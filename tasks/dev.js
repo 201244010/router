@@ -1,36 +1,51 @@
 
 const webpack = require('webpack');
-const middleWare = require('webpack-dev-middleware');
-const history = require("connect-history-api-fallback");
+const devServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
-const express = require('express');
 const utils = require('../utils');
 const styleLoaders = utils.styleLoaders({extract : false, sourceMap : true});
 
-const app = express();
-const port = 3003;
+const port = 3004;
 
-console.time('编译耗时');
-
-let conf = merge(require('../webpack.base.conf'), {
+const conf = merge(require('../webpack.base.conf'), {
   module : {
     rules : styleLoaders
-  }
+  },
+  plugins : [
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ]
 });
-let compiler = webpack(conf);
 
-app.use(history({
-  index: '/index.html',
-  verbose: false
-}));
 
-app.use(middleWare(compiler, {
-  logLevel : 'silent'
-}));
+utils.print(conf);
 
-app.listen(port, function() {
+const options = {
+  // Tell the server where to serve content from
+  // contentBase: path.resolve(__dirname, '..', 'dist'),
+  contentBase: "/dist",
+  // Enable webpack's Hot Module Replacement feature:
+  hot: true,
+  // Enable gzip compression for everything served
+  compress: true,
+  // Specify a host to use. By default this is localhost
+  host: 'localhost',
+  // When using the HTML5 History API, the index.html page will likely have to be served in place of any 404 responses
+  historyApiFallback : true,
+  // When open is enabled, the dev server will open the browser.
+  open : true,
+  // With noInfo enabled, messages like the webpack bundle information that is shown when starting up and after each save, will be hidden. Errors and warnings will still be shown.
+  noInfo: true
+};
+
+devServer.addDevServerEntrypoints(conf, options);
+
+const compiler = webpack(conf);
+const server = new devServer(compiler, options);
+
+
+server.listen(port, "localhost", function() {
   console.log('dev-server wake up, open %s', "http://localhost:" + port);
-  console.timeEnd('编译耗时');
 })
 
 

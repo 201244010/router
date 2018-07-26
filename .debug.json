@@ -1,0 +1,128 @@
+{
+    "entry": {
+        "main": "/Users/kelvin/sunmi/web-w1/src/index"
+    },
+    "devtool": "inline-cheap-module-source-map",
+    "output": {
+        "path": "/Users/kelvin/sunmi/web-w1/dist",
+        "filename": "[name].min.js"
+    },
+    "module": {
+        "rules": [
+            {
+                "test": {},
+                "exclude": {},
+                "loader": "babel-loader",
+                "options": {
+                    "compact": false,
+                    "cacheDirectory": true
+                }
+            },
+            {
+                "test": {},
+                "loader": "file-loader",
+                "options": {
+                    "name": "[name]_[sha512:hash:base64:7].[ext]"
+                }
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader"
+                ]
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader",
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "indentedSyntax": false,
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader",
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "resolve": {
+        "extensions": [
+            ".js",
+            ".jsx",
+            ".css",
+            ".scss",
+            ".json"
+        ]
+    },
+    "plugins": [
+        {
+            "chunkNames": [
+                "vendor"
+            ],
+            "filenameTemplate": "vendor.min.js",
+            "ident": "/Users/kelvin/sunmi/web-w1/node_modules/_webpack@3.12.0@webpack/lib/optimize/CommonsChunkPlugin.js0"
+        },
+        {
+            "options": {
+                "template": "/Users/kelvin/sunmi/web-w1/index.template.html",
+                "filename": "index.html",
+                "hash": false,
+                "inject": true,
+                "compile": true,
+                "favicon": false,
+                "minify": false,
+                "cache": true,
+                "showErrors": true,
+                "chunks": "all",
+                "excludeChunks": [],
+                "title": "Webpack App",
+                "xhtml": false
+            }
+        },
+        {
+            "options": {}
+        },
+        {
+            "options": {},
+            "fullBuildTimeout": 200,
+            "requestTimeout": 10000
+        }
+    ]
+}

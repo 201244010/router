@@ -13,7 +13,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js[x]?$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: { compact: false, cacheDirectory: true }
@@ -40,9 +40,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template : resolve('index.template.html'),
       inject : true
-    }),
-    
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    })
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ]
 };
 
