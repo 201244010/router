@@ -81,7 +81,7 @@ exports.cssLoaders = cssLoaders = function(options = {}) {
     return {
         css: generateLoaders("", "", forVue),
         sass: generateLoaders("sass", { indentedSyntax: false }, forVue),
-        less : generateLoaders("less", {}, forVue),
+        // less : generateLoaders("less", {}, forVue),
         scss: generateLoaders("sass", forVue)
     };
 }

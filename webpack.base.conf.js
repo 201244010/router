@@ -5,6 +5,7 @@ const resolve = args => path.resolve(__dirname, args);
 
 module.exports = {
   entry : { main : resolve('./src/index') },
+  devtool : "inline-cheap-module-source-map",
   output : {
     path : resolve('dist'),
     filename : '[name].min.js'
