@@ -15,7 +15,7 @@ function timestamp() {
 }
 
 function resolve(...dirs) {
-    return path.join(__dirname, "..", ...dirs);
+    return path.join(__dirname, ...dirs);
 }
 
 exports.timestamp = timestamp;

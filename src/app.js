@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import "./style.scss";
+import "./assets/styles/style.scss";
 import Home from './pages/Home';
 import About from './pages/About';
 import Topics from './pages/Topics';
