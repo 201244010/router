@@ -85,7 +85,9 @@
     "resolve": {
         "alias": {
             "~": "/Users/kelvin/sunmi/web-w1/src",
-            "common": "/Users/kelvin/sunmi/web-w1/src/assets/common"
+            "styles": "/Users/kelvin/sunmi/web-w1/src/assets/styles",
+            "common": "/Users/kelvin/sunmi/web-w1/src/assets/common",
+            "pub": "/Users/kelvin/sunmi/web-w1/src/pub"
         },
         "extensions": [
             ".js",
