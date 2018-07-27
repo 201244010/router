@@ -2,6 +2,8 @@
 const webpack = require('webpack');
 const devServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const chalk = require("chalk");
 const utils = require('../utils');
 const styleLoaders = utils.styleLoaders({extract : false, sourceMap : true});
 
@@ -12,6 +14,17 @@ const conf = merge(require('../webpack.base.conf'), {
     rules : styleLoaders
   },
   plugins : [
+    new ProgressBarPlugin({
+      format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+      clear: false,
+      callback : function(){
+        console.log('dev-server wake up, open %s', "http://localhost:" + port);
+      }
+    }),
+    // 编译时(compile time)插件
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV':  JSON.stringify('development')
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ]
@@ -45,7 +58,7 @@ const server = new devServer(compiler, options);
 
 
 server.listen(port, "localhost", function() {
-  console.log('dev-server wake up, open %s', "http://localhost:" + port);
+  // console.log('dev-server wake up, open %s', "http://localhost:" + port);
 })
 
 

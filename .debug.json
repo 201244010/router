@@ -131,6 +131,12 @@
                 "xhtml": false
             }
         },
+        {},
+        {
+            "definitions": {
+                "process.env.NODE_ENV": "\"development\""
+            }
+        },
         {
             "options": {}
         },

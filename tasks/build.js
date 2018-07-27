@@ -2,31 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const merge = require('webpack-merge');
-const utils = require('../utils');
-
-const styleLoaders = utils.styleLoaders({extract : true, minimize : true});
-
-let conf = merge(require('../webpack.base.conf'), {
-    module : {
-        rules : styleLoaders
-    },
-    devtool : false,
-    plugins : [
-        new ExtractTextPlugin({
-            filename: '[name].min.css',
-            allChunks: true
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                drop_console: false,
-            }
-        })
-    ]
-});
-// fs.writeFileSync('./debug.json', JSON.stringify(conf, null, 4));
+const conf = require('../webpack.prod.conf');
 
 webpack(conf, function(err, stats) {
   if (err) {
