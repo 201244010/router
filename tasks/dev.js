@@ -15,8 +15,8 @@ const conf = merge(require('../webpack.base.conf'), {
   },
   plugins : [
     new ProgressBarPlugin({
-      format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
-      clear: false,
+      format: 'build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+      clear: true,
       callback : function(){
         console.log('dev-server wake up, open %s', "http://localhost:" + port);
       }

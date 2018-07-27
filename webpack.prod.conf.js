@@ -12,7 +12,7 @@ let styleLoaders = utils.styleLoaders({extract : true, minimize : true});
 let plugins = [
     new ProgressBarPlugin({
         format: 'build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
-        clear: false
+        clear: true
     }),
     // 编译时(compile time)插件
     new webpack.DefinePlugin({
