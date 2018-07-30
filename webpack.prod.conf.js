@@ -7,8 +7,10 @@ const argv = require('minimist')(process.argv.slice(2));
 const utils = require('./utils');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
+const theme = require('./theme');
 
-let styleLoaders = utils.styleLoaders({extract : true, minimize : true});
+let styleLoaders = utils.styleLoaders({extract : true, minimize : true, modifyVars : JSON.stringify(theme)});
+
 let plugins = [
     new ProgressBarPlugin({
         format: 'build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',

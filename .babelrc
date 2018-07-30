@@ -1,6 +1,10 @@
 {
   "presets": [ "env", "react", "stage-0"],
   "plugins": [
+    ["import", {
+      "libraryName": "antd",
+      "style": true
+    }],
     "syntax-dynamic-import",
     "react-hot-loader/babel",
     ["transform-runtime", { "polyfill": true, "regenerator": true } ]

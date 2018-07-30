@@ -5,7 +5,8 @@ const merge = require('webpack-merge');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const utils = require('../utils');
-const styleLoaders = utils.styleLoaders({extract : false, sourceMap : true});
+const theme = require('../theme');
+const styleLoaders = utils.styleLoaders({extract : false, sourceMap : true, modifyVars : JSON.stringify(theme)});
 
 const port = 3004;
 

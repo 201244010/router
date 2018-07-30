@@ -1,13 +1,15 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const theme = require('./theme');
 
 const resolve = args => path.resolve(__dirname, args);
 const conf = require('./conf');
 
 module.exports = {
   entry : { main : resolve('./src/app') },
-  devtool : "inline-cheap-module-source-map",
+  // devtool : "inline-cheap-module-source-map",
+  devtool : "cheap-module-eval-source-map",
   output : {
     path : resolve('dist'),
     filename : '[name].min.js'
