@@ -119,6 +119,26 @@
     },
     "plugins": [
         {
+            "opts": {
+                "analyzerMode": "server",
+                "analyzerHost": "127.0.0.1",
+                "analyzerPort": 8888,
+                "reportFilename": "report.html",
+                "defaultSizes": "parsed",
+                "openAnalyzer": true,
+                "generateStatsFile": false,
+                "statsFilename": "stats.json",
+                "statsOptions": null,
+                "excludeAssets": null,
+                "logLevel": "info",
+                "startAnalyzer": true
+            },
+            "server": null,
+            "logger": {
+                "activeLevels": {}
+            }
+        },
+        {
             "definitions": {
                 "common": "common"
             }

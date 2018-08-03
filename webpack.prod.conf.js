@@ -2,10 +2,8 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const argv = require('minimist')(process.argv.slice(2));
-const utils = require('./utils');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const utils = require('./utils');
 const chalk = require("chalk");
 const theme = require('./theme');
 
@@ -33,12 +31,6 @@ let plugins = [
         }
     })
 ];
-
-if(argv.analysis){
-    plugins.unshift(new BundleAnalyzerPlugin({
-        analyzerPort : 8888
-    }));
-}
 
 const conf = merge(require('./webpack.base.conf'), {
     module : { rules : styleLoaders },

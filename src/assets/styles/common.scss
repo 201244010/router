@@ -5,8 +5,9 @@ html,body, .layout {
 }
 
 body {
-    font: 13px/22px, PingFangSC-Regular, '微软雅黑';
+    font: 13px/22px PingFangSC-Regular, '微软雅黑'!important;
     color: rgba(0,0,0,0.45);
+    background-color: #F0F2F5!important;
 }
 
 a, a:hover, a:visited, a:link {
