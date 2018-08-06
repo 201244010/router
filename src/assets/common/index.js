@@ -2,7 +2,7 @@
 
 import Loadable from 'react-loadable';
 import axios from 'axios';
-import { stringify } from 'qs';
+// import { stringify } from 'qs';
 
 const { keys, values, assign } = Object;
 const noop = ()=>{};

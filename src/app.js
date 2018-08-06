@@ -21,24 +21,9 @@ const store = configurestore();
 class App extends React.Component {
     constructor(props){
         super(props);
-        // this.state = {
-        //     userInfo : {
-        //         name : '数据请求中...'
-        //     }
-        // };
     }
 
-    componentDidMount(){
-        // setTimeout(() => {
-        //     this.setState( (prev, state) => (
-        //         {
-        //             userInfo : {
-        //                 name : '奥巴马'
-        //             }
-        //         }
-        //     ));
-        // }, 3000);
-    }
+    componentDidMount(){}
 
     render(){
         return (

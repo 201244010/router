@@ -1,4 +1,3 @@
-
 const webpack = require('webpack');
 const devServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
@@ -6,25 +5,29 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const utils = require('../utils');
 const theme = require('../theme');
-const styleLoaders = utils.styleLoaders({extract : false, sourceMap : true, modifyVars : JSON.stringify(theme)});
+const styleLoaders = utils.styleLoaders({
+  extract: false,
+  sourceMap: true,
+  modifyVars: JSON.stringify(theme)
+});
 
 const port = 3004;
 
 const conf = merge(require('../webpack.base.conf'), {
-  module : {
-    rules : styleLoaders
+  module: {
+    rules: styleLoaders
   },
-  plugins : [
+  plugins: [
     new ProgressBarPlugin({
       format: 'build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
       clear: true,
-      callback : function(){
+      callback: function () {
         console.log('dev-server wake up, open %s', "http://localhost:" + port);
       }
     }),
     // 编译时(compile time)插件
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV':  JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development')
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
@@ -45,9 +48,9 @@ const options = {
   // Specify a host to use. By default this is localhost
   host: 'localhost',
   // When using the HTML5 History API, the index.html page will likely have to be served in place of any 404 responses
-  historyApiFallback : true,
+  historyApiFallback: true,
   // When open is enabled, the dev server will open the browser.
-  open : true,
+  open: true,
   // With noInfo enabled, messages like the webpack bundle information that is shown when starting up and after each save, will be hidden. Errors and warnings will still be shown.
   noInfo: true
 };
@@ -58,17 +61,6 @@ const compiler = webpack(conf);
 const server = new devServer(compiler, options);
 
 
-server.listen(port, "localhost", function() {
+server.listen(port, "localhost", function () {
   // console.log('dev-server wake up, open %s', "http://localhost:" + port);
 })
-
-
-
-
-
-
-
-
-
-
-
