@@ -2,6 +2,7 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Input, Button, Icon } from 'antd';
 import Form from '~/components/Form';
+import axios from 'axios';
 
 const { FormItem, ErrorTip }  = Form;
 
@@ -34,17 +35,18 @@ class Login extends React.Component {
     }
 
     post = () => {
-        if(!this.state.password.trim().length){
+        const password = this.state.password;
+        if(!password.trim().length){
             return this.setState({ tip : '密码不能为空' });
         }
         this.setState({
             loading : true
         });
 
-        setTimeout(()=> {
+        axios.post('http://localhost:3000/login', {password}).then((res)=>{
+            console.log('done', res);
             this.setState({ loading : false });
-            alert('登录成功');
-        }, 1000)
+        })
     }
 
     render() {

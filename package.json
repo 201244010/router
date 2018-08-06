@@ -10,7 +10,7 @@
     "dev": "node tasks/dev.js",
     "dev:a": "node tasks/dev.js --analysis",
     "start:server": "node ./server/bin/www",
-    "dev:server": "./node_modules/.bin/nodemon bin/www"
+    "dev:server": "./node_modules/.bin/nodemon server/bin/www"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -64,6 +64,7 @@
     "babel-preset-react": "^6.24.1",
     "classnames": "^2.2.6",
     "css-loader": "^0.28.11",
+    "koa2-cors": "^2.0.6",
     "mockjs": "^1.0.1-beta3",
     "nodemon": "^1.8.1",
     "progress-bar-webpack-plugin": "^1.11.0",
