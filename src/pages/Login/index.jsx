@@ -1,8 +1,6 @@
 import React from 'react';
-import { hot } from 'react-hot-loader';
 import { Input, Button, Icon } from 'antd';
 import Form from '~/components/Form';
-import axios from 'axios';
 
 const { FormItem, ErrorTip }  = Form;
 
@@ -25,9 +23,7 @@ class Login extends React.Component {
         this.setState({ tip : '' });
     }
 
-    componentDidMount() {
-        console.log(common.fetcher);
-    }
+    componentDidMount() { }
 
     enter() {}
 
@@ -43,7 +39,10 @@ class Login extends React.Component {
             return this.setState({ tip : '密码不能为空' });
         }
         this.setState({ loading : true });
-        const {data} = await common.fetch(__BASEAPI__ + '/login', {method : 'POST', data : { password : btoa(password) }});
+        const {data} = await common.fetchWithCode('ACCOUNT_LOGIN', {
+            method : 'POST', 
+            data : { account : { password : btoa(password), username : 'admin' }}
+        });
         this.setState({ loading : false });
         if(data.errcode == 0){
             alert('登录成功');
@@ -85,6 +84,5 @@ class Login extends React.Component {
     }
 }
 
-export default hot(module)(Login);
+export default Login;
 
-// export default common.withHot(Login);

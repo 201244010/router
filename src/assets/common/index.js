@@ -1,11 +1,12 @@
 
 
 import Loadable from 'react-loadable';
+import {DIRECTIVE} from './constants';
 import axios from 'axios';
 import { stringify } from 'qs';
 
 const { assign } = Object;
-const noop = ()=>{};
+const noop = () => {};
 
 export const asyncImport = component => {
     return Loadable({
@@ -14,24 +15,20 @@ export const asyncImport = component => {
     });
 };
 
-export function fetch(url, params){
-    let conf  = { method : 'GET', timeout : 10 * 1000, responseType : 'json' };
-    if(!url){
-       alert('Request url is required'); 
-       return;
-    }
-    let options = assign(conf, params);
-    let method = params.method.toLowerCase();
+export function fetchWithCode(directive, options = {}){
+    let code = DIRECTIVE[directive];
+    let url = __BASEAPI__ + '/' + directive;
+    let payload = code ? {opcode : code} : {};
+    let method = options.method ? options.method : 'get';
     
+    method = method.toLowerCase();
+    payload = Object.assign(options.data || options.params || {}, payload);
+
     if(method === 'get'){
-        options.params = {"params" : options.data || options.params || {}};
+        options.params = {"params" : [payload]};
     }
     else if(method === 'post'){
-        // options.headers = {
-        //     "Content-Type" : "application/x-www-form-urlencoded:charset=UTF-8",
-        //     ...options.headers
-        // };
-        options.data = {"params" : options.data || options.params || {}};
+        options.data = {"params" : [payload]};
         options.data = stringify(options.data, {encodeValuesOnly : true});
     }
     return axios(url, options).catch( error => {

@@ -3,7 +3,7 @@
 const router = require('koa-router')();
 const utils = require('../utils');
 
-router.prefix('/api/login');
+router.prefix('/api/ACCOUNT_LOGIN');
 
 router.get('/', function (ctx, next) {
     ctx.body = {
@@ -13,11 +13,13 @@ router.get('/', function (ctx, next) {
 });
 
 router.post('/', function(ctx, next){
+    console.log(ctx.request.body, ctx.request.params);
     let { params } = ctx.request.body; 
-    if( !params || !params.password ){
+    params = params[0];
+    if( !params || !params.account.password ){
         return ctx.body = { errcode : 1, message : '参数缺失' };
     }
-    let password = params.password;
+    let password = params.account.password;
     if(!password){
         return ctx.body = { errcode : 1, message : '密码不能为空' };
     }
