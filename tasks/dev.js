@@ -27,7 +27,8 @@ const conf = merge(require('../webpack.base.conf'), {
     }),
     // 编译时(compile time)插件
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      __BASEAPI__ : JSON.stringify('http://localhost:3000/api')
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()

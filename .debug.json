@@ -156,7 +156,8 @@
         {},
         {
             "definitions": {
-                "process.env.NODE_ENV": "\"development\""
+                "process.env.NODE_ENV": "\"development\"",
+                "__BASEAPI__": "\"http://localhost:3000/api\""
             }
         },
         {

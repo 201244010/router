@@ -3,7 +3,7 @@
 const router = require('koa-router')();
 const utils = require('../utils');
 
-router.prefix('/login');
+router.prefix('/api/login');
 
 router.get('/', function (ctx, next) {
     ctx.body = {

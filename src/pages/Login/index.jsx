@@ -43,14 +43,13 @@ class Login extends React.Component {
             return this.setState({ tip : '密码不能为空' });
         }
         this.setState({ loading : true });
-        const {data} = await common.fetch('http://localhost:3000/login', {method : 'POST', data : { password : btoa(password) }});
+        const {data} = await common.fetch(__BASEAPI__ + '/login', {method : 'POST', data : { password : btoa(password) }});
         this.setState({ loading : false });
         if(data.errcode == 0){
             alert('登录成功');
             return;
         }
         this.setState({ tip : data.message });
-
     }
 
     render() {

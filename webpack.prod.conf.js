@@ -16,7 +16,8 @@ let plugins = [
     }),
     // 编译时(compile time)插件
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV':  JSON.stringify('production')
+      'process.env.NODE_ENV':  JSON.stringify('production'),
+      __BASEAPI__ : JSON.stringify('/api')
     }),
     // 提取样式表
     new ExtractTextPlugin({
