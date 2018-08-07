@@ -25,7 +25,9 @@ class Login extends React.Component {
         this.setState({ tip : '' });
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        console.log(common.fetcher);
+    }
 
     enter() {}
 
@@ -34,19 +36,21 @@ class Login extends React.Component {
         this.setState({ password: '' });
     }
 
-    post = () => {
+    post = async () => {
         const password = this.state.password;
+
         if(!password.trim().length){
             return this.setState({ tip : '密码不能为空' });
         }
-        this.setState({
-            loading : true
-        });
+        this.setState({ loading : true });
+        const {data} = await common.fetch('http://localhost:3000/login', {method : 'POST', data : { password : btoa(password) }});
+        this.setState({ loading : false });
+        if(data.errcode == 0){
+            alert('登录成功');
+            return;
+        }
+        this.setState({ tip : data.message });
 
-        axios.post('http://localhost:3000/login', {password}).then((res)=>{
-            console.log('done', res);
-            this.setState({ loading : false });
-        })
     }
 
     render() {
