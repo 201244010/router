@@ -12,17 +12,17 @@ export default class Header extends React.Component {
 		return (
 			<div className="header">
 				<Grid>
-					<ul className="ui-none">
+					<ul>
 						<li>
 							<span>SUNMI</span>
 							<span>SUNMI W1</span>
 						</li>
-						<li className="menu">
+						<li className="menu ui-hidden">
 							<a href="javascript:;" className="ui-ib now">网络状态</a>
 							<a href="javascript:;" className="ui-ib">基础设置</a>
 							<a href="javascript:;" className="ui-ib">高级设置</a>
 						</li>
-						<li className="sidebar">
+						<li className="sidebar ui-hidden">
 							<a href="javascript:;" className="ui-ib">下载手机版</a>
 							<span className="ui-ib">|</span>
 							<a href="javascript:;" className="ui-ib">退出管理</a>

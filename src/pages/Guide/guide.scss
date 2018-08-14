@@ -9,10 +9,6 @@
 .steps {
     $white : rgba(255, 255, 255, .5);
     $pure-white : #fff;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: center;
     padding-bottom: 20px;
     .guide-header {
         flex : none;
@@ -20,7 +16,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size : 14px;
+        font-size : 16px;
         color : $white;
         width : 874px;
         margin : auto;
@@ -28,13 +24,15 @@
             margin : 0 10px;
             flex : none;
             i {
-                width : 24px;
-                height: 24px;
+                width : 26px;
+                height: 26px;
                 font-style: normal;
                 border : 1px solid $white;
                 text-align: center;
                 border-radius: 100%;
-                margin-right: 4px;
+                margin-right: 10px;
+                font-size: 14px;
+                line-height: 25px;
             }
             &.line {
                 flex : 1;
@@ -45,6 +43,8 @@
                 color : $pure-white;
                 i {
                     border-color : $pure-white;
+                    background-color : #fff;
+                    color : #2956C6;
                 }
                 &+.line {
                     border-color: $pure-white;
@@ -60,7 +60,13 @@
         border-radius: 8px;
         border : 1px solid #fff;
         background-color: #fff;
-        padding : 35px;
+        padding : 20px 35px 35px;
+        h2 {
+            height: 60px;
+            line-height: 60px;
+            border-bottom : 1px solid #ccc;
+            margin-bottom : 10px;
+        }
     }
 }
 

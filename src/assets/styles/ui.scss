@@ -13,9 +13,15 @@ h1, .ui-title {
     line-height: 1;
 }
 
+h2, .ui-subtitle {
+    font-size : $sub-font-size!important;
+    color : #000!important;
+    font-weight: bold!important;
+}
+
 .ui-tips {
     font-size: 12px;
-    color: rgba($color: #000, $alpha: .45);
+    color: #ADB1B9;
 }
 
 .ui-form-tips {
@@ -49,6 +55,13 @@ h1, .ui-title {
 
 .ui-flex {
     display: flex;
+}
+
+.ui-flex-column {
+    display: flex;
+    flex-flow : column nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .ui-center {
