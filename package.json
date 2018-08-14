@@ -9,8 +9,8 @@
     "build:a": "rimraf dist && node tasks/build.js --analysis",
     "dev": "node tasks/dev.js",
     "dev:a": "node tasks/dev.js --analysis",
-    "start:server": "node ./server/bin/www",
-    "dev:server": "./node_modules/.bin/nodemon server/bin/www"
+    "server": "node ./server/bin/www",
+    "server:w": "./node_modules/.bin/nodemon server/bin/www"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

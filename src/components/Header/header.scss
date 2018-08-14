@@ -1,13 +1,54 @@
 
 .header {
-    background: #001529;
+    background: #2956C6;
     color : #fff;
-    height: 64px;
-    line-height: 64px;
-    padding: 0 140px;
 
     a:hover {
         color : #fff;
+    }
+
+    ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin : 0;
+        height: 55px;
+        font-size : 14px;
+
+        a {
+            font-weight: normal;
+        }
+
+        li {
+            flex : 1;
+        }
+
+        .menu {
+            font-size : 16px;
+            a { 
+                margin-right : 50px; 
+                height : 36px;
+                line-height: 36px;
+                border-bottom : 2px solid #2956C6;
+                
+                &:hover, &.now {
+                    font-weight: bold;
+                    border-bottom-color: #fff;
+                }
+            }
+        }
+
+        li:nth-of-type(1) {
+            flex : none;
+            width : 400px;
+        }
+
+        .sidebar {
+            font-size: 14px;
+            flex : none;
+            width : 200px;
+            span { margin : 0 15px; }
+        }
     }
 }
 

@@ -29,13 +29,18 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 } 
     
 
-.container {
+.main {
     position: absolute;
-    top : 64px;
+    top : 55px;
     bottom : 0;
     width : 100%;
     z-index: 3;
-    overflow: auto;
+    overflow: auto; 
+    background-image : linear-gradient(180deg, $primary-bg-color 175px, #f2f3f7 175px);
+}
+
+ul,li{
+    list-style: none;
 }
 
 

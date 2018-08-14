@@ -3,20 +3,18 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import configurestore from './pub/store/configureStore';
 import "./assets/styles/index.scss";
 
 import Header from './components/Header/header';
 
 
-import UserBox from './components/UserBox';
-import { UserInfoContext } from './context';
-import Home from './pages/Home';
-import About from './pages/About';
-import Topics from './pages/Topics';
-import Login from './pages/Login';
+// import UserBox from './components/UserBox';
+// import { UserInfoContext } from './context';
 
-const store = configurestore();
+import Login from './pages/Login';
+import Guide from "./pages/Guide";
+// import configurestore from './pub/store/configureStore';
+// const store = configurestore();
 
 class App extends React.Component {
     constructor(props){
@@ -32,10 +30,11 @@ class App extends React.Component {
                 {/* <UserInfoContext.Provider value={this.state.userInfo}>
                     <UserBox></UserBox>
                 </UserInfoContext.Provider> */}
-                <div className="container">
+                <div className="main">
                     <Router>
                         <Switch>
                             <Route path="/login" component={Login} />
+                            <Route path="/guide" component={Guide} />
                         </Switch>
                     </Router>
                 </div>
@@ -44,10 +43,6 @@ class App extends React.Component {
     }
 };
 
-console.log(store);
 const node = document.querySelector('#wrap');
 ReactDOM.render(<App />, node);
-
-console.log('Wake up!');
-
 

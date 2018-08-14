@@ -2,7 +2,11 @@
  * font
  */
 
-.ui-title {
+h1, h2, h3, h4 {
+    margin-bottom: 0;
+}
+
+h1, .ui-title {
     font-size: $primary-font-size;
     color: $primary-color;
     margin-bottom : 40px;
@@ -58,6 +62,13 @@
     height: 100%;
 }
 
+.ui-container {
+    width : 1216px;
+    margin : auto;
+    height: 100%;
+}
+ 
+
 // .ui-has-error .ant-input,
 // .ui-has-error .ant-input:hover {
 //     border-color: #f5222d;
@@ -80,6 +91,25 @@
 //     box-shadow: 0 0 0 2px rgba(245, 34, 45, 0.2);
 //     border-right-width: 1px !important;
 // }
+
+/* inline-block */
+.ui-ib {
+    display : inline-block;
+    vertical-align: middle;
+}
+
+.ui-none {
+    display: none;
+}
+
+.ui-block {
+    display: block;
+}
+
+.ui-hidden {
+    visibility: hidden;
+}
+
 
 /* UI FROM */
 .ui-form {
