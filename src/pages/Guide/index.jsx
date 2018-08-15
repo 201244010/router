@@ -37,12 +37,9 @@ export default class Guide extends React.Component {
                     </li>
                 </ul>
                 <div className="guide-body">
-                    <Privacy></Privacy> 
-                    {/* <Router>
-                        <Switch>
-                            <Route path="/" component={Privacy} />
-                        </Switch>
-                    </Router> */}
+                    <Switch>
+                        <Route path="password" component={Privacy} />
+                    </Switch>
                 </div>
             </Grid>
         );
