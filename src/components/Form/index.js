@@ -35,22 +35,55 @@ class Input extends React.Component {
     }
 
     static defaultProps = {
-        type : 'text',
-        width : 260
+        type : 'password',
+    };
+
+    state = {
+        hidden : true,
+        type : this.props.type
     };
 
     static propTypes = {
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
-        width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ])
+        onBlur : PropTypes.func.isRequired,
+        width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
+        visibilityChange : PropTypes.func
+
     };
+
+    HandleVisibilityChange = ()=>{
+        this.setState((prevState, prop)=>({
+            hidden : !prevState.hidden,
+            type : !prevState.hidden ? 'password' : 'text'
+        }));
+        if(this.props.visibilitychange){
+            this.props.visibilitychange(this.state.hidden);
+        }
+    };
+
+    handleChange = e => {
+        console.log('change', e.target.value);
+        this.props.onChange(e.target.value);
+    };
+
+    handleBlur = e => {
+        console.log('blur');
+        this.props.onBlur(e.target.value);
+    }
     
     render(){
-        const {type, width, onChange, ...rest} = this.props;
+        let {type, width, onChange, onBlur, visibilitychange, ...rest} = this.props;
+        let hidden = this.state.hidden;
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
-                <i className="ui-icon-eye w1 eye-open"></i>
-                <input className="ui-input" {...rest} type={this.props.type}/>
+                <i className="ui-icon ui-icon-eye-open" style={{ display :  hidden ? 'block' : 'none'}} onClick={this.HandleVisibilityChange}></i>
+                <i className="ui-icon ui-icon-eye-close" style={{ display :  !hidden ? 'block' : 'none'}} onClick={this.HandleVisibilityChange}></i>
+                <input  className="ui-input" 
+                        onBlur={this.handleBlur}
+                        onChange={this.handleChange} 
+                        {...rest} 
+                        type={this.state.type}/>
             </div>
         );
     }
