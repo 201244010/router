@@ -16,25 +16,30 @@ a, a:hover, a:visited, a:link {
 }
 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
-    text-align: right;
+    color: #333C4F;
+    opacity: .3;
 } 
 input:-moz-placeholder, textarea:-moz-placeholder { 
-    text-align: right;
+    color: #333C4F;
+    opacity: .3;
 } 
 input::-moz-placeholder, textarea::-moz-placeholder {
-    text-align: right;
+    color: #333C4F;
+    opacity: .3;
 } 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-    text-align: right;
+    color: #333C4F;
+    opacity: .3;
 } 
     
 
 .main {
-    position: absolute;
-    top : 55px;
-    bottom : 0;
-    width : 100%;
-    z-index: 3;
+    // position: absolute;
+    // top : 55px;
+    // bottom : 0;
+    // width : 100%;
+    // z-index: 3;
+    min-height: 100%;
     overflow: auto; 
     background-image : linear-gradient(180deg, $primary-bg-color 175px, #f2f3f7 175px);
 }

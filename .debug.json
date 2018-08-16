@@ -5,7 +5,8 @@
     "devtool": "cheap-module-eval-source-map",
     "output": {
         "path": "/Users/kelvin/sunmi/web-w1/dist",
-        "filename": "[name].min.js"
+        "filename": "[name].min.js",
+        "publicPath": "/"
     },
     "module": {
         "rules": [

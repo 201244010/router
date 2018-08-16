@@ -1,11 +1,16 @@
 
 import React from 'react';
-// import { Switch, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Privacy from './Privacy';
-import Grid from '~/components/Grid';
+import SetPassword from './SetPassword';
+import SubLayout from '~/components/SubLayout';
 
 import './guide.scss';
+
+
+const Start = props => {
+    return <div>开始设置</div>
+};
 
 export default class Guide extends React.Component {
     constructor(props){
@@ -13,8 +18,9 @@ export default class Guide extends React.Component {
     }
 
     render(){
+        const { match } = this.props;
         return (
-            <Grid className="steps ui-flex-column">
+            <SubLayout className="steps">
                 <ul className="guide-header">
                     <li className="now">
                         <i className="ui-ib">1</i>
@@ -38,10 +44,12 @@ export default class Guide extends React.Component {
                 </ul>
                 <div className="guide-body">
                     <Switch>
-                        <Route path="password" component={Privacy} />
+                        {/* <Route path={match.path} exact component={Start}></Route> */}
+                        <Route path={`${match.path}/setpassword`} component={SetPassword} />
+                        <Redirect from={match.path} to={`${match.path}/setpassword`}></Redirect>
                     </Switch>
                 </div>
-            </Grid>
+            </SubLayout>
         );
     }
 

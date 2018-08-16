@@ -5,44 +5,41 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./assets/styles/index.scss";
 
-import Header from './components/Header/header';
-
+import PrimaryHeader from './components/PrimaryHeader';
+import Login from './pages/Login';
+import Guide from "./pages/Guide";
+import Home from './pages/Home';
 
 // import UserBox from './components/UserBox';
 // import { UserInfoContext } from './context';
-
-import Login from './pages/Login';
-import Guide from "./pages/Guide";
 // import configurestore from './pub/store/configureStore';
 // const store = configurestore();
 
-class App extends React.Component {
-    constructor(props){
-        super(props);
-    }
+const PrimaryLayout = () => (
+  <div className="ui-fullscreen">
+      <PrimaryHeader />
+      {/* <UserInfoContext.Provider value={this.state.userInfo}>
+          <UserBox></UserBox>
+      </UserInfoContext.Provider> */}
+      <div className="main">
+        <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/guide" component={Guide} />
+        </Switch>
+      </div>
+  </div>
+);
 
-    componentDidMount(){}
 
-    render(){
-        return (
-            <div className="ui-fullscreen">
-                <Header />
-                {/* <UserInfoContext.Provider value={this.state.userInfo}>
-                    <UserBox></UserBox>
-                </UserInfoContext.Provider> */}
-                <div className="main">
-                    <Router>
-                        <Switch>
-                            <Route path="/login" component={Login} />
-                            <Route path="/guide" component={Guide} />
-                        </Switch>
-                    </Router>
-                </div>
-            </div>
-        );
-    }
-};
+const App = () => (
+  <Router>
+    <PrimaryLayout></PrimaryLayout> 
+  </Router>
+);
 
-const node = document.querySelector('#wrap');
-ReactDOM.render(<App />, node);
+
+ReactDOM.render(<App />, document.querySelector('#wrap'));
+
+
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-export default function Container(props){
+export default function SubLayout(props){
     const {children, className, ...rest} = props;
     const names = classNames([className, 'ui-container']);
     return (

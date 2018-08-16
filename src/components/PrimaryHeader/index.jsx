@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './header.scss';
-import Grid from "../Grid";
+import SubLayout from "../SubLayout";
 
 export default class Header extends React.Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ export default class Header extends React.Component {
 	render() {
 		return (
 			<div className="header">
-				<Grid>
+				<SubLayout>
 					<ul>
 						<li>
 							<span>SUNMI</span>
@@ -28,7 +28,7 @@ export default class Header extends React.Component {
 							<a href="javascript:;" className="ui-ib">退出管理</a>
 						</li>
 					</ul>
-				</Grid>
+				</SubLayout>
 			</div>
 		);
 	}

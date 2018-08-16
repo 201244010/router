@@ -15,7 +15,8 @@ const options = {
   devtool: "cheap-module-eval-source-map",
   output: {
     path: resolve('dist'),
-    filename: '[name].min.js'
+    filename: '[name].min.js',
+    publicPath : "/"
   },
   module: {
     rules: [
