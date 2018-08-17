@@ -99,14 +99,23 @@ export default class SetWan extends React.PureComponent {
     }
 
     checkParams(){
-        let { type, pppoeAccount, pppoePassword  } = this.state;
+        let { type, pppoeAccount, pppoePassword, dns, ip, dnsbackup, gateway, subnetmask } = this.state;
         switch(type){
             case 'pppoe' :
                 if(pppoeAccount.length === 0 || pppoePassword.length === 0){
                     return false;
                 }
                 break;
-            case 'dhcp' :
+            case 'staticip' :
+                let empty = [dns, ip, dnsbackup, subnetmask, gateway].some(field => {
+                    if(field.length === 0){
+                        return true;
+                    }
+                    return field.some(f => f === '');
+                })
+                if(empty){
+                    return false;
+                }            
                 break;
         }
         return true;
@@ -119,8 +128,10 @@ export default class SetWan extends React.PureComponent {
     }
 
     onIPConifgChange = (value, field) => {
-        this.setState({
-            [field] : value
+        this.setState({ [field] : value }, function() {
+            this.setState({
+                disabled : !this.checkParams()
+            });
         });
     }
 
@@ -211,7 +222,7 @@ const StaticIp = props => {
                 onChange={value => props.onChange(value, 'ip')} />
         </FormItem>,
         <FormItem key='subnetmask' label="子网掩码">
-            <InputGroup 
+            <InputGroup                                                                         
                 inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
         </FormItem>,
