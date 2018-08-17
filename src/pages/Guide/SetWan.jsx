@@ -74,6 +74,9 @@ export default class SetWan extends React.PureComponent {
                                 <Option value="ip">手动输入IP（静态IP）</Option>
                             </Select>
                         </FormItem>
+                        <FormItem label="账号">
+                            
+                        </FormItem>
                     </Form>
                 </div>
             </div>

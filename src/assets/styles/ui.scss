@@ -122,6 +122,10 @@ h3 {
             line-height: 1.5;
             font-size : 12px;
         }
+        .ui-input:focus {
+            border : 1px solid #FB8632;
+            box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
+        }
         &.has-error {
             .ui-input {
                 border : 1px solid #FB8632;
