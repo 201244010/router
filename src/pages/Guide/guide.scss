@@ -67,6 +67,26 @@
             border-bottom : 1px solid #ccc;
             margin-bottom : 10px;
         }
+
+        .guide-tip {
+            margin-bottom : 25px;
+        }
+
+        .set-wan {
+            .ui-center {
+                height : 400px;
+            }
+            .none {
+                display: none;
+            }
+            .wan {
+                display: none
+            }
+            .wan.block {
+                display: block;
+            }
+
+        }
     }
 }
 

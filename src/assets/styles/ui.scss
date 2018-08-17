@@ -19,6 +19,11 @@ h2, .ui-subtitle {
     font-weight: bold!important;
 }
 
+h3 {
+    font-size : 18px!important;
+    color : #333!important;
+}
+
 .ui-tips {
     font-size: 12px;
     color: #ADB1B9;
@@ -80,30 +85,6 @@ h2, .ui-subtitle {
     margin : auto;
     height: 100%;
 }
- 
-
-// .ui-has-error .ant-input,
-// .ui-has-error .ant-input:hover {
-//     border-color: #f5222d;
-// }
-
-// .ui-has-error .ant-input:focus {
-//     border-color: #ff4d4f;
-//     outline: 0;
-//     box-shadow: 0 0 0 2px rgba(245, 34, 45, 0.2);
-//     border-right-width: 1px !important;
-// }
-
-// .ui-has-error .ant-input:not([disabled]):hover {
-//     border-color: #f5222d;
-// }
-
-// .ui-has-error .ant-calendar-picker-open .ant-calendar-picker-input {
-//     border-color: #ff4d4f;
-//     outline: 0;
-//     box-shadow: 0 0 0 2px rgba(245, 34, 45, 0.2);
-//     border-right-width: 1px !important;
-// }
 
 /* inline-block */
 .ui-ib {
@@ -128,8 +109,9 @@ h2, .ui-subtitle {
 .ui-form {
     position: relative;
     margin-bottom : 10px;
-
+    width : 360px;
     .ui-form-item {
+        display: flex;
         position: relative;
         font-size : 14px;
         margin-bottom : 6px;
@@ -157,10 +139,16 @@ h2, .ui-subtitle {
         margin-right : 15px;
         line-height: 42px;
         text-align: right;
+        flex : none;
+        min-width : 100px;
+    }
+
+    .ui-form-item-field {
+        flex : 1;
+        width : 100%;
     }
 
     .ui-input-outline {
-        width : 260px;
         position: relative;
         
     }

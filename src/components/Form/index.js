@@ -11,9 +11,10 @@ const FormItem = props => {
     return (
         <div className={klass} style={props.style} >
             { 
-                props.label ? [
-                <div key={'label'} className="ui-form-item-label ui-ib">{props.label}</div>, 
-                <div key={'input'} className="ui-ib">{props.children}</div>] : props.children 
+                (props.label || props.label == '#') ? [
+                <div key={'label'} className="ui-form-item-label ui-ib">{props.label === '#' ? '' : props.label}</div>, 
+                <div key={'input'} className="ui-form-item-field ui-ib">{props.children}</div>] : 
+                <div className="ui-form-item-field">{props.children}</div> 
             }
         </div>
     )
@@ -21,8 +22,10 @@ const FormItem = props => {
 
 
 const Form = props => {
+    const blockSubmit = (e) => {e.preventDefault()};
+    
     return (
-        <form className="ui-form" style={props.style}>
+        <form className="ui-form" style={props.style} onSubmit={blockSubmit} >
             {props.children}
         </form>
     );
@@ -47,8 +50,10 @@ class Input extends React.Component {
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         onBlur : PropTypes.func.isRequired,
+        onEnter : PropTypes.func,
         width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
-        visibilityChange : PropTypes.func
+        visibilityChange : PropTypes.func,
+        placeholder : PropTypes.string
 
     };
 
@@ -63,17 +68,20 @@ class Input extends React.Component {
     };
 
     handleChange = e => {
-        console.log('change', e.target.value);
         this.props.onChange(e.target.value);
     };
 
+    handleKeyPress  = e => {
+        if(e.which === 13 && this.props.onEnter){
+            this.props.onEnter();
+        }
+    }
+
     handleBlur = e => {
-        console.log('blur');
         this.props.onBlur(e.target.value);
     }
     
     render(){
-        let {type, width, onChange, onBlur, visibilitychange, ...rest} = this.props;
         let hidden = this.state.hidden;
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
@@ -81,8 +89,9 @@ class Input extends React.Component {
                 <i className="ui-icon ui-icon-eye-close" style={{ display :  !hidden ? 'block' : 'none'}} onClick={this.HandleVisibilityChange}></i>
                 <input  className="ui-input" 
                         onBlur={this.handleBlur}
+                        onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
-                        {...rest} 
+                        placeholder={this.props.placeholder}
                         type={this.state.type}/>
             </div>
         );
