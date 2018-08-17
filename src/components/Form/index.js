@@ -49,7 +49,9 @@ class Input extends React.Component {
     static propTypes = {
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
-        onBlur : PropTypes.func.isRequired,
+        name : PropTypes.string,
+        value : PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        onBlur : PropTypes.func,
         onEnter : PropTypes.func,
         width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
         visibilityChange : PropTypes.func,
@@ -78,19 +80,33 @@ class Input extends React.Component {
     }
 
     handleBlur = e => {
-        this.props.onBlur(e.target.value);
+        if(this.props.onBlur){
+            this.props.onBlur(e.target.value);
+        }
     }
     
     render(){
         let hidden = this.state.hidden;
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
-                <i className="ui-icon ui-icon-eye-open" style={{ display :  hidden ? 'block' : 'none'}} onClick={this.HandleVisibilityChange}></i>
-                <i className="ui-icon ui-icon-eye-close" style={{ display :  !hidden ? 'block' : 'none'}} onClick={this.HandleVisibilityChange}></i>
+                {
+                    this.props.type === 'password' ? [
+                        <i key="eye-open" className="ui-icon ui-icon-eye-open" 
+                            style={{ display :  hidden ? 'block' : 'none'}} 
+                            onClick={this.HandleVisibilityChange}>
+                        </i>,
+                        <i key="eye-close" className="ui-icon ui-icon-eye-close" 
+                            style={{ display :  !hidden ? 'block' : 'none'}} 
+                            onClick={this.HandleVisibilityChange}>
+                        </i>
+                    ] : ""
+                }
                 <input  className="ui-input" 
                         onBlur={this.handleBlur}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
+                        value={this.props.value}
+                        name={this.props.name}
                         placeholder={this.props.placeholder}
                         type={this.state.type}/>
             </div>

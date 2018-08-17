@@ -1,10 +1,10 @@
 {
     "entry": {
-        "main": "/Users/kelvin/sunmi/web-w1/src/app"
+        "main": "/Users/wangshangwen/work/sunmi/web-w1/src/app"
     },
     "devtool": "cheap-module-eval-source-map",
     "output": {
-        "path": "/Users/kelvin/sunmi/web-w1/dist",
+        "path": "/Users/wangshangwen/work/sunmi/web-w1/dist",
         "filename": "[name].min.js",
         "publicPath": "/"
     },
@@ -105,10 +105,10 @@
     },
     "resolve": {
         "alias": {
-            "~": "/Users/kelvin/sunmi/web-w1/src",
-            "styles": "/Users/kelvin/sunmi/web-w1/src/assets/styles",
-            "common": "/Users/kelvin/sunmi/web-w1/src/assets/common",
-            "pub": "/Users/kelvin/sunmi/web-w1/src/pub"
+            "~": "/Users/wangshangwen/work/sunmi/web-w1/src",
+            "styles": "/Users/wangshangwen/work/sunmi/web-w1/src/assets/styles",
+            "common": "/Users/wangshangwen/work/sunmi/web-w1/src/assets/common",
+            "pub": "/Users/wangshangwen/work/sunmi/web-w1/src/pub"
         },
         "extensions": [
             ".js",
@@ -128,18 +128,18 @@
             "chunkNames": [
                 "vendor"
             ],
-            "ident": "/Users/kelvin/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js0"
+            "ident": "/Users/wangshangwen/work/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js0"
         },
         {
             "chunkNames": [
                 "manifest"
             ],
             "minChunks": null,
-            "ident": "/Users/kelvin/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js1"
+            "ident": "/Users/wangshangwen/work/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js1"
         },
         {
             "options": {
-                "template": "/Users/kelvin/sunmi/web-w1/index.template.html",
+                "template": "/Users/wangshangwen/work/sunmi/web-w1/index.template.html",
                 "filename": "index.html",
                 "hash": false,
                 "inject": true,

@@ -2,9 +2,9 @@ import React from 'react';
 import { Progress } from 'antd';
 import classnames from 'classnames';
 import Form from '~/components/Form';
-import { Select } from "antd";
+import { Select, Button, Input } from "antd";
 
-const { FormItem, ErrorTip, Input : FormInput  } = Form;
+const { FormItem, Input : FormInput  } = Form;
 const Option = Select.Option;
 
 
@@ -16,8 +16,14 @@ export default class SetWan extends React.PureComponent {
     state = {
         percent : 0,
         tip : "正在检测是否联网，请稍后...",
-        test : true,
-        wan : 'pppoe'
+        test : false,
+        type : 'pppoe',
+        pppoeAccount : '',
+        pppoeAccountTip : '',
+        pppoePassword : '',
+        pppoePasswordTip : '',
+        disabled : true,
+        loading : false
     };
 
     increase = (step = 10) => {
@@ -32,17 +38,71 @@ export default class SetWan extends React.PureComponent {
                     this.setState({
                         test : false
                     });
-                }, 300)
+                }, 300);
                 clearInterval(this.timer);
             }
         });
     }
 
     handleChange = value => {
-        this.setState({
-            wan : value
+        this.setState({ type : value }, function(){
+            if(this.state.type === 'dhcp'){
+                return this.setState({
+                    disabled : false
+                });
+            }
+            this.setState({
+                disabled : !this.checkParams()
+            });
         });
     };
+
+    handleAccountChange = value => {
+        this.setState({ pppoeAccount : value }, function(){
+            this.setState({
+                disabled : !this.checkParams()
+            });
+        });
+    }
+
+    handleAccountBlur = ()=>{
+        if(this.state.pppoeAccount.length === 0 ){
+            this.setState({
+                pppoeAccountTip : "PPPOE 账号不能为空"
+            });
+        }
+    }
+
+
+    handlePasswordChange = value => {
+        this.setState({ pppoePassword : value }, function(){
+            this.setState({
+                disabled : !this.checkParams()
+            });
+        });
+    };
+
+    handlePasswordBlur = ()=>{
+        if(this.state.pppoePassword.length === 0 ){
+            this.setState({
+                pppoePasswordTip : "PPPOE 密码不能为空"
+            });
+        }
+    }
+
+    checkParams(){
+        let { type, pppoeAccount, pppoePassword  } = this.state;
+        switch(type){
+            case 'pppoe' :
+                if(pppoeAccount.length === 0 || pppoePassword.length === 0){
+                    return false;
+                }
+                break;
+            case 'dhcp' :
+                break;
+        }
+        return true;
+    }
 
     componentDidMount(){
        this.timer = setInterval(()=>{
@@ -51,12 +111,12 @@ export default class SetWan extends React.PureComponent {
     }
 
     render(){
-        const {tip, test} = this.state;
+        const {tip, test, type, disabled, loading} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置管理员密码</h2> 
                 <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
-                {/* <div className={classnames(["ui-center speed-test", {'none' : !test}])}>
+                <div className={classnames(["ui-center speed-test", {'none' : !test}])}>
                     <Progress type="circle" gapPosition="bottom" 
                               strokeColor="red"
                               width={100}
@@ -64,24 +124,92 @@ export default class SetWan extends React.PureComponent {
                             //   format={percent => `${percent}%`} 
                               percent={this.state.percent} />
                     <h3>{tip}</h3>
-                </div> */}
+                </div>
                 <div className={classnames(['wan', {'block' : !test}])}>
                     <Form style={{ margin : '0 auto' }}>
                         <FormItem label="上网方式">
                             <Select defaultValue="pppoe" style={{ width: "100%" }} onChange={this.handleChange}>
                                 <Option value="pppoe">宽带账号上网（PPPoE）</Option>
                                 <Option value="dhcp">自动获取IP（DHCP）</Option>
-                                <Option value="ip">手动输入IP（静态IP）</Option>
+                                <Option value="staticip">手动输入IP（静态IP）</Option>
                             </Select>
                         </FormItem>
-                        <FormItem label="账号">
-                            
+                        {/* pppoe 输入组件 */}
+                        {
+                           type === 'pppoe' ? <PPPOE 
+                           pppoeAccount={this.state.pppoeAccount} 
+                           pppoeAccountTip={this.state.pppoeAccountTip}
+                           pppoePassword={this.state.pppoePassword}
+                           pppoePasswordTip={this.state.pppoePasswordTip}
+                           handleAccountBlur={this.handleAccountBlur}
+                           handleAccountChange={this.handleAccountChange} 
+                           handlePasswordChange={this.handlePasswordChange}
+                           handlePasswordBlur={this.handlePasswordBlur} />  : ''
+                        }
+                        {/* 静态 ip 输入组件 */}
+                        {
+                            type === 'staticip' ? <StaticIp /> : ''
+                        }
+                        <FormItem label="#">
+                            <Button type="primary" disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                         </FormItem>
                     </Form>
                 </div>
             </div>
         )
     }
+};
+
+const PPPOE = props => {
+    return [
+        <FormItem key='account' label="账号">
+            <FormInput placeholder="请输入账号"
+                type="text"
+                name="pppoe-account"
+                value={props.pppoeAccount}
+                onBlur={props.handleAccountBlur}
+                onChange={props.handleAccountChange} />
+        </FormItem>,
+        <FormItem key='password' label="密码">
+            <FormInput 
+                value={props.pppoePassword}
+                placeholder="密码" 
+                name="pppoe-password"
+                onBlur={props.handlePasswordBlur}
+                onChange={props.handlePasswordChange} />
+        </FormItem>
+    ];
+};
+
+// 静态 IP 配置
+const StaticIp = props => {
+    return [
+        <FormItem key='ip' label="IP地址">
+            <FormInput placeholder=""
+                type="text"
+                name="ip" />
+        </FormItem>,
+        <FormItem key='subnetMask' label="子网掩码">
+            <FormInput placeholder=""
+                type="text"
+                name="subnetmask" />
+        </FormItem>,
+        <FormItem key='gateway' label="网关">
+            <FormInput placeholder=""
+                type="text"
+                name="gateway" />
+        </FormItem>,
+        <FormItem key='dns' label="首选DNS">
+            <FormInput placeholder=""
+                type="text"
+                name="subnetmask" />
+        </FormItem>,
+        <FormItem key='dns-backup' label="备选DNS">
+            <FormInput placeholder=""
+                type="text"
+                name="dns-backup" />
+        </FormItem>
+    ];
 };
 
 
