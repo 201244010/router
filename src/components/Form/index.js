@@ -115,10 +115,109 @@ class Input extends React.Component {
 };
 
 
+class InputGroup extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            inputs : this.props.inputs,
+            focus : false
+        };
+    }
+    static propTypes = {
+        inputs : PropTypes.array.isRequired,
+        onChange : PropTypes.func.isRequired
+    };
+
+    onInputChange = (e, i, it) => {
+        const inputs = this.state.inputs;
+        const item = inputs.find(item => item === it);
+        item.value = e.target.value;
+        this.setState({ inputs });
+        if(this.props.onChange){
+            const values = inputs.map(input => input.value);
+            this.props.onChange(values, this.state.inputs);
+        }
+    }
+
+    onInputFocus = (e, i , it) => {
+        const inputs = this.state.inputs;
+        const item = inputs.find(input => input === it);
+        item.focus = true;
+        this.setState({ inputs }, function(){
+            // console.log('focus', this.formItemFocus(), this.state.inputs);
+            if(this.formItemFocus()){
+                this.setState({
+                    focus : true
+                });
+            }
+        });
+        // console.log('focus');
+    }
+
+    onInputBlur = (e, i, it) => {
+        const inputs = this.state.inputs;
+        const item = inputs.find(input => input === it);
+        item.focus = false;
+        this.setState({ inputs }, () => {
+            // console.log('blur', this.formItemBlur(), this.state.inputs);
+            if(this.formItemBlur()){
+                this.setState({
+                    focus : false
+                });
+            }
+        });
+        // console.log('blur');
+    }
+
+    formItemFocus(){
+        return this.state.inputs.some(item => item.focus);
+    }
+
+    formItemBlur(){
+        let ret = true;
+        this.state.inputs.forEach(input => {
+            if(input.focus){
+                ret = false;
+            }
+        })
+        return ret;
+    }
+
+    render(){
+        const { onChange } = this.props;
+        const { inputs, focus } = this.state;
+        return (
+            <div className={classnames(['ui-input-outline ui-input-group', {focus}])}>
+                {
+                    inputs.map( (item, i) => {
+                        const It = <input key={'input-' + i} 
+                                        maxLength={item.maxLength}
+                                        value={item.value} 
+                                        className="ui-input-group-item"
+                                        onBlur={ e => this.onInputBlur(e, i, item) }
+                                        onFocus={ e => this.onInputFocus(e, i, item)}
+                                        onChange={ e => this.onInputChange(e, i, item)} 
+                                        type='text'
+                                    />;
+                        if(i !== inputs.length - 1){
+                            return [It, <span className="dot" key={'span-' + i}></span>];
+                        }
+                        return It;
+                    })
+                }
+            </div>
+        )
+    }
+};
+
+
 
 Form.FormItem = FormItem;
 Form.ErrorTip = ErrorTip;
 Form.Input = Input;
+Form.InputGroup = InputGroup;
+
+
 
 export default Form;
 

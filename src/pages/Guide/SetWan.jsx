@@ -2,9 +2,9 @@ import React from 'react';
 import { Progress } from 'antd';
 import classnames from 'classnames';
 import Form from '~/components/Form';
-import { Select, Button, Input } from "antd";
+import { Select, Button } from "antd";
 
-const { FormItem, Input : FormInput  } = Form;
+const { FormItem, Input : FormInput, InputGroup  } = Form;
 const Option = Select.Option;
 
 
@@ -18,12 +18,20 @@ export default class SetWan extends React.PureComponent {
         tip : "正在检测是否联网，请稍后...",
         test : false,
         type : 'pppoe',
+        // pppoe
         pppoeAccount : '',
         pppoeAccountTip : '',
         pppoePassword : '',
         pppoePasswordTip : '',
         disabled : true,
-        loading : false
+        loading : false,
+
+        // 静态 ip
+        ip : [],
+        subnetmask : [],
+        gateway : [],
+        dns : [],
+        dnsbackup : []
     };
 
     increase = (step = 10) => {
@@ -110,8 +118,15 @@ export default class SetWan extends React.PureComponent {
        }, 300) 
     }
 
+    onIPConifgChange = (value, field) => {
+        this.setState({
+            [field] : value
+        });
+    }
+
+
     render(){
-        const {tip, test, type, disabled, loading} = this.state;
+        const {tip, test, type, disabled, loading, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置管理员密码</h2> 
@@ -148,7 +163,13 @@ export default class SetWan extends React.PureComponent {
                         }
                         {/* 静态 ip 输入组件 */}
                         {
-                            type === 'staticip' ? <StaticIp /> : ''
+                            type === 'staticip' ? <StaticIp ip={ip} 
+                                                            dns={dns} 
+                                                            gateway={gateway} 
+                                                            dnsbackup={dnsbackup} 
+                                                            onChange={this.onIPConifgChange}
+
+                                                    /> : ''
                         }
                         <FormItem label="#">
                             <Button type="primary" disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
@@ -185,29 +206,30 @@ const PPPOE = props => {
 const StaticIp = props => {
     return [
         <FormItem key='ip' label="IP地址">
-            <FormInput placeholder=""
-                type="text"
-                name="ip" />
+            <InputGroup 
+                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'ip')} />
         </FormItem>,
-        <FormItem key='subnetMask' label="子网掩码">
-            <FormInput placeholder=""
-                type="text"
-                name="subnetmask" />
+        <FormItem key='subnetmask' label="子网掩码">
+            <InputGroup 
+                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'subnetmask')} />
         </FormItem>,
         <FormItem key='gateway' label="网关">
-            <FormInput placeholder=""
-                type="text"
-                name="gateway" />
+            <InputGroup 
+                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'gateway')} />
         </FormItem>,
         <FormItem key='dns' label="首选DNS">
-            <FormInput placeholder=""
-                type="text"
-                name="subnetmask" />
+            <InputGroup 
+                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'dns')} />
         </FormItem>,
-        <FormItem key='dns-backup' label="备选DNS">
-            <FormInput placeholder=""
-                type="text"
-                name="dns-backup" />
+        <FormItem key='dnsbackup' label="备选DNS">
+            <InputGroup 
+                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'dnsbackup')}
+            />
         </FormItem>
     ];
 };
