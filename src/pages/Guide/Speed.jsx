@@ -53,7 +53,7 @@ export default class Speed extends React.Component {
   }
 
   render(){
-    const {showModal, mode}  = this.state;
+    const {showModal, mode, speedTestdone}  = this.state;
     return (
       <div className="speed">
         <h2>设置上下行宽带</h2> 
@@ -64,33 +64,21 @@ export default class Speed extends React.Component {
                 <span className="border ui-ib"></span>
                 <a href="javascript:;" className={classnames(["ui-ib", {'now': mode === 'manual'}])} onClick={this.switchMode('Manual')}>手动设置</a>
             </div>
-            <div className="ui-center entry">
-                {
-                    mode === 'auto' ? 
-                    <SpeedAutoConfig back={this.back} nextStep={this.nextStep} /> : 
-                    <SpeedManualConfig back={this.back} nextStep={this.nextStep} 
-                                        changeBandWidth={this.changeBandWidth} />
-                }
-            </div>
-            <div className="ui-center speed-result">
-                <span>网络测试完成，您的网络带宽为</span>
-                <ul className="board">
-                    <li>131311</li>
-                    <li></li>
-                    <li>2222</li>
-                </ul>
-                <div className="button-wrap">
-                    <Button type="primary" style={{ width : "100%" }}>下一步</Button>
-                    <div className="help">
-                        <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                        
-                        <div className="more">
-                            <a href="javascript:;" className="ui-tips">重新测速</a> 或 
-                            <a href="javascript:;" className="ui-tips">手动设置</a>
-                        </div>
+            {/* 自动测速 | 手动配速 */}
+            {
+                mode === 'auto' ?
+                (!speedTestdone ? 
+                    <div className="ui-center entry">
+                        <SpeedAutoConfig back={this.back} autoSpeedTest={this.autoSpeedTest} nextStep={this.nextStep} />
+                    </div> : "") : 
+                (
+                    <div className="ui-center entry">
+                        <SpeedManualConfig back={this.back} nextStep={this.nextStep} changeBandWidth={this.changeBandWidth} />
                     </div>
-                </div>
-            </div>
+                )
+            }
+            {/* 自动测速结果看板 */}
+            { speedTestdone && mode === 'auto' ? <SpeedAutoBoard configByManual={this.switchMode('Manual')} back={this.back} /> : ""}
             <Modal active={showModal} >
                 <h4 style={{ fontSize : 32 }}>60%</h4>
                 <Progress percent={50} status="active" showInfo={false} strokeWidth={10} />
@@ -110,10 +98,43 @@ const SpeedAutoConfig = props => {
     ];
 }
 
-const SpeedAutoConfigResult = props => {
-    return [
-        
-    ];
+const SpeedAutoBoard = props => {
+    return (
+        <div className="ui-center speed-result">
+            <span>网络测试完成，您的网络带宽为</span>
+            <div className="board">
+                <div className="board-item">
+                    <ul>
+                        <li>14.44</li>
+                        <li>
+                            <div className="ui-tips">Mbps</div>
+                            <div className="ui-tips">上行带宽<Icon type="up" /></div>
+                        </li>
+                    </ul>
+                </div>
+                <div className="board-item"></div>
+                <div className="board-item">
+                    <ul>
+                        <li>14.44</li>
+                        <li>
+                            <div className="ui-tips">Mbps</div>
+                            <div className="ui-tips">下行带宽 <Icon type="down" /></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div className="button-wrap">
+                <Button type="primary" style={{ width : "100%" }}>下一步</Button>
+                <div className="help">
+                    <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
+                    <div className="more">
+                        <a href="javascript:;" className="ui-tips">重新测速</a> 或 
+                        <a href="javascript:;" className="ui-tips" onClick={props.configByManual}>手动设置</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 const SpeedManualConfig = props => {
