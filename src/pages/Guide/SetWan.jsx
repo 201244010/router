@@ -3,6 +3,7 @@ import { Progress } from 'antd';
 import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
+import Icon from '~/components/Icon';
 
 const { FormItem, Input : FormInput, InputGroup  } = Form;
 const Option = Select.Option;
@@ -15,9 +16,10 @@ export default class SetWan extends React.PureComponent {
 
     state = {
         percent : 0,
-        tip : "正在检测是否联网，请稍后...",
-        test : false,
+        test : true,
         type : 'pppoe',
+        status : "active",
+
         // pppoe
         pppoeAccount : '',
         pppoeAccountTip : '',
@@ -39,14 +41,17 @@ export default class SetWan extends React.PureComponent {
             percent : prevState.percent + step
         }), function(){
             if(this.state.percent >= 100 && this.timer){
-                this.setState({
-                    tip : '已连接网络，正在跳转到带宽设置…',
-                });
-                setTimeout(()=>{
-                    this.setState({
-                        test : false
+                const probability = Math.random() * 10 > 2;
+                if(probability){
+                    this.setState({ status : 'success' }, function(){
+                        setTimeout(()=>{
+                            this.setState({ test : false });
+                        }, 2000)
                     });
-                }, 300);
+                }
+                else {
+                    this.setState({ status : 'exception' });
+                }
                 clearInterval(this.timer);
             }
         });
@@ -137,21 +142,23 @@ export default class SetWan extends React.PureComponent {
         });
     }
 
+    back = () => {
+        this.props.history.go(-1);
+    }
+
+    nextStep = () => this.setState({ test : false})
 
     render(){
-        const {tip, test, type, disabled, loading, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
+        const { test, status, percent, type, disabled, loading, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置管理员密码</h2> 
                 <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
                 <div className={classnames(["ui-center speed-test", {'none' : !test}])}>
-                    <Progress type="circle" gapPosition="bottom" 
-                              strokeColor="red"
-                              width={100}
-                              style={{ marginBottom : 30 }}
-                            //   format={percent => `${percent}%`} 
-                              percent={this.state.percent} />
-                    <h3>{tip}</h3>
+                    <NetTest percent={percent} 
+                            status={status} 
+                            reSet={this.back}
+                            nextStep={this.nextStep} />
                 </div>
                 <div className={classnames(['wan', {'block' : !test}])}>
                     <Form style={{ margin : '0 auto' }}>
@@ -164,15 +171,15 @@ export default class SetWan extends React.PureComponent {
                         </FormItem>
                         {/* pppoe 输入组件 */}
                         {
-                           type === 'pppoe' ? <PPPOE 
-                           pppoeAccount={this.state.pppoeAccount} 
-                           pppoeAccountTip={this.state.pppoeAccountTip}
-                           pppoePassword={this.state.pppoePassword}
-                           pppoePasswordTip={this.state.pppoePasswordTip}
-                           handleAccountBlur={this.handleAccountBlur}
-                           handleAccountChange={this.handleAccountChange} 
-                           handlePasswordChange={this.handlePasswordChange}
-                           handlePasswordBlur={this.handlePasswordBlur} />  : ''
+                            type === 'pppoe' ? <PPPOE 
+                                pppoeAccount={this.state.pppoeAccount} 
+                                pppoeAccountTip={this.state.pppoeAccountTip}
+                                pppoePassword={this.state.pppoePassword}
+                                pppoePasswordTip={this.state.pppoePasswordTip}
+                                handleAccountBlur={this.handleAccountBlur}
+                                handleAccountChange={this.handleAccountChange} 
+                                handlePasswordChange={this.handlePasswordChange}
+                                handlePasswordBlur={this.handlePasswordBlur} />  : ''
                         }
                         {/* 静态 ip 输入组件 */}
                         {
@@ -188,12 +195,54 @@ export default class SetWan extends React.PureComponent {
                         <FormItem label="#">
                             <Button type="primary" disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                         </FormItem>
+                        {
+                            (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
+                                <div className="help">
+                                    <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                                    {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
+                                </div>
+                            </FormItem> : ""
+                        }
                     </Form>
                 </div>
             </div>
         )
     }
 };
+
+
+const NetTest = props => {
+    switch(props.status){
+        case 'active' :
+            return [
+                <Progress key="progress-active" type="circle" gapPosition="bottom" 
+                            strokeColor="red"
+                            width={80}
+                            style={{ marginBottom : 30 }}
+                            status={props.status}
+                            // format={percent => `${percent}%`} 
+                            percent={props.percent} />,
+                <h3 key="active-h3">正在检测是否联网，请稍后...</h3>
+            ]
+        case 'exception' :
+            return (<div className="progress-tip" style={{ width : 260 }}>
+                    <Icon type="mistake" size="large" color="#d33519" />
+                    <h3>无法连接互联网</h3>
+                    <h4>请检查您的宽带帐号密码是否正确</h4>
+                    <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
+                    <div className="help">
+                        <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
+                        <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，直接设置无线网络</a>
+                    </div>
+                </div>);
+        case 'success' :
+            return (<div className="progress-tip">
+                <Icon type="correct" size="large" color="#87d067" />
+                <h3>已连接网络，正在跳转到带宽设置…</h3>
+            </div>);
+        
+    }
+}
 
 const PPPOE = props => {
     return [
