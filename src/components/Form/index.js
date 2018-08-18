@@ -192,7 +192,7 @@ class InputGroup extends React.Component {
                     inputs.map( (item, i) => {
                         const It = <input key={'input-' + i} 
                                         maxLength={item.maxLength}
-                                        value={item.value} 
+                                        defaultValue={item.value} 
                                         className="ui-input-group-item"
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}

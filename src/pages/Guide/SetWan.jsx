@@ -111,7 +111,9 @@ export default class SetWan extends React.PureComponent {
                     if(field.length === 0){
                         return true;
                     }
-                    return field.some(f => f === '');
+                    return field.some(f => {
+                        return (f === '' || f === null || f === undefined);
+                    });
                 })
                 if(empty){
                     return false;
@@ -177,6 +179,7 @@ export default class SetWan extends React.PureComponent {
                             type === 'staticip' ? <StaticIp ip={ip} 
                                                             dns={dns} 
                                                             gateway={gateway} 
+                                                            subnetmask={subnetmask}
                                                             dnsbackup={dnsbackup} 
                                                             onChange={this.onIPConifgChange}
 
@@ -218,27 +221,27 @@ const StaticIp = props => {
     return [
         <FormItem key='ip' label="IP地址">
             <InputGroup 
-                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
         </FormItem>,
         <FormItem key='subnetmask' label="子网掩码">
             <InputGroup                                                                         
-                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
         </FormItem>,
         <FormItem key='gateway' label="网关">
             <InputGroup 
-                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
         </FormItem>,
         <FormItem key='dns' label="首选DNS">
             <InputGroup 
-                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dns')} />
         </FormItem>,
         <FormItem key='dnsbackup' label="备选DNS">
             <InputGroup 
-                inputs={[{value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}, {value : '', maxLength : 3}]} 
+                inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dnsbackup')}
             />
         </FormItem>
