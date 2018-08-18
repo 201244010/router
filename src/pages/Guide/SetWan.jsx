@@ -46,7 +46,7 @@ export default class SetWan extends React.PureComponent {
                     this.setState({ status : 'success' }, function(){
                         setTimeout(()=>{
                             this.setState({ test : false });
-                        }, 2000)
+                        }, 1000)
                     });
                 }
                 else {
@@ -101,6 +101,18 @@ export default class SetWan extends React.PureComponent {
                 pppoePasswordTip : "PPPOE 密码不能为空"
             });
         }
+    }
+
+    submit = () => {
+        this.setState({
+            loading : true
+        });
+
+        setTimeout(()=>{
+            this.setState({ loading : false }, function() {
+                this.props.history.push("/guide/speed");
+            });
+        }, 2000)
     }
 
     checkParams(){
@@ -193,7 +205,7 @@ export default class SetWan extends React.PureComponent {
                                                     /> : ''
                         }
                         <FormItem label="#">
-                            <Button type="primary" disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
+                            <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                         </FormItem>
                         {
                             (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>

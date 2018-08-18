@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SetPassword from './SetPassword';
 import SetWan from './SetWan';
+import Speed from './Speed';
 import SubLayout from '~/components/SubLayout';
 
 import './guide.scss';
@@ -46,12 +47,12 @@ export default class Guide extends React.Component {
                         <span className="ui-ib">设置上网参数</span>
                     </li>
                     <li className="line"></li>
-                    <li className={classnames({ now : activeRouteName === 'setspeed' })}>
+                    <li className={classnames({ now : activeRouteName === 'speed' })}>
                         <i className="ui-ib">3</i>
                         <span className="ui-ib">设置上下行宽带</span>
                     </li>
                     <li className="line"></li>
-                    <li className={classnames({ now : activeRouteName === 'setwifi' })}>
+                    <li className={classnames({ now : activeRouteName === 'wifi' })}>
                         <i className="ui-ib">4</i>
                         <span className="ui-ib">设置无线网络</span>
                     </li>
@@ -61,6 +62,7 @@ export default class Guide extends React.Component {
                         {/* <Route path={match.path} exact component={Start}></Route> */}
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />
                         <Route path={`${match.path}/setwan`} component={SetWan} />
+                        <Route path={`${match.path}/speed`} component={Speed} />
                         <Redirect from={match.path} to={`${match.path}/setpassword`}></Redirect>
                     </Switch>
                 </div>

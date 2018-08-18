@@ -112,15 +112,93 @@
             justify-content: flex-start;
             align-items: center;
             flex : 1;
+            width: 100%;
             a {
                 color : #ccc;
                 width : 100%;
                 text-decoration: underline;
+                &:nth-of-type(1) {
+                    flex : none;
+                    width : 40px;
+                }
                 &:nth-of-type(2) {
                     text-align: right;
                 }
                 &:hover {
                     color : #FB8632;
+                }
+            }
+            .more {
+                flex : 1;
+                text-align: right;
+            }
+        }
+
+        .speed {
+            .button-group {
+                position: absolute;
+                top : 0;
+                left : 0;
+                text-align: center;
+                margin-top : 24px;
+                margin-bottom : 5px;
+                background: #F8F8F8;
+                border: 1px solid rgba(0,0,0,0.12);
+                border-radius: 4px;
+                box-sizing: border-box;
+                width : 192px;
+                a {
+                    color : #ADB1B9;
+                    height : 34px;
+                    width : 94px;
+                    line-height: 36px;
+                    padding : 0 10px;
+                    font-size : 14px;
+                    &.now, &:hover {
+                        color : #FB8632;
+                        text-decoration: none;
+                    }
+                }
+                
+                span.border {
+                    width : 1px;
+                    height : 20px;
+                    background-color :rgba(0,0,0,0.12);
+                }
+            }
+            .entry {
+                width : 260px;
+                margin: auto;
+                padding: 70px 0;
+            }
+            .button-wrap {
+                width : 260px;
+            }
+            .speed-result {
+                .help {
+                    color : #ccc;
+                }
+                .board {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding : 0;
+                    > li {
+                        display: flex;
+                        &:nth-of-type(1){
+                            justify-content: flex-end;
+                        }
+                        &:nth-of-type(2){
+                            flex : none;
+                            width : 1px;
+                            margin : 0 25px;
+                            background-color : #ccc;
+                            padding : 5px 0;
+                        }
+                        &:nth-of-type(3){
+                            justify-content: flex-start;
+                        }
+                    }
                 }
             }
         }
