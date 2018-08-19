@@ -2,6 +2,7 @@ import React from 'react';
 
 import './header.scss';
 import SubLayout from "../SubLayout";
+import Icon from '~/components/Icon';
 
 export default class Header extends React.Component {
 	constructor(props) {
@@ -14,8 +15,10 @@ export default class Header extends React.Component {
 				<SubLayout>
 					<ul>
 						<li>
-							<span>SUNMI</span>
-							<span>SUNMI W1</span>
+                            <div className="ui-ib logo">
+                                <Icon type="logo" size={40} color="#fff" />
+                            </div>
+							<span className="ui-ib slogan">SUNMI W1</span>
 						</li>
 						<li className="menu ui-hidden">
 							<a href="javascript:;" className="ui-ib now">网络状态</a>

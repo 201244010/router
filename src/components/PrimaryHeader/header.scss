@@ -23,6 +23,13 @@
             flex : 1;
         }
 
+        .logo {
+            margin-right: 15px;
+        }
+        .slogan {
+            vertical-align: -2px;
+        }
+
         .menu {
             font-size : 16px;
             a { 
@@ -40,7 +47,7 @@
 
         li:nth-of-type(1) {
             flex : none;
-            width : 400px;
+            width : auto;
         }
 
         .sidebar {
