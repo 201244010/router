@@ -7,13 +7,18 @@ const ErrorTip = props => <div style={props.style} className="ui-form-explain">{
 
 const FormItem = props => {
     const showErrorTip = props.showErrorTip;
+    const suffix = props.suffix;
+    const labelStyle = props.labelStyle || {};
     const klass = classnames(['ui-form-item', { 'ui-form-item-with-help' :  showErrorTip, "has-error" : showErrorTip}]);
     return (
         <div className={klass} style={props.style} >
             { 
                 (props.label || props.label == '#') ? [
-                <div key={'label'} className="ui-form-item-label ui-ib">{props.label === '#' ? '' : props.label}</div>, 
-                <div key={'input'} className="ui-form-item-field ui-ib">{props.children}</div>] : 
+                <div key={'label'} className="ui-form-item-label ui-ib" style={labelStyle} >{props.label === '#' ? '' : props.label}</div>, 
+                <div key={'input'} className="ui-form-item-field ui-ib">
+                    {props.children}
+                    { suffix ? <div className="ui-form-item-suffix">{suffix}</div> : "" }
+                </div>] : 
                 <div className="ui-form-item-field">{props.children}</div> 
             }
         </div>

@@ -233,6 +233,22 @@
                 }
             }
         }
+
+
+        .wifi-box {
+            flex-flow : row wrap;
+            form {
+                flex : none;
+            }
+            .border {
+                height : 140px;
+                width : 1px;
+                background : #ccc;
+                flex : none;
+                margin : 0 80px;
+
+            }
+        }
     }
 }
 

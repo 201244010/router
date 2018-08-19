@@ -150,6 +150,15 @@ h3 {
     .ui-form-item-field {
         flex : 1;
         width : 100%;
+        line-height: 40px;
+        .ui-form-item-suffix {
+            position: absolute;
+            right : 10px;
+            top : 10px;
+            z-index: 4;
+            color : #ccc;
+            font-size: 14px;
+        }
     }
 
     .ui-input-outline {
