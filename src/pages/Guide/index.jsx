@@ -46,7 +46,7 @@ export default class Guide extends React.Component {
         let activeRouteName = this.state.activeRouteName;
         return classnames({
             now : activeRouteName === step,
-            done : this.dones[activeRouteName].indexOf(step) > -1
+            done : this.dones[activeRouteName] && this.dones[activeRouteName].indexOf(step) > -1
         });
     }
 
@@ -81,7 +81,7 @@ export default class Guide extends React.Component {
                     </li>
                 </ul>
                 <div className="icon-bg">
-                    <Icon type={iconType} size={240} />
+                    <Icon type={iconType || "lock"} size={240} />
                 </div>
                 <div className="guide-body">
                     <Switch>

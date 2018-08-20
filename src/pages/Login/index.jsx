@@ -45,7 +45,7 @@ class Login extends React.Component {
         });
         this.setState({ loading : false });
         if(data.errcode == 0){
-            alert('登录成功');
+            this.props.history.push('/');
             return;
         }
         this.setState({ tip : data.message });

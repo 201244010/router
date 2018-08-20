@@ -71,3 +71,30 @@ button.ant-btn-primary.ant-btn-loading {
 .ant-click-animating-node {
     border-color : #FB8632!important;
 }
+
+
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    border-color : #FB8632!important;
+    box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2)!important;
+}
+
+.ant-select-selection:hover {
+    border-color : #FB8632!important;
+}
+
+// .ant-select-focused .ant-select-selection,
+// .ant-select-selection:focus,
+// .ant-select-selection:active {
+//   border-color: #FB8632;
+//   outline: 0;
+//   -webkit-box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
+//           box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
+//   border-right-width: 1px !important;
+// }
+
+// .ant-select-open .ant-select-selection {
+//     border-color: #FB8632!important;
+// }
+// ::selection {
+//     background : #FB8632;
+// }
