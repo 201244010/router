@@ -205,12 +205,26 @@ h3 {
             outline :none;
         }
     }
+
+    .ui-input.disabled,.ui-input-group.disabled, input[disabled] {
+        background: #F7F7F7;
+        border: 1px solid rgba(0,0,0,0.15);
+    }
+
     .ui-icon {
         position: absolute;
         right: 10px;
-        top: 10px;
+        top: 0;
         cursor: pointer;
     }
+
+
+    // input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    //     box-shadow: 0 0 0 40px white inset;
+    // }
+    // input[disabled]:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    //     box-shadow: 0 0 0 40px #F7F7F7 inset;
+    // }
 }
 
 .ui-relative {

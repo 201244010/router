@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const ErrorTip = props => <div style={props.style} className="ui-form-explain">{props.children}</div>;
 
 const FormItem = props => {
-    const showErrorTip = props.showErrorTip;
+    const showErrorTip = props.showErrorTip || props.errorTip;
     const suffix = props.suffix;
     const labelStyle = props.labelStyle || {};
     const klass = classnames(['ui-form-item', { 'ui-form-item-with-help' :  showErrorTip, "has-error" : showErrorTip}]);
@@ -30,7 +30,7 @@ const Form = props => {
     const blockSubmit = (e) => {e.preventDefault()};
     
     return (
-        <form className="ui-form" style={props.style} onSubmit={blockSubmit} >
+        <form className="ui-form" autoComplete="off" style={props.style} onSubmit={blockSubmit} >
             {props.children}
         </form>
     );
@@ -58,6 +58,7 @@ class Input extends React.Component {
         value : PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onBlur : PropTypes.func,
         onEnter : PropTypes.func,
+        disabled : PropTypes.bool,
         width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
         visibilityChange : PropTypes.func,
         placeholder : PropTypes.string
@@ -111,6 +112,7 @@ class Input extends React.Component {
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
                         value={this.props.value}
+                        disabled={this.props.disabled}
                         name={this.props.name}
                         placeholder={this.props.placeholder}
                         type={this.state.type}/>
@@ -130,7 +132,8 @@ class InputGroup extends React.Component {
     }
     static propTypes = {
         inputs : PropTypes.array.isRequired,
-        onChange : PropTypes.func.isRequired
+        onChange : PropTypes.func.isRequired,
+        disabled : PropTypes.bool
     };
 
     onInputChange = (e, i, it) => {
@@ -189,7 +192,6 @@ class InputGroup extends React.Component {
     }
 
     render(){
-        const { onChange } = this.props;
         const { inputs, focus } = this.state;
         return (
             <div className={classnames(['ui-input-outline ui-input-group', {focus}])}>

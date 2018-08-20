@@ -84,6 +84,7 @@ export default class Speed extends React.Component {
                 <Progress percent={50} status="active" showInfo={false} strokeWidth={10} />
                 <Tips size="16" top={5}>测速中，请稍后…</Tips>
             </Modal>
+            
         </div>
       </div>
     )

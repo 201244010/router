@@ -12,15 +12,47 @@ export default class SetWifi extends React.Component {
     }
 
     state = {
-        checked : true
+        guestWifi : true,
+        hostWifiName : '',
+        hostWifiPsw : '',
+        guestWifiName : '',
+        guestWifiPsw : '',
+        canSubmit : false
     };
 
     openGuestSetting = () => {
-        this.setState({checked : !this.state.checked});
+        this.setState({guestWifi : !this.state.guestWifi}, () => {
+            this.setState({ canSubmit : this.valid() });
+        });
+    }
+
+    handleChange = (value, field) => {
+        this.setState({ [field] : value }, function(){
+            this.setState({ canSubmit : this.valid() });
+        });
+    }
+
+    valid(){
+        let ret = true;
+        let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
+        
+        [hostWifiName, hostWifiPsw].forEach( item => {
+            if(item.trim().length === 0){
+                ret = false;
+            }
+        })
+        if(guestWifi){
+            [guestWifiName, guestWifiPsw].forEach( item => {
+                if(item.trim().length === 0){
+                    ret = false;
+                }
+            })  
+        }
+        return ret;
     }
 
     render(){
-        const { checked } = this.state;
+        const { guestWifi, canSubmit } = this.state;
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
@@ -29,27 +61,27 @@ export default class SetWifi extends React.Component {
                     <Form>
                         <FormItem label="主Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input type="text" placeholder="请输入Wi-Fi名称" onChange={()=>{}} />
+                            <Input type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
-                            <Input type="text" placeholder="请输入Wi-Fi密码" onChange={()=>{}} />
+                            <Input type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
                         </FormItem>
                     </Form>
                     <div className="border"></div>
                     <Form>
                         <FormItem label="客人Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
-                            <Switch checkedChildren="开" checked={checked} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
+                            <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input type="text" placeholder="请输入Wi-Fi名称" onChange={()=>{}} />
+                            <Input disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
-                            <Input type="text" placeholder="请输入Wi-Fi密码" onChange={()=>{}} />
+                            <Input disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
                         </FormItem>
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center' }}>
-                    <Button type="primary" style={{ width : 260 }} disabled>完成</Button>
+                    <Button type="primary" style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
                 </div>
             </div> 
         );
