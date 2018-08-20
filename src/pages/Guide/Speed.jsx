@@ -93,7 +93,7 @@ export default class Speed extends React.Component {
 
 const SpeedAutoConfig = props => {
 	return [
-        <Icon key="autoSpeedIcon" type="correct" size={140} />,
+        <Icon key="autoSpeedIcon" type="dashboard" color="#e0e1e2" size={160} />,
 		<Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>开始测速</Button>,
         <Helper key="help" back={props.back} more={props.nextStep} moreText="跳过，不需要只能带宽功能" />
     ];
