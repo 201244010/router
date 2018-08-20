@@ -49,6 +49,25 @@
                 &+.line {
                     border-color: $pure-white;
                 }
+                .ui-icon {
+                    display: none;
+                }
+            }
+            .ui-icon {
+                margin-right: 8px;
+                display: none;
+            }
+            &.done {
+                color : $pure-white;
+                .ui-icon {
+                   display: inline-block;
+                }
+                &+.line {
+                    border-color: $pure-white;
+                }
+                .order-num {
+                    display: none;
+                }
             }
         }
     }
@@ -61,6 +80,8 @@
         min-height: 500px;
         background-color: #fff;
         padding : 20px 35px 35px;
+        position: relative;
+        z-index: 200;
         h2 {
             height: 60px;
             line-height: 60px;
@@ -249,6 +270,14 @@
 
             }
         }
+    }
+
+    .icon-bg {
+        position: absolute;
+        right : -60px;
+        z-index: 100;
+        top : -100px;
+        opacity: 0.15;
     }
 }
 

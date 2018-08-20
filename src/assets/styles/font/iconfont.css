@@ -12,6 +12,7 @@
   font-size:16px;
   font-style:normal;
   display: inline-block;
+  vertical-align: middle;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color : #adb1b9;
