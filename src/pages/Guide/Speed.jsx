@@ -109,7 +109,7 @@ const SpeedAutoBoard = props => {
                         <li>14.44</li>
                         <li>
                             <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">上行带宽<Icon type="up" /></div>
+                            <div className="ui-tips">上行带宽<Icon type="bandwidthdown" size={12} color="#4687FF" /></div>
                         </li>
                     </ul>
                 </div>
@@ -119,7 +119,7 @@ const SpeedAutoBoard = props => {
                         <li>14.44</li>
                         <li>
                             <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">下行带宽 <Icon type="down" /></div>
+                            <div className="ui-tips">下行带宽 <Icon type="bandwidthup" size={12} color="#87D068" /></div>
                         </li>
                     </ul>
                 </div>
