@@ -1,18 +1,25 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import { Button, Switch } from 'antd';
+import Modal from '~/components/Modal';
+import Icon from '~/components/Icon';
+import { Button, Switch, Progress } from 'antd';
 
 const { FormItem, Input } = Form;
 
 
 export default class SetWifi extends React.Component {
     constructor(props){
-        super(props);    
+        super(props); 
+        this.tick = 1;   
     }
 
     state = {
-        guestWifi : true,
+        guestWifi : false,
+        loading : false,
+        percent : 10,
+        done : false,
+        active : false,
         hostWifiName : '',
         hostWifiPsw : '',
         guestWifiName : '',
@@ -30,6 +37,23 @@ export default class SetWifi extends React.Component {
         this.setState({ [field] : value }, function(){
             this.setState({ canSubmit : this.valid() });
         });
+    }
+
+    submit = ()=>{
+        this.setState({ loading : true, active : true });
+        this.timer = setInterval(()=> {
+            this.tick++;
+            this.setState({ percent : this.state.percent += 10 }, function(){
+                if(this.state.percent >= 100){
+                    this.setState({done : true});
+                    clearInterval(this.timer);
+                }
+            });
+        }, 1000)
+    }
+
+    format = ()=>{
+        return this.tick + 'S';
     }
 
     valid(){
@@ -81,8 +105,26 @@ export default class SetWifi extends React.Component {
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center' }}>
-                    <Button type="primary" style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
+                    <Button type="primary" loading={this.state.loading} onClick={this.submit}  style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
                 </div>
+                <Modal active={this.state.active}>
+                    {
+                        !this.state.done ? 
+                            <div className="progress">
+                                <Progress type="circle" percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} />
+                                <h3>正在等待WI-FI重启，请稍后...</h3>
+                            </div>
+                            : 
+                            <div className="success">
+                                <div style={{ marginBottom : 20 }}><Icon size={80} color="#87d068" type="correct"></Icon></div>
+                                <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
+                                <div className="ui-t3">主：{this.state.hostWifiName}</div>
+                                {
+                                    this.state.guestWifi ? <div className="ui-t3">客：{this.state.guestWifiName}</div> : ''
+                                }
+                            </div>
+                    }
+                </Modal>
             </div> 
         );
     }

@@ -19,7 +19,9 @@ input.ant-input:hover {
     border-color: $button-bg-color;
 }
 
-
+button.ant-btn-primary.ant-btn-loading {
+    border-color : #FB8632!important;
+}
 .ant-btn-primary.disabled, 
 .ant-btn-primary[disabled], 
 .ant-btn-primary.disabled:hover, 
@@ -52,6 +54,10 @@ input.ant-input:hover {
 
 .ant-progress-circle-path {
     stroke : #FB8632!important;
+}
+
+.ant-progress-status-success .ant-progress-circle-path {
+    stroke: #52c41a!important;
 }
 
 .ant-progress-success-bg, .ant-progress-bg {
