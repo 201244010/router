@@ -2,6 +2,7 @@
 import React from 'react';
 import Form from '~/components/Form';
 import {Button} from 'antd';
+import routes from '../../routes';
 
 const { FormItem, ErrorTip, Input }  = Form;
 
@@ -38,13 +39,16 @@ export default class Steps extends React.Component {
         const password = this.state.password;
 
         this.setState({ loading : true });
-        const {data} = await common.fetchWithCode('ACCOUNT_LOGIN', {
-            method : 'POST', 
-            data : { account : { password : btoa(password), username : 'admin' }}
-        });
+        const result = await common.fetchWithCode(
+            'ACCOUNT_MODIFY', 
+            { method : 'POST', data : { account : { password : btoa(password), username : 'admin' } } }, 
+            { loop : 3, interval : 2000 }
+        ).catch(ex => console.error('outer catch', ex))
+
         this.setState({ loading : false });
+        const data = result.data;
         if(data.errcode == 0){
-            this.props.history.push('/guide/setwan');
+            this.props.history.push(routes.guideSetWan);
             return;
         }
         this.setState({ tip : data.message });
