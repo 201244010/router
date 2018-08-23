@@ -7,7 +7,7 @@ import routes from '../../routes';
 const { FormItem, ErrorTip, Input }  = Form;
 
 
-export default class Steps extends React.Component {
+export default class SetPassword extends React.Component {
     constructor(props){
         super(props);
     }
@@ -33,25 +33,33 @@ export default class Steps extends React.Component {
         // }
     };
 
+    stopFn = ()=>{
+        return this.stop;
+    }
+
+    componentWillUnmount(){
+        // this.stop = true;
+    }
 
     // 表单提交
     post = async () => {
-        const password = this.state.password;
+        let password = this.state.password, data;
 
         this.setState({ loading : true });
         const result = await common.fetchWithCode(
             'ACCOUNT_MODIFY', 
             { method : 'POST', data : { account : { password : btoa(password), username : 'admin' } } }, 
-            { loop : 3, interval : 2000 }
-        ).catch(ex => console.error('outer catch', ex))
-
+            { loop : true, stop : this.stopFn }
+        )
         this.setState({ loading : false });
-        const data = result.data;
-        if(data.errcode == 0){
-            this.props.history.push(routes.guideSetWan);
-            return;
+        data = result.data;
+        if(data){
+            if(data.errcode == 0){
+                this.props.history.push(routes.guideSetWan);
+                return;
+            }
+            this.setState({ tip : data.message });
         }
-        this.setState({ tip : data.message });
     }
 
     // 监听输入实时改变

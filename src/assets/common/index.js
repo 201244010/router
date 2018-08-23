@@ -3,6 +3,7 @@
 import Loadable from 'react-loadable';
 import {DIRECTIVE} from './constants';
 import axios from 'axios';
+// import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import { stringify } from 'qs';
 
@@ -31,8 +32,11 @@ export const getTimeZone = () => {
 /**
  * ajax封装
  * @param {string} directive api指令
- * @param {json} options axios配置
- * @param {json} 扩展配置 loop 是否循环 或循环 N 次, interval 轮询间隔
+ * @param {object} options axios配置
+ * @param {object} loopOption 扩展配置 
+ *               loopOption.loop [boolean]是否循环 或循环 N 次, 
+ *               loopOption.interval [number]] 轮询间隔 ms
+ *               loopOption.stop [function]
  * @see
  * fetchWithCode(
  *      'ACCOUNT_LOGIN', 
@@ -41,17 +45,17 @@ export const getTimeZone = () => {
  * fetchWithCode(
  *      'DHCPS_GET', 
  *      {timeout : 3000, data : {password : '123'}},
- *      {loop : true, interval : 1000}
+ *      {loop : true, interval : 1000, stop : function(){return true}},
+ *      
  * );
  */
-export function fetchWithCode(directive, options = {}, loopOption = {loop : false, interval : 300}){
+export function fetchWithCode(directive, options = {}, loopOption = {}){
     let code = DIRECTIVE[directive];
     let url = __BASEAPI__ + '/' + directive;
     let payload = code ? {opcode : code} : {};
     let method = options.method ? options.method : 'get';
     let count = 1;
-    let { loop, interval } = loopOption;
-    
+    let { loop, interval } = Object.assign({loop : false, interval : 1000, context : this}, loopOption);
     method = method.toLowerCase();
     payload = Object.assign(options.data || options.params || {}, payload);
 
@@ -63,7 +67,11 @@ export function fetchWithCode(directive, options = {}, loopOption = {loop : fals
         options.data = stringify(options.data, {encodeValuesOnly : true});
     }
 
-    return new Promise((resolve, reject) => {
+    if(loopOption.loop && typeof loopOption.stop !== 'function'){
+        throw new Error('loopOption.stop must be function, because loopOption.loop is active');
+    }
+
+    const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
                 return resolve(response);
@@ -74,13 +82,18 @@ export function fetchWithCode(directive, options = {}, loopOption = {loop : fals
                     case 'number' :
                         if(count < loop){
                             count++;
-                            setTimeout(()=>fetch(), interval);
+                            if(!loopOption.stop()){
+                                setTimeout(()=>fetch(), interval);
+                            }
                             return false;
                         }
                         break;
                     case 'boolean' :
                         if(loop === true){
-                            return fetch();
+                            if(!loopOption.stop()){
+                                setTimeout(()=>fetch(), interval);
+                            }
+                            return false;
                         }
                         break;
                     case 'string' :
@@ -92,11 +105,12 @@ export function fetchWithCode(directive, options = {}, loopOption = {loop : fals
         }
         fetch();
     })
+    
+    return promise;
 };
 
 // export const TIMEZONES = TIMEZONE;;
-
-
+// export const timersManager = timersManager;
 
 
 
