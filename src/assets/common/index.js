@@ -71,7 +71,6 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     if(loopOption.loop && typeof loopOption.stop !== 'function'){
         throw new Error('loopOption.stop must be function, because loopOption.loop is active');
     }
-
     const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
