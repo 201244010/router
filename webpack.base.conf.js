@@ -30,7 +30,7 @@ const options = {
         test: /\.(png|jpg|gif|woff|woff2|ttf|eot|svg|swf)$/,
         loader: "file-loader",
         options: {
-          name: "[name]_[sha512:hash:base64:7].[ext]"
+          name: "[name].[ext]"
         }
       }
     ]

@@ -26,19 +26,10 @@ export default class SetPassword extends React.Component {
                 disabled : true
             });
         }
-        // else {
-        //     this.setState({
-        //         disabled : false
-        //     });
-        // }
     };
 
-    stopFn = ()=>{
-        return this.stop;
-    }
-
     componentWillUnmount(){
-        // this.stop = true;
+        this.stop = true;
     }
 
     // 表单提交
@@ -49,7 +40,7 @@ export default class SetPassword extends React.Component {
         const result = await common.fetchWithCode(
             'ACCOUNT_MODIFY', 
             { method : 'POST', data : { account : { password : btoa(password), username : 'admin' } } }, 
-            { loop : true, stop : this.stopFn }
+            { loop : true, stop : () => this.stop }
         )
         this.setState({ loading : false });
         data = result.data;
@@ -91,9 +82,6 @@ export default class SetPassword extends React.Component {
                         <Input placeholder="请设置密码" onChange = {this.onPassportChange} onBlur={ this.onPassportBlur } onEnter={this.onEnter} />
                         <ErrorTip>{tip}</ErrorTip> 
                     </FormItem>
-                    {/* <FormItem style={{ paddingLeft : 71 }}>
-                        <Button disabled={disabled} loading={loading} style={{ width : 260 }} onClick={this.post} size="large" type="primary">下一步</Button>
-                    </FormItem> */}
                     <FormItem label="#">
                         <Button disabled={disabled} loading={loading} style={{ width : "100%" }} onClick={this.post} size="large" type="primary">下一步</Button>
                     </FormItem>

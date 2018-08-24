@@ -36,7 +36,8 @@ export const getTimeZone = () => {
  * @param {object} loopOption 扩展配置 
  *               loopOption.loop [boolean]是否循环 或循环 N 次, 
  *               loopOption.interval [number]] 轮询间隔 ms
- *               loopOption.stop [function]
+ *               loopOption.stop [function] 轮询终止的条件
+ *               loopOption.pending [function] 已经成功响应，仍需继续轮询的条件
  * @see
  * fetchWithCode(
  *      'ACCOUNT_LOGIN', 
@@ -74,6 +75,10 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
+                if(loopOption && loopOption.pending(response)){
+                    setTimeout(()=>fetch(), interval);
+                    return false;
+                }
                 return resolve(response);
             })
             .catch( error => {
