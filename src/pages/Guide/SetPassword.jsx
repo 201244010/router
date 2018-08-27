@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {Button} from 'antd';
+import {Button, Modal} from 'antd';
 import routes from '../../routes';
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -34,23 +34,22 @@ export default class SetPassword extends React.Component {
 
     // 表单提交
     post = async () => {
-        let password = this.state.password, data;
+        let password = this.state.password;
 
         this.setState({ loading : true });
-        const result = await common.fetchWithCode(
+        const response = await common.fetchWithCode(
             'ACCOUNT_MODIFY', 
             { method : 'POST', data : { account : { password : btoa(password), username : 'admin' } } }, 
-            { loop : true, stop : () => this.stop }
-        )
+            { loop : 1, stop : () => this.stop, interval : 2000, handleError : true }
+        ).catch(ex => {})
+
         this.setState({ loading : false });
-        data = result.data;
-        if(data){
-            if(data.errcode == 0){
-                this.props.history.push(routes.guideSetWan);
-                return;
-            }
-            this.setState({ tip : data.message });
+        let { errcode, message } = response;
+        if(errcode == 0){
+            this.props.history.push(routes.guideSetWan);
+            return;
         }
+        this.setState({ tip : message });
     }
 
     // 监听输入实时改变

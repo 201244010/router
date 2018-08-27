@@ -3,6 +3,8 @@
 import Loadable from 'react-loadable';
 import {DIRECTIVE} from './constants';
 import axios from 'axios';
+import { Modal } from 'antd';
+import React from 'react';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import { stringify } from 'qs';
@@ -51,14 +53,15 @@ export const getTimeZone = () => {
  * );
  */
 export function fetchWithCode(directive, options = {}, loopOption = {}){
+    options = assign({timeout : 3000}, options);
     let code = DIRECTIVE[directive];
     let url = __BASEAPI__ + '/' + directive;
-    let payload = code ? {opcode : code} : {};
+    let payload = code ? {opcode : code} : {};    
     let method = options.method ? options.method : 'get';
     let count = 1;
-    let { loop, interval } = Object.assign({loop : false, interval : 1000, context : this}, loopOption);
+    let { loop, interval } = Object.assign({loop : false, interval : 1000 }, loopOption);
     method = method.toLowerCase();
-    payload = Object.assign(options.data || options.params || {}, payload);
+    payload = assign(options.data || options.params || {}, payload);
 
     if(method === 'get'){
         options.params = {"params" : [payload]};
@@ -104,6 +107,9 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                         throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
                         break;
                 }
+                if(loopOption.handleError){
+                    Modal.error({ title : 'Error', content : <Error error={error} directive={directive} />});
+                }
                 return reject(error);
             })
         }
@@ -112,6 +118,17 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     
     return promise;
 };
+
+
+function Error(props){
+    return (
+        <div>
+            <div>{props.error.message}</div>
+            <span className="ui-tips">({props.directive})</span>
+        </div>
+    )
+}
+
 
 // export const TIMEZONES = TIMEZONE;;
 // export const timersManager = timersManager;

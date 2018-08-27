@@ -186,14 +186,14 @@ export default class SetWan extends React.PureComponent {
             'WANWIDGET_DIALDETECT_GET', 
             { method : 'POST' },
             { 
-                loop : 1, 
+                loop : 10, 
                 interval : 2000,
                 pending : res => res.data[0].result.status === 'detecting', 
                 stop : () => this.stop
             }
         )
-        .catch(ex => {});
-        response = {errcode : 0, message : 'success', data : [{result : {dialdetect : { status : 'detected', dial_type : 'pppoe' }}}]};
+        // .catch(ex => {});
+        // response = {errcode : 0, message : 'success', data : [{result : {dialdetect : { status : 'detected', dial_type : 'pppoe' }}}]};
         this.setState({detect : false});
         const { errcode, data, message } = response;
         if(errcode == 0){
