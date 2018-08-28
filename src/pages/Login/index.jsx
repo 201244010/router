@@ -61,24 +61,24 @@ class Login extends React.Component {
             <div key='login-content' className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
-                        <Form style={{ width : 265 }} >
-                            <FormItem showErrorTip={tip} >
+                        <Form style={{ width : 320 }} >
+                            <FormItem showErrorTip={tip} style={{ marginBottom : 30 }}>
                                 <Input placeholder="管理密码"
                                         type="password"
-                                        style={{ width: 265 }}
+                                        // style={{ width: 265 }}
                                         value={this.state.password}
-                                        ref={node => this.passwordInput = node}
+                                        // ref={node => this.passwordInput = node}
                                         // suffix={suffix}
-                                        onKeyUp={this.onKeyUp}
+                                        // onKeyUp={this.onKeyUp}
                                         onChange={this.onChange} />
                                 <ErrorTip>{ tip }</ErrorTip>
                             </FormItem>
                         </Form>
                         <Button type="primary"
                                 onClick={this.post}
-                                style={{ margin: "0 0 10px", width: 265 }}
+                                style={{ margin: "0 0 10px", width: 320 }}
                                 loading={this.state.loading}>登录</Button>
-                        <p>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+                        <p style={{ fontSize : 12, lineHeight : 1.5 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
                     </div>
                 </div>
                 
