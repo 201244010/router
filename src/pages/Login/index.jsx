@@ -1,8 +1,9 @@
 import React from 'react';
-import { Input, Button, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
+import CustomIcon from '~/components/Icon';
 
-const { FormItem, ErrorTip }  = Form;
+const { FormItem, ErrorTip, Input }  = Form;
 
 class Login extends React.Component {
     constructor(props) {
@@ -15,8 +16,8 @@ class Login extends React.Component {
         loading: false
     };
 
-    onChange = e => {
-        this.setState({ password: e.target.value })
+    onChange = value => {
+        this.setState({ password: value })
     }
 
     onKeyUp = e => {
@@ -52,35 +53,36 @@ class Login extends React.Component {
     }
 
     render() {
-        const password = this.state.password.trim();
+        // const password = this.state.password.trim();
         const tip = this.state.tip;
-        const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
+        // const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
 
-        return (
-            <div className="ui-center ui-fullscreen">
-                <div className="form-box" style={{ textAlign : 'center' }}>
-                    <p className="ui-title">欢迎使用商米路由器</p>
-                    <Form style={{ width : 265, margin : 'auto' }} >
-                        <FormItem showErrorTip={tip} >
-                            <Input placeholder="管理密码"
-                                    type="password"
-                                    style={{ width: 265 }}
-                                    value={this.state.password}
-                                    ref={node => this.passwordInput = node}
-                                    suffix={suffix}
-                                    onKeyUp={this.onKeyUp}
-                                    onChange={this.onChange} />
-                            <ErrorTip>{ tip }</ErrorTip>
-                        </FormItem>
-                    </Form>
-                    <Button type="primary"
-                            onClick={this.post}
-                            style={{ margin: "0 0 10px", width: 265 }}
-                            loading={this.state.loading}>登录</Button>
-                    <p className="ui-tips">忘记密码请按RESET键1秒复位，重新设置路由器</p>
+        return [
+            <div key='login-content' className="ui-center ui-fullscreen">
+                    <div className="form-box" style={{ textAlign : 'center' }}>
+                        <CustomIcon type="logo" size={90} color="#fff" />
+                        <Form style={{ width : 265 }} >
+                            <FormItem showErrorTip={tip} >
+                                <Input placeholder="管理密码"
+                                        type="password"
+                                        style={{ width: 265 }}
+                                        value={this.state.password}
+                                        ref={node => this.passwordInput = node}
+                                        // suffix={suffix}
+                                        onKeyUp={this.onKeyUp}
+                                        onChange={this.onChange} />
+                                <ErrorTip>{ tip }</ErrorTip>
+                            </FormItem>
+                        </Form>
+                        <Button type="primary"
+                                onClick={this.post}
+                                style={{ margin: "0 0 10px", width: 265 }}
+                                loading={this.state.loading}>登录</Button>
+                        <p>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+                    </div>
                 </div>
-            </div>
-        );
+                
+        ];
     }
 }
 

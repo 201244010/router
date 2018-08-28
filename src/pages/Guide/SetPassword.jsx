@@ -40,7 +40,7 @@ export default class SetPassword extends React.Component {
         const response = await common.fetchWithCode(
             'ACCOUNT_MODIFY', 
             { method : 'POST', data : { account : { password : btoa(password), username : 'admin' } } }, 
-            { loop : 1, stop : () => this.stop, interval : 2000, handleError : true }
+            { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }
         ).catch(ex => {})
 
         this.setState({ loading : false });
