@@ -44,7 +44,7 @@ class Login extends React.Component {
             method : 'POST', 
             data : { account : { password : btoa(password), user : 'admin' }}
         });
-        const {data, errcode, message} = response;
+        const { errcode, message } = response;
         this.setState({ loading : false });
         if(errcode == 0){
             this.props.history.push('/');

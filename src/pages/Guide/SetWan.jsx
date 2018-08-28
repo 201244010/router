@@ -91,13 +91,13 @@ export default class SetWan extends React.PureComponent {
         wan['dial_type'] = type;
         switch(this.state.type){
             case 'pppoe' :
-                let info = this.netInfo.pppoe;
-                wan['dns_type'] = info.dns_type;
+                let {info, pppoe} = this.netInfo;
+                wan['dns_type'] = 'auto';pppoe.dns_type;
                 wan['user_info'] = {
                     username : btoa(pppoeAccount),
                     password : btoa(pppoePassword)
                 };
-                wan['dns_info'] = info.dns_info;
+                // wan['dns_info'] = { dns1 : info.dns1, dns2 : info.dns2 };
                 break;
             case 'static' :
                 wan.info = {
@@ -186,19 +186,18 @@ export default class SetWan extends React.PureComponent {
             'WANWIDGET_DIALDETECT_GET', 
             { method : 'POST' },
             { 
-                loop : 10, 
+                loop : true, 
                 interval : 2000,
                 pending : res => res.data[0].result.status === 'detecting', 
                 stop : () => this.stop
             }
         )
-        // .catch(ex => {});
-        // response = {errcode : 0, message : 'success', data : [{result : {dialdetect : { status : 'detected', dial_type : 'pppoe' }}}]};
         this.setState({detect : false});
         const { errcode, data, message } = response;
         if(errcode == 0){
             let { dialdetect } = data[0].result;
             let { dial_type } = dialdetect;
+            dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
             this.setState({ type :  dial_type });
             return;
         }
@@ -206,25 +205,10 @@ export default class SetWan extends React.PureComponent {
     }
 
     getNetInfo = async ()=>{
-        let response = await common.fetchWithCode('NETWORK_WAN_IPV4_GET', {method : 'POST'}).catch(ex=>{});
-        response = {
-            errcode : 0, 
-            message : 'success', 
-            data : [
-                {
-                    result : {
-                        wan : {
-                            info : { 
-                                dns2 : '8.8.4.4'
-                            },
-                            dns_info : {
-                                dns1 : '8.8.8.8'
-                            }
-                        }
-                    }
-                }
-            ]
-        };
+        let response = await common.fetchWithCode(
+            'NETWORK_WAN_IPV4_GET',
+            { method : 'POST' }
+        ).catch(ex=>{});
         let { data, errcode, message } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;

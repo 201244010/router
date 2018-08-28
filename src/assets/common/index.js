@@ -1,7 +1,7 @@
 
 
 import Loadable from 'react-loadable';
-import {DIRECTIVE} from './constants';
+import { DIRECTIVE, ERROR_MESSAGE} from './constants';
 import axios from 'axios';
 import { Modal } from 'antd';
 import React from 'react';
@@ -56,7 +56,7 @@ export const getTimeZone = () => {
 export function fetchWithCode(directive, options = {}, loopOption = {}){
     options = assign({timeout : 3000}, options);
     let code = DIRECTIVE[directive];
-    let url = __BASEAPI__ ; //+ '/' + directive;
+    let url = __BASEAPI__ + '/' + directive;
     let payload;    
     let method = options.method ? options.method : 'get';
     let count = 1;
@@ -79,13 +79,16 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
-                if(loopOption && loopOption.pending && loopOption.pending(response)){
+                let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+                if(res.errcode !== 0){
+                    res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
+                }
+                
+                if(loopOption && loopOption.pending && loopOption.pending(res)){
                     setTimeout(()=>fetch(), interval);
                     return false;
                 }
-                let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 // 预处理 追加 message 字段
-                res.message = res.errcode !== 0 ? res.data[0].result.desc : '';
                 console.log("debug:", directive, res);
                 return resolve(res);
             })
