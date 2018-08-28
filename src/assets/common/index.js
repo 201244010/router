@@ -52,39 +52,44 @@ export const getTimeZone = () => {
  *      
  * );
  */
+
 export function fetchWithCode(directive, options = {}, loopOption = {}){
     options = assign({timeout : 3000}, options);
     let code = DIRECTIVE[directive];
-    let url = __BASEAPI__ + '/' + directive;
-    let payload = code ? {opcode : code} : {};    
+    let url = __BASEAPI__ ; //+ '/' + directive;
+    let payload;    
     let method = options.method ? options.method : 'get';
     let count = 1;
-    let { loop, interval } = Object.assign({loop : false, interval : 1000 }, loopOption);
+    let { loop, interval } = Object.assign({loop : false, interval : 1000, pending : noop }, loopOption);
     method = method.toLowerCase();
-    payload = assign(options.data || options.params || {}, payload);
+    payload = {
+        param : assign(options.data || options.params || {}),
+        opcode : code
+    };
 
     if(method === 'get'){
-        options.params = {"params" : [payload]};
+        options.params = {"params" : [payload], count : "1"};
     }
     else if(method === 'post'){
-        options.data = {"params" : [payload]};
-        options.data = stringify(options.data, {encodeValuesOnly : true});
+        options.data = {"params" : [payload], count : "1"};
     }
-
     if(loopOption.loop && typeof loopOption.stop !== 'function'){
         throw new Error('loopOption.stop must be function, because loopOption.loop is active');
     }
     const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
-                if(loopOption && loopOption.pending(response)){
+                if(loopOption && loopOption.pending && loopOption.pending(response)){
                     setTimeout(()=>fetch(), interval);
                     return false;
                 }
-                return resolve(response);
+                let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+                // 预处理 追加 message 字段
+                res.message = res.errcode !== 0 ? res.data[0].result.desc : '';
+                console.log("debug:", directive, res);
+                return resolve(res);
             })
             .catch( error => {
-                // console.error("axios catch error : ", error);
                 switch(typeof loop){
                     case 'number' :
                         if(count < loop){

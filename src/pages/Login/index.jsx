@@ -36,20 +36,21 @@ class Login extends React.Component {
     post = async () => {
         const password = this.state.password;
 
-        if(!password.trim().length){
-            return this.setState({ tip : '密码不能为空' });
-        }
+        // if(!password.trim().length){
+        //     return this.setState({ tip : '密码不能为空' });
+        // }
         this.setState({ loading : true });
-        const {data} = await common.fetchWithCode('ACCOUNT_LOGIN', {
+        const response = await common.fetchWithCode('ACCOUNT_LOGIN', {
             method : 'POST', 
-            data : { account : { password : btoa(password), username : 'admin' }}
+            data : { account : { password : btoa(password), user : 'admin' }}
         });
+        const {data, errcode, message} = response;
         this.setState({ loading : false });
-        if(data.errcode == 0){
+        if(errcode == 0){
             this.props.history.push('/');
             return;
         }
-        this.setState({ tip : data.message });
+        this.setState({ tip : message });
     }
 
     render() {
