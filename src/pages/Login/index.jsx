@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
-import QRcode from '~/components/QRcode';
+import QRcode from './QRcode';
 
 const { FormItem, ErrorTip, Input }  = Form;
 
