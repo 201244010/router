@@ -1,10 +1,9 @@
-.divQR{
+.qr{
     width:132px;
     height:149px;
     border-radius:8px;
     margin:0;
     padding:0;
-    font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #333C4F;
     text-align: center;
@@ -14,7 +13,7 @@
     background: #fff;
     padding: 16px 0 0 0;
 }
-img{
+.qr img{
     width: 100px;
     height: 100px;
     margin: 0; 

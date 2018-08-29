@@ -8,7 +8,7 @@ class QRcode extends React.Component{
     }
     render(){
         return (
-            <div className="divQR">
+            <div className="qr">
                 <img src="QRcode.png"></img>
                 <p>扫描二维码下载APP</p>
             </div>
