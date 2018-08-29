@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-
 const ErrorTip = props => <div style={props.style} className="ui-form-explain">{props.children}</div>;
 
 const FormItem = props => {
@@ -177,6 +176,17 @@ class InputGroup extends React.Component {
         // console.log('blur');
     }
 
+    // 限制只能输入数字 退格，删除，tab
+    handleKeyPress  = e => {
+        const which = e.which;
+        const allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
+        if(allow){
+            return true;
+        }
+        e.preventDefault();
+    }
+
+
     formItemFocus(){
         return this.state.inputs.some(item => item.focus);
     }
@@ -204,6 +214,7 @@ class InputGroup extends React.Component {
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}
                                         onChange={ e => this.onInputChange(e, i, item)} 
+                                        onKeyPress={ this.handleKeyPress }
                                         type='text'
                                     />;
                         if(i !== inputs.length - 1){

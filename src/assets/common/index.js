@@ -79,6 +79,11 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     const promise = new Promise((resolve, reject) => {
         function fetch(){
             return axios(url, options).then(function(response){
+                // 请求响应 但是响应的数据集为空
+                if(response.data === ''){
+                    return resolve({errcode : 0});
+                }
+                // 正常响应 解析响应结果
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if(res.errcode !== 0){
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
@@ -89,7 +94,7 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                     return false;
                 }
                 // 预处理 追加 message 字段
-                console.log("debug:", directive, res);
+                console.log("[DEBUG]]:", directive, res);
                 return resolve(res);
             })
             .catch( error => {
@@ -113,10 +118,9 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                         break;
                     case 'string' :
                         throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
-                        break;
                 }
                 if(loopOption.handleError){
-                    Modal.error({ title : 'Error', content : <Error error={error} directive={directive} />});
+                    Modal.error({ title : 'Error', content : <ErrorTip error={error} directive={directive} />});
                 }
                 return reject(error);
             })
@@ -128,7 +132,7 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
 };
 
 
-function Error(props){
+function ErrorTip(props){
     return (
         <div>
             <div>{props.error.message}</div>
@@ -141,7 +145,15 @@ function Error(props){
 // export const TIMEZONES = TIMEZONE;;
 // export const timersManager = timersManager;
 
-
+export const mockResponse = function(data){
+    return {
+        errcode : 0,
+        data : [{
+            result : data
+        }],
+        message : 'success'
+    };
+}
 
 
 

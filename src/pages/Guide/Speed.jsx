@@ -27,7 +27,6 @@ export default class Speed extends React.Component {
   }
 
   reTest = ()=>{
-      console.log('reTEST');
       this.autoSpeedTest();
   }
 
@@ -39,13 +38,22 @@ export default class Speed extends React.Component {
     
     let response = await common.fetchWithCode(
         'WANWIDGET_SPEEDTEST_INFO_GET',
-        { method : 'POST', data : {speedtest : { 'force_update' : true }} },
-        { loop : 3, pending : resp => resp.data[0].result.speedtest.status === 'testing', stop : () => this.stop, interval : 1000 }
+        { 
+            method : 'POST', 
+            data : { speedtest : { 'force_update' : true }} 
+        },
+        { 
+            loop : 10, 
+            pending : resp => {
+                return resp.data[0].result.speedtest.status === 'testing';
+            }, 
+            stop : () => this.stop, interval : 1000 
+        }
     ).catch(ex => {});
-    response = {errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "20", down_bandwidth : "13"}}}]}
+    response = { errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "200", down_bandwidth : "100"}}}]}
 
     this.setState({ speedTestdone : true, showModal : false });
-    let {errcode, message} = response;
+    let { errcode, message } = response;
     if(errcode == 0){
         let info = response.data[0].result.speedtest;
         this.setState({
@@ -58,29 +66,56 @@ export default class Speed extends React.Component {
   }
 
   //  手动配速  
-  configure = async () => {
-    let { upBandWidth, downBandWidth } = this.state;
-    let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
-    let response = await common.fetchWithCode(
-        'QOS_SET', 
-        { method : 'POST', data}
-    );
-    let { errcode, message } = response;
-    if(errcode == 0){
-        return this.props.history.push('/guide/setwifi');
+    configure = async () => {
+        let { upBandWidth, downBandWidth } = this.state;
+        upBandWidth += 'Mbps';
+        downBandWidth += 'Mbps';
+        let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
+        let response = await common.fetchWithCode(
+            'QOS_SET',
+            { method : 'POST', data },
+            { loop : 10, stop : () => this.stop }
+        ).catch(ex => {});
+        response = common.mockResponse({
+            "qos": { 
+                "enable":true,
+                "source":"speedtest/default/manual",
+                "up_bandwidth": upBandWidth,
+                "down_bandwidth": downBandWidth,
+                "sunmi_weight":"50",
+                "white_weight":"30"
+            }
+        });
+        let { errcode, message } = response;
+        if(errcode == 0){
+            return this.props.history.push('/guide/setwifi');
+        }
+        Modal.error({ title : '手动配置QOS异常', message });
     }
-    Modal.error({ title : '手动配置QOS异常', message });
- }
 
-  // 获取 qos 信息
-  async fetchQOSInfo(){
-    let response = await common.fetchWithCode('QOS_GET', { method : 'POST' });
-    let {errcode, data, message} = response;
-    if(errcode == 0){
-        return this.qos = data[0].result.qos;
+    // 获取 qos 信息
+    async fetchQOSInfo(){
+        let response = await common.fetchWithCode(
+            'QOS_GET', 
+            { method : 'POST' },
+            { loop : 10, stop : () => this.stop }
+        ).catch(ex => {});
+        response = common.mockResponse({
+            "qos": { 
+                "enable":true,
+                "source":"speedtest/default/manual",
+                "up_bandwidth":"20Mbps",
+                "down_bandwidth":"100Mbps",
+                "sunmi_weight":"50",
+                "white_weight":"30"
+            }
+        })
+        let {errcode, data, message} = response;
+        if(errcode == 0){
+            return this.qos = data[0].result.qos;
+        }
+        Modal.error({ title : 'QOS信息获取失败', message });
     }
-    Modal.error({ title : 'qos 信息获取失败', message });
-  }
 
   autoSpeedTest = () => {
     this.setState({ showModal : true, mode : 'auto' });
@@ -103,15 +138,15 @@ export default class Speed extends React.Component {
       this.setState({
           [field] : value
       });
-  }
+    }
 
-  componentWillUnmount(){
-      this.stop = true;
-  }
+    componentWillUnmount(){
+        this.stop = true;
+    }
 
-  componentDidMount(){
-    this.fetchQOSInfo();
-  }
+    componentDidMount(){
+        this.fetchQOSInfo();
+    }
 
   render(){
     const {showModal, mode, speedTestdone, upBandWidth, downBandWidth}  = this.state;

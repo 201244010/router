@@ -132,20 +132,21 @@ export default class SetWan extends React.PureComponent {
                 {method : 'POST'},
                 {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
             );
-            let { errcode:code, data, message:msg} = connectStatus;
+            let { errcode:code, data } = connectStatus;
             if(code == 0){
+                let online = data[0].result.onlinetest.online;
                 this.setState({
                     showNetWorkStatus : true,
-                    online : data[0].result.onlinetest.online
+                    online
                 });
-                setTimeout(() => {
-                    this.props.history.push("/guide/speed");
-                }, 2000);
+                if(online){
+                    setTimeout(() => { this.props.history.push("/guide/speed") }, 2000);
+                }
                 return;
             }
             return;
         }
-        Modal.error({ title : '提交失败', msg });
+        Modal.error({ title : 'WAN口设置失败', content :  message });
     }
 
     // 校验参数
@@ -163,7 +164,9 @@ export default class SetWan extends React.PureComponent {
                         return true;
                     }
                     return field.some(f => {
-                        return (f === '' || f === null || f === undefined);
+                        if(f == null || typeof f === 'undefined' || f === ''){
+                            return true;
+                        }
                     });
                 })
                 if(empty){

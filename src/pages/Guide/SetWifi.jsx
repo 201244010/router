@@ -39,7 +39,7 @@ export default class SetWifi extends React.Component {
         });
     }
 
-    submit = async ()=>{
+    submit = async ()=> {
         this.setState({ loading : true});
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
@@ -51,6 +51,7 @@ export default class SetWifi extends React.Component {
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
         ).catch(ex => {});
+
         this.setState({active : true})
         this.timer = setInterval(()=> {
             this.tick++;
@@ -72,13 +73,13 @@ export default class SetWifi extends React.Component {
         let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
         
         [hostWifiName, hostWifiPsw].forEach( item => {
-            if(item.trim().length === 0){
+            if(item.length === 0){
                 ret = false;
             }
         })
         if(guestWifi){
             [guestWifiName, guestWifiPsw].forEach( item => {
-                if(item.trim().length === 0){
+                if(item.length === 0){
                     ret = false;
                 }
             })  
@@ -87,49 +88,10 @@ export default class SetWifi extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchWithCode( 'WIRELESS_GET', { method : 'POST' }).catch(ex =>{});
-        response = {
-                errcode : 0,
-                data : [
-                    {
-                        result : {
-                            "main":{
-                                "host":{
-                                    "band_division":false,
-                                    "band_2g":{
-                                        "enable":true,
-                                        "ssid":"xxxx",
-                                        "encryption":"xxx",
-                                        "password":"xxxx", //base64编码
-                                        "hide_ssid":false,
-                                        "hwmode": "11ng",
-                                        "htmode": "HT40",
-                                        "channel": "1"
-                                    },
-                                    "band_5g":{
-                                        "enable":true,
-                                        "ssid":"xxxx",
-                                        "encryption":"xxx",
-                                        "password":"xxxx", //base64编码
-                                        "hide_ssid":false,
-                                        "hwmode": "11ac",
-                                        "htmode": "HT80",
-                                        "channel": "149"
-                                    }
-                                }
-                            },
-                            "guest":{
-                                "enable":true,
-                                "ssid":"xxxx",
-                                "password":"xxxx" //base64编码}
-                            }
-                        }
-                    }
-                ]
-            };
+        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }).catch(ex =>{});
         let { errcode, data, message } = response;
         if(errcode == 0){
-            let {main, guest} = data[0].result;
+            let { main, guest } = data[0].result;
             this.mainWireLess = main;
             this.hostWireLess = main.host.band_2g;
             this.guestWireLess = guest;
@@ -137,7 +99,7 @@ export default class SetWifi extends React.Component {
             this.setState({
                 hostWifiName : this.hostWireLess.ssid,
                 guestWifiName : this.guestWireLess.ssid,
-                guestWifi : guest.enable
+                guestWifi : this.guestWireLess.enable !== '0'
             });
             return;
         }
