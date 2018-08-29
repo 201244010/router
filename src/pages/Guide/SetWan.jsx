@@ -91,17 +91,16 @@ export default class SetWan extends React.PureComponent {
         wan['dial_type'] = type;
         switch(this.state.type){
             case 'pppoe' :
-                let {info, pppoe} = this.netInfo;
-                wan['dns_type'] = 'auto';pppoe.dns_type;
+                let { pppoe } = this.netInfo;
+                wan['dns_type'] = pppoe.dns_type === "dynamic" ? 'auto' : pppoe.dns_type;
                 wan['user_info'] = {
                     username : btoa(pppoeAccount),
                     password : btoa(pppoePassword)
                 };
-                // wan['dns_info'] = { dns1 : info.dns1, dns2 : info.dns2 };
                 break;
             case 'static' :
                 wan.info = {
-                    ipv4 : ip.join(','),
+                    ipv4 : ip.join('.'),
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : dns.join('.'),
@@ -110,7 +109,7 @@ export default class SetWan extends React.PureComponent {
                 break;
             case 'dhcp' :
                 wan['dns_type'] = this.netInfo.dhcp.dns_type;
-                wan['dns_info'] = [];
+                // wan['dns_info'] = [];
                 break;
         }
         return { wan };
@@ -122,36 +121,31 @@ export default class SetWan extends React.PureComponent {
         let payload = this.composeParams();
         let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
             .catch(ex => {})
-        response = {errcode : 0, message : 'ff'};
         this.setState({ loading : false });
         let {errcode, message } = response;
         if(errcode == 0){
             // 触发检测联网状态
             common.fetchWithCode('WANWIDGET_ONLINETEST_START', {method : 'POST'});
             // 获取联网状态
-            let connectStatus = common.fetchWithCode(
+            let connectStatus = await common.fetchWithCode(
                 'WANWIDGET_ONLINETEST_GET', 
                 {method : 'POST'},
                 {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
             );
-            let {errcode:code, data} = connectStatus;
+            let { errcode:code, data, message:msg} = connectStatus;
             if(code == 0){
                 this.setState({
                     showNetWorkStatus : true,
                     online : data[0].result.onlinetest.online
                 });
+                setTimeout(() => {
+                    this.props.history.push("/guide/speed");
+                }, 2000);
                 return;
             }
-            // this.props.history.push("/guide/speed");
             return;
         }
-        Modal.error({ title : '提交失败', message });
-
-        // setTimeout(()=>{
-        //     this.setState({ loading : false }, function() {
-        //         this.props.history.push("/guide/speed");
-        //     });
-        // }, 2000)
+        Modal.error({ title : '提交失败', msg });
     }
 
     // 校验参数
@@ -188,7 +182,7 @@ export default class SetWan extends React.PureComponent {
             { 
                 loop : true, 
                 interval : 2000,
-                pending : res => res.data[0].result.status === 'detecting', 
+                pending : res => res.data[0].result.dialdetect.status === 'detecting', 
                 stop : () => this.stop
             }
         )
@@ -198,7 +192,10 @@ export default class SetWan extends React.PureComponent {
             let { dialdetect } = data[0].result;
             let { dial_type } = dialdetect;
             dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-            this.setState({ type :  dial_type });
+            this.setState({ 
+                type :  dial_type, 
+                disabled : dial_type == 'dhcp' ? false : true 
+            });
             return;
         }
         Modal.error({ title: '上网方式检查', content: message });
@@ -207,11 +204,13 @@ export default class SetWan extends React.PureComponent {
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
-            { method : 'POST' }
+            { method : 'POST' },
+            { loop : true, pending : res => res.data[0].result.dialdetect === 'detecting', stop : ()=> this.stop }
         ).catch(ex=>{});
         let { data, errcode, message } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
+            console.log('[GOT] IPV4: ', this.netInfo);
             return;
         }
         Modal.error({ title: '获取 ipv4 信息失败', content: message });
@@ -242,8 +241,8 @@ export default class SetWan extends React.PureComponent {
         const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
         return (
             <div className="set-wan">
-                <h2>设置管理员密码</h2> 
-                <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
+                <h2>设置上网参数</h2> 
+                <p className="ui-tips guide-tip">上网参数设置完成后，即可连接网络 </p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
                     <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />,
@@ -252,56 +251,58 @@ export default class SetWan extends React.PureComponent {
                 {/* 显示网络连接状态 */}
                 {
                     showNetWorkStatus ? 
-                        <div className={classnames(["ui-center speed-test"])}>
-                        <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
-                    </div> :
-                    ''
-                }
-                <div className={classnames(['wan', {'block' : !detect}])}>
-                    <Form style={{ margin : '0 auto' }}>
-                        <FormItem label="上网方式">
-                            <Select value={type} style={{ width: "100%" }} onChange={this.handleChange}>
-                                <Option value="pppoe">宽带账号上网（PPPoE）</Option>
-                                <Option value="dhcp">自动获取IP（DHCP）</Option>
-                                <Option value="static">手动输入IP（静态IP）</Option>
-                            </Select>
-                        </FormItem>
-                        {/* pppoe 输入组件 */}
-                        {
-                            type === 'pppoe' ? <PPPOE 
-                                pppoeAccount={this.state.pppoeAccount} 
-                                pppoeAccountTip={this.state.pppoeAccountTip}
-                                pppoePassword={this.state.pppoePassword}
-                                pppoePasswordTip={this.state.pppoePasswordTip}
-                                handleAccountBlur={this.handleAccountBlur}
-                                handleAccountChange={this.handleAccountChange} 
-                                handlePasswordChange={this.handlePasswordChange}
-                                handlePasswordBlur={this.handlePasswordBlur} />  : ''
-                        }
-                        {/* 静态 ip 输入组件 */}
-                        {
-                            type === 'static' ? <StaticIp ip={ip} 
-                                                            dns={dns} 
-                                                            gateway={gateway} 
-                                                            subnetmask={subnetmask}
-                                                            dnsbackup={dnsbackup} 
-                                                            onChange={this.onIPConifgChange}
+                        (<div className={classnames(["ui-center speed-test"])}>
+                            <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
+                        </div>) :
+                    (
+                        <div className={classnames(['wan', {'block' : !detect}])}>
+                            <Form style={{ margin : '0 auto' }}>
+                                <FormItem label="上网方式">
+                                    <Select value={type} style={{ width: "100%" }} onChange={this.handleChange}>
+                                        <Option value="pppoe">宽带账号上网（PPPoE）</Option>
+                                        <Option value="dhcp">自动获取IP（DHCP）</Option>
+                                        <Option value="static">手动输入IP（静态IP）</Option>
+                                    </Select>
+                                </FormItem>
+                                {/* pppoe 输入组件 */}
+                                {
+                                    type === 'pppoe' ? <PPPOE 
+                                        pppoeAccount={this.state.pppoeAccount} 
+                                        pppoeAccountTip={this.state.pppoeAccountTip}
+                                        pppoePassword={this.state.pppoePassword}
+                                        pppoePasswordTip={this.state.pppoePasswordTip}
+                                        handleAccountBlur={this.handleAccountBlur}
+                                        handleAccountChange={this.handleAccountChange} 
+                                        handlePasswordChange={this.handlePasswordChange}
+                                        handlePasswordBlur={this.handlePasswordBlur} />  : ''
+                                }
+                                {/* 静态 ip 输入组件 */}
+                                {
+                                    type === 'static' ? <StaticIp ip={ip} 
+                                                                    dns={dns} 
+                                                                    gateway={gateway} 
+                                                                    subnetmask={subnetmask}
+                                                                    dnsbackup={dnsbackup} 
+                                                                    onChange={this.onIPConifgChange}
 
-                                                    /> : ''
-                        }
-                        <FormItem label="#">
-                            <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
-                        </FormItem>
-                        {
-                            (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
-                                <div className="help">
-                                    <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                                    {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
-                                </div>
-                            </FormItem> : ""
-                        }
-                    </Form>
-                </div>
+                                                            /> : ''
+                                }
+                                <FormItem label="#">
+                                    <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
+                                </FormItem>
+                                {
+                                    (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
+                                        <div className="help">
+                                            <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                                            {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
+                                        </div>
+                                    </FormItem> : ""
+                                }
+                            </Form>
+                        </div>
+                    )
+                }
+                
             </div>
         )
     }
