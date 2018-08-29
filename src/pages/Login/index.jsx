@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
+import QRcode from '~/components/QRcode';
 
 const { FormItem, ErrorTip, Input }  = Form;
 
@@ -80,6 +81,9 @@ class Login extends React.Component {
                                 style={{ margin: "0 0 10px", width: 320 }}
                                 loading={this.state.loading}>登录</Button>
                         <p style={{ fontSize : 12, lineHeight : 1.5 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+                    </div>
+                    <div>
+                       <QRcode />
                     </div>
                 </div>
                 
