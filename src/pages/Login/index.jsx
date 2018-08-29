@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
-import QRcode from './QRcode';
+import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
 
@@ -82,8 +82,9 @@ class Login extends React.Component {
                                 loading={this.state.loading}>登录</Button>
                         <p style={{ fontSize : 12, lineHeight : 1.5 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
                     </div>
-                    <div>
-                       <QRcode />
+                    <div className="qr">
+                        <img src="QRcode.png"></img>
+                        <p>扫描二维码下载APP</p>
                     </div>
                 </div>
                 
