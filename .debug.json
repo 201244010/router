@@ -1,0 +1,173 @@
+{
+    "entry": {
+        "main": "/Users/wangshangwen/work/sunmi/web-w1/src/app"
+    },
+    "devtool": "cheap-module-eval-source-map",
+    "output": {
+        "path": "/Users/wangshangwen/work/sunmi/web-w1/dist",
+        "filename": "[name].min.js",
+        "publicPath": "/"
+    },
+    "module": {
+        "rules": [
+            {
+                "test": {},
+                "exclude": {},
+                "loader": "babel-loader",
+                "options": {
+                    "compact": false,
+                    "cacheDirectory": true
+                }
+            },
+            {
+                "test": {},
+                "loader": "file-loader",
+                "options": {
+                    "name": "[name].[ext]"
+                }
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader"
+                ]
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader",
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "indentedSyntax": false,
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader",
+                    {
+                        "loader": "less-loader",
+                        "options": {
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            },
+            {
+                "test": {},
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "minimize": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "postcss-loader",
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "resolve": {
+        "alias": {
+            "~": "/Users/wangshangwen/work/sunmi/web-w1/src",
+            "styles": "/Users/wangshangwen/work/sunmi/web-w1/src/assets/styles",
+            "common": "/Users/wangshangwen/work/sunmi/web-w1/src/assets/common",
+            "pub": "/Users/wangshangwen/work/sunmi/web-w1/src/pub"
+        },
+        "extensions": [
+            ".js",
+            ".jsx",
+            ".css",
+            ".scss",
+            ".json"
+        ]
+    },
+    "plugins": [
+        {
+            "definitions": {
+                "common": "common"
+            }
+        },
+        {
+            "chunkNames": [
+                "vendor"
+            ],
+            "ident": "/Users/wangshangwen/work/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js0"
+        },
+        {
+            "chunkNames": [
+                "manifest"
+            ],
+            "minChunks": null,
+            "ident": "/Users/wangshangwen/work/sunmi/web-w1/node_modules/webpack/lib/optimize/CommonsChunkPlugin.js1"
+        },
+        {
+            "options": {
+                "template": "/Users/wangshangwen/work/sunmi/web-w1/index.template.html",
+                "filename": "index.html",
+                "hash": false,
+                "inject": true,
+                "compile": true,
+                "favicon": false,
+                "minify": false,
+                "cache": true,
+                "showErrors": true,
+                "chunks": "all",
+                "excludeChunks": [],
+                "title": "Webpack App",
+                "xhtml": false
+            }
+        },
+        {},
+        {
+            "definitions": {
+                "process.env.NODE_ENV": "\"development\"",
+                "__BASEAPI__": "\"http://localhost:3000/api\""
+            }
+        },
+        {
+            "options": {}
+        },
+        {
+            "options": {},
+            "fullBuildTimeout": 200,
+            "requestTimeout": 10000
+        }
+    ]
+}

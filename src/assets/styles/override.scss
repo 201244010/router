@@ -1,0 +1,100 @@
+
+
+button.ant-btn-primary,
+button.ant-btn-primary:hover, button.ant-btn-primary:focus {
+    background-color : $button-bg-color;
+    border : 1px solid $button-bg-color;
+    height: 42px;
+}
+
+button.ant-btn-primary.ant-btn-loading {
+    border-color : rgba(147, 147, 147, 1);
+}
+
+button.ant-btn-lg span {
+    font-size : 14px;
+}
+
+input.ant-input:hover {
+    border-color: $button-bg-color;
+}
+
+button.ant-btn-primary.ant-btn-loading {
+    border-color : #FB8632!important;
+}
+.ant-btn-primary.disabled, 
+.ant-btn-primary[disabled], 
+.ant-btn-primary.disabled:hover, 
+.ant-btn-primary[disabled]:hover, 
+.ant-btn-primary.disabled:focus, 
+.ant-btn-primary[disabled]:focus, 
+.ant-btn-primary.disabled:active, 
+.ant-btn-primary[disabled]:active, 
+.ant-btn-primary.disabled.active, 
+.ant-btn-primary[disabled].active {
+    background-color : #EBEBEB!important;
+    color : #fff!important;
+    font-size : 14px;
+    border : none!important;
+}
+
+.ant-progress-circle .ant-progress-text .anticon {
+    font-size : 2.5em;
+}
+
+.ant-select {
+    .ant-select-selection {
+        height : 42px;
+    }
+    
+    .ant-select-selection__rendered {
+        line-height: 42px;
+    }
+}
+
+.ant-progress-circle-path {
+    stroke : #FB8632!important;
+}
+
+.ant-progress-status-success .ant-progress-circle-path {
+    stroke: #52c41a!important;
+}
+
+.ant-progress-success-bg, .ant-progress-bg {
+    background-color : #FB8632!important;
+}
+
+.ant-switch-checked {
+    background-color : #FB8632!important;
+}
+
+.ant-click-animating-node {
+    border-color : #FB8632!important;
+}
+
+
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    border-color : #FB8632!important;
+    box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2)!important;
+}
+
+.ant-select-selection:hover {
+    border-color : #FB8632!important;
+}
+
+// .ant-select-focused .ant-select-selection,
+// .ant-select-selection:focus,
+// .ant-select-selection:active {
+//   border-color: #FB8632;
+//   outline: 0;
+//   -webkit-box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
+//           box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
+//   border-right-width: 1px !important;
+// }
+
+// .ant-select-open .ant-select-selection {
+//     border-color: #FB8632!important;
+// }
+// ::selection {
+//     background : #FB8632;
+// }

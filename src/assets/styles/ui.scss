@@ -1,0 +1,248 @@
+/**
+ * font
+ */
+
+h1, h2, h3, h4 {
+    margin-bottom: 0;
+}
+
+h1, .ui-title {
+    font-size: $primary-font-size;
+    color: $primary-color;
+    margin-bottom : 40px;
+    line-height: 1;
+}
+
+h2, .ui-subtitle {
+    font-size : $sub-font-size!important;
+    color : #000!important;
+    font-weight: bold!important;
+}
+
+h3 {
+    font-size : 18px!important;
+    color : #333!important;
+}
+
+.ui-t2 {
+    font-size : 18px;
+    color : #333;
+    margin-bottom : 8px;
+}
+
+.ui-t3 {
+    font-size : 14px;
+    margin-bottom : 8px;
+    color : #333;
+}
+
+.ui-tips {
+    font-size: 12px;
+    color: #ADB1B9;
+}
+
+.ui-form-tips {
+    padding-left : 3px;
+    height: 15px;
+    line-height: 15px;
+}
+
+.ui-txt-error {
+    color : #f5222d;
+}
+
+/**
+ * button
+ */
+
+.ui-button {
+    color: #fff;
+    font-size: 16px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .65);
+    padding: 0 100px;
+}
+
+/*
+ * flex
+ *
+ */
+
+.ui-flex {
+    display: flex;
+}
+
+.ui-flex-column {
+    display: flex;
+    flex-flow : column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.ui-center {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.ui-fullscreen {
+    height: 100%;
+}
+
+.ui-container {
+    width : 1216px;
+    margin : auto;
+    height: 100%;
+}
+
+/* inline-block */
+.ui-ib {
+    display : inline-block;
+    vertical-align: middle;
+}
+
+.ui-none {
+    display: none;
+}
+
+.ui-block {
+    display: block;
+}
+
+.ui-hidden {
+    visibility: hidden;
+}
+
+
+/* UI FROM */
+.ui-form {
+    position: relative;
+    margin-bottom : 10px;
+    width : 360px;
+    .ui-form-item {
+        display: flex;
+        position: relative;
+        font-size : 14px;
+        margin-bottom : 24px;
+        vertical-align : top;
+        .ui-form-explain {
+            position: absolute;
+            bottom : -22px;
+            line-height: 1.5;
+            font-size : 12px;
+        }
+        .ui-input:focus {
+            border : 1px solid #FB8632;
+            box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
+        }
+        &.has-error {
+            .ui-input {
+                border : 1px solid #FB8632;
+                box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
+            }
+            .ui-form-explain {
+                color : #FB8632;
+                padding-left: 10px;
+            }
+        }
+    }
+
+    .ui-form-item-label {
+        height : 42px;
+        margin-right : 15px;
+        line-height: 42px;
+        text-align: right;
+        flex : none;
+        min-width : 100px;
+    }
+
+    .ui-form-item-field {
+        flex : 1;
+        width : 100%;
+        line-height: 40px;
+        .ui-form-item-suffix {
+            position: absolute;
+            right : 10px;
+            top : 0;
+            z-index: 4;
+            color : #ccc;
+            font-size: 14px;
+        }
+    }
+
+    .ui-input-outline {
+        position: relative;
+    }
+
+    .ui-input-group {
+        border-radius: 4px;
+        border : 1px solid rgba(0,0,0,0.15);
+        padding : 0 10px;
+        &.focus {
+            border-color : #FB8632;
+            box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
+
+        }
+        .ui-input-group-item {
+            border : none;
+            width : 30px;
+            outline: none;
+            height: 40px;
+            display: inline-block;
+            vertical-align: bottom;
+            text-align: center;
+        }
+        span.dot {
+            display: inline-block;
+            width : 2px;
+            height : 2px;
+            border-radius: 100%;
+            background-color : #000;
+            vertical-align: 4px;
+            margin : 0 14px;
+        }
+    }
+
+    .ui-input {
+        height : 40px;
+        border-radius: 4px;
+        border : 1px solid rgba(0,0,0,0.15);
+        padding-left: 10px;
+        width : 100%;
+        color : #333;
+        box-sizing: border-box;
+        &:focus {
+            outline :none;
+        }
+    }
+
+    .ui-input.disabled,.ui-input-group.disabled, input[disabled] {
+        background: #F7F7F7;
+        border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .ui-icon {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        cursor: pointer;
+    }
+
+
+    // input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    //     box-shadow: 0 0 0 40px white inset;
+    // }
+    // input[disabled]:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    //     box-shadow: 0 0 0 40px #F7F7F7 inset;
+    // }
+}
+
+.ui-relative {
+    position: relative;
+}
+
+
+
