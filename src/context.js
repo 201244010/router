@@ -1,8 +1,8 @@
 
 import React from 'react';
 
-const userinfo = {
-  name : '未知'
+const userinfo = { 
+    logined : false    
 };
 
 export const UserInfoContext = React.createContext(userinfo);

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './header.scss';
-import classnames from 'classnames';
 import SubLayout from "../SubLayout";
 import Icon from '~/components/Icon';
 
@@ -25,9 +24,15 @@ export default class Header extends React.Component {
 						{
                             logined ? [
                                 <li key="1" className="menu">
-                                    <a href="javascript:;" className="ui-ib now">网络状态</a>
-                                    <a href="javascript:;" className="ui-ib">基础设置</a>
-                                    <a href="javascript:;" className="ui-ib">高级设置</a>
+                                    <a href="javascript:;" className="ui-ib now">
+                                        <Icon type="netstat"></Icon> 网络状态
+                                    </a>
+                                    <a href="javascript:;" className="ui-ib">
+                                        <Icon type="set"></Icon> 基础设置
+                                    </a>
+                                    <a href="javascript:;" className="ui-ib">
+                                        <Icon type="advancedsetup"></Icon> 高级设置
+                                    </a>
                                 </li>,
                                 <li key="2" className="sidebar">
                                     <a href="javascript:;" className="ui-ib">下载手机版</a>

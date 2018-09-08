@@ -3,8 +3,12 @@
     background: #2956C6;
     color : #fff;
 
-    a:hover {
+    .ui-icon, a:hover {
         color : #fff;
+    }
+
+    .ui-icon {
+        font-size : 24px;
     }
 
     ul {
