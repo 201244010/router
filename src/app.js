@@ -33,8 +33,10 @@ class PrimaryLayout extends React.Component {
     }
 
     render(){
-        const isLoginPage = this.state.pathname === '/login';
-        const klassnames = classnames(['main', {'login-box' : isLoginPage}]);
+        const pathname = this.state.pathname;
+        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1;
+        // console.log(pathname, blueBg);
+        const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
             <div className="ui-fullscreen">
                 {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
@@ -46,7 +48,7 @@ class PrimaryLayout extends React.Component {
                         <Route path="/guide" component={Guide} />
                         <Route path="/settings" component={Settings} />
                     </Switch>
-                    {isLoginPage ? <PrimaryFooter/> : ""}
+                    {blueBg ? <PrimaryFooter/> : ""}
                 </div>
             </div>
         );
