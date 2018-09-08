@@ -11,6 +11,7 @@ import PrimaryFooter from './components/PrimaryFooter';
 import Login from './pages/Login';
 import Guide from "./pages/Guide";
 import Home from './pages/Home';
+import Settings from './pages/Settings';
 
 // import UserBox from './components/UserBox';
 // import { UserInfoContext } from './context';
@@ -28,11 +29,11 @@ class PrimaryLayout extends React.Component {
     }
 
     render(){
-        const isLogin = this.state.pathname === '/login';
-        const klassnames = classnames(['main', {'login-box' : isLogin}]);
+        const isLoginPage = this.state.pathname === '/login';
+        const klassnames = classnames(['main', {'login-box' : isLoginPage}]);
         return (
             <div className="ui-fullscreen">
-                <PrimaryHeader />
+                <PrimaryHeader logined={true} />
                 {/* <UserInfoContext.Provider value={this.state.userInfo}>
                     <UserBox></UserBox>
                 </UserInfoContext.Provider> */}
@@ -41,8 +42,9 @@ class PrimaryLayout extends React.Component {
                         <Route path="/" exact component={Home} />
                         <Route path="/login" component={Login} />
                         <Route path="/guide" component={Guide} />
+                        <Route path="/settings" component={Settings} />
                     </Switch>
-                    {isLogin ? <PrimaryFooter/> : ""}
+                    {isLoginPage ? <PrimaryFooter/> : ""}
                 </div>
             </div>
         );
