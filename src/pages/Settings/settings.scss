@@ -19,6 +19,7 @@
         border-right : 1px solid rgb(229, 230, 234);
         .ui-icon {
             display: block;
+            margin-bottom : 4px;
         }
         .nav-item {
             position: relative;
@@ -47,7 +48,27 @@
 
     > article {
         width : 100%;
-        padding : 50px 60px;
+        padding : 30px 60px;
+        overflow-y : auto;
+    }
+
+    .wifi-settings {
+        .wifi-setting-item {
+            margin-bottom : 20px;
+            padding-bottom : 10px;
+        }
+        .ui-tiled.compact {
+            margin-bottom: 0;
+            width : 320px;
+            margin-top : 10px;
+        }
+        label {
+            margin-bottom : 5px;
+            display: block;
+        }
+        .ui-form .more .ui-icon {
+            position: static;
+        }
     }
 }
 

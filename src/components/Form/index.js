@@ -2,13 +2,22 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import './form.scss';
+
 const ErrorTip = props => <div style={props.style} className="ui-form-explain">{props.children}</div>;
 
 const FormItem = props => {
     const showErrorTip = props.showErrorTip || props.errorTip;
     const suffix = props.suffix;
     const labelStyle = props.labelStyle || {};
-    const klass = classnames(['ui-form-item', { 'ui-form-item-with-help' :  showErrorTip, "has-error" : showErrorTip}]);
+    const klass = classnames([
+        'ui-form-item', 
+        { 
+            'ui-form-item-with-help' :  showErrorTip, 
+            "has-error" : showErrorTip,
+            "ui-form-item-small" : props.type === 'small'
+        }
+    ]);
     return (
         <div className={klass} style={props.style} >
             { 
