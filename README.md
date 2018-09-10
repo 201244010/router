@@ -21,6 +21,18 @@ WEBPACK(v3) + React(v16) + React-router(v4) + Redux(v4) + Koa2 + SASS + Antd
     |- app.js    // 项目入口文件
     |- context.js // React context
 ```
+### 路由设计
+
+- 首页 `/`
+- 登录页 `/login`
+- 快速设置(引导页) `/guide`  
+    - 设置密码 `/guide/setpassword`
+    - wan 设置 `/guide/setwan`
+    - QOS 测速 `/guide/speed`
+    - wifi 设置 `/guide/setwif`
+- 基础设置 `/settings`
+    - wifi 设置 `/settings/wifi`
+
 
 ### 开发说明：
 1. 开发人员自行安装 nodejs(≥v8)。
