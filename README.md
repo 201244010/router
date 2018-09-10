@@ -13,13 +13,32 @@ WEBPACK(v3) + React(v16) + React-router(v4) + Redux(v4) + Koa2 + SASS + Antd
         |- common
         |- styles
     |- components // 高复用业务组件列表
+        |- Form
+        |- icon
+        |- Modal
+        |- PanelHeader
+        |- PrimaryHeader
+        |- SubLayout
+        |- Tips
         |- ...
     |- pages     // 路由+页面
-        |- ...   // 各个路由页面
+        |- Guide // 快速设置页面及子页
+        |- Home  // 首页
+        |- Login // 登录页
+        |- Settings // 基础设置及子页
     |- pub       
         |- ...   // redux
     |- app.js    // 项目入口文件
     |- context.js // React context
+|- babelrc
+|- debug.json 
+|- index.template.html // 项目 html 模板文件
+|- postcss.config.js   // postcss 配置文件
+|- theme.js            // 自定义 antd 主题配置
+|- utils.js
+|- webpack.base.conf.js // WEBPACK 基础配置
+|- webpack.prod.conf.js // WEBPACK 生产环境构建配置
+
 ```
 ### 路由设计
 
