@@ -29,7 +29,7 @@ WEBPACK(v3) + React(v16) + React-router(v4) + Redux(v4) + Koa2 + SASS + Antd
     - 设置密码 `/guide/setpassword`
     - wan 设置 `/guide/setwan`
     - QOS 测速 `/guide/speed`
-    - wifi 设置 `/guide/setwif`
+    - wifi 设置 `/guide/setwifi`
 - 基础设置 `/settings`
     - wifi 设置 `/settings/wifi`
 
