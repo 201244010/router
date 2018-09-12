@@ -53,7 +53,7 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('setpassword')}>
                         <i className="ui-ib order-num">1</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置密码</span>
+                        <span className="ui-ib">设置管理密码</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwan')}>
