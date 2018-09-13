@@ -27,6 +27,10 @@ export default class SetWifi extends React.Component {
         canSubmit : false
     };
 
+    back = ()=>{
+        this.props.history.push("/guide/speed");
+    };
+
     openGuestSetting = () => {
         this.setState({guestWifi : !this.state.guestWifi}, () => {
             this.setState({ canSubmit : this.valid() });
@@ -47,21 +51,28 @@ export default class SetWifi extends React.Component {
         this.guestWireLess.password = btoa(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.guestWifi;
 
-        common.fetchWithCode(
+        let response = await common.fetchWithCode(
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
         ).catch(ex => {});
 
-        this.setState({active : true})
-        this.timer = setInterval(()=> {
-            this.tick++;
-            this.setState({ percent : this.state.percent += 0.5 }, function(){
-                if(this.state.percent >= 100){
-                    this.setState({done : true});
-                    clearInterval(this.timer);
-                }
-            });
-        }, 20)
+        this.setState({ loading : false});
+        
+        let {errcode, data, message} = response;
+        if(errcode == 0){
+            this.setState({active : true})
+            this.timer = setInterval(()=> {
+                this.tick++;
+                this.setState({ percent : this.state.percent += 0.5 }, function(){
+                    if(this.state.percent >= 100){
+                        this.setState({done : true});
+                        clearInterval(this.timer);
+                    }
+                });
+            }, 20);
+            return;
+        }
+        Modal.error({ title : 'WI-FI设置失败', content : message });
     }
 
     format = ()=>{
@@ -73,13 +84,13 @@ export default class SetWifi extends React.Component {
         let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
         
         [hostWifiName, hostWifiPsw].forEach( item => {
-            if(item.length === 0){
+            if(item.length === 0 || hostWifiPsw.length < 6){
                 ret = false;
             }
         })
         if(guestWifi){
             [guestWifiName, guestWifiPsw].forEach( item => {
-                if(item.length === 0){
+                if(item.length === 0 || guestWifiPsw.length < 6){
                     ret = false;
                 }
             })  
@@ -124,7 +135,7 @@ export default class SetWifi extends React.Component {
                     <Form>
                         <FormItem label="主Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={hostWifiName} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                            <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={hostWifiPsw} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
@@ -136,15 +147,18 @@ export default class SetWifi extends React.Component {
                             <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={guestWifiName}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                            <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={guestWifiPsw} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
                         </FormItem>
                     </Form>
                 </div>
-                <div style={{ margin : "auto", textAlign : 'center' }}>
-                    <Button type="primary" loading={this.state.loading} onClick={this.submit}  style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
+                <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
+                    <Button type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <div className="help">
+                        <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                    </div>
                 </div>
                 <CustomModal active={this.state.active}>
                     {

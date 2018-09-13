@@ -38,11 +38,11 @@ export default class SetPassword extends React.Component {
 
         this.setState({ loading : true });
         const response = await common.fetchWithCode(
-            'ACCOUNT_MODIFY', 
+            'ACCOUNT_INITIAL_PASSWORD', 
             { 
-                method : 'POST', data : { account : { password : btoa(password), user : 'admin', oldpassword : btoa("test") } } }, 
+                method : 'POST', data : { account : { password : btoa(password), user : 'admin' } } }, 
             { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }
-        ).catch(ex => {})
+        ).catch(ex => { console.error(ex) })
 
         this.setState({ loading : false });
         let { errcode, message } = response;

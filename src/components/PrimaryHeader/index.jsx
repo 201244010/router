@@ -7,22 +7,37 @@ import Icon from '~/components/Icon';
 export default class Header extends React.Component {
 	constructor(props) {
         super(props);
-	}
+    }
+    
+    state = {
+        isLoginPage : false
+    };
+
+    static getDerivedStateFromProps(){
+        const pathname = location.pathname;
+        return {
+            isLoginPage : pathname === '/login',
+            isGuidePage : pathname.indexOf('/guide') > -1
+        };
+    }
 
 	render() {
-        const logined = this.props.logined;
+        const logined = this.props.logined, { isLoginPage, isGuidePage } = this.state;
 		return (
 			<div className="header">
 				<SubLayout>
 					<ul>
 						<li>
-                            <div className="ui-ib logo">
-                                <Icon type="logo" size={40} color="#fff" />
-                            </div>
+                            {
+                                isLoginPage ? "" :
+                                <div className="ui-ib logo">
+                                    <Icon type="logo" size={40} color="#fff" />
+                                </div>
+                            }
 							<span className="ui-ib slogan">SUNMI W1</span>
 						</li>
 						{
-                            logined ? [
+                            logined && !isLoginPage && !isGuidePage ? [
                                 <li key="1" className="menu">
                                     <a href="javascript:;" className="ui-ib now">
                                         <Icon type="netstat"></Icon> 网络状态

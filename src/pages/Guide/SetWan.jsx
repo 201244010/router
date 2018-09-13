@@ -235,7 +235,7 @@ export default class SetWan extends React.PureComponent {
     }
 
     back = () => {
-        this.props.history.go(-1);
+        this.props.history.push("/guide/setpassword");
     }
 
     nextStep = () => this.setState({ detect : false})
@@ -294,12 +294,13 @@ export default class SetWan extends React.PureComponent {
                                     <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                                 </FormItem>
                                 {
-                                    (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
-                                        <div className="help">
-                                            <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                                            {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
-                                        </div>
-                                    </FormItem> : ""
+                                    (type === 'pppoe' || type === 'dhcp') ? 
+                                        <FormItem label="#" style={{ marginTop : -20 }}>
+                                            <div className="help">
+                                                <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                                                {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
+                                            </div>
+                                        </FormItem> : ""
                                 }
                             </Form>
                         </div>
