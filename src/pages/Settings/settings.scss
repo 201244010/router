@@ -48,22 +48,7 @@
 
     > article {
         width : 100%;
-        padding : 30px 60px;
-        overflow-y : auto;
-    }
-
-    .lan-set-tab {
-        .ant-tabs-tab{
-            color: #ADB1B9;
-            margin-right:3px;
-        }
-        .ant-tabs-tab-active{
-            color: #FB8632;
-        }
-        .ant-tabs-ink-bar{
-            height:3px;
-            background-color: #FB8632;
-        }
+        overflow: hidden;
     }
 
     .wifi-settings {

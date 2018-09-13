@@ -30,9 +30,10 @@ export default class Lan extends React.Component {
     render(){
         const { ip, netmask, dhcp, startIp, endIp, leaseTime, tip, disabled, loading } = this.state;
         return (
-            <div className="wifi-settings">
-                <Form style={{ width : '100%', marginTop : 0}}>
-                    <section className="wifi-setting-item">
+        <div className="lan-settting">
+            <div className="content">
+                <Form>
+                    <section className="content-item">
                         <PanelHeader title="局域网IP地址" />
                         <label style={{marginTop:24}}>IP地址</label>
                         <FormItem style={{ width : 320}}>
@@ -47,9 +48,9 @@ export default class Lan extends React.Component {
                                 onChange={value => this.onChange(value, 'netmask')} />
                         </FormItem>
                     </section>
-                    <section className="wifi-setting-item">
+                    <section className="content-item">
                         <PanelHeader title="DHCP服务" checkable={true} checked={dhcp} />
-                        <label style={{marginTop:24}}>开始IP地址</label>
+                        <label style={{ marginTop: 24 }}>开始IP地址</label>
                         <FormItem style={{ width : 320}}>
                             <InputGroup size="small"
                                 inputs={[{value : startIp[0], maxLength : 3}, {value : startIp[1], maxLength : 3}, {value : startIp[2], maxLength : 3}, {value : startIp[3], maxLength : 3}]} 
@@ -69,10 +70,11 @@ export default class Lan extends React.Component {
                         </FormItem>
                     </section>
                 </Form>
-                <div style={{width:"100%", borderTop:"1px solid #ccc", paddingTop:20}}>
-                    <Button disabled={disabled} loading={loading} style={{ width : 320 }} onClick={this.post} size="large" type="primary">保存</Button>
-                </div>
             </div>
+                <div className="save">
+                    <Button disabled={disabled} loading={loading} style={{ width: 320, margin: "20px 60px 30px" }} onClick={this.post} size="large" type="primary">保存</Button>
+                </div>
+        </div>
         );
     }
 };

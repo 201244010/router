@@ -1,0 +1,47 @@
+.main.blue-bg .ui-form {
+    width:100%;
+    margin:0 60px;
+}
+.lan-settting {
+    display: flex;
+    flex-direction: column;
+    height: 75%;
+    .content {
+        flex: 1 1 auto;
+        overflow-y:auto;
+        overflow-x: hidden;
+        .content-item{
+            >label {
+                display: block;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+    .save {
+        flex:0 1 100px;
+        width: 100%;
+        border-top:1px solid #ccc;
+        padding-top:10px;
+        margin-top: 30px;
+    }
+}
+
+
+.lan-set-tab {
+    .ant-tabs-nav{
+        margin-left:60px;
+    }
+    .ant-tabs-tab{
+        color: #ADB1B9;
+        margin-right:16px;
+        padding:12px 0;
+    }
+    .ant-tabs-tab-active{
+        color: #FB8632;
+    }
+    .ant-tabs-ink-bar{
+        height:3px;
+        background-color: #FB8632;
+    }
+}

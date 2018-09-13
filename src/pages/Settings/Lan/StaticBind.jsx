@@ -156,7 +156,7 @@ export default class StaticBind extends React.Component {
             )
         }];
         return (
-            <div>
+            <div style={{margin:"30px 60px"}}>
                 <div style={{margin:"20px 20px 20px 0"}}>
                     <Button onClick={this.selectAdd} style={{marginRight:20}}>在线列表添加</Button>
                     <Button onClick={this.manualAdd}>手动添加</Button>
