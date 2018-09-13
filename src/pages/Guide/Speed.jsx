@@ -114,7 +114,7 @@ export default class Speed extends React.Component {
         if(errcode == 0){
             return this.qos = data[0].result.qos;
         }
-        Modal.error({ title : 'QOS信息获取失败', message });
+        Modal.error({ title : 'QOS信息获取失败', content : message });
     }
 
   autoSpeedTest = () => {

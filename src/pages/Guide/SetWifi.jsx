@@ -51,21 +51,28 @@ export default class SetWifi extends React.Component {
         this.guestWireLess.password = btoa(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.guestWifi;
 
-        common.fetchWithCode(
+        let response = await common.fetchWithCode(
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
         ).catch(ex => {});
 
-        this.setState({active : true})
-        this.timer = setInterval(()=> {
-            this.tick++;
-            this.setState({ percent : this.state.percent += 0.5 }, function(){
-                if(this.state.percent >= 100){
-                    this.setState({done : true});
-                    clearInterval(this.timer);
-                }
-            });
-        }, 20)
+        this.setState({ loading : false});
+        
+        let {errcode, data, message} = response;
+        if(errcode == 0){
+            this.setState({active : true})
+            this.timer = setInterval(()=> {
+                this.tick++;
+                this.setState({ percent : this.state.percent += 0.5 }, function(){
+                    if(this.state.percent >= 100){
+                        this.setState({done : true});
+                        clearInterval(this.timer);
+                    }
+                });
+            }, 20);
+            return;
+        }
+        Modal.error({ title : 'WI-FI设置失败', content : message });
     }
 
     format = ()=>{
