@@ -7,7 +7,18 @@ import Icon from '~/components/Icon';
 export default class Header extends React.Component {
 	constructor(props) {
         super(props);
-	}
+    }
+    
+    state = {
+        isLoginPage : false
+    };
+
+    static getDerivedStateFromProps(){
+        const pathname = location.pathname;
+        return {
+            isLoginPage : pathname === '/login'
+        };
+    }
 
 	render() {
         const logined = this.props.logined;
@@ -22,7 +33,7 @@ export default class Header extends React.Component {
 							<span className="ui-ib slogan">SUNMI W1</span>
 						</li>
 						{
-                            logined ? [
+                            logined && !this.state.isLoginPage ? [
                                 <li key="1" className="menu">
                                     <a href="javascript:;" className="ui-ib now">
                                         <Icon type="netstat"></Icon> 网络状态
