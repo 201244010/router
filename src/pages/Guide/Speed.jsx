@@ -20,7 +20,7 @@ export default class Speed extends React.Component {
     };
   }
 
-  back = ()=>this.props.history.go(-1);
+  back = ()=>this.props.history.push("/guide/setwan");
   
   nextStep = () => {
       this.props.history.push('/guide/setwifi');

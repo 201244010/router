@@ -27,6 +27,10 @@ export default class SetWifi extends React.Component {
         canSubmit : false
     };
 
+    back = ()=>{
+        this.props.history.push("/guide/speed");
+    };
+
     openGuestSetting = () => {
         this.setState({guestWifi : !this.state.guestWifi}, () => {
             this.setState({ canSubmit : this.valid() });
@@ -143,8 +147,11 @@ export default class SetWifi extends React.Component {
                         </FormItem>
                     </Form>
                 </div>
-                <div style={{ margin : "auto", textAlign : 'center' }}>
-                    <Button type="primary" loading={this.state.loading} onClick={this.submit}  style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
+                <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
+                    <Button type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <div className="help">
+                        <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                    </div>
                 </div>
                 <CustomModal active={this.state.active}>
                     {
