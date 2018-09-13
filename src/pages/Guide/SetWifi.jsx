@@ -84,13 +84,13 @@ export default class SetWifi extends React.Component {
         let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
         
         [hostWifiName, hostWifiPsw].forEach( item => {
-            if(item.length === 0){
+            if(item.length === 0 || hostWifiPsw.length < 6){
                 ret = false;
             }
         })
         if(guestWifi){
             [guestWifiName, guestWifiPsw].forEach( item => {
-                if(item.length === 0){
+                if(item.length === 0 || guestWifiPsw.length < 6){
                     ret = false;
                 }
             })  
