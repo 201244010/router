@@ -60,6 +60,7 @@ class Input extends React.Component {
     };
 
     static propTypes = {
+        size : PropTypes.string,
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         name : PropTypes.string,
@@ -101,6 +102,7 @@ class Input extends React.Component {
     
     render(){
         let hidden = this.state.hidden;
+        let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
                 {
@@ -115,7 +117,7 @@ class Input extends React.Component {
                         </i>
                     ] : ""
                 }
-                <input  className="ui-input" 
+                <input  className={classnames(classes)}
                         onBlur={this.handleBlur}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
@@ -212,9 +214,12 @@ class InputGroup extends React.Component {
     }
 
     render(){
-        const { inputs, focus } = this.state;
-        const size = this.props.size;
-        const classes = ['ui-input-outline ui-input-group', {focus}, {[size] : true}];
+        let { inputs, focus } = this.state;
+        let size = this.props.size;
+        let classes = ['ui-input-outline ui-input-group', {focus}];
+        if(this.props.size){
+            classes.push({[size] : true});
+        }
         return (
             <div className={classnames(classes)}>
                 {

@@ -105,6 +105,9 @@
         &:focus {
             outline :none;
         }
+        &.small {
+            height : 32px;
+        }
     }
 
     .ui-form-item-small {

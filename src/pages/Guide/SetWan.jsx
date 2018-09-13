@@ -354,7 +354,7 @@ const PPPOE = props => {
 const StaticIp = props => {
     return [
         <FormItem key='ip' label="IP地址">
-            <InputGroup 
+            <InputGroup
                 inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
         </FormItem>,
