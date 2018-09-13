@@ -128,7 +128,7 @@ export default class SetWifi extends React.Component {
                     <Form>
                         <FormItem label="主Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={hostWifiName} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                            <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={hostWifiPsw} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
@@ -140,7 +140,7 @@ export default class SetWifi extends React.Component {
                             <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={guestWifiName}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                            <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={guestWifiPsw} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />

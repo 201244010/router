@@ -61,6 +61,7 @@ class Input extends React.Component {
 
     static propTypes = {
         size : PropTypes.string,
+        maxLength : PropTypes.number,
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         name : PropTypes.string,
@@ -119,6 +120,7 @@ class Input extends React.Component {
                 }
                 <input  className={classnames(classes)}
                         onBlur={this.handleBlur}
+                        maxLength={this.props.maxLength}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
                         value={this.props.value}
