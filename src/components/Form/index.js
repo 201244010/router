@@ -139,6 +139,7 @@ class InputGroup extends React.Component {
         };
     }
     static propTypes = {
+        size : PropTypes.string,
         inputs : PropTypes.array.isRequired,
         onChange : PropTypes.func.isRequired,
         disabled : PropTypes.bool
@@ -212,8 +213,10 @@ class InputGroup extends React.Component {
 
     render(){
         const { inputs, focus } = this.state;
+        const size = this.props.size;
+        const classes = ['ui-input-outline ui-input-group', {focus}, {[size] : true}];
         return (
-            <div className={classnames(['ui-input-outline ui-input-group', {focus}])}>
+            <div className={classnames(classes)}>
                 {
                     inputs.map( (item, i) => {
                         const It = <input key={'input-' + i} 
