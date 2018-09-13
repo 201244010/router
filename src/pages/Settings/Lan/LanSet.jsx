@@ -63,7 +63,8 @@ export default class Lan extends React.Component {
                         </FormItem>
                         <label>地址租期</label>
                         <FormItem showErrorTip={tip} type="small" style={{ width : 320}}>
-                            <Input type="text" value={leaseTime} onChange={value => this.onChange(value, 'leaseTime')} placeholder="分钟" />
+                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
+                            <Input type="text" value={leaseTime} onChange={value => this.onChange(value, 'leaseTime')} placeholder="请输入租期时间（2～1440）" />
                             <ErrorTip>{tip}</ErrorTip>
                         </FormItem>
                     </section>
