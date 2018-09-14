@@ -235,10 +235,19 @@ export default class SetWan extends React.PureComponent {
     }
 
     back = () => {
-        this.props.history.go(-1);
+        this.props.history.push("/guide/setpassword");
     }
 
-    nextStep = () => this.setState({ detect : false})
+    nextStep = () => {
+        this.setState({ detect : false});
+        this.props.history.push("/guide/setwifi");
+    }
+
+    reSet = ()=>{
+        this.setState({
+            showNetWorkStatus : false
+        });
+    }
 
     render(){
         const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
@@ -255,7 +264,7 @@ export default class SetWan extends React.PureComponent {
                 {
                     showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
-                            <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
+                            <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
@@ -294,12 +303,13 @@ export default class SetWan extends React.PureComponent {
                                     <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                                 </FormItem>
                                 {
-                                    (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
-                                        <div className="help">
-                                            <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                                            {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
-                                        </div>
-                                    </FormItem> : ""
+                                    (type === 'pppoe' || type === 'dhcp') ? 
+                                        <FormItem label="#" style={{ marginTop : -20 }}>
+                                            <div className="help">
+                                                <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                                                {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
+                                            </div>
+                                        </FormItem> : ""
                                 }
                             </Form>
                         </div>
@@ -319,8 +329,8 @@ const NetStatus = props => {
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
             <CustomIcon type="mistake" size="large" color="#d33519" />
-            <h3>无法连接互联网</h3>
-            <h4>请检查您的宽带帐号密码是否正确</h4>
+            <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
+            {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
@@ -354,7 +364,7 @@ const PPPOE = props => {
 const StaticIp = props => {
     return [
         <FormItem key='ip' label="IP地址">
-            <InputGroup 
+            <InputGroup
                 inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
         </FormItem>,

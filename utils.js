@@ -22,16 +22,13 @@ exports.timestamp = timestamp;
 exports.resolve = resolve;
 
 exports.cssLoaders = cssLoaders = function(options = {}) {
-    const sourceMap = options.sourceMap || false;
-    const minimize = options.minimize || false;
-    const forVue = options.forVue || false;
-    const cssLoader = {
-        loader: "css-loader",
-        options: {
-          minimize,
-          sourceMap
-        }
-    };
+    let sourceMap = options.sourceMap || false;
+    let minimize = options.minimize || false;
+    let forVue = options.forVue || false;
+
+    options = Object.assign({ minimize, sourceMap }, options);
+    
+    let cssLoader = { loader: "css-loader", options };
 
     /**
      * generate loader string to be used with extract text plugin
@@ -81,9 +78,9 @@ exports.cssLoaders = cssLoaders = function(options = {}) {
     // https://vue-loader.vuejs.org/en/configurations/extract-css.html
     return {
         css: generateLoaders("", "", forVue),
-        sass: generateLoaders("sass", { indentedSyntax: false }, forVue),
-        less : generateLoaders("less", {}, forVue),
-        scss: generateLoaders("sass", forVue)
+        sass: generateLoaders("sass", options, forVue),
+        less : generateLoaders("less", options, forVue),
+        scss: generateLoaders("sass", options, forVue)
     };
 }
 

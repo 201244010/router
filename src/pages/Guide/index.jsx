@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import SetPassword from './SetPassword';
 import SetWan from './SetWan';
 import Speed from './Speed';
@@ -11,11 +10,6 @@ import SubLayout from '~/components/SubLayout';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
-
-
-const Start = props => {
-    return <div>开始设置</div>
-};
 
 export default class Guide extends React.Component {
     constructor(props){
@@ -85,7 +79,6 @@ export default class Guide extends React.Component {
                 </div>
                 <div className="guide-body">
                     <Switch>
-                        {/* <Route path={match.path} exact component={Start}></Route> */}
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />
                         <Route path={`${match.path}/setwan`} component={SetWan} />
                         <Route path={`${match.path}/speed`} component={Speed} />

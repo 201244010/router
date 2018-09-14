@@ -2,14 +2,21 @@
 .header {
     background: #2956C6;
     color : #fff;
+    a:hover, a:active, a:visited {
+        text-decoration: none;
+    }
 
-    a:hover {
+    .ui-icon, a:hover {
         color : #fff;
+    }
+
+    .ui-icon {
+        font-size : 24px;
     }
 
     ul {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         margin : 0;
         height: 55px;
@@ -32,12 +39,12 @@
 
         .menu {
             font-size : 16px;
+            text-align: center;
             a { 
                 margin-right : 50px; 
                 height : 36px;
                 line-height: 36px;
                 border-bottom : 2px solid #2956C6;
-                
                 &:hover, &.now {
                     font-weight: bold;
                     border-bottom-color: #fff;

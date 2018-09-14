@@ -11,16 +11,21 @@ import PrimaryFooter from './components/PrimaryFooter';
 import Login from './pages/Login';
 import Guide from "./pages/Guide";
 import Home from './pages/Home';
+import Settings from './pages/Settings';
+
+import { UserInfoContext } from './context';
 
 // import UserBox from './components/UserBox';
-// import { UserInfoContext } from './context';
 // import configurestore from './pub/store/configureStore';
 // const store = configurestore();
 
 class PrimaryLayout extends React.Component {
     constructor(props){ super(props) }
 
-    state = { pathname : '/' };
+    state = { 
+        pathname : '/',
+        logined : true
+    };
     
     static getDerivedStateFromProps (){
         const pathname = location.pathname;
@@ -28,21 +33,22 @@ class PrimaryLayout extends React.Component {
     }
 
     render(){
-        const isLogin = this.state.pathname === '/login';
-        const klassnames = classnames(['main', {'login-box' : isLogin}]);
+        const pathname = this.state.pathname;
+        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1;
+        // console.log(pathname, blueBg);
+        const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
             <div className="ui-fullscreen">
-                <PrimaryHeader />
-                {/* <UserInfoContext.Provider value={this.state.userInfo}>
-                    <UserBox></UserBox>
-                </UserInfoContext.Provider> */}
+                {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
+                <PrimaryHeader logined={this.state.logined} />
                 <div className={klassnames}>
                     <Switch>
                         <Route path="/" exact component={Home} />
                         <Route path="/login" component={Login} />
                         <Route path="/guide" component={Guide} />
+                        <Route path="/settings" component={Settings} />
                     </Switch>
-                    {isLogin ? <PrimaryFooter/> : ""}
+                    {blueBg ? <PrimaryFooter/> : ""}
                 </div>
             </div>
         );

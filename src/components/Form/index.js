@@ -2,13 +2,22 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import './form.scss';
+
 const ErrorTip = props => <div style={props.style} className="ui-form-explain">{props.children}</div>;
 
 const FormItem = props => {
     const showErrorTip = props.showErrorTip || props.errorTip;
     const suffix = props.suffix;
     const labelStyle = props.labelStyle || {};
-    const klass = classnames(['ui-form-item', { 'ui-form-item-with-help' :  showErrorTip, "has-error" : showErrorTip}]);
+    const klass = classnames([
+        'ui-form-item', 
+        { 
+            'ui-form-item-with-help' :  showErrorTip, 
+            "has-error" : showErrorTip,
+            "ui-form-item-small" : props.type === 'small'
+        }
+    ]);
     return (
         <div className={klass} style={props.style} >
             { 
@@ -51,6 +60,8 @@ class Input extends React.Component {
     };
 
     static propTypes = {
+        size : PropTypes.string,
+        maxLength : PropTypes.number,
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         name : PropTypes.string,
@@ -92,6 +103,7 @@ class Input extends React.Component {
     
     render(){
         let hidden = this.state.hidden;
+        let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
                 {
@@ -106,8 +118,9 @@ class Input extends React.Component {
                         </i>
                     ] : ""
                 }
-                <input  className="ui-input" 
+                <input  className={classnames(classes)}
                         onBlur={this.handleBlur}
+                        maxLength={this.props.maxLength}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
                         value={this.props.value}
@@ -130,6 +143,7 @@ class InputGroup extends React.Component {
         };
     }
     static propTypes = {
+        size : PropTypes.string,
         inputs : PropTypes.array.isRequired,
         onChange : PropTypes.func.isRequired,
         disabled : PropTypes.bool
@@ -202,9 +216,14 @@ class InputGroup extends React.Component {
     }
 
     render(){
-        const { inputs, focus } = this.state;
+        let { inputs, focus } = this.state;
+        let size = this.props.size;
+        let classes = ['ui-input-outline ui-input-group', {focus}];
+        if(this.props.size){
+            classes.push({[size] : true});
+        }
         return (
-            <div className={classnames(['ui-input-outline ui-input-group', {focus}])}>
+            <div className={classnames(classes)}>
                 {
                     inputs.map( (item, i) => {
                         const It = <input key={'input-' + i} 

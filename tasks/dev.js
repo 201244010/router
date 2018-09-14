@@ -5,10 +5,12 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const utils = require('../utils');
 const theme = require('../theme');
-const styleLoaders = utils.styleLoaders({
-  extract: false,
-  sourceMap: true,
-  modifyVars: JSON.stringify(theme)
+
+let styleLoaders = utils.styleLoaders({
+    extract: false,
+    sourceMap: true, 
+    modifyVars : theme,
+    javascriptEnabled: true
 });
 
 const port = 3004;

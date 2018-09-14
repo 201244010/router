@@ -7,7 +7,12 @@ const utils = require('./utils');
 const chalk = require("chalk");
 const theme = require('./theme');
 
-let styleLoaders = utils.styleLoaders({extract : true, minimize : true, modifyVars : JSON.stringify(theme)});
+let styleLoaders = utils.styleLoaders({
+    extract : true, 
+    minimize : true,
+    modifyVars : theme,
+    javascriptEnabled: true
+});
 
 let plugins = [
     new ProgressBarPlugin({
