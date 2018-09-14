@@ -49,8 +49,10 @@ export default class SetWifi extends React.Component {
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
         this.guestWireLess.password = btoa(this.state.guestWifiPsw);
-        this.guestWireLess.enable = this.guestWifi;
+        this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
 
+        this.mainWireLess.host.band_2g.enable = "1";
+        
         let response = await common.fetchWithCode(
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
@@ -99,7 +101,7 @@ export default class SetWifi extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }).catch(ex =>{});
+        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }, { handleError : true })
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
@@ -111,6 +113,7 @@ export default class SetWifi extends React.Component {
                 hostWifiName : this.hostWireLess.ssid,
                 guestWifiName : this.guestWireLess.ssid,
                 guestWifi : this.guestWireLess.enable !== '0'
+                // guestWifiPsw : atob(guest.password)
             });
             return;
         }
