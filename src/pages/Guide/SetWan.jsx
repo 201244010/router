@@ -238,7 +238,16 @@ export default class SetWan extends React.PureComponent {
         this.props.history.push("/guide/setpassword");
     }
 
-    nextStep = () => this.setState({ detect : false})
+    nextStep = () => {
+        this.setState({ detect : false});
+        this.props.history.push("/guide/setwifi");
+    }
+
+    reSet = ()=>{
+        this.setState({
+            showNetWorkStatus : false
+        });
+    }
 
     render(){
         const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
@@ -255,7 +264,7 @@ export default class SetWan extends React.PureComponent {
                 {
                     showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
-                            <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
+                            <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
@@ -320,8 +329,8 @@ const NetStatus = props => {
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
             <CustomIcon type="mistake" size="large" color="#d33519" />
-            <h3>无法连接互联网</h3>
-            <h4>请检查您的宽带帐号密码是否正确</h4>
+            <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
+            {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
