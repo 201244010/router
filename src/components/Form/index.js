@@ -144,6 +144,7 @@ class InputGroup extends React.Component {
     }
     static propTypes = {
         size : PropTypes.string,
+        type : PropTypes.string,
         inputs : PropTypes.array.isRequired,
         onChange : PropTypes.func.isRequired,
         disabled : PropTypes.bool
@@ -218,6 +219,7 @@ class InputGroup extends React.Component {
     render(){
         let { inputs, focus } = this.state;
         let size = this.props.size;
+        let type = this.props.type;
         let classes = ['ui-input-outline ui-input-group', {focus}];
         if(this.props.size){
             classes.push({[size] : true});
@@ -237,7 +239,7 @@ class InputGroup extends React.Component {
                                         type='text'
                                     />;
                         if(i !== inputs.length - 1){
-                            return [It, <span className="dot" key={'span-' + i}></span>];
+                            return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
                         }
                         return It;
                     })
