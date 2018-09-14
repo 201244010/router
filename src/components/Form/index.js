@@ -193,9 +193,11 @@ class InputGroup extends React.Component {
 
     // 限制只能输入数字 退格，删除，tab
     handleKeyPress  = e => {
-        const which = e.which;
-        const allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
-        if(allow){
+        let which = e.which;
+        let allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
+        let isWord = (which >= 65 && which <= 90) || which == 20; // 字母 Cape Lock	
+        let move = which == 37 || which == 39;
+        if(allow || (isWord && this.props.type == 'mac') || move ){
             return true;
         }
         e.preventDefault();
