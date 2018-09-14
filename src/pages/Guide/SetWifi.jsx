@@ -60,18 +60,38 @@ export default class SetWifi extends React.Component {
 
         this.setState({ loading : false});
         
-        let {errcode, data, message} = response;
+        let {errcode, message} = response;
         if(errcode == 0){
-            this.setState({active : true})
+            this.setState({active : true});
             this.timer = setInterval(()=> {
                 this.tick++;
-                this.setState({ percent : this.state.percent += 0.2 }, function(){
+                this.setState({ percent : this.state.percent += 0.1 }, function(){
                     if(this.state.percent >= 100){
                         this.setState({done : true});
                         clearInterval(this.timer);
                     }
                 });
             }, 20);
+            // 发起嗅探网络连接状态
+            common.fetchWithCode( "WANWIDGET_ONLINETEST_START", {method : 'POST'} );
+            // 嗅探网络连接状态
+            let connectStatus = await common.fetchWithCode(
+                'WANWIDGET_ONLINETEST_GET', 
+                {method : 'POST'},
+                {
+                    loop : true, 
+                    interval : 300, 
+                    stop : ()=> this.stop, 
+                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                }
+            );
+            if(connectStatus.errcode == 0){
+                let online = connectStatus.data[0].result.onlinetest.online;
+                if(online){
+                    setTimeout(() => { this.props.history.push("/") }, 10);
+                }
+                return;
+            }
             return;
         }
         Modal.error({ title : 'WI-FI设置失败', content : message });
