@@ -48,11 +48,11 @@ export default class SetWifi extends React.Component {
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
-        this.guestWireLess.password = btoa(this.state.guestWifiPsw);
+        this.guestWireLess.static_password = btoa(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
 
         this.mainWireLess.host.band_2g.enable = "1";
-        
+
         let response = await common.fetchWithCode(
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
@@ -65,7 +65,7 @@ export default class SetWifi extends React.Component {
             this.setState({active : true})
             this.timer = setInterval(()=> {
                 this.tick++;
-                this.setState({ percent : this.state.percent += 0.5 }, function(){
+                this.setState({ percent : this.state.percent += 0.2 }, function(){
                     if(this.state.percent >= 100){
                         this.setState({done : true});
                         clearInterval(this.timer);
@@ -133,10 +133,10 @@ export default class SetWifi extends React.Component {
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
-                <p className="ui-tips guide-tip">客人Wi-Fi可开放给客人使用，保障隐私安全 </p>
+                <p className="ui-tips guide-tip">顾客Wi-Fi可开放给客人使用，保障隐私安全 </p>
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
-                        <FormItem label="主Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
+                        <FormItem label="商户Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
                             <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
                         </FormItem>
@@ -146,7 +146,7 @@ export default class SetWifi extends React.Component {
                     </Form>
                     <div className="border"></div>
                     <Form>
-                        <FormItem label="客人Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
+                        <FormItem label="顾客Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
                             <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
@@ -178,6 +178,10 @@ export default class SetWifi extends React.Component {
                                 {
                                     this.state.guestWifi ? <div className="ui-t3">客用：{this.state.guestWifiName}</div> : ''
                                 }
+                                <div className="ui-center" style={{ border : "1px solid #ccc", margin : "10px auto 5px", height : 100, width : 100 }}>
+                                    假装有二维码
+                                </div>
+                                <div className="ui-tips">扫描二维码下载APP</div>
                             </div>
                     }
                 </CustomModal>
