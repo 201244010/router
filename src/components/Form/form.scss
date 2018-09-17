@@ -1,5 +1,5 @@
 /* UI FROM */
-.ui-form {
+.ui-form, .ant-modal {
     position: relative;
     margin-bottom : 10px;
     width : 360px;
@@ -56,6 +56,12 @@
 
     .ui-input-outline {
         position: relative;
+        .ui-icon {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            cursor: pointer;
+        }
     }
 
     .ui-input-group {
@@ -120,13 +126,6 @@
     .ui-input.disabled,.ui-input-group.disabled, input[disabled] {
         background: #F7F7F7;
         border: 1px solid rgba(0,0,0,0.15);
-    }
-
-    .ui-icon {
-        position: absolute;
-        right: 10px;
-        top: 0;
-        cursor: pointer;
     }
 
 
