@@ -142,6 +142,13 @@ class InputGroup extends React.Component {
             focus : false
         };
     }
+
+    static getDerivedStateFromProps(props){
+        return {
+            inputs : props.inputs
+        }
+    }
+
     static propTypes = {
         size : PropTypes.string,
         type : PropTypes.string,
@@ -232,7 +239,8 @@ class InputGroup extends React.Component {
                     inputs.map( (item, i) => {
                         const It = <input key={'input-' + i} 
                                         maxLength={item.maxLength}
-                                        defaultValue={item.value} 
+                                        // defaultValue={item.value} 
+                                        value={item.value}
                                         className="ui-input-group-item"
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}
