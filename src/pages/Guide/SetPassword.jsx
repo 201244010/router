@@ -74,7 +74,7 @@ export default class SetPassword extends React.Component {
         const { match } = this.props;
         const { tip, disabled, loading } = this.state;
         return (
-            <div> 
+            <div className="setpassword"> 
                 <h2>设置管理员密码</h2> 
                 <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
                 <Form style={{margin : '24px auto'}}>
