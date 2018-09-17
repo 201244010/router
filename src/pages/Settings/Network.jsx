@@ -178,15 +178,18 @@ export default class WIFI extends React.Component {
 
     //表单提交参数
     composeParams(){
-        let wan = {}, {type, pppoeAccount, pppoePassword, ip, dns, dnsbackup, gateway, subnetmask} = this.state;
+        let wan = {}, {type, pppoeAccount, pppoePassword, pppoeType, pppoeDns, pppoeDnsbackup, dhcpType, dhcpDns, dhcpDnsbackup, ip, staticDns, staticDnsbackup, gateway, subnetmask} = this.state;
         wan['dial_type'] = type;
-        switch(this.state.type){
+        switch(type){
             case 'pppoe' :
-                let { pppoe } = this.netInfo;
-                wan['dns_type'] = pppoe.dns_type === "dynamic" ? 'auto' : pppoe.dns_type;
+                wan['dns_type'] = pppoeType,
                 wan['user_info'] = {
                     username : btoa(pppoeAccount),
                     password : btoa(pppoePassword)
+                };
+                wan['dns_info'] = {
+                    dns1 : pppoeDns.join('.'),
+                    dns2 : pppoeDnsbackup.join('.')
                 };
                 break;
             case 'static' :
@@ -194,13 +197,16 @@ export default class WIFI extends React.Component {
                     ipv4 : ip.join('.'),
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
-                    dns1 : dns.join('.'),
-                    dns2 : dnsbackup.join('.')
+                    dns1 : staticDns.join('.'),
+                    dns2 : staticDnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
-                wan['dns_type'] = this.netInfo.dhcp.dns_type;
-                // wan['dns_info'] = [];
+                wan['dns_type'] = dhcpType,
+                wan['dns_info'] = {
+                    dns1 : dhcpDns.join('.'),
+                    dns2 : dhcpDnsbackup.join('.')
+                };
                 break;
         }
         return { wan };
@@ -277,15 +283,15 @@ export default class WIFI extends React.Component {
                         } 
                         {
                             type === 'pppoe' & pppoeType === 'manual' ? <Dns dnsbackup={pppoeDnsbackup}
-                            dns={pppoeDns} onChange={this.onIPConifgChange}/> : ''
+                            dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                         {
                             type === 'dhcp' & dhcpType === 'manual' ? <Dns dnsbackup={dhcpDnsbackup}
-                            dns={dhcpDns} onChange={this.onIPConifgChange}/> : ''
+                            dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }             
                         {
                             type === 'static' ? <Dns dnsbackup={staticDnsbackup}
-                            dns={staticDns} onChange={this.onIPConifgChange}/> : ''
+                            dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                         <div className="lan-setting">
                             <div className="save">
@@ -317,7 +323,6 @@ const PPPoE = props => {
         </RadioGroup>
     </div>
     ]; 
-
 }
 
 const Dhcp = props => {
@@ -364,13 +369,13 @@ const Dns = props => {
             <FormItem  style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, props.dns)} />
+                    onChange={value => props.onChange(value, props.dnsname)} />
             </FormItem>
             <label>备选DNS</label>
             <FormItem style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, props.dnsbackup)}
+                    onChange={value => props.onChange(value, props.dnsbackupname)}
                 />
             </FormItem>
         </div>
