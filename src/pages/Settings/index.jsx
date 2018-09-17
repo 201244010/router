@@ -5,6 +5,7 @@ import CustomIcon from '~/components/Icon';
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import Wifi from './WI-Fi';
+import Lan from './Lan';
 
 import './settings.scss';
 
@@ -35,6 +36,7 @@ export default class Setting extends React.Component {
                 <article>
                     <Switch>
                         <Route path={`${match.path}/wifi`} component={Wifi} />
+                        <Route path={`${match.path}/lan`} component={Lan} />
                         <Redirect from={match.path} to={`${match.path}/wifi`}></Redirect>
                     </Switch>
                 </article>

@@ -1,0 +1,63 @@
+.main.blue-bg .ui-form {
+    width:100%;
+    padding: 0 60px;
+    margin-top: 0;
+}
+.lan-settting {
+    .content-item{
+        >label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+    }
+    .save {
+        width: 100%;
+        border-top:1px solid #ccc;
+        padding-top:10px;
+        margin-top: 30px;
+    }
+}
+
+.lan-set-tab {
+    .ant-tabs-nav{
+        margin-left:60px;
+    }
+    .ant-tabs-tab{
+        color: #ADB1B9;
+        margin-right:16px;
+        padding:12px 0;
+    }
+    .ant-tabs-tab-active{
+        color: #FB8632;
+    }
+    .ant-tabs-ink-bar{
+        height:3px;
+        background-color: #FB8632;
+    }
+    .ant-table-placeholder{
+        height: 255px;
+        line-height: 180px;
+        font-size: 16px;
+        color: #ADB1B9;
+        text-align: center;
+    }
+}
+
+.ui-icon-refresh{
+    position: absolute;
+    cursor: pointer;
+    top: 17px;
+    left: 100px;
+    font-size: 20px;
+}
+.ant-modal-footer {
+    button, button:hover, button:focus{
+        height: 32px;
+    }
+}
+.ant-popover-buttons {
+    button, button:hover, button:focus{
+        height: 24px;
+    }
+}

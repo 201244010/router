@@ -6,22 +6,56 @@ import SubLayout from "../SubLayout";
 export default class Header extends React.Component {
 	constructor(props) {
         super(props);
-	}
+    }
+    
+    state = {
+        isLoginPage : false
+    };
+
+    static getDerivedStateFromProps(){
+        const pathname = location.pathname;
+        return {
+            isLoginPage : pathname === '/login',
+            isGuidePage : pathname.indexOf('/guide') > -1
+        };
+    }
+
+    logout = async ()=>{
+        let response = await common.fetchWithCode(
+            'ACCOUNT_LOGOUT', 
+            { method : 'POST' }
+        );
+        let { errcode, message } = response;
+        if(errcode == 0){
+            this.props.history.push('/login');
+            return;
+        }
+        Modal.error({ title : '退出失败', content :  message });
+    }
 
 	render() {
-        const logined = this.props.logined;
+        const logined = this.props.logined, { isLoginPage, isGuidePage } = this.state;
 		return (
 			<div className="header">
 				<SubLayout>
 					<ul>
 						<li>
-						    <div className="ui-ib logo">
+<<<<<<< HEAD
+			         <div className="ui-ib logo">
                                 <Icon type="logo" size={40} color="#fff" />
                             </div>
+=======
+                            {
+                                isLoginPage ? "" :
+                                <div className="ui-ib logo">
+                                    <Icon type="logo" size={40} color="#fff" />
+                                </div>
+                            }
+>>>>>>> c614c19a9b7dfa147fc40dee7b5c5865a58cbcbe
 							<span className="ui-ib slogan">SUNMI W1</span>
 						</li>
 						{
-                            logined ? [
+                            logined && !isLoginPage && !isGuidePage ? [
                                 <li key="1" className="menu">
                                     <a href="javascript:;" className="ui-ib now">
                                         <Icon type="netstat"></Icon> 网络状态
@@ -36,7 +70,7 @@ export default class Header extends React.Component {
                                 <li key="2" className="sidebar">
                                     <a href="javascript:;" className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
-                                    <a href="javascript:;" className="ui-ib">退出管理</a>
+                                    <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
                                 </li>
                             ] : ''
                         }

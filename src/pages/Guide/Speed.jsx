@@ -20,7 +20,7 @@ export default class Speed extends React.Component {
     };
   }
 
-  back = ()=>this.props.history.go(-1);
+  back = ()=>this.props.history.push("/guide/setwan");
   
   nextStep = () => {
       this.props.history.push('/guide/setwifi');
@@ -114,7 +114,7 @@ export default class Speed extends React.Component {
         if(errcode == 0){
             return this.qos = data[0].result.qos;
         }
-        Modal.error({ title : 'QOS信息获取失败', message });
+        Modal.error({ title : 'QOS信息获取失败', content : message });
     }
 
   autoSpeedTest = () => {
