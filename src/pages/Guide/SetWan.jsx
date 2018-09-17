@@ -121,7 +121,6 @@ export default class SetWan extends React.PureComponent {
         let payload = this.composeParams();
         let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
             .catch(ex => {})
-        this.setState({ loading : false });
         let {errcode, message } = response;
         if(errcode == 0){
             // 触发检测联网状态
@@ -133,6 +132,7 @@ export default class SetWan extends React.PureComponent {
                 {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
             );
             let { errcode:code, data } = connectStatus;
+            this.setState({ loading : false });
             if(code == 0){
                 let online = data[0].result.onlinetest.online;
                 this.setState({
@@ -140,7 +140,8 @@ export default class SetWan extends React.PureComponent {
                     online
                 });
                 if(online){
-                    setTimeout(() => { this.props.history.push("/guide/speed") }, 2000);
+                    // this.props.history.push("/guide/speed");
+                    setTimeout(() => { this.props.history.push("/guide/speed") }, 300);
                 }
                 return;
             }
@@ -235,10 +236,19 @@ export default class SetWan extends React.PureComponent {
     }
 
     back = () => {
-        this.props.history.go(-1);
+        this.props.history.push("/guide/setpassword");
     }
 
-    nextStep = () => this.setState({ detect : false})
+    nextStep = () => {
+        this.setState({ detect : false});
+        this.props.history.push("/guide/setwifi");
+    }
+
+    reSet = ()=>{
+        this.setState({
+            showNetWorkStatus : false
+        });
+    }
 
     render(){
         const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
@@ -255,7 +265,7 @@ export default class SetWan extends React.PureComponent {
                 {
                     showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
-                            <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
+                            <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
@@ -294,12 +304,13 @@ export default class SetWan extends React.PureComponent {
                                     <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                                 </FormItem>
                                 {
-                                    (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
-                                        <div className="help">
-                                            <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                                            {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
-                                        </div>
-                                    </FormItem> : ""
+                                    (type === 'pppoe' || type === 'dhcp') ? 
+                                        <FormItem label="#" style={{ marginTop : -20 }}>
+                                            <div className="help">
+                                                <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                                                {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
+                                            </div>
+                                        </FormItem> : ""
                                 }
                             </Form>
                         </div>
@@ -319,8 +330,8 @@ const NetStatus = props => {
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
             <CustomIcon type="mistake" size="large" color="#d33519" />
-            <h3>无法连接互联网</h3>
-            <h4>请检查您的宽带帐号密码是否正确</h4>
+            <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
+            {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>

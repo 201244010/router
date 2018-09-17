@@ -119,7 +119,10 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                     case 'string' :
                         throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
                 }
-                if(loopOption.handleError){
+                if(error.toString().indexOf('403') > -1){
+                    Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
+                }
+                else if(loopOption.handleError){
                     Modal.error({ title : 'Error', content : <ErrorTip error={error} directive={directive} />});
                 }
                 return reject(error);

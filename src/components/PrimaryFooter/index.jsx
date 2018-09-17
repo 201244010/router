@@ -3,8 +3,13 @@ import React from 'react';
 export default function(){
     return (
         <footer>
-            <p> <a href="javascript:;">商米官网</a> 热线电话：400-902-1168</p>
-            <p>@2016 上海商米科技有限公司 版权所有 沪ICP备16006543</p>
+            <p> <span>系统版本：1.0.0稳定版</span> <span>MAC地址：34:36:3B:78:48:F7</span></p>
+            <p>
+                @2016 上海商米科技有限公司
+                <a href="javascript:;">官网</a>|
+                <a href="javascript:;">常见问题</a>|
+                服务热线：400-902-1168
+            </p>
         </footer>
     )
 }
