@@ -17,16 +17,25 @@
         padding : 20px 0;
         color : #ADB1B9;
         border-right : 1px solid rgb(229, 230, 234);
+        a, a:hover, a:visited, a:link{
+            color: #F2F3F7;
+        }
         .ui-icon {
             display: block;
             margin-bottom : 4px;
         }
+        span{
+            color : #ADB1B9;
+        }
         .nav-item {
             position: relative;
-            &.now { 
+            &.now {
                 color : #FB8632; 
                 .ui-icon {
                     color : #FB8632; 
+                }
+                span{
+                    color : #FB8632;
                 }
                 &::after {
                     position: absolute;

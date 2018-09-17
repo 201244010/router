@@ -2,7 +2,7 @@
 import React from 'react';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, Link } from "react-router-dom";
 
 import Wifi from './WI-Fi';
 import Lan from './Lan';
@@ -20,18 +20,24 @@ export default class Setting extends React.Component {
         return (
             <SubLayout className="settings">
                 <nav>
-                    <div className="now nav-item">
-                        <CustomIcon type="wifiset" size={28} />
-                        <span>WI-FI设置</span>
-                    </div>
-                    <div className="nav-item">
-                        <CustomIcon type="browser"  size={28} />
-                        <span>上网设置</span>
-                    </div>
-                    <div className="nav-item">
-                        <CustomIcon type="lanset"  size={28} />
-                        <span>局域网设置</span>
-                    </div>
+                    <Link to="wifi" activeClassName="now">
+                        <div className="now nav-item">
+                            <CustomIcon type="wifiset" size={28} />
+                            <span>WI-FI设置</span>
+                        </div>
+                    </Link>
+                    <Link to="network" activeClassName="now">
+                        <div className="nav-item">
+                            <CustomIcon type="browser" size={28} />
+                            <span>上网设置</span>
+                        </div>
+                    </Link>
+                    <Link to="lan" activeClassName="now">
+                        <div className="nav-item">
+                            <CustomIcon type="lanset" size={28} />
+                            <span>局域网设置</span>
+                        </div>
+                    </Link>
                 </nav>
                 <article>
                     <Switch>
