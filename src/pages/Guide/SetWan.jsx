@@ -140,8 +140,8 @@ export default class SetWan extends React.PureComponent {
                     online
                 });
                 if(online){
-                    this.props.history.push("/guide/speed");
-                    // setTimeout(() => { this.props.history.push("/guide/speed") }, 2000);
+                    // this.props.history.push("/guide/speed");
+                    setTimeout(() => { this.props.history.push("/guide/speed") }, 300);
                 }
                 return;
             }
