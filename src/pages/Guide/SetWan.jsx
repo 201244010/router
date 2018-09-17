@@ -121,7 +121,6 @@ export default class SetWan extends React.PureComponent {
         let payload = this.composeParams();
         let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
             .catch(ex => {})
-        this.setState({ loading : false });
         let {errcode, message } = response;
         if(errcode == 0){
             // 触发检测联网状态
@@ -133,6 +132,7 @@ export default class SetWan extends React.PureComponent {
                 {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
             );
             let { errcode:code, data } = connectStatus;
+            this.setState({ loading : false });
             if(code == 0){
                 let online = data[0].result.onlinetest.online;
                 this.setState({
@@ -140,7 +140,8 @@ export default class SetWan extends React.PureComponent {
                     online
                 });
                 if(online){
-                    setTimeout(() => { this.props.history.push("/guide/speed") }, 2000);
+                    // this.props.history.push("/guide/speed");
+                    setTimeout(() => { this.props.history.push("/guide/speed") }, 300);
                 }
                 return;
             }
