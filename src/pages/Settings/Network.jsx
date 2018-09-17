@@ -13,32 +13,45 @@ const RadioGroup = Radio.Group;
 
 export default class WIFI extends React.Component {
     state = {
-        hostSsid : '123',
-        hostSsidPasswrod : '',
+        type : 'pppoe',
+        disable : false,
+        //pppoe
+        pppoeAccount : '123',
+        pppoeAccountTip : '',
+        pppoePassword : '',
+        pppoePasswordTip : '',
+        pppoeType: 'auto',
         hostSsidPasswordDisabled : false,
-        guestSsid : '456',
-        merge : true,
-        encryption : 22,
-        setType: 1,
+        pppoeDns:[],
+        pppoeDnsbackup:[],
 
         //静态IP
         ip : [],
         subnetmask : [],
         gateway : [],
-        dns : [],
-        dnsbackup : []
+        staticDns : [],
+        staticDnsbackup : [],
+
+        //dhcp
+        dhcpType: 'auto',
+        dhcpDns: [],
+        dhcpDnsbackup:[]
     };
 
-    onHostSsidChange = value => {
-        this.setState({
-            hostSsid : value
+    handleAccountChange = value => {
+        this.setState({ pppoeAccount : value }, function(){
+            this.setState({
+                disabled : !this.checkParams()
+            });
         });
     }
 
-    onHostPswChange = value => {
-        this.setState({
-            hostSsidPasswrod : value
-        });
+    handleAccountBlur = ()=>{
+        if(this.state.pppoeAccount.length === 0 ){
+            this.setState({
+                pppoeAccountTip : "PPPOE 账号不能为空"
+            });
+        }
     }
 
     handleHostPassword = checked => {
@@ -47,21 +60,159 @@ export default class WIFI extends React.Component {
         });
     }
 
-    onHostEncryChange = value => {
+    // 处理pppoe 密码框 change
+    handlePasswordChange = value => {
+        this.setState({ pppoePassword : value }, function(){
+            this.setState({
+                disabled : !this.checkParams()
+            });
+        });
+    };
+    
+    // 处理pppoe 密码框 change
+    handlePasswordChange = value => {
+        this.setState({ pppoePassword : value }, function(){
+            this.setState({
+                disabled : !this.checkParams()
+            });
+        });
+    };
+
+    // pppoe 密码输入框失去焦点
+    handlePasswordBlur = ()=>{
+        if(this.state.pppoePassword.length === 0 ){
+            this.setState({
+                pppoePasswordTip : "PPPOE 密码不能为空"
+            });
+        }
+    }
+    
+    onTypeChange = value => {
         this.setState({
-            encryption:value
+            type:value
+        })
+    }
+
+    onRadioChange = (value,feild) => {
+        this.setState({
+            [feild]:value
         })
     }
     
-    onRadioChange = event => {
+    onDhcpRadioChange = event => {
         this.setState({
-            setType:event.target.value
+            dhcpType:event.target.value
         })
     }
 
+    onPppoeRadioChange = event => {
+        this.setState({
+            pppoeType:event.target.value
+        })
+    }
+
+    // 校验参数
+    checkParams(){
+        let { type, pppoeAccount, pppoePassword, staticDns, staticDnsbackup, ip, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
+        switch(type){
+            case 'pppoe' :
+                if(pppoeAccount.length === 0 || pppoePassword.length === 0){
+                    return false;
+                }
+                let empty = [pppoeDns, pppoeDnsbackup].some(field => {
+                    if(field.length === 0){
+                        return true;
+                    }
+                    return field.some(f => {
+                        if(f == null || typeof f === 'undefined' || f === ''){
+                            return true;
+                        }
+                    });
+                })
+                if(empty){
+                    return false;
+                } 
+                break;
+            case 'static' :
+                empty = [staticDns, staticDnsbackup, ip, subnetmask, gateway].some(field => {
+                    if(field.length === 0){
+                        return true;
+                    }
+                    return field.some(f => {
+                        if(f == null || typeof f === 'undefined' || f === ''){
+                            return true;
+                        }
+                    });
+                })
+                if(empty){
+                    return false;
+                }            
+                break;
+            case 'dhcp':
+                empty = [dhcpDns, dhcpDnsbackup].some(field => {
+                    if(field.length === 0){
+                        return true;
+                    }
+                    return field.some(f => {
+                        if(f == null || typeof f === 'undefined' || f === ''){
+                            return true;
+                        }
+                    });
+                })
+                if(empty){
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    //检测地址
+    onIPConifgChange = (value, field) => {
+        this.setState({ [field] : value }, function() {
+            this.setState({
+                disabled : !this.checkParams()
+            });
+        });
+    }
+
+    //表单提交参数
+    composeParams(){
+        let wan = {}, {type, pppoeAccount, pppoePassword, ip, dns, dnsbackup, gateway, subnetmask} = this.state;
+        wan['dial_type'] = type;
+        switch(this.state.type){
+            case 'pppoe' :
+                let { pppoe } = this.netInfo;
+                wan['dns_type'] = pppoe.dns_type === "dynamic" ? 'auto' : pppoe.dns_type;
+                wan['user_info'] = {
+                    username : btoa(pppoeAccount),
+                    password : btoa(pppoePassword)
+                };
+                break;
+            case 'static' :
+                wan.info = {
+                    ipv4 : ip.join('.'),
+                    mask : subnetmask.join('.'),
+                    gateway : gateway.join('.'),
+                    dns1 : dns.join('.'),
+                    dns2 : dnsbackup.join('.')
+                };
+                break;
+            case 'dhcp' :
+                wan['dns_type'] = this.netInfo.dhcp.dns_type;
+                // wan['dns_info'] = [];
+                break;
+        }
+        return { wan };
+    }
+
+    //表单提交
+    post = async() => {
+
+    }
 
     render(){
-        const { hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,ip,subnetmask,gateway,dns,dnsbackup} = this.state;
+        const {type, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ip, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0}}>
@@ -95,38 +246,46 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-item">
                         <PanelHeader title="上网设置" checkable={false} checked={true} />
                         <label>上网方式</label>
-                        <Select value={this.state.encryption} style={{ width: 320, marginBottom: 16}} onChange={this.onHostEncryChange}>
-                            <Option value={11}>宽带账号上网（PPPoE）</Option>
-                            <Option value={22}>自动获取IP（DHCP）</Option>
-                            <Option value={33}>手动输入IP（静态IP）</Option>
+                        <Select value={this.state.type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange}>
+                            <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
+                            <Option value='dhcp'>自动获取IP（DHCP）</Option>
+                            <Option value='static'>手动输入IP（静态IP）</Option>
                         </Select>
                         {
-                            encryption === 11 ? <PPPoE hostSsid={this.state.hostSsid}
-                                    onHostSsidChange={this.onHostSsidChange}
-                                    hostSsidPasswordDisabled = {this.state.hostSsidPasswordDisabled}
-                                    hostSsidPasswrod = {this.state.hostSsidPasswrod}
-                                    onHostPswChange = {this.onHostPswChange}
-                                    dnsbackup={dnsbackup}
-                                    dns={dns} 
-                                    onRadioChange={this.onRadioChange}
-                                    setType={this.state.setType}
-                            /> : ''
+        
+                            type === 'pppoe' ? <PPPoE pppoeAccount = {pppoeAccount}
+                                    pppoePasswrod = {this.state.pppoePasswrod}
+                                    handlePasswordChange = {this.handlePasswordChange}
+                                    pppoeType={this.state.pppoeType}
+                                    onPppoeRadioChange={this.onPppoeRadioChange}
+                                    handleAccountChange={this.handleAccountChange}
+                                    handlePasswordBlur={this.handlePasswordBlur}
+
+                            />: ''
+                        }
+                        {   
+                            type === 'dhcp' ? <Dhcp onDhcpRadioChange={this.onDhcpRadioChange}
+                                    dhcpType={this.state.dhcpType}
+                            />: ''
                         }
                         {
-                            encryption === 22 ? <Dhcp onRadioChange={this.onRadioChange}
-                                    setType={this.state.setType}
-                                    dns={dns} 
-                                    dnsbackup={dnsbackup}
-                            /> : ''
-                        }
-                        {
-                            encryption === 33 ? <Static ip={ip}
-                                            dns={dns} 
+                            type === 'static' ? <Static ip={ip} 
                                             gateway={gateway} 
                                             subnetmask={subnetmask}
-                                            dnsbackup={dnsbackup} 
                                             onChange={this.onIPConifgChange}
                             /> : ''
+                        } 
+                        {
+                            type === 'pppoe' & pppoeType === 'manual' ? <Dns dnsbackup={pppoeDnsbackup}
+                            dns={pppoeDns} onChange={this.onIPConifgChange}/> : ''
+                        }
+                        {
+                            type === 'dhcp' & dhcpType === 'manual' ? <Dns dnsbackup={dhcpDnsbackup}
+                            dns={dhcpDns} onChange={this.onIPConifgChange}/> : ''
+                        }             
+                        {
+                            type === 'static' ? <Dns dnsbackup={staticDnsbackup}
+                            dns={staticDns} onChange={this.onIPConifgChange}/> : ''
                         }
                         <div className="lan-setting">
                             <div className="save">
@@ -142,33 +301,20 @@ export default class WIFI extends React.Component {
 
 const PPPoE = props => {
     return [
-    <div className="wifi-settings">
+    <div key="pppoe" className="wifi-settings">
         <label>账号</label>
-        <FormItem type="small" style={{ width : 320}}>
-            <Input type="text" value={props.hostSsid} onChange={props.onHostSsidChange}/>
+        <FormItem key="pppoessid" type="small" style={{ width : 320}}>
+            <Input type="text" value={props.pppoeAccount} onChange={props.handleAccountChange}/>
         </FormItem>
         <label>密码</label>
-        <FormItem type="small" style={{ width : 320}}>
-            <Input type="password" disabled={props.hostSsidPasswordDisabled} value={props.hostSsidPasswrod} onChange={props.onHostPswChange} />
+        <FormItem key="pppoepassword" type="small" style={{ width : 320}}>
+            <Input type="password" disabled={props.hostSsidPasswordDisabled} onBlur={props.handleAccountBlur} value={props.pppoePassword} onChange={props.handlePasswordChange} />
         </FormItem>
         <label>DNS配置</label>
-        <RadioGroup className="radio" onChange={props.onRadioChange} value={props.setType}>
-            <Radio className="label-in" value={1}>自动设置</Radio>
-            <Radio className="label-in" value={2}>手动设置</Radio>
+        <RadioGroup key="pppoedns" className="radio" onChange={props.onPppoeRadioChange} value={props.pppoeType}>
+            <Radio className="label-in" value='auto'>自动设置</Radio>
+            <Radio className="label-in" value='manual'>手动设置</Radio>
         </RadioGroup>
-        <label>首选DNS</label>
-        <FormItem key='dns' style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dns')} />
-        </FormItem>
-        <label>备选DNS</label>
-        <FormItem key='dnsbackup' style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dnsbackup')}
-            />
-        </FormItem>
     </div>
     ]; 
 
@@ -176,32 +322,19 @@ const PPPoE = props => {
 
 const Dhcp = props => {
     return [
-        <div className="wifi-settings">
+        <div key="dhcp" className="wifi-settings">
             <label>DNS配置</label>
-            <RadioGroup className="radio" onChange={props.onRadioChange} value={props.setType}>
-                <Radio className="label-in" value={1}>自动设置</Radio>
-                <Radio className="label-in" value={2}>手动设置</Radio>
+            <RadioGroup key="dhcpdns" className="radio" onChange={props.onDhcpRadioChange} value={props.dhcpType}>
+                <Radio className="label-in" value='auto'>自动设置</Radio>
+                <Radio className="label-in" value='manual'>手动设置</Radio>
             </RadioGroup>
-            <label>首选DNS</label>
-            <FormItem key='dns' style={{ width : 320}}>
-                <InputGroup 
-                    inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, 'dns')} />
-            </FormItem>
-            <label>备选DNS</label>
-            <FormItem key='dnsbackup' style={{ width : 320}}>
-                <InputGroup 
-                    inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, 'dnsbackup')}
-                />
-            </FormItem>
         </div>
     ];
 }
 
 const Static = props => {
     return [
-    <div className="wifi-settings">
+    <div key="dhcp" className="wifi-settings">
         <label>IP地址</label>
         <FormItem key='ip' style={{ width : 320}}>
             <InputGroup 
@@ -220,22 +353,27 @@ const Static = props => {
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
         </FormItem>
-        <label>首选DNS</label>
-        <FormItem key='dns' style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dns')} />
-        </FormItem>
-        <label>备选DNS</label>
-        <FormItem key='dnsbackup' style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dnsbackup')}
-            />
-        </FormItem>
     </div>
     ];
 }
 
-
+const Dns = props => {
+    return [
+        <div key="dnstype" className="wifi-settings">
+            <label>首选DNS</label>
+            <FormItem  style={{ width : 320}}>
+                <InputGroup 
+                    inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
+                    onChange={value => props.onChange(value, props.dns)} />
+            </FormItem>
+            <label>备选DNS</label>
+            <FormItem style={{ width : 320}}>
+                <InputGroup 
+                    inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
+                    onChange={value => props.onChange(value, props.dnsbackup)}
+                />
+            </FormItem>
+        </div>
+    ]
+}
 
