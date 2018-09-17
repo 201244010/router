@@ -85,6 +85,12 @@
         width: 50%;    
         flex: 1;
     }
+    >section:nth-child(1){
+        margin-right:100px;
+    }
+    .panel-hd{
+        border-bottom:0;
+    }
 }
 .wifi-setting-save{
     height: 98px;
