@@ -1,8 +1,7 @@
 import React from 'react';
-
+import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
-import Icon from '~/components/Icon';
 
 export default class Header extends React.Component {
 	constructor(props) {
@@ -19,6 +18,19 @@ export default class Header extends React.Component {
             isLoginPage : pathname === '/login',
             isGuidePage : pathname.indexOf('/guide') > -1
         };
+    }
+
+    logout = async ()=>{
+        let response = await common.fetchWithCode(
+            'ACCOUNT_LOGOUT', 
+            { method : 'POST' }
+        );
+        let { errcode, message } = response;
+        if(errcode == 0){
+            this.props.history.push('/login');
+            return;
+        }
+        Modal.error({ title : '退出失败', content :  message });
     }
 
 	render() {
@@ -52,7 +64,7 @@ export default class Header extends React.Component {
                                 <li key="2" className="sidebar">
                                     <a href="javascript:;" className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
-                                    <a href="javascript:;" className="ui-ib">退出管理</a>
+                                    <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
                                 </li>
                             ] : ''
                         }

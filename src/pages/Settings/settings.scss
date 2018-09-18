@@ -17,44 +17,54 @@
         padding : 20px 0;
         color : #ADB1B9;
         border-right : 1px solid rgb(229, 230, 234);
+        a, a:hover, a:visited, a:link{
+            color: #F2F3F7;
+        }
         .ui-icon {
             display: block;
             margin-bottom : 4px;
         }
+        span{
+            color : #ADB1B9;
+        }
         .nav-item {
             position: relative;
-            &.now { 
-                color : #FB8632; 
-                .ui-icon {
-                    color : #FB8632; 
-                }
-                &::after {
-                    position: absolute;
-                    content : '';
-                    height : 14px; 
-                    width : 14px;
-                    transform : rotate(45deg);
-                    right : -7px;
-                    top : 50%;
-                    background : #fff;
-                    margin-top : -7px;
-                    border : 1px solid rgb(229, 230, 234);
-                    border-width: 0 0 1px 1px;
-                }
-            }
             padding : 25px 0;
+        }
+        .active .nav-item{
+            .ui-icon {
+                color : #FB8632; 
+            }
+            span{
+                color : #FB8632;
+            }
+            &::after {
+                position: absolute;
+                content : '';
+                height : 14px;
+                width : 14px;
+                transform : rotate(45deg);
+                right : -7px;
+                top : 50%;
+                background : #fff;
+                margin-top : -7px;
+                border : 1px solid rgb(229, 230, 234);
+                border-width: 0 0 1px 1px;
+            }
         }
     }
 
     > article {
         width : 100%;
-        overflow: auto;
+        padding : 30px 60px 0 0;
+        overflow-y : auto;
     }
 
     .wifi-settings {
         .wifi-setting-item {
             margin-bottom : 20px;
             padding-bottom : 10px;
+            padding-left: 60px;
         }
         .ui-tiled.compact {
             margin-bottom: 0;
@@ -93,5 +103,35 @@
 
     }
 
+}
+
+.wifi-setting-twocolumn{
+    margin: 0;
+    padding: 0;
+    display:flex;
+    flex-direction: row;
+    
+    >section {
+        display: flex;
+        flex-direction: column;
+        width: 50%;    
+        flex: 1;
+    }
+    >section:nth-child(1){
+        margin-right:100px;
+    }
+    .panel-hd{
+        border-bottom:0;
+    }
+}
+.wifi-setting-save{
+    height: 98px;
+    border-top: 1px solid #d8d8d8;
+    .wifi-setting-button{
+        width: 320px;
+        height: 42px;
+        left: 60px;
+        top: 24px;
+    }
 }
 
