@@ -27,6 +27,10 @@ export default class SetWifi extends React.Component {
         canSubmit : false
     };
 
+    back = ()=>{
+        this.props.history.push("/guide/speed");
+    };
+
     openGuestSetting = () => {
         this.setState({guestWifi : !this.state.guestWifi}, () => {
             this.setState({ canSubmit : this.valid() });
@@ -44,24 +48,53 @@ export default class SetWifi extends React.Component {
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
-        this.guestWireLess.password = btoa(this.state.guestWifiPsw);
-        this.guestWireLess.enable = this.guestWifi;
+        this.guestWireLess.static_password = btoa(this.state.guestWifiPsw);
+        this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
 
-        common.fetchWithCode(
+        this.mainWireLess.host.band_2g.enable = "1";
+
+        let response = await common.fetchWithCode(
             'WIRELESS_SET',
             { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
         ).catch(ex => {});
 
-        this.setState({active : true})
-        this.timer = setInterval(()=> {
-            this.tick++;
-            this.setState({ percent : this.state.percent += 0.5 }, function(){
-                if(this.state.percent >= 100){
-                    this.setState({done : true});
-                    clearInterval(this.timer);
+        this.setState({ loading : false});
+        
+        let {errcode, message} = response;
+        if(errcode == 0){
+            this.setState({active : true});
+            this.timer = setInterval(()=> {
+                this.tick++;
+                this.setState({ percent : this.state.percent += 0.1 }, function(){
+                    if(this.state.percent >= 100){
+                        this.setState({done : true});
+                        clearInterval(this.timer);
+                    }
+                });
+            }, 20);
+            // 发起嗅探网络连接状态
+            common.fetchWithCode( "WANWIDGET_ONLINETEST_START", {method : 'POST'} );
+            // 嗅探网络连接状态
+            let connectStatus = await common.fetchWithCode(
+                'WANWIDGET_ONLINETEST_GET', 
+                {method : 'POST'},
+                {
+                    loop : true, 
+                    interval : 300, 
+                    stop : ()=> this.stop, 
+                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
                 }
-            });
-        }, 20)
+            );
+            if(connectStatus.errcode == 0){
+                let online = connectStatus.data[0].result.onlinetest.online;
+                if(online){
+                    setTimeout(() => { this.props.history.push("/") }, 10);
+                }
+                return;
+            }
+            return;
+        }
+        Modal.error({ title : 'WI-FI设置失败', content : message });
     }
 
     format = ()=>{
@@ -73,13 +106,13 @@ export default class SetWifi extends React.Component {
         let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
         
         [hostWifiName, hostWifiPsw].forEach( item => {
-            if(item.length === 0){
+            if(item.length === 0 || hostWifiPsw.length < 8){
                 ret = false;
             }
         })
         if(guestWifi){
             [guestWifiName, guestWifiPsw].forEach( item => {
-                if(item.length === 0){
+                if(item.length === 0 || guestWifiPsw.length < 8){
                     ret = false;
                 }
             })  
@@ -88,7 +121,7 @@ export default class SetWifi extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }).catch(ex =>{});
+        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }, { handleError : true })
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
@@ -100,6 +133,7 @@ export default class SetWifi extends React.Component {
                 hostWifiName : this.hostWireLess.ssid,
                 guestWifiName : this.guestWireLess.ssid,
                 guestWifi : this.guestWireLess.enable !== '0'
+                // guestWifiPsw : atob(guest.password)
             });
             return;
         }
@@ -119,12 +153,12 @@ export default class SetWifi extends React.Component {
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
-                <p className="ui-tips guide-tip">客人Wi-Fi可开放给客人使用，保障隐私安全 </p>
+                <p className="ui-tips guide-tip">顾客Wi-Fi可开放给客人使用，保障隐私安全 </p>
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
-                        <FormItem label="主Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
+                        <FormItem label="商户Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={hostWifiName} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                            <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={hostWifiPsw} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
@@ -132,19 +166,22 @@ export default class SetWifi extends React.Component {
                     </Form>
                     <div className="border"></div>
                     <Form>
-                        <FormItem label="客人Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
+                        <FormItem label="顾客Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
                             <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
-                            <Input value={guestWifiName}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                            <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
                             <Input value={guestWifiPsw} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
                         </FormItem>
                     </Form>
                 </div>
-                <div style={{ margin : "auto", textAlign : 'center' }}>
-                    <Button type="primary" loading={this.state.loading} onClick={this.submit}  style={{ width : 260 }} disabled={!canSubmit}>完成</Button>
+                <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
+                    <Button type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <div className="help">
+                        <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                    </div>
                 </div>
                 <CustomModal active={this.state.active}>
                     {
@@ -161,6 +198,10 @@ export default class SetWifi extends React.Component {
                                 {
                                     this.state.guestWifi ? <div className="ui-t3">客用：{this.state.guestWifiName}</div> : ''
                                 }
+                                <div className="ui-center" style={{ border : "1px solid #ccc", margin : "10px auto 5px", height : 100, width : 100 }}>
+                                    假装有二维码
+                                </div>
+                                <div className="ui-tips">扫描二维码下载APP</div>
                             </div>
                     }
                 </CustomModal>

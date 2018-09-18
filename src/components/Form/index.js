@@ -60,6 +60,8 @@ class Input extends React.Component {
     };
 
     static propTypes = {
+        size : PropTypes.string,
+        maxLength : PropTypes.number,
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         name : PropTypes.string,
@@ -101,6 +103,7 @@ class Input extends React.Component {
     
     render(){
         let hidden = this.state.hidden;
+        let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
         return (
             <div className="ui-input-outline" style={{ width : this.props.width }}>
                 {
@@ -115,8 +118,9 @@ class Input extends React.Component {
                         </i>
                     ] : ""
                 }
-                <input  className="ui-input" 
+                <input  className={classnames(classes)}
                         onBlur={this.handleBlur}
+                        maxLength={this.props.maxLength}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
                         value={this.props.value}
@@ -138,7 +142,16 @@ class InputGroup extends React.Component {
             focus : false
         };
     }
+
+    static getDerivedStateFromProps(props){
+        return {
+            inputs : props.inputs
+        }
+    }
+
     static propTypes = {
+        size : PropTypes.string,
+        type : PropTypes.string,
         inputs : PropTypes.array.isRequired,
         onChange : PropTypes.func.isRequired,
         disabled : PropTypes.bool
@@ -187,9 +200,11 @@ class InputGroup extends React.Component {
 
     // 限制只能输入数字 退格，删除，tab
     handleKeyPress  = e => {
-        const which = e.which;
-        const allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
-        if(allow){
+        let which = e.which;
+        let allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
+        let isWord = (which >= 65 && which <= 90) || which == 20; // 字母 Cape Lock	
+        let move = which == 37 || which == 39;
+        if(allow || (isWord && this.props.type == 'mac') || move ){
             return true;
         }
         e.preventDefault();
@@ -211,14 +226,21 @@ class InputGroup extends React.Component {
     }
 
     render(){
-        const { inputs, focus } = this.state;
+        let { inputs, focus } = this.state;
+        let size = this.props.size;
+        let type = this.props.type;
+        let classes = ['ui-input-outline ui-input-group', {focus}];
+        if(this.props.size){
+            classes.push({[size] : true});
+        }
         return (
-            <div className={classnames(['ui-input-outline ui-input-group', {focus}])}>
+            <div className={classnames(classes)}>
                 {
                     inputs.map( (item, i) => {
                         const It = <input key={'input-' + i} 
                                         maxLength={item.maxLength}
-                                        defaultValue={item.value} 
+                                        // defaultValue={item.value} 
+                                        value={item.value}
                                         className="ui-input-group-item"
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}
@@ -227,7 +249,7 @@ class InputGroup extends React.Component {
                                         type='text'
                                     />;
                         if(i !== inputs.length - 1){
-                            return [It, <span className="dot" key={'span-' + i}></span>];
+                            return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
                         }
                         return It;
                     })

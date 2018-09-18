@@ -5,6 +5,7 @@ export const DIRECTIVE = {
     ACCOUNT_LOGIN : "0x2000",
     ACCOUNT_LOGOUT : "0x2001",
     ACCOUNT_MODIFY : "0x2002",
+    ACCOUNT_INITIAL_PASSWORD : "0x2062",
     
     // DHCPS 配置
     DHCPS_GET : "0x2003",

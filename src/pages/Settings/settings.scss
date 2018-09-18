@@ -17,39 +17,51 @@
         padding : 20px 0;
         color : #ADB1B9;
         border-right : 1px solid rgb(229, 230, 234);
+        a, a:hover, a:visited, a:link{
+            color: #F2F3F7;
+        }
         .ui-icon {
             display: block;
             margin-bottom : 4px;
         }
+        span{
+            color : #ADB1B9;
+        }
         .nav-item {
             position: relative;
-            &.now { 
-                color : #FB8632; 
-                .ui-icon {
-                    color : #FB8632; 
-                }
-                &::after {
-                    position: absolute;
-                    content : '';
-                    height : 14px; 
-                    width : 14px;
-                    transform : rotate(45deg);
-                    right : -7px;
-                    top : 50%;
-                    background : #fff;
-                    margin-top : -7px;
-                    border : 1px solid rgb(229, 230, 234);
-                    border-width: 0 0 1px 1px;
-                }
-            }
             padding : 25px 0;
+        }
+        .active .nav-item{
+            .ui-icon {
+                color : #FB8632; 
+            }
+            span{
+                color : #FB8632;
+            }
+            &::after {
+                position: absolute;
+                content : '';
+                height : 14px;
+                width : 14px;
+                transform : rotate(45deg);
+                right : -7px;
+                top : 50%;
+                background : #fff;
+                margin-top : -7px;
+                border : 1px solid rgb(229, 230, 234);
+                border-width: 0 0 1px 1px;
+            }
         }
     }
 
     > article {
         width : 100%;
+<<<<<<< HEAD
         padding : 30px 60px 0 0;
         overflow-y : auto;
+=======
+        overflow: auto;
+>>>>>>> feature/w1-react
     }
 
     .wifi-settings {
