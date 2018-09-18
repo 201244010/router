@@ -40,18 +40,12 @@ export default class Header extends React.Component {
 				<SubLayout>
 					<ul>
 						<li>
-<<<<<<< HEAD
-			         <div className="ui-ib logo">
-                                <Icon type="logo" size={40} color="#fff" />
-                            </div>
-=======
                             {
                                 isLoginPage ? "" :
                                 <div className="ui-ib logo">
                                     <Icon type="logo" size={40} color="#fff" />
                                 </div>
                             }
->>>>>>> c614c19a9b7dfa147fc40dee7b5c5865a58cbcbe
 							<span className="ui-ib slogan">SUNMI W1</span>
 						</li>
 						{
