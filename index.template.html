@@ -6,7 +6,7 @@
   <title>W1路由器管理后台</title>
   <script>
     //   (function(){var protocol=location.protocol;if(protocol==="http:"){location.href=location.href.replace("http:","https:")}})();
-    var client=function(){var engine={ie:0,ver:null};var browser={ie:0,ver:null};var ua=navigator.userAgent;if(/MSIE ([^;]+)/.test(ua)){engine.ver=browser.ver=RegExp["$1"];engine.ie=browser.ie=parseFloat(engine.ver);if(engine.ie<10){alert("请使用IE10及以上的版本登陆！")}}}();
+    var client=function(){var engine={ie:0,ver:null};var ua=navigator.userAgent;if(/(?i)MSIE ([^;]+)/.test(ua)){engine.ver=RegExp["$1"];engine.ie=parseFloat(engine.ver,10);if(engine.ie<10){alert("请使用IE10及以上版本的浏览器访问！")}}}();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
