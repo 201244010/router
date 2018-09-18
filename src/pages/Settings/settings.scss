@@ -56,13 +56,19 @@
 
     > article {
         width : 100%;
+<<<<<<< HEAD
+        padding : 30px 60px 0 0;
+        overflow-y : auto;
+=======
         overflow: auto;
+>>>>>>> feature/w1-react
     }
 
     .wifi-settings {
         .wifi-setting-item {
             margin-bottom : 20px;
             padding-bottom : 10px;
+            padding-left: 60px;
         }
         .ui-tiled.compact {
             margin-bottom: 0;
@@ -76,6 +82,36 @@
         .ui-form .more .ui-icon {
             position: static;
         }
+    }
+}
+
+.wifi-setting-twocolumn{
+    margin: 0;
+    padding: 0;
+    display:flex;
+    flex-direction: row;
+    
+    >section {
+        display: flex;
+        flex-direction: column;
+        width: 50%;    
+        flex: 1;
+    }
+    >section:nth-child(1){
+        margin-right:100px;
+    }
+    .panel-hd{
+        border-bottom:0;
+    }
+}
+.wifi-setting-save{
+    height: 98px;
+    border-top: 1px solid #d8d8d8;
+    .wifi-setting-button{
+        width: 320px;
+        height: 42px;
+        left: 60px;
+        top: 24px;
     }
 }
 
