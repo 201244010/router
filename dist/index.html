@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>W1路由器管理后台</title>
   <script>
-    (function(){var protocol=location.protocol;if(protocol==="http:"){location.href=location.href.replace("http:","https:")}})();
+    (function(){"http:"===location.protocol&&"localhost"!==location.hostname&&(location.href=location.href.replace("http:","https:"))})();
     (function(){var engine={ie:0,ver:null};var ua=navigator.userAgent;if(/MSIE ([^;]+)/i.test(ua)){engine.ver=RegExp["$1"];engine.ie=parseFloat(engine.ver,10);if(engine.ie<10){alert("请使用IE10及以上版本的浏览器访问！")}}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
