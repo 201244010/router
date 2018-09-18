@@ -225,10 +225,11 @@ export default class WIFI extends React.Component {
         Modal.error({ title : 'WAN口设置失败', content : message});
     }
 
+    //获取信息
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'},
+            { method : 'POST'}
         ).catch(ex=>{});
 
         let { data, errcode, message } =response;
