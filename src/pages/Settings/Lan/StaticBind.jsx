@@ -25,49 +25,49 @@ export default class StaticBind extends React.Component {
         tipName: '',
         staticLists: [{
             index:0,
-            name: 'John Brown John Brown John Brown John Brown John Brown John Brown',
+            note: 'John Brown John Brown John Brown John Brown John Brown John Brown',
             mac: '00:AA:BB:CC:DD:10',
             ip: '192.168.0.100',
             state: '0',
         }, {
             index:1,
-            name: 'John Brown 1',
+            note: 'John Brown 1',
             mac: '00:AA:BB:CC:DD:11',
             ip: '192.168.0.101',
             state: '1',
         }, {
             index:2,
-            name: 'John Brown 2',
+            note: 'John Brown 2',
             mac: '00:AA:BB:CC:DD:12',
             ip: '192.168.0.102',
             state: '1',
         }, {
             index: 3,
-            name: 'John Brown 3',
+            note: 'John Brown 3',
             mac: '00:AA:BB:CC:DD:13',
             ip: '192.168.0.103',
             state: '0',
         }, {
             index: 4,
-            name: 'John Brown 4',
+            note: 'John Brown 4',
             mac: '00:AA:BB:CC:DD:14',
             ip: '192.168.0.100',
             state: '0',
         }, {
             index: 5,
-            name: 'John Brown 5',
+            note: 'John Brown 5',
             mac: '00:AA:BB:CC:DD:15',
             ip: '192.168.0.101',
             state: '1',
         }, {
             index: 6,
-            name: 'John Brown 6',
+            note: 'John Brown 6',
             mac: '00:AA:BB:CC:DD:16',
             ip: '192.168.0.102',
             state: '1',
         }, {
             index: 7,
-            name: 'John Brown 7',
+            note: 'John Brown 7',
             mac: '00:AA:BB:CC:DD:17',
             ip: '192.168.0.103',
             state: '0',
@@ -159,6 +159,12 @@ export default class StaticBind extends React.Component {
         }]
     };
 
+    onChange = (val, key) => {
+        this.setState({
+            [key]: (typeof val == 'object' ? [...val] : val)
+        });
+    }
+
     selectAdd = () => {
         this.setState({
             visible: true
@@ -174,14 +180,23 @@ export default class StaticBind extends React.Component {
             editName: '',
             editIp: ['', '', '', ''],
             editMac: ['', '', '', '', '', '']
-        }, () => {
-            console.log(this.state)
         });
     }
 
-    handleDelete = (index) => {
-        const staticLists = [...this.state.staticLists];
-        this.setState({ staticLists: staticLists.filter(item => item.index !== index) });
+    handleDelete = async (record) => {
+        let response = await common.fetchWithCode(
+            'DHCPS_RESERVEDIP_DELETE',
+            { method: 'POST', data: { reserved_ip: [Object.assign({}, record)] } }
+        ).catch(ex => { });
+
+        let { errcode, message } = response;
+        if (errcode == 0) {
+            const staticLists = [...this.state.staticLists];
+            this.setState({ staticLists: staticLists.filter(item => item.index !== record.index) });
+            return;
+        }
+
+        Modal.error({ title: '删除失败', content: message });
     }
 
     handleSelect = (mac) => {
@@ -204,38 +219,94 @@ export default class StaticBind extends React.Component {
             editShow: true,
             editLoading: false,
             editIndex: record.index,
-            editName: record.name,
+            editName: record.note,
             editIp: [...ip],
             editMac: [...mac]
         });
     }
 
-    onSelectOk = () => {
+    onSelectOk = async () => {
         this.setState({
             loading: true
         });
+        console.log(this.state.onlineList.filter(item => item.checked).map(item => {
+            return {
+                ip: item.address.ip,
+                mac: item.address.mac,
+                note: item.name
+            }
+        }))
 
-        //TODO
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-                loading: false
-            })
-        }, 2000);
-    }
+        let directive = 'DHCPS_RESERVEDIP_ADD', 
+            reservedIp = this.state.onlineList.filter(item => item.checked).map(item => {
+                return {
+                    ip: item.address.ip,
+                    mac: item.address.mac,
+                    note: item.name
+                }
+            });
 
-    onEditOk = () => {
-        this.setState({
-            editLoading: true
-        });
+        let response = await common.fetchWithCode(
+            directive, { method: 'POST', data: { reserved_ip: reservedIp } }
+        ).catch(ex => { });
 
-        //TODO
-        setTimeout(() => {
+        let { errcode, message } = response;
+        if (errcode == 0) {
+            // refresh staic bind list
+            this.fetchStaticInfo();
+
             this.setState({
                 editLoading: false,
                 editShow: false
             })
-        }, 2000);
+            return;
+        }
+
+        Modal.error({ title: '保存失败', content: message });
+    }
+
+    onEditOk = async () => {
+        this.setState({
+            editLoading: true
+        });
+
+        let directive, reservedIp;
+        switch(this.state.editType) {
+            case 'add':
+                directive = 'DHCPS_RESERVEDIP_ADD';
+                reservedIp = [{
+                    ip: this.state.editIp,
+                    mac: this.state.editMac,
+                    note: this.state.editName
+                }];
+
+                break;
+            case 'edit':
+                directive = 'DHCPS_RESERVEDIP_MODIFY';
+                reservedIp = {
+                    old: this.state.staticLists.find(item => item.index === this.state.editIndex),
+                    new: {
+                        ip: this.state.editIp,
+                        mac: this.state.editMac,
+                        note: this.state.editName
+                    }
+                };
+                break;
+        }
+
+        let response = await common.fetchWithCode(directive, { method: 'POST', data: { reserved_ip: reservedIp } }
+        ).catch(ex => { });
+
+        let { errcode, message } = response;
+        if (errcode == 0) {
+            this.setState({
+                editLoading: false,
+                editShow: false
+            })
+            return;
+        }
+
+        Modal.error({ title: '保存失败', content: message });
     }
 
     onSelectCancle = () => {
@@ -252,13 +323,66 @@ export default class StaticBind extends React.Component {
         })
     }
 
+    submit = async () => {
+        this.summitLan();
+        this.summitDhcp();
+    }
+
+    async fetchStaticInfo() {
+        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' }, { handleError: true })
+        let { errcode, data, message } = response;
+        if (errcode == 0) {
+            let { reserved_ip_list } = data[0].result;
+            this.setState({
+                staticLists: reserved_ip_list.map(item => {
+                    return Object.assign({ state: '1' }, item);
+                })
+            });
+        }
+
+        Modal.error({ title: '获取静态地址分配指令异常', message });
+    }
+
+    async fetchClientsInfo() {
+        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' }, { handleError: true })
+        let { errcode, data, message } = response;
+        if (errcode == 0) {
+            const logoMap = {
+                '2.4g': 'wifi',
+                '5g': 'wifi',
+                'not wifi': 'logo',
+                'wired': 'logo',
+            };
+
+            let { data } = data[0].result;
+            this.setState({
+                onlineList: data.map(item => {
+                    return {
+                        logo: item.wifi_mode,
+                        name: item.hostname,
+                        address: { ip: item.ip, mac: item.mac },
+                        checked: false
+                    }
+                })
+            });
+            return;
+        }
+
+        Modal.error({ title: '获取客户端列表指令异常', message });
+    }
+
+    componentDidMount() {
+        this.fetchStaticInfo();
+        this.fetchClientsInfo();
+    }
+
     render() {
         const { staticLists, onlineList, visible, loading, 
             editLoading, editShow, editType, editName, editIp, editMac, tipName} = this.state;
 
         const columns = [{
             title: '设备名称',
-            dataIndex: 'name',
+            dataIndex: 'note',
             width:300
         }, {
             title: 'MAC地址',
@@ -284,7 +408,7 @@ export default class StaticBind extends React.Component {
                 <span>
                     <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color:"#3D76F6"}}>编辑</a>
                     <Divider type="vertical" />
-                    <Popconfirm title="您确定要删除该设备吗？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record.index)}>
+                    <Popconfirm title="您确定要删除该设备吗？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#FB8632" }}>删除</a>
                     </Popconfirm>
                 </span>
@@ -313,23 +437,9 @@ export default class StaticBind extends React.Component {
                 </span>
             )
         }, {
-            title: '实时速率',
-            dataIndex: 'rate',
-            width: 160,
-            render: (text, record) => (
-                <span>
-                    <span><CustomIcon type="bandwidthup" size={12} color="#749cf5" /><label style={{marginLeft:5}}>{record.rate.txRate}</label></span><br />
-                    <span><CustomIcon type="bandwidthdown" size={12} color="#abde95" /><label style={{ marginLeft: 5 }}>{record.rate.rxRate}</label></span>
-                </span>
-            )
-        }, {
-            title: '流量消耗',
-            dataIndex: 'flux',
-            width: 160
-        }, {
             title: '操作',
             dataIndex: 'checked',
-            width: 94,
+            width: 60,
             render: (checked, record) => (
                 <Checkbox checked={checked} onChange={() => this.handleSelect(record.address.mac)}></Checkbox>
             )
@@ -363,20 +473,20 @@ export default class StaticBind extends React.Component {
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
                     <FormItem showErrorTip={tipName} type="small" style={{ width: 320 }}>
-                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" />
+                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" />
                         <ErrorTip>{tipName}</ErrorTip>
                     </FormItem>
                     <label style={{ marginTop: 24 }}>IP地址</label>
                     <FormItem style={{ width: 320 }}>
                         <InputGroup size="small"
                             inputs={[{ value: editIp[0], maxLength: 3 }, { value: editIp[1], maxLength: 3 }, { value: editIp[2], maxLength: 3 }, { value: editIp[3], maxLength: 3 }]}
-                            onChange={value => this.onChange(value, 'ip')} />
+                            onChange={value => this.onChange(value, 'editIp')} />
                     </FormItem>
                     <label style={{ marginTop: 24 }}>MAC地址</label>
                     <FormItem style={{ width: 320 }}>
                         <InputGroup size="small" type="mac"
                             inputs={[{ value: editMac[0], maxLength: 2 }, { value: editMac[1], maxLength: 2 }, { value: editMac[2], maxLength: 2 }, { value: editMac[3], maxLength: 2 }, { value: editMac[4], maxLength: 2 }, { value: editMac[5], maxLength: 2 }]}
-                            onChange={value => this.onChange(value, 'mac')} />
+                            onChange={value => this.onChange(value, 'editMac')} />
                     </FormItem>
                 </Modal>
             </div>
