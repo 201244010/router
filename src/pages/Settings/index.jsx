@@ -46,7 +46,6 @@ export default class Setting extends React.Component {
                         <Route path={`${match.path}/lan`} component={Lan} />
                         <Route path={`${match.path}/Network`} component={Network} />
                         <Redirect from={match.path} to={`${match.path}/wifi`}></Redirect>
-                        <Redirect from={match.path} to={`${match.path}/Network`}></Redirect>
                     </Switch>
                 </article>
             </SubLayout>

@@ -1,17 +1,16 @@
 
 import React from 'react';
-import { Checkbox, Select ,Radio,Button, Modal} from 'antd';
+import {Select ,Radio,Button, Modal} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import CustomIcon from "~/components/Icon";
 
-const {FormItem, ErrorTip, Input,InputGroup} = Form;
+const {FormItem, Input,InputGroup} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
 
 
-export default class WIFI extends React.Component {
+export default class NETWORK extends React.Component {
     state = {
         type : 'pppoe',
         disable : false,
@@ -90,12 +89,6 @@ export default class WIFI extends React.Component {
     onTypeChange = value => {
         this.setState({
             type:value
-        })
-    }
-
-    onRadioChange = (value,feild) => {
-        this.setState({
-            [feild]:value
         })
     }
     
