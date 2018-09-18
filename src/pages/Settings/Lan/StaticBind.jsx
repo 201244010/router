@@ -23,140 +23,8 @@ export default class StaticBind extends React.Component {
         editIp: '',
         editMac: '',
         tipName: '',
-        staticLists: [{
-            index:0,
-            note: 'John Brown John Brown John Brown John Brown John Brown John Brown',
-            mac: '00:AA:BB:CC:DD:10',
-            ip: '192.168.0.100',
-            state: '0',
-        }, {
-            index:1,
-            note: 'John Brown 1',
-            mac: '00:AA:BB:CC:DD:11',
-            ip: '192.168.0.101',
-            state: '1',
-        }, {
-            index:2,
-            note: 'John Brown 2',
-            mac: '00:AA:BB:CC:DD:12',
-            ip: '192.168.0.102',
-            state: '1',
-        }, {
-            index: 3,
-            note: 'John Brown 3',
-            mac: '00:AA:BB:CC:DD:13',
-            ip: '192.168.0.103',
-            state: '0',
-        }, {
-            index: 4,
-            note: 'John Brown 4',
-            mac: '00:AA:BB:CC:DD:14',
-            ip: '192.168.0.100',
-            state: '0',
-        }, {
-            index: 5,
-            note: 'John Brown 5',
-            mac: '00:AA:BB:CC:DD:15',
-            ip: '192.168.0.101',
-            state: '1',
-        }, {
-            index: 6,
-            note: 'John Brown 6',
-            mac: '00:AA:BB:CC:DD:16',
-            ip: '192.168.0.102',
-            state: '1',
-        }, {
-            index: 7,
-            note: 'John Brown 7',
-            mac: '00:AA:BB:CC:DD:17',
-            ip: '192.168.0.103',
-            state: '0',
-        }],
-        onlineList:[{
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: {ip:'192.168.0.100', mac: "00:11:22:AA:BB:01"},
-            rate: {txRate: '10Mbps', rxRate: '72Mbps'},
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:02" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:03" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:04" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:05" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:06" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:07" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:08" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:09" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:0A" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:0B" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }, {
-            logo: 'logo',
-            name: 'xiongming-iPhone',
-            address: { ip: '192.168.0.100', mac: "00:11:22:AA:BB:0C" },
-            rate: { txRate: '10Mbps', rxRate: '72Mbps' },
-            flux: '1GB',
-            checked: false
-        }]
+        staticLists: [],
+        onlineList:[]
     };
 
     onChange = (val, key) => {
@@ -323,12 +191,7 @@ export default class StaticBind extends React.Component {
         })
     }
 
-    submit = async () => {
-        this.summitLan();
-        this.summitDhcp();
-    }
-
-    async fetchStaticInfo() {
+    fetchStaticInfo = async () => {
         let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' }, { handleError: true })
         let { errcode, data, message } = response;
         if (errcode == 0) {
@@ -343,7 +206,7 @@ export default class StaticBind extends React.Component {
         Modal.error({ title: '获取静态地址分配指令异常', message });
     }
 
-    async fetchClientsInfo() {
+    fetchClientsInfo = async () => {
         let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' }, { handleError: true })
         let { errcode, data, message } = response;
         if (errcode == 0) {
@@ -459,7 +322,13 @@ export default class StaticBind extends React.Component {
                     confirmLoading={loading}
                     onOk={this.onSelectOk}
                     onCancel={this.onSelectCancle} >
-                    <CustomIcon type="refresh" />
+                    <Button size="large" style={{
+                        position: "absolute",
+                        top: 5,
+                        left: 100,
+                        border: 0,
+                        padding: 0
+                    }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         style={{height:360, overflowY: 'auto'}}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备在线~" }} />
