@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Checkbox, Select ,Radio,Button} from 'antd';
+import { Checkbox, Select ,Radio,Button, Modal} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
@@ -214,7 +214,35 @@ export default class WIFI extends React.Component {
 
     //表单提交
     post = async() => {
+        this.setState({loading : true});
+        let payload = this.composeParams();
+        let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET',{method : 'POST',data : payload})
+            .catch(ex => {})
+        let {errcode, message } = response;
+        if (errcode == 0){
+            return;
+        }
+        Modal.error({ title : 'WAN口设置失败', content : message});
+    }
 
+    getNetInfo = async ()=>{
+        let response = await common.fetchWithCode(
+            'NETWORK_WAN_IPV4_GET',
+            { method : 'POST'},
+        ).catch(ex=>{});
+
+        let { data, errcode, message } =response;
+        if(errcode == 0){
+            this.netInfo = data[0].result.wan;
+            console.log('[GOT] IPV4: ', this.netInfo);
+            return;
+        }
+        Modal.error({ title: '获取 ipv4 信息失败', content: message});
+    }
+
+    componentDidMount(){
+        //获取网络状况
+       // this.getNetInfo();
     }
 
     render(){
@@ -252,16 +280,16 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-item">
                         <PanelHeader title="上网设置" checkable={false} checked={true} />
                         <label>上网方式</label>
-                        <Select value={this.state.type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange}>
+                        <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange}>
                             <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
                             <Option value='dhcp'>自动获取IP（DHCP）</Option>
                             <Option value='static'>手动输入IP（静态IP）</Option>
                         </Select>
                         {
         
-                            type === 'pppoe' ? <PPPoE pppoeAccount = {pppoeAccount}
-                                    pppoePasswrod = {this.state.pppoePasswrod}
-                                    handlePasswordChange = {this.handlePasswordChange}
+                            type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}
+                                    pppoePasswrod={this.state.pppoePasswrod}
+                                    handlePasswordChange={this.handlePasswordChange}
                                     pppoeType={this.state.pppoeType}
                                     onPppoeRadioChange={this.onPppoeRadioChange}
                                     handleAccountChange={this.handleAccountChange}
@@ -295,7 +323,7 @@ export default class WIFI extends React.Component {
                         }
                         <div className="lan-setting">
                             <div className="save">
-                                <Button  style={{ width : 320 }}  size="large" type="primary">保存</Button>
+                                <Button  style={{ width : 320 }}  onClick={this.post} size="large" type="primary">保存</Button>
                             </div>
                         </div>
                     </section>
