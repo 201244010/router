@@ -2,8 +2,9 @@ import React from 'react';
 import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
+import { withRouter } from "react-router-dom";
 
-export default class Header extends React.Component {
+class PrimaryHeader extends React.Component {
 	constructor(props) {
         super(props);
     }
@@ -76,6 +77,8 @@ export default class Header extends React.Component {
 
 };
 
+
+export default withRouter(PrimaryHeader);
 
 
 
