@@ -14,6 +14,15 @@ export default class NETWORK extends React.Component {
     state = {
         type : 'pppoe',
         disable : false,
+        onlineStatus : '',
+
+        //info
+        infoIp : [],
+        infoGateway : [],
+        infoMask : [],
+        infoDns1 : [],
+        infoDns2 : [],
+
         //pppoe
         pppoeAccount : '123',
         pppoeAccountTip : '',
@@ -225,14 +234,54 @@ export default class NETWORK extends React.Component {
             { method : 'POST'}
         ).catch(ex=>{});
 
+        // 触发检测联网状态
+        common.fetchWithCode('WANWIDGET_ONLINETEST_START', {method : 'POST'});
+        // 获取联网状态
+        let connectStatus = await common.fetchWithCode(
+            'WANWIDGET_ONLINETEST_GET',
+                {method : 'POST'},
+                {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
+        );
+        let { errcode:code} = connectStatus;
+        if(code == 0){
+            this.setState({
+                onlineStatus : '已联网'
+            })
+        }
+        this.setState({
+            onlineStatus : '未联网'
+        })
         let { data, errcode, message } = response;
         if(errcode == 0){
-            this.netInfo = data[0].result.wan;
-            console.log('[GOT] IPV4: ', this.netInfo);
+            let {dhcp, staticMode, info, pppoe} = data[0].result.wan;
+            this.setState({
+                type : data[0].result.wan.dial_type,
+                dhcpType : dhcp.dns_type,
+                pppoeType : pppoe.dns_type,
+
+                //static
+                ip : staticMode.ipv4,
+                gateway : staticMode.gateway,
+                subnetmask : staticMode.mask,
+                staticDns : staticMode.dns1,
+                staticDnsbackup : staticMode.dns2,
+
+                //dhcp
+                dhcpDns : dhcp.dns_info.dns1,
+                dhcpDnsbackup : dhcp.dns_info.dns2,
+
+                //pppoe
+                pppoeAccount : pppoe.user_info.username,
+                pppoeDns : pppoe.dns_info.dns1,
+                pppoeDnsbackup : pppoe.dns_info.dns2
+
+            })
             return;
         }
         Modal.error({ title: '获取 ipv4 信息失败', content: message});
     }
+
+
 
     componentDidMount(){
         //获取网络状况
@@ -240,7 +289,7 @@ export default class NETWORK extends React.Component {
     }
 
     render(){
-        const {type, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ip, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
+        const {type, infoIp ,onlineStatus, infoGateway, infoMask, infoDns1, infoDns2, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ip, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0}}>
@@ -248,27 +297,27 @@ export default class NETWORK extends React.Component {
                         <PanelHeader title="当前上网信息" checkable={false} checked={true} />
                         <div>
                             <ul className="ui-mute">联网状态:</ul>
-                            <label className="oneline">已联网</label>
+                            <label className="oneline">{onlineStatus}</label>
                         </div>
                         <div>
                             <ul className="ui-mute">上网方式:</ul>
-                            <label className="oneline">PPPoE拨号</label>
+                            <label className="oneline">{type}</label>
                         </div>
                         <div>
                             <ul className="ui-mute">IP地址:</ul>
-                            <label className="oneline">192.168.2.1</label>
+                            <label className="oneline">{infoIp}</label>
                         </div>
                         <div>
                             <ul className="ui-mute">子网掩码:</ul>
-                            <label className="oneline">255.255.255.0</label>
+                            <label className="oneline">{infoMask}</label>
                         </div>
                         <div>
                             <ul className="ui-mute">默认网关:</ul>
-                            <label className="oneline">255.255.255.0</label>
+                            <label className="oneline">{infoGateway}</label>
                         </div>
                         <div>    
                             <ul className="ui-mute">DNS:</ul>
-                            <label className="oneline">255.255.255.0</label>
+                            <label className="oneline">{infoDns1}</label>
                         </div>
                     </section>
                     <section className="wifi-setting-item">
