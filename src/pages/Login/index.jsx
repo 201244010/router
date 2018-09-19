@@ -59,9 +59,15 @@ class Login extends React.Component {
     }
 
     render() {
+<<<<<<< HEAD
         // const password = this.state.password.trim();
         const {tip, disabled} = this.state;
         // const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
+=======
+        //const password = this.state.password.trim();
+        const tip = this.state.tip;
+        //const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
+>>>>>>> dde90c7e6cdf823e452f83e80209adc03b09af9d
 
         return [
             <div key='login-content' className="ui-center ui-fullscreen">
@@ -71,12 +77,13 @@ class Login extends React.Component {
                             <FormItem showErrorTip={tip} style={{ marginBottom : 30 }}>
                                 <Input placeholder="管理密码"
                                         type="password"
-                                        // style={{ width: 265 }}
+                                        //style={{ width: 265 }}
                                         value={this.state.password}
-                                        // ref={node => this.passwordInput = node}
-                                        // suffix={suffix}
-                                        // onKeyUp={this.onKeyUp}
-                                        onChange={this.onChange} />
+                                        //ref={node => this.passwordInput = node}
+                                        //suffix={suffix}
+                                        //onKeyUp={this.onKeyUp}
+                                        //onChange={this.onChange} 
+                                        />
                                 <ErrorTip>{ tip }</ErrorTip>
                             </FormItem>
                         </Form>
