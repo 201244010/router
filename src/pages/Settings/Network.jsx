@@ -225,7 +225,7 @@ export default class NETWORK extends React.Component {
             { method : 'POST'}
         ).catch(ex=>{});
 
-        let { data, errcode, message } =response;
+        let { data, errcode, message } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
             console.log('[GOT] IPV4: ', this.netInfo);
@@ -236,7 +236,7 @@ export default class NETWORK extends React.Component {
 
     componentDidMount(){
         //获取网络状况
-       // this.getNetInfo();
+       this.getNetInfo();
     }
 
     render(){
