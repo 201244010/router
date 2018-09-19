@@ -67,10 +67,10 @@ export default class WIFI extends React.Component {
         moreSettingType5:'pulldown',
         moreDisplaydHost5:'none',
         //tip
-        tip_host : '',
-        tip_guest : '',
-        tip_2g : '',
-        tip_5g : ''
+        tipHost : '',
+        tipGuest : '',
+        tip2g : '',
+        tip5g : ''
     };
     onChange = (name,value) =>{
         this.setState({
@@ -78,24 +78,24 @@ export default class WIFI extends React.Component {
         });
         if(!value.trim().length){
             switch (name){
-                case 'hostSsid' : this.setState({tip_host : '不能为空'});
+                case 'hostSsid' : this.setState({tipHost : '请输入Wi-Fi名称'});
                 break;
-                case 'guestSsid' : this.setState({tip_guest : '不能为空'});
+                case 'guestSsid' : this.setState({tipGuest : '请输入Wi-Fi名称'});
                 break;
-                case 'hostSsid24' : this.setState({tip_2g : '不能为空'});
+                case 'hostSsid24' : this.setState({tip2g : '请输入Wi-Fi名称'});
                 break;
-                case 'hostSsid5' : this.setState({tip_5g : '不能为空'});
+                case 'hostSsid5' : this.setState({tip5g : '请输入Wi-Fi名称'});
                 break;
             }
         }else{
             switch (name){
-                case 'hostSsid' : this.setState({tip_host : ''});
+                case 'hostSsid' : this.setState({tipHost : ''});
                 break;
-                case 'guestSsid' : this.setState({tip_guest : ''});
+                case 'guestSsid' : this.setState({tipGuest : ''});
                 break;
-                case 'hostSsid24' : this.setState({tip_2g : ''});
+                case 'hostSsid24' : this.setState({tip2g : ''});
                 break;
-                case 'hostSsid5' : this.setState({tip_5g : ''});
+                case 'hostSsid5' : this.setState({tip5g : ''});
                 break;
             }
         }
@@ -116,12 +116,12 @@ export default class WIFI extends React.Component {
             hostSsidPasswordDisabled:!type
         });
         if(type==false){
-            this.setState({tip_host:''});
+            this.setState({tipHost:''});
         }else{
             if(!this.state.hostSsid.trim().length){
-                this.setState({tip_host:'不能为空'});
+                this.setState({tipHost:'请输入Wi-Fi名称'});
             }else{
-                this.setState({tip_host:''});
+                this.setState({tipHost:''});
             }
         }
     }
@@ -133,12 +133,12 @@ export default class WIFI extends React.Component {
             guestSsidPasswordDisabled:!type,
         });
         if(type==false){
-            this.setState({tip_guest:''});
+            this.setState({tipGuest:''});
         }else{
             if(!this.state.guestSsid.trim().length){
-                this.setState({tip_guest:'不能为空'});
+                this.setState({tipGuest:'请输入Wi-Fi名称'});
             }else{
-                this.setState({tip_guest:''});
+                this.setState({tipGuest:''});
             }
         }
     }
@@ -165,12 +165,12 @@ export default class WIFI extends React.Component {
             hostSsid24PasswordDisabled:!type,
         });
         if(type==false){
-            this.setState({tip_2g:''});
+            this.setState({tip2g:''});
         }else{
             if(!this.state.hostSsid24.trim().length){
-                this.setState({tip_2g:'不能为空'});
+                this.setState({tip2g:'请输入Wi-Fi名称'});
             }else{
-                this.setState({tip_2g:''});
+                this.setState({tip2g:''});
             }
         }
     }
@@ -194,20 +194,13 @@ export default class WIFI extends React.Component {
             disabledType5:!type,
             hostSsid5PasswordDisabled:!type
         });
-        // this.setState({
-        //     band_5g : Object.assign(this.state.band_5g, {
-        //         host5Enable : e.target.checked, 
-        //         disabledType5:!e.target.checked,
-        //         hostSsid5PasswordDisabled:!e.target.checked  
-        //     })
-        // });
         if(type==false){
-            this.setState({tip_5g:''});
+            this.setState({tip5g:''});
         }else{
             if(!this.state.hostSsid5.trim().length){
-                this.setState({tip_5g:'不能为空'});
+                this.setState({tip5g:'请输入Wi-Fi名称'});
             }else{
-                this.setState({tip_5g:''});
+                this.setState({tip5g:''});
             }
         }
     }
@@ -261,6 +254,7 @@ export default class WIFI extends React.Component {
         this.guestWireLess.enable = this.state.guestEnable;         
         //timeCyc : guest wifi 密码更换周期,
         //displayType:是否显示动态密码的地方，与PWDType有关
+
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable;
         this.hostWireLess.band_2g.ssid = this.state.hostSsid24;
@@ -270,19 +264,8 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_2g.htmode = this.state. htmode24;
         this.hostWireLess.band_2g.channel = this.state.channel24;
         //signal24:信号强弱
-        //5G
-        //优化方案
-        /*state = {
-            band_2g : {
 
-            },
-            band_5g : {
-                enable : xxx,
-                ssid : xx,
-                password : '',
-                hide_ssid : ''
-            }
-        };*/
+        //5G
         // this.hostWireLess.band_5g = this.state.band_5g;
         //Object.assign(this.hostWireLess.band_5g, this.state.band_5g);
         this.hostWireLess.band_5g.enable = this.state.host5Enable;
@@ -329,7 +312,6 @@ export default class WIFI extends React.Component {
             this.mainWireLess = main;
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
-            // console.log(this.hostWireLess, this.guestWireLess);
             this.setState({
                 channelType : this.hostWireLess.band_division,
                 hostSsid : this.hostWireLess.band_2g.ssid,
@@ -352,6 +334,7 @@ export default class WIFI extends React.Component {
                 disabledType2 : !this.guestWireLess.enable,
                 //timeCyc : guest wifi 密码更换周期,
                 //displayType:是否显示动态密码的地方，与PWDType有关
+
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable,
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
@@ -363,6 +346,7 @@ export default class WIFI extends React.Component {
                 channel24 : this.hostWireLess.band_2g.channel,
                 //signal24:信号强弱
                 disabledType24 : !this.hostWireLess.band_2g.enable,
+
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
@@ -374,6 +358,7 @@ export default class WIFI extends React.Component {
                 channel5 : this.hostWireLess.band_5g.channel,
                 //signal5:信号强弱
                 disabledType5 : !this.hostWireLess.band_5g.enable,
+
                 //more
                 moreSettingType:'pulldown',
                 moreDisplaydHost:'none',
@@ -396,7 +381,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestSsidPassword,pwdForbid,guestSsidPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,timeCyc,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,signal24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,signal5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tip_host,tip_guest,tip_2g,tip_5g} = this.state;
+        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestSsidPassword,pwdForbid,guestSsidPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,timeCyc,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,signal24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,signal5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -408,9 +393,9 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-item">
                         <PanelHeader title="商户Wi-Fi" checkable={true} checked={hostEnable} onChange={this.onHostEnableChange} />
                         <label style={{marginTop:20}}>Wi-Fi名称</label>
-                        <FormItem type="small" showErrorTip={tip_host} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={tipHost} style={{ width : 320}}>
                             <Input type="text" value={hostSsid} onChange={(value)=>this.onChange('hostSsid',value)} disabled={disabledType}/>
-                            <ErrorTip>{tip_host}</ErrorTip>
+                            <ErrorTip>{tipHost}</ErrorTip>
                         </FormItem>
                         <ul className="ui-tiled compact">
                             <li><label>Wi-Fi密码</label></li>
@@ -440,9 +425,9 @@ export default class WIFI extends React.Component {
                             <section>
                                 <PanelHeader title="2.4G信号" checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
                                 <label>Wi-Fi名称</label>
-                                <FormItem type="small" showErrorTip={tip_2g} style={{ width : 320}}>
+                                <FormItem type="small" showErrorTip={tip2g} style={{ width : 320}}>
                                     <Input type="text" value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24} />
-                                    <ErrorTip>{tip_2g}</ErrorTip>
+                                    <ErrorTip>{tip2g}</ErrorTip>
                                 </FormItem>
                                 <ul className="ui-tiled compact">
                                     <li><label>Wi-Fi密码</label></li>
@@ -491,9 +476,9 @@ export default class WIFI extends React.Component {
                             <section>
                             <PanelHeader title="5G信号" checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
                                 <label>Wi-Fi名称</label>
-                                <FormItem type="small" showErrorTip={tip_5g} style={{ width : 320}}>
+                                <FormItem type="small" showErrorTip={tip5g} style={{ width : 320}}>
                                     <Input type="text" value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
-                                    <ErrorTip>{tip_5g}</ErrorTip>
+                                    <ErrorTip>{tip5g}</ErrorTip>
                                 </FormItem>
                                 <ul className="ui-tiled compact">
                                     <li><label>Wi-Fi密码</label></li>
@@ -545,9 +530,9 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-item">
                         <PanelHeader title="客人Wi-Fi" checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
                         <label style={{marginTop:20}}>Wi-Fi名称</label>
-                        <FormItem type="small" showErrorTip={tip_guest} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={tipGuest} style={{ width : 320}}>
                             <Input type="text" value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
-                            <ErrorTip>{tip_guest}</ErrorTip>
+                            <ErrorTip>{tipGuest}</ErrorTip>
                         </FormItem>
                         <label>密码方式</label>
                         <RadioGroup onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
