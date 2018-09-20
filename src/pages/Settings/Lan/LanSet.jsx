@@ -57,7 +57,7 @@ export default class Lan extends React.Component {
 
         let response = await common.fetchWithCode(
             'NETWORK_LAN_IPV4_SET',
-            { method: 'POST', data: { lan: this.lanInfo } }
+            { method: 'POST', data: { lan: {info:this.lanInfo }} }
         ).catch(ex => { });
 
         this.setState({ loading: false });
@@ -77,9 +77,9 @@ export default class Lan extends React.Component {
             this.dhcps = dhcps;
             this.setState({
                 dhcp: this.dhcps.enable,
-                startIp: [...this.dhcp.startip.split('.')],
-                endIp: [...this.dhcp.endip.split('.')],
-                leaseTime: leasetime
+                startIp: [...this.dhcps.startip.split('.')],
+                endIp: [...this.dhcps.endip.split('.')],
+                leaseTime: this.dhcps.leasetime
             });
             return;
         }
