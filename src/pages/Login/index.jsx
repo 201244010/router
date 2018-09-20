@@ -72,7 +72,7 @@ class Login extends React.Component {
                                         //ref={node => this.passwordInput = node}
                                         //suffix={suffix}
                                         //onKeyUp={this.onKeyUp}
-                                        //onChange={this.onChange} 
+                                        onChange={this.onChange} 
                                         />
                                 <ErrorTip>{ tip }</ErrorTip>
                             </FormItem>
