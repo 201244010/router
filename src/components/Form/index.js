@@ -157,10 +157,15 @@ class InputGroup extends React.Component {
         disabled : PropTypes.bool
     };
 
+    static defaultProps = {
+        type : 'ip'
+    }
+
     onInputChange = (e, i, it) => {
+        const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-        item.value = e.target.value;
+        item.value = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-zA-Z]*/g, '');
         this.setState({ inputs });
         if(this.props.onChange){
             const values = inputs.map(input => input.value);

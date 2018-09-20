@@ -65,7 +65,7 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('speed')}>
                         <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置上下行宽带</span>
+                        <span className="ui-ib">设置上下行带宽</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwifi')}>

@@ -72,13 +72,37 @@
             margin-top : 10px;
         }
         label {
-            margin-bottom : 5px;
+            margin-bottom : 12px;
             display: block;
+        }
+        .oneline {
+            display:inline-block;
+            margin-left:5px;
         }
         .ui-form .more .ui-icon {
             position: static;
         }
+        .ui-input {
+            display:inline;
+            margin-right:10px;
+        }
+        .radio {
+            display:block;
+            margin-top:12px;
+            margin-bottom:12px;
+            .label-in {
+                display: inline-block;
+            }
+        }
+        .ant-radio-inner:after {
+            background-color:orange;
+        }
+        .ant-radio-checked .ant-radio-inner  {
+            border-color:orange;
+        }
+
     }
+
 }
 
 .wifi-setting-twocolumn{

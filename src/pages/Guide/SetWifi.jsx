@@ -47,6 +47,8 @@ export default class SetWifi extends React.Component {
         this.setState({ loading : true});
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
+        this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName;
+        this.mainWireLess.host.band_5g.password = btoa(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
         this.guestWireLess.static_password = btoa(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
@@ -131,9 +133,12 @@ export default class SetWifi extends React.Component {
             // console.log(this.hostWireLess, this.guestWireLess);
             this.setState({
                 hostWifiName : this.hostWireLess.ssid,
+                hostWifiPsw : atob(this.hostWireLess.password),
                 guestWifiName : this.guestWireLess.ssid,
-                guestWifi : this.guestWireLess.enable !== '0'
-                // guestWifiPsw : atob(guest.password)
+                guestWifi : this.guestWireLess.enable !== '0',
+                guestWifiPsw : atob(guest.static_password)   
+            }, () => {
+                this.setState({canSubmit : this.valid()})
             });
             return;
         }
