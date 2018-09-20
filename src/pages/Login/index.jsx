@@ -55,7 +55,7 @@ class Login extends React.Component {
             this.props.history.push('/');
             return;
         }
-        this.setState({ tip : message === 'fff' ? "密码错误" : message });
+        this.setState({ tip : message === 'ERRCODE_PARAMS_INVALID' ? "密码错误" : message });
     }
 
     render() {

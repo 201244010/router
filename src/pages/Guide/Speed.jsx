@@ -152,7 +152,7 @@ export default class Speed extends React.Component {
     const {showModal, mode, speedTestdone, upBandWidth, downBandWidth}  = this.state;
     return (
       <div className="speed">
-        <h2>设置上下行宽带</h2> 
+        <h2>设置上下行带宽</h2> 
         <p className="ui-tips guide-tip">设置之后，路由器就可以根据设备优先级智能调配网速。 </p>
         <div className="ui-relative">
             <div className="button-group">
@@ -254,14 +254,14 @@ const SpeedAutoBoard = props => {
 const SpeedManualConfig = props => {
 	return (
         <Form style={{ width : 385 }}>
-            <FormItem label="#" style={{ marginBottom : 15 }}>
+            <FormItem label="#" style={{ marginBottom : 15,fontWeight:'bold' }}>
                 <span>为了准确分配网速，请确保带宽值输入准确</span>
             </FormItem>
-            <FormItem label="上行总带宽" suffix="Mbps">
-                <Input type="text" value={props.upBandWidth} placeholder="请输入上行总宽带" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
+            <FormItem style={{fontWeight:'bold' }} label="上行总带宽" suffix="Mbps">
+                <Input type="text" value={props.upBandWidth}  placeholder="请输入上行总带宽" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
             </FormItem>
-            <FormItem label="下行总带宽" suffix="Mbps">
-                <Input type="text" value={props.downBandWidth}  placeholder="请输入下行总宽带" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
+            <FormItem style={{fontWeight:'bold' }} label="下行总带宽" suffix="Mbps">
+                <Input type="text" value={props.downBandWidth}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
             </FormItem>
             <FormItem label="#">
         		<Button type="primary" size="large" style={{ width : "100%"}} onClick={props.configure}>下一步</Button>
