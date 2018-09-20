@@ -3,6 +3,7 @@ import React from 'react';
 import {Select ,Radio,Button, Modal} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
+import { runInDebugContext } from 'vm';
 
 const {FormItem, Input,InputGroup} = Form;
 const Option = Select.Option;
@@ -253,7 +254,8 @@ export default class NETWORK extends React.Component {
         })
         let { data, errcode, message } = response;
         if(errcode == 0){
-            let {dhcp, staticMode, info, pppoe} = data[0].result.wan;
+            let {dhcp, info, pppoe} = data[0].result.wan;
+            let staticMode = data[0].result.wan.static;
             this.setState({
                 type : data[0].result.wan.dial_type,
                 dhcpType : dhcp.dns_type,
@@ -266,16 +268,30 @@ export default class NETWORK extends React.Component {
                 staticDns : staticMode.dns1,
                 staticDnsbackup : staticMode.dns2,
 
-                //dhcp
-                dhcpDns : dhcp.dns_info.dns1,
-                dhcpDnsbackup : dhcp.dns_info.dns2,
-
                 //pppoe
                 pppoeAccount : pppoe.user_info.username,
-                pppoeDns : pppoe.dns_info.dns1,
-                pppoeDnsbackup : pppoe.dns_info.dns2
 
+                //info
+                infoIp : info.ipv4,
+                infoGateway : info.gateway,
+                infoMask : info.mask,
+                infoDns1 : info.dns1,
+                infoDns2 : info.dns2
             })
+
+            if(this.state.dhcpType == "manual"){
+                this.setState({
+                    dhcpDns : dhcp.dns_info.dns1,
+                    dhcpDnsbackup : dhcp.dns_info.dns2
+                })
+            }
+
+            if(this.state.pppoeType == "manual"){
+                this.setState({
+                    pppoeDns : pppoe.dns_info.dns1,
+                    pppoeDnsbackup : pppoe.dns_info.dns2
+                })
+            }
             return;
         }
         Modal.error({ title: '获取 ipv4 信息失败', content: message});
