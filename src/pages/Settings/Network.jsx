@@ -329,13 +329,13 @@ export default class NETWORK extends React.Component {
             onlineStatus : '未联网'
         })
 
-        setInterval(() => {this.refreshNetStatus()},3000);
     }
 
     componentDidMount(){
         //获取网络状况
        this.getNetInfo();
        this.refreshNetStatus();
+       setInterval(() => {this.refreshNetStatus()},3000);
     }
 
     render(){
