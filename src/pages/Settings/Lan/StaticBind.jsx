@@ -34,6 +34,7 @@ export default class StaticBind extends React.Component {
     }
 
     selectAdd = () => {
+        this.fetchClientsInfo();
         this.setState({
             visible: true
         });
@@ -104,7 +105,7 @@ export default class StaticBind extends React.Component {
                     enable: true,
                     note: item.name,
                     ip: item.address.ip,
-                    mac: item.address.mac
+                    mac: item.address.mac.toUpperCase()
                 };
             });
 
@@ -113,7 +114,7 @@ export default class StaticBind extends React.Component {
         ).catch(ex => { });
 
         this.setState({
-            editLoading: false
+            loading: false
         });
 
         let { errcode, message } = response;
@@ -143,7 +144,7 @@ export default class StaticBind extends React.Component {
                 reservedIp = [{
                     enable: true,
                     ip: this.state.editIp.join('.'),
-                    mac: this.state.editMac.join(':'),
+                    mac: this.state.editMac.join(':').toUpperCase(),
                     note: this.state.editName
                 }];
 
@@ -155,13 +156,13 @@ export default class StaticBind extends React.Component {
                     old: {
                         enable: item.enable,
                         ip: item.ip,
-                        mac: item.mac,
+                        mac: item.mac.toUpperCase(),
                         note: item.note || 'unknown'
                     },
                     new: {
                         enable: true,
                         ip: this.state.editIp.join('.'),
-                        mac: this.state.editMac.join(':'),
+                        mac: this.state.editMac.join(':').toUpperCase(),
                         note: this.state.editName
                     }
                 };
@@ -177,6 +178,7 @@ export default class StaticBind extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
+            this.fetchStaticInfo();
             this.setState({
                 editShow: false
             })
@@ -201,7 +203,7 @@ export default class StaticBind extends React.Component {
     }
 
     fetchStaticInfo = async () => {
-        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' }, { handleError: true })
+        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' })
         let { errcode, data, message } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
@@ -214,11 +216,11 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        Modal.error({ title: '获取静态地址分配指令异常', message });
+        Modal.error({ title: '获取静态地址列表指令异常', message });
     }
 
     fetchClientsInfo = async () => {
-        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' }, { handleError: true })
+        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
         let { errcode, message } = response;
         if (errcode == 0) {
             const logoMap = {
@@ -229,8 +231,17 @@ export default class StaticBind extends React.Component {
             };
 
             let { data } = response.data[0].result;
+
+            // filter clients in dhcp static list
+            let restClients = data.filter(item => {
+                let mac = item.mac.toUpperCase();
+                return !!!(this.state.staticLists.find(client => {
+                    return (mac == client.mac.toUpperCase());
+                }));
+            });
+
             this.setState({
-                onlineList: data.map(item => {
+                onlineList: restClients.map(item => {
                     return {
                         logo: logoMap[item.wifi_mode],
                         name: item.hostname,
@@ -241,13 +252,12 @@ export default class StaticBind extends React.Component {
             });
             return;
         }
-
+    
         Modal.error({ title: '获取客户端列表指令异常', message });
     }
 
     componentDidMount() {
         this.fetchStaticInfo();
-        this.fetchClientsInfo();
     }
 
     render() {
@@ -342,7 +352,7 @@ export default class StaticBind extends React.Component {
                     }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         style={{height:360, overflowY: 'auto'}}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备在线~" }} />
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />
                 </Modal>
                 <Modal title={editType === 'edit' ? '编辑静态地址' : '添加静态地址'}
                     cancelText="取消" okText={editType === 'edit' ? '保存' : '添加'}
