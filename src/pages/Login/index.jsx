@@ -59,16 +59,9 @@ class Login extends React.Component {
     }
 
     render() {
-<<<<<<< HEAD
         // const password = this.state.password.trim();
         const {tip, disabled} = this.state;
         // const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
-=======
-        //const password = this.state.password.trim();
-        const tip = this.state.tip;
-        //const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
->>>>>>> dde90c7e6cdf823e452f83e80209adc03b09af9d
-
         return [
             <div key='login-content' className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>
@@ -82,7 +75,7 @@ class Login extends React.Component {
                                         //ref={node => this.passwordInput = node}
                                         //suffix={suffix}
                                         //onKeyUp={this.onKeyUp}
-                                        //onChange={this.onChange} 
+                                        onChange={this.onChange} 
                                         />
                                 <ErrorTip>{ tip }</ErrorTip>
                             </FormItem>
