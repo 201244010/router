@@ -66,7 +66,7 @@ class Login extends React.Component {
             <div key='login-content' className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
-                        <Form style={{ width : 320 }} >
+                        <Form style={{ width : 320, padding: 0 }} >
                             <FormItem showErrorTip={tip} style={{ marginBottom : 30 }}>
                                 <Input placeholder="管理密码"
                                         type="password"
