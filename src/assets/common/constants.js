@@ -56,8 +56,8 @@ export const DIRECTIVE = {
     SECURITY_GET : '',
 
     // 客户端设备信息获取
-    CLIENT_LIST_GET : '',
-    CLIENT_ITEM_GET : '',
+    CLIENT_LIST_GET: '0x2025',
+    CLIENT_ITEM_GET: '0x2026',
     CLIENT_ITEM_GET : '',
 
     // 问题诊断 
