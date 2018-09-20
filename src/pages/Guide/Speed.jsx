@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Spin, Icon, Modal } from 'antd';
+import { Button, Icon, Modal } from 'antd';
 import classnames from 'classnames';
 import CustomIcon from '~/components/Icon';
 import CustomModal from '~/components/Modal';
@@ -7,16 +7,19 @@ import Tips from '~/components/Tips';
 import Form from '~/components/Form';
 
 const { FormItem, Input } = Form;
+const reg = /\D+/;
 
 export default class Speed extends React.Component {
   constructor(props){
     super(props);
+
     this.state = {
 	  	showModal : false,
 	 	speedTestdone : false,
         mode : 'auto',
-        upBandWidth : 0,
-        downBandWidth : 0
+        upBandWidth : '0',
+        downBandWidth : '0',
+        disabled : true
     };
   }
 
@@ -28,6 +31,15 @@ export default class Speed extends React.Component {
 
   reTest = ()=>{
       this.autoSpeedTest();
+  }
+
+  checkParams(){
+      let {upBandWidth, downBandWidth} = this.state;
+      upBandWidth = upBandWidth.trim();
+      downBandWidth = downBandWidth.trim();
+      return !(reg.test(downBandWidth) || reg.test(upBandWidth) || 
+      parseInt(downBandWidth) == 0 || parseInt(upBandWidth) == 0 ||
+      downBandWidth === "" || upBandWidth === '')
   }
 
   // 测速请求函数
@@ -47,10 +59,11 @@ export default class Speed extends React.Component {
             pending : resp => {
                 return resp.data[0].result.speedtest.status === 'testing';
             }, 
-            stop : () => this.stop, interval : 1000 
+            stop : () => this.stop, 
+            interval : 1000 
         }
     ).catch(ex => {});
-    response = { errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "200", down_bandwidth : "100"}}}]}
+    //response = { errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "200", down_bandwidth : "100"}}}]}
 
     this.setState({ speedTestdone : true, showModal : false });
     let { errcode, message } = response;
@@ -68,29 +81,19 @@ export default class Speed extends React.Component {
   //  手动配速  
     configure = async () => {
         let { upBandWidth, downBandWidth } = this.state;
-        upBandWidth += 'Mbps';
-        downBandWidth += 'Mbps';
+        upBandWidth = parseInt(upBandWidth) + 'Mbps';
+        downBandWidth = parseInt(downBandWidth) + 'Mbps';
         let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
         let response = await common.fetchWithCode(
             'QOS_SET',
             { method : 'POST', data },
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
-        response = common.mockResponse({
-            "qos": { 
-                "enable":true,
-                "source":"speedtest/default/manual",
-                "up_bandwidth": upBandWidth,
-                "down_bandwidth": downBandWidth,
-                "sunmi_weight":"50",
-                "white_weight":"30"
-            }
-        });
         let { errcode, message } = response;
         if(errcode == 0){
             return this.props.history.push('/guide/setwifi');
         }
-        Modal.error({ title : '手动配置QOS异常', message });
+        Modal.error({ title : '手动配置QOS异常', content : message });
     }
 
     // 获取 qos 信息
@@ -100,16 +103,6 @@ export default class Speed extends React.Component {
             { method : 'POST' },
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
-        response = common.mockResponse({
-            "qos": { 
-                "enable":true,
-                "source":"speedtest/default/manual",
-                "up_bandwidth":"20Mbps",
-                "down_bandwidth":"100Mbps",
-                "sunmi_weight":"50",
-                "white_weight":"30"
-            }
-        })
         let {errcode, data, message} = response;
         if(errcode == 0){
             return this.qos = data[0].result.qos;
@@ -127,7 +120,7 @@ export default class Speed extends React.Component {
   }
 
   changeToManualMode = () => {
-    this.setState({ mode : 'manual' });
+    this.setState({ mode : 'manual', disabled : !this.checkParams() });
   }
 
   switchMode(mode){
@@ -135,8 +128,10 @@ export default class Speed extends React.Component {
   }
 
   changeBandWidth = (value, field)=>{
-      this.setState({
-          [field] : value
+      this.setState({ [field] : value }, () => { 
+          this.setState({
+              disabled : !this.checkParams()
+          });
       });
     }
 
@@ -177,6 +172,7 @@ export default class Speed extends React.Component {
                                         changeBandWidth={this.changeBandWidth} 
                                         configure={this.configure}
                                         reTest={this.reTest}
+                                        disabled={this.state.disabled}
                                         nextStep={this.nextStep} /> </div> 
                 )
             }
@@ -264,7 +260,7 @@ const SpeedManualConfig = props => {
                 <Input type="text" value={props.downBandWidth}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
             </FormItem>
             <FormItem label="#">
-        		<Button type="primary" size="large" style={{ width : "100%"}} onClick={props.configure}>下一步</Button>
+        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={props.configure}>下一步</Button>
             </FormItem>
             <FormItem label="#" style={{ marginTop : -30 }}>
                 <div className="help">
