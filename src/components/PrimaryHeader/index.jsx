@@ -2,7 +2,12 @@ import React from 'react';
 import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink, Route, Redirect, Switch} from "react-router-dom";
+
+import Home from '../../pages/Home';
+import Settings from '../../pages/Settings';
+import Advance from '../../pages/Advance';
+
 
 class PrimaryHeader extends React.Component {
 	constructor(props) {
@@ -35,6 +40,7 @@ class PrimaryHeader extends React.Component {
     }
 
 	render() {
+        const {match} = this.props;
         const logined = this.props.logined, { isLoginPage, isGuidePage } = this.state;
 		return (
 			<div className="header">
@@ -51,17 +57,17 @@ class PrimaryHeader extends React.Component {
 						</li>
 						{
                             logined && !isLoginPage && !isGuidePage ? [
-                                <li key="1" className="menu">
-                                    <a href="javascript:;" className="ui-ib now">
+                                <nav key="1" className="menu">
+                                    <NavLink to={match.path + "home"} activeClassName="active">
                                         <Icon type="netstat"></Icon> 网络状态
-                                    </a>
-                                    <a href="javascript:;" className="ui-ib">
+                                    </NavLink>
+                                    <NavLink to={match.path + "settings"} activeClassName="active">
                                         <Icon type="set"></Icon> 基础设置
-                                    </a>
-                                    <a href="javascript:;" className="ui-ib">
+                                    </NavLink>
+                                    <NavLink to={match.path + "advance"} activeClassName="active">
                                         <Icon type="advancedsetup"></Icon> 高级设置
-                                    </a>
-                                </li>,
+                                    </NavLink>
+                                </nav>,
                                 <li key="2" className="sidebar">
                                     <a href="javascript:;" className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
@@ -71,6 +77,14 @@ class PrimaryHeader extends React.Component {
                         }
 					</ul>
 				</SubLayout>
+                <article>
+                        <Switch>
+                            <Route path={`${match.path}home`} component={Home} />
+                            <Route path={`${match.path}settings`} component={Settings} />
+                            <Route path={`${match.path}advance`} component={Advance} />
+                            <Redirect from={match.path} to={`${match.path}home`}></Redirect>
+                        </Switch>
+                </article>
 			</div>
 		);
 	}
