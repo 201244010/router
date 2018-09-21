@@ -44,7 +44,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
     &.blue-bg {
         color : #fff;
         height : auto;
-        background-image : linear-gradient(180deg, $primary-bg-color);
+        background-image : linear-gradient(180deg, $primary-bg-color 175px, $primary-bg-color 0);
         position : absolute;
         left : 0;
         top : 55px;
