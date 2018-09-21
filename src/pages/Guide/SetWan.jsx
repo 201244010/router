@@ -117,8 +117,11 @@ export default class SetWan extends React.PureComponent {
 
     // 提交表单
     submit = async () => {
+        let payload = this.composeParams(), info = payload.wan.info;
+        if(this.state.type === 'static' && info.ipv4 === info.gateway){
+            return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
+        }
         this.setState({ loading : true });
-        let payload = this.composeParams();
         let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
             .catch(ex => {})
         let {errcode, message } = response;
@@ -147,7 +150,7 @@ export default class SetWan extends React.PureComponent {
             }
             return;
         }
-        Modal.error({ title : 'WAN口设置失败', content :  message });
+        Modal.error({ title : 'WAN口设置失败', content :  message == "ERRCODE_PARAM_VALUE_INVALID" ? "wan口的设置参数不合法" : "" });
     }
 
     // 校验参数
