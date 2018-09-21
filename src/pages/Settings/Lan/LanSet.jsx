@@ -8,12 +8,12 @@ const { FormItem, ErrorTip, Input : FormInput, InputGroup, Input } = Form;
 
 export default class Lan extends React.Component {
     state = {
-        ip : ['', '', '', ''],
-        netmask : ['', '', '', ''],
+        ipv4 : ['', '', '', ''],
+        mask : ['', '', '', ''],
         dhcp: true,
-        startIp : ['', '', '', ''],
-        endIp : ['', '', '', ''],
-        leaseTime : '',
+        startip : ['', '', '', ''],
+        endip : ['', '', '', ''],
+        leasetime : '',
         tip : "",
         disabled : false,
         loading : false
@@ -37,8 +37,8 @@ export default class Lan extends React.Component {
             let { lan } = data[0].result;
             this.lanInfo = lan.info;
             this.setState({
-                ip: [...this.lanInfo.ipv4.split('.')],
-                netmask: [...this.lanInfo.mask.split('.')]
+                ipv4: [...this.lanInfo.ipv4.split('.')],
+                mask: [...this.lanInfo.mask.split('.')]
             });
             return;
         }
@@ -47,13 +47,13 @@ export default class Lan extends React.Component {
     }
 
     summitLan = async () => {
-        Modal.warning({
+        await Modal.warning({
             title: '提示',
             content: '局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效',
         });
 
-        this.lanInfo.ipv4 = this.state.ip.join('.');
-        this.lanInfo.mask = this.state.netmask.join('.');
+        this.lanInfo.ipv4 = this.state.ipv4.join('.');
+        this.lanInfo.mask = this.state.mask.join('.');
 
         let response = await common.fetchWithCode(
             'NETWORK_LAN_IPV4_SET',
@@ -77,9 +77,9 @@ export default class Lan extends React.Component {
             this.dhcps = dhcps;
             this.setState({
                 dhcp: this.dhcps.enable,
-                startIp: [...this.dhcps.startip.split('.')],
-                endIp: [...this.dhcps.endip.split('.')],
-                leaseTime: this.dhcps.leasetime
+                startip: [...this.dhcps.startip.split('.')],
+                endip: [...this.dhcps.endip.split('.')],
+                leasetime: this.dhcps.leasetime
             });
             return;
         }
@@ -89,9 +89,9 @@ export default class Lan extends React.Component {
 
     summitDhcp = async () => {
         this.dhcps.enable = this.state.dhcp;
-        this.dhcps.startip = this.state.startIp;
-        this.dhcps.endip = this.state.endIp;
-        this.dhcps.leasetime = this.state.leaseTime;
+        this.dhcps.startip = this.state.startip.join('.');
+        this.dhcps.endip = this.state.endip.join('.');
+        this.dhcps.leasetime = this.state.leasetime;
 
         let response = await common.fetchWithCode(
             'DHCPS_SET',
@@ -113,7 +113,7 @@ export default class Lan extends React.Component {
     }
 
     render(){
-        const { ip, netmask, dhcp, startIp, endIp, leaseTime, tip, disabled, loading } = this.state;
+        const { ipv4, mask, dhcp, startip, endip, leasetime, tip, disabled, loading } = this.state;
         return (
         <div className="lan-settting">
                 <Form>
@@ -122,14 +122,14 @@ export default class Lan extends React.Component {
                         <label style={{ marginTop: 24 }}>IP地址</label>
                         <FormItem style={{ width: 320 }}>
                             <InputGroup size="small"
-                                inputs={[{ value: ip[0], maxLength: 3 }, { value: ip[1], maxLength: 3 }, { value: ip[2], maxLength: 3 }, { value: ip[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'ip')} />
+                                inputs={[{ value: ipv4[0], maxLength: 3 }, { value: ipv4[1], maxLength: 3 }, { value: ipv4[2], maxLength: 3 }, { value: ipv4[3], maxLength: 3 }]}
+                                onChange={value => this.onChange(value, 'ipv4')} />
                         </FormItem>
                         <label>子网掩码</label>
                         <FormItem style={{ width: 320 }}>
                             <InputGroup size="small"
-                                inputs={[{ value: netmask[0], maxLength: 3 }, { value: netmask[1], maxLength: 3 }, { value: netmask[2], maxLength: 3 }, { value: netmask[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'netmask')} />
+                                inputs={[{ value: mask[0], maxLength: 3 }, { value: mask[1], maxLength: 3 }, { value: mask[2], maxLength: 3 }, { value: mask[3], maxLength: 3 }]}
+                                onChange={value => this.onChange(value, 'mask')} />
                         </FormItem>
                     </section>
                     <section className="content-item">
@@ -137,19 +137,19 @@ export default class Lan extends React.Component {
                         <label style={{ marginTop: 24 }}>开始IP地址</label>
                         <FormItem style={{ width: 320 }}>
                             <InputGroup size="small"
-                                inputs={[{ value: startIp[0], maxLength: 3 }, { value: startIp[1], maxLength: 3 }, { value: startIp[2], maxLength: 3 }, { value: startIp[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'startIp')} />
+                                inputs={[{ value: startip[0], maxLength: 3 }, { value: startip[1], maxLength: 3 }, { value: startip[2], maxLength: 3 }, { value: startip[3], maxLength: 3 }]}
+                                onChange={value => this.onChange(value, 'startip')} />
                         </FormItem>
                         <label>结束IP地址</label>
                         <FormItem style={{ width: 320 }}>
                             <InputGroup size="small"
-                                inputs={[{ value: endIp[0], maxLength: 3 }, { value: endIp[1], maxLength: 3 }, { value: endIp[2], maxLength: 3 }, { value: endIp[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'endIp')} />
+                                inputs={[{ value: endip[0], maxLength: 3 }, { value: endip[1], maxLength: 3 }, { value: endip[2], maxLength: 3 }, { value: endip[3], maxLength: 3 }]}
+                                onChange={value => this.onChange(value, 'endip')} />
                         </FormItem>
                         <label>地址租期</label>
                         <FormItem showErrorTip={tip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
-                            <Input type="text" value={leaseTime} onChange={value => this.onChange(value, 'leaseTime')} placeholder="请输入租期时间（2～1440）" />
+                            <Input type="text" value={leasetime} onChange={value => this.onChange(value, 'leasetime')} placeholder="请输入租期时间（2～1440）" maxLength="4" />
                             <ErrorTip>{tip}</ErrorTip>
                         </FormItem>
                     </section>
