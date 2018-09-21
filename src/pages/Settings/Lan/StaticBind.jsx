@@ -34,6 +34,7 @@ export default class StaticBind extends React.Component {
     }
 
     selectAdd = () => {
+        this.fetchClientsInfo();
         this.setState({
             visible: true
         });
@@ -97,26 +98,24 @@ export default class StaticBind extends React.Component {
         this.setState({
             loading: true
         });
-        console.log(this.state.onlineList.filter(item => item.checked).map(item => {
-            return {
-                ip: item.address.ip,
-                mac: item.address.mac,
-                note: item.name
-            }
-        }))
 
         let directive = 'DHCPS_RESERVEDIP_ADD', 
             reservedIp = this.state.onlineList.filter(item => item.checked).map(item => {
                 return {
+                    enable: true,
+                    note: item.name,
                     ip: item.address.ip,
-                    mac: item.address.mac,
-                    note: item.name
-                }
+                    mac: item.address.mac.toUpperCase()
+                };
             });
 
         let response = await common.fetchWithCode(
             directive, { method: 'POST', data: { reserved_ip: reservedIp } }
         ).catch(ex => { });
+
+        this.setState({
+            loading: false
+        });
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -124,7 +123,7 @@ export default class StaticBind extends React.Component {
             this.fetchStaticInfo();
 
             this.setState({
-                editLoading: false,
+                visible: false,
                 editShow: false
             })
             return;
@@ -143,19 +142,27 @@ export default class StaticBind extends React.Component {
             case 'add':
                 directive = 'DHCPS_RESERVEDIP_ADD';
                 reservedIp = [{
-                    ip: this.state.editIp,
-                    mac: this.state.editMac,
+                    enable: true,
+                    ip: this.state.editIp.join('.'),
+                    mac: this.state.editMac.join(':').toUpperCase(),
                     note: this.state.editName
                 }];
 
                 break;
             case 'edit':
                 directive = 'DHCPS_RESERVEDIP_MODIFY';
+                let item = this.state.staticLists.find(item => item.index === this.state.editIndex);
                 reservedIp = {
-                    old: this.state.staticLists.find(item => item.index === this.state.editIndex),
+                    old: {
+                        enable: item.enable,
+                        ip: item.ip,
+                        mac: item.mac.toUpperCase(),
+                        note: item.note || 'unknown'
+                    },
                     new: {
-                        ip: this.state.editIp,
-                        mac: this.state.editMac,
+                        enable: true,
+                        ip: this.state.editIp.join('.'),
+                        mac: this.state.editMac.join(':').toUpperCase(),
                         note: this.state.editName
                     }
                 };
@@ -165,10 +172,14 @@ export default class StaticBind extends React.Component {
         let response = await common.fetchWithCode(directive, { method: 'POST', data: { reserved_ip: reservedIp } }
         ).catch(ex => { });
 
+        this.setState({
+            editLoading: false
+        });
+
         let { errcode, message } = response;
         if (errcode == 0) {
+            this.fetchStaticInfo();
             this.setState({
-                editLoading: false,
                 editShow: false
             })
             return;
@@ -192,23 +203,25 @@ export default class StaticBind extends React.Component {
     }
 
     fetchStaticInfo = async () => {
-        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' }, { handleError: true })
+        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' })
         let { errcode, data, message } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
             this.setState({
                 staticLists: reserved_ip_list.map(item => {
-                    return Object.assign({ state: '1' }, item);
+                    return Object.assign({}, item);
                 })
             });
+
+            return;
         }
 
-        Modal.error({ title: '获取静态地址分配指令异常', message });
+        Modal.error({ title: '获取静态地址列表指令异常', message });
     }
 
     fetchClientsInfo = async () => {
-        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' }, { handleError: true })
-        let { errcode, data, message } = response;
+        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
+        let { errcode, message } = response;
         if (errcode == 0) {
             const logoMap = {
                 '2.4g': 'wifi',
@@ -217,11 +230,20 @@ export default class StaticBind extends React.Component {
                 'wired': 'logo',
             };
 
-            let { data } = data[0].result;
+            let { data } = response.data[0].result;
+
+            // filter clients in dhcp static list
+            let restClients = data.filter(item => {
+                let mac = item.mac.toUpperCase();
+                return !!!(this.state.staticLists.find(client => {
+                    return (mac == client.mac.toUpperCase());
+                }));
+            });
+
             this.setState({
-                onlineList: data.map(item => {
+                onlineList: restClients.map(item => {
                     return {
-                        logo: item.wifi_mode,
+                        logo: logoMap[item.wifi_mode],
                         name: item.hostname,
                         address: { ip: item.ip, mac: item.mac },
                         checked: false
@@ -230,13 +252,12 @@ export default class StaticBind extends React.Component {
             });
             return;
         }
-
+    
         Modal.error({ title: '获取客户端列表指令异常', message });
     }
 
     componentDidMount() {
         this.fetchStaticInfo();
-        this.fetchClientsInfo();
     }
 
     render() {
@@ -257,11 +278,11 @@ export default class StaticBind extends React.Component {
             width: 120
         }, {
             title: '状态',
-            dataIndex: 'state',
+            dataIndex: 'enable',
             width:70,
-            render: state => (
+            render: enable => (
                 <span>
-                    {state == 0 ? (<label style={{ color: '#D33419' }}>失效</label>) : (<label>有效</label>)}
+                    {!enable ? (<label style={{ color: '#D33419' }}>失效</label>) : (<label>有效</label>)}
                 </span>
             )
         }, {
@@ -331,7 +352,7 @@ export default class StaticBind extends React.Component {
                     }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         style={{height:360, overflowY: 'auto'}}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备在线~" }} />
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />
                 </Modal>
                 <Modal title={editType === 'edit' ? '编辑静态地址' : '添加静态地址'}
                     cancelText="取消" okText={editType === 'edit' ? '保存' : '添加'}
