@@ -2,12 +2,7 @@ import React from 'react';
 import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
-import { withRouter, NavLink, Route, Redirect, Switch} from "react-router-dom";
-
-import Home from '../../pages/Home';
-import Settings from '../../pages/Settings';
-import Advance from '../../pages/Advance';
-
+import { withRouter, NavLink } from "react-router-dom";
 
 class PrimaryHeader extends React.Component {
 	constructor(props) {
@@ -77,14 +72,6 @@ class PrimaryHeader extends React.Component {
                         }
 					</ul>
 				</SubLayout>
-                <article>
-                        <Switch>
-                            <Route path={`${match.path}home`} component={Home} />
-                            <Route path={`${match.path}settings`} component={Settings} />
-                            <Route path={`${match.path}advance`} component={Advance} />
-                            <Redirect from={match.path} to={`${match.path}home`}></Redirect>
-                        </Switch>
-                </article>
 			</div>
 		);
 	}
