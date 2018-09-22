@@ -2,7 +2,7 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button } from 'antd'
+import { Button, Table } from 'antd'
 
 import CustomIcon from '~/components/Icon';
 const {FormItem, Input,InputGroup} = Form;
@@ -24,6 +24,34 @@ export default class Bandwidth extends React.PureComponent {
     
     render(){
         const {bandvalue, bandenable} = this.state;
+        const columns = [{
+            title : '设备类型',
+            dataIndex : 'type'
+        },{
+            title : '带宽分配优先级',
+            dataIndex : 'priority'
+        },{
+            title : '最低保证比例',
+            dataIndex : 'percent'
+        }]
+
+        const data = [{
+            key : '1',
+            type : '商米设备',
+            priority : '高',
+            percent : '20'
+        },{
+            key : '2',
+            type : '优先设备',
+            priority : '中',
+            percent : '20'
+        },{
+            key : '3',
+            type : '普通设备',
+            priority : '低',
+            percent : '20'
+        }]
+
         return (
             <div style={{paddingLeft : 60}}>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
@@ -34,12 +62,13 @@ export default class Bandwidth extends React.PureComponent {
                 <section className="band-value">
                     <label className="band-size">{bandvalue}
                         <span className="band-unit">Mbps</span>
-                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon type="wifiset"/></span></span>
+                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
                     </label>
                     <label className="band-line">|</label> 
-                    <label className="band-size">{bandvalue}
+                    <label className="band-size">
+                        <span size={24}>{bandvalue}</span>
                         <span className="band-unit">Mbps</span>
-                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon type="wifiset"/></span></span>
+                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
                     </label>
                 </section>
                 <section style={{margin:"20px 20px 20px 0"}}>
@@ -51,7 +80,7 @@ export default class Bandwidth extends React.PureComponent {
                         <PanelHeader title="网速智能分配" checkable={true} onChange={this.OnBandEnable}/>
                     </section>
                     {
-                        bandenable ?  <Bandon /> : <Bandclose />
+                        bandenable ?  <Bandon columns={columns} data={data}/> : <Bandclose />
                     }
                 </Form>
             </div>
@@ -59,15 +88,12 @@ export default class Bandwidth extends React.PureComponent {
     }
 };
 
-
 const Bandclose = props => {
     return (
         <p>"网速智能分配"启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。</p>
-    )
+     )
 }
 
 const Bandon = props => {
-    return [
-        
-    ]
+     return (<Table columns={props.columns} bordered={true} dataSource={props.data} />)
 }
