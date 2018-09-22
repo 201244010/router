@@ -115,8 +115,15 @@ export default class Lan extends React.Component {
     }
 
     submit = async () => {
-        this.summitLan();
-        this.summitDhcp();
+        await Modal.warning({
+            title: '提示',
+            content: '局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效',
+            okText: '知道了',
+            onOk:() => {
+                this.summitLan();
+                this.summitDhcp();
+            }
+        });
     }
 
     async fetchLanInfo() {
@@ -136,11 +143,6 @@ export default class Lan extends React.Component {
     }
 
     summitLan = async () => {
-        await Modal.warning({
-            title: '提示',
-            content: '局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效',
-        });
-
         this.lanInfo.ipv4 = this.state.ipv4.join('.');
         this.lanInfo.mask = this.state.mask.join('.');
 
