@@ -18,6 +18,7 @@ export default class SetWan extends React.PureComponent {
         detect : true,
         type : 'pppoe', // pppoe | dhcp | static
         showNetWorkStatus : false,
+        wan_linkstate: false,
 
         // pppoe
         pppoeAccount : '',
@@ -150,7 +151,8 @@ export default class SetWan extends React.PureComponent {
             }
             return;
         }
-        Modal.error({ title : 'WAN口设置失败', content :  message == "ERRCODE_PARAM_VALUE_INVALID" ? "wan口的设置参数不合法" : "" });
+        Modal.error({ title : 'WAN口设置失败', content :  message == "ERRCODE_PARAM_VALUE_INVALID" ? "wan口的设置参数不合法" : "" ,onOk:()=>{this.setState({loading : false})}});
+        
     }
 
     // 校验参数
@@ -181,10 +183,49 @@ export default class SetWan extends React.PureComponent {
         return true;
     }
 
-    dialDetect = async () => {  
+    //GetLinkState = async () =>{
+        
+        //网线插拔状态
+        //this.setState({wan_linkstate : response.data.wan_linkstate});
+        
+    //}
+    
+
+    // dialDetect = async () => {
+    //     common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
+    //         this.setState({wan_linkstate : false});
+    //         common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
+    //         let response =  common.fetchWithCode(
+    //             'WANWIDGET_DIALDETECT_GET', 
+    //             { method : 'POST' },
+    //             { 
+    //                 loop : true, 
+    //                 interval : 2000,
+    //                 pending : res => res.data[0].result.dialdetect.status === 'detecting', 
+    //                 stop : () => this.stop
+    //             }
+    //         )
+    //         this.setState({detect : false});
+    //         const { errcode, data, message } = response;
+    //         if(errcode == 0){
+    //             let { dialdetect } = data[0].result;
+    //             let { dial_type } = dialdetect;
+    //             dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
+    //             this.setState({ 
+    //                 type :  dial_type, 
+    //                 disabled : dial_type == 'dhcp' ? false : true 
+    //             });
+    //             return;
+    //         }
+    //         Modal.error({ title: '上网方式检查', content: message });
+    //     });
+    
+    dialDetect = async () => {
+        common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
+        this.setState({wan_linkstate : false});
         common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-        let response = await common.fetchWithCode(
-            'WANWIDGET_DIALDETECT_GET', 
+        let response =  common.fetchWithCode(
+          'WANWIDGET_DIALDETECT_GET', 
             { method : 'POST' },
             { 
                 loop : true, 
@@ -198,14 +239,45 @@ export default class SetWan extends React.PureComponent {
         if(errcode == 0){
             let { dialdetect } = data[0].result;
             let { dial_type } = dialdetect;
-            dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-            this.setState({ 
-                type :  dial_type, 
-                disabled : dial_type == 'dhcp' ? false : true 
-            });
-            return;
-        }
-        Modal.error({ title: '上网方式检查', content: message });
+                dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
+                this.setState({ 
+                   type :  dial_type, 
+                   disabled : dial_type == 'dhcp' ? false : true 
+                 });
+                return;
+            }
+            Modal.error({ title: '上网方式检查', content: message });
+        });
+    }
+
+    dialDetect = async () => {
+            this.setState({wan_linkstate : false});
+            common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
+            let response =  common.fetchWithCode(
+                'WANWIDGET_DIALDETECT_GET', 
+                { method : 'POST' },
+                { 
+                    loop : true, 
+                    interval : 2000,
+                    pending : res => res.data[0].result.dialdetect.status === 'detecting', 
+                    stop : () => this.stop
+                }
+            )
+            this.setState({detect : false});
+            const { errcode, data, message } = response;
+            if(errcode == 0){
+                let { dialdetect } = data[0].result;
+                let { dial_type } = dialdetect;
+                dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
+                this.setState({ 
+                    type :  dial_type, 
+                    disabled : dial_type == 'dhcp' ? false : true 
+                });
+                return;
+            }
+            Modal.error({ title: '上网方式检查', content: message });
+    
+        
     }
 
     getNetInfo = async ()=>{
@@ -252,9 +324,14 @@ export default class SetWan extends React.PureComponent {
             showNetWorkStatus : false
         });
     }
-
+    OnwanLinkState = () =>{
+        this.setState({
+            wan_linkstate:true
+        })
+    }
+    
     render(){
-        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
+        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wan_linkstate} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置上网参数</h2> 
@@ -266,6 +343,9 @@ export default class SetWan extends React.PureComponent {
                 </div>
                 {/* 显示网络连接状态 */}
                 {
+                    !wan_linkstate?
+                        (<div className={classnames(["ui-center speed-test"])}> <LinkState dialDetect={this.dialDetect} OnwanLinkState={this.OnwanLinkState} /></div>)
+                        :
                     showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
                             <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
@@ -318,11 +398,23 @@ export default class SetWan extends React.PureComponent {
                             </Form>
                         </div>
                     )
-                }
                 
+                }
             </div>
         )
     }
+};
+const LinkState = props =>{
+    return(
+        <div>
+            <CustomIcon type="mistake" size="large" />
+            <h3>请检查你的网线是否插好</h3>
+            <Button type="primary" onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
+            <div className="help">
+                    <a href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过，直接设置</a>
+            </div>
+        </div>
+    );
 };
 
 const NetStatus = props => {
