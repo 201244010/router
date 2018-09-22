@@ -60,7 +60,7 @@ export default class Advance extends React.PureComponent {
                         <Route path={`${match.path}/blacklist`} component={Blacklist} />
                         <Route path={`${match.path}/auth`} component={Auth} />
                         <Route path={`${match.path}/systemsetup`} component={Systemsetup} />
-                        <Redirect from={match.path} to={`${match.path}/networkSpeed`}></Redirect>
+                        <Redirect from={match.path} to={`${match.path}/bandwidth`}></Redirect>
                     </Switch>
                 </article>
             </SubLayout>
