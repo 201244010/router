@@ -34,7 +34,7 @@ export default class Bandwidth extends React.PureComponent {
             title : '最低保证比例',
             dataIndex : 'percent'
         }]
-
+    
         const data = [{
             key : '1',
             type : '商米设备',
@@ -50,7 +50,7 @@ export default class Bandwidth extends React.PureComponent {
             type : '普通设备',
             priority : '低',
             percent : '20'
-        }]
+        }]  
 
         return (
             <div style={{paddingLeft : 60}}>
@@ -65,8 +65,7 @@ export default class Bandwidth extends React.PureComponent {
                         <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
                     </label>
                     <label className="band-line">|</label> 
-                    <label className="band-size">
-                        <span size={24}>{bandvalue}</span>
+                    <label className="band-size">{bandvalue}
                         <span className="band-unit">Mbps</span>
                         <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
                     </label>
@@ -95,5 +94,5 @@ const Bandclose = props => {
 }
 
 const Bandon = props => {
-     return (<Table columns={props.columns} bordered={true} dataSource={props.data} />)
+     return (<Table columns={props.columns} dataSource={props.data} />)
 }
