@@ -20,7 +20,7 @@ export default class PanelHeader extends React.PureComponent {
             <ul className="panel-hd ui-tiled">
                 <li><span>{title}</span></li>
                 {
-                    checkable ? <li><Switch defaultChecked={checked} onChange={this.onChange} /></li> : ''
+                    checkable ? <li><Switch checked={checked} onChange={this.onChange} /></li> : ''
                 }
             </ul>
         );
