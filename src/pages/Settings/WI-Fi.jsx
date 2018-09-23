@@ -4,6 +4,7 @@ import { Checkbox, Select, Button, Radio, Modal } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
+import { runInDebugContext } from 'vm';
 
 const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
@@ -18,14 +19,16 @@ export default class WIFI extends React.Component {
         hostSsidPasswrod : '',
         hostSsidPasswordDisabled : false,
         guestSsid : '客Wi-Fi',
-        guestSsidPassword:'',
-        guestSsidPasswordDisabled:false,
+        guestStaticPassword : '',
+        guestDynamicPassword : '',
+        guestPassword:'',
+        guestPasswordDisabled:false,
         pwdForbid:false,
         guestPwdForbid:false,
         //merge : true,
         encryption : '',
         way:2,
-        PWDType:'none',
+        PWDType:'static',
         channelWidth:11,
         signal:11,
         hostEnable:true,
@@ -33,7 +36,7 @@ export default class WIFI extends React.Component {
         hiddenType:false,
         guestEnable:true,
         disabledType2:false,
-        timeCyc : '456',
+        period : '456',
         displayType:'none',
         //2.4G
         host24Enable:true,
@@ -104,7 +107,7 @@ export default class WIFI extends React.Component {
     onPWDTypeChange = e =>{
         this.setState({
             PWDType:e.target.value,
-            displayType:e.target.value
+            displayType:e.target.value == 'static'? 'none' : 'block'
         });
     }
 
@@ -130,7 +133,7 @@ export default class WIFI extends React.Component {
         this.setState({
             guestEnable:type,
             disabledType2:!type,
-            guestSsidPasswordDisabled:!type,
+            guestPasswordDisabled:!type,
         });
         if(type==false){
             this.setState({tipGuest:''});
@@ -153,7 +156,7 @@ export default class WIFI extends React.Component {
     onGuestPwdForbidChange = e =>{
         this.setState({
             guestPwdForbid:e.target.checked,
-            guestSsidPasswordDisabled:e.target.checked
+            guestPasswordDisabled:e.target.checked
         });
     }
      
@@ -242,36 +245,37 @@ export default class WIFI extends React.Component {
     }
 
     submit = async ()=> {
-        this.hostWireLess.band_division = this.state.channelType;
+        this.hostWireLess.band_division = this.state.channelType == true? '1' : '0';
         this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.password = btoa(this.state.guestSsidPassword);
+        this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
+        //this.guestWireLess.dynamic_password = btoa(this.state.guestDynamicPassword);
+        //this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword); 
         //pwdForbid : 是否设置密码
         //merge : true,
         //way:2,
-        //PWDType:动态、静态密码,
+        this.guestWireLess.password_type = this.state.PWDType,
         //channelWidth:11,
         //signal:11,
-        this.guestWireLess.enable = this.state.guestEnable;         
-        //timeCyc : guest wifi 密码更换周期,
-        //displayType:是否显示动态密码的地方，与PWDType有关
+        this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
+        this.guestWireLess.period = this.state.period,
 
         //2.4G
-        this.hostWireLess.band_2g.enable = this.state.host24Enable;
+        this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
         this.hostWireLess.band_2g.ssid = this.state.hostSsid24;
         this.hostWireLess.band_2g.password = btoa(this.state.hostSsid24Passwrod);
-        this.hostWireLess.band_2g.hide_ssid = this.state.hide_ssid24;
+        this.hostWireLess.band_2g.hide_ssid = this.state.hide_ssid24 == true? '1' : '0';
         this.hostWireLess.band_2g.encryption = this.state.encryption24;
-        this.hostWireLess.band_2g.htmode = this.state. htmode24;
+        this.hostWireLess.band_2g.htmode = this.state.htmode24;
         this.hostWireLess.band_2g.channel = this.state.channel24;
         //signal24:信号强弱
 
         //5G
         // this.hostWireLess.band_5g = this.state.band_5g;
         //Object.assign(this.hostWireLess.band_5g, this.state.band_5g);
-        this.hostWireLess.band_5g.enable = this.state.host5Enable;
+        this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
         this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
         this.hostWireLess.band_5g.password = btoa(this.state.hostSsid5Passwrod);
-        this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5;
+        this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
         this.hostWireLess.band_5g.encryption = this.state.encryption5;
         this.hostWireLess.band_5g.htmode = this.state.htmode5;
         this.hostWireLess.band_5g.channel = this.state. channel5;
@@ -313,51 +317,53 @@ export default class WIFI extends React.Component {
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
             this.setState({
-                channelType : this.hostWireLess.band_division,
+                channelType : this.hostWireLess.band_division == '1'? true : false,
                 hostSsid : this.hostWireLess.band_2g.ssid,
                 hostSsidPasswrod : atob(this.hostWireLess.band_2g.password),
-                hostSsidPasswordDisabled : !this.hostWireLess.band_2g.enable,
+                hostSsidPasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
                 guestSsid : this.guestWireLess.ssid,
-                guestSsidPassword : atob(this.guestWireLess.password),
-                guestSsidPasswordDisabled : !this.guestWireLess.enable,
+                guestStaticPassword : atob(this.guestWireLess.static_password),
+                //guestDynamicPassword : atob(this.guestWireLess.dynamic_password),
+                //guestPassword : this.guestWireLess.password_type == 'static'? atob(this.guestWireLess.static_password):atob(this.guestWireLess.dynamic_password),
+                guestPasswordDisabled : this.guestWireLess.enable == '1'? false : true,
+                PWDType : this.guestWireLess.password_type,
+                displayType:this.guestWireLess.password_type == 'static'? 'none' : 'block',
                 //pwdForbid : 是否设置密码
                 //merge : true,
                 encryption : this.hostWireLess.band_2g.encryption,
                 //way:2,
-                //PWDType:动态、静态密码,
                 //channelWidth:11,
                 //signal:11,
-                hostEnable : this.hostWireLess.band_2g.enable,
-                disabledType : !this.hostWireLess.band_2g.enable,
-                hiddenType : !this.hostWireLess.band_2g.enable,
-                guestEnable : this.guestWireLess.enable,
-                disabledType2 : !this.guestWireLess.enable,
-                //timeCyc : guest wifi 密码更换周期,
-                //displayType:是否显示动态密码的地方，与PWDType有关
-
+                hostEnable : this.hostWireLess.band_2g.enable == '1'? true : false,
+                disabledType : this.hostWireLess.band_2g.enable == '1'? false : true,
+                hiddenType : this.hostWireLess.band_2g.enable == '1'? false : true,
+                guestEnable : this.guestWireLess.enable == '1'? true : false,
+                disabledType2 : this.guestWireLess.enable == '1'? false : true,
+                period : this.guestWireLess.period,
+                
                 //2.4G
-                host24Enable : this.hostWireLess.band_2g.enable,
+                host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
                 hostSsid24Passwrod : atob(this.hostWireLess.band_2g.password),
-                hostSsid24PasswordDisabled : !this.hostWireLess.band_2g.enable,
-                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid,
+                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
+                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
                 encryption24 : this.hostWireLess.band_2g.encryption,
                 htmode24 : this.hostWireLess.band_2g.htmode,
                 channel24 : this.hostWireLess.band_2g.channel,
                 //signal24:信号强弱
-                disabledType24 : !this.hostWireLess.band_2g.enable,
+                disabledType24 : this.hostWireLess.band_2g.enable == '1'? false : true,
 
                 //5G
-                host5Enable : this.hostWireLess.band_5g.enable,
+                host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
                 hostSsid5Passwrod : atob(this.hostWireLess.band_5g.password),
-                hostSsid5PasswordDisabled : !this.hostWireLess.band_5g.enable,
-                hide_ssid5 : this.hostWireLess.band_5g.hide_ssid,
+                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
+                hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
                 htmode5 : this.hostWireLess.band_5g.htmode,
                 channel5 : this.hostWireLess.band_5g.channel,
                 //signal5:信号强弱
-                disabledType5 : !this.hostWireLess.band_5g.enable,
+                disabledType5 : this.hostWireLess.band_5g.enable == '1'? false : true,
 
                 //more
                 moreSettingType:'pulldown',
@@ -381,7 +387,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestSsidPassword,pwdForbid,guestSsidPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,timeCyc,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,signal24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,signal5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
+        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestStaticPassword,guestDynamicPassword,guestPassword,pwdForbid,guestPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,signal24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,signal5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -411,10 +417,10 @@ export default class WIFI extends React.Component {
                         <label>加密方式</label>
                         <Select value={encryption} style={{ width: 320 }} disabled={disabledType} onChange={(value)=>this.onChange('encryption',value)}>
                             <Option value={'none'}>无</Option>
-                            <Option value={'psk2+ccmp'}>1</Option>
-                            <Option value={'psk2+ccmp+tkip'}>2</Option>
-                            <Option value={'psk-mixed/ccmp'}>3</Option>
-                            <Option value={'psk-mixed/ccmp+tkip'}>4</Option>
+                            <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                            <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                            <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                            <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
                         </Select>
                         </div>  
                     </section>
@@ -446,10 +452,10 @@ export default class WIFI extends React.Component {
                                 <label>加密方式</label>
                                 <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24}>
                                     <Option value={'none'}>无</Option>
-                                    <Option value={'psk2+ccmp'}>1</Option>
-                                    <Option value={'psk2+ccmp+tkip'}>2</Option>
-                                    <Option value={'psk-mixed/ccmp'}>3</Option>
-                                    <Option value={'psk-mixed/ccmp+tkip'}>4</Option>
+                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
                                 </Select>
                                 <label>频道带宽</label>
                                 <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24}>
@@ -460,11 +466,21 @@ export default class WIFI extends React.Component {
                                 </Select>
                                 <label>无线信道</label> 
                                 <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24}>
-                                    <Option value={'auto'}>自动(当前信道2))</Option>
-                                    <Option value={'ban1'}>信道1</Option>
-                                    <Option value={'ban2'}>信道2</Option>
-                                    <Option value={'ban3'}>信道3</Option>
-                                    <Option value={'ban4'}>信道4</Option>
+                                    <Option value={'auto'}>自动(当前信道+{channel24})</Option>
+                                    <Option value={'1'}>信道1</Option>
+                                    <Option value={'2'}>信道2</Option>
+                                    <Option value={'3'}>信道3</Option>
+                                    <Option value={'4'}>信道4</Option>
+                                    <Option value={'5'}>信道5</Option>
+                                    <Option value={'6'}>信道6</Option>
+                                    <Option value={'7'}>信道7</Option>
+                                    <Option value={'8'}>信道8</Option>
+                                    <Option value={'9'}>信道9</Option>
+                                    <Option value={'10'}>信道10</Option>
+                                    <Option value={'11'}>信道11</Option>
+                                    <Option value={'12'}>信道12</Option>
+                                    <Option value={'13'}>信道13</Option>
+                                    <Option value={'14'}>信道14</Option>
                                 </Select>
                                 <label>信号强度</label>
                                 <Select value={signal24} style={{ width: 320 }} onChange={(value)=>this.onChange('signal24',value)} disabled={disabledType24}>
@@ -497,10 +513,10 @@ export default class WIFI extends React.Component {
                                 <label>加密方式</label>
                                 <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
                                     <Option value={'none'}>无</Option>
-                                    <Option value={'psk2+ccmp'}>1</Option>
-                                    <Option value={'psk2+ccmp+tkip'}>2</Option>
-                                    <Option value={'psk-mixed/ccmp'}>3</Option>
-                                    <Option value={'psk-mixed/ccmp+tkip'}>4</Option>
+                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
                                 </Select>
                                 <label>频道带宽</label>
                                 <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
@@ -511,11 +527,21 @@ export default class WIFI extends React.Component {
                                 </Select>
                                 <label>无线信道</label> 
                                 <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
-                                    <Option value={'auto'}>自动(当前信道2))</Option>
-                                    <Option value={'ban1'}>信道1</Option>
-                                    <Option value={'ban2'}>信道2</Option>
-                                    <Option value={'ban3'}>信道3</Option>
-                                    <Option value={'ban4'}>信道4</Option>
+                                    <Option value={'auto'}>自动(当前信道+{channel5})</Option>
+                                    <Option value={'1'}>信道1</Option>
+                                    <Option value={'2'}>信道2</Option>
+                                    <Option value={'3'}>信道3</Option>
+                                    <Option value={'4'}>信道4</Option>
+                                    <Option value={'5'}>信道5</Option>
+                                    <Option value={'6'}>信道6</Option>
+                                    <Option value={'7'}>信道7</Option>
+                                    <Option value={'8'}>信道8</Option>
+                                    <Option value={'9'}>信道9</Option>
+                                    <Option value={'10'}>信道10</Option>
+                                    <Option value={'11'}>信道11</Option>
+                                    <Option value={'12'}>信道12</Option>
+                                    <Option value={'13'}>信道13</Option>
+                                    <Option value={'14'}>信道14</Option>
                                 </Select>
                                 <label>信号强度</label>
                                 <Select value={signal5} style={{ width: 320 }} onChange={(value)=>this.onChange('signal5',value)} disabled={disabledType5}>
@@ -536,32 +562,40 @@ export default class WIFI extends React.Component {
                         </FormItem>
                         <label>密码方式</label>
                         <RadioGroup onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
-                            <Radio style={{display:'inline-block'}} value={'none'}>静态密码</Radio>
-                            <Radio style={{display:'inline-block'}} value={'block'}>动态密码</Radio>
+                            <Radio style={{display:'inline-block'}} value={'static'}>静态密码</Radio>
+                            <Radio style={{display:'inline-block'}} value={'dynamic'}>动态密码</Radio>
                         </RadioGroup>
                         <section style={{display:displayType}}>
                             <label>动态变更周期</label>
+                            <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" value={timeCyc} onChange={(value)=>this.onChange('timeCyc',value)} disabled={disabledType2} />
+                                <Input type="text" value={period} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>    
                             </FormItem>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1}}>小时</span>
+                            </div>
                             <ul className="ui-tiled compact">
                                 <li><label>当前密码是：</label></li>
-                                <li><p>123456</p></li>
-                            </ul>    
+                                <li><p value={guestDynamicPassword}>123456</p></li>
+                            </ul> 
+                            <span style={{opacity:'0.5'}}>如您有配套的商米收银设备，客人Wi-Fi名称和密码将打印在小票上</span>   
                         </section>
                         <section style={{display:displayType=='none'?'block':'none'}}>
                             <ul className="ui-tiled compact">
                                 <li><label>Wi-Fi密码</label></li>
                                 <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>不设密码</Checkbox></li>
                             </ul>
+                            <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
-                                <Input type="password" disabled={guestSsidPasswordDisabled} value={guestSsidPassword} onChange={(value)=>this.onChange('guestSsidPassword',value)} />
+                                <Input type="password" disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                             </FormItem>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，客人Wi-Fi名称和密码将打印在小票上</span>
+                            </div>
                         </section>  
                     </section>
                     <section className="wifi-setting-save">
                         <Button className="wifi-setting-button" type="primary" onClick={this.submit}>保存</Button>
                     </section>
+                    <span value={guestPassword}></span>
                 </Form>
             </div>
         );

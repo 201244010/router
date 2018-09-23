@@ -199,7 +199,6 @@ export default class SetWan extends React.PureComponent {
             ).then((response)=>{
                 this.setState({detect : false});
                 const { errcode, data, message } = response;
-                console.log(response);
                 if(errcode == 0){
                     let { dialdetect } = data[0].result;
                     let { dial_type } = dialdetect;
@@ -210,7 +209,6 @@ export default class SetWan extends React.PureComponent {
                         });
                         return;
                 }else{
-                    console.log(errcode);
                     Modal.error({ title: '上网方式检查', content: message });
                 }
             });        
