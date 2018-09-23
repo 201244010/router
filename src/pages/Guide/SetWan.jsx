@@ -182,43 +182,6 @@ export default class SetWan extends React.PureComponent {
         }
         return true;
     }
-
-    //GetLinkState = async () =>{
-        
-        //网线插拔状态
-        //this.setState({wan_linkstate : response.data.wan_linkstate});
-        
-    //}
-    
-
-    // dialDetect = async () => {
-    //     common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
-    //         this.setState({wan_linkstate : false});
-    //         common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-    //         let response =  common.fetchWithCode(
-    //             'WANWIDGET_DIALDETECT_GET', 
-    //             { method : 'POST' },
-    //             { 
-    //                 loop : true, 
-    //                 interval : 2000,
-    //                 pending : res => res.data[0].result.dialdetect.status === 'detecting', 
-    //                 stop : () => this.stop
-    //             }
-    //         )
-    //         this.setState({detect : false});
-    //         const { errcode, data, message } = response;
-    //         if(errcode == 0){
-    //             let { dialdetect } = data[0].result;
-    //             let { dial_type } = dialdetect;
-    //             dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-    //             this.setState({ 
-    //                 type :  dial_type, 
-    //                 disabled : dial_type == 'dhcp' ? false : true 
-    //             });
-    //             return;
-    //         }
-    //         Modal.error({ title: '上网方式检查', content: message });
-    //     });
     
     dialDetect = async () => {
         common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
@@ -253,36 +216,6 @@ export default class SetWan extends React.PureComponent {
             });        
         });
     }
-
-    // dialDetect = async () => {
-    //         this.setState({wan_linkstate : false});
-    //         common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-    //         let response =  common.fetchWithCode(
-    //             'WANWIDGET_DIALDETECT_GET', 
-    //             { method : 'POST' },
-    //             { 
-    //                 loop : true, 
-    //                 interval : 2000,
-    //                 pending : res => res.data[0].result.dialdetect.status === 'detecting', 
-    //                 stop : () => this.stop
-    //             }
-    //         )
-    //         this.setState({detect : false});
-    //         const { errcode, data, message } = response;
-    //         if(errcode == 0){
-    //             let { dialdetect } = data[0].result;
-    //             let { dial_type } = dialdetect;
-    //             dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-    //             this.setState({ 
-    //                 type :  dial_type, 
-    //                 disabled : dial_type == 'dhcp' ? false : true 
-    //             });
-    //             return;
-    //         }
-    //         Modal.error({ title: '上网方式检查', content: message });
-    
-        
-    // }
 
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
@@ -410,7 +343,7 @@ export default class SetWan extends React.PureComponent {
 };
 const LinkState = props =>{
     return(
-        <div style={{width:260,textAlign:'center'}}>
+        <div style={{width:260,textAlign:'center',marginTop:-15}}>
             <CustomIcon type="mistake" size="large" color="#d33519"/>
             <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
             <Button type="primary" onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
