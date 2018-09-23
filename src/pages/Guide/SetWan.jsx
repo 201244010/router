@@ -222,39 +222,10 @@ export default class SetWan extends React.PureComponent {
     
     dialDetect = async () => {
         common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
-        this.setState({wan_linkstate : false});
-        common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-        let response =  common.fetchWithCode(
-          'WANWIDGET_DIALDETECT_GET', 
-            { method : 'POST' },
-            { 
-                loop : true, 
-                interval : 2000,
-                pending : res => res.data[0].result.dialdetect.status === 'detecting', 
-                stop : () => this.stop
-            }
-        )
-        this.setState({detect : false});
-        const { errcode, data, message } = response;
-        if(errcode == 0){
-            let { dialdetect } = data[0].result;
-            let { dial_type } = dialdetect;
-                dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-                this.setState({ 
-                   type :  dial_type, 
-                   disabled : dial_type == 'dhcp' ? false : true 
-                 });
-                return;
-            }
-            Modal.error({ title: '上网方式检查', content: message });
-        });
-    }
-
-    dialDetect = async () => {
             this.setState({wan_linkstate : false});
             common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-            let response =  common.fetchWithCode(
-                'WANWIDGET_DIALDETECT_GET', 
+            common.fetchWithCode(
+            'WANWIDGET_DIALDETECT_GET', 
                 { method : 'POST' },
                 { 
                     loop : true, 
@@ -262,23 +233,56 @@ export default class SetWan extends React.PureComponent {
                     pending : res => res.data[0].result.dialdetect.status === 'detecting', 
                     stop : () => this.stop
                 }
-            )
-            this.setState({detect : false});
-            const { errcode, data, message } = response;
-            if(errcode == 0){
-                let { dialdetect } = data[0].result;
-                let { dial_type } = dialdetect;
-                dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-                this.setState({ 
-                    type :  dial_type, 
-                    disabled : dial_type == 'dhcp' ? false : true 
-                });
-                return;
-            }
-            Modal.error({ title: '上网方式检查', content: message });
+            ).then((response)=>{
+                this.setState({detect : false});
+                const { errcode, data, message } = response;
+                console.log(response);
+                if(errcode == 0){
+                    let { dialdetect } = data[0].result;
+                    let { dial_type } = dialdetect;
+                        dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
+                        this.setState({ 
+                        type :  dial_type, 
+                        disabled : dial_type == 'dhcp' ? false : true 
+                        });
+                        return;
+                }else{
+                    console.log(errcode);
+                    Modal.error({ title: '上网方式检查', content: message });
+                }
+            });        
+        });
+    }
+
+    // dialDetect = async () => {
+    //         this.setState({wan_linkstate : false});
+    //         common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
+    //         let response =  common.fetchWithCode(
+    //             'WANWIDGET_DIALDETECT_GET', 
+    //             { method : 'POST' },
+    //             { 
+    //                 loop : true, 
+    //                 interval : 2000,
+    //                 pending : res => res.data[0].result.dialdetect.status === 'detecting', 
+    //                 stop : () => this.stop
+    //             }
+    //         )
+    //         this.setState({detect : false});
+    //         const { errcode, data, message } = response;
+    //         if(errcode == 0){
+    //             let { dialdetect } = data[0].result;
+    //             let { dial_type } = dialdetect;
+    //             dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
+    //             this.setState({ 
+    //                 type :  dial_type, 
+    //                 disabled : dial_type == 'dhcp' ? false : true 
+    //             });
+    //             return;
+    //         }
+    //         Modal.error({ title: '上网方式检查', content: message });
     
         
-    }
+    // }
 
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
