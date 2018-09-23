@@ -406,12 +406,12 @@ export default class SetWan extends React.PureComponent {
 };
 const LinkState = props =>{
     return(
-        <div>
-            <CustomIcon type="mistake" size="large" />
-            <h3>请检查你的网线是否插好</h3>
+        <div style={{width:260,textAlign:'center'}}>
+            <CustomIcon type="mistake" size="large" color="#d33519"/>
+            <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
             <Button type="primary" onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
             <div className="help">
-                    <a href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过，直接设置</a>
+                    <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过，直接设置</a>
             </div>
         </div>
     );
