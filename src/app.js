@@ -12,6 +12,8 @@ import Login from './pages/Login';
 import Guide from "./pages/Guide";
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import Advance from './pages/Advance';
+
 
 import { UserInfoContext } from './context';
 
@@ -34,8 +36,8 @@ class PrimaryLayout extends React.Component {
 
     render(){
         const pathname = this.state.pathname;
-        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1;
-        // console.log(pathname, blueBg);
+        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1 || pathname.indexOf('/advance') > -1;
+        console.log(pathname, blueBg);
         const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
             <div className="ui-fullscreen">
@@ -46,7 +48,9 @@ class PrimaryLayout extends React.Component {
                         <Route path="/" exact component={Home} />
                         <Route path="/login" component={Login} />
                         <Route path="/guide" component={Guide} />
+                        <Route path="/home" component={Home} />
                         <Route path="/settings" component={Settings} />
+                        <Route path="/advance" component={Advance} />
                     </Switch>
                     {blueBg ? <PrimaryFooter/> : ""}
                 </div>
