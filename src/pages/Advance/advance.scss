@@ -1,0 +1,34 @@
+.band-value {
+    .band-size {
+        font-size: 34px;
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-top: 30px;
+    }
+    .band-unit {
+        font-size: 12px;
+        display: inline-block;
+        vertical-align: text-top;
+        margin-left: 12px;
+        color:#ADB1B9;
+    }
+    .band-bottom {
+        font-size: 12px;
+        vertical-align: text-bottom;
+        display: inline-block;
+        margin-left: -33px;
+        color : #ADB1B9;
+    }
+    .icon-band {
+        margin-left: 8px;
+    }
+    .band-line {
+        font-size: 40px;
+        display: inline-block;
+        line-height: 40px;
+        height: 40px;
+        margin-left: 30px;
+        margin-right: 30px;
+        color : lightgray;
+    }
+}

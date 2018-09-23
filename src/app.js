@@ -36,8 +36,8 @@ class PrimaryLayout extends React.Component {
 
     render(){
         const pathname = this.state.pathname;
-        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1;
-        // console.log(pathname, blueBg);
+        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1 || pathname.indexOf('/advance') > -1;
+        console.log(pathname, blueBg);
         const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
             <div className="ui-fullscreen">
