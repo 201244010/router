@@ -242,7 +242,7 @@ class InputGroup extends React.Component {
             <div className={classnames(classes)}>
                 {
                     inputs.map( (item, i) => {
-                        const It = <input key={'input-' + i} 
+                        const It = <div><input key={'input-' + i} 
                                         maxLength={item.maxLength}
                                         // defaultValue={item.value} 
                                         value={item.value}
@@ -252,7 +252,7 @@ class InputGroup extends React.Component {
                                         onChange={ e => this.onInputChange(e, i, item)} 
                                         onKeyPress={ this.handleKeyPress }
                                         type='text'
-                                    />;
+                                    /></div>;
                         if(i !== inputs.length - 1){
                             return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
                         }

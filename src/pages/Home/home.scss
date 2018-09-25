@@ -1,0 +1,155 @@
+.main{
+    background-image : linear-gradient(180deg, #2956C6 190px, #f2f3f7 190px);
+    &.blue-bg {
+        background-image : linear-gradient(180deg, #2956C6 190px, #2956C6 0);
+    }
+    .func-list{
+        display: flex;
+        justify-content:space-between;
+        margin:0;
+        li.func-item{
+            flex: 0 0 auto;
+            width: 392px;
+            height: 180px;
+            background: #FFF;
+            border: 1px solid rgba(0,0,0,0.10);
+            border-radius: 8px;
+        }
+    }
+    .online-clinet{
+        font-size: 16px;
+        color: #333C4F;
+        margin: 20px 0 10px;
+    }
+    .online-list{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:space-between;
+        align-items:flex-start;
+        align-content:flex-start;
+        >div {
+            flex: 0 0 auto;
+        }
+        .list-header{
+            font-size: 16px;
+            font-weight: bold;
+            color: #333C4F;
+            position: relative;
+            margin: 10px 10px 20px;
+            .divider{
+                width:4px;
+                height: 20px;
+            }
+            .statistics{
+                font-weight:lighter;
+                color: #150000;
+            }
+            .more{
+                font-weight: lighter;
+                color: #61739D;
+                position: absolute;
+                top: 0;
+                right: 5px;
+            }
+        }
+        .left-list{
+            height: 410px;
+            display: flex;
+            flex-direction: column;
+            justify-content:space-between;
+            .list-content {
+                flex: 0 0 auto;
+                background-color:#FFF;
+                border: 1px solid rgba(0,0,0,0.04);
+                border-radius: 8px;
+                ul{
+                    margin-left: 20px;
+                }
+            }
+            .sunmi-list{
+                width: 804px;
+                height: 150px;
+            }
+            .normal-list{
+                width: 804px;
+                height: 240px;
+            }
+        }
+        .priority-list{
+            width: 392px;
+            height: 410px;
+            background-color:#FFF;
+            border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 8px;
+        }
+        .client-item{
+            color: #9B9B9B;
+            width: 128px;
+            height: 90px;
+            display: inline-block;
+            text-align: center;
+            .icon{
+                width: 50px;
+                height: 50px;
+                margin: 0 auto 5px;
+                border-radius: 50%;
+                border:1px solid #9B9B9B;
+                text-align: center;
+                .ui-icon{
+                    color: #333C4F;
+                    line-height: 50px !important ;
+                    vertical-align: middle;
+                }
+            }
+            .dot{
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+            }
+            p{
+                font-size: 12px;
+                color: #9B9B9B;
+                display: inline-block;
+                width: 90px;
+                margin-left: 2px;
+                margin-bottom: 0;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                vertical-align: bottom;
+            }
+        }
+        & .sunmi-list{
+            .divider{
+                background-color:#FF8F00;
+            }
+            .dot{
+                background-color:#FF8F00;
+            }
+        }
+        & .normal-list{
+            .divider{
+                background-color:#4687FF;
+            }
+            .dot{
+                background-color:#4687FF;
+            }
+        }
+        & .priority-list{
+            .divider{
+                background-color:#87D068;
+            }
+            .dot{
+                background-color:#87D068;
+            }
+        }
+    }
+    footer{
+        color: #ADB1B9;
+        a {
+            color: #ADB1B9;
+            text-decoration: underline;
+        }
+    }
+}
