@@ -35,7 +35,7 @@
             font-weight: bold;
             color: #333C4F;
             position: relative;
-            margin: 10px 10px 15px;
+            margin: 10px 10px 20px;
             .divider{
                 width:4px;
                 height: 20px;
@@ -49,7 +49,7 @@
                 color: #61739D;
                 position: absolute;
                 top: 0;
-                right: 10px;
+                right: 5px;
             }
         }
         .left-list{
@@ -68,11 +68,11 @@
             }
             .sunmi-list{
                 width: 804px;
-                height: 160px;
+                height: 150px;
             }
             .normal-list{
                 width: 804px;
-                height: 230px;
+                height: 240px;
             }
         }
         .priority-list{
@@ -96,6 +96,7 @@
                 border:1px solid #9B9B9B;
                 text-align: center;
                 .ui-icon{
+                    color: #333C4F;
                     line-height: 50px !important ;
                     vertical-align: middle;
                 }

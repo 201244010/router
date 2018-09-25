@@ -35,6 +35,105 @@ export default class Home extends React.PureComponent {
             mac: '00:11:22:33:44:03',
             icon: 'pad',
             type: 'sunmi'
+        }],
+        normalClients: [{
+            name:'Bla Bla Bla Bla Bla Bla Bla Bla',
+            mac:'00:11:22:33:44:00',
+            icon:'computer',
+            type:'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac:'00:11:22:33:44:01',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        },
+        {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:02',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:03',
+            icon: 'pad',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:04',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:05',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:06',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:07',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:08',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:09',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:0A',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:0B',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:0C',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:0D',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:0E',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }],
+        priorityClients: [{
+            name:'Bla Bla Bla Bla Bla Bla Bla Bla',
+            mac:'00:11:22:33:44:00',
+            icon:'computer',
+            type:'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac:'00:11:22:33:44:01',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        },
+        {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:02',
+            icon: 'bootdevice',
+            type: 'sunmi'
+        }, {
+            name: 'Bla Bla Bla Bla',
+            mac: '00:11:22:33:44:03',
+            icon: 'pad',
+            type: 'sunmi'
         }, {
             name: 'Bla Bla Bla Bla',
             mac: '00:11:22:33:44:04',
@@ -96,7 +195,8 @@ export default class Home extends React.PureComponent {
 
 
     render(){
-        const { sunmiNum, priorityNum, normalNum, sunmiClients}  = this.state;
+        const { sunmiClients, normalClients, priorityClients}  = this.state;
+        const total = sunmiClients.length + normalClients.length + priorityClients.length;
         return (
             <div>
                 <SubLayout>
@@ -105,14 +205,14 @@ export default class Home extends React.PureComponent {
                         <li className='func-item'></li>
                         <li className='func-item'></li>
                     </ul>
-                    <p className='online-clinet'>在线设备（<span>{sunmiNum + priorityNum + normalNum}</span>）</p>
+                    <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                     <div className='online-list'>
                         <div className='left-list'>
                             <ClientList className='sunmi-list' data={sunmiClients} />
-                            <ClientList className='normal-list' data={sunmiClients} />
+                            <ClientList className='normal-list' data={normalClients} />
                         </div>
                         <div className='priority-list'>
-                            <ClientList className='priority-list' data={sunmiClients} />
+                            <ClientList className='priority-list' data={priorityClients} />
                         </div>
                     </div>
                 </SubLayout>
@@ -143,7 +243,7 @@ const ClientList  = (props) => {
         if (index < max){
             return (
                 <li key={client.mac} className='client-item'>
-                    <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
+                    <div className='icon'><CustomIcon type={client.icon} size={24} /></div>
                     <div className='dot'></div><p title={client.name}>{client.name}</p>
                 </li>
             );
@@ -153,7 +253,7 @@ const ClientList  = (props) => {
     return (
         <div className={classnames(['list-content', props.className])}>
             <div className='list-header'>
-                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{current}/{total}）</span><Button className='more' size='small'>查看全部</Button>
+                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{current}/{total}）</span><Button className='more'>查看全部</Button>
             </div>
             <ul>{listItems}</ul>
     </div>);
