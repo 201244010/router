@@ -245,11 +245,6 @@ export default class SetWan extends React.PureComponent {
         });
     }
 
-    back = () => {
-        this.props.history.push("/guide/setpassword");
-        console.log(1);
-    }
-
     nextStep = () => {
         this.setState({ detect : false});
         this.props.history.push("/guide/setwifi");

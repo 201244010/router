@@ -80,31 +80,23 @@ export default class WIFI extends React.Component {
         this.setState({
             [name]:value
         });
-        if(!value.trim().length){
-            switch (name){
-                case 'hostSsid' : this.setState({tipHost : '请输入Wi-Fi名称'});
-                break;
-                case 'guestSsid' : this.setState({tipGuest : '请输入Wi-Fi名称'});
-                break;
-                case 'hostSsid24' : this.setState({tip2g : '请输入Wi-Fi名称'});
-                break;
-                case 'hostSsid5' : this.setState({tip5g : '请输入Wi-Fi名称'});
-                break;
-            }
-        }else{
-            switch (name){
-                case 'hostSsid' : this.setState({tipHost : ''});
-                break;
-                case 'guestSsid' : this.setState({tipGuest : ''});
-                break;
-                case 'hostSsid24' : this.setState({tip2g : ''});
-                break;
-                case 'hostSsid5' : this.setState({tip5g : ''});
-                break;
-            }
+        let tip = value.trim().length ? "" : '请输入Wi-Fi名称'
+        switch (name){
+            case 'hostSsid' : this.setState({tipHost : tip});
+            break;
+            case 'guestSsid' : this.setState({tipGuest : tip});
+            break;
+            case 'hostSsid24' : this.setState({tip2g : tip});
+            break;
+            case 'hostSsid5' : this.setState({tip5g : tip});
+            break;
         }
     }
-
+    onChannelTypeChange = type =>{
+        this.setState({
+            channelType : type
+        })
+    }
     onPWDTypeChange = e =>{
         this.setState({
             PWDType:e.target.value,
@@ -431,7 +423,7 @@ export default class WIFI extends React.Component {
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title="双频合一" checkable={true} checked={channelType} onChange={(value)=>this.onChange('channelType',value)}/>
+                        <PanelHeader title="双频合一" checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/>
                         <p>2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启</p>
                     </section>
                     {this.state.channelType ? (
@@ -534,65 +526,65 @@ export default class WIFI extends React.Component {
                                 </div>
                             </section>
                             <section>
-                            <PanelHeader title="5G信号" checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
-                                <label>Wi-Fi名称</label>
-                                <FormItem type="small" showErrorTip={tip5g} style={{ width : 320}}>
-                                    <Input type="text" value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
-                                    <ErrorTip>{tip5g}</ErrorTip>
-                                </FormItem>
-                                <ul className="ui-tiled compact">
-                                    <li><label>Wi-Fi密码</label></li>
-                                    <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>不设密码</Checkbox></li>
-                                </ul>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="password" disabled={hostSsid5PasswordDisabled} value={hostSsid5Passwrod} onChange={(value)=>this.onChange('hostSsid5Passwrod',value)} />
-                                </FormItem>  
-                                <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting5}>
-                                    更多设置 <CustomIcon type={moreSettingType5} size={14}/>
-                                </div>
-                                <div style={{display:moreDisplaydHost5}}>
+                                <PanelHeader title="5G信号" checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
+                                    <label>Wi-Fi名称</label>
+                                    <FormItem type="small" showErrorTip={tip5g} style={{ width : 320}}>
+                                        <Input type="text" value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
+                                        <ErrorTip>{tip5g}</ErrorTip>
+                                    </FormItem>
                                     <ul className="ui-tiled compact">
-                                        <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
+                                        <li><label>Wi-Fi密码</label></li>
+                                        <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>不设密码</Checkbox></li>
                                     </ul>
-                                    {!(encryption5 =='none')?
-                                        (
-                                            <div>
-                                            <label>加密方式</label>
-                                            <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                                <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                                <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                                <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                                <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                            </Select>
-                                            </div>
-                                        ) : ''
-                                    }
-                                    <label>频道带宽</label>
-                                    <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                        <Option value={'auto'}>自动</Option>
-                                        <Option value={'HT20'}>20M</Option>
-                                        <Option value={'HT40'}>40M</Option>
-                                        <Option value={'HT80'}>80M</Option>
-                                    </Select>
-                                    <label>无线信道</label> 
-                                    <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
-                                        <Option value={'auto'}>自动(当前信道+{current_channel5}})</Option>
-                                        <Option value={'1'}>信道1</Option>
-                                        <Option value={'2'}>信道2</Option>
-                                        <Option value={'3'}>信道3</Option>
-                                        <Option value={'4'}>信道4</Option>
-                                        <Option value={'5'}>信道5</Option>
-                                        <Option value={'6'}>信道6</Option>
-                                        <Option value={'7'}>信道7</Option>
-                                        <Option value={'8'}>信道8</Option>
-                                        <Option value={'9'}>信道9</Option>
-                                        <Option value={'10'}>信道10</Option>
-                                        <Option value={'11'}>信道11</Option>
-                                        <Option value={'12'}>信道12</Option>
-                                        <Option value={'13'}>信道13</Option>
-                                        <Option value={'14'}>信道14</Option>
-                                    </Select>
-                                </div>
+                                    <FormItem type="small" style={{ width : 320}}>
+                                        <Input type="password" disabled={hostSsid5PasswordDisabled} value={hostSsid5Passwrod} onChange={(value)=>this.onChange('hostSsid5Passwrod',value)} />
+                                    </FormItem>  
+                                    <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting5}>
+                                        更多设置 <CustomIcon type={moreSettingType5} size={14}/>
+                                    </div>
+                                    <div style={{display:moreDisplaydHost5}}>
+                                        <ul className="ui-tiled compact">
+                                            <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
+                                        </ul>
+                                        {!(encryption5 =='none')?
+                                            (
+                                                <div>
+                                                <label>加密方式</label>
+                                                <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
+                                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                                </Select>
+                                                </div>
+                                            ) : ''
+                                        }
+                                        <label>频道带宽</label>
+                                        <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
+                                            <Option value={'auto'}>自动</Option>
+                                            <Option value={'HT20'}>20M</Option>
+                                            <Option value={'HT40'}>40M</Option>
+                                            <Option value={'HT80'}>80M</Option>
+                                        </Select>
+                                        <label>无线信道</label> 
+                                        <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
+                                            <Option value={'auto'}>自动(当前信道+{current_channel5}})</Option>
+                                            <Option value={'1'}>信道1</Option>
+                                            <Option value={'2'}>信道2</Option>
+                                            <Option value={'3'}>信道3</Option>
+                                            <Option value={'4'}>信道4</Option>
+                                            <Option value={'5'}>信道5</Option>
+                                            <Option value={'6'}>信道6</Option>
+                                            <Option value={'7'}>信道7</Option>
+                                            <Option value={'8'}>信道8</Option>
+                                            <Option value={'9'}>信道9</Option>
+                                            <Option value={'10'}>信道10</Option>
+                                            <Option value={'11'}>信道11</Option>
+                                            <Option value={'12'}>信道12</Option>
+                                            <Option value={'13'}>信道13</Option>
+                                            <Option value={'14'}>信道14</Option>
+                                        </Select>
+                                    </div>
                             </section>
                         </section>
                     </section>
