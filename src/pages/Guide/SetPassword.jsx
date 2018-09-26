@@ -50,8 +50,7 @@ export default class SetPassword extends React.Component {
             this.props.history.push(routes.guideSetWan);
             return;
         }
-        this.setState({ tip : message == "ERRCODE_PERMISSION" ? "已设置过密码" : message
-        });
+        this.setState({ tip : message == "ERRCODE_PERMISSION" ? "已设置过密码" : message});
     }
 
     // 监听输入实时改变

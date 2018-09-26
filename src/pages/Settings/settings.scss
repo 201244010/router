@@ -116,6 +116,11 @@
         flex-direction: column;
         width: 50%;    
         flex: 1;
+        >div{
+            label{
+                margin-top:20px;
+            } 
+        }
     }
     >section:nth-child(1){
         margin-right:100px;
