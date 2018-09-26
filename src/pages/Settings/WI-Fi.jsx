@@ -19,6 +19,7 @@ export default class WIFI extends React.Component {
         hostSsidPasswrod : '',
         hostSsidPasswordDisabled : false,
         guestSsid : '客Wi-Fi',
+        guestEncryption : '',
         guestStaticPassword : '',
         guestDynamicPassword : '',
         guestPassword:'',
@@ -48,7 +49,7 @@ export default class WIFI extends React.Component {
         encryption24:'',
         htmode24:'HT80',
         channel24:'',
-        signal24:11,
+        current_channel24 : '',
         disabledType24:false,
         //5G
         host5Enable:true,
@@ -60,7 +61,7 @@ export default class WIFI extends React.Component {
         encryption5:'',
         htmode5:'HT80',
         channel5:'',
-        signal5:11,
+        current_channel5 : '',
         disabledType5:false,
         //more
         moreSettingType:'pulldown',
@@ -151,6 +152,16 @@ export default class WIFI extends React.Component {
             pwdForbid:e.target.checked,
             hostSsidPasswordDisabled:e.target.checked
         });
+        console.log(e.target.checked);
+        if(e.target.checked == true){
+            this.setState({
+                encryption : 'none'
+            });
+        }else{
+            this.setState({
+                encryption : 'psk-mixed/ccmp+tkip'
+            });
+        }
     }
 
     onGuestPwdForbidChange = e =>{
@@ -158,6 +169,15 @@ export default class WIFI extends React.Component {
             guestPwdForbid:e.target.checked,
             guestPasswordDisabled:e.target.checked
         });
+        if(e.target.checked == true){
+            this.setState({
+                guestEncryption : 'none'
+            });
+        }else{
+            this.setState({
+                guestEncryption : 'psk-mixed/ccmp+tkip'
+            });
+        }
     }
      
     //2.4G
@@ -183,6 +203,15 @@ export default class WIFI extends React.Component {
             pwdForbid24:e.target.checked,
             hostSsid24PasswordDisabled:e.target.checked  
         });
+        if(e.target.checked == true){
+            this.setState({
+                encryption24 : 'none'
+            });
+        }else{
+            this.setState({
+                encryption24 : 'psk-mixed/ccmp+tkip'
+            });
+        }
     }
     onHide_ssid24Change = e =>{
         this.setState({
@@ -213,6 +242,15 @@ export default class WIFI extends React.Component {
             pwdForbid5:e.target.checked,
             hostSsid5PasswordDisabled:e.target.checked
         });
+        if(e.target.checked == true){
+            this.setState({
+                encryption5 : 'none'
+            });
+        }else{
+            this.setState({
+                encryption5 : 'psk-mixed/ccmp+tkip'
+            });
+        }
     } 
 
     onHide_ssid5Change = e =>{
@@ -253,7 +291,8 @@ export default class WIFI extends React.Component {
         //pwdForbid : 是否设置密码
         //merge : true,
         //way:2,
-        this.guestWireLess.password_type = this.state.PWDType,
+        this.guestWireLess.encryption = this.state.guestEncryption;
+        this.guestWireLess.password_type = this.state.PWDType;
         //channelWidth:11,
         //signal:11,
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
@@ -267,7 +306,6 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_2g.encryption = this.state.encryption24;
         this.hostWireLess.band_2g.htmode = this.state.htmode24;
         this.hostWireLess.band_2g.channel = this.state.channel24;
-        //signal24:信号强弱
 
         //5G
         // this.hostWireLess.band_5g = this.state.band_5g;
@@ -279,7 +317,6 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_5g.encryption = this.state.encryption5;
         this.hostWireLess.band_5g.htmode = this.state.htmode5;
         this.hostWireLess.band_5g.channel = this.state. channel5;
-        //signal5:信号强弱
 
         let response = await common.fetchWithCode(
             'WIRELESS_SET',
@@ -300,6 +337,7 @@ export default class WIFI extends React.Component {
                     }
                 });
             }, 20);
+            return;
         }
         Modal.error({ title : 'WI-FI设置失败', content : message });
     }
@@ -322,6 +360,7 @@ export default class WIFI extends React.Component {
                 hostSsidPasswrod : atob(this.hostWireLess.band_2g.password),
                 hostSsidPasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
                 guestSsid : this.guestWireLess.ssid,
+                guestEncryption : this.guestWireLess.encryption,
                 guestStaticPassword : atob(this.guestWireLess.static_password),
                 //guestDynamicPassword : atob(this.guestWireLess.dynamic_password),
                 //guestPassword : this.guestWireLess.password_type == 'static'? atob(this.guestWireLess.static_password):atob(this.guestWireLess.dynamic_password),
@@ -350,7 +389,7 @@ export default class WIFI extends React.Component {
                 encryption24 : this.hostWireLess.band_2g.encryption,
                 htmode24 : this.hostWireLess.band_2g.htmode,
                 channel24 : this.hostWireLess.band_2g.channel,
-                //signal24:信号强弱
+                current_channel24 : this.hostWireLess.band_2g.current_channel,
                 disabledType24 : this.hostWireLess.band_2g.enable == '1'? false : true,
 
                 //5G
@@ -362,7 +401,7 @@ export default class WIFI extends React.Component {
                 encryption5 : this.hostWireLess.band_5g.encryption,
                 htmode5 : this.hostWireLess.band_5g.htmode,
                 channel5 : this.hostWireLess.band_5g.channel,
-                //signal5:信号强弱
+                current_channel5 : this.hostWireLess.band_5g.current_channel,
                 disabledType5 : this.hostWireLess.band_5g.enable == '1'? false : true,
 
                 //more
@@ -387,7 +426,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestStaticPassword,guestDynamicPassword,guestPassword,pwdForbid,guestPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,signal24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,signal5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
+        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestEncryption,guestStaticPassword,guestDynamicPassword,guestPassword,pwdForbid,guestPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -414,14 +453,19 @@ export default class WIFI extends React.Component {
                             更多设置 <CustomIcon type={moreSettingType} size={14} />
                         </div>
                         <div style={{display:moreDisplaydHost}}>
-                        <label>加密方式</label>
-                        <Select value={encryption} style={{ width: 320 }} disabled={disabledType} onChange={(value)=>this.onChange('encryption',value)}>
-                            <Option value={'none'}>无</Option>
-                            <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                            <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                            <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                            <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                        </Select>
+                            {!(this.state.encryption =='none')?
+                                (
+                                    <div>
+                                        <label>加密方式</label>
+                                        <Select value={encryption} style={{ width: 320 }} disabled={disabledType} onChange={(value)=>this.onChange('encryption',value)}>
+                                            <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                            <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                            <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                            <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                        </Select>
+                                    </div> 
+                                ) : ''
+                            }
                         </div>  
                     </section>
                     ):(
@@ -446,47 +490,47 @@ export default class WIFI extends React.Component {
                                     更多设置 <CustomIcon type={moreSettingType24} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost24}}>
-                                <ul className="ui-tiled compact">
-                                    <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>隐藏网络不被发现</Checkbox></li>
-                                </ul>
-                                <label>加密方式</label>
-                                <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24}>
-                                    <Option value={'none'}>无</Option>
-                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                </Select>
-                                <label>频道带宽</label>
-                                <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24}>
-                                    <Option value={'auto'}>自动</Option>
-                                    <Option value={'HT20'}>20M</Option>
-                                    <Option value={'HT40'}>40M</Option>
-                                    <Option value={'HT80'}>80M</Option>
-                                </Select>
-                                <label>无线信道</label> 
-                                <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24}>
-                                    <Option value={'auto'}>自动(当前信道+{channel24})</Option>
-                                    <Option value={'1'}>信道1</Option>
-                                    <Option value={'2'}>信道2</Option>
-                                    <Option value={'3'}>信道3</Option>
-                                    <Option value={'4'}>信道4</Option>
-                                    <Option value={'5'}>信道5</Option>
-                                    <Option value={'6'}>信道6</Option>
-                                    <Option value={'7'}>信道7</Option>
-                                    <Option value={'8'}>信道8</Option>
-                                    <Option value={'9'}>信道9</Option>
-                                    <Option value={'10'}>信道10</Option>
-                                    <Option value={'11'}>信道11</Option>
-                                    <Option value={'12'}>信道12</Option>
-                                    <Option value={'13'}>信道13</Option>
-                                    <Option value={'14'}>信道14</Option>
-                                </Select>
-                                <label>信号强度</label>
-                                <Select value={signal24} style={{ width: 320 }} onChange={(value)=>this.onChange('signal24',value)} disabled={disabledType24}>
-                                    <Option value={11}>强</Option>
-                                    <Option value={22}>弱</Option>
-                                </Select>
+                                    <ul className="ui-tiled compact">
+                                        <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>隐藏网络不被发现</Checkbox></li>
+                                    </ul>
+                                    {!(encryption24 =='none')?
+                                        (
+                                            <div>
+                                            <label>加密方式</label>
+                                            <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24}>
+                                                <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                                <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                                <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                                <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                            </Select>
+                                            </div>
+                                        ) : ''
+                                    }
+                                    <label>频道带宽</label>
+                                    <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24}>
+                                        <Option value={'auto'}>自动</Option>
+                                        <Option value={'HT20'}>20M</Option>
+                                        <Option value={'HT40'}>40M</Option>
+                                        <Option value={'HT80'}>80M</Option>
+                                    </Select>
+                                    <label>无线信道</label> 
+                                    <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24}>
+                                        <Option value={'auto'}>自动(当前信道+{current_channel24})</Option>
+                                        <Option value={'1'}>信道1</Option>
+                                        <Option value={'2'}>信道2</Option>
+                                        <Option value={'3'}>信道3</Option>
+                                        <Option value={'4'}>信道4</Option>
+                                        <Option value={'5'}>信道5</Option>
+                                        <Option value={'6'}>信道6</Option>
+                                        <Option value={'7'}>信道7</Option>
+                                        <Option value={'8'}>信道8</Option>
+                                        <Option value={'9'}>信道9</Option>
+                                        <Option value={'10'}>信道10</Option>
+                                        <Option value={'11'}>信道11</Option>
+                                        <Option value={'12'}>信道12</Option>
+                                        <Option value={'13'}>信道13</Option>
+                                        <Option value={'14'}>信道14</Option>
+                                    </Select>
                                 </div>
                             </section>
                             <section>
@@ -507,47 +551,47 @@ export default class WIFI extends React.Component {
                                     更多设置 <CustomIcon type={moreSettingType5} size={14}/>
                                 </div>
                                 <div style={{display:moreDisplaydHost5}}>
-                                <ul className="ui-tiled compact">
-                                    <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
-                                </ul>
-                                <label>加密方式</label>
-                                <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                    <Option value={'none'}>无</Option>
-                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                </Select>
-                                <label>频道带宽</label>
-                                <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                    <Option value={'auto'}>自动</Option>
-                                    <Option value={'HT20'}>20M</Option>
-                                    <Option value={'HT40'}>40M</Option>
-                                    <Option value={'HT80'}>80M</Option>
-                                </Select>
-                                <label>无线信道</label> 
-                                <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
-                                    <Option value={'auto'}>自动(当前信道+{channel5})</Option>
-                                    <Option value={'1'}>信道1</Option>
-                                    <Option value={'2'}>信道2</Option>
-                                    <Option value={'3'}>信道3</Option>
-                                    <Option value={'4'}>信道4</Option>
-                                    <Option value={'5'}>信道5</Option>
-                                    <Option value={'6'}>信道6</Option>
-                                    <Option value={'7'}>信道7</Option>
-                                    <Option value={'8'}>信道8</Option>
-                                    <Option value={'9'}>信道9</Option>
-                                    <Option value={'10'}>信道10</Option>
-                                    <Option value={'11'}>信道11</Option>
-                                    <Option value={'12'}>信道12</Option>
-                                    <Option value={'13'}>信道13</Option>
-                                    <Option value={'14'}>信道14</Option>
-                                </Select>
-                                <label>信号强度</label>
-                                <Select value={signal5} style={{ width: 320 }} onChange={(value)=>this.onChange('signal5',value)} disabled={disabledType5}>
-                                    <Option value={11}>强</Option>
-                                    <Option value={22}>弱</Option>
-                                </Select>
+                                    <ul className="ui-tiled compact">
+                                        <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
+                                    </ul>
+                                    {!(encryption5 =='none')?
+                                        (
+                                            <div>
+                                            <label>加密方式</label>
+                                            <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
+                                                <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                                <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                                <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                                <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                            </Select>
+                                            </div>
+                                        ) : ''
+                                    }
+                                    <label>频道带宽</label>
+                                    <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
+                                        <Option value={'auto'}>自动</Option>
+                                        <Option value={'HT20'}>20M</Option>
+                                        <Option value={'HT40'}>40M</Option>
+                                        <Option value={'HT80'}>80M</Option>
+                                    </Select>
+                                    <label>无线信道</label> 
+                                    <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
+                                        <Option value={'auto'}>自动(当前信道+{current_channel5}})</Option>
+                                        <Option value={'1'}>信道1</Option>
+                                        <Option value={'2'}>信道2</Option>
+                                        <Option value={'3'}>信道3</Option>
+                                        <Option value={'4'}>信道4</Option>
+                                        <Option value={'5'}>信道5</Option>
+                                        <Option value={'6'}>信道6</Option>
+                                        <Option value={'7'}>信道7</Option>
+                                        <Option value={'8'}>信道8</Option>
+                                        <Option value={'9'}>信道9</Option>
+                                        <Option value={'10'}>信道10</Option>
+                                        <Option value={'11'}>信道11</Option>
+                                        <Option value={'12'}>信道12</Option>
+                                        <Option value={'13'}>信道13</Option>
+                                        <Option value={'14'}>信道14</Option>
+                                    </Select>
                                 </div>
                             </section>
                         </section>
