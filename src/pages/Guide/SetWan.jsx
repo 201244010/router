@@ -18,7 +18,7 @@ export default class SetWan extends React.PureComponent {
         detect : true,
         type : 'pppoe', // pppoe | dhcp | static
         showNetWorkStatus : false,
-        wan_linkstate: false,
+        wan_linkstate: true,
 
         // pppoe
         pppoeAccount : '',
@@ -185,7 +185,11 @@ export default class SetWan extends React.PureComponent {
     
     dialDetect = async () => {
         common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
-            this.setState({wan_linkstate : false});
+            const {errcode,data} = resp;
+            this.setState({detect : false});
+            if(errcode == 0){
+                this.setState({wan_linkstate : data.wan_linkstate});
+            } 
             common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
             common.fetchWithCode(
             'WANWIDGET_DIALDETECT_GET', 
@@ -197,7 +201,7 @@ export default class SetWan extends React.PureComponent {
                     stop : () => this.stop
                 }
             ).then((response)=>{
-                this.setState({detect : false});
+               
                 const { errcode, data, message } = response;
                 if(errcode == 0){
                     let { dialdetect } = data[0].result;
@@ -275,9 +279,9 @@ export default class SetWan extends React.PureComponent {
                 {/* 显示网络连接状态 */}
                 {
                     !wan_linkstate?
-                        (<div className={classnames(["ui-center speed-test"])}> <LinkState dialDetect={this.dialDetect} OnwanLinkState={this.OnwanLinkState} /></div>)
+                        (<div className={classnames(["ui-center speed-test",{'none' : detect}])}> <LinkState dialDetect={this.dialDetect} OnwanLinkState={this.OnwanLinkState} /></div>)
                         :
-                    showNetWorkStatus ? 
+                        showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
                             <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
                         </div>) :
