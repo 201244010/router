@@ -26,18 +26,14 @@ export default class WIFI extends React.Component {
         guestPasswordDisabled:false,
         pwdForbid:false,
         guestPwdForbid:false,
-        //merge : true,
         encryption : '',
-        way:2,
         PWDType:'static',
-        channelWidth:11,
-        signal:11,
         hostEnable:true,
         disabledType:false,
         hiddenType:false,
         guestEnable:true,
         disabledType2:false,
-        period : '456',
+        period : '45',
         displayType:'none',
         //2.4G
         host24Enable:true,
@@ -275,18 +271,14 @@ export default class WIFI extends React.Component {
     }
 
     submit = async ()=> {
+        //是否双频合一
         this.hostWireLess.band_division = this.state.channelType == true? '1' : '0';
+
+        //guest
         this.guestWireLess.ssid = this.state.guestSsid;
         this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
-        //this.guestWireLess.dynamic_password = btoa(this.state.guestDynamicPassword);
-        //this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword); 
-        //pwdForbid : 是否设置密码
-        //merge : true,
-        //way:2,
         this.guestWireLess.encryption = this.state.guestEncryption;
         this.guestWireLess.password_type = this.state.PWDType;
-        //channelWidth:11,
-        //signal:11,
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.period,
 
@@ -300,8 +292,6 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_2g.channel = this.state.channel24;
 
         //5G
-        // this.hostWireLess.band_5g = this.state.band_5g;
-        //Object.assign(this.hostWireLess.band_5g, this.state.band_5g);
         this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
         this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
         this.hostWireLess.band_5g.password = btoa(this.state.hostSsid5Passwrod);
@@ -347,27 +337,23 @@ export default class WIFI extends React.Component {
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
             this.setState({
+                //host
                 channelType : this.hostWireLess.band_division == '1'? true : false,
                 hostSsid : this.hostWireLess.band_2g.ssid,
                 hostSsidPasswrod : atob(this.hostWireLess.band_2g.password),
                 hostSsidPasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
-                guestSsid : this.guestWireLess.ssid,
-                guestEncryption : this.guestWireLess.encryption,
-                guestStaticPassword : atob(this.guestWireLess.static_password),
-                //guestDynamicPassword : atob(this.guestWireLess.dynamic_password),
-                //guestPassword : this.guestWireLess.password_type == 'static'? atob(this.guestWireLess.static_password):atob(this.guestWireLess.dynamic_password),
-                guestPasswordDisabled : this.guestWireLess.enable == '1'? false : true,
-                PWDType : this.guestWireLess.password_type,
-                displayType:this.guestWireLess.password_type == 'static'? 'none' : 'block',
-                //pwdForbid : 是否设置密码
-                //merge : true,
                 encryption : this.hostWireLess.band_2g.encryption,
-                //way:2,
-                //channelWidth:11,
-                //signal:11,
                 hostEnable : this.hostWireLess.band_2g.enable == '1'? true : false,
                 disabledType : this.hostWireLess.band_2g.enable == '1'? false : true,
                 hiddenType : this.hostWireLess.band_2g.enable == '1'? false : true,
+
+                //guest
+                guestSsid : this.guestWireLess.ssid,
+                guestEncryption : this.guestWireLess.encryption,
+                guestStaticPassword : atob(this.guestWireLess.static_password),
+                guestPasswordDisabled : this.guestWireLess.enable == '1'? false : true,
+                PWDType : this.guestWireLess.password_type,
+                displayType:this.guestWireLess.password_type == 'static'? 'none' : 'block',
                 guestEnable : this.guestWireLess.enable == '1'? true : false,
                 disabledType2 : this.guestWireLess.enable == '1'? false : true,
                 period : this.guestWireLess.period,
@@ -396,7 +382,7 @@ export default class WIFI extends React.Component {
                 current_channel5 : this.hostWireLess.band_5g.current_channel,
                 disabledType5 : this.hostWireLess.band_5g.enable == '1'? false : true,
 
-                //more
+                //more设置
                 moreSettingType:'pulldown',
                 moreDisplaydHost:'none',
                 moreSettingType24:'pulldown',
@@ -418,7 +404,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestEncryption,guestStaticPassword,guestDynamicPassword,guestPassword,pwdForbid,guestPasswordDisabled,way,PWDType,channelWidth,signal,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
+        const { channelType,hostSsid, hostSsidPasswrod, encryption, hostSsidPasswordDisabled,guestSsid,guestEncryption,guestStaticPassword,guestDynamicPassword,guestPassword,pwdForbid,guestPasswordDisabled,PWDType,disabledType,hostEnable,hiddenType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Passwrod,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipHost,tipGuest,tip2g,tip5g} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
