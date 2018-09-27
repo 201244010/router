@@ -173,11 +173,10 @@ export default class Bandwidth extends React.PureComponent {
         });
         let handleTime = setInterval(() => {
             this.setState({
-                    percent: this.state.percent + 2
+                    percent: this.state.percent + 1
             }, () =>{
                 if (this.state.percent >= 100){
                     this.setState({
-                        speedFail: true,
                         visible: false,
                         percent: 0
                     });
@@ -298,7 +297,7 @@ export default class Bandwidth extends React.PureComponent {
                         <span className="band-unit">Mbps</span>
                         <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
                     </div>
-                    <div className="band-line">|</div> 
+                    <div className="band-line"></div> 
                     <div className="band-size">{downband}
                         <span className="band-unit">Mbps</span>
                         <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
@@ -381,10 +380,12 @@ const Bandclose = props => {
 
 const Bandon = props => {
      return [
-     <Table className="anti-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
-     <section className="wifi-setting-save" style={{marginTop:30}}>
-        <Button  style={{left:0}} className="wifi-setting-button" type="primary" onClick={props.post}>保存</Button>
-     </section>
+    <div key='speedbutton'>
+        <Table className="anti-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
+        <section className="wifi-setting-save" style={{marginTop:30}}>
+            <Button  style={{left:0}} className="wifi-setting-button" type="primary" onClick={props.post}>保存</Button>
+        </section>
+     </div>
     ]
 } 
 
