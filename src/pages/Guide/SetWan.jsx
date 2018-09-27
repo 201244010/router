@@ -190,7 +190,6 @@ export default class SetWan extends React.PureComponent {
             this.setState({detect : false});
             if(errcode == 0){
                 this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
-                console.log(1,this.state.wanLinkState);
             }else{
                 Modal.error({title :'获取网线插拔状态失败'});
             } 
