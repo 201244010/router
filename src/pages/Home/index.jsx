@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { Button, Table, Divider, Popover, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import PrimaryFooter from '~/components/PrimaryFooter';
 import CustomIcon from '~/components/Icon';
 import ClientList from './ClientList';
+import QoS from './QoS';
 
 import './home.scss'
-
 
 export default class Home extends React.PureComponent {
     state = {
@@ -223,11 +223,44 @@ export default class Home extends React.PureComponent {
             mac: '00:11:22:33:44:0E',
             icon: 'bootdevice',
             type: 'priority'
+        }],
+        qosData: [{
+            name: '商米设备',
+            value: 20,
+            color: '#FF8F00'
+        },
+        {
+            name: '优先设备',
+            value: 10,
+            color: '#87D068'
+        },
+        {
+            name: '普通设备',
+            value: 5,
+            color: '#4687FF'
+        },
+        {
+            name: '剩余带宽',
+            value: 10,
+            color: '#DFE8F3'
         }]
+    }
+    componentDidMount(){
+        setInterval(() =>{
+            this.setState({
+                qosData: this.state.qosData.map(item => {
+                    return {
+                        name: item.name,
+                        value: parseInt(50 * Math.random()),
+                        color: item.color
+                    }
+                })
+            })
+        }, 3000)
     }
 
     render(){
-        const { sunmiClients, normalClients, priorityClients}  = this.state;
+        const { sunmiClients, normalClients, priorityClients, qosData}  = this.state;
         const total = sunmiClients.length + normalClients.length + priorityClients.length;
         return (
             <div>
@@ -255,8 +288,8 @@ export default class Home extends React.PureComponent {
                                 <Button className='test-speed'>自动测速</Button>
                             </div>
                         </li>
-                        <li className='func-item'></li>
-                        <li className='func-item search'>
+                        <QoS data={qosData} />
+                        <li className='func-item search' style={{padding:'20px 0px'}}>
                             <img className='radar' src={require('~/assets/images/radar.png')} />
                             <div className='content'>
                                 <h3>搜寻商米设备</h3>
