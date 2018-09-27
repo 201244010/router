@@ -595,10 +595,10 @@ export default class WIFI extends React.Component {
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1}}>小时</span>
                             </div>
-                            <ul className="ui-tiled compact">
-                                <li><label>当前密码是：</label></li>
-                                <li><p value={guestDynamicPassword}>123456</p></li>
-                            </ul> 
+                            <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap'}}>
+                                <label>当前密码是：</label>
+                                <p style={{color:'orange'}} value={guestDynamicPassword}>123456</p>
+                            </div> 
                             <span style={{opacity:'0.5'}}>如您有配套的商米收银设备，客人Wi-Fi名称和密码将打印在小票上</span>   
                         </section>
                         <section style={{display:displayType=='none'?'block':'none'}}>

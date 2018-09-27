@@ -18,7 +18,7 @@ export default class SetWan extends React.PureComponent {
         detect : true,
         type : 'pppoe', // pppoe | dhcp | static
         showNetWorkStatus : false,
-        wan_linkstate: true,
+        wanLinkState: true,
 
         // pppoe
         pppoeAccount : '',
@@ -184,11 +184,15 @@ export default class SetWan extends React.PureComponent {
     }
     
     dialDetect = async () => {
+        this.setState({detect:true});
         common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
             const {errcode,data} = resp;
             this.setState({detect : false});
             if(errcode == 0){
-                this.setState({wan_linkstate : data.wan_linkstate});
+                this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
+                console.log(1,this.state.wanLinkState);
+            }else{
+                Modal.error({title :'获取网线插拔状态失败'});
             } 
             common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
             common.fetchWithCode(
@@ -261,12 +265,12 @@ export default class SetWan extends React.PureComponent {
     }
     OnwanLinkState = () =>{
         this.setState({
-            wan_linkstate:true
+            wanLinkState:true
         })
     }
     
     render(){
-        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wan_linkstate} = this.state;
+        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wanLinkState} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置上网参数</h2> 
@@ -278,7 +282,7 @@ export default class SetWan extends React.PureComponent {
                 </div>
                 {/* 显示网络连接状态 */}
                 {
-                    !wan_linkstate?
+                    !wanLinkState?
                         (<div className={classnames(["ui-center speed-test",{'none' : detect}])}> <LinkState dialDetect={this.dialDetect} OnwanLinkState={this.OnwanLinkState} /></div>)
                         :
                         showNetWorkStatus ? 
