@@ -232,7 +232,13 @@ export default class NETWORK extends React.Component {
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'}
+            { method : 'POST'},
+            {
+                loop : false, 
+                interval : 3000, 
+                stop : ()=> this.stop, 
+                pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+            }
         ).catch(ex=>{});
 
         let { data, errcode, message } = response;
@@ -278,9 +284,14 @@ export default class NETWORK extends React.Component {
     refreshNetStatus = async ()=>{
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'}
+            { method : 'POST'},
+            {
+                loop : true, 
+                interval : 3000, 
+                stop : ()=> this.stop, 
+                pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+            }
         ).catch(ex=>{});
-
         let { data, errcode} = response;
         if(errcode == 0){
             let info = data[0].result.wan.info;
@@ -317,25 +328,37 @@ export default class NETWORK extends React.Component {
         let connectStatus = await common.fetchWithCode(
             'WANWIDGET_ONLINETEST_GET',
                 {method : 'POST'},
-                {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
+                {
+                    loop : true, 
+                    interval : 3000, 
+                    stop : ()=> this.stop, 
+                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                }
         );
-        let { errcode:code} = connectStatus;
+        let { errcode:code, datanum} = connectStatus;
         if(code == 0){
-            this.setState({
-                onlineStatus : '已联网'
-            })
+            let onlinetest = datanum[0].result.onlinetest.online;
+            if(onlinetest === "true"){
+                this.setState({
+                    onlineStatus : '已联网'
+                })
+            }else{
+                this.setState({
+                    onlineStatus : '未联网'
+                })
+            }
         }
-        this.setState({
-            onlineStatus : '未联网'
-        })
-
     }
 
     componentDidMount(){
         //获取网络状况
        this.getNetInfo();
        this.refreshNetStatus();
-       setInterval(() => {this.refreshNetStatus()},3000);
+       this.stop = false;
+    }
+
+    componentWillUnmount(){
+        this.stop = true;
     }
 
     render(){
