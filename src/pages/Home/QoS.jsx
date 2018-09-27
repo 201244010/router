@@ -1,0 +1,88 @@
+import React from 'react';
+import { Button } from 'antd';
+
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/pie';
+import 'echarts/lib/component/legend';
+
+export default class QoS extends React.Component {
+    constructor(props) {
+        super(props);
+        this.pieDom = null;
+        this.option = {
+            legend: {
+                orient: 'vertical',//竖直放置
+                icon: 'circle',//图标为圆形，默认是方形
+                align: 'auto',
+                itemGap: 10,//两个属性的距离
+                itemWidth: 10,//图标的宽度，对应有itemHeight为高度,圆形只有半径
+                x: '42%',//距离左侧位置
+                y: '20%',//距离上面位置
+                data: props.data.slice(0, -1),//属性名称
+                align: 'left',//图标与属性名的相对位置
+                selectedMode: false,//可选择
+                textStyle: {//属性名的字体样式设置
+                    fontSize: 12,
+                    color: '#333C4F'
+                }
+            },
+            series: [{//饼状图设置
+                type: 'pie',//类型为饼状
+                radius: ['70%', '100%'],//内圈半径，外圈半径
+                center: ['20%', '50%'],//饼状图位置，第一个参数是左右，第二个是上下。
+                avoidLabelOverlap: false,
+                hoverAnimation: false,//鼠标悬停效果，默认是true
+                label: {//设置饼状图圆心属性
+                    normal: {
+                        show: false
+                    }
+                },
+                data: props.data.map(item => { return { name: item.name, value: item.value } }),//对应数据
+                itemStyle: {//元素样式
+                    normal: {
+                        //柱状图颜色  
+                        color: function (params) {//对每个颜色赋值
+                            return props.data[params.dataIndex].color;
+                        },
+                    }
+                }
+            }]
+        };
+    }
+
+    componentDidMount() {
+        let bwPie = (this.pieDom == null) ? echarts.init(document.getElementById('bwPie')) : this.pieDom;
+        bwPie.setOption(this.option);
+    }
+
+    componentDidUpdate() {
+        let bwPie = (this.pieDom == null) ? echarts.init(document.getElementById('bwPie')) : this.pieDom;
+        bwPie.setOption(this.option);
+    }
+
+    render() {
+        const data = this.props.data;
+        let total = data.slice(0, -1);
+        let cost = 0, bandList = [];
+
+        total.forEach(item => {
+            cost += item.value;
+            bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{item.value + '%'}</span></li>);
+        });
+
+        return (
+            <li className='func-item bandwidth'>
+                <div className='title'>
+                    <div className='percent'>{cost + '%'}</div>
+                    <div className='desc'>总带宽使用率</div>
+                </div>
+                <div className='pie' id='bwPie' style={{ height: 120, width: 320 }}></div>
+                {cost >= 80 ? 
+                    (<h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4>) : 
+                    (<h4 className='nice'>当前网络畅通，可放心使用</h4>)}
+                <ul className='band-desc'>{bandList}</ul>
+                <Button className='set-band'>设置宽带</Button>
+            </li>
+        )
+    }
+}
