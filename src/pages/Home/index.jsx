@@ -223,13 +223,8 @@ export default class Home extends React.PureComponent {
             mac: '00:11:22:33:44:0E',
             icon: 'bootdevice',
             type: 'priority'
-        }]
-    }
-
-    render(){
-        const { sunmiClients, normalClients, priorityClients}  = this.state;
-        const total = sunmiClients.length + normalClients.length + priorityClients.length;
-        let data = [{
+        }],
+        qosData: [{
             name: '商米设备',
             value: 20,
             color: '#FF8F00'
@@ -248,7 +243,25 @@ export default class Home extends React.PureComponent {
             name: '剩余带宽',
             value: 10,
             color: '#DFE8F3'
-        }];
+        }]
+    }
+    componentDidMount(){
+        setInterval(() =>{
+            this.setState({
+                qosData: this.state.qosData.map(item => {
+                    return {
+                        name: item.name,
+                        value: parseInt(50 * Math.random()),
+                        color: item.color
+                    }
+                })
+            })
+        }, 3000)
+    }
+
+    render(){
+        const { sunmiClients, normalClients, priorityClients, qosData}  = this.state;
+        const total = sunmiClients.length + normalClients.length + priorityClients.length;
         return (
             <div>
                 <SubLayout>
@@ -275,7 +288,7 @@ export default class Home extends React.PureComponent {
                                 <Button className='test-speed'>自动测速</Button>
                             </div>
                         </li>
-                        <QoS data={data} />
+                        <QoS data={qosData} />
                         <li className='func-item search' style={{padding:'20px 0px'}}>
                             <img className='radar' src={require('~/assets/images/radar.png')} />
                             <div className='content'>
