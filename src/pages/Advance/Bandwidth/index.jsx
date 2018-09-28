@@ -15,10 +15,13 @@ export default class Bandwidth extends React.PureComponent {
         manualShow:false, //手动设置弹窗是否可见
         speedFill:false,//带宽测速完成弹窗是否可见
         speedFail:false,//带宽测速失败弹窗是否可见
+        bandunset : false,//总带宽未设置弹窗
         bandenable : false,
-        upband : '20',
-        downband : '100',
+        upband : '--',
+        downband : '--',
         source : '', //测速方式
+        buttonloading : false,
+        unit : 'Mbps',
 
         //自动设置
         failTip:'这里是失败原因【1000】',
@@ -26,9 +29,9 @@ export default class Bandwidth extends React.PureComponent {
         percent: 0 ,//测速百分比
 
         //设备权重
-        sunmi : 50,
-        white : 30,
-        normal : 20,
+        sunmi : '50',
+        white : '30',
+        normal : '20',
         sunmiTip : '',
         whiteTip : '',
         normalTip : '',
@@ -44,13 +47,13 @@ export default class Bandwidth extends React.PureComponent {
         if (val === ''){
             val = 0
         }
-        return val;
+        return parseInt(val);
     }
 
     onChange = (val, key) => {
         let tip = '各设备百分比总和需不大于100%',value = val.replace(/\D/g,'');
         this.setState({
-            [key]: value === "" ? value : parseInt(value),
+            [key]: value === "" ? value : value,
             sunmiTip : '',
             whiteTip : '',
             normalTip : ''
@@ -77,9 +80,19 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     OnBandEnable = value => {
-        this.setState({
-            bandenable : value
-        })
+        if(this.state.upband === '--' || this.state.downband === '--'){
+            this.setState({
+                bandunset : true
+            });
+            setTimeout(()=>{
+                this.setState({
+                    bandunset : false
+                })},3000)
+        }else{
+            this.setState({
+                bandenable : value
+            })
+        }
     }
 
     speedTestStatus = async ()=> {
@@ -97,7 +110,7 @@ export default class Bandwidth extends React.PureComponent {
                 pending : resp => resp.data[0].result.speedtest.status !== 'ok'
             }
         ).catch(ex=>{});
-        let {errcode:code, data} = status;
+        let {errcode:code, data,message} = status;
         if (code == 0){
             let info = data[0].result.speedtest;
             if(info.status === "ok"){
@@ -105,14 +118,18 @@ export default class Bandwidth extends React.PureComponent {
                     speedFill : true,
                     visible : false,
                     upband : info.up_bandwidth,
-                    downband : info.down_bandwidth 
-                })
+                    downband : info.down_bandwidth,
+                    percent : 0,
+                });
+                return;
             }
             if(info.status === "fail"){
                 this.setState({
                     speedFail : true,
                     visible : false,
-                })
+                    percent : 0
+                });
+                return;
             }
         }
         Modal.error({ title: '获取测速失败', content: message});
@@ -140,18 +157,23 @@ export default class Bandwidth extends React.PureComponent {
         this.setState({
             loading : true
         });
-        let payload = this.composeparams("manual");
+        let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
         let response = await common.fetchWithCode(
             'QOS_SET',
-            {method : 'POST', data : payload}).catch(ex=>{}
-        )
+            {method : 'POST', data : payload}
+        ).catch(ex=>{})
         let {errcode, message} = response;
         if (errcode == 0){
             this.setState({
-                manualShow :false
-            })
+                manualShow :false,
+                loading : false
+            });
+            this.getBandInfo();
             return;
         }
+        this.setState({
+            loading : false
+        })
         Modal.error({titile : 'QOS设置失败', content : message});
     }
 
@@ -182,6 +204,9 @@ export default class Bandwidth extends React.PureComponent {
                     });
                     clearInterval(handleTime); 
                 }
+                if (this.state.speedFail === true || this.state.speedFill === true ){
+                    clearInterval(handleTime); 
+                }
             })
         }, 1000);
         this.speedTestStatus();
@@ -191,32 +216,39 @@ export default class Bandwidth extends React.PureComponent {
     getBandInfo = async ()=>{
         let response = await common.fetchWithCode(
             'QOS_GET',
-            {method : 'POST'}
+            {method : 'POST'},
+            {
+                loop : true,
+                interval : 3000,
+                stop : ()=>this.stop
+            }
         ).catch(ex=>{});
 
         let {data, errcode, message} = response;
         if (errcode == 0){
             let qos = data[0].result.qos;
             this.setState({
-                upband : qos.up_bandwidth,
-                downband : qos.down_bandwidth,
+                upband : qos.up_bandwidth.replace(/[A-Za-z]+/,''),
+                downband : qos.down_bandwidth.replace(/[A-Za-z]+/,''),
+                unit : qos.up_bandwidth.replace(/[0-9]+/,''),
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
                 bandenable : qos.enable
             })
+            return;
         }
 
         Modal.error({ title: '路由器QoS模块信息获取失败', content: message});
     }
 
     //定义数据格式
-    composeparams(val){
+    composeparams(val,upband,downband){
         let qos = {}, {bandenable, upbandTmp, downbandTmp, sunmi, white, normal} = this.state;
         qos['enable'] = bandenable;
         qos['source'] = val;
-        qos['up_bandwidth'] = upbandTmp;
-        qos['down_bandwidth'] = downbandTmp;
+        qos['up_bandwidth'] = upband + 'Mbps';
+        qos['down_bandwidth'] = downband + 'Mbps';
         qos['sunmi_weight'] = sunmi;
         qos['white_weight'] = white;
         qos['normal_weight'] = normal;
@@ -225,17 +257,29 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     componentDidMount(){
+        this.stop = false;
         this.getBandInfo();
     }
 
+    componentWillUnmount(){
+        this.stop = true
+    }
+
     post = async ()=>{
-        let payload = this.composeparams("default");
+        this.setState({
+            buttonloading : true
+        })
+        let payload = this.composeparams("default",this.state.upband,this.state.downband);
         let response = await common.fetchWithCode(
             'QOS_SET',
             {method : 'POST', data : payload}).catch(ex=>{}
         )
         let {errcode, message} = response;
         if (errcode == 0){
+            this.setState({
+                buttonloading : false
+            });
+            this.getBandInfo();
             return;
         }
         Modal.error({titile : 'QOS设置失败', content : message});
@@ -244,9 +288,9 @@ export default class Bandwidth extends React.PureComponent {
     
 
     render(){
-        const {loading, bandenable, visible, percent, manualShow, speedFail, 
+        const {bandunset, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
-            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp} = this.state;
+            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, buttonloading} = this.state;
         const columns = [{
             title : '设备类型',
             dataIndex : 'type'
@@ -294,12 +338,12 @@ export default class Bandwidth extends React.PureComponent {
                 </Form>
                 <section className="band-value">
                     <div className="band-size">{upband}
-                        <span className="band-unit">Mbps</span>
+                        <span className="band-unit">{unit}</span>
                         <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
                     </div>
                     <div className="band-line"></div> 
                     <div className="band-size">{downband}
-                        <span className="band-unit">Mbps</span>
+                        <span className="band-unit">{unit}</span>
                         <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
                     </div>
                 </section>
@@ -313,7 +357,7 @@ export default class Bandwidth extends React.PureComponent {
                         <div className="speed-distribution"><CustomIcon size={16} color="gray" type="help"/></div>
                     </section>
                     {
-                        bandenable ?  <Bandon columns={columns} data={data} post={this.post}/> : <Bandclose />
+                        bandenable ?  <Bandon columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
                     }
                 </Form>
                 <Modal closable={false} footer={null} visible={visible} onCancel={this.handleCancel} centered={true}>
@@ -331,12 +375,12 @@ export default class Bandwidth extends React.PureComponent {
                     >
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
                         <FormItem type="small" style={{ width: 320 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>Mbps</label>
+                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
                             <Input type="text" value={upbandTmp} onChange={value => this.onChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
                         </FormItem>                    
                     <label style={{ marginTop: 24 }}>下行总带宽</label>
                         <FormItem  type="small" style={{ width: 320 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>Mbps</label>
+                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
                             <Input type="text" value={downbandTmp} onChange={value => this.onChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
                         </FormItem>
                 </Modal>
@@ -347,11 +391,11 @@ export default class Bandwidth extends React.PureComponent {
                     </div>
                     <div className="band-line">
                         <CustomIcon color="blue" type="kbyte" size={16}/>
-                        <label>上行带宽：{upband}Mbps</label>
+                        <label>上行带宽：{upband}{unit}</label>
                     </div>
                     <div className="band-line">
                         <CustomIcon color="green" type="downloadtraffic" size={16}/>
-                        <label>上行带宽：{downband}Mbps</label>
+                        <label>上行带宽：{downband}{unit}</label>
                     </div>
                     <section className="speed-bottom">
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
@@ -366,6 +410,12 @@ export default class Bandwidth extends React.PureComponent {
                     <section className="speed-bottom">
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>
                     </section>
+                </Modal>
+                <Modal closable={false} mask={false} visible={bandunset} footer={null} width={170} style={{padding : 10,top : 78}}>
+                    <div className="band-line" style={{margin : 0, padding : 0}}>
+                        <CustomIcon color="orange" type="clean" size={14}  />
+                        <label style={{fontSize : 14,marginLeft : 6}}>请先设置总带宽</label>
+                    </div>
                 </Modal>
             </div>
         );
@@ -383,7 +433,7 @@ const Bandon = props => {
     <div key='speedbutton'>
         <Table className="anti-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
         <section className="wifi-setting-save" style={{marginTop:30}}>
-            <Button  style={{left:0}} className="wifi-setting-button" type="primary" onClick={props.post}>保存</Button>
+            <Button  style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
         </section>
      </div>
     ]
