@@ -112,6 +112,7 @@ export default class Bandwidth extends React.PureComponent {
         ).catch(ex=>{});
         let {errcode:code, data,message} = status;
         if (code == 0){
+            console.log("vvvv")
             let info = data[0].result.speedtest;
             if(info.status === "ok"){
                 this.setState({
@@ -124,6 +125,7 @@ export default class Bandwidth extends React.PureComponent {
                 return;
             }
             if(info.status === "fail"){
+                console.log("aaaa");
                 this.setState({
                     speedFail : true,
                     visible : false,
@@ -360,7 +362,7 @@ export default class Bandwidth extends React.PureComponent {
                         bandenable ?  <Bandon columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
                     }
                 </Form>
-                <Modal closable={false} footer={null} visible={visible} onCancel={this.handleCancel} centered={true}>
+                <Modal closable={false} footer={null} visible={visible} centered={true}>
                     <div className="percent-position">{percent}%</div>
                     <Progress percent={percent} strokeColor="orange" showInfo={false}/>
                     <div className="progress-position">测速中，请稍后…</div>

@@ -196,7 +196,7 @@ export default class NETWORK extends React.Component {
                 };
                 break;
             case 'static' :
-                wan.info = {
+                wan['info'] = {
                     ipv4 : ip.join('.'),
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
