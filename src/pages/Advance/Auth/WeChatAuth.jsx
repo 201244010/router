@@ -31,7 +31,6 @@ export default class WeChatAuth extends React.Component{
             {"ssid":"W1-Test-2.4G", "enable":"1"},
             {"ssid":"W1-Test-5G", "enable":"1"}
         ],
-        deleteButton:true,
     }
 
     onEnableChange = type =>{
@@ -83,23 +82,21 @@ export default class WeChatAuth extends React.Component{
             headers: {
                 authorization: 'authorization-text',
             },
-            showUploadList : false,
+            disabled:false,
+            showUploadList : true,
             onChange(info) {
               if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
-                this.setState({deleteButton : true});
                 return;
               }
               if (info.file.status === 'done') {
-                this.setState({deleteButton : true});
                 message.success('${info.file.name} file uploaded successfully');
                 return;
               } else if (info.file.status === 'error') {
-                this.setState({deleteButton : false});
                 message.error('${info.file.name} file upload failed.');
                 return;
               }
-              this.setState({deleteButton : false});
+              this.setState({disabled : false});
             },
             beforeUpload(file){
                 const isImage = file.type ==='image/png'||'image/jpg';
@@ -110,7 +107,7 @@ export default class WeChatAuth extends React.Component{
             }
           };
         
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList,deleteButton} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList} = this.state;
         const ssidListOption = ssidList.map(ssidOption =><Option key ={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
             <div className="auth">
@@ -144,7 +141,6 @@ export default class WeChatAuth extends React.Component{
                                         <Icon type="upload" /> 上传Logo图片
                                         </Button>
                                     </Upload>
-                                    {deleteButton?<span style={{marginTop:15,marginBottom:3,paddingTop:6,paddingLeft:6}}><CustomIcon  type={'delete'} size={20}/></span> :''}
                                 </div>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <Upload {...props}>
