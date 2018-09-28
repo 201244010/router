@@ -1,7 +1,7 @@
 
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
-import Form from '~/Components/Form';
+import Form from '~/components/Form';
 import {Modal ,Select} from 'antd';
 
 const {FormItem,Input} = Form;
