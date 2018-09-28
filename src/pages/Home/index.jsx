@@ -11,219 +11,9 @@ import './home.scss'
 
 export default class Home extends React.PureComponent {
     state = {
-        sunmiNum: 10,
-        priorityNum:12,
-        normalNum:21,
-        sunmiClients:[{
-            name:'Bla Bla Bla Bla Bla Bla Bla Bla',
-            ip:'192.168.100.1',
-            mac:'00:11:22:33:44:00',
-            icon:'computer',
-            type:'sunmi'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip:'192.168.100.1',
-            mac:'00:11:22:33:44:01',
-            icon: 'bootdevice',
-            type: 'sunmi'
-        },
-        {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:02',
-            icon: 'bootdevice',
-            type: 'sunmi'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:03',
-            icon: 'pad',
-            type: 'sunmi'
-        }],
-        normalClients: [{
-            name:'Bla Bla Bla Bla Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac:'00:11:22:33:44:00',
-            icon:'computer',
-            type:'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-                ip: '192.168.100.1',
-            mac:'00:11:22:33:44:01',
-            icon: 'bootdevice',
-            type: 'normal'
-        },
-        {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:02',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:03',
-            icon: 'pad',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:04',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:05',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:06',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:07',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:08',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:09',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0A',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0B',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0C',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0D',
-            icon: 'bootdevice',
-            type: 'normal'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0E',
-            icon: 'bootdevice',
-            type: 'normal'
-        }],
-        priorityClients: [{
-            name:'Bla Bla Bla Bla Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac:'00:11:22:33:44:00',
-            icon:'computer',
-            type:'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip:'192.168.100.1',
-            mac:'00:11:22:33:44:01',
-            icon: 'bootdevice',
-            type: 'priority'
-        },
-        {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:02',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:03',
-            icon: 'pad',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:04',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:05',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:06',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:07',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:08',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:09',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0A',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0B',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0C',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0D',
-            icon: 'bootdevice',
-            type: 'priority'
-        }, {
-            name: 'Bla Bla Bla Bla',
-            ip: '192.168.100.1',
-            mac: '00:11:22:33:44:0E',
-            icon: 'bootdevice',
-            type: 'priority'
-        }],
+        sunmiClients:[],
+        normalClients: [],
+        whitelistClients: [],
         qosData: [{
             name: '商米设备',
             value: 20,
@@ -245,6 +35,117 @@ export default class Home extends React.PureComponent {
             color: '#DFE8F3'
         }]
     }
+
+    formatTime = (total) => {
+        let seconds = parseInt(total, 10);
+        let day = parseInt(seconds / 86400);
+        let hour = parseInt((seconds % 86400) / 3600);
+        let minute = parseInt((seconds % 3600) / 60);
+        let second = parseInt(seconds % 60);
+
+        let timeStr = "";
+        if (day > 0) {
+            timeStr += day + "天";
+        }
+
+        if (hour > 0) {
+            timeStr += hour + "时";
+        }
+
+        if (minute > 0) {
+            timeStr += minute + "分";
+        }
+
+        if (second >= 0) {
+            timeStr += second + "秒";
+        }
+
+        return timeStr;
+    }
+
+    formatSpeed = (speed) => {
+        let kSpeed = 1024;
+        let mSpeed = kSpeed * 1024;
+        let gSpeed = mSpeed * 1024;
+
+        speed = parseInt(speed, 10);
+        if (speed >= gSpeed) {
+            speed = (speed / gSpeed).toFixed(2) + "GB/s";
+        }
+        else if (speed >= mSpeed) {
+            speed = (speed / mSpeed).toFixed(2) + "MB/s";
+        }
+        else if (speed >= kSpeed) {
+            speed = (speed / kSpeed).toFixed(0) + "KB/s";
+        }
+        else {
+            speed = speed.toFixed(0) + "B/s";
+        }
+
+        return speed.toString();
+    }
+
+    fetchClinetsInfo = () => {
+        let fetchClinets = common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' });
+        let fetchTraffic = common.fetchWithCode('TRAFFIC_STATS_GET', { method: 'POST' });
+
+        Promise.all([fetchClinets, fetchTraffic]).then(results =>{
+            let clients, traffics;
+            let { errcode, data } = results[0];
+            if (0 !== errcode){
+                return;
+            } else {
+                clients = data[0].result.data;
+            }
+
+            if (0 !== results[1].errcode) {
+                return;
+            } else {
+                traffics = results[1].data[0].result.traffic_stats.hosts;
+            }
+
+            // merge clients && traffic info
+            let totalList = clients.map(client => {
+                const modeMap = {
+                    '2.4g': '2.4G',
+                    '5g': '5G',
+                    'not wifi': '有线'
+                };
+                let dft = {
+                    total_tx_bytes: 0,
+                    total_rx_bytes: 0,
+                    cur_tx_bytes: 0,
+                    cur_rx_bytes: 0
+                };
+                let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
+                let rssi = ('not wifi' == client.wifi_mode) ? '--' : (('good' === client.rssi) ? '好' : '差');
+                let mode = modeMap[client.wifi_mode];
+                let ontime = this.formatTime(client.ontime);
+                let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
+                return {
+                    icon: 'logo',
+                    name: client.hostname,
+                    ip: client.ip,
+                    mac: client.mac.toUpperCase(),
+                    type: client.type,
+                    mode: mode,
+                    ontime: ontime,
+                    rssi: rssi,
+                    tx: this.formatSpeed(tf.cur_tx_bytes),
+                    rx: this.formatSpeed(tf.cur_rx_bytes),
+                    flux: flux,
+                }
+            });
+            this.setState({
+                sunmiClients: totalList.filter(item => item.type !== 'sunmi'),
+                normalClients: totalList.filter(item => item.type !== 'normal'),
+                whitelistClients: totalList.filter(item => item.type !== 'whitelist'),
+            });
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     componentDidMount(){
         setInterval(() =>{
             this.setState({
@@ -257,11 +158,13 @@ export default class Home extends React.PureComponent {
                 })
             })
         }, 3000)
+
+        this.fetchClinetsInfo();
     }
 
     render(){
-        const { sunmiClients, normalClients, priorityClients, qosData}  = this.state;
-        const total = sunmiClients.length + normalClients.length + priorityClients.length;
+        const { sunmiClients, normalClients, whitelistClients, qosData}  = this.state;
+        const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
             <div>
                 <SubLayout>
@@ -304,8 +207,8 @@ export default class Home extends React.PureComponent {
                             <ClientList type='sunmi' data={sunmiClients} placement='top' />
                             <ClientList type='normal' data={normalClients} placement='top' />
                         </div>
-                        <div className='priority-list'>
-                            <ClientList type='priority' data={priorityClients} placement='top' />
+                        <div className='whitelist-list'>
+                            <ClientList type='whitelist' data={whitelistClients} placement='top' />
                         </div>
                     </div>
                 </SubLayout>

@@ -196,7 +196,7 @@ export default class NETWORK extends React.Component {
                 };
                 break;
             case 'static' :
-                wan.info = {
+                wan['info'] = {
                     ipv4 : ip.join('.'),
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
@@ -232,15 +232,9 @@ export default class NETWORK extends React.Component {
     getNetInfo = async ()=>{
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'},
-            {
-                loop : false, 
-                interval : 3000, 
-                stop : ()=> this.stop, 
-                pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
-            }
+            { method : 'POST'}
         ).catch(ex=>{});
-
+        console.log(response);  
         let { data, errcode, message } = response;
         if(errcode == 0){
             let {dhcp, pppoe} = data[0].result.wan;
@@ -282,83 +276,73 @@ export default class NETWORK extends React.Component {
     
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        let response = await common.fetchWithCode(
-            'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'},
-            {
-                loop : true, 
-                interval : 3000, 
-                stop : ()=> this.stop, 
-                pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
-            }
-        ).catch(ex=>{});
-        let { data, errcode} = response;
-        if(errcode == 0){
-            let info = data[0].result.wan.info;
-            this.setState({
-                //info
-                infoIp : info.ipv4,
-                infoGateway : info.gateway,
-                infoMask : info.mask,
-                infoDns1 : info.dns1,
-                infoDns2 : info.dns2
-            })
-            
-            if(data[0].result.wan.dial_type == "dhcp"){
-                this.setState({
-                    dialType : 'DHCP自动获取'
-                })
-            }
+        let fetchNetwork = common.fetchWithCode('NETWORK_WAN_IPV4_GET',{method : 'POST'});
+        let fetchOnlineStart = common.fetchWithCode('WANWIDGET_ONLINETEST_START',{method : 'POST'});
+        let fetchOnlineGet = common.fetchWithCode('WANWIDGET_ONLINETEST_GET',{method : 'POST'});
 
-            if(data[0].result.wan.dial_type == "pppoe"){
+        Promise.all([fetchNetwork,fetchOnlineStart,fetchOnlineGet]).then(result => {
+            let {errcode, data} = result[0];
+            if(errcode == 0){
+                let info = data[0].result.wan.info;
                 this.setState({
-                    dialType : 'PPPoE拨号'
+                    //info
+                    infoIp : info.ipv4,
+                    infoGateway : info.gateway,
+                    infoMask : info.mask,
+                    infoDns1 : info.dns1,
+                    infoDns2 : info.dns2
                 })
-            }
-
-            if(data[0].result.wan.dial_type == "static"){
-                this.setState({
-                    dialType : '静态获取'
-                })
-            }
-        }
-        // 触发检测联网状态
-        common.fetchWithCode('WANWIDGET_ONLINETEST_START', {method : 'POST'});
-        // 获取联网状态
-        let connectStatus = await common.fetchWithCode(
-            'WANWIDGET_ONLINETEST_GET',
-                {method : 'POST'},
-                {
-                    loop : true, 
-                    interval : 3000, 
-                    stop : ()=> this.stop, 
-                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                
+                if(data[0].result.wan.dial_type == "dhcp"){
+                    this.setState({
+                        dialType : 'DHCP自动获取'
+                    })
                 }
-        );
-        let { errcode:code, datanum} = connectStatus;
-        if(code == 0){
-            let onlinetest = datanum[0].result.onlinetest.online;
-            if(onlinetest === "true"){
-                this.setState({
-                    onlineStatus : '已联网'
-                })
-            }else{
-                this.setState({
-                    onlineStatus : '未联网'
-                })
+    
+                if(data[0].result.wan.dial_type == "pppoe"){
+                    this.setState({
+                        dialType : 'PPPoE拨号'
+                    })
+                }
+    
+                if(data[0].result.wan.dial_type == "static"){
+                    this.setState({
+                        dialType : '静态获取'
+                    })
+                }
             }
-        }
+            // 触发检测联网状态
+            let connectStatus = result[2];
+            // 获取联网状态
+            let {errcode:code} = connectStatus;
+            if(code == 0){
+                let onlinetest = connectStatus.data[0].result.onlinetest.online,status = connectStatus.data[0].result.onlinetest.status;
+                if(status === "ok"){
+                    if(onlinetest === true){
+                        this.setState({
+                            onlineStatus : '已联网'
+                        })
+                    }
+                    if(onlinetest === false){
+                        this.setState({
+                            onlineStatus : '未联网'
+                        })
+                    }
+                }
+            }
+        })
     }
 
     componentDidMount(){
         //获取网络状况
        this.getNetInfo();
-       this.refreshNetStatus();
+       this.handleTime = setInterval(() => this.refreshNetStatus(),3000);
        this.stop = false;
     }
 
     componentWillUnmount(){
         this.stop = true;
+        clearInterval(this.handleTime);
     }
 
     render(){

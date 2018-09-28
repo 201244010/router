@@ -48,7 +48,7 @@
                 height: 240px;
             }
         }
-        .priority-list{
+        .whitelist-list{
             width: 392px;
             height: 410px;
             background-color:#FFF;
@@ -116,7 +116,7 @@
                 background-color:#4687FF;
             }
         }
-        & .priority-list{
+        & .whitelist-list{
             .divider{
                 background-color:#87D068;
             }
@@ -162,10 +162,23 @@
         }
         button:first-child{
             color: #3D76F6;
+            border-radius: 0;
             border-right: 1px solid #ECECEC;
         }
         button:last-child{
             color: #BF4C41;
         }
+    }
+}
+
+i.dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #87D068;
+    margin-right: 5px;
+    border-radius: 50%;
+    &.warning{
+        background-color:#BF4C41;
     }
 }
