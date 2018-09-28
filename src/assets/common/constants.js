@@ -61,6 +61,10 @@ export const DIRECTIVE = {
     CLIENT_ITEM_GET: '0x2026',
     CLIENT_ITEM_GET : '',
 
+    // 流量统计
+    TRAFFIC_STATS_GET: '0x2040',
+    TRAFFIC_STATS_RESET: '0x2041',
+
     // 问题诊断 
     DIAGNOSIS_START : '',
     DIAGNOSIS_INFO_GET : '',
