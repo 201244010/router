@@ -2,7 +2,8 @@
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import {Modal ,Select} from 'antd';
+import { Modal ,Select,Upload, message, Button, Icon } from 'antd';
+
 
 const {FormItem,Input} = Form;
 const Option = Select.Option;
@@ -42,6 +43,7 @@ export default class WeChatAuth extends React.Component{
             [name] : value
         })
     }
+
     async fetchWeChatAuthInfo(){
         let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_GET',{method : 'post'},{handleError : true});
         let {errcode,data,message} = response;
@@ -61,7 +63,7 @@ export default class WeChatAuth extends React.Component{
                 shopId : this.weixin.shopid,
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
-                //ssidList : this.weixin.ssidlist,
+                ssidList : this.weixin.ssidlist,
             });
             return ;
         }
@@ -73,24 +75,108 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        
+        const props = {
+            name: 'file',
+            action: '//jsonplaceholder.typicode.com/posts/',
+            headers: {
+                authorization: 'authorization-text',
+            },
+            showUploadList : false,
+            onChange(info) {
+              if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+              }
+              if (info.file.status === 'done') {
+                message.success('${info.file.name} file uploaded successfully');
+              } else if (info.file.status === 'error') {
+                message.error('${info.file.name} file upload failed.');
+              }
+            },
+            beforeUpload(file){
+                const isImage = file.type ==='.jpg/.png';
+                if(!isImage){
+                    message.error('只能上传带.jpg、.png后缀的图片文件');
+                }
+                return isImage;
+            }
+          };
         
         const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList} = this.state;
         const ssidListOption = ssidList.map(ssidOption =><Option key ={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
-            <div>
-                <Form>
-                    <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
-                    <label>上网时长</label>
-                    <FormItem type="small" style={{ width : 320}}>
-                        <Input type="text" disabled={false} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
-                    </FormItem>
-                    <label>空闲断线</label>
-                    <FormItem type="small" style={{ width : 320}}>
-                        <Input type="text" disabled={false} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
-                    </FormItem>
-                    <label>上网时长</label>
-                    <Select style={{width:320}}>{ssidListOption}</Select>
+            <div className="auth">
+                <Form style={{width:'100%',margin:0,paddingLeft:0}}>
+                    <div className='left'>
+                        <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
+                        <label>上网时长</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" disabled={false} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                        </FormItem>
+                        <label>空闲断线</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" disabled={false} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                        </FormItem>
+                        <div style={{display:'flex',flexDirection:'column'}}>
+                            <label>生效SSID</label>
+                            <Select style={{width:320}}>{ssidListOption}</Select>
+                        </div>
+                        <PanelHeader title = "认证页面设置" checkable={false} />
+                        <section className='twosection'>
+                            <section>
+                                <Upload {...props}>
+                                    <Button style={{width:150}}>
+                                    <Icon type="upload" /> 上传Logo图片
+                                    </Button>
+                                </Upload>
+                                <span>支持扩展名：.jpg .png；图片大小：</span>
+                                <Upload {...props}>
+                                    <Button style={{width:150}}>
+                                    <Icon type="upload" /> 上传背景图片
+                                    </Button>
+                                </Upload>
+                                <span>支持扩展名：.jpg .png；图片大小：</span>
+                                <label>Logo信息</label>
+                                <FormItem type="small" style={{ width : 320}}>
+                                    <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                </FormItem>
+                                <label>欢迎信息</label>
+                                <FormItem type="small" style={{ width : 320}}>
+                                    <Input type="text" placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                </FormItem>
+                                <label>登陆按钮提示文字</label>
+                                <FormItem type="small" style={{ width : 320}}>
+                                    <Input type="text" placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
+                                </FormItem>
+                                <label>版权声明</label>
+                                <FormItem type="small" style={{ width : 320}}>
+                                    <Input type="text" placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                </FormItem>
+                            </section>
+                            <section>
+
+                            </section>                  
+                        </section>
+                        <PanelHeader title = "微信公众平台参数设置" checkable={false} />
+                        <label>SSID</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" placeholder={'请输入SSID'} disabled={false} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
+                        </FormItem>
+                        <label>ShopID</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" placeholder={'请输入ShopID'} disabled={false} value={shopId} onChange={(value)=>this.onChange('shopId',value)} />
+                        </FormItem>
+                        <label>AppID</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" placeholder={'请输入AppID'} disabled={false} value={appId} onChange={(value)=>this.onChange('appId',value)} />
+                        </FormItem>
+                        <label>SecretKey</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" placeholder={'请输入SecretKey'} disabled={false} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
+                        </FormItem>
+                    </div>
+                    <section className="weixin-auth-save">
+                        <Button className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+                    </section>
                 </Form>
             </div>
         );
