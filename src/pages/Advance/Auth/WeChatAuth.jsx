@@ -2,6 +2,7 @@
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
+import CustomIcon from '~/components/Icon';
 import { Modal ,Select,Upload, message, Button, Icon } from 'antd';
 
 
@@ -29,7 +30,8 @@ export default class WeChatAuth extends React.Component{
         ssidList :[
             {"ssid":"W1-Test-2.4G", "enable":"1"},
             {"ssid":"W1-Test-5G", "enable":"1"}
-        ]
+        ],
+        deleteButton:true,
     }
 
     onEnableChange = type =>{
@@ -85,15 +87,22 @@ export default class WeChatAuth extends React.Component{
             onChange(info) {
               if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
+                this.setState({deleteButton : true});
+                return;
               }
               if (info.file.status === 'done') {
+                this.setState({deleteButton : true});
                 message.success('${info.file.name} file uploaded successfully');
+                return;
               } else if (info.file.status === 'error') {
+                this.setState({deleteButton : false});
                 message.error('${info.file.name} file upload failed.');
+                return;
               }
+              this.setState({deleteButton : false});
             },
             beforeUpload(file){
-                const isImage = file.type ==='.jpg/.png';
+                const isImage = file.type ==='image/png'||'image/jpg';
                 if(!isImage){
                     message.error('只能上传带.jpg、.png后缀的图片文件');
                 }
@@ -101,41 +110,50 @@ export default class WeChatAuth extends React.Component{
             }
           };
         
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList,deleteButton} = this.state;
         const ssidListOption = ssidList.map(ssidOption =><Option key ={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
             <div className="auth">
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div className='left'>
                         <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
-                        <label>上网时长</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" disabled={false} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
-                        </FormItem>
+                        <label style={{marginTop:20}}>上网时长</label>
+                        <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
+                            <FormItem type="small" style={{ width : 320}}>
+                                <Input type="text" disabled={false} placeholder={'请输入上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                            </FormItem>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
+                        </div>
                         <label>空闲断线</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" disabled={false} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
-                        </FormItem>
+                        <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
+                            <FormItem type="small" style={{ width : 320}}>
+                                <Input type="text" disabled={false} placeholder={'请输入空闲断线'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                            </FormItem>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
+                        </div>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Select style={{width:320}}>{ssidListOption}</Select>
+                            <Select style={{width:320}} placeholder={'请选择生效SSID'}>{ssidListOption}</Select>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>
-                                <Upload {...props}>
-                                    <Button style={{width:150}}>
-                                    <Icon type="upload" /> 上传Logo图片
-                                    </Button>
-                                </Upload>
+                                <div style={{display:'flex',flexDirection:'row'}}>
+                                    <Upload {...props}>
+                                        <Button style={{width:150,marginTop:15,marginBottom:3}}>
+                                        <Icon type="upload" /> 上传Logo图片
+                                        </Button>
+                                    </Upload>
+                                    {deleteButton?<span style={{marginTop:15,marginBottom:3,paddingTop:6,paddingLeft:6}}><CustomIcon  type={'delete'} size={20}/></span> :''}
+                                </div>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <Upload {...props}>
-                                    <Button style={{width:150}}>
+                                    <Button style={{width:150,marginTop:15,marginBottom:3}}>
                                     <Icon type="upload" /> 上传背景图片
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <label>Logo信息</label>
+                                <label style={{marginTop:20}}>Logo信息</label>
                                 <FormItem type="small" style={{ width : 320}}>
                                     <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
                                 </FormItem>
@@ -153,7 +171,9 @@ export default class WeChatAuth extends React.Component{
                                 </FormItem>
                             </section>
                             <section>
+                                <div>
 
+                                </div>
                             </section>                  
                         </section>
                         <PanelHeader title = "微信公众平台参数设置" checkable={false} />
