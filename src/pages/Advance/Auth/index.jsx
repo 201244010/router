@@ -6,6 +6,8 @@ import SmsAuth from './SmsAuth';
 import NonAuth from './NonAuth';
 import AuthUserList from './AuthUserList';
 
+import './auth.scss'
+
 const TabPane = Tabs.TabPane;
 
 export default class Auth extends React.PureComponent {

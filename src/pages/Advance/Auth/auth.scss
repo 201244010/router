@@ -1,0 +1,33 @@
+.auth{
+    display : flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    label{
+        margin-bottom:5px;
+    }
+    .left{
+        padding-left:60px;
+        .twosection{
+            display:flex;
+            flex-direction:row;
+            flex-wrap:nowrap;
+            >section{
+                display:flex;
+                flex-direction:column;
+                flex:1
+            }
+        }
+    }
+    .weixin-auth-save{
+        height: 98px;
+        border-top: 1px solid #d8d8d8;
+        left:-60px;
+        .weixin-auth-button{
+            width: 320px;
+            height: 42px;
+            left: 60px;
+            top: 24px;
+        }
+    }
+    
+}
