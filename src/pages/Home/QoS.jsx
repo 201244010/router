@@ -86,7 +86,7 @@ export default class QoS extends React.Component {
                     (<h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4>) : 
                     (<h4 className='nice'>当前网络畅通，可放心使用</h4>)}
                 <ul className='band-desc'>{bandList}</ul>
-                <Button className='set-band'>设置宽带</Button>
+                <Button className='set-band'><a href="/advance/bandwidth">设置宽带</a></Button>
             </li>
         )
     }
