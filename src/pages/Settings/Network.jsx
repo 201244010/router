@@ -3,8 +3,9 @@ import React from 'react';
 import {Select ,Radio,Button, Modal} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
+import {checkIp, checkMask} from '~/assets/common/check';
 
-const {FormItem, Input,InputGroup} = Form;
+const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
@@ -32,21 +33,88 @@ export default class NETWORK extends React.Component {
         pppoePasswordTip : '',
         pppoeType: 'auto',
         hostSsidPasswordDisabled : false,
-        pppoeDns:[],
-        pppoeDnsbackup:[],
+        pppoeDns:["","","",""],
+        pppoeDnsbackup:["","","",""],
 
         //静态IP
-        ip : [],
-        subnetmask : [],
-        gateway : [],
-        staticDns : [],
-        staticDnsbackup : [],
-
+        ipv4 : ["","","",""],
+        subnetmask : ["","","",""],
+        gateway : ["","","",""],
+        staticDns : ["","","",""],
+        staticDnsbackup : ["","","",""],
         //dhcp
         dhcpType: 'auto',
-        dhcpDns: [],
-        dhcpDnsbackup:[]
+        dhcpDns: ["","","",""],
+        dhcpDnsbackup:["","","",""],
+
+        //防呆提示语
+        ipv4Tip : '',
+        gatewayTip : '',
+        subnetmaskTip : '',
+        staticDnsTip : '',
+        staticDnsbackupTip : '',
+        dhcpDnsTip : '',
+        dhcpDnsbackupTip : '',
+        pppoeDnsTip : '',
+        pppoeDnsbackupTip : ''
     };
+
+    onIPConifgChange = (val, key) => {
+        let tip = '';
+        switch(key){
+            case 'ipv4':
+                if (0 !== checkIp(val)){
+                    tip = 'IP地址非法，请重新输入';
+                }
+                break;
+            case 'subnetmask':
+                if (!checkMask(val)) {
+                    tip = '子网掩码非法，请重新输入';
+                }
+                break;
+            case 'gateway':
+                if (0 !== checkIp(val)) {
+                    tip = '网关非法，请重新输入';
+                }
+                break;
+            case 'staticDns':
+                if (0 !== checkIp(val)){
+                    tip = '首选DNS非法，请重新输入';
+                } 
+                break;
+            case 'dhcpDns':
+                if (0 !== checkIp(val)) {
+                    tip = '首选DNS非法，请重新输入';
+                }
+                break;
+            case 'pppoeDns':
+                if (0 !== checkIp(val)) {
+                    tip = '首选DNS非法，请重新输入';
+                }
+                break;
+            case 'staticDnsbackup':
+                if (0 !== checkIp(val)){
+                    tip = '次选DNS非法，请重新输入';
+                }
+                break;
+            case 'dhcpDnsbackup':
+                if (0 !== checkIp(val)) {
+                    tip = '次选DNS非法，请重新输入';
+                }
+                break;
+            case 'pppoeDnsbackup':
+                if (0 !== checkIp(val)) {
+                    tip = '次选DNS非法，请重新输入';
+                }
+                break;
+        }
+        this.setState({
+            [key] : (typeof val == 'object' ? [...val] : val),
+            [key + 'Tip'] : tip
+        },()=>{
+            this.setState({disabled : !this.checkParams()});
+        })
+    }
 
     handleAccountChange = value => {
         this.setState({ pppoeAccount : value }, function(){
@@ -91,7 +159,10 @@ export default class NETWORK extends React.Component {
     onTypeChange = value => {
         this.setState({
             type : value,
-            disabled : !this.checkParams()
+        },()=>{
+            this.setState({
+                disabled : !this.checkParams()
+            })
         })
     }
     
@@ -112,7 +183,7 @@ export default class NETWORK extends React.Component {
 
     // 校验参数
     checkParams(){
-        let { type, pppoeAccount, pppoePassword,pppoeType, dhcpType, staticDns, staticDnsbackup, ip, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
+        let { type, pppoeAccount, pppoePassword,pppoeType, dhcpType, staticDns, staticDnsbackup, ipv4, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
         switch(type){
             case 'pppoe' :
                 if(pppoeAccount.length === 0 || pppoePassword.length === 0){
@@ -137,7 +208,7 @@ export default class NETWORK extends React.Component {
 
                 break;
             case 'static' :
-                empty = [staticDns, staticDnsbackup, ip, subnetmask, gateway].some(field => {
+               let empty = [staticDns, staticDnsbackup, ipv4, subnetmask, gateway].some(field => {
                     if(field.length === 0){
                         return true;
                     }
@@ -173,18 +244,9 @@ export default class NETWORK extends React.Component {
         return true;
     }
 
-    //检测地址
-    onIPConifgChange = (value, field) => {
-        this.setState({ [field] : value }, function() {
-            this.setState({
-                disabled : !this.checkParams()
-            });
-        });
-    }
-
     //表单提交参数
     composeParams(){
-        let wan = {}, {type, disabled, pppoeAccount, pppoePassword, pppoeType, pppoeDns, pppoeDnsbackup, dhcpType, dhcpDns, dhcpDnsbackup, ip, staticDns, staticDnsbackup, gateway, subnetmask} = this.state;
+        let wan = {}, {type, pppoeAccount, pppoePassword, pppoeType, pppoeDns, pppoeDnsbackup, dhcpType, dhcpDns, dhcpDnsbackup, ipv4, staticDns, staticDnsbackup, gateway, subnetmask} = this.state;
         wan['dial_type'] = type;
         switch(type){
             case 'pppoe' :
@@ -200,7 +262,7 @@ export default class NETWORK extends React.Component {
                 break;
             case 'static' :
                 wan['info'] = {
-                    ipv4 : ip.join('.'),
+                    ipv4 : ipv4.join('.'),
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : staticDns.join('.'),
@@ -227,7 +289,7 @@ export default class NETWORK extends React.Component {
         let {errcode, message } = response;
         if (errcode == 0){
             this.setState({
-                loading : flase
+                loading : false
             });x
             return;
         }   
@@ -240,7 +302,6 @@ export default class NETWORK extends React.Component {
             'NETWORK_WAN_IPV4_GET',
             { method : 'POST'}
         ).catch(ex=>{});
-        console.log(response);  
         let { data, errcode, message } = response;
         if(errcode == 0){
             let {dhcp, pppoe} = data[0].result.wan;
@@ -251,7 +312,7 @@ export default class NETWORK extends React.Component {
                 pppoeType : pppoe.dns_type,
 
                 //static
-                ip : [...staticMode.ipv4.split('.')],
+                ipv4 : [...staticMode.ipv4.split('.')],
                 gateway : [...staticMode.gateway.split('.')],
                 subnetmask : [...staticMode.mask.split('.')],
                 staticDns : [...staticMode.dns1.split('.')],
@@ -353,7 +414,7 @@ export default class NETWORK extends React.Component {
     }
 
     render(){
-        const {disabled, loading, type, infoIp , dialType, onlineStatus, infoGateway, infoMask, infoDns1, infoDns2, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ip, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
+        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,disabled, loading, type, infoIp , dialType, onlineStatus, infoGateway, infoMask, infoDns1, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -402,7 +463,6 @@ export default class NETWORK extends React.Component {
                                     handleAccountChange={this.handleAccountChange}
                                     handlePasswordBlur={this.handlePasswordBlur}
                                     handleAccountBlur={this.handleAccountBlur}
-
                             />: ''
                         }
                         {   
@@ -411,22 +471,29 @@ export default class NETWORK extends React.Component {
                             />: ''
                         }
                         {
-                            type === 'static' ? <Static ip={ip} 
+                            type === 'static' ? <Static ipv4={ipv4} 
                                             gateway={gateway} 
                                             subnetmask={subnetmask}
                                             onChange={this.onIPConifgChange}
+                                            ipv4Tip={ipv4Tip}
+                                            gatewayTip={gatewayTip}
+                                            subnetmaskTip={subnetmaskTip}
+
                             /> : ''
                         } 
                         {
-                            type === 'pppoe' & pppoeType === 'manual' ? <Dns dnsbackup={pppoeDnsbackup}
+                            type === 'pppoe' & pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
+                            dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
                             dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                         {
-                            type === 'dhcp' & dhcpType === 'manual' ? <Dns dnsbackup={dhcpDnsbackup}
+                            type === 'dhcp' & dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
+                            dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
                             dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }             
                         {
-                            type === 'static' ? <Dns dnsbackup={staticDnsbackup}
+                            type === 'static' ? <Dns dnsTip={staticDnsTip}
+                            dnsbackupTip={staticDnsbackupTip} dnsbackup={staticDnsbackup}
                             dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                     </section>
@@ -475,44 +542,56 @@ const Static = props => {
     return [
     <div key="static" className="wifi-settings">
         <label>IP地址</label>
-        <FormItem key='ip' style={{ width : 320}}>
+        <FormItem key='ipv4' showErrorTip={props.ipv4Tip} style={{ width : 320}}>
             <InputGroup 
-                inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'ip')} />
+                inputs={[{value : props.ipv4[0], maxLength : 3}, {value : props.ipv4[1], maxLength : 3}, {value : props.ipv4[2], maxLength : 3}, {value : props.ipv4[3], maxLength : 3}]} 
+                onChange={value => props.onChange(value, 'ipv4')} />
+            <ErrorTip>{props.ipv4Tip}</ErrorTip>
          </FormItem>
         <label>子网掩码</label>
-        <FormItem key='subnetmask' style={{ width : 320}}>
+        <FormItem key='subnetmask' showErrorTip={props.subnetmaskTip} style={{ width : 320}}>
             <InputGroup                                                                     
                 inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
+            <ErrorTip>{props.subnetmaskTip}</ErrorTip>
         </FormItem>
         <label>网关</label>
-        <FormItem key='gateway' style={{ width : 320}}>
+        <FormItem key='gateway' showErrorTip={props.gatewayTip} style={{ width : 320}}>
             <InputGroup 
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
+            <ErrorTip>{props.gatewayTip}</ErrorTip>
         </FormItem>
     </div>
     ];
 }
 
-const Dns = props => {
-    return [
-        <div key="dnstype" className="wifi-settings">
-            <label>首选DNS</label>
-            <FormItem key='dns' style={{ width : 320}}>
-                <InputGroup 
-                    inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, props.dnsname)} />
-            </FormItem>
-            <label>备选DNS</label>
-            <FormItem key='dnsbackup' style={{ width : 320}}>
-                <InputGroup 
-                    inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                    onChange={value => props.onChange(value, props.dnsbackupname)}
-                />
-            </FormItem>
-        </div>
-    ]
+class Dns extends React.Component  {
+    constructor(props){
+        super(props)
+    }
+
+    render (){
+        const props = this.props;
+        return (
+            <div className="wifi-settings">
+                <label>首选DNS</label>
+                <FormItem key={props.dnsname} showErrorTip={props.dnsTip} style={{ width : 320}}>
+                    <InputGroup
+                        inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
+                        onChange={value => props.onChange(value, props.dnsname)} />
+                    <ErrorTip>{props.dnsTip}</ErrorTip>
+                </FormItem>
+                <label>备选DNS</label>
+                <FormItem key={props.dnsbackupname} showErrorTip={props.dnsbackupTip} style={{ width : 320}}>
+                    <InputGroup
+                        inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
+                        onChange={value => props.onChange(value, props.dnsbackupname)}
+                    />
+                    <ErrorTip>{props.dnsbackupTip}</ErrorTip>
+                </FormItem>
+            </div>
+        )
+    }
 }
 
