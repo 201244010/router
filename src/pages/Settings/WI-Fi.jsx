@@ -343,6 +343,8 @@ export default class WIFI extends React.Component {
                 hostSsidPasswrod : atob(this.hostWireLess.band_2g.password),
                 hostSsidPasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
                 encryption : this.hostWireLess.band_2g.encryption,
+                pwdForbid : this.hostWireLess.band_2g.encryption == 'none' ? true :false,
+                hostSsidPasswordDisabled : this.hostWireLess.band_2g.encryption == 'none' ? true :false,
                 hostEnable : this.hostWireLess.band_2g.enable == '1'? true : false,
                 disabledType : this.hostWireLess.band_2g.enable == '1'? false : true,
                 hiddenType : this.hostWireLess.band_2g.enable == '1'? false : true,
@@ -365,6 +367,8 @@ export default class WIFI extends React.Component {
                 hostSsid24PasswordDisabled : this.hostWireLess.band_2g.enable == '1'? false : true,
                 hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
                 encryption24 : this.hostWireLess.band_2g.encryption,
+                pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ? true :false,
+                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.encryption == 'none' ? true :false,
                 htmode24 : this.hostWireLess.band_2g.htmode,
                 channel24 : this.hostWireLess.band_2g.channel,
                 current_channel24 : this.hostWireLess.band_2g.current_channel,
@@ -377,6 +381,8 @@ export default class WIFI extends React.Component {
                 hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
+                pwdForbid5 :this.hostWireLess.band_5g.encryption == 'none' ? true :false,
+                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.encryption == 'none' ? true :false,
                 htmode5 : this.hostWireLess.band_5g.htmode,
                 channel5 : this.hostWireLess.band_5g.channel,
                 current_channel5 : this.hostWireLess.band_5g.current_channel,
@@ -489,11 +495,10 @@ export default class WIFI extends React.Component {
                                         <Option value={'auto'}>自动</Option>
                                         <Option value={'HT20'}>20M</Option>
                                         <Option value={'HT40'}>40M</Option>
-                                        <Option value={'HT80'}>80M</Option>
                                     </Select>
                                     <label>无线信道</label> 
                                     <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24}>
-                                        <Option value={'auto'}>自动(当前信道+{current_channel24})</Option>
+                                        <Option value={'auto'}>自动(当前信道{current_channel24})</Option>
                                         <Option value={'1'}>信道1</Option>
                                         <Option value={'2'}>信道2</Option>
                                         <Option value={'3'}>信道3</Option>
@@ -507,7 +512,6 @@ export default class WIFI extends React.Component {
                                         <Option value={'11'}>信道11</Option>
                                         <Option value={'12'}>信道12</Option>
                                         <Option value={'13'}>信道13</Option>
-                                        <Option value={'14'}>信道14</Option>
                                     </Select>
                                 </div>
                             </section>
@@ -554,21 +558,11 @@ export default class WIFI extends React.Component {
                                         </Select>
                                         <label>无线信道</label> 
                                         <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
-                                            <Option value={'auto'}>自动(当前信道+{current_channel5}})</Option>
-                                            <Option value={'1'}>信道1</Option>
-                                            <Option value={'2'}>信道2</Option>
-                                            <Option value={'3'}>信道3</Option>
-                                            <Option value={'4'}>信道4</Option>
-                                            <Option value={'5'}>信道5</Option>
-                                            <Option value={'6'}>信道6</Option>
-                                            <Option value={'7'}>信道7</Option>
-                                            <Option value={'8'}>信道8</Option>
-                                            <Option value={'9'}>信道9</Option>
-                                            <Option value={'10'}>信道10</Option>
-                                            <Option value={'11'}>信道11</Option>
-                                            <Option value={'12'}>信道12</Option>
-                                            <Option value={'13'}>信道13</Option>
-                                            <Option value={'14'}>信道14</Option>
+                                            <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
+                                            <Option value={'149'}>149</Option>
+                                            <Option value={'153'}>153</Option>
+                                            <Option value={'157'}>157</Option>
+                                            <Option value={'161'}>161</Option>
                                         </Select>
                                     </div>
                             </section>
