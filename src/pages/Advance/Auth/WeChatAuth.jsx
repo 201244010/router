@@ -18,7 +18,6 @@ export default class WeChatAuth extends React.Component{
         enable : false,
         onlineLimit : '60',
         idleLimit : '10',
-        selectedSsid : 'W1-Test-2.4G',
         logo : '欢迎您',
         welcome : '欢迎使用微信连Wi-Fi',
         loginHint : '一键打开微信连Wi-Fi',
@@ -31,6 +30,7 @@ export default class WeChatAuth extends React.Component{
             {"ssid":"W1-Test-2.4G", "enable":"1"},
             {"ssid":"W1-Test-5G", "enable":"1"}
         ],
+        selectedSsid : [],
     }
 
     onEnableChange = type =>{
@@ -48,14 +48,13 @@ export default class WeChatAuth extends React.Component{
     async fetchWeChatAuthInfo(){
         let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_GET',{method : 'post'},{handleError : true});
         let {errcode,data,message} = response;
+        this.weixin =data[0].result.weixin;
+        console.log(this.weixin);
         if(errcode == 0){
-            let {weixin} = data[0].result;
-            this.weixin = weixin;
             this.setState({
                 enable : this.weixin.enable,
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
-                selectedSsid : this.weixin.selected_ssid,
                 logo : this.weixin.logo,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
@@ -64,11 +63,20 @@ export default class WeChatAuth extends React.Component{
                 shopId : this.weixin.shopid,
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
-                ssidList : this.weixin.ssidlist,
             });
+            console.log(this.weixin.ssidlist);
+            const childrenList = [];
+            for (let i = 0; i < this.weixin.ssidlist.length; i++) {
+            childrenList.push(<Option value={this.weixin.ssidlist[i].name}>{this.weixin.ssidlist[i].name}</Option>);
+            }
+            this.setState({children:childrenList});
             return ;
         }
         Modal.error({title  : '微信认证的信息获取失败', content : message});
+    }
+
+    submit =async() =>{
+
     }
 
     componentDidMount(){
@@ -76,6 +84,8 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children} = this.state;
+        
         const props = {
             name: 'file',
             action: '//jsonplaceholder.typicode.com/posts/',
@@ -106,9 +116,8 @@ export default class WeChatAuth extends React.Component{
                 return isImage;
             }
           };
-        
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList} = this.state;
-        const ssidListOption = ssidList.map(ssidOption =><Option key ={ssidOption.ssid}>{ssidOption.ssid}</Option>);
+    
+        //const ssidListOption = ssidList.map(ssidOption =><Option value={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
             <div className="auth">
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
@@ -130,7 +139,7 @@ export default class WeChatAuth extends React.Component{
                         </div>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Select style={{width:320}} placeholder={'请选择生效SSID'}>{ssidListOption}</Select>
+                            <Select mode="multiple" style={{width:320}} value={selectedSsid} placeholder={'请选择生效SSID'}>{children}</Select>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
