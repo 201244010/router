@@ -24,7 +24,7 @@ export default class Bandwidth extends React.PureComponent {
         unit : 'Mbps',
 
         //自动设置
-        failTip:'这里是失败原因【1000】',
+        failTip:'网络未连接',
         speedTest : false, //1测速成功，0测速失败
         percent: 0 ,//测速百分比
 
@@ -106,13 +106,11 @@ export default class Bandwidth extends React.PureComponent {
             {
                 loop : 5,
                 interval : 20000,
-                stop : ()=>this.stop,
-                pending : resp => resp.data[0].result.speedtest.status !== 'ok'
+                stop : ()=>this.stop
             }
         ).catch(ex=>{});
         let {errcode:code, data,message} = status;
         if (code == 0){
-            console.log("vvvv")
             let info = data[0].result.speedtest;
             if(info.status === "ok"){
                 this.setState({
@@ -125,7 +123,6 @@ export default class Bandwidth extends React.PureComponent {
                 return;
             }
             if(info.status === "fail"){
-                console.log("aaaa");
                 this.setState({
                     speedFail : true,
                     visible : false,
@@ -369,7 +366,7 @@ export default class Bandwidth extends React.PureComponent {
                 </Modal>
 
                 <Modal title='手动设置带宽' okText="确定" cancelText="取消" 
-                    onOk={this.onEditOk} onCancel={this.onEditCancle}
+                    onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable}}

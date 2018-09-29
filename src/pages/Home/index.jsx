@@ -11,6 +11,16 @@ import './home.scss'
 
 export default class Home extends React.PureComponent {
     state = {
+        refresh: true,
+        showMesh: false,
+        meshR: true,
+        meshStatus:'',
+        meshList: [{
+            "name": "lilei's xiaoshan",
+            "model": "xiaoshan",
+            "mac": "10:20:30:40:50:66",
+            "ip": "192.168.1.123"
+        }],
         sunmiClients:[],
         normalClients: [],
         whitelistClients: [],
@@ -85,11 +95,31 @@ export default class Home extends React.PureComponent {
         return speed.toString();
     }
 
+    stopRefresh = () => {
+        clearInterval(this.timer);
+        this.setState({
+            refresh : false,
+        })
+    }
+
+    startRefresh = () => {
+        this.setState({
+            refresh: true,
+        });
+
+        clearTimeout(this.timer);
+        this.fetchClinetsInfo();
+    }
+
     fetchClinetsInfo = () => {
         let fetchClinets = common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' });
         let fetchTraffic = common.fetchWithCode('TRAFFIC_STATS_GET', { method: 'POST' });
 
         Promise.all([fetchClinets, fetchTraffic]).then(results =>{
+            if (!this.state.refresh){
+                return;
+            }
+
             let clients, traffics;
             let { errcode, data } = results[0];
             if (0 !== errcode){
@@ -106,9 +136,17 @@ export default class Home extends React.PureComponent {
 
             // merge clients && traffic info
             let totalList = clients.map(client => {
+                const deviceMap = {
+                    iphone:'number',
+                    android: 'android',
+                    ipad: 'pad',
+                    pc: 'computer',
+                    unknown: 'unknown',
+                };
                 const modeMap = {
                     '2.4g': '2.4G',
                     '5g': '5G',
+                    'sunmi': '商米专用Wi-Fi',
                     'not wifi': '有线'
                 };
                 let dft = {
@@ -120,14 +158,15 @@ export default class Home extends React.PureComponent {
                 let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
                 let rssi = ('not wifi' == client.wifi_mode) ? '--' : (('good' === client.rssi) ? '好' : '差');
                 let mode = modeMap[client.wifi_mode];
+                let device = deviceMap[client.device || 'unknown'];
                 let ontime = this.formatTime(client.ontime);
                 let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
                 return {
-                    icon: 'logo',
+                    icon: device,
                     name: client.hostname,
                     ip: client.ip,
                     mac: client.mac.toUpperCase(),
-                    type: client.type,
+                    type: client.type || 'normal',
                     mode: mode,
                     ontime: ontime,
                     rssi: rssi,
@@ -136,34 +175,34 @@ export default class Home extends React.PureComponent {
                     flux: flux,
                 }
             });
-            this.setState({
-                sunmiClients: totalList.filter(item => item.type !== 'sunmi'),
-                normalClients: totalList.filter(item => item.type !== 'normal'),
-                whitelistClients: totalList.filter(item => item.type !== 'whitelist'),
-            });
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
 
-    componentDidMount(){
-        setInterval(() =>{
             this.setState({
+                sunmiClients: totalList.filter(item => item.type === 'sunmi'),
+                normalClients: totalList.filter(item => item.type === 'normal'),
+                whitelistClients: totalList.filter(item => item.type === 'whitelist'),
                 qosData: this.state.qosData.map(item => {
                     return {
                         name: item.name,
                         value: parseInt(50 * Math.random()),
                         color: item.color
                     }
-                })
-            })
-        }, 3000)
+                }),
+            });
 
+            this.timer = setTimeout(() => {
+                this.fetchClinetsInfo();
+            }, 3000)
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    componentDidMount(){
         this.fetchClinetsInfo();
     }
 
     render(){
-        const { sunmiClients, normalClients, whitelistClients, qosData}  = this.state;
+        const { sunmiClients, normalClients, whitelistClients, qosData, showMesh}  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
             <div>
@@ -199,16 +238,32 @@ export default class Home extends React.PureComponent {
                                 <p>一键添加附近的<br />商米设备专属网络业务不掉线</p>
                                 <Button className='search'>搜寻设备</Button>
                             </div>
+                            <Modal title={'TODO'} maskClosable={false}
+                                width={560} visible={showMesh}
+                                footer={[
+                                    <Button key='ok' onClick={this.handleCancel}>取消</Button>
+                                ]}>
+                                <Button style={{
+                                    position: "absolute",
+                                    top: 10,
+                                    left: 160,
+                                    border: 0,
+                                    padding: 0
+                                }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
+                            </Modal>
                         </li>
                     </ul>
                     <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                     <div className='online-list'>
                         <div className='left-list'>
-                            <ClientList type='sunmi' data={sunmiClients} placement='top' />
-                            <ClientList type='normal' data={normalClients} placement='top' />
+                            <ClientList type='sunmi' data={sunmiClients}
+                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh } />
+                            <ClientList type='normal' data={normalClients}
+                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                         </div>
                         <div className='whitelist-list'>
-                            <ClientList type='whitelist' data={whitelistClients} placement='top' />
+                            <ClientList type='whitelist' data={whitelistClients}
+                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                         </div>
                     </div>
                 </SubLayout>
