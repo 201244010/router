@@ -16,15 +16,50 @@ export default class ClientList extends React.Component{
     }
 
     showMore = () => {
+        this.props.stopRefresh();
         this.setState({
             visible: true
         });
     }
 
+    handleEdit = async (record) => {
+        let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+        let response = await common.fetchWithCode(
+            directive,
+            { method: 'POST', data: { white_list: [{ name: record.name, mac: record.mac }] } }
+        ).catch(ex => { });
+
+        let { errcode, message } = response;
+        if (errcode == 0) {
+            return;
+        }
+
+        Modal.error({ title: '操作失败', content: message });
+    }
+
+    handleDelete = async (record) => {
+        let response = await common.fetchWithCode(
+            'QOS_AC_BLACKLIST_ADD',
+            { method: 'POST', data: { black_list: [{ name: record.name, mac: record.mac}] } }
+        ).catch(ex => { });
+
+        let { errcode, message } = response;
+        if (errcode == 0) {
+            return;
+        }
+
+        Modal.error({ title: '操作失败', content: message });
+    }
+
     handleCancel = () => {
+        this.props.startRefresh();
         this.setState({
             visible: false
         });
+    }
+
+    fetchClientsInfo = () => {
+        this.props.startRefresh();
     }
 
     render() {
@@ -52,7 +87,8 @@ export default class ClientList extends React.Component{
             if (index < max) {
                 return (
                     <li key={client.mac} className='client-item'>
-                        <Popover placement={placement} content={<Item client={client} />} trigger='click'>
+                        <Popover placement={placement} trigger='click' 
+                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
                             <div className='icon'><CustomIcon type={client.icon} size={22} /></div>
                         </Popover>
                         <div className='dot'></div><p title={client.name}>{client.name}</p>
@@ -62,7 +98,6 @@ export default class ClientList extends React.Component{
         });
 
         const onlineCols = [{
-            title: '',
             dataIndex: 'icon',
             width: 60,
             render: (icon, record) => (
@@ -94,10 +129,7 @@ export default class ClientList extends React.Component{
         }, {
             title: '所属网络',
             dataIndex: 'mode',
-            width: 80,
-            render: (mode, record) => (
-                <span>{mode}</span>
-            )
+            width: 80
         }, {
             title: '信号强度',
             dataIndex: 'rssi',
@@ -143,12 +175,23 @@ export default class ClientList extends React.Component{
                 }}
         }];
 
-        return (<div className={classnames(['list-content', props.type + '-list'])}>
+        return (
+        <div className={classnames(['list-content', props.type + '-list'])}>
             <div className='list-header'>
                 <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{current}/{total}）</span>
                 <Button className='more' onClick={this.showMore}>查看全部</Button>
             </div>
             <ul>{listItems}</ul>
+            {('sunmi' === props.type && clients.length <= 0) &&
+                <div className='null-tip'>
+                    <label>没有商米设备连接到该网络，</label> <a href="javascript:;">一键搜寻商米设备</a>
+                </div>
+            }
+            {('whitelist' === props.type && clients.length <= 0) &&
+                <div className='null-tip'>
+                    <label>您还未设置优先设备，</label><a href="/advance/whitelist">设置优先设备</a>
+                </div>
+            }
             <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
                 width={960} style={{ position: 'relative' }}
                 visible={visible}
@@ -173,18 +216,6 @@ export default class ClientList extends React.Component{
 class Item extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-    whitelistAdd = (mac) => {
-        console.log('whitelist clicked: ' + mac)
-    }
-
-    whitelistDel = (mac) => {
-        console.log('whitelist delete clicked: ' + mac)
-    }
-
-    forbidAdd = (mac) => {
-        console.log('forbid clicked: ' + mac)
     }
 
     render() {
@@ -221,8 +252,8 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.whitelistDel(mac)}>解除优先</Button>
-                            <Button onClick={() => this.forbidAdd(mac)}>禁止上网</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>解除优先</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);
             case 'normal':
@@ -232,8 +263,8 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.whitelistAdd(mac)}>优先上网</Button>
-                            <Button onClick={() => this.forbidAdd(mac)}>禁止上网</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac})}>优先上网</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);
         }

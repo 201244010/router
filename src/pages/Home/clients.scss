@@ -25,6 +25,22 @@
                 right: 5px;
             }
         }
+        .list-content{
+            position: relative;
+            .null-tip{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 12px;
+                color: #ADB1B9;
+                text-align: center;
+                a{
+                    font-size: 12px;
+                    color: #4687FF;
+                }
+            }
+        }
         .left-list{
             height: 410px;
             display: flex;
