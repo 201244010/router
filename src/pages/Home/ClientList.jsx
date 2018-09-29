@@ -252,8 +252,8 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnL({ type: clinet.type, name: clien.name, mac: client.mac })}>解除优先</Button>
-                            <Button onClick={() => this.props.btnR({ name: clien.name, mac: client.mac })}>禁止上网</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>解除优先</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);
             case 'normal':
@@ -263,8 +263,8 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnL({type: clinet.type, name:clien.name, mac:client.mac})}>优先上网</Button>
-                            <Button onClick={() => this.props.btnR({ name: clien.name, mac: client.mac })}>禁止上网</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac})}>优先上网</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);
         }
