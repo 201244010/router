@@ -2,9 +2,8 @@
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import CustomIcon from '~/components/Icon';
-import { Modal ,Select,Upload, message, Button, Icon } from 'antd';
-
+import { Modal ,Select,Button} from 'antd';
+import UploadImage from '~/components/Upload';
 
 const {FormItem,Input} = Form;
 const Option = Select.Option;
@@ -31,6 +30,7 @@ export default class WeChatAuth extends React.Component{
             {"ssid":"W1-Test-5G", "enable":"1"}
         ],
         selectedSsid : [],
+        children : [],
     }
 
     onEnableChange = type =>{
@@ -68,6 +68,7 @@ export default class WeChatAuth extends React.Component{
                 shopId : this.weixin.shopid,
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
+                ssidList : this.weixin.ssidlist,
             });
             console.log(this.weixin.ssidlist);
             const childrenList = [];
@@ -81,7 +82,19 @@ export default class WeChatAuth extends React.Component{
     }
 
     submit =async() =>{
-
+        this.weixin.enable = this.state.enable;
+        this.weixin.online_limit =this.state.onlineLimit;
+        this.weixin.idle_limit = this.state.idleLimit;
+        this.weixin.logo = this.state.logo;
+        this.weixin.welcome = this.state.welcome;
+        this.weixin.login_hint = this.state.loginHint;
+        this.weixin.statement = this.state.statement;
+        this.weixin.ssid = this.state.ssid;
+        this.weixin.shopid = this.state.shopId;
+        this.weixin.appid = this.state.appId;
+        this.weixin.secretkey = this.state.secretKey;
+        this.weixin.ssidlist ='';
+        let reponse = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_SET',{method : 'post',data : {}})
     }
 
     componentDidMount(){
@@ -89,40 +102,8 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList,children} = this.state;
         
-        const props = {
-            name: 'file',
-            action: '//jsonplaceholder.typicode.com/posts/',
-            headers: {
-                authorization: 'authorization-text',
-            },
-            disabled:false,
-            showUploadList : true,
-            onChange(info) {
-              if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-                return;
-              }
-              if (info.file.status === 'done') {
-                message.success('${info.file.name} file uploaded successfully');
-                return;
-              } else if (info.file.status === 'error') {
-                message.error('${info.file.name} file upload failed.');
-                return;
-              }
-              this.setState({disabled : false});
-            },
-            beforeUpload(file){
-                const isImage = file.type ==='image/png'||'image/jpg';
-                if(!isImage){
-                    message.error('只能上传带.jpg、.png后缀的图片文件');
-                }
-                return isImage;
-            }
-        };
-    
-        //const ssidListOption = ssidList.map(ssidOption =><Option value={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
             <div className="auth">
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
@@ -144,24 +125,14 @@ export default class WeChatAuth extends React.Component{
                         </div>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Select mode="tags" style={{width:320}} value={selectedSsid} placeholder={'请选择生效SSID'} onChange={this.handleChange}>{children}</Select>
+                            <Choose Children={children} />
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
-                            <section>
-                                <div style={{display:'flex',flexDirection:'row'}}>
-                                    <Upload {...props}>
-                                        <Button style={{width:150,marginTop:15,marginBottom:3}}>
-                                        <Icon type="upload" /> 上传Logo图片
-                                        </Button>
-                                    </Upload>
-                                </div>
+                            <section>    
+                                <UploadImage />
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <Upload {...props}>
-                                    <Button style={{width:150,marginTop:15,marginBottom:3}}>
-                                    <Icon type="upload" /> 上传背景图片
-                                    </Button>
-                                </Upload>
+                                <UploadImage />
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <FormItem type="small" style={{ width : 320}}>
@@ -212,3 +183,11 @@ export default class WeChatAuth extends React.Component{
         );
     }
 }
+
+const Choose = props =>{
+        return (
+            <Select mode="multiple" style={{ width: 320 }}  placeholder="请选择生效SSID">
+                {props.Children}
+            </Select>
+        );
+};
