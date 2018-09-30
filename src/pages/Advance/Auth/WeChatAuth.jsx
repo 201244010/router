@@ -45,6 +45,11 @@ export default class WeChatAuth extends React.Component{
         })
     }
 
+    handleChange(value) {
+        console.log(`selected ${value}`);
+      }
+      
+
     async fetchWeChatAuthInfo(){
         let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_GET',{method : 'post'},{handleError : true});
         let {errcode,data,message} = response;
@@ -115,7 +120,7 @@ export default class WeChatAuth extends React.Component{
                 }
                 return isImage;
             }
-          };
+        };
     
         //const ssidListOption = ssidList.map(ssidOption =><Option value={ssidOption.ssid}>{ssidOption.ssid}</Option>);
         return (
@@ -139,7 +144,7 @@ export default class WeChatAuth extends React.Component{
                         </div>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Select mode="multiple" style={{width:320}} value={selectedSsid} placeholder={'请选择生效SSID'}>{children}</Select>
+                            <Select mode="tags" style={{width:320}} value={selectedSsid} placeholder={'请选择生效SSID'} onChange={this.handleChange}>{children}</Select>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
