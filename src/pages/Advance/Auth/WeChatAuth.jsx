@@ -25,10 +25,6 @@ export default class WeChatAuth extends React.Component{
         shopId :"17231844",
         appId : "wxd7faaa125d198e2d",
         secretKey : "c9f39b0676a850901b063c1e2056f2d0",
-        ssidList :[
-            {"ssid":"W1-Test-2.4G", "enable":"1"},
-            {"ssid":"W1-Test-5G", "enable":"1"}
-        ],
         selectedSsid : [],
         children : [],
     }
@@ -45,16 +41,35 @@ export default class WeChatAuth extends React.Component{
         })
     }
 
-    handleChange(value) {
-        console.log(`selected ${value}`);
-      }
-      
+    
+    onChooseChange = value =>{
+        this.setState({
+            selectedSsid:value
+        });
+        
+    }
+
+    onDeselect = value =>{
+        for(let i=0;i<this.weixin.ssidlist.length;i++){
+            if(value == this.weixin.ssidlist[i].ssid){
+                this.weixin.ssidlist[i].enable = "0";
+            }
+        }
+    }
+
+    onSelect = value =>{
+        for(let i=0;i<this.weixin.ssidlist.length;i++){
+            if(value == this.weixin.ssidlist[i].ssid){
+                this.weixin.ssidlist[i].enable = "1";
+            }
+        }
+
+    }
 
     async fetchWeChatAuthInfo(){
         let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_GET',{method : 'post'},{handleError : true});
         let {errcode,data,message} = response;
         this.weixin =data[0].result.weixin;
-        console.log(this.weixin);
         if(errcode == 0){
             this.setState({
                 enable : this.weixin.enable,
@@ -68,12 +83,17 @@ export default class WeChatAuth extends React.Component{
                 shopId : this.weixin.shopid,
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
-                ssidList : this.weixin.ssidlist,
             });
-            console.log(this.weixin.ssidlist);
+            this.weixin.ssidlist =[
+                {"ssid":"W1-Test-2.4G", "enable":"1"},
+                {"ssid":"W1-Test-5G", "enable":"1"}
+            ];
+            for(let i= 0;i<this.weixin.ssidlist.length;i++){
+                this.weixin.ssidlist[i].enable = "0";
+            }
             const childrenList = [];
             for (let i = 0; i < this.weixin.ssidlist.length; i++) {
-            childrenList.push(<Option value={this.weixin.ssidlist[i].name}>{this.weixin.ssidlist[i].name}</Option>);
+                childrenList.push(<Option value={this.weixin.ssidlist[i].ssid}>{this.weixin.ssidlist[i].ssid}</Option>);
             }
             this.setState({children:childrenList});
             return ;
@@ -93,8 +113,12 @@ export default class WeChatAuth extends React.Component{
         this.weixin.shopid = this.state.shopId;
         this.weixin.appid = this.state.appId;
         this.weixin.secretkey = this.state.secretKey;
-        this.weixin.ssidlist ='';
-        let reponse = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_SET',{method : 'post',data : {}})
+        let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_SET',{method : 'post',data : {weixin : this.weixin}}).catch(ex => {});
+        let {errcode,message} = response;
+        if(errcode == '0'){
+            return ;
+        }
+        Modal.error({title : '微信认证信息设置失败',content : message});
     }
 
     componentDidMount(){
@@ -102,7 +126,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,ssidList,children} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children} = this.state;
         
         return (
             <div className="auth">
@@ -125,14 +149,14 @@ export default class WeChatAuth extends React.Component{
                         </div>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Choose Children={children} />
+                            <Choose Children={children} selectedSsid={selectedSsid} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <UploadImage />
+                                <UploadImage uploadTitle={'上传Logo图'}/>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <UploadImage />
+                                <UploadImage uploadTitle={'上传背景图'}/>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <FormItem type="small" style={{ width : 320}}>
@@ -186,7 +210,7 @@ export default class WeChatAuth extends React.Component{
 
 const Choose = props =>{
         return (
-            <Select mode="multiple" style={{ width: 320 }}  placeholder="请选择生效SSID">
+            <Select mode="multiple" style={{ width: 320 }} onDeselect={props.onDeselect} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="请选择生效SSID">
                 {props.Children}
             </Select>
         );
