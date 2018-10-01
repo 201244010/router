@@ -31,7 +31,8 @@ export default class WeChatAuth extends React.Component{
 
     onEnableChange = type =>{
         this.setState({
-            enable : type
+            enable : type,
+            disableType:!type
         })
     }
 
@@ -72,7 +73,8 @@ export default class WeChatAuth extends React.Component{
         this.weixin =data[0].result.weixin;
         if(errcode == 0){
             this.setState({
-                enable : this.weixin.enable,
+                enable : this.weixin.enable == '1'? true : false,
+                disableType :this.weixin.enable == '1'? false : true,
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
                 logo : this.weixin.logo,
@@ -102,7 +104,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     submit =async() =>{
-        this.weixin.enable = this.state.enable;
+        this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
         this.weixin.logo = this.state.logo;
@@ -126,7 +128,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children,disableType} = this.state;
         
         return (
             <div className="auth">
@@ -136,20 +138,20 @@ export default class WeChatAuth extends React.Component{
                         <label style={{marginTop:20}}>上网时长</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                                <Input type="text" disabled={false} placeholder={'请输入上网时长'} disabled={disableType} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                         <label>空闲断线</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入空闲断线'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                                <Input type="text" disabled={false} placeholder={'请输入空闲断线'} disabled={disableType} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
-                        <div style={{display:'flex',flexDirection:'column'}}>
+                        <div style={{width:320,display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Choose Children={children} selectedSsid={selectedSsid} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
+                            <Choose Children={children} selectedSsid={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
@@ -210,7 +212,7 @@ export default class WeChatAuth extends React.Component{
 
 const Choose = props =>{
         return (
-            <Select mode="multiple" style={{ width: 320 }} onDeselect={props.onDeselect} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="请选择生效SSID">
+            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
                 {props.Children}
             </Select>
         );
