@@ -161,21 +161,33 @@ export default class WeChatAuth extends React.Component{
                                 <UploadImage uploadTitle={'上传背景图'}/>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
-                                </FormItem>
+                                <div style={{display:'flex',flexDirection:'row'}}>
+                                    <FormItem type="small" style={{ width : 320}}>
+                                        <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                    </FormItem>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
+                                </div>
                                 <label>欢迎信息</label>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="text" placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
-                                </FormItem>
+                                <div style={{display:'flex',flexDirection:'row'}}>
+                                    <FormItem type="small" style={{ width : 320}}>
+                                        <Input type="text" placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                    </FormItem>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                </div>
                                 <label>登陆按钮提示文字</label>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="text" placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
-                                </FormItem>
+                                <div style={{display:'flex',flexDirection:'row'}}>
+                                    <FormItem type="small" style={{ width : 320}}>
+                                        <Input type="text" placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
+                                    </FormItem>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
+                                </div>
                                 <label>版权声明</label>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="text" placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
-                                </FormItem>
+                                <div style={{display:'flex',flexDirection:'row'}}>
+                                    <FormItem type="small" style={{ width : 320}}>
+                                        <Input type="text" placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                    </FormItem>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                </div>
                             </section>
                             <section>
                                 <div>
