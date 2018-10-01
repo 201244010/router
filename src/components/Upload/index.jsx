@@ -109,7 +109,7 @@ export default class UploadImage extends React.Component {
         };
       return (
         <Upload {...props} fileList={this.state.fileList}>
-          <Button>
+          <Button style={{width:130}}>
             <Icon type="upload" /> {this.props.uploadTitle}
           </Button>
         </Upload>
