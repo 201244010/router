@@ -115,7 +115,7 @@ export default class SmsAuth extends React.Component{
         Modal.error({title  : '短信认证的信息获取失败', content : message});
     }
 
-    submit =async() =>{
+    submit = async() =>{
         this.sms.enable = this.state.enable == true? '1' : '0';
         this.sms.online_limit =this.state.onlineLimit;
         this.sms.idle_limit = this.state.idleLimit;
