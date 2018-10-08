@@ -1,0 +1,32 @@
+.head-line {
+    margin-top: 15px;
+    height : 35px;
+    border-bottom: 1px solid #ccc;
+}
+
+.head-content {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.head-title {
+    display: inline-block;
+    margin-left : 6px;
+    color : black;
+}
+
+.ant-modal-body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.button-bottom {
+    height: 60px;
+    border-top: 1px solid #d8d8d8;
+    .button-click{
+        width: 88px;
+        height: 42px;
+        left: 392px;
+        top: 20px;
+    }
+}
