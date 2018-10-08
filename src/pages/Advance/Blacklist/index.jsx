@@ -3,37 +3,64 @@ import React from 'react';
 import { Button, Table, Divider, Popconfirm, Modal, Checkbox } from 'antd';
 import CustomIcon from '~/components/Icon';
 import PanelHeader from '~/components/PanelHeader';
+import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 
 const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 
 const pagination = {
     pageSize: 6,
-    hideOnSinglePage: true
+    hideOnSinglePage: true,
+    showTotal: total => `已添加${total}台设备`,
+};
+
+const logoMap = {
+    iphone: 'number',
+    android: 'android',
+    ipad: 'pad',
+    pc: 'computer',
+    unknown: 'unknown',
 };
 
 export default class Blacklist extends React.Component {
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
+        disabled: true,
         editLoading: false,
         editShow: false,
-        editIndex: -1,
-        editName: '',
-        editMac: '',
-        tipName: '',
-        blockLists: [{
-            logo:'logo',
-            note:'Hello world',
-            mac:'00:11:22:DD:AA:11',
-            time:"2014-12-24  23:12:00"
-        }],
+        name: '',
+        mac: '',
+        nameTip: '请输入备注名称',
+        macTip: '请输入MAC地址',
+        blockLists: [],
         onlineList: []
     };
 
     onChange = (val, key) => {
+        let tip = '';
+
+        switch (key) {
+            case 'name':
+                if (val.length <= 0) {
+                    tip = '请输入备注名称';
+                }
+                break;
+            case 'mac':
+                if (0 !== checkMac(val)) {
+                    tip = 'MAC地址非法，请重新输入';
+                }
+                break;
+        }
+
         this.setState({
-            [key]: (typeof val == 'object' ? [...val] : val)
+            [key]: (typeof val == 'object' ? [...val] : val),
+            [key + 'Tip']: tip,
+        }, () => {
+            let st = this.state;
+            let tip = ['nameTip', 'macTip'];
+            let ok = tip.every((tip) => { return '' === st[tip] });
+            this.setState({ disabled: !ok});
         });
     }
 
@@ -48,16 +75,20 @@ export default class Blacklist extends React.Component {
         this.setState({
             editShow: true,
             editLoading: false,
-            editIndex: -1,
-            editName: '',
-            editMac: ['', '', '', '', '', '']
+            name: '',
+            mac: ['', '', '', '', '', '']
         });
     }
 
     handleDelete = async (record) => {
+        console.log(record)
         let response = await common.fetchWithCode(
-            'DHCPS_RESERVEDIP_DELETE',
-            { method: 'POST', data: { reserved_ip: [Object.assign({}, record)] } }
+            'QOS_AC_BLACKLIST_DELETE',
+            { method: 'POST', data: { black_list: [{
+                index: record.index,
+                name: record.name,
+                mac: record.mac,
+            }] } }
         ).catch(ex => { });
 
         let { errcode, message } = response;
@@ -74,7 +105,7 @@ export default class Blacklist extends React.Component {
         const onlineList = [...this.state.onlineList];
         this.setState({
             onlineList: onlineList.map(item => {
-                if (item.address.mac === mac) {
+                if (item.mac === mac) {
                     item.checked = !item.checked;
                 }
 
@@ -88,18 +119,16 @@ export default class Blacklist extends React.Component {
             loading: true
         });
 
-        let directive = 'DHCPS_RESERVEDIP_ADD',
-            reservedIp = this.state.onlineList.filter(item => item.checked).map(item => {
+        let directive = 'QOS_AC_BLACKLIST_ADD',
+            black_list = this.state.onlineList.filter(item => item.checked).map(item => {
                 return {
-                    enable: true,
-                    note: item.name,
-                    ip: item.address.ip,
-                    mac: item.address.mac.toUpperCase()
+                    name: item.name,
+                    mac: item.mac.toUpperCase()
                 };
             });
 
         let response = await common.fetchWithCode(
-            directive, { method: 'POST', data: { reserved_ip: reservedIp } }
+            directive, { method: 'POST', data: { black_list: black_list } }
         ).catch(ex => { });
 
         this.setState({
@@ -108,8 +137,8 @@ export default class Blacklist extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            // refresh staic bind list
-            this.fetchStaticInfo();
+            // refresh list
+            this.fetchBlackList();
 
             this.setState({
                 visible: false,
@@ -126,14 +155,13 @@ export default class Blacklist extends React.Component {
             editLoading: true
         });
 
-        let directive = 'DHCPS_RESERVEDIP_ADD';
-        let reservedIp = [{
-            enable: true,
-            mac: this.state.editMac.join(':').toUpperCase(),
-            note: this.state.editName
+        let directive = 'QOS_AC_BLACKLIST_ADD';
+        let black_list = [{
+            mac: this.state.mac.join(':').toUpperCase(),
+            name: this.state.name
         }];
 
-        let response = await common.fetchWithCode(directive, { method: 'POST', data: { reserved_ip: reservedIp } });
+        let response = await common.fetchWithCode(directive, { method: 'POST', data: { black_list: black_list } });
 
         this.setState({
             editLoading: false
@@ -141,7 +169,7 @@ export default class Blacklist extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchStaticInfo();
+            this.fetchBlackList();
             this.setState({
                 editShow: false
             })
@@ -165,34 +193,32 @@ export default class Blacklist extends React.Component {
         })
     }
 
-    fetchStaticInfo = async () => {
-        let response = await common.fetchWithCode('DHCPS_RESERVEDIP_LIST_GET', { method: 'POST' })
+    fetchBlackList = async () => {
+        let response = await common.fetchWithCode('QOS_AC_BLACKLIST_GET', { method: 'POST' })
         let { errcode, data, message } = response;
         if (errcode == 0) {
-            let { reserved_ip_list } = data[0].result;
+            let { black_list } = data[0].result;
             this.setState({
-                blockLists: reserved_ip_list.map(item => {
-                    return Object.assign({}, item);
+                blockLists: black_list.map(item => {
+                    return {
+                        logo: logoMap[item.device] || 'unknown',
+                        name: item.name,
+                        mac: item.mac,
+                        index: item.index
+                    }
                 })
             });
 
             return;
         }
 
-        Modal.error({ title: '获取静态地址列表指令异常', message });
+        Modal.error({ title: '获取黑名单列表指令异常', message });
     }
 
     fetchClientsInfo = async () => {
         let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
         let { errcode, message } = response;
         if (errcode == 0) {
-            const logoMap = {
-                '2.4g': 'wifi',
-                '5g': 'wifi',
-                'not wifi': 'logo',
-                'wired': 'logo',
-            };
-
             let { data } = response.data[0].result;
 
             // filter clients in dhcp static list
@@ -206,9 +232,10 @@ export default class Blacklist extends React.Component {
             this.setState({
                 onlineList: restClients.map(item => {
                     return {
-                        logo: logoMap[item.wifi_mode],
+                        logo: logoMap[item.device] || 'unknown',
                         name: item.hostname,
-                        address: { ip: item.ip, mac: item.mac },
+                        mac: item.mac,
+                        time: item.time,
                         checked: false
                     }
                 })
@@ -220,12 +247,12 @@ export default class Blacklist extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchStaticInfo();
+        this.fetchBlackList();
     }
 
     render() {
         const { blockLists, onlineList, visible, loading,
-            editLoading, editShow, editName, editMac, tipName } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, disabled } = this.state;
 
         const columns = [{
             title: '',
@@ -236,7 +263,7 @@ export default class Blacklist extends React.Component {
             )
         }, {
             title: '设备名称',
-            dataIndex: 'note',
+            dataIndex: 'name',
             width: 300
         }, {
             title: 'MAC地址',
@@ -270,21 +297,15 @@ export default class Blacklist extends React.Component {
             dataIndex: 'name',
             width: 245
         }, {
-            title: 'IP/MAC地址',
-            dataIndex: 'address',
+            title: 'MAC地址',
+            dataIndex: 'mac',
             width: 210,
-            render: (text, record) => (
-                <span>
-                    <span><label style={{ marginRight: 3 }}>IP:</label><label>{record.address.ip}</label></span><br />
-                    <span><label style={{ marginRight: 3 }}>MAC:</label><label>{record.address.mac}</label></span>
-                </span>
-            )
         }, {
             title: '操作',
             dataIndex: 'checked',
             width: 60,
             render: (checked, record) => (
-                <Checkbox checked={checked} onChange={() => this.handleSelect(record.address.mac)}></Checkbox>
+                <Checkbox checked={checked} onChange={() => this.handleSelect(record.mac)}></Checkbox>
             )
         }];
 
@@ -310,7 +331,7 @@ export default class Blacklist extends React.Component {
                         border: 0,
                         padding: 0
                     }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
-                    <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
+                    <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />
                 </Modal>
@@ -320,17 +341,19 @@ export default class Blacklist extends React.Component {
                     visible={editShow}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
+                    okButtonProps={{disabled:disabled}}
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
-                    <FormItem showErrorTip={tipName} type="small" style={{ width: 320 }}>
-                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" />
-                        <ErrorTip>{tipName}</ErrorTip>
+                    <FormItem showErrorTip={nameTip} type="small" style={{ width: 320 }}>
+                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" />
+                        <ErrorTip>{nameTip}</ErrorTip>
                     </FormItem>
                     <label style={{ marginTop: 24 }}>MAC地址</label>
-                    <FormItem style={{ width: 320 }}>
+                    <FormItem showErrorTip={macTip} style={{ width: 320 }}>
                         <InputGroup size="small" type="mac"
-                            inputs={[{ value: editMac[0], maxLength: 2 }, { value: editMac[1], maxLength: 2 }, { value: editMac[2], maxLength: 2 }, { value: editMac[3], maxLength: 2 }, { value: editMac[4], maxLength: 2 }, { value: editMac[5], maxLength: 2 }]}
-                            onChange={value => this.onChange(value, 'editMac')} />
+                            inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
+                            onChange={value => this.onChange(value, 'mac')} />
+                        <ErrorTip>{macTip}</ErrorTip>
                     </FormItem>
                 </Modal>
             </div>
