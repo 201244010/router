@@ -116,8 +116,8 @@ export default class Bandwidth extends React.PureComponent {
                 this.setState({
                     speedFill : true,
                     visible : false,
-                    upband : info.up_bandwidth,
-                    downband : info.down_bandwidth,
+                    upband : info.up_bandwidth / 1024,
+                    downband : info.down_bandwidth / 1024,
                     percent : 0,
                 });
                 return;
@@ -227,9 +227,8 @@ export default class Bandwidth extends React.PureComponent {
         if (errcode == 0){
             let qos = data[0].result.qos;
             this.setState({
-                upband : qos.up_bandwidth.replace(/[A-Za-z]+/,''),
-                downband : qos.down_bandwidth.replace(/[A-Za-z]+/,''),
-                unit : qos.up_bandwidth.replace(/[0-9]+/,''),
+                upband : qos.up_bandwidth / 1024,
+                downband : qos.down_bandwidth / 1024,
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
@@ -246,8 +245,8 @@ export default class Bandwidth extends React.PureComponent {
         let qos = {}, {bandenable, upbandTmp, downbandTmp, sunmi, white, normal} = this.state;
         qos['enable'] = bandenable;
         qos['source'] = val;
-        qos['up_bandwidth'] = upband + 'Mbps';
-        qos['down_bandwidth'] = downband + 'Mbps';
+        qos['up_bandwidth'] = upband * 1024 + '';
+        qos['down_bandwidth'] = downband * 1024 + '';
         qos['sunmi_weight'] = sunmi;
         qos['white_weight'] = white;
         qos['normal_weight'] = normal;

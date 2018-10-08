@@ -88,12 +88,15 @@ export default class SysUpgrade extends React.Component{
         ).catch(ex=>{})
         console.log(response)
         let {data,errcode} =response;
+        let result = data[0].result.upgrade
 
         if(errcode == 0){       
             this.setState({
-                currentVersion : data.current_version,
-                latestVersion : data.newest_version
+                currentVersion : result.current_version,
+                latestVersion : result.newest_version
             })
+
+            return;
         }
         
         Modal.error({title : '获取路由器当前版本信息和最新版本信息失败'});
@@ -101,6 +104,7 @@ export default class SysUpgrade extends React.Component{
 
     componentDidMount(){
         this.getInfo();
+        this.handleDisable();
     }
 
     render(){
@@ -118,7 +122,7 @@ export default class SysUpgrade extends React.Component{
                     <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{currentVersion}</label>
                 </div>
                 {
-                    (currentVersion === latestVersion) ? <div style={{color : '#ADB1B9', marginBottom : 20}}>你的版本是最新，无需升级</div>
+                    (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>你的版本是最新，无需升级</div>
                     : <LatestVer latestVersion={latestVersion} versionClick={this.versionClick}/>
                 }
                 <section className="wifi-setting-save" style={{marginTop : -10 ,borderTop : 'none'}}>
