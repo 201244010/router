@@ -108,4 +108,50 @@ let checkSameNet = (ip1, ip2, netmask) => {
     return ((host1 &= mask) == (host2 &= mask));
 }
 
-export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet};
+/* 检查MAC地址格式是否合法 */
+let validMacFormat = function (value) {
+    let result = /^([0-9a-f]{2}:){5}([0-9a-f]{2})$/gi.test(value);
+
+    return (result == true ? 0 : -2);
+};
+
+/* 检查MAC地址范围是否合法 */
+let validMacAddr = function (value, opt) {
+    let charSet = "0123456789abcdef";
+    let macAddr = value.toLowerCase();
+
+    if (opt.zero && macAddr == "00:00:00:00:00:00") {
+        return -3;
+    }
+
+    if (opt.broadcast && macAddr == "ff:ff:ff:ff:ff:ff") {
+        return -4;
+    }
+
+    if (opt.multicast && 1 == charSet.indexOf(macAddr.charAt(1)) % 2) {
+        return -5;
+    }
+
+    return 0;
+};
+
+let checkMac = function (mac, opt = { zero: true, broadcast: true, multicast: true }) {
+    let value = mac.join(':');
+    let result = 0;
+
+    if (0 == value.length) {
+        return -1;
+    }
+
+    if (0 != (result = validMacFormat(value))) {
+        return result;
+    }
+
+    if (0 != (result = validMacAddr(value, opt))) {
+        return result;
+    }
+
+    return 0;
+};
+
+export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac};

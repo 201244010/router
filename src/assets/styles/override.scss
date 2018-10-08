@@ -82,6 +82,15 @@ button.ant-btn-primary.ant-btn-loading {
     border-color : #FB8632!important;
 }
 
+.ant-table-pagination.ant-pagination {
+    float: none !important;
+    text-align: right;
+    .ant-pagination-total-text{
+        float: left;
+        color:#ADB1B9;
+    }
+}
+
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
 // .ant-select-selection:active {
