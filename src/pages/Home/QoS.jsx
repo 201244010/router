@@ -16,6 +16,7 @@ export default class QoS extends React.Component {
         let bwPie = (this.pieDom == null) ? echarts.init(this.ID) : this.pieDom;
         this.option = {
             legend: {
+                show: this.props.enable,
                 orient: 'vertical',//竖直放置
                 icon: 'circle',//图标为圆形，默认是方形
                 align: 'auto',
@@ -33,7 +34,7 @@ export default class QoS extends React.Component {
             },
             series: [{//饼状图设置
                 type: 'pie',//类型为饼状
-                radius: ['72%', '100%'],//内圈半径，外圈半径
+                radius: ['74%', '100%'],//内圈半径，外圈半径
                 center: ['20%', '50%'],//饼状图位置，第一个参数是左右，第二个是上下。
                 avoidLabelOverlap: false,
                 hoverAnimation: false,//鼠标悬停效果，默认是true
@@ -67,26 +68,30 @@ export default class QoS extends React.Component {
 
     render() {
         const data = this.props.data;
+        const enable = this.props.enable;
         let total = data.slice(0, -1);
         let cost = 0, bandList = [];
 
         total.forEach(item => {
-            cost += item.value;
+            cost += parseInt(item.value);
             bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{item.value + '%'}</span></li>);
         });
+
+        cost = enable ? cost : '--';
 
         return (
             <li className='func-item bandwidth'>
                 <div className='title'>
                     <div className='percent'>{cost + '%'}</div>
-                    <div className='desc'>总带宽使用率</div>
+                    <div className='desc'>下行带宽使用率</div>
                 </div>
                 <div className='pie' ref={ID => this.ID = ID} style={{ height: 120, width: 320 }}></div>
-                {cost >= 80 ? 
-                    (<h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4>) : 
-                    (<h4 className='nice'>当前网络畅通，可放心使用</h4>)}
-                <ul className='band-desc'>{bandList}</ul>
-                <Button className='set-band'><a href="/advance/bandwidth">设置宽带</a></Button>
+                {enable && (cost >= 80 ?
+                    <h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4> :
+                    <h4 className='nice'>当前网络畅通，可放心使用</h4>)}
+                {enable && <ul className='band-desc'>{bandList}</ul>}
+                {!enable && <div className='qos-disabled'>网速智能分配功能尚未开启</div>}
+                <Button className='set-band'><a href="/advance/bandwidth">{enable ? '设置宽带' : '前往设置'}</a></Button>
             </li>
         )
     }
