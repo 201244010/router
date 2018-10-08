@@ -3,11 +3,12 @@
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import { Modal ,Select,Button} from 'antd';
+import { Modal ,Select ,Button ,Radio} from 'antd';
 import UploadImage from '~/components/Upload';
 
 const {FormItem,Input} = Form;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 
 export default class SmsAuth extends React.Component{
     constructor(props){
@@ -29,6 +30,7 @@ export default class SmsAuth extends React.Component{
         signName : '商米',
         selectedSsid : [],
         children : [],
+        watchValue : '1',
     }
 
     onEnableChange = type =>{
@@ -69,11 +71,18 @@ export default class SmsAuth extends React.Component{
 
     }
 
+    onWatchValueChange = e =>{
+        this.setState({
+            watchValue : e.target.value
+        })
+        
+    }
+
     async smsAuthInfo(){
         let response = await common.fetchWithCode('AUTH_SHORTMESSAGE_CONFIG_GET',{method : 'post'},{handleError : true});
         let {errcode,data,message} = response;
-        this.sms =data[0].result.sms;
         if(errcode == 0){
+            this.sms =data[0].result.sms;
             this.setState({
                 enable : this.sms.enable == '1'? true : false,
                 disableType :this.sms.enable == '1'? false : true,
@@ -132,7 +141,7 @@ export default class SmsAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,statement,codeExpired,serverProvider,accessKeyId,accessKeySecret,templateCode,signName,children,disableType} = this.state;
+        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,statement,codeExpired,serverProvider,accessKeyId,accessKeySecret,templateCode,signName,children,disableType,watchValue} = this.state;
         
         return (
             <div className="auth">
@@ -186,13 +195,26 @@ export default class SmsAuth extends React.Component{
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
                                 </div>
                             </section>
-                            <section>
-                                <div>
+                            <section style={{display : 'flex',flexDirection : 'column'}}>
+                            <RadioGroup onChange={this.onWatchValueChange} value={watchValue}>
+                                <Radio style={{display:'inline-block',width:120}} value={'1'}>手机效果预览</Radio>
+                                <Radio style={{display:'inline-block',width:120}} value={'2'}>网页效果预览</Radio>
+                            </RadioGroup>
+                            {(watchValue == '1')?
+                                (
+                                    <div style={{width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:20}}>
 
-                                </div>
+                                    </div>
+                                ):(
+                                    <div style={{width:467,height:262,border:'1px solid grey',borderRadius:8,marginTop:20}}>
+
+                                    </div>
+                                )
+    
+                            }
                             </section>                  
                         </section>
-                        <PanelHeader title = "微信公众平台参数设置" checkable={false} />
+                        <PanelHeader title = "短信平台参数设置" checkable={false} />
                         <label>验证码有效期</label>
                         <FormItem type="small" style={{ width : 320}}>
                             <Input type="text" placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
