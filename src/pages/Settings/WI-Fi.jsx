@@ -236,8 +236,8 @@ export default class WIFI extends React.Component {
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? this.state.guestStaticPassword : this.state.guestDynamicPassword;
-        this.guestWireLess.static_password = this.state.guestStaticPassword;
+        this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword);
+        this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
 
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
@@ -308,8 +308,8 @@ export default class WIFI extends React.Component {
                 guestEnable : this.guestWireLess.enable == '1'? true : false,
                 disabledType2 : this.guestWireLess.enable == '1'? false : true,
                 period : this.guestWireLess.period,
-                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : this.guestWireLess.password,
-                guestStaticPassword : this.guestWireLess.static_password, 
+                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : atob(this.guestWireLess.password),
+                guestStaticPassword : atob(this.guestWireLess.static_password), 
                 
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
@@ -541,7 +541,7 @@ export default class WIFI extends React.Component {
                             </div>
                             <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap'}}>
                                 <label>当前密码是：</label>
-                                <p style={{color:'orange'}} value={guestDynamicPassword}>123456</p>
+                                <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
                             </div> 
                             <span style={{opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>   
                         </section>
