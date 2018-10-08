@@ -6,11 +6,11 @@ import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 
-const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
+const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
 const pagination = {
     pageSize: 6,
-    hideOnSinglePage: true,
+    hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
 };
 
@@ -31,6 +31,7 @@ export default class Blacklist extends React.Component {
         editShow: false,
         name: '',
         mac: '',
+        me: '',
         nameTip: '请输入备注名称',
         macTip: '请输入MAC地址',
         blockLists: [],
@@ -49,8 +50,12 @@ export default class Blacklist extends React.Component {
             case 'mac':
                 if (0 !== checkMac(val)) {
                     tip = 'MAC地址非法，请重新输入';
+                    break;
                 }
-                break;
+                if (this.state.me === val.join(':').toUpperCase()) {
+                    tip = '不能将本机加入黑名单，请重新输入';
+                    break;
+                }
         }
 
         this.setState({
@@ -81,7 +86,6 @@ export default class Blacklist extends React.Component {
     }
 
     handleDelete = async (record) => {
-        console.log(record)
         let response = await common.fetchWithCode(
             'QOS_AC_BLACKLIST_DELETE',
             { method: 'POST', data: { black_list: [{
@@ -201,9 +205,10 @@ export default class Blacklist extends React.Component {
             this.setState({
                 blockLists: black_list.map(item => {
                     return {
-                        logo: logoMap[item.device] || 'unknown',
+                        logo: 'unknown',
                         name: item.name,
                         mac: item.mac,
+                        time: new Date(item.time).toLocaleString(),
                         index: item.index
                     }
                 })
@@ -224,7 +229,7 @@ export default class Blacklist extends React.Component {
             // filter clients in dhcp static list
             let restClients = data.filter(item => {
                 let mac = item.mac.toUpperCase();
-                return !!!(this.state.blockLists.find(client => {
+                return (mac !== this.state.me) && !!!(this.state.blockLists.find(client => {
                     return (mac == client.mac.toUpperCase());
                 }));
             });
@@ -235,7 +240,6 @@ export default class Blacklist extends React.Component {
                         logo: logoMap[item.device] || 'unknown',
                         name: item.hostname,
                         mac: item.mac,
-                        time: item.time,
                         checked: false
                     }
                 })
@@ -246,8 +250,21 @@ export default class Blacklist extends React.Component {
         Modal.error({ title: '获取客户端列表指令异常', message });
     }
 
+    fetchWhoAmI = async () => {
+        let response = await common.fetchWithCode('WHOAMI_GET', { method: 'POST' })
+        let { errcode } = response;
+        if (errcode == 0) {
+            let { mac } = response.data[0].result;
+
+            this.setState({
+                me: mac.toUpperCase(),
+            });
+        }
+    }
+
     componentDidMount() {
         this.fetchBlackList();
+        this.fetchWhoAmI();
     }
 
     render() {
@@ -259,7 +276,7 @@ export default class Blacklist extends React.Component {
             dataIndex: 'logo',
             width: 80,
             render: (text, record) => (
-                <CustomIcon type={record.logo} size={24} />
+                <CustomIcon type={record.logo} size={32} />
             )
         }, {
             title: '设备名称',
@@ -310,7 +327,7 @@ export default class Blacklist extends React.Component {
         }];
 
         return (
-            <div style={{ margin: "20px 60px" }}>
+            <div style={{ margin: "0 60px" }}>
                 <PanelHeader title="添加黑名单设备" />
                 <div style={{ margin: "20px 20px 20px 0" }}>
                     <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>在线列表添加</Button>
@@ -360,10 +377,3 @@ export default class Blacklist extends React.Component {
         );
     }
 };
-
-
-
-
-
-
-

@@ -8,7 +8,7 @@ const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 
 const pagination = {
     pageSize: 6,
-    hideOnSinglePage: true,
+    hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
 };
 
