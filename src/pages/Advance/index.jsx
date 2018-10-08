@@ -24,7 +24,7 @@ export default class Advance extends React.PureComponent {
                 <nav>
                     <NavLink to={match.path + "/bandwidth"} activeClassName="active">
                         <div className="nav-item">
-                            <CustomIcon type="bandwidth" size={28}/>
+                            <CustomIcon type="networkspeeddistribution" size={28}/>
                             <span>网速智能分配</span>
                         </div>
                     </NavLink>

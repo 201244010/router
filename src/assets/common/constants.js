@@ -59,7 +59,7 @@ export const DIRECTIVE = {
     // 客户端设备信息获取
     CLIENT_LIST_GET: '0x2025',
     CLIENT_ITEM_GET: '0x2026',
-    CLIENT_ITEM_GET : '',
+    WHOAMI_GET: '0x2027',
 
     // 流量统计
     TRAFFIC_STATS_GET: '0x2040',
