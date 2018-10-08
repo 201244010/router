@@ -59,7 +59,7 @@ export const DIRECTIVE = {
     // 客户端设备信息获取
     CLIENT_LIST_GET: '0x2025',
     CLIENT_ITEM_GET: '0x2026',
-    CLIENT_ITEM_GET : '',
+    WHOAMI_GET: '0x2027',
 
     // 流量统计
     TRAFFIC_STATS_GET: '0x2040',
@@ -80,6 +80,12 @@ export const DIRECTIVE = {
     AUTH_SHORTMESSAGE_CONFIG_SET : '0x2083',
     AUTH_SHORTMESSAGE_CODE_REQUEST : '0x2080',
     AUTH_SHORTMESSAGE_CODE_VERIFY : '0x2081',
+
+    //系统升级
+    FIRMWARE_GET : '0x2071',
+    FIRMWARE_SET : '0x2072',
+    UPGRADE_START :'0x2074',
+    UPGRADE_STATE : '0x2075',
 };
 
 

@@ -21,27 +21,33 @@ export default class Home extends React.PureComponent {
             "mac": "10:20:30:40:50:66",
             "ip": "192.168.1.123"
         }],
+        upSpeed: 0,
+        upUnit: 'Kbps',
+        downSpeed: 0,
+        downUnit: 'Kbps',
+        qosEnable: true,
+        totalBand: 10 * 1024 * 1024,
         sunmiClients:[],
         normalClients: [],
         whitelistClients: [],
         qosData: [{
             name: '商米设备',
-            value: 20,
+            value: 0,
             color: '#FF8F00'
         },
         {
             name: '优先设备',
-            value: 10,
+            value: 0,
             color: '#87D068'
         },
         {
             name: '普通设备',
-            value: 5,
+            value: 0,
             color: '#4687FF'
         },
         {
             name: '剩余带宽',
-            value: 10,
+            value: 100,
             color: '#DFE8F3'
         }]
     }
@@ -80,16 +86,16 @@ export default class Home extends React.PureComponent {
 
         speed = parseInt(speed, 10);
         if (speed >= gSpeed) {
-            speed = (speed / gSpeed).toFixed(2) + "GB/s";
+            speed = (speed / gSpeed).toFixed(2) + "Gbps";
         }
         else if (speed >= mSpeed) {
-            speed = (speed / mSpeed).toFixed(2) + "MB/s";
+            speed = (speed / mSpeed).toFixed(2) + "Mbps";
         }
         else if (speed >= kSpeed) {
-            speed = (speed / kSpeed).toFixed(0) + "KB/s";
+            speed = (speed / kSpeed).toFixed(0) + "Kbps";
         }
         else {
-            speed = speed.toFixed(0) + "B/s";
+            speed = speed.toFixed(0) + "bps";
         }
 
         return speed.toString();
@@ -111,6 +117,19 @@ export default class Home extends React.PureComponent {
         this.fetchClinetsInfo();
     }
 
+    fetchQoS = async () => {
+        let response = await common.fetchWithCode('QOS_GET', { method: 'POST' })
+        let { errcode, data } = response;
+        if (errcode == 0) {
+            let { qos } = data[0].result;
+            this.setState({
+                qosEnable: qos.enable,
+                totalBand: parseInt(qos.up_bandwidth, 10),
+            });
+            return;
+        }
+    }
+
     fetchClinetsInfo = () => {
         let fetchClinets = common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' });
         let fetchTraffic = common.fetchWithCode('TRAFFIC_STATS_GET', { method: 'POST' });
@@ -121,6 +140,11 @@ export default class Home extends React.PureComponent {
             }
 
             let clients, traffics;
+            let band = {
+                sunmi: 0,
+                whitelist: 0,
+                normal: 0,
+            };
             let { errcode, data } = results[0];
             if (0 !== errcode){
                 return;
@@ -161,12 +185,17 @@ export default class Home extends React.PureComponent {
                 let device = deviceMap[client.device || 'unknown'];
                 let ontime = this.formatTime(client.ontime);
                 let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
+
+                // 统计不同类型设备带宽
+                client.type = client.type || 'normal';
+                band[client.type] += tf.cur_rx_bytes;
+
                 return {
                     icon: device,
                     name: client.hostname,
                     ip: client.ip,
                     mac: client.mac.toUpperCase(),
-                    type: client.type || 'normal',
+                    type: client.type,
                     mode: mode,
                     ontime: ontime,
                     rssi: rssi,
@@ -176,14 +205,25 @@ export default class Home extends React.PureComponent {
                 }
             });
 
+            let wan = results[1].data[0].result.traffic_stats.wan;
+            let tx = this.formatSpeed(wan.cur_tx_bytes);
+            let rx = this.formatSpeed(wan.cur_rx_bytes);
+            let total = this.state.totalBand;
+            let rest = total - (band.sunmi + band.whitelist + band.normal);
+            let bandCount = [band.sunmi, band.whitelist, band.normal, (rest > 0 ? rest : 0)];
+
             this.setState({
+                upSpeed: tx.match(/[0-9\.]+/g),
+                upUnit: tx.match(/[a-z]+/gi),
+                downSpeed: rx.match(/[0-9\.]+/g),
+                downUnit: rx.match(/[a-z]+/gi),
                 sunmiClients: totalList.filter(item => item.type === 'sunmi'),
                 normalClients: totalList.filter(item => item.type === 'normal'),
                 whitelistClients: totalList.filter(item => item.type === 'whitelist'),
-                qosData: this.state.qosData.map(item => {
+                qosData: this.state.qosData.map((item, index) => {
                     return {
                         name: item.name,
-                        value: parseInt(50 * Math.random()),
+                        value: (bandCount[index] * 100 / total).toFixed(0),
                         color: item.color
                     }
                 }),
@@ -198,11 +238,13 @@ export default class Home extends React.PureComponent {
     }
 
     componentDidMount(){
+        this.fetchQoS();
         this.fetchClinetsInfo();
     }
 
     render(){
-        const { sunmiClients, normalClients, whitelistClients, qosData, showMesh}  = this.state;
+        const { qosEnable, upSpeed, upUnit, downSpeed, downUnit, 
+                sunmiClients, normalClients, whitelistClients, qosData, showMesh}  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
             <div>
@@ -213,24 +255,24 @@ export default class Home extends React.PureComponent {
                             <img className='router' src={require('~/assets/images/router.svg')} />
                             <div className='content'>
                                 <h4><span>网络状态</span><span className='state'>正常</span></h4>
-                                <div className='down'>
-                                    <label className='speed'>6.25</label>
+                                <div className='up'>
+                                    <label className='speed'>{upSpeed}</label>
                                     <div className='tip'>
                                         <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
-                                        <div className='unit'>Mbps</div>
+                                        <div className='unit'>{upUnit}</div>
                                     </div>
                                 </div>
-                                <div className='up'>
-                                    <label className='speed'>6.25</label>
+                                <div className='down'>
+                                    <label className='speed'>{downSpeed}</label>
                                     <div className='tip'>
                                         <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
-                                        <div className='unit'>Mbps</div>
+                                        <div className='unit'>{downUnit}</div>
                                     </div>
                                 </div>
                                 <Button className='test-speed'>自动测速</Button>
                             </div>
                         </li>
-                        <QoS data={qosData} />
+                        <QoS data={qosData} enable={qosEnable} />
                         <li className='func-item search' style={{padding:'20px 0px'}}>
                             <img className='radar' src={require('~/assets/images/radar.png')} />
                             <div className='content'>
