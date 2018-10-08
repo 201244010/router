@@ -11,25 +11,39 @@ export default class ChangePassword extends React.Component{
         userName : 'admin',
         oldPWD : '',
         newPWD : '',
+<<<<<<< HEAD
         surePWD : '',
         disabled : true,
+=======
+        surePWD : ''
+>>>>>>> 修改管理员密码发开基本完成
     }
 
     onChange = (name,value) =>{
         this.setState({
+<<<<<<< HEAD
             [name] : value,  
         },()=>{this.setState({disabled : this.state.surePWD.trim().length<6})})
+=======
+            [name]:value
+        })
+>>>>>>> 修改管理员密码发开基本完成
     }
 
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
             message.error('请保持两次输入新密码一致');
+<<<<<<< HEAD
             this.setState({surePWD : '',disabled : true});
+=======
+            this.setState({surePWD : ''});
+>>>>>>> 修改管理员密码发开基本完成
             return ;
         }else{
             this.user= this.state.userName;
             this.oldpassword = btoa(this.state.oldPWD);
             this.password = btoa(this.state.newPWD);
+<<<<<<< HEAD
             this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password};
             let response = await common.fetchWithCode('ACCOUNT_MODIFY',{method : 'post', data : {account:this.account}}).catch(ex => {});
             let {errcode} = response;
@@ -38,11 +52,25 @@ export default class ChangePassword extends React.Component{
             }
             
             Modal.error({title : '修改失败',content : '旧密码错误'});
+=======
+            this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password}
+            console.log(this.account);
+            let response = await common.fetchWithCode('ACCOUNT_MODIFY',{method : 'post', data : {account:this.account}}).catch(ex => {});
+            let {errcode} = response;
+            if(errcode == '0'){
+                return;
+            }
+            Modal.error({title : '修改失败',content : ''});
+>>>>>>> 修改管理员密码发开基本完成
         }
     }
 
     render(){
+<<<<<<< HEAD
         const {oldPWD,newPWD,surePWD,disabled} = this.state;
+=======
+        const {oldPWD,newPWD,surePWD} = this.state;
+>>>>>>> 修改管理员密码发开基本完成
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
@@ -61,7 +89,11 @@ export default class ChangePassword extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
+<<<<<<< HEAD
                         <Button disabled={disabled} className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+=======
+                        <Button className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+>>>>>>> 修改管理员密码发开基本完成
                     </section>
                 </Form>
             </div>
