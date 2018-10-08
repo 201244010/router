@@ -19,7 +19,6 @@ export default class WIFI extends React.Component {
         guestEncryption : '',
         guestStaticPassword : '',
         guestDynamicPassword : '',
-        guestPassword:'',
         guestPasswordDisabled:false,
         guestPwdForbid:false,
         PWDType:'static',
@@ -237,6 +236,8 @@ export default class WIFI extends React.Component {
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.period,
+        this.guestWireLess.password = this.state.PWDType == 'static'? this.state.guestStaticPassword : this.state.guestDynamicPassword;
+        this.guestWireLess.static_password = this.state.guestStaticPassword;
 
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
@@ -303,10 +304,12 @@ export default class WIFI extends React.Component {
                 guestStaticPassword : atob(this.guestWireLess.static_password),
                 guestPasswordDisabled : this.guestWireLess.enable == '1'? false : true,
                 PWDType : this.guestWireLess.password_type,
-                displayType:this.guestWireLess.password_type == 'static'? 'none' : 'block',
+                displayType : this.guestWireLess.password_type == 'static'? 'none' : 'block',
                 guestEnable : this.guestWireLess.enable == '1'? true : false,
                 disabledType2 : this.guestWireLess.enable == '1'? false : true,
                 period : this.guestWireLess.period,
+                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : this.guestWireLess.password,
+                guestStaticPassword : this.guestWireLess.static_password, 
                 
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
@@ -357,7 +360,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,guestSsid,guestStaticPassword,guestDynamicPassword,guestPassword,guestPasswordDisabled,PWDType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Password,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipGuest,tip2g,tip5g} = this.state;
+        const { channelType,guestSsid,guestStaticPassword,guestDynamicPassword,guestPasswordDisabled,PWDType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Password,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipGuest,tip2g,tip5g} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -558,7 +561,6 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-save">
                         <Button className="wifi-setting-button" type="primary" onClick={this.submit}>保存</Button>
                     </section>
-                    <span value={guestPassword}></span>
                 </Form>
             </div>
         );
