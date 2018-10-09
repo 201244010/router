@@ -336,7 +336,7 @@ export default class SetWan extends React.PureComponent {
 const LinkState = props =>{
     return(
         <div style={{width:260,textAlign:'center',marginTop:-15}}>
-            <CustomIcon type="mistake" size="large" color="#d33519"/>
+            <CustomIcon type="hint" size="large" color="#FF5500"/>
             <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
             <Button type="primary" onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
             <div className="help">
@@ -353,7 +353,7 @@ const NetStatus = props => {
             <h3>已连接网络，正在跳转到带宽设置…</h3>
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
-            <CustomIcon type="mistake" size="large" color="#d33519" />
+            <CustomIcon type="hint" size="large" color="#FF5500" />
             <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
