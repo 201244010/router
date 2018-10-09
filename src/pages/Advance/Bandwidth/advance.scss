@@ -34,7 +34,7 @@
     }
 }
 
-.anti-table {
+.qos-table {
     .ant-table-thead >tr >th{
         padding : 8px 0;
         border-bottom:none;
@@ -48,18 +48,29 @@
         padding : 8px 0;
         border-bottom:none;
         background: none;
+        .ui-form-item-field {
+            width : 236px;
+        }
     }
 }
 
 .percent-position {
     text-align: center;
     font-size: 32px;
+    color: #333C4F;
 }
 
 .progress-position {
     text-align: center;
     font-size: 16px;
     margin-top: 10px;
+    color: #ADB1B9;
+}
+
+.color-change {
+    .ant-progress-bg {
+        background : linear-gradient(to right, #FAD961 , #FB8632)
+    }
 }
 
 .progress-test {
@@ -105,4 +116,16 @@
 
 .ant-modal-header {
     padding : 16px 13px;
+}
+
+.qos-input {
+    display: inline-block;
+    .ui-input{
+        width: 100px;
+    }
+}
+
+.qos-tip {
+    color : red;
+    margin-left: 6px;
 }
