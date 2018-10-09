@@ -107,6 +107,60 @@ export default class SysUpgrade extends React.Component{
         this.handleDisable();
     }
 
+    handleDisable = ()=> {
+        if (this.state.currentVersion !== this.state.latestVersion){
+            this.setState({
+                disable : true
+            })
+        }
+    }
+
+    versionClick = ()=>{
+        this.setState({
+            version : true
+        })
+    }
+
+    handleCancle = ()=> {
+        this.setState({
+            version : false
+        })
+    }
+
+    updateFail = () => {
+        this.setState({
+            downloadFail : false
+        })
+    }
+
+    updateFill = () => {
+        this.setState({
+            downloadSuccess : false
+        })
+    }
+
+    getInfo = async ()=>{
+        let response = await common.fetchWithCode(
+            'FIRMWARE_GET',
+            { method : 'POST'}
+        ).catch(ex=>{})
+        console.log(response)
+        let {data,errcode} =response;
+
+        if(errcode == 0){       
+            this.setState({
+                currentVersion : data.current_version,
+                latestVersion : data.newest_version
+            })
+        }
+        
+        Modal.error({title : '获取路由器当前版本信息和最新版本信息失败'});
+    }
+
+    componentDidMount(){
+        this.getInfo();
+    }
+
     render(){
         const {downloadSuccess, downloadFailtip,failReason,loading,download,downloadFail, disable, version, currentVersion, latestVersion,downloadTip,warningTip} = this.state;
 
