@@ -185,7 +185,7 @@ export default class SetWifi extends React.Component {
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
-                    <Button type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <Button size='large' type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
                     <div className="help">
                         <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
                     </div>

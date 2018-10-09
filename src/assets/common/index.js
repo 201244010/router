@@ -43,18 +43,18 @@ export const getTimeZone = () => {
  * @see
  * fetchWithCode(
  *      'ACCOUNT_LOGIN', 
- *      {timeout : 3000, data : {password : '123'}},
+ *      {timeout : 5000, data : {password : '123'}},
  * );
  * fetchWithCode(
  *      'DHCPS_GET', 
- *      {timeout : 3000, data : {password : '123'}},
+ *      {timeout : 5000, data : {password : '123'}},
  *      {loop : true, interval : 1000, stop : function(){return true}},
  *      
  * );
  */
 
 export function fetchWithCode(directive, options = {}, loopOption = {}){
-    options = assign({timeout : 3000}, options);
+    options = assign({timeout : 5000}, options);
     let code = DIRECTIVE[directive];
     let url = __BASEAPI__ + '/' + directive;
     let payload;    

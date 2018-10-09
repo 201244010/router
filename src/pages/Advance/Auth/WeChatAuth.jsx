@@ -190,7 +190,7 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div>
+                                <div style={{width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25}}>
 
                                 </div>
                             </section>                  

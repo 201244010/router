@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {Button, Modal} from 'antd';
+import {Button} from 'antd';
 import routes from '../../routes';
 
 const { FormItem, ErrorTip, Input }  = Form;
