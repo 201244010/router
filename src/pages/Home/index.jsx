@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Progress } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import PrimaryFooter from '~/components/PrimaryFooter';
 import CustomIcon from '~/components/Icon';
@@ -9,8 +9,16 @@ import QoS from './QoS';
 
 import './home.scss'
 
+const TOTAL_TIME = 60 * 1000;
+
 export default class Home extends React.PureComponent {
     state = {
+        visible: false,
+        percent: 0,
+        successShow: false,
+        upBand: 0,
+        downBand: 0,
+        failShow: false,
         refresh: true,
         showMesh: false,
         meshR: true,
@@ -26,7 +34,7 @@ export default class Home extends React.PureComponent {
         downSpeed: 0,
         downUnit: 'Kbps',
         qosEnable: true,
-        totalBand: 10 * 1024 * 1024,
+        totalBand: 8 * 1024 * 1024,
         sunmiClients:[],
         normalClients: [],
         whitelistClients: [],
@@ -237,13 +245,47 @@ export default class Home extends React.PureComponent {
         })
     }
 
+    runningSpeedTest = () => {
+        
+    }
+
+    startSpeedTest = () => {
+        this.runningSpeedTest();
+
+        this.setState({
+            visible: true,
+        });
+
+        this.speedTimer = setInterval(() => {
+            let percent = this.state.percent + 1;
+            if (percent <= 100){
+                this.setState({
+                    percent: percent,
+                });
+            }else{
+                clearInterval(this.speedTimer);
+            }
+        }, TOTAL_TIME / 100);
+    }
+
+    closeSpeedTest = () => {
+        this.setState({
+            successShow: false,
+        });
+    }
+
     componentDidMount(){
         this.fetchQoS();
         this.fetchClinetsInfo();
     }
 
+    componentWillUnmount(){
+        this.stopRefresh();
+    }
+
     render(){
-        const { qosEnable, upSpeed, upUnit, downSpeed, downUnit, 
+        const { qosEnable, upSpeed, upUnit, downSpeed, downUnit,
+                visible, percent, successShow, upBand, downBand, failShow,
                 sunmiClients, normalClients, whitelistClients, qosData, showMesh}  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
@@ -269,15 +311,38 @@ export default class Home extends React.PureComponent {
                                         <div className='unit'>{downUnit}</div>
                                     </div>
                                 </div>
-                                <Button className='test-speed'>自动测速</Button>
+                                <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
                             </div>
+                            <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
+                                <h4>{percent}%</h4>
+                                <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
+                                <p>测速中，请稍后...</p>
+                            </Modal>
+                            <Modal className='speed-success-modal' closable={false} visible={successShow} centered={true}
+                                footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
+                                <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
+                                <h4>带宽测速完成</h4>
+                                <ul className='speed-result'>
+                                    <li>
+                                        <CustomIcon color="#3D76F6" type="kbyte" size={12} />
+                                        <label>上行带宽：</label><span>{upBand}Mbps</span>
+                                    </li>
+                                    <li>
+                                        <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
+                                        <label>下行带宽：</label><span>{downBand}Mbps</span>
+                                    </li>
+                                </ul>
+                            </Modal>
+                            <Modal className='speed-fail-modal' closable={false} footer={null} visible={failShow} centered={true}>
+                                <CustomIcon color="#FF5500" type="defeated" size={64} />
+                            </Modal>
                         </li>
                         <QoS data={qosData} enable={qosEnable} />
                         <li className='func-item search' style={{padding:'20px 0px'}}>
                             <img className='radar' src={require('~/assets/images/radar.png')} />
                             <div className='content'>
                                 <h3>搜寻商米设备</h3>
-                                <p>一键添加附近的<br />商米设备专属网络业务不掉线</p>
+                                <p>商米设备一键连接上网快速安全</p>
                                 <Button className='search'>搜寻设备</Button>
                             </div>
                             <Modal title={'TODO'} maskClosable={false}

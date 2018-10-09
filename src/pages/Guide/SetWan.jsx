@@ -322,7 +322,7 @@ export default class SetWan extends React.PureComponent {
                                                             /> : ''
                                 }
                                 <FormItem label="#">
-                                    <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
+                                    <Button type="primary" size='large' onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                                 </FormItem>
                             </Form>
                         </div>
@@ -338,7 +338,7 @@ const LinkState = props =>{
         <div style={{width:260,textAlign:'center',marginTop:-15}}>
             <CustomIcon type="hint" size="large" color="#FF5500"/>
             <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
-            <Button type="primary" onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
+            <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
             <div className="help">
                     <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过，直接设置</a>
             </div>
@@ -356,7 +356,7 @@ const NetStatus = props => {
             <CustomIcon type="hint" size="large" color="#FF5500" />
             <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
-            <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
+            <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
                 <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，直接设置无线网络</a>

@@ -91,7 +91,7 @@ export default class ClientList extends React.Component{
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
                             <div className='icon'><CustomIcon type={client.icon} size={22} /></div>
                         </Popover>
-                        <div className='dot'></div><p title={client.name}>{client.name}</p>
+                        <div className='under-desc'><i className='dot'></i><p title={client.name}>{client.name}</p></div>
                     </li>
                 );
             }
