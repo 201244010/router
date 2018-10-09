@@ -14,7 +14,7 @@ const TabPane = Tabs.TabPane;
 export default class Systemsetup extends React.PureComponent {
     render(){
         return (
-            <Tabs className="weixin-tabs" defaultActiveKey="SysUpgrade">
+            <Tabs className="weixin-tabs" defaultActiveKey="ChangePassword">
                 <TabPane tab="修改管理员密码" key="ChangePassword"><ChangePassword /></TabPane>
                 <TabPane tab="系统升级" key="SysUpgrade"><SysUpgrade /></TabPane>
                 <TabPane tab="备份与恢复" key="Backup"><Backup /></TabPane>

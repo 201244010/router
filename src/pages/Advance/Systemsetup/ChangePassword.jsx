@@ -11,37 +11,38 @@ export default class ChangePassword extends React.Component{
         userName : 'admin',
         oldPWD : '',
         newPWD : '',
-        surePWD : ''
+        surePWD : '',
+        disabled : true,
     }
 
     onChange = (name,value) =>{
         this.setState({
-            [name]:value
-        })
+            [name] : value,  
+        },()=>{this.setState({disabled : this.state.surePWD.trim().length<6})})
     }
 
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
             message.error('请保持两次输入新密码一致');
-            this.setState({surePWD : ''});
+            this.setState({surePWD : '',disabled : true});
             return ;
         }else{
             this.user= this.state.userName;
             this.oldpassword = btoa(this.state.oldPWD);
             this.password = btoa(this.state.newPWD);
-            this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password}
-            console.log(this.account);
+            this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password};
             let response = await common.fetchWithCode('ACCOUNT_MODIFY',{method : 'post', data : {account:this.account}}).catch(ex => {});
             let {errcode} = response;
             if(errcode == '0'){
-                return;
+                message.success('修改成功,3秒后将跳转到登陆页面',1,setTimeout(3000,()=>{location.href = '/login'}));    
             }
-            Modal.error({title : '修改失败',content : ''});
+            
+            Modal.error({title : '修改失败',content : '旧密码错误'});
         }
     }
 
     render(){
-        const {oldPWD,newPWD,surePWD} = this.state;
+        const {oldPWD,newPWD,surePWD,disabled} = this.state;
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
@@ -60,7 +61,7 @@ export default class ChangePassword extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+                        <Button disabled={disabled} className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>
