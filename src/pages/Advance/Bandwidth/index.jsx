@@ -7,7 +7,7 @@ import { Button, Table, Progress, Modal } from 'antd'
 import CustomIcon from '~/components/Icon';
 const {FormItem,ErrorTip, Input,InputGroup} = Form;
 
-import './advance.scss'
+import './bandwidth.scss'
 
 export default class Bandwidth extends React.PureComponent {
     state = {
@@ -371,7 +371,7 @@ export default class Bandwidth extends React.PureComponent {
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
                     <div className="percent-position">{percent}%</div>
                     <Progress percent={percent} className="color-change" showInfo={false}/>
-                    <div className="progress-position">测速中，请稍后...</div>
+                    <div className="progress-position">测速中，请稍候...</div>
                 </Modal>
 
                 <Modal title='手动设置带宽' okText="确定" cancelText="取消" 
