@@ -21,8 +21,6 @@ export default class Home extends React.PureComponent {
         failShow: false,
         refresh: true,
         showMesh: false,
-        meshR: true,
-        meshStatus:'',
         meshList: [{
             "name": "lilei's xiaoshan",
             "model": "xiaoshan",
@@ -246,7 +244,45 @@ export default class Home extends React.PureComponent {
     }
 
     runningSpeedTest = () => {
-        
+        let start = common.fetchWithCode(
+            'WANWIDGET_SPEEDTEST_START',
+            { method: 'POST' }
+        );
+
+        start.then(() => {
+            let status = common.fetchWithCode(
+                'WANWIDGET_SPEEDTEST_INFO_GET',
+                { method: 'POST' },
+                {
+                    loop: TOTAL_TIME / 10000,
+                    interval: 10000,
+                    stop: () => this.stop,
+                    pending: res => res.data[0].result.speedtest.status === "testing"
+                }
+            );
+
+            status.then((resp) => {
+                let { errcode: code, data } = resp;
+                if (code == 0) {
+                    let info = data[0].result.speedtest;
+                    if (info.status === "ok") {
+                        this.setState({
+                            successShow: true,
+                            visible: false,
+                            percent: 0,
+                            upBand: (info.up_bandwidth / 1024).toFixed(2),
+                            downBand: (info.down_bandwidth / 1024).toFixed(2),
+                        });
+                    } else if (info.status === "fail") {
+                        this.setState({
+                            failShow: true,
+                            visible: false,
+                            percent: 0,
+                        });
+                    }
+                }
+            })
+        });
     }
 
     startSpeedTest = () => {
@@ -270,16 +306,20 @@ export default class Home extends React.PureComponent {
 
     closeSpeedTest = () => {
         this.setState({
+            visible: false,
             successShow: false,
+            failShow: false,
         });
     }
 
     componentDidMount(){
+        this.stop = false;
         this.fetchQoS();
         this.fetchClinetsInfo();
     }
 
     componentWillUnmount(){
+        this.stop = true
         this.stopRefresh();
     }
 
@@ -318,7 +358,7 @@ export default class Home extends React.PureComponent {
                                 <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
                                 <p>测速中，请稍后...</p>
                             </Modal>
-                            <Modal className='speed-success-modal' closable={false} visible={successShow} centered={true}
+                            <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
                                 footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
                                 <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
                                 <h4>带宽测速完成</h4>
@@ -333,8 +373,10 @@ export default class Home extends React.PureComponent {
                                     </li>
                                 </ul>
                             </Modal>
-                            <Modal className='speed-fail-modal' closable={false} footer={null} visible={failShow} centered={true}>
-                                <CustomIcon color="#FF5500" type="defeated" size={64} />
+                            <Modal className='speed-result-modal' closable={false} visible={failShow} centered={true}
+                                footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
+                                <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
+                                <h4>带宽测速失败，请重试</h4>
                             </Modal>
                         </li>
                         <QoS data={qosData} enable={qosEnable} />
