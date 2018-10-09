@@ -439,7 +439,7 @@ const Bandclose = props => {
 const Bandon = props => {
      return [
     <div key='speedbutton'>
-        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
+        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />
         <section className="wifi-setting-save" style={{marginTop:30}}>
             <Button  style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
         </section>
