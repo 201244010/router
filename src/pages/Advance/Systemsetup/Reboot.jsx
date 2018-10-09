@@ -55,11 +55,19 @@ export default class Reboot extends React.Component{
                 </div>
                 <CustomModal active={loadingActive}>
                     <Icon key="progress-icon1" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
+<<<<<<< HEAD
                     <h3 key="active-h3">正在重启路由器，请稍候...</h3>
                     <span style={{color:'#D33419'}}>重启过程中请勿断电！！！</span>
                 </CustomModal>
                 <CustomModal active={succeedActive}>
                     <CustomIcon key="progress-icon2" type="succeed" size="large" color='#87D068'/>
+=======
+                    <h3 key="active-h3">正在重启路由器，请稍后...</h3>
+                    <span style={{color:'red'}}>重启过程中请勿断电！！！</span>
+                </CustomModal>
+                <CustomModal active={succeedActive}>
+                    <CustomIcon key="progress-icon2" type="succeed" size="large" color='green'/>
+>>>>>>> 完善修改管理员密码功能、完成路由器重启
                     <h3 style={{marginTop:10}} key="active-h3">重启完成，请重新登录管理界面</h3>
                     <div style={{borderTop:'1px solid #d8d8d8',marginTop:25}}>
                         <Button style={{width:160,bottom:-20}} className="weixin-auth-button" type="primary" onClick={this.login}>确定</Button>
