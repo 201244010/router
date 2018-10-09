@@ -6,8 +6,8 @@ import { Button, Table, Progress, Modal } from 'antd'
 
 import CustomIcon from '~/components/Icon';
 const {FormItem,ErrorTip, Input,InputGroup} = Form;
-import '../../Settings/settings.scss'
-import '../advance.scss'
+
+import './bandwidth.scss'
 
 export default class Bandwidth extends React.PureComponent {
     state = {
@@ -58,24 +58,24 @@ export default class Bandwidth extends React.PureComponent {
             whiteTip : '',
             normalTip : ''
         },() =>{ 
-                    const {sunmi, white, normal, upbandTmp ,downbandTmp} = this.state;
-                    if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
-                        this.setState({
-                            sunmiTip : '',
-                            whiteTip : '',
-                            normalTip : '',
-                            [key + 'Tip'] : tip
-                        })
-                    }
-                    if (upbandTmp === "" || downbandTmp === ""){
-                        this.setState({
-                            disable : true
-                        })
-                     }else {
-                        this.setState({
-                            disable : false
-                        })
-                    }
+            const {sunmi, white, normal, upbandTmp ,downbandTmp} = this.state;
+            if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
+                this.setState({
+                    sunmiTip : '',
+                    whiteTip : '',
+                    normalTip : '',
+                    [key + 'Tip'] : tip
+                })
+            }
+            if (upbandTmp === "" || downbandTmp === ""){
+                this.setState({
+                    disable : true
+                })
+                }else {
+                this.setState({
+                    disable : false
+                })
+            }
         })       
     }
 
@@ -99,39 +99,49 @@ export default class Bandwidth extends React.PureComponent {
         common.fetchWithCode(
             'WANWIDGET_SPEEDTEST_START',
             {method : 'POST'}
-        );
-        let status = await common.fetchWithCode(
-            'WANWIDGET_SPEEDTEST_INFO_GET',
-            {method : 'POST'},
-            {
-                loop : 5,
-                interval : 20000,
-                stop : ()=>this.stop
-            }
-        ).catch(ex=>{});
-        let {errcode:code, data,message} = status;
-        if (code == 0){
-            let info = data[0].result.speedtest;
-            if(info.status === "ok"){
-                this.setState({
-                    speedFill : true,
-                    visible : false,
-                    upband : info.up_bandwidth / 1024,
-                    downband : info.down_bandwidth / 1024,
-                    percent : 0,
+        ).then((resp => {
+            const {errcode} = resp;
+            if(errcode === 0){
+                let status = common.fetchWithCode(
+                    'WANWIDGET_SPEEDTEST_INFO_GET',
+                    {method : 'POST'},
+                    {
+                        loop : 5,
+                        interval : 20000,
+                        stop : ()=>this.stop,
+                        pending : res => res.data[0].result.speedtest.status === "testing"
+                    }
+                ).then((resp) => {
+                    let {errcode:code, data} = resp;
+                    if (code == 0){
+                        let info = data[0].result.speedtest;
+                        if(info.status === "ok"){
+                            this.setState({
+                                speedFill : true,
+                                visible : false,
+                                upband : (info.up_bandwidth / 1024).toFixed(2),
+                                downband : (info.down_bandwidth / 1024).toFixed(2),
+                                percent : 0,
+                            });
+                            let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
+                            common.fetchWithCode(
+                                'QOS_SET',
+                                {method : 'POST', data : payload}).catch(ex=>{}
+                            )
+                        }else if(info.status === "fail"){
+                            this.setState({
+                                speedFail : true,
+                                visible : false,
+                                percent : 0
+                            });
+                            return;
+                        }
+                    }
                 });
-                return;
+            }else{
+                Modal.error({ title: '获取测速失败'});
             }
-            if(info.status === "fail"){
-                this.setState({
-                    speedFail : true,
-                    visible : false,
-                    percent : 0
-                });
-                return;
-            }
-        }
-        Modal.error({ title: '获取测速失败', content: message});
+        }))
     }
 
     showManual = () => {
@@ -201,6 +211,7 @@ export default class Bandwidth extends React.PureComponent {
                         visible: false,
                         percent: 0
                     });
+                    Modal.error({ title: '自动测速失败'});
                     clearInterval(handleTime); 
                 }
                 if (this.state.speedFail === true || this.state.speedFill === true ){
@@ -227,8 +238,8 @@ export default class Bandwidth extends React.PureComponent {
         if (errcode == 0){
             let qos = data[0].result.qos;
             this.setState({
-                upband : qos.up_bandwidth / 1024,
-                downband : qos.down_bandwidth / 1024,
+                upband : (qos.up_bandwidth / 1024).toFixed(2),
+                downband : (qos.down_bandwidth / 1024).toFixed(2),
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
@@ -236,17 +247,16 @@ export default class Bandwidth extends React.PureComponent {
             })
             return;
         }
-
         Modal.error({ title: '路由器QoS模块信息获取失败', content: message});
     }
 
     //定义数据格式
     composeparams(val,upband,downband){
-        let qos = {}, {bandenable, upbandTmp, downbandTmp, sunmi, white, normal} = this.state;
+        let qos = {}, {bandenable, sunmi, white, normal} = this.state;
         qos['enable'] = bandenable;
         qos['source'] = val;
-        qos['up_bandwidth'] = upband * 1024 + '';
-        qos['down_bandwidth'] = downband * 1024 + '';
+        qos['up_bandwidth'] = parseInt(upband * 1024) + '';
+        qos['down_bandwidth'] = parseInt(downband * 1024) + '';
         qos['sunmi_weight'] = sunmi;
         qos['white_weight'] = white;
         qos['normal_weight'] = normal;
@@ -283,8 +293,6 @@ export default class Bandwidth extends React.PureComponent {
         Modal.error({titile : 'QOS设置失败', content : message});
     }
 
-    
-
     render(){
         const {bandunset, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
@@ -299,12 +307,14 @@ export default class Bandwidth extends React.PureComponent {
             title : '最低保证比例',
             dataIndex : 'percent',
             render: (text,record) =><div>
-                        <FormItem type="small" style={{ width: 100, marginBottom : 0 }}>
-                            <label style={{ position: 'absolute', right: -20, top: 0, zIndex: 1 }}>%</label>
-                            <Input style={{height : 28}} type="text" value={text} onChange={value => this.onChange(value, record.key)} />
-                            <label style={{ position: 'absolute', right: -231, top: 0,color : 'red', zIndex: 1 }}>{record.errorTip}</label>
-                        </FormItem> 
-                    </div>   
+                <FormItem type="small" style={{marginBottom : 0}}>
+                    <div className="qos-input">
+                        <Input  style={{height : 28}} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                    </div>
+                    <label>%</label>
+                    <label className="qos-tip">{record.errorTip}</label>
+                </FormItem> 
+            </div>   
         }]
     
         const data = [{
@@ -346,7 +356,7 @@ export default class Bandwidth extends React.PureComponent {
                     </div>
                 </section>
                 <section style={{margin:"20px 20px 20px 0"}}>
-                        <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动设置</Button>
+                        <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动测速</Button>
                         <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
                 </section>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
@@ -360,8 +370,8 @@ export default class Bandwidth extends React.PureComponent {
                 </Form>
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
                     <div className="percent-position">{percent}%</div>
-                    <Progress percent={percent} strokeColor="orange" showInfo={false}/>
-                    <div className="progress-position">测速中，请稍后…</div>
+                    <Progress percent={percent} className="color-change" showInfo={false}/>
+                    <div className="progress-position">测速中，请稍候...</div>
                 </Modal>
 
                 <Modal title='手动设置带宽' okText="确定" cancelText="取消" 
@@ -384,16 +394,16 @@ export default class Bandwidth extends React.PureComponent {
                 </Modal>
                 <Modal closable={false} visible={speedFill} centered={true} footer={null}>
                     <div className="progress-test">
-                        <CustomIcon color="lightgreen" type="succeed" size={64}/>
+                        <CustomIcon color="#87D068" type="succeed" size={64}/>
                         <div className="speedfill">带宽测速完成!</div>
                     </div>
                     <div className="band-line">
-                        <CustomIcon color="blue" type="kbyte" size={16}/>
+                        <CustomIcon color="#779FF8" type="kbyte" size={16}/>
                         <label>上行带宽：{upband}{unit}</label>
                     </div>
                     <div className="band-line">
-                        <CustomIcon color="green" type="downloadtraffic" size={16}/>
-                        <label>上行带宽：{downband}{unit}</label>
+                        <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
+                        <label>下行带宽：{downband}{unit}</label>
                     </div>
                     <section className="speed-bottom">
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
@@ -429,7 +439,7 @@ const Bandclose = props => {
 const Bandon = props => {
      return [
     <div key='speedbutton'>
-        <Table className="anti-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
+        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />,
         <section className="wifi-setting-save" style={{marginTop:30}}>
             <Button  style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
         </section>
