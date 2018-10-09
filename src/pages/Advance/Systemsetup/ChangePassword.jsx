@@ -34,7 +34,7 @@ export default class ChangePassword extends React.Component{
             let response = await common.fetchWithCode('ACCOUNT_MODIFY',{method : 'post', data : {account:this.account}}).catch(ex => {});
             let {errcode} = response;
             if(errcode == '0'){
-                message.success('修改成功,3秒后将跳转到登陆页面',1,setTimeout(3000,()=>{location.href = '/login'}));    
+                message.success('修改成功,5秒后将跳转到登陆页面',1,setTimeout(()=>{location.href = '/login'}),5000);    
             }
             
             Modal.error({title : '修改失败',content : '旧密码错误'});

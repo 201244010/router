@@ -55,7 +55,7 @@ export default class Reboot extends React.Component{
                 </div>
                 <CustomModal active={loadingActive}>
                     <Icon key="progress-icon1" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
-                    <h3 key="active-h3">正在重启路由器，请稍后...</h3>
+                    <h3 key="active-h3">正在重启路由器，请稍候...</h3>
                     <span style={{color:'#D33419'}}>重启过程中请勿断电！！！</span>
                 </CustomModal>
                 <CustomModal active={succeedActive}>
