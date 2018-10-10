@@ -15,20 +15,20 @@ const RadioGroup=Radio.Group;
 export default class WIFI extends React.Component {
     state = {
         channelType: true,
-        guestSsid : '客Wi-Fi',
+        guestSsid : '',
         guestEncryption : '',
         guestStaticPassword : '',
         guestDynamicPassword : '',
         guestPasswordDisabled:false,
         guestPwdForbid:false,
-        PWDType:'static',
+        PWDType:'',
         guestEnable:true,
         disabledType2:false,
-        period : '45',
+        period : '',
         displayType:'none',
         //2.4G
         host24Enable:true,
-        hostSsid24:'主Wi-Fi2.4',
+        hostSsid24:'',
         hostSsid24Password:'',
         hostSsid24PasswordDisabled:false,
         pwdForbid24:false,
@@ -40,7 +40,7 @@ export default class WIFI extends React.Component {
         disabledType24:false,
         //5G
         host5Enable:true,
-        hostSsid5:'主Wi-Fi5',
+        hostSsid5:'',
         hostSsid5Passwrod:'',
         hostSsid5PasswordDisabled:false,
         pwdForbid5:false,
