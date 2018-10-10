@@ -208,7 +208,7 @@ export default class Blacklist extends React.Component {
                         logo: 'unknown',
                         name: item.name,
                         mac: item.mac,
-                        time: new Date(item.time).toLocaleString(),
+                        time: new Date(parseInt(item.time) * 1000).toLocaleString(),
                         index: item.index
                     }
                 })
