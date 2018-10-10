@@ -163,7 +163,7 @@ export default class NonAuth extends React.Component{
             });
 
         let response = await common.fetchWithCode(
-            directive, { method: 'POST', data: { auth:{white_list: white_list}} }
+            directive, { method: 'POST', data: { auth:{whitelist: white_list}} }
         ).catch(ex => { });
 
         this.setState({
@@ -196,7 +196,7 @@ export default class NonAuth extends React.Component{
             name: this.state.name
         }];
 
-        let response = await common.fetchWithCode(directive, { method: 'POST', data: { auth :{white_list: white_list }} });
+        let response = await common.fetchWithCode(directive, { method: 'POST', data: { auth :{whitelist: white_list }} });
 
         this.setState({
             editLoading: false
