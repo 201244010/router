@@ -31,6 +31,68 @@
     }
 }
 
+.speed-btm{
+    height: 60px;
+    border-top: 1px solid #d8d8d8;
+    .speed-btn{
+        width: 160px;
+        height: 42px;
+        left: 180px;
+        top: 15px;
+    }
+}
+
+.upgrade-warning{
+    color: red;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+
+.upgrade-download{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.progress-result {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    .progressfill {
+        font-weight: 600;
+        font-size: 16px;
+        margin-top: 12px;
+        font-weight: bold;
+        color: #333C4F;
+    }
+    .progressfail {
+        margin-top: 6px;
+        margin-bottom: 32px;
+        font-size: 12px;
+        color: #ADB1B9;
+    }
+}
+
+.progress-download {
+    display: block;
+    text-align: center;
+    .speedfill {
+        font-size: 16px;
+        margin-top: 12px;
+        font-weight: bold;
+    }
+}
+
+.upgrade-save{
+    height: 98px;
+    border-top: 1px solid #d8d8d8;
+    .upgrade-btn{
+        width: 116px;
+        height: 42px;
+        left: 60px;
+        top: 24px;
+    }
+}
+
 .weixin-auth-save{
     height: 98px;
     border-top: 1px solid #d8d8d8;
