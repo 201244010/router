@@ -87,6 +87,7 @@ class Login extends React.Component {
                             </FormItem>
                         </Form>
                         <Button type="primary"
+                                size='large'
                                 onClick={this.post}
                                 disabled={disabled}
                                 style={{ margin: "0 0 10px", width: 320 }}

@@ -188,9 +188,8 @@ export default class Speed extends React.Component {
                 {/* <h4 style={{ fontSize : 32 }}>60%</h4> */}
                 {/* <Progress percent={50} status="active" showInfo={false} strokeWidth={10} /> */}
                 <Icon type="loading" style={{ fontSize: 80, color : "#FB8632", marginBottom : 20 }} spin />
-                <Tips size="16" top={5}>测速中，请稍后…</Tips>
+                <Tips size="16" top={5}>测速中，请稍候...</Tips>
             </CustomModal>
-            
         </div>
       </div>
     )

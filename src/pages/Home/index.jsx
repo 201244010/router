@@ -356,7 +356,7 @@ export default class Home extends React.PureComponent {
                             <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
                                 <h4>{percent}%</h4>
                                 <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
-                                <p>测速中，请稍后...</p>
+                                <p>测速中，请稍候...</p>
                             </Modal>
                             <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
                                 footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>

@@ -277,7 +277,7 @@ export default class SetWan extends React.PureComponent {
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
                     <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />,
-                    <h3 key="active-h3">正在检查上网方式，请稍后...</h3>
+                    <h3 key="active-h3">正在检查上网方式，请稍候...</h3>
                 </div>
                 {/* 显示网络连接状态 */}
                 {

@@ -20,7 +20,7 @@ export default class SysUpgrade extends React.Component{
         //checkFail : false,//文件校验失败弹窗
 
         duration : 5,//文件下载时间
-        downloadTip : '正在下载新版本，请稍后...',
+        downloadTip : '正在下载新版本，请稍候...',
         warningTip : '下载过程中请勿断电！！！',
         downloadFailtip : '升级文件下载失败，请重试',
         failReason : '这里是失败原因【1000】'
