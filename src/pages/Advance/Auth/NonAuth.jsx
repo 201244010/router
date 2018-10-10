@@ -271,7 +271,7 @@ export default class NonAuth extends React.Component{
                         index: item.index,
                         icon: 'unknown',
                         name: item.name,
-                        mac: item.mactoUpperCase(),
+                        mac: item.mac.toUpperCase(),
                     }
                 }),
             });
@@ -337,14 +337,6 @@ export default class NonAuth extends React.Component{
                         textOverflow:'ellipsis',
                         whiteSpace: 'nowrap',
                     }} title={record.name}>{record.name}</div>
-                    <i style={{
-                        display: 'inline-block',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: (record.online ? '#87D068' : '#ADB1B9' ),
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                    }}></i>
                 </div>
             )
         }, {
