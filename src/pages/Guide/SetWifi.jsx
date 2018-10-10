@@ -195,7 +195,7 @@ export default class SetWifi extends React.Component {
                         !this.state.done ? 
                             <div className="progress">
                                 <Progress type="circle" showInfo={false} percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} />
-                                <h3>正在等待WI-FI重启，请稍后...</h3>
+                                <h3>正在等待WI-FI重启，请稍候...</h3>
                             </div>
                             : 
                             <div className="success">
