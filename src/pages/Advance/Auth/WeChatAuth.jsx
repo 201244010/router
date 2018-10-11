@@ -15,16 +15,16 @@ export default class WeChatAuth extends React.Component{
     
     state = {
         enable : false,
-        onlineLimit : '60',
-        idleLimit : '10',
+        onlineLimit : '',
+        idleLimit : '',
         logo : '欢迎您',
         welcome : '欢迎使用微信连Wi-Fi',
         loginHint : '一键打开微信连Wi-Fi',
         statement : '由Sunmi为您提供Wi-Fi服务',
-        ssid : "W1-wxTest",
-        shopId :"17231844",
-        appId : "wxd7faaa125d198e2d",
-        secretKey : "c9f39b0676a850901b063c1e2056f2d0",
+        ssid : '',
+        shopId :'',
+        appId : '',
+        secretKey : '',
         selectedSsid : [],
         children : [],
     }
