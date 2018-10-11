@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {Button,Modal,Icon} from 'antd';
+import {Button,Icon} from 'antd';
 import CustomModal from '~/components/Modal';
 import CustomIcon from '~/components/Icon';
 
@@ -41,17 +41,21 @@ export default class Reboot extends React.Component{
                     <section style={{borderTop:0,marginTop:20}} className="weixin-auth-save">
                         <Button style={{width:130}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即重启</Button>
                     </section>
-                    <Modal title="提示" visible={visible} onOk={this.reboot} onCancel={this.handleCancel}  
-                        footer={[
-                            <Button key="back" style={{fontSize:12}} onClick={this.handleCancel}>取消</Button>,
+                    <CustomModal style={{padding : 0}} active={visible}>
+                        <div className='div-header'>
+                            <CustomIcon key="progress-icon2" type="hint" size={14} color='grey'/>
+                            <span style={{marginLeft:8}}>提示</span>
+                        </div>
+                        <div className='div-body'>
+                            <p>确定要立即重启路由器？</p>
+                        </div>
+                        <div className='div-footer'>
+                            <Button key="back" style={{fontSize:12,marginRight:16}} onClick={this.handleCancel}>取消</Button>
                             <Button key="submit" style={{fontSize:12}} type="primary" onClick={this.reboot}>
-                            立即重启
-                            </Button>,
-                        ]}>
-                        <p>&nbsp;</p>
-                        <p>确定要立即重启路由器？</p>
-                        <p>&nbsp;</p>
-                    </Modal>
+                                立即重启
+                            </Button>
+                        </div>  
+                    </CustomModal>
                 </div>
                 <CustomModal active={loadingActive}>
                     <Icon key="progress-icon1" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />

@@ -33,7 +33,7 @@ export const DIRECTIVE = {
     // 无线功能
     WIRELESS_GET : '0x2013',
     WIRELESS_SET : '0x2014',
-    WIRELESS_ACL_SET : '0x2015',
+    WIRELESS_CHANNEL_LIST_GET:'0x3001',
 
     // sunmi mesh 按键
     SUNMIMESH_START : '0x2016',
@@ -88,8 +88,8 @@ export const DIRECTIVE = {
     UPGRADE_STATE : '0x2075',
 
     //系统工具
-    SYSTEM_RESTART : '0x2090',
-    SYSTEM_RESTORE : '0x2091',
+    SYSTEM_RESTART : '0x2015',
+    SYSTEM_RESTORE : '0x2016',
     CONFIG_CLOUD_BACKUP : '0x2092',
     CONFIG_LOCAL_BACKUP : '0x2093',
     CONFIG_CLOUD_RESTORE : '0x2094',
