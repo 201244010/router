@@ -151,6 +151,7 @@
     p{
         width: 270px;
         font-size: 14px;
+        font-weight:600;
         color: #333C4F;
         overflow: hidden;
         text-overflow:ellipsis;
@@ -161,6 +162,9 @@
         width: 280px;
         li{
             width: 140px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
             font-size: 10px;
             display: inline-block;
             margin-bottom: 5px;
