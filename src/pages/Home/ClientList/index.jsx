@@ -4,7 +4,7 @@ import { Button, Divider, Popover, Modal, Table } from 'antd';
 
 import CustomIcon from '~/components/Icon';
 
-import './clients.scss'
+import './clients.scss';
 
 export default class ClientList extends React.Component{
     constructor(props) {
@@ -232,7 +232,7 @@ class Item extends React.Component {
         let info = (
             <ul>
                 <li><label>信号强度：</label><span>{signal}</span></li><li><label>接入方式：</label><span>{access}</span></li>
-                <li><label>接入时间：</label><span>{time}</span></li><li><label>流量消耗：</label><span>{flux}</span></li>
+                <li><label>接入时间：</label><span title={time}>{time}</span></li><li><label>流量消耗：</label><span>{flux}</span></li>
                 <li><label>上传速度：</label><span>{up}</span></li><li><label>下载速度：</label><span>{down}</span></li>
                 <li><label>IP：</label><span>{ip}</span></li><li><label>MAC：</label><span>{mac}</span></li>
             </ul>
