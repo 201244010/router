@@ -93,6 +93,29 @@
     }
 }
 
+.div-header{
+    text-align:left;
+    padding-left:20px;
+    padding-top:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid #d4d4d4;
+}
+
+.div-body{
+    text-align:left;
+    height:80px;
+    padding-top:30px;
+    padding-bottom:30px;
+    padding-left:20px
+}
+
+.div-footer{
+    text-align:right;padding-top:20px;
+    padding-bottom:20px;
+    padding-right:20px;
+    border-top:1px solid #d4d4d4
+}
+
 .weixin-auth-save{
     height: 98px;
     border-top: 1px solid #d8d8d8;

@@ -4,10 +4,11 @@ import { Button, Modal, Progress } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import PrimaryFooter from '~/components/PrimaryFooter';
 import CustomIcon from '~/components/Icon';
-import ClientList from './ClientList';
+import ClientList from "./ClientList";
 import QoS from './QoS';
+import Mesh from './Mesh';
 
-import './home.scss'
+import './home.scss';
 
 const TOTAL_TIME = 60 * 1000;
 
@@ -20,13 +21,6 @@ export default class Home extends React.PureComponent {
         downBand: 0,
         failShow: false,
         refresh: true,
-        showMesh: false,
-        meshList: [{
-            "name": "lilei's xiaoshan",
-            "model": "xiaoshan",
-            "mac": "10:20:30:40:50:66",
-            "ip": "192.168.1.123"
-        }],
         upSpeed: 0,
         upUnit: 'Kbps',
         downSpeed: 0,
@@ -312,6 +306,10 @@ export default class Home extends React.PureComponent {
         });
     }
 
+    startSunmiMesh = () => {
+        this.refs.sunmiMesh.startSunmiMesh();
+    }
+
     componentDidMount(){
         this.stop = false;
         this.fetchQoS();
@@ -326,7 +324,7 @@ export default class Home extends React.PureComponent {
     render(){
         const { qosEnable, upSpeed, upUnit, downSpeed, downUnit,
                 visible, percent, successShow, upBand, downBand, failShow,
-                sunmiClients, normalClients, whitelistClients, qosData, showMesh}  = this.state;
+                sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
             <div>
@@ -385,27 +383,15 @@ export default class Home extends React.PureComponent {
                             <div className='content'>
                                 <h3>搜寻商米设备</h3>
                                 <p>商米设备一键连接上网快速安全</p>
-                                <Button className='search'>搜寻设备</Button>
+                                <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
                             </div>
-                            <Modal title={'TODO'} maskClosable={false}
-                                width={560} visible={showMesh}
-                                footer={[
-                                    <Button key='ok' onClick={this.handleCancel}>取消</Button>
-                                ]}>
-                                <Button style={{
-                                    position: "absolute",
-                                    top: 10,
-                                    left: 160,
-                                    border: 0,
-                                    padding: 0
-                                }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
-                            </Modal>
+                            <Mesh ref="sunmiMesh" />
                         </li>
                     </ul>
                     <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                     <div className='online-list'>
                         <div className='left-list'>
-                            <ClientList type='sunmi' data={sunmiClients}
+                            <ClientList type='sunmi' data={sunmiClients} startSunmiMesh={this.startSunmiMesh}
                                 startRefresh={this.startRefresh} stopRefresh={this.stopRefresh } />
                             <ClientList type='normal' data={normalClients}
                                 startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
