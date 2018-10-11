@@ -5,7 +5,7 @@ import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal} from 'antd';
 
-const { FormItem, ErrorTip, Input : FormInput, InputGroup, Input } = Form;
+const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
 export default class Lan extends React.Component {
     state = {

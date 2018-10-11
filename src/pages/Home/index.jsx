@@ -391,7 +391,7 @@ export default class Home extends React.PureComponent {
                     <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                     <div className='online-list'>
                         <div className='left-list'>
-                            <ClientList type='sunmi' data={sunmiClients}
+                            <ClientList type='sunmi' data={sunmiClients} startSunmiMesh={this.startSunmiMesh}
                                 startRefresh={this.startRefresh} stopRefresh={this.stopRefresh } />
                             <ClientList type='normal' data={normalClients}
                                 startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
