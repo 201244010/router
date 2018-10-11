@@ -4,6 +4,10 @@
     }
     .title{
         vertical-align: middle;
+        span{
+            margin: 0 5px;
+            color: #FB8632;
+        }
     }
     .ant-modal-body{
         height: 240px;

@@ -14,7 +14,7 @@ export default class Mesh extends React.Component{
         disabled: true,
         btnStr: '已找到全部商米设备',
         state: 'running',  // running/done
-        title:'',
+        title: '',
         devices: [
             /*{ model: 'V2x PRO', mac: '00:11:22:33:44:55' },
             { model: 'T2x mini', mac: '00:11:22:33:44:56' },
@@ -49,9 +49,9 @@ export default class Mesh extends React.Component{
             status.then((resp) => {
                 let { errcode, data, message } = resp;
                 if (errcode == 0) {
-                    let { devices } = data[0].result.sunmimesh;
+                    let { devices } = data[0].sunmimesh;
                     let num = devices.length;
-                    let title = (num > 0) ? `<span>搜寻到附近</span>${num}<span>台商米设备</span>` : '正在搜寻商米设备...';
+                    let title = (num > 0) ? `搜寻到附近 ${num} 台商米设备` : '正在搜寻商米设备...';
                     this.setState({
                         devices: devices.map(item => Object.assign({}, item)),
                         title: title,
@@ -69,13 +69,14 @@ export default class Mesh extends React.Component{
             visible: true,
             disabled: true,
             state: 'running',
-            title: '正在搜寻商米设备...',
+            //title: '正在搜寻商米设备...',
+            title: `搜寻到附近<span>2</span>台商米设备`,
             devices: [],
         });
 
-        let start = common.fetchWithCode('SUNMIMESH_STOP',{ method: 'POST'});
+        let start = common.fetchWithCode('SUNMIMESH_START',{ method: 'POST'});
 
-        start.then((resp) => this.refreshMeshInfo(resp.data[0].result.sunmimesh.duration));
+        start.then((resp) => this.refreshMeshInfo(resp.data[0].sunmimesh.duration));
     }
 
     stopSunmiMesh = () => {
@@ -84,6 +85,7 @@ export default class Mesh extends React.Component{
         })
 
         // stop sunmi mesh
+        clearInterval(this.timer);
         common.fetchWithCode('SUNMIMESH_STOP', { method: 'POST' });
     }
 
@@ -93,7 +95,7 @@ export default class Mesh extends React.Component{
         const icon = <Icon type="loading" style={{ fontSize: 20, color: '#FB8632' }} spin />;
         let Title = [
             'running' === state && <Spin className='spin' indicator={icon} />,
-            <span className='title'>{title}</span>
+            <span dangerouslySetInnerHTML={{ __html: title }} className='title' />
         ];
 
         const iconMap = {   // TODO

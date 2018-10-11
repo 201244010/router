@@ -184,7 +184,7 @@ export default class ClientList extends React.Component{
             <ul>{listItems}</ul>
             {('sunmi' === props.type && clients.length <= 0) &&
                 <div className='null-tip'>
-                    <label>没有商米设备连接到该网络，</label> <a href="javascript:;">一键搜寻商米设备</a>
+                    <label>没有商米设备连接到该网络，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
                 </div>
             }
             {('whitelist' === props.type && clients.length <= 0) &&
