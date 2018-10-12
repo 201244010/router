@@ -17,7 +17,8 @@ class PrimaryHeader extends React.Component {
         const pathname = location.pathname;
         return {
             isLoginPage : pathname === '/login',
-            isGuidePage : pathname.indexOf('/guide') > -1
+            isGuidePage : pathname.indexOf('/guide') > -1,
+            isWelcomPage : pathname.indexOf('/welcom') >-1
         };
     }
 
@@ -36,7 +37,7 @@ class PrimaryHeader extends React.Component {
 
 	render() {
         const {match} = this.props;
-        const logined = this.props.logined, { isLoginPage, isGuidePage } = this.state;
+        const logined = this.props.logined, { isLoginPage, isGuidePage,isWelcomPage } = this.state;
 		return (
 			<div className="header">
 				<SubLayout>
@@ -48,10 +49,13 @@ class PrimaryHeader extends React.Component {
                                     <Icon type="logo" size={40} color="#fff" />
                                 </div>
                             }
-							<span className="ui-ib slogan">SUNMI W1</span>
+                            {
+                                isWelcomPage ? "" :
+                                <span className="ui-ib slogan">SUNMI W1</span>
+                            }	
 						</li>
 						{
-                            logined && !isLoginPage && !isGuidePage ? [
+                            logined && !isLoginPage && !isGuidePage && !isWelcomPage ? [
                                 <nav key="1" className="menu">
                                     <NavLink to={match.path + "home"} activeClassName="active">
                                         <Icon type="netstat"></Icon> 网络状态

@@ -118,10 +118,12 @@ export default class NonAuth extends React.Component{
             'AUTH_WHITELIST_DELETE',
             {
                 method: 'POST', data: {
-                    white_list: [{
-                        name: record.name,
-                        mac: record.mac,
-                    }]
+                    auth:{
+                        white_list: [{
+                            name: record.name,
+                            mac: record.mac,
+                        }]
+                    }
                 }
             }
         ).catch(ex => { });
