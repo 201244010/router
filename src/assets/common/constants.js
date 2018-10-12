@@ -53,8 +53,10 @@ export const DIRECTIVE = {
     QOS_SET : '0x2022',
 
     // 安全防护
-    SECURITY_SET : '',
-    SECURITY_GET : '',
+    DOSD_GET: '0x2047',
+    DOSD_SET: '0x2048',
+    DOSD_BLOCKLIST_GET: '0x2049',
+    DOSD_BLOCKLIST_DELETE: '0x204a',
 
     // 客户端设备信息获取
     CLIENT_LIST_GET: '0x2025',
