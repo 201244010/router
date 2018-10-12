@@ -90,6 +90,24 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
+.ant-tabs-nav-wrap{
+    .ant-tabs-nav{
+        margin-left:60px;
+    }
+    .ant-tabs-tab{
+        color: #ADB1B9 !important;
+        margin-right:32px !important;
+        padding:12px 0 !important;
+    }
+    .ant-tabs-tab-active{
+        color: #FB8632;
+    }
+    .ant-tabs-ink-bar{
+        height:3px !important;
+        background-color: #FB8632 !important;
+    }
+}
+
 .ant-checkbox-checked, .ant-checkbox-indeterminate{
     .ant-checkbox-inner{
         background-color: #FB8632!important;
