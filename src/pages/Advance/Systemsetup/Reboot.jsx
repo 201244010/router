@@ -62,7 +62,7 @@ export default class Reboot extends React.Component{
                     <h3 key="active-h3">正在重启路由器，请稍候...</h3>
                     <span style={{color:'#D33419'}}>重启过程中请勿断电！！！</span>
                 </CustomModal>
-                <CustomModal active={succeedActive}>
+                <CustomModal style={{paddingLeft:0,paddingRight:0}} active={succeedActive}>
                     <CustomIcon key="progress-icon2" type="succeed" size="large" color='#87D068'/>
                     <h3 style={{marginTop:10}} key="active-h3">重启完成，请重新登录管理界面</h3>
                     <div style={{borderTop:'1px solid #d8d8d8',marginTop:25}}>
