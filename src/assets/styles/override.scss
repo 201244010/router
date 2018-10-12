@@ -90,6 +90,13 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
+.ant-checkbox-checked, .ant-checkbox-indeterminate{
+    .ant-checkbox-inner{
+        background-color: #FB8632!important;
+        border-color: #FB8632!important;
+    }
+}
+
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
 // .ant-select-selection:active {
