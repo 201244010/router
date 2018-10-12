@@ -29,11 +29,9 @@ export default class Mesh extends React.Component{
     }
 
     refreshMeshInfo = async (duration) => {
-        let i = 0,
-            interval = 5000,
-            count = Math.ceil(duration * 1000 / interval);
         this.timer = setInterval(() => {
-            if (i++ > count) {
+            let currentTime = new Date().getTime();
+            if ((currentTime - this.startTime) > duration * 1000){
                 clearInterval(this.timer);
                 let num = this.state.devices.length;
                 this.setState({
@@ -61,16 +59,16 @@ export default class Mesh extends React.Component{
                     Modal.error({ title: '获取商米设备列表指令异常', message });
                 }
             })
-        }, interval);
+        }, 5000);
     }
 
     startSunmiMesh = () => {
+        this.startTime = new Date().getTime();
         this.setState({
             visible: true,
             disabled: true,
             state: 'running',
-            //title: '正在搜寻商米设备...',
-            title: `搜寻到附近<span>2</span>台商米设备`,
+            title: '正在搜寻商米设备...',
             devices: [],
         });
 

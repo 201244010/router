@@ -26,7 +26,7 @@ export default class Recovery extends React.Component{
     }
 
     guide = () =>{
-        location.href='/guide';
+        location.href='/welcome';
         this.setState({succeedActive:false})
     }
 
@@ -59,7 +59,7 @@ export default class Recovery extends React.Component{
                     <h3 key="active-h3">正在恢复出厂设置，请稍候...</h3>
                     <span style={{color:'#D33419'}}>恢复出厂过程中请勿断电！！！</span>
                 </CustomModal>
-                <CustomModal active={succeedActive}>
+                <CustomModal style={{paddingLeft:0,paddingRight:0}} active={succeedActive}>
                     <CustomIcon key="progress-icon2" type="succeed" size="large" color='#87D068'/>
                     <h3 style={{marginTop:10}} key="active-h3">恢复出厂完成，请重新登录管理界面</h3>
                     <div style={{borderTop:'1px solid #d8d8d8',marginTop:25}}>

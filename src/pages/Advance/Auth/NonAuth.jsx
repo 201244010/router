@@ -118,10 +118,12 @@ export default class NonAuth extends React.Component{
             'AUTH_WHITELIST_DELETE',
             {
                 method: 'POST', data: {
-                    white_list: [{
-                        name: record.name,
-                        mac: record.mac,
-                    }]
+                    auth:{
+                        white_list: [{
+                            name: record.name,
+                            mac: record.mac,
+                        }]
+                    }
                 }
             }
         ).catch(ex => { });
@@ -388,8 +390,8 @@ export default class NonAuth extends React.Component{
         return (
             <div style={{ margin: "0 60px" }}>
                 <div style={{borderBottom:'1px solid #ECECEC'}}>
-                    <PanelHeader title="优先设备免认证" checkable={true} checked={prioritizedFree} onChange={value => this.onTypeChange(value,'prioritizedFree')}/>
-                    <PanelHeader title="有线端口免认证" checkable={true} checked={wiredFree} onChange={value => this.onTypeChange(value,'wiredFree')}/>
+                    <PanelHeader className='unauth-header' title="优先设备免认证" checkable={true} checked={prioritizedFree} onChange={value => this.onTypeChange(value,'prioritizedFree')}/>
+                    <PanelHeader className='unauth-header' title="有线端口免认证" checkable={true} checked={wiredFree} onChange={value => this.onTypeChange(value,'wiredFree')}/>
                 </div>
                 <div style={{ margin: "20px 20px 20px 0" }}>
                     <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>在线列表添加</Button>

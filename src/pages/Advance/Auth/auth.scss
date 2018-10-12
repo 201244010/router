@@ -1,19 +1,4 @@
 .weixin-tabs {
-    .ant-tabs-nav{
-        margin-left:60px;
-    }
-    .ant-tabs-tab{
-        color: #ADB1B9;
-        margin-right:32px;
-        padding:12px 0;
-    }
-    .ant-tabs-tab-active{
-        color: #FB8632;
-    }
-    .ant-tabs-ink-bar{
-        height:3px;
-        background-color: #FB8632;
-    }
     .ant-table-placeholder{
         height: 255px;
         line-height: 180px;
@@ -67,7 +52,7 @@
     }
     
 }
-.panel-hd{
+.unauth-header{
     border-bottom:0;
     span{
         color:#333C4F;

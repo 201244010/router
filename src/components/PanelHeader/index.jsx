@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Switch } from 'antd';
+import classnames from 'classnames';
 import './panelHeader.scss';
 
 export default class PanelHeader extends React.PureComponent {
@@ -15,9 +16,9 @@ export default class PanelHeader extends React.PureComponent {
     }
 
     render(){
-        const { title, checkable, checked } = this.props;
+        const { title, checkable, checked, className } = this.props;
         return (
-            <ul className="panel-hd ui-tiled">
+            <ul className={classnames(['panel-hd ui-tiled', className])}>
                 <li><span>{title}</span></li>
                 {
                     checkable ? <li><Switch checked={checked} onChange={this.onChange} /></li> : ''
