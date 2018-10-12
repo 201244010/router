@@ -153,8 +153,8 @@ export default class SysUpgrade extends React.Component{
 
         return (
             <div style={{paddingLeft : 60}}>
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
-                    <section className="wifi-setting-item">
+                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
+                    <section className="online-update">
                         <PanelHeader title="在线升级" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
                 </Form>

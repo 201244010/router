@@ -5,7 +5,7 @@ import Form from "~/components/Form";
 import { Button, Table, Progress, Modal } from 'antd'
 
 import CustomIcon from '~/components/Icon';
-const {FormItem,ErrorTip, Input,InputGroup} = Form;
+const {FormItem, Input} = Form;
 
 import './bandwidth.scss'
 
