@@ -18,7 +18,7 @@ class PrimaryHeader extends React.Component {
         return {
             isLoginPage : pathname === '/login',
             isGuidePage : pathname.indexOf('/guide') > -1,
-            isWelcomPage : pathname.indexOf('/welcom') >-1
+            isWelcomPage : pathname.indexOf('/welcome') >-1
         };
     }
 

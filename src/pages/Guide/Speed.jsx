@@ -81,8 +81,8 @@ export default class Speed extends React.Component {
   //  手动配速  
     configure = async () => {
         let { upBandWidth, downBandWidth } = this.state;
-        upBandWidth = parseInt(upBandWidth) + 'Mbps';
-        downBandWidth = parseInt(downBandWidth) + 'Mbps';
+        upBandWidth = parseInt(upBandWidth)*1024;
+        downBandWidth = parseInt(downBandWidth)*1024 ;
         let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
         let response = await common.fetchWithCode(
             'QOS_SET',
@@ -93,7 +93,7 @@ export default class Speed extends React.Component {
         if(errcode == 0){
             return this.props.history.push('/guide/setwifi');
         }
-        Modal.error({ title : '手动配置QOS异常', content : message });
+        Modal.error({ title : '手动配置QOS异常', content : message == 'ERRCODE_PARAMS_INVALID' ? '参数设置失败':message });
     }
 
     // 获取 qos 信息

@@ -26,7 +26,7 @@ export default class Recovery extends React.Component{
     }
 
     guide = () =>{
-        location.href='/guide';
+        location.href='/welcome';
         this.setState({succeedActive:false})
     }
 

@@ -92,7 +92,7 @@ export default class SetWifi extends React.Component {
             if(connectStatus.errcode == 0){
                 let online = connectStatus.data[0].result.onlinetest.online;
                 if(online){
-                    setTimeout(() => { this.props.history.push("/") }, 10);
+                    setTimeout(() => { this.props.history.push("/login") }, 10);
                 }
                 return;
             }

@@ -1,11 +1,6 @@
 
 import React from 'react';
-import { Button, Icon } from 'antd';
-import Form from '~/components/Form';
-import CustomIcon from '~/components/Icon';
-import "./welcome.scss";
-
-const { FormItem, ErrorTip, Input }  = Form;
+import { Button ,Checkbox, Modal} from 'antd';
 
 export default class Welcome extends React.Component {
     constructor(props) {
@@ -14,58 +9,47 @@ export default class Welcome extends React.Component {
  
     state ={
 
+        loading:false,
+        checkBox : true,
+        disabled : false
     }
 
     post = async () => {
-        const password = this.state.password;
+        location.href = '/guide';
+        // this.setState({loading : true});
+        // let response = await common.fetchWithCode('',{method : 'post' ,data : {}});
+        // let {errcode,message} = response;
+        // if (errcode == 0){
+        //     location.href = '/guide';
+        // }else{
+        //     Modal.error({title : '错误', content : message});
+        //     this.setState({loading : false});
+        // } 
+    }
 
-        // if(!password.trim().length){
-        //     return this.setState({ tip : '密码不能为空' });
-        // }
-        this.setState({ loading : true });
-        const response = await common.fetchWithCode('ACCOUNT_LOGIN', {
-            method : 'POST', 
-            data : { account : { password : btoa(password), user : 'admin' }}
-        });
-        const { errcode, message } = response;
-        this.setState({ loading : false });
-        if(errcode == 0){
-            this.props.history.push('/');
-            return;
-        }
-        if(message === 'ERRCODE_PARAMS_INVALID'){
-            this.setState({tip : "密码错误"});
-        }else if(message === 'ERRCODE_PERMISSION'){
-            this.setState({tip : '密码错误次数过多，请5分钟后再试'});
-        }else{
-            this.setState({tip : message});
-        }    
+    onCheckBoxChange = e =>{
+        this.setState({
+            checkBox : e.target.checked,
+            disabled : !e.target.checked
+        })
     }
 
     render() {
-        const {tip, disabled} = this.state;
+        const {loading,checkBox,disabled} = this.state;
         return (
-            <div className='welcome-content' style={{border:'1px solid black'}}>
-                <div style={{ textAlign : 'center' }}>
-                    <CustomIcon type="logo" size={90} color="#fff" />
-                    <Form style={{ width : 320, padding: 0 }} >
-                        <FormItem showErrorTip={tip} style={{ marginBottom : 30 }}>
-                            <Input placeholder="管理密码"
-                                    type="password"
-                                    value={this.state.password}
-                                    onChange={this.onChange} 
-                                    />
-                            <ErrorTip>{ tip }</ErrorTip>
-                            </FormItem>
-                        </Form>
-                        <Button type="primary"
-                                size='large'
-                                onClick={this.post}
-                                disabled={disabled}
-                                style={{ margin: "0 0 10px", width: 320 }}
-                                loading={this.state.loading}>登录</Button>
-                        <p style={{ fontSize : 12, lineHeight : 1.5 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+            <div key='welcome-content' className="ui-center ui-fullscreen">
+                <div className="form-box" style={{ textAlign : 'center' }}>
+                    <h1 style={{fontSize :46,fontFamily: 'PingFangSC-Semibold',color: '#FFFFFF',textAlign: 'center',lineHeight: '46px',marginBottom:15}}>欢迎使用商米路由器</h1>
+                    <div>
+                        <span style={{fontFamily: 'PingFangSC-Regular',fontSize: 18,color: '#FFFFFF'}}>简单几步设置，路由器就可以上网啦</span>
                     </div>
+                    <Button type="primary" size='large' disabled={disabled} onClick={this.post} style={{ margin: "39px 0 12px", width: 320 }} loading={loading}>
+                        开始设置
+                    </Button>
+                    <div>
+                        <Checkbox style={{color:'#FFFFFF',fontFamily: 'PingFangSC-Regular',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='' target='_blank' style={{textDecoration:'underline'}}>商米服务协议</a>》和《<a href='' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
+                    </div>
+                </div>
             </div>        
         );
     }
