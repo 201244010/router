@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Divider, Popover, Modal, Table } from 'antd';
+import { Button, Divider, Popover, Modal, Table, message } from 'antd';
 
 import CustomIcon from '~/components/Icon';
 
@@ -38,6 +38,10 @@ export default class ClientList extends React.Component{
     }
 
     handleDelete = async (record) => {
+        if (this.props.mac === record.mac){
+            message.warning('不能禁止本机上网');
+            return;
+        }
         let response = await common.fetchWithCode(
             'QOS_AC_BLACKLIST_ADD',
             { method: 'POST', data: { black_list: [{ name: record.name, mac: record.mac}] } }
