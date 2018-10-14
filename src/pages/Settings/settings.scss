@@ -11,6 +11,8 @@
     > nav {
         border-radius: 8px 0 0 8px;
         background-color : #F2F3F7;
+        overflow-y: auto;
+        overflow-x: hidden;
         width : 147px;
         flex : none;
         text-align: center;

@@ -27,6 +27,7 @@ export default class Home extends React.PureComponent {
         downUnit: 'Kbps',
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
+        me: '',
         sunmiClients:[],
         normalClients: [],
         whitelistClients: [],
@@ -115,6 +116,18 @@ export default class Home extends React.PureComponent {
 
         clearTimeout(this.timer);
         this.fetchClinetsInfo();
+    }
+
+    fetchWhoAmI = async () => {
+        let response = await common.fetchWithCode('WHOAMI_GET', { method: 'POST' })
+        let { errcode } = response;
+        if (errcode == 0) {
+            let { mac } = response.data[0].result;
+
+            this.setState({
+                me: mac.toUpperCase(),
+            });
+        }
     }
 
     fetchQoS = async () => {
@@ -312,6 +325,7 @@ export default class Home extends React.PureComponent {
 
     componentDidMount(){
         this.stop = false;
+        this.fetchWhoAmI();
         this.fetchQoS();
         this.fetchClinetsInfo();
     }
@@ -323,87 +337,85 @@ export default class Home extends React.PureComponent {
 
     render(){
         const { qosEnable, upSpeed, upUnit, downSpeed, downUnit,
-                visible, percent, successShow, upBand, downBand, failShow,
+                visible, percent, successShow, upBand, downBand, failShow, me,
                 sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
-            <div>
-                <SubLayout>
-                    <ul className='func-list'>
-                        <li className='func-item internet'>
-                            <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
-                            <img className='router' src={require('~/assets/images/router.svg')} />
-                            <div className='content'>
-                                <h4><span>网络状态</span><span className='state'>正常</span></h4>
-                                <div className='up'>
-                                    <label className='speed'>{upSpeed}</label>
-                                    <div className='tip'>
-                                        <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
-                                        <div className='unit'>{upUnit}</div>
-                                    </div>
+            [<SubLayout className='home'>
+                <ul className='func-list'>
+                    <li className='func-item internet'>
+                        <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
+                        <img className='router' src={require('~/assets/images/router.svg')} />
+                        <div className='content'>
+                            <h4><span>网络状态</span><span className='state'>正常</span></h4>
+                            <div className='up'>
+                                <label className='speed'>{upSpeed}</label>
+                                <div className='tip'>
+                                    <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
+                                    <div className='unit'>{upUnit}</div>
                                 </div>
-                                <div className='down'>
-                                    <label className='speed'>{downSpeed}</label>
-                                    <div className='tip'>
-                                        <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
-                                        <div className='unit'>{downUnit}</div>
-                                    </div>
+                            </div>
+                            <div className='down'>
+                                <label className='speed'>{downSpeed}</label>
+                                <div className='tip'>
+                                    <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
+                                    <div className='unit'>{downUnit}</div>
                                 </div>
-                                <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
                             </div>
-                            <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
-                                <h4>{percent}%</h4>
-                                <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
-                                <p>测速中，请稍候...</p>
-                            </Modal>
-                            <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
-                                footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
-                                <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                                <h4>带宽测速完成</h4>
-                                <ul className='speed-result'>
-                                    <li>
-                                        <CustomIcon color="#3D76F6" type="kbyte" size={12} />
-                                        <label>上行带宽：</label><span>{upBand}Mbps</span>
-                                    </li>
-                                    <li>
-                                        <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
-                                        <label>下行带宽：</label><span>{downBand}Mbps</span>
-                                    </li>
-                                </ul>
-                            </Modal>
-                            <Modal className='speed-result-modal' closable={false} visible={failShow} centered={true}
-                                footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
-                                <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
-                                <h4>带宽测速失败，请重试</h4>
-                            </Modal>
-                        </li>
-                        <QoS data={qosData} enable={qosEnable} />
-                        <li className='func-item search' style={{padding:'20px 0px'}}>
-                            <img className='radar' src={require('~/assets/images/radar.png')} />
-                            <div className='content'>
-                                <h3>搜寻商米设备</h3>
-                                <p>商米设备一键连接上网快速安全</p>
-                                <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
-                            </div>
-                            <Mesh ref="sunmiMesh" />
-                        </li>
-                    </ul>
-                    <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
-                    <div className='online-list'>
-                        <div className='left-list'>
-                            <ClientList type='sunmi' data={sunmiClients} startSunmiMesh={this.startSunmiMesh}
-                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh } />
-                            <ClientList type='normal' data={normalClients}
-                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                            <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
                         </div>
-                        <div className='whitelist-list'>
-                            <ClientList type='whitelist' data={whitelistClients}
-                                startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                        <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
+                            <h4>{percent}%</h4>
+                            <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
+                            <p>测速中，请稍候...</p>
+                        </Modal>
+                        <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
+                            footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
+                            <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
+                            <h4>带宽测速完成</h4>
+                            <ul className='speed-result'>
+                                <li>
+                                    <CustomIcon color="#3D76F6" type="kbyte" size={12} />
+                                    <label>上行带宽：</label><span>{upBand}Mbps</span>
+                                </li>
+                                <li>
+                                    <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
+                                    <label>下行带宽：</label><span>{downBand}Mbps</span>
+                                </li>
+                            </ul>
+                        </Modal>
+                        <Modal className='speed-result-modal' closable={false} visible={failShow} centered={true}
+                            footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
+                            <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
+                            <h4>带宽测速失败，请重试</h4>
+                        </Modal>
+                    </li>
+                    <QoS data={qosData} enable={qosEnable} />
+                    <li className='func-item search' style={{ padding: '20px 0px' }}>
+                        <img className='radar' src={require('~/assets/images/radar.png')} />
+                        <div className='content'>
+                            <h3>搜寻商米设备</h3>
+                            <p>商米设备一键连接上网快速安全</p>
+                            <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
                         </div>
+                        <Mesh ref="sunmiMesh" />
+                    </li>
+                </ul>
+                <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
+                <div className='online-list'>
+                    <div className='left-list'>
+                        <ClientList type='sunmi' data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                        <ClientList type='normal' data={normalClients} mac={me}
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
-                </SubLayout>
-                <PrimaryFooter />
-            </div>
+                    <div className='whitelist-list'>
+                        <ClientList type='whitelist' data={whitelistClients} mac={me}
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                    </div>
+                </div>
+            </SubLayout>,
+            <PrimaryFooter className='home-footer' />]
         );
     }
 };

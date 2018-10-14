@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import "./assets/styles/index.scss";
 
@@ -14,7 +14,6 @@ import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Advance from './pages/Advance';
 import Welcome from './pages/Welcome';
-
 
 import { UserInfoContext } from './context';
 
@@ -32,12 +31,15 @@ class PrimaryLayout extends React.Component {
     
     static getDerivedStateFromProps (){
         const pathname = location.pathname;
-        return { pathname };
+        const logined = document.cookie.length > 0;
+        return { pathname, logined };
     }
 
     render(){
         const pathname = this.state.pathname;
-        const blueBg = pathname === '/login' || pathname.indexOf('/settings') > -1 || pathname.indexOf('/advance') > -1 || pathname.indexOf('/welcome') > -1;
+        let redirect = this.state.logined ? '/home' : '/login';
+        const blueBgs = ['/login', '/settings', '/advance', '/welcome'];
+        const blueBg = blueBgs.some(url => pathname.indexOf(url) > -1);
         const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
             <div className="ui-fullscreen">
@@ -45,13 +47,13 @@ class PrimaryLayout extends React.Component {
                 <PrimaryHeader logined={this.state.logined} />
                 <div className={klassnames}>
                     <Switch>
-                        <Route path="/" exact component={Home} />
                         <Route path="/login" component={Login} />
                         <Route path="/guide" component={Guide} />
                         <Route path="/home" component={Home} />
                         <Route path="/settings" component={Settings} />
                         <Route path="/advance" component={Advance} />
                         <Route path='/welcome' component={Welcome}/>
+                        <Redirect from='/' to={redirect}></Redirect>
                     </Switch>
                     {blueBg ? <PrimaryFooter/> : ""}
                 </div>
