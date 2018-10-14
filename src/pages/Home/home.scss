@@ -3,6 +3,9 @@
     &.blue-bg {
         background-image : linear-gradient(180deg, #2956C6 190px, #2956C6 0);
     }
+    .home{
+        height : auto;
+    }
     .func-list{
         display: flex;
         justify-content:space-between;
@@ -190,8 +193,10 @@
         align-items:flex-start;
         align-content:flex-start;
     }
-    footer{
+    .home-footer{
+        position: static;
         color: #ADB1B9;
+        margin-top: 5px;
         a {
             color: #ADB1B9;
             text-decoration: underline;
