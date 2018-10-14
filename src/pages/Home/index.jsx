@@ -27,6 +27,7 @@ export default class Home extends React.PureComponent {
         downUnit: 'Kbps',
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
+        me: '',
         sunmiClients:[],
         normalClients: [],
         whitelistClients: [],
@@ -115,6 +116,18 @@ export default class Home extends React.PureComponent {
 
         clearTimeout(this.timer);
         this.fetchClinetsInfo();
+    }
+
+    fetchWhoAmI = async () => {
+        let response = await common.fetchWithCode('WHOAMI_GET', { method: 'POST' })
+        let { errcode } = response;
+        if (errcode == 0) {
+            let { mac } = response.data[0].result;
+
+            this.setState({
+                me: mac.toUpperCase(),
+            });
+        }
     }
 
     fetchQoS = async () => {
@@ -312,6 +325,7 @@ export default class Home extends React.PureComponent {
 
     componentDidMount(){
         this.stop = false;
+        this.fetchWhoAmI();
         this.fetchQoS();
         this.fetchClinetsInfo();
     }
@@ -323,7 +337,7 @@ export default class Home extends React.PureComponent {
 
     render(){
         const { qosEnable, upSpeed, upUnit, downSpeed, downUnit,
-                visible, percent, successShow, upBand, downBand, failShow,
+                visible, percent, successShow, upBand, downBand, failShow, me,
                 sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
@@ -390,13 +404,13 @@ export default class Home extends React.PureComponent {
                 <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                 <div className='online-list'>
                     <div className='left-list'>
-                        <ClientList type='sunmi' data={sunmiClients} startSunmiMesh={this.startSunmiMesh}
+                        <ClientList type='sunmi' data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                        <ClientList type='normal' data={normalClients}
+                        <ClientList type='normal' data={normalClients} mac={me}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                     <div className='whitelist-list'>
-                        <ClientList type='whitelist' data={whitelistClients}
+                        <ClientList type='whitelist' data={whitelistClients} mac={me}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                 </div>
