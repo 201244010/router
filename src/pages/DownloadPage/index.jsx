@@ -1,0 +1,70 @@
+import React,{Component} from 'react';
+import CustomIcon from '~/components/Icon';
+import './downloadPage.scss';
+import Header from 'antd/lib/calendar/Header';
+
+export default class DownloadPage extends Component{
+    
+    render(){
+        return(<div className='downloadPage'>
+            <PageHeader />
+            <PageBody />
+        </div>);
+    }
+    
+    
+}
+
+const PageHeader = props =>{
+    return (
+        <div className='div-header'>
+            <div className='title'>
+                <h1>商米管家APP</h1>
+                <p>下载商米管家APP，支持本地和远程管理路由器，随时随地查看店铺设备状态。</p>
+            </div>
+            <div className='QRcode'>
+                <div></div>
+                <p>扫码下载APP</p>
+            </div>
+        </div>
+    );
+}
+
+const PageBody = props =>{
+    return (
+        <div className='div-body'>
+            <div className='sperate1'>
+                <div className='div1'>
+                    {/* <CustomIcon type='remotecontrol' size='large' /> */}
+                    <div className='div2'>
+                        <h2>远程管理</h2>
+                        <p>用手机随时随地轻松管理网络</p>
+                    </div>
+                </div>
+                <div className='div1'>
+                    {/* <CustomIcon type='grouping' size='large' /> */}
+                    <div className='div2'>
+                        <h2>分组管理</h2>
+                        <p>添加自定义店铺，分组管理设备</p>
+                    </div>
+                </div>
+            </div>
+            <div className='sperate1'>
+                <div className='div1'>
+                    {/* <CustomIcon type='terminal' size='large' /> */}
+                    <div className='div2'>
+                        <h2>终端管理</h2>
+                        <p>轻松管理联网终端，支持一键优先/禁止上网</p>
+                    </div>
+                </div>
+                <div className='div1'>
+                    {/* <CustomIcon type='route' size='large' /> */}
+                    <div className='div2'>
+                        <h2>路由设置</h2>
+                        <p>支持多功能设置，全面管理路由器</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

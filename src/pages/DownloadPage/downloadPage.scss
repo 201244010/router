@@ -1,0 +1,86 @@
+.downloadPage{
+    border-radius : 8px;
+    background-color : #fff;
+    display : flex;
+    flex-flow : column nowrap;
+    justify-content : flex-start;
+    flex : 1;
+    color : #333;
+    padding : 41px 60px 126px 60px;
+    margin: 0 32px;
+    .div-header{
+        padding: 0 0 20px 0;
+        border-bottom : 1px solid #ECECEC;
+        display: flex;
+        flex-flow: row nowrap;
+        .title{
+            margin-top:17px;
+            h1{
+                font-family : 'PingFangSC-Semibold';
+                font-size : 28px;
+                color : #333C4F;
+                margin-top : 28px 0 9px;
+            }
+            p{
+                font-family : 'PingFangSC-Regular';
+                font-size : 16px;
+                color : #ADB1B9;
+                margin : 10px 0 20px 0;
+            }
+        }
+        .QRcode{
+            flex:1;
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: flex-end;
+            top : 10px;
+            right : 0;
+            >div{
+                border: 1px solid black;
+                height : 80px;
+                width : 80px;
+            }
+            p{
+                font-family : 'PingFangSC-Regular';
+                font-size : 12px;
+                color : #333C4F;
+                text-align : center;
+                width: 80px;
+            } 
+        }
+    }
+    .div-body{
+        flex: 1;
+        display : flex;
+        flex-flow : column nowrap;
+        height:300px;
+        width: 100%;
+        margin: 0;
+        padding: 59px 0 0 0;
+        .sperate1{
+            flex : 1;
+            display : flex ;
+            flex-flow : row nowrap;
+            align-items: center;
+            .div1{
+                flex : 1;
+                .div2{
+                    margin-left : 112px;
+                    height: 30px;
+                    // display : flex;
+                    // flex-flow: column nowrap;
+                    h2{ 
+                        font-family : 'PingFangSC-Semibold';
+                        font-size : 20px;
+                        color : #333C4F;
+                    }
+                    p{
+                        font-family : 'PingFangSC-Regular';
+                        font-size : 16px;
+                        color : #333C4F;
+                    }
+                }
+            }
+        }    
+    }    
+}
