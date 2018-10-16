@@ -5,20 +5,20 @@ export default class DownloadPage extends Component{
     
     render(){
         return(
-        <div className='downloadPage'>
-            <div className='div-header'>
+        <div className='app-download'>
+            <div className='app-header'>
                 <div className='title'>
                     <h1>商米管家APP</h1>
                     <p>下载商米管家APP，支持本地和远程管理路由器，随时随地查看店铺设备状态。</p>
                 </div>
                 <div className='QRcode'>
-                    <div>
+                    <div className='QRcode-img'>
                           
                     </div>
                     <p>扫码下载APP</p>
                 </div>
             </div>
-            <div className='div-body'>
+            <div className='app-body'>
                 <ul style={{marginBottom:59}}>
                     <li>
                         <div className='category'>

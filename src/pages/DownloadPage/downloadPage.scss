@@ -1,4 +1,4 @@
-.downloadPage{
+.app-download{
     border-radius : 8px;
     background-color : #fff;
     display : flex;
@@ -8,7 +8,7 @@
     color : #333;
     padding : 41px 60px 126px 60px;
     margin: 0 32px;
-    .div-header{
+    .app-header{
         padding: 0 0 20px 0;
         border-bottom : 1px solid #ECECEC;
         display: flex;
@@ -33,7 +33,7 @@
             align-items: flex-end;
             top : 10px;
             right : 0;
-            >div{
+            .QRcode-img{
                 border: 1px solid black;
                 height : 80px;
                 width : 80px;
@@ -46,7 +46,7 @@
             } 
         }
     }
-    .div-body{
+    .app-body{
         
         height:300px;
         width: 100%;
