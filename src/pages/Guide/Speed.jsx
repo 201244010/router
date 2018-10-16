@@ -178,12 +178,13 @@ export default class Speed extends React.Component {
             }
             {/* 自动测速结果看板 */}
             { speedTestdone && mode === 'auto' ? 
+                <div className="ui-center entry">
                 <SpeedAutoBoard configByManual={this.switchMode('Manual')} 
                                 back={this.back} 
                                 reTest={this.reTest}
                                 configure={this.configure}
                                 upBandWidth={upBandWidth} 
-                                downBandWidth={downBandWidth} /> : ""}
+                                downBandWidth={downBandWidth} /></div> : ""}
             <CustomModal active={showModal} >
                 {/* <h4 style={{ fontSize : 32 }}>60%</h4> */}
                 {/* <Progress percent={50} status="active" showInfo={false} strokeWidth={10} /> */}
@@ -233,7 +234,7 @@ const SpeedAutoBoard = props => {
                 </div>
             </div>
             <div className="button-wrap">
-                <Button type="primary" style={{ width : "100%" }} onClick={props.configure}>下一步</Button>
+                <Button type="primary" size='large' style={{ width : "100%" }} onClick={props.configure}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     <div className="more">
@@ -248,8 +249,9 @@ const SpeedAutoBoard = props => {
 
 const SpeedManualConfig = props => {
 	return (
-        <Form style={{ width : 385 }}>
-            <FormItem label="#" style={{ marginBottom : 15,fontWeight:'bold' }}>
+        <div className="ui-center speed-result">
+        <Form style={{ width : 385,left:-52 }}>
+            <FormItem label="#" style={{ marginBottom : 15 }}>
                 <span>为了准确分配网速，请确保带宽值输入准确</span>
             </FormItem>
             <FormItem style={{fontWeight:'bold' }} label="上行总带宽" suffix="Mbps">
@@ -275,6 +277,7 @@ const SpeedManualConfig = props => {
                 </div>
             </FormItem>
         </Form>
+        </div>
     )
 };
 
