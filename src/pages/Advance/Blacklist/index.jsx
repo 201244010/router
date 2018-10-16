@@ -330,7 +330,7 @@ export default class Blacklist extends React.Component {
             <div style={{ margin: "0 60px" }}>
                 <PanelHeader title="添加黑名单设备" />
                 <div style={{ margin: "20px 20px 20px 0" }}>
-                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>在线列表添加</Button>
+                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>列表添加</Button>
                     <Button onClick={this.manualAdd}>手动添加</Button>
                 </div>
                 <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}

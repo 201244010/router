@@ -393,7 +393,7 @@ export default class NonAuth extends React.Component{
                     <PanelHeader className='unauth-header' title="有线端口免认证" checkable={true} checked={wiredFree} onChange={value => this.onTypeChange(value,'wiredFree')}/>
                 </div>
                 <div style={{ margin: "20px 20px 20px 0" }}>
-                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>在线列表添加</Button>
+                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>列表添加</Button>
                     <Button onClick={this.manualAdd}>手动添加</Button>
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
