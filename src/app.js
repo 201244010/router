@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Advance from './pages/Advance';
 import Welcome from './pages/Welcome';
+import DownloadPage from './pages/DownloadPage';
 
 import { UserInfoContext } from './context';
 
@@ -38,7 +39,7 @@ class PrimaryLayout extends React.Component {
     render(){
         const pathname = this.state.pathname;
         let redirect = this.state.logined ? '/home' : '/login';
-        const blueBgs = ['/login', '/settings', '/advance', '/welcome'];
+        const blueBgs = ['/login', '/settings', '/advance', '/welcome','/downloadPage'];
         const blueBg = blueBgs.some(url => pathname.indexOf(url) > -1);
         const klassnames = classnames(['main', {'blue-bg' : blueBg}]);
         return (
@@ -52,7 +53,8 @@ class PrimaryLayout extends React.Component {
                         <Route path="/home" component={Home} />
                         <Route path="/settings" component={Settings} />
                         <Route path="/advance" component={Advance} />
-                        <Route path='/welcome' component={Welcome}/>
+                        <Route path='/welcome' component={Welcome} />
+                        <Route path='/downloadPage' component={DownloadPage} />
                         <Redirect from='/' to={redirect}></Redirect>
                     </Switch>
                     {blueBg ? <PrimaryFooter/> : ""}
