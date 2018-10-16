@@ -29,42 +29,41 @@ export default class Lan extends React.Component {
             startipTip = '',
             endipTip = '';
 
-        switch(key){
-            case 'ipv4':
-                if (0 !== checkIp(val)){
-                    tip = 'IP地址非法，请重新输入';
+        let valid = {
+            ipv4 : {
+                func : checkIp,
+                args : {who:'IP地址'},
+            },
+            mask : {
+                func : checkMask,
+                args : {who : '子网掩码'},
+            },
+            startip : {
+                func : checkIp,
+                args : {who : '开始IP地址'},
+            },
+            endip : {
+                func : checkIp,
+                args : {who : '结束IP地址'},
+            },
+            leasetime : {
+                func : checkRange,
+                args : {
+                    min : 2,
+                    max : 1440,
+                    who : '地址租期',
                 }
-                break;
-            case 'mask':
-                if (!checkMask(val)) {
-                    tip = '子网掩码非法，请重新输入';
-                }
-                break;
-            case 'enable':
-                break;
-            case 'startip':
-                if (0 !== checkIp(val)) {
-                    tip = '开始IP地址非法，请重新输入';
-                }
-                break;
-            case 'endip':
-                if (0 !== checkIp(val)) {
-                    tip = '结束IP地址非法，请重新输入';
-                }
-                break;
-            case 'leasetime':
-                if (!checkRange(val, 2, 1440)) {
-                    tip = '地址租期非法，请重新输入';
-                }
-                break;
+            }
         }
 
-        if ('startip' !== key && (0 !== checkIp(this.state.startip))){
-            startipTip = '开始IP地址非法，请重新输入';
+        tip = valid[key].func(val, valid[key].args)
+
+        if ('startip' !== key){
+            startipTip = checkIp(this.state.startip, {who : '开始IP地址'});
         }
 
-        if ('endip' !== key && (0 !== checkIp(this.state.endip))) {
-            endipTip = '结束IP地址非法，请重新输入';
+        if ('endip' !== key) {
+            endipTip = checkIp(this.state.endip, {who : '结束IP地址'})
         }
 
         this.setState({
