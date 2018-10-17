@@ -1,17 +1,24 @@
 let checkNum = (num) => {
-    return /^-?\d+$/.test(num);
+    if(false == /^-?\d+$/.test(num)){
+        return '请输入正确的数字';
+    };
+
+    return '';
 }
 
-let checkRange = (num, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => {
-    if (checkNum(num)){
+let checkRange = (num, option) => {
+    let {min = -Math.pow(2, 32), max = Math.pow(2, 32), opt = {who : '数字'}} = option;
+    if (checkNum(num).length == 0){
         num = (typeof num === 'string') ? parseInt(num, 10) : num;
-        return (num >= min && num <= max);
+        if (!(num >= min && num <= max)) {
+            return `${opt.who}范围必须在${min}-${max}之间`;
+        }
     }
 
-    return false;
-}
+    return '';
+}   
 
-let checkIpFormat = (ip) => {
+let checkIpFormat = (ip, opt = { who: 'IP地址'}) => {
     // ip format ['xxx', 'xxx', 'xxx', 'xxx']
     let valid = ip.every((val) => {
         let len = val.length;
@@ -27,45 +34,46 @@ let checkIpFormat = (ip) => {
         return true;
     });
 
-    return valid;
+    return valid ? '' : `${opt.who}格式非法，请重新输入`;
 }
 
-let checkIp = (ip, opt = { loop: true, zero: true, broadcast: true, multicast: true, reserve: true }) => {
-    let valid = checkIpFormat(ip);
+let checkIp = (ip, opt = { who: 'IP地址', loop: true, zero: true, broadcast: true, multicast: true, reserve: true }) => {
+    const who = opt.who;
+    let valid = checkIpFormat(ip, opt);
 
-    if (!valid) {
+    if (valid.length > 0) {
         // 格式非法
-        return -1;
+        return valid;
     }
 
     let ipStr = ip.join('.');
     if (opt.zero && '0.0.0.0' === ipStr) {
         // 全0地址
-        return -2;
+        return `${who}不能为0.0.0.0`;
     }
 
     if (opt.broadcast && '255.255.255.255' === ipStr) {
         // 全1地址
-        return -3;
+        return `${who}不能为255.255.255.255`;
     }
 
     let ip0 = parseInt(ip[0], 10);
     if (opt.multicast && (ip0 >= 0xE0 && ip0 <= 0xEF)) {
         // 组播IP地址 D类
-        return -4;
+        return `${who}不能为D类地址`;
     }
 
     if (opt.reserve && 127 === ip0) {
         // 回环IP地址
-        return -5;
+        return `${who}不能为回环地址`;
     }
 
     if (opt.reserve && (ip0 >= 0xF0 && ip0 <= 0xFF)) {
         // 保留地址 E类
-        return -6;
+        return `${who}不能为E类地址`;
     }
 
-    return 0;
+    return '';
 }
 
 let checkMask = (mask, opt = { zero:true, broadcast:true}) => {

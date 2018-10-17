@@ -76,7 +76,7 @@ class PrimaryHeader extends React.Component {
                                     </NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
-                                    <a href="javascript:;" className="ui-ib">下载手机版</a>
+                                    <a href="/downloadPage"  className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
                                     <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
                                 </li>

@@ -49,8 +49,8 @@ export default class NonAuth extends React.Component{
             name:'Hello world',
             online: false,
             ontime:'--',
-            ip:'192.168.100.138',
-            mac:'00:11:22:AA:44:88',
+            ip:'192.168.100.139',
+            mac:'00:11:22:AA:44:89',
             network:'5G Wi-Fi',
         }*/],
         onlineList: []
@@ -114,6 +114,7 @@ export default class NonAuth extends React.Component{
     }
 
     handleDelete = async (record) => {
+        console.log(1,record);
         let response = await common.fetchWithCode(
             'AUTH_WHITELIST_DELETE',
             {
@@ -131,7 +132,7 @@ export default class NonAuth extends React.Component{
         let { errcode, message } = response;
         if (errcode == 0) {
             const whiteList = [...this.state.whiteList];
-            this.setState({ whiteList: whiteList.filter(item => item.index !== record.index) });
+            this.setState({ whiteList: whiteList.filter(item =>{return item.mac !== record.mac;})});
             return;
         }
 
@@ -276,7 +277,7 @@ export default class NonAuth extends React.Component{
                         mac: item.mac.toUpperCase(),
                     }
                 }),
-            });
+            },()=>{console.log(this.state.whiteList);});
             return ;
         }
         Modal.error({ title: '获取免认证设备列表指令异常', message });
@@ -385,8 +386,6 @@ export default class NonAuth extends React.Component{
             )
         }];
 
-    
-        
         return (
             <div style={{ margin: "0 60px" }}>
                 <div style={{borderBottom:'1px solid #ECECEC'}}>

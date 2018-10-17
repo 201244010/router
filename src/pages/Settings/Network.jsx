@@ -60,54 +60,45 @@ export default class NETWORK extends React.Component {
     };
 
     onIPConifgChange = (val, key) => {
-        let tip = '';
-        switch(key){
-            case 'ipv4':
-                if (0 !== checkIp(val)){
-                    tip = 'IP地址非法，请重新输入';
-                }
-                break;
-            case 'subnetmask':
-                if (!checkMask(val)) {
-                    tip = '子网掩码非法，请重新输入';
-                }
-                break;
-            case 'gateway':
-                if (0 !== checkIp(val)) {
-                    tip = '网关非法，请重新输入';
-                }
-                break;
-            case 'staticDns':
-                if (0 !== checkIp(val)){
-                    tip = '首选DNS非法，请重新输入';
-                } 
-                break;
-            case 'dhcpDns':
-                if (0 !== checkIp(val)) {
-                    tip = '首选DNS非法，请重新输入';
-                }
-                break;
-            case 'pppoeDns':
-                if (0 !== checkIp(val)) {
-                    tip = '首选DNS非法，请重新输入';
-                }
-                break;
-            case 'staticDnsbackup':
-                if (0 !== checkIp(val)){
-                    tip = '次选DNS非法，请重新输入';
-                }
-                break;
-            case 'dhcpDnsbackup':
-                if (0 !== checkIp(val)) {
-                    tip = '次选DNS非法，请重新输入';
-                }
-                break;
-            case 'pppoeDnsbackup':
-                if (0 !== checkIp(val)) {
-                    tip = '次选DNS非法，请重新输入';
-                }
-                break;
+        let valid = {
+            ipv4:{
+                func: checkIp,
+                who:'IP地址',
+            },
+            subnetmask:{
+                func: checkMask,
+                who:'子网掩码',
+            },
+            gateway:{
+                func: checkIp,
+                who:'网关',
+            },
+            staticDns:{
+                func: checkIp,
+                who:'首选DNS',
+            },
+            dhcpDns:{
+                func: checkIp,
+                who:'首选DNS',
+            },
+            pppoeDns:{
+                func: checkIp,
+                who:'首选DNS',
+            },
+            staticDnsbackup:{
+                func: checkIp,
+                who:'次选DNS',
+            },
+            dhcpDnsbackup:{
+                func: checkIp,
+                who:'次选DNS',
+            },
+            pppoeDnsbackup:{
+                func: checkIp,
+                who:'次选DNS',
+            },
         }
+        let tip = valid[key].func(val, {who : valid[key].who});
         this.setState({
             [key] : (typeof val == 'object' ? [...val] : val),
             [key + 'Tip'] : tip
@@ -282,15 +273,25 @@ export default class NETWORK extends React.Component {
 
     //表单提交
     post = async() => {
-        this.setState({loading : true});
-        let payload = this.composeParams();
+        this.setState({
+            loading : true,
+            disabled : true,
+        });
+        let payload = this.composeParams(), info = payload.wan.info;
+        if(this.state.type === 'static' && info.ipv4 === info.gateway){
+            this.setState({
+                disabled : false
+            });
+            return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
+        }
         let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET',{method : 'POST',data : payload})
             .catch(ex => {})
         let {errcode, message } = response;
         if (errcode == 0){
             this.setState({
-                loading : false
-            });x
+                loading : false,
+                disabled : false
+            });
             return;
         }   
         Modal.error({ title : 'WAN口设置失败', content : message});
@@ -301,7 +302,7 @@ export default class NETWORK extends React.Component {
         let response = await common.fetchWithCode(
             'NETWORK_WAN_IPV4_GET',
             { method : 'POST'}
-        ).catch(ex=>{});
+        );
         let { data, errcode, message } = response;
         if(errcode == 0){
             let {dhcp, pppoe} = data[0].result.wan;
@@ -311,18 +312,23 @@ export default class NETWORK extends React.Component {
                 dhcpType : dhcp.dns_type,
                 pppoeType : pppoe.dns_type,
 
-                //static
-                ipv4 : [...staticMode.ipv4.split('.')],
-                gateway : [...staticMode.gateway.split('.')],
-                subnetmask : [...staticMode.mask.split('.')],
-                staticDns : [...staticMode.dns1.split('.')],
-                staticDnsbackup : [...staticMode.dns2.split('.')],
-
                 //pppoe
                 pppoeAccount : atob(pppoe.user_info.username),
                 pppoePassword : atob(pppoe.user_info.password),
 
             })
+
+            if(this.state.type === 'static'){
+                this.setState({
+                    //static
+                    ipv4 : [...staticMode.ipv4.split('.')],
+                    gateway : [...staticMode.gateway.split('.')],
+                    subnetmask : [...staticMode.mask.split('.')],
+                    staticDns : [...staticMode.dns1.split('.')],
+                    staticDnsbackup : [...staticMode.dns2.split('.')]
+                })
+                console.log(this.state.ipv4)
+            }
 
             if(this.state.dhcpType == "manual"){
                 this.setState({
@@ -344,12 +350,8 @@ export default class NETWORK extends React.Component {
     
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        let fetchNetwork = common.fetchWithCode('NETWORK_WAN_IPV4_GET',{method : 'POST'});
-        let fetchOnlineStart = common.fetchWithCode('WANWIDGET_ONLINETEST_START',{method : 'POST'});
-        let fetchOnlineGet = common.fetchWithCode('WANWIDGET_ONLINETEST_GET',{method : 'POST'});
-
-        Promise.all([fetchNetwork,fetchOnlineStart,fetchOnlineGet]).then(result => {
-            let {errcode, data} = result[0];
+        let response = await  common.fetchWithCode('NETWORK_WAN_IPV4_GET',{method : 'POST'});
+            let {errcode, data} = response;
             if(errcode == 0){
                 let info = data[0].result.wan.info;
                 this.setState({
@@ -378,28 +380,17 @@ export default class NETWORK extends React.Component {
                         dialType : '静态获取'
                     })
                 }
-            }
-            // 触发检测联网状态
-            let connectStatus = result[2];
-            // 获取联网状态
-            let {errcode:code} = connectStatus;
-            if(code == 0){
-                let onlinetest = connectStatus.data[0].result.onlinetest.online,status = connectStatus.data[0].result.onlinetest.status;
-                if(status === "ok"){
-                    if(onlinetest === true){
-                        this.setState({
-                            onlineStatus : '已联网'
-                        })
-                    }
-                    if(onlinetest === false){
-                        this.setState({
-                            onlineStatus : '未联网'
-                        })
-                    }
+                if(info.online === true){
+                    this.setState({
+                        onlineStatus : '已联网'
+                    })
+                }else{
+                    this.setState({
+                        onlineStatus : '未联网'
+                    })
                 }
             }
-        })
-    }
+        }
 
     componentDidMount(){
         //获取网络状况
@@ -482,12 +473,12 @@ export default class NETWORK extends React.Component {
                             /> : ''
                         } 
                         {
-                            type === 'pppoe' & pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
+                            type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
                             dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
                             dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                         {
-                            type === 'dhcp' & dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
+                            type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
                             dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
                             dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }             
@@ -540,31 +531,32 @@ const Dhcp = props => {
 
 const Static = props => {
     return [
-    <div key="static" className="wifi-settings">
-        <label>IP地址</label>
-        <FormItem key='ipv4' showErrorTip={props.ipv4Tip} style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.ipv4[0], maxLength : 3}, {value : props.ipv4[1], maxLength : 3}, {value : props.ipv4[2], maxLength : 3}, {value : props.ipv4[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'ipv4')} />
-            <ErrorTip>{props.ipv4Tip}</ErrorTip>
-         </FormItem>
-        <label>子网掩码</label>
-        <FormItem key='subnetmask' showErrorTip={props.subnetmaskTip} style={{ width : 320}}>
-            <InputGroup                                                                     
-                inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'subnetmask')} />
-            <ErrorTip>{props.subnetmaskTip}</ErrorTip>
-        </FormItem>
-        <label>网关</label>
-        <FormItem key='gateway' showErrorTip={props.gatewayTip} style={{ width : 320}}>
-            <InputGroup 
-                inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'gateway')} />
-            <ErrorTip>{props.gatewayTip}</ErrorTip>
-        </FormItem>
-    </div>
-    ];
+        <div key="static" className="wifi-settings">
+            <label>IP地址</label>
+            <FormItem key='ipv4' showErrorTip={props.ipv4Tip} style={{ width : 320}}>
+                <InputGroup 
+                    inputs={[{value : props.ipv4[0], maxLength : 3}, {value : props.ipv4[1], maxLength : 3}, {value : props.ipv4[2], maxLength : 3}, {value : props.ipv4[3], maxLength : 3}]} 
+                    onChange={value => props.onChange(value, 'ipv4')} />
+                <ErrorTip>{props.ipv4Tip}</ErrorTip>
+                </FormItem>
+            <label>子网掩码</label>
+            <FormItem key='subnetmask' showErrorTip={props.subnetmaskTip} style={{ width : 320}}>
+                <InputGroup                                                                     
+                    inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
+                    onChange={value => props.onChange(value, 'subnetmask')} />
+                <ErrorTip>{props.subnetmaskTip}</ErrorTip>
+            </FormItem>
+            <label>网关</label>
+            <FormItem key='gateway' showErrorTip={props.gatewayTip} style={{ width : 320}}>
+                <InputGroup 
+                    inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
+                    onChange={value => props.onChange(value, 'gateway')} />
+                <ErrorTip>{props.gatewayTip}</ErrorTip>
+            </FormItem>
+        </div>
+        ];
 }
+
 
 class Dns extends React.Component  {
     constructor(props){
