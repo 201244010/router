@@ -2,10 +2,9 @@ import React from 'react';
 
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import {Checkbox, Button, Modal, Radio} from 'antd';
+import {Checkbox, Button, Modal, Radio, Upload,Icon} from 'antd';
 import CustomIcon from '~/components/Icon';
 const {FormItem, Input} = Form;
-import UploadImage from '~/components/Upload';
 const RadioGroup = Radio.Group;
 
 import './backup.scss'
@@ -20,8 +19,8 @@ export default class Backup extends React.Component{
         backupSuccessTip : '备份成功！',
         filename : '',
 
-        baseBackup : false,
-        authBackup : false,
+        baseBackup : true,
+        authBackup : true,
 
         recoverCloud : false,//从云恢复
         radioChoose : '',
@@ -47,16 +46,61 @@ export default class Backup extends React.Component{
         })
     }
 
-    cloudBackup = () => {
+    cloudBackup = async () => {
         this.setState({
-            backupCloud : true
+            backupCloud : true,
+        });
+        let response = await common.fetchApi({
+            opcode : 'CONFIG_CLOUD_CONFIGLIST'
         })
+        
+        let {errcode, data} = response;
+        if(errcode == 0){
+            let result = data[0].result.configlist;
+            let sortObj = result.sort(this.compare('id'))
+            this.setState({
+                cloudList : sortObj.map(item => {
+                    return Object.assign({}, item)
+                }),
+                filename : ''
+            });
+
+            return;
+        }else{
+            Modal.error({title : '获取备份列表失败'});
+        }
+
     }
 
-    cloudRecover = () => {
+    compare = (id) => {
+        return (object1, object2) => {
+            return object2[id] - object1[id];
+        }
+    }
+
+    cloudRecover = async () => {
         this.setState({
             recoverCloud : true
         })
+        let response = await common.fetchApi({
+            opcode : 'CONFIG_CLOUD_CONFIGLIST'
+        })
+  
+        let {errcode, data} = response;
+        if(errcode == 0){
+            let result = data[0].result.configlist;
+            let sortObj = result.sort(this.compare('id'))
+            this.setState({
+                cloudList : sortObj.map(item => {
+                    
+                    return Object.assign({}, item)
+                })
+            });
+
+            return;
+        }else{
+            Modal.error({title : '获取备份列表失败'});
+        }
     }
 
 
@@ -85,14 +129,17 @@ export default class Backup extends React.Component{
     }
     //备份到本地
     postBackupLocal = async () => {
-        let param = {};
-        param['basebackup'] = this.state.baseBackup;
-        param['authbackup'] = this.state.authBackup;
+        let backup = {};
+        backup['basebackup'] = Number(this.state.baseBackup);
+        backup['authbackup'] = Number(this.state.authBackup);
 
-        let response = await common.fetchWithCode(
-            'CONFIG_LOCAL_BACKUP',
-            {method : 'POST', data : param}
-        )
+        let response = await common.fetchApi({
+            opcode : 'CONFIG_LOCAL_BACKUP',
+            data : {backup}
+        },
+        {
+            fileLink : true, responseType : 'blob'
+        })
 
         let {errcode} = response;
         if(errcode == 0){
@@ -104,31 +151,53 @@ export default class Backup extends React.Component{
 
     //备份到云
     postBackupCloud = async () => {
-        let param = {};
-        param['filename'] = this.state.filename;
-        param['authbackup'] = this.state.authBackup;
-        param['basebackup'] = this.state.baseBackup;
+        let backup = {};
+        backup['filename'] = this.state.filename;
+        backup['authbackup'] = Number(this.state.authBackup);
+        backup['basebackup'] = Number(this.state.baseBackup);
         
-        let response = await common.fetchWithCode(
-            'CONFIG_CLOUD_BACKUP',
-            {method : 'POST', data : param}
-        )
+        let response = await common.fetchApi({
+            opcode : 'CONFIG_CLOUD_BACKUP',
+            data : {backup}
+        })
         let {errcode} = response;
         if(errcode == 0){
             this.setState({
-                backupSuccess : true
+                backupSuccess : true,
+                backupCloud : false,
+                backupSuccessTip : '备份成功',
             })
             return;
         }else{
             this.setState({
-                backupFail : true
+                backupFail : true,
+                backupCloud : false,
+                backupFailTip : '备份失败！请重试~',
             })
         } 
     }
 
     //从本地恢复
-    postRecoverLocal = async () => {
-        
+    postRecoverLocal = (info) => {
+        if(info.file.status === 'uploading') {
+            
+        }
+        if(info.file.status === 'done'){
+            if(info.file.response.data[0].errcode == 0){
+                this.setState({
+                    backupSuccess : true,
+                    backupSuccessTip : '恢复成功'
+                })
+            }else{
+                this.setState({
+                    backupFail : true,
+                    backupFailTip : '恢复失败'
+                })
+            }
+        }
+        if(info.file.status === 'error'){
+            Modal.error({title : '上传失败'})
+        }
     }
 
     //从云恢复
@@ -137,50 +206,26 @@ export default class Backup extends React.Component{
             id : this.state.radioChoose
         }
 
-        let response = await common.fetchWithCode(
-            'CONFIG_CLOUD_RESTORE',
-            {method : 'POST', data : param}
-        )
+        let response = await common.fetchApi({
+            opcode : 'CONFIG_CLOUD_RESTORE',
+            data : param
+        })
 
         let {errcode} = response;
         if(errcode == 0){
             this.setState({
                 backupSuccess : true,
-                backupSuccessTip : '恢复成功'
+                backupSuccessTip : '恢复成功',
+                recoverCloud : false
             })
             return;
         }else{
             this.setState({
                 backupFail : true,
-                backupFailTip : '恢复失败！请重试~'
+                backupFailTip : '恢复失败！请重试~',
+                recoverCloud : false
             })
         }
-    }
-
-    //获取备份列表地、
-    getListInfo = async () => {
-        let response = await common.fetchWithCode(
-            'CONFIG_CLOUD_CONFIGLIST',
-            {method : 'POST'}
-        )
-        
-        let {errcode, data} = response;
-        if(errcode == 0){
-            let result = data[0].result.configlist;
-            this.setState({
-                cloudList : result.map(item => {
-                    return Object.assign({}, item)
-                })
-            });
-
-            return;
-        }else{
-            Modal.error({title : '获取备份列表失败'});
-        }
-    }
-
-    componentDidMount(){
-        //this.getListInfo();
     }
 
     render(){
@@ -220,7 +265,11 @@ export default class Backup extends React.Component{
                     </section>
                 </Form>
                 <div className="recover-local">
-                        <UploadImage/>
+                        <Upload onChange={this.postRecoverLocal} name='file' data={{opcode : '0x2018'}} multiple={false} action="http://192.168.100.1/api">
+                                <Button style={{width:130}}> 
+                                    <Icon type="upload" />
+                                </Button>
+                        </Upload>
                         <input class="button-name" type="button" value="从本地恢复"></input>
                 </div>
                 <div className="recover-cloud">
