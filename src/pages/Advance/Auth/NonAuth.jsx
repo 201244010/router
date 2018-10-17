@@ -329,8 +329,9 @@ export default class NonAuth extends React.Component{
             title: '',
             dataIndex: 'icon',
             width: 60,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.icon} size={32} />
+                <CustomIcon type={record.icon} size={42} />
             )
         }, {
             title: '设备名称',
@@ -369,8 +370,9 @@ export default class NonAuth extends React.Component{
             title: '',
             dataIndex: 'icon',
             width: 60,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.icon} size={24} />
+                <CustomIcon type={record.icon} size={42} />
             )
         }, {
             title: '设备名称',

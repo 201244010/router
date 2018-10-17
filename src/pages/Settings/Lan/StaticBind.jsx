@@ -328,8 +328,9 @@ export default class StaticBind extends React.Component {
             title: '',
             dataIndex: 'logo',
             width: 60,
+            className:'center',
             render: (text, record) => (
-                <CustomIcon type={record.logo} size={24}  />
+                <CustomIcon type={record.logo} size={42}  />
             )
         }, {
             title: '设备名称',
