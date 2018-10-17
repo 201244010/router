@@ -122,16 +122,17 @@ export default class Lan extends React.Component {
             title: '提示',
             content: '局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效',
             okText: '知道了',
-            onOk:() => {
-                this.summitLan();
-                this.summitDhcp();
-            }
+            onOk: this.submitAll
         });
     }
 
-    async fetchLanInfo() {
-        let response = await common.fetchWithCode('NETWORK_LAN_IPV4_GET', { method: 'POST' })
-        let { errcode, data, message } = response;
+    async fetchBasic () {
+        let response = await common.fetchApi([
+            { opcode: 'NETWORK_LAN_IPV4_GET' },
+            { opcode: 'DHCPS_GET' }
+        ]);
+
+        let { errcode, data } = response;
         if (errcode == 0) {
             let { lan } = data[0].result;
             this.lanInfo = lan.info;
@@ -139,62 +140,39 @@ export default class Lan extends React.Component {
                 ipv4: [...this.lanInfo.ipv4.split('.')],
                 mask: [...this.lanInfo.mask.split('.')]
             });
-            return;
-        }
 
-        Modal.error({ title: '获取局域网配置指令异常', message });
-    }
-
-    summitLan = async () => {
-        this.lanInfo.ipv4 = this.state.ipv4.join('.');
-        this.lanInfo.mask = this.state.mask.join('.');
-
-        this.setState({ loading: true });
-        let response = await common.fetchWithCode(
-            'NETWORK_LAN_IPV4_SET',
-            { method: 'POST', data: { lan: {info:this.lanInfo }} }
-        ).catch(ex => { });
-
-        this.setState({ loading: false });
-
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            return;
-        }
-        Modal.error({ title: '局域网IP地址设置失败', content: message });
-    }
-
-    async fetchDhcpsInfo() {
-        let response = await common.fetchWithCode('DHCPS_GET', { method: 'POST' })
-        let { errcode, data, message } = response;
-        if (errcode == 0) {
-            let { dhcps } = data[0].result;
+            let { dhcps } = data[1].result;
             this.dhcps = dhcps;
             this.setState({
                 enable: this.dhcps.enable,
                 startip: [...this.dhcps.startip.split('.')],
                 endip: [...this.dhcps.endip.split('.')],
                 leasetime: this.dhcps.leasetime
-            }, () => {
-                console.log(this.state)
             });
             return;
         }
 
-        Modal.error({ title: '获取DHCP服务器配置指令异常', message });
+        Modal.error({ title: '获取局域网配置指令异常', message });
     }
 
-    summitDhcp = async () => {
+    submitAll = async () => {
+        this.lanInfo.ipv4 = this.state.ipv4.join('.');
+        this.lanInfo.mask = this.state.mask.join('.');
+
         this.dhcps.enable = this.state.enable;
         this.dhcps.startip = this.state.startip.join('.');
         this.dhcps.endip = this.state.endip.join('.');
         this.dhcps.leasetime = this.state.leasetime;
 
         this.setState({ loading: true });
-        let response = await common.fetchWithCode(
-            'DHCPS_SET',
-            { method: 'POST', data: { dhcps: this.dhcps } }
-        ).catch(ex => { });
+        let response = await common.fetchApi(
+            [{
+                opcode: 'NETWORK_LAN_IPV4_SET',
+                data: { lan: { info: this.lanInfo } }
+            }, {
+                opcode: 'DHCPS_SET',
+                data: { dhcps: this.dhcps }
+            }]).catch(ex => { });
 
         this.setState({ loading: false });
 
@@ -202,12 +180,11 @@ export default class Lan extends React.Component {
         if (errcode == 0) {
             return;
         }
-        Modal.error({ title: 'DHCP服务设置失败', content: message });
+        Modal.error({ title: '配置保存失败', content: message });
     }
 
     componentDidMount() {
-        this.fetchLanInfo();
-        this.fetchDhcpsInfo();
+        this.fetchBasic();
     }
 
     render(){

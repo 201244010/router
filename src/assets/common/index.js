@@ -135,7 +135,35 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     return promise;
 };
 
+/**
+ * ajax封装
+ * @param {string} data 指令和指令参数
+ * @param {object} options axios配置
+ * @param {object} loopOption 扩展配置 
+ *               loopOption.loop [boolean]是否循环 或循环 N 次, 
+ *               loopOption.interval [number]] 轮询间隔 ms
+ *               loopOption.stop [function] 轮询终止的条件
+ *               loopOption.pending [function] 已经成功响应，仍需继续轮询的条件
+ * @see
+ * fetchApi(
+ *      [{
+ *          opcode : 'ACCOUNT_LOGIN', 
+ *          data : {password : '123'}
+ *      }],
+ *      {timeout : 10000},
+ * );
+ * fetchApi(
+ *      [
+ *          {opcode : 'DHCPS_GET'},
+ *          {opcode : 'NETWORK_LAN_IPV4_GET'}
+ *      ],
+ *      {timeout : 10000},
+ *      {loop : true, interval : 1000, stop : function(){return true}},
+ *      
+ * );
+ */
 export function fetchApi(data, options = {}, loopOption = {}) {
+    data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
     options = assign({ timeout: 10000, method: 'POST' }, options);
 
     let url = __BASEAPI__ + '/';
