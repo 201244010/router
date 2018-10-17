@@ -241,7 +241,7 @@ export default class StaticBind extends React.Component {
             { opcode: 'CLIENT_LIST_GET' }
         ]);
 
-        let { errcode, data } = response;
+        let { errcode, data, message } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
 
