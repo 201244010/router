@@ -8,6 +8,12 @@
     }
 }
 
+.hide-input {
+    .ant-select-search__field {
+        opacity: 0;
+    }
+}
+
 .auth{
     display : flex;
     flex-direction: column;
