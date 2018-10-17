@@ -1,12 +1,12 @@
 
 import React from 'react';
+import { Button, Switch, Modal, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomModal from '~/components/Modal';
-import Icon from '~/components/Icon';
-import { Button, Switch, Modal, Progress } from 'antd';
+import CustomIcon from '~/components/Icon';
+import Tips from '~/components/Tips';
 
 const { FormItem, Input } = Form;
-
 
 export default class SetWifi extends React.Component {
     constructor(props){
@@ -17,7 +17,6 @@ export default class SetWifi extends React.Component {
     state = {
         guestWifi : false,
         loading : false,
-        percent : 10,
         done : false,
         active : false,
         hostWifiName : '',
@@ -65,38 +64,34 @@ export default class SetWifi extends React.Component {
         this.setState({ loading : false});
         
         let {errcode, message} = response;
-        if(errcode == 0){
-            this.setState({active : true});
-            this.timer = setInterval(()=> {
-                this.tick++;
-                this.setState({ percent : this.state.percent += 0.1 }, function(){
-                    if(this.state.percent >= 100){
-                        this.setState({done : true});
-                        clearInterval(this.timer);
-                    }
-                });
-            }, 20);
-            // 发起嗅探网络连接状态
-            common.fetchWithCode( "WANWIDGET_ONLINETEST_START", {method : 'POST'} );
-            // 嗅探网络连接状态
-            let connectStatus = await common.fetchWithCode(
-                'WANWIDGET_ONLINETEST_GET', 
-                {method : 'POST'},
-                {
-                    loop : true, 
-                    interval : 300, 
-                    stop : ()=> this.stop, 
-                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
-                }
-            );
-            if(connectStatus.errcode == 0){
-                let online = connectStatus.data[0].result.onlinetest.online;
-                if(online){
-                    setTimeout(() => { this.props.history.push("/login") }, 10);
-                }
-                return;
-            }
-            return;
+        if(errcode === 0){
+            this.setState({
+                active : true,
+                done: false,
+            });
+            setTimeout(async() => {
+                await common.fetchWithCode(
+                    'WIRELESS_GET', 
+                    { method : 'POST' }
+                ).catch(ex => {
+                    if(ex !== ''){
+                        this.setState({done: true});  
+                    }}).then(
+                            async()=>{
+                            await common.fetchWithCode(
+                                'WIRELESS_GET', 
+                                { method : 'POST' },
+                                {
+                                    loop: true,
+                                    interval: 500,
+                                    stop: resp => {resp!== 0},
+                                }
+                            );
+                            this.props.history.push("/login");
+                        }
+                    );
+            }, 7000);
+            return ;
         }
         Modal.error({ title : 'WI-FI设置失败', content : message });
     }
@@ -194,16 +189,18 @@ export default class SetWifi extends React.Component {
                     {
                         !this.state.done ? 
                             <div className="progress">
-                                <Progress type="circle" showInfo={false} percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} />
-                                <h3>正在等待WI-FI重启，请稍候...</h3>
+                                {/* <Progress type="circle" showInfo={false} percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} /> */}
+                                <Icon type="loading" style={{ fontSize: 80, color : "#FB8632", marginBottom : 20 }} spin />
+                                {/* <h3>正在等待WI-FI重启，请稍候...</h3> */}
+                                <Tips size="16" top={5}>正在等待WI-FI重启，请稍候...</Tips>
                             </div>
                             : 
                             <div className="success">
-                                <div style={{ marginBottom : 20 }}><Icon size={80} color="#87d068" type="correct"></Icon></div>
+                                <div style={{ marginBottom : 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
                                 <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
-                                <div className="ui-t3">主：{this.state.hostWifiName}</div>
+                                <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
                                 {
-                                    this.state.guestWifi ? <div className="ui-t3">客用：{this.state.guestWifiName}</div> : ''
+                                    this.state.guestWifi ? <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div> : ''
                                 }
                                 <div className="ui-center" style={{ border : "1px solid #ccc", margin : "10px auto 5px", height : 100, width : 100 }}>
                                     假装有二维码

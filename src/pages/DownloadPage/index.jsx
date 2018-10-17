@@ -5,7 +5,7 @@ export default class DownloadPage extends Component{
     
     render(){
         return(
-        <div className='app-download'>
+        <div className='app-download ui-container'>
             <div className='app-header'>
                 <div className='title'>
                     <h1>商米管家APP</h1>
