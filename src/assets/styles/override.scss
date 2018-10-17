@@ -90,6 +90,11 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
+.ant-table-tbody>tr>td.center{
+    padding: 0 !important;
+    text-align: center;
+}
+
 .ant-tabs-nav-wrap{
     .ant-tabs-nav{
         margin-left:60px;

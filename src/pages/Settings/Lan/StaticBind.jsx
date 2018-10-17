@@ -241,7 +241,7 @@ export default class StaticBind extends React.Component {
             { opcode: 'CLIENT_LIST_GET' }
         ]);
 
-        let { errcode, data } = response;
+        let { errcode, data, message } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
 
@@ -328,8 +328,9 @@ export default class StaticBind extends React.Component {
             title: '',
             dataIndex: 'logo',
             width: 60,
+            className:'center',
             render: (text, record) => (
-                <CustomIcon type={record.logo} size={24}  />
+                <CustomIcon type={record.logo} size={42}  />
             )
         }, {
             title: '设备名称',

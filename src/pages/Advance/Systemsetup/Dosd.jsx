@@ -30,10 +30,10 @@ export default class Dosd extends React.Component {
             disabled: true,
         });
 
-        let response = await common.fetchWithCode(
-            'DOSD_SET',
-            { method: 'POST', data: { dosd: { enable, icmp, udp, tcp_syn } } }
-        ).catch(ex => { });
+        let response = await common.fetchApi({
+            opcode: 'DOSD_SET',
+            data: { dosd: { enable, icmp, udp, tcp_syn } }
+        });
 
         this.setState({
             loading: false,
@@ -47,46 +47,38 @@ export default class Dosd extends React.Component {
         Modal.error({ title: 'DoS设置失败', content: message });
     }
 
-    fetchDosInfo = () => {
-        let dosd = common.fetchWithCode('DOSD_GET', { method: 'POST' });
-        let dosdList = common.fetchWithCode('DOSD_BLOCKLIST_GET', { method: 'POST' });
+    fetchDosInfo = async () => {
+        let response = await common.fetchApi([
+            { opcode: 'DOSD_GET' },
+            { opcode: 'DOSD_BLOCKLIST_GET' }
+        ]);
 
-        Promise.all([dosd, dosdList]).then(resp => {
-            let dosd, blocklist;
-            let { errcode, data } = resp[0];
-            if (0 !== errcode) {
-                return;
-            }
-            dosd = data[0].result.dosd;
-            let {enable, udp, icmp, tcp_syn} = dosd;
+        let { errcode, data, message } = response;
+        if (0 !== errcode) {
+            Modal.error({ title: 'DoS指令异常', message });
+            return;
+        }
 
-            if (0 !== resp[1].errcode) {
-                return;
-            }
-            blocklist = resp[1].data[0].result.block_list;
+        let dosd = data[0].result.dosd,
+            blocklist = data[1].result.block_list;
+        let { enable, udp, icmp, tcp_syn } = dosd;
 
-            this.setState({
-                enable, 
-                udp, 
-                icmp, 
-                tcp_syn,
-                blockList: blocklist.map(item => Object.assign({}, item)),
-            });
-        }).catch((error) => {
-            Modal.error({ title: 'DoS指令异常', error });
-        })
+        this.setState({
+            enable,
+            udp,
+            icmp,
+            tcp_syn,
+            blockList: blocklist.map(item => Object.assign({}, item)),
+        });
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchWithCode(
-            'DOSD_BLOCKLIST_DELETE',
-            {
-                method: 'POST', 
-                data: {
-                    block_list: [record]
-                }
+        let response = await common.fetchApi({
+            opcode: 'DOSD_BLOCKLIST_DELETE',
+            data: {
+                block_list: [record]
             }
-        ).catch(ex => { });
+        });
 
         let { errcode, message } = response;
         if (errcode == 0) {
