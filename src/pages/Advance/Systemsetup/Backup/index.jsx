@@ -130,8 +130,8 @@ export default class Backup extends React.Component{
     //备份到本地
     postBackupLocal = async () => {
         let backup = {};
-        backup['basebackup'] = Number(this.state.baseBackup);
-        backup['authbackup'] = Number(this.state.authBackup);
+        backup['basebackup'] = this.state.baseBackup ? 1 : 0;
+        backup['authbackup'] = this.state.authBackup ? 1 : 0;
 
         let response = await common.fetchApi({
             opcode : 'CONFIG_LOCAL_BACKUP',
@@ -153,8 +153,8 @@ export default class Backup extends React.Component{
     postBackupCloud = async () => {
         let backup = {};
         backup['filename'] = this.state.filename;
-        backup['authbackup'] = Number(this.state.authBackup);
-        backup['basebackup'] = Number(this.state.baseBackup);
+        backup['authbackup'] = this.state.authBackup ? 1 : 0;
+        backup['basebackup'] = this.state.baseBackup ? 1 : 0;
         
         let response = await common.fetchApi({
             opcode : 'CONFIG_CLOUD_BACKUP',
