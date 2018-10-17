@@ -30,8 +30,8 @@ export default class Bootdevice extends React.Component {
         editShow: false,
         name: '',
         mac: '',
-        nameTip: '请输入备注名称',
-        macTip: '请输入MAC地址',
+        nameTip: '',
+        macTip: '',
         whiteList: [/*{
             icon:'computer',
             name:'xiongmingxiongmingxiongiongiongminxiongmingxiongmingxiongiongiongmin',
@@ -54,28 +54,28 @@ export default class Bootdevice extends React.Component {
 
     onChange = (val, key) => {
         let tip = '';
+        let valid = {
+            name: {
+                func: (val) => {
+                    return (val.length <= 0) ? '请输入备注名称' : '';
+                },
+            },
+            mac: {
+                func: checkMac,
+            }
+        };
 
-        switch (key) {
-            case 'name':
-                if (val.length <= 0) {
-                    tip = '请输入备注名称';
-                }
-                break;
-            case 'mac':
-                if (0 !== checkMac(val)) {
-                    tip = 'MAC地址非法，请重新输入';
-                }
-                break;
-        }
+        tip = valid[key].func(val, valid[key].args);
 
         this.setState({
             [key]: (typeof val == 'object' ? [...val] : val),
             [key + 'Tip']: tip,
         }, () => {
-            let st = this.state;
-            let tip = ['nameTip', 'macTip'];
-            let ok = tip.every((tip) => { return '' === st[tip] });
-            this.setState({ disabled: !ok });
+            const keys = ['name', 'mac'];
+            let disabled = keys.some(k => {
+                return this.state[k + 'Tip'].length > 0
+            });
+            this.setState({ disabled: disabled });
         });
     }
 
@@ -91,7 +91,9 @@ export default class Bootdevice extends React.Component {
             editShow: true,
             editLoading: false,
             name: '',
-            mac: ['', '', '', '', '', '']
+            mac: ['', '', '', '', '', ''],
+            nameTip: '请输入备注名称',
+            macTip: '请输入MAC地址',
         });
     }
 
@@ -449,7 +451,7 @@ export default class Bootdevice extends React.Component {
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
                     <FormItem showErrorTip={nameTip} type="small" style={{ width: 320 }}>
-                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" />
+                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" maxLength={32} />
                         <ErrorTip>{nameTip}</ErrorTip>
                     </FormItem>
                     <label style={{ marginTop: 24 }}>MAC地址</label>
