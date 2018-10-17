@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Table, Divider, Popconfirm, Modal, Checkbox} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Form from "~/components/Form";
+import { checkIp, checkMac } from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 
@@ -16,6 +17,7 @@ export default class StaticBind extends React.Component {
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
+        disabled: true,
         editLoading: false,
         editShow: false,
         editType: 'add',         // add/edit
@@ -23,14 +25,38 @@ export default class StaticBind extends React.Component {
         editName: '',
         editIp: '',
         editMac: '',
-        tipName: '',
+        editNameTip: '',
+        editIpTip: '',
+        editMacTip: '',
         staticLists: [],
         onlineList:[]
     };
 
     onChange = (val, key) => {
+        let valid = {
+            editName: {
+                func: (val) => {
+                    return (val.length <= 0) ? '请输入备注名称' : '';
+                },
+            },
+            editIp: {
+                func: checkIp
+            },
+            editMac: {
+                func: checkMac,
+            }
+        };
+
+        let tip = valid[key].func(val, valid[key].args);
         this.setState({
-            [key]: (typeof val == 'object' ? [...val] : val)
+            [key]: (typeof val == 'object' ? [...val] : val),
+            [key + 'Tip']: tip,
+        }, () => {
+            const keys = ['editName', 'editIp', 'editMac'];
+            let disabled = keys.some(k => {
+                return this.state[k + 'Tip'].length > 0
+            });
+            this.setState({ disabled: disabled });
         });
     }
 
@@ -49,7 +75,10 @@ export default class StaticBind extends React.Component {
             editIndex: -1,
             editName: '',
             editIp: ['', '', '', ''],
-            editMac: ['', '', '', '', '', '']
+            editMac: ['', '', '', '', '', ''],
+            editNameTip: '请输入备注名称',
+            editIpTip: '请输入IP地址',
+            editMacTip: '请输入MAC地址',
         });
     }
 
@@ -263,7 +292,8 @@ export default class StaticBind extends React.Component {
 
     render() {
         const { staticLists, onlineList, visible, loading, 
-            editLoading, editShow, editType, editName, editIp, editMac, tipName} = this.state;
+            editLoading, editShow, editType, editName, editIp, editMac, 
+            editNameTip, editIpTip, editMacTip, disabled } = this.state;
 
         const columns = [{
             title: '设备名称',
@@ -333,7 +363,7 @@ export default class StaticBind extends React.Component {
         return (
             <div style={{margin:"20px 60px"}}>
                 <div style={{margin:"20px 20px 20px 0"}}>
-                    <Button onClick={this.selectAdd} style={{marginRight:20}}>在线列表添加</Button>
+                    <Button onClick={this.selectAdd} style={{marginRight:20}}>列表添加</Button>
                     <Button onClick={this.manualAdd}>手动添加</Button>
                 </div>
                 <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
@@ -361,23 +391,26 @@ export default class StaticBind extends React.Component {
                     visible={editShow}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
+                    okButtonProps={{ disabled: disabled }}
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
-                    <FormItem showErrorTip={tipName} type="small" style={{ width: 320 }}>
-                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" />
-                        <ErrorTip>{tipName}</ErrorTip>
+                    <FormItem showErrorTip={editNameTip} type="small" style={{ width: 320 }}>
+                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" maxLength={32} />
+                        <ErrorTip>{editNameTip}</ErrorTip>
                     </FormItem>
                     <label style={{ marginTop: 24 }}>IP地址</label>
-                    <FormItem style={{ width: 320 }}>
+                    <FormItem showErrorTip={editIpTip} style={{ width: 320 }}>
                         <InputGroup size="small"
                             inputs={[{ value: editIp[0], maxLength: 3 }, { value: editIp[1], maxLength: 3 }, { value: editIp[2], maxLength: 3 }, { value: editIp[3], maxLength: 3 }]}
                             onChange={value => this.onChange(value, 'editIp')} />
+                        <ErrorTip>{editIpTip}</ErrorTip>
                     </FormItem>
                     <label style={{ marginTop: 24 }}>MAC地址</label>
-                    <FormItem style={{ width: 320 }}>
+                    <FormItem showErrorTip={editMacTip} style={{ width: 320 }}>
                         <InputGroup size="small" type="mac"
                             inputs={[{ value: editMac[0], maxLength: 2 }, { value: editMac[1], maxLength: 2 }, { value: editMac[2], maxLength: 2 }, { value: editMac[3], maxLength: 2 }, { value: editMac[4], maxLength: 2 }, { value: editMac[5], maxLength: 2 }]}
                             onChange={value => this.onChange(value, 'editMac')} />
+                        <ErrorTip>{editMacTip}</ErrorTip>
                     </FormItem>
                 </Modal>
             </div>

@@ -54,16 +54,20 @@ export default class Lan extends React.Component {
                     who : '地址租期',
                 }
             }
-        }
+        };
 
-        tip = valid[key].func(val, valid[key].args)
+        tip = valid[key].func(val, valid[key].args);
 
         if ('startip' !== key){
             startipTip = checkIp(this.state.startip, {who : '开始IP地址'});
+        } else {
+            startipTip = tip;
         }
 
         if ('endip' !== key) {
             endipTip = checkIp(this.state.endip, {who : '结束IP地址'})
+        } else {
+            endipTip = tip;
         }
 
         this.setState({
@@ -247,7 +251,7 @@ export default class Lan extends React.Component {
                         <label>地址租期</label>
                         <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
-                            <Input type="text" value={leasetime} onChange={value => this.onChange(value, 'leasetime')} placeholder="请输入租期时间（2～1440）" maxLength="4" />
+                            <Input type="text" value={leasetime} onChange={value => this.onChange(value, 'leasetime')} placeholder="请输入租期时间（2～1440）" maxLength={4} />
                             <ErrorTip>{leasetimeTip}</ErrorTip>
                         </FormItem>
                     </section>
