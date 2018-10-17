@@ -238,43 +238,32 @@ export default class Backup extends React.Component{
                     <p className="recover-time">{item.upload_time}</p>
                 </li>
             )
-        })
+        });
 
         return (
-            <div className="backup">
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
-                    <section className="backup-title">
-                        <PanelHeader title="备份" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
+            <div className="backup-restore">
+                <Form>
+                    <section>
+                        <PanelHeader title="备份" checkable={false} onChange={(value) => this.onChange('channelType', value)} />
+                        <ul className='backup-list'>
+                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、黑名单</Checkbox></li>
+                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>
+                        </ul>
+                        <div className='func-btn'>
+                            <Button onClick={this.postBackupLocal}>备份到本地</Button>
+                            <Button onClick={this.cloudBackup}>备份到云</Button>
+                        </div>
+                    </section>
+                    <section className='restore'>
+                        <PanelHeader title="恢复" checkable={false} onChange={(value) => this.onChange('channelType', value)} />
+                        <div className='restore-func'>
+                            <Upload onChange={this.postRecoverLocal} name='file' data={{ opcode: '0x2018' }} multiple={false} action={__BASEAPI__}>
+                                <Button>从本地恢复</Button>
+                            </Upload>
+                            <Button className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>
+                        </div>
                     </section>
                 </Form>
-                <div className="backup-base">
-                    <Checkbox checked={baseBackup} onChange={this.checkBasebackup}><span className="backup-info">管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、黑名单</span></Checkbox>
-                </div>
-                <div className="backup-auth">
-                    <Checkbox checked={authBackup} onChange={this.checkAuthbackup}><span className="backup-info">认证配置（微信认证、短信认证）</span></Checkbox>
-                </div>
-                <div className="backup-local">
-                    <Button ghost={true} block onClick={this.postBackupLocal}><span className="backup-info">备份到本地</span></Button>
-                </div>
-                <div className="backup-cloud">
-                    <Button ghost={true} block onClick={this.cloudBackup}><span className="backup-info">备份到云</span></Button>
-                </div>
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
-                    <section className="backup-title">
-                        <PanelHeader title="恢复" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
-                    </section>
-                </Form>
-                <div className="recover-local">
-                        <Upload onChange={this.postRecoverLocal} name='file' data={{opcode : '0x2018'}} multiple={false} action="http://192.168.100.1/api">
-                                <Button style={{width:130}}> 
-                                    <Icon type="upload" />
-                                </Button>
-                        </Upload>
-                        <input class="button-name" type="button" value="从本地恢复"></input>
-                </div>
-                <div className="recover-cloud">
-                    <Button ghost={true} block onClick={this.cloudRecover}><span className="backup-info">从云恢复</span></Button>
-                </div>
                 <Modal title='备份到云' visible={backupCloud} centered={true} width={360} closable={false} cancelText='取消' okText='开始备份' onCancel={this.handleCancle} onOk={this.postBackupCloud}>
                     <div className="backup-modal">
                         <div className="backup-filename">文件名</div>
@@ -286,36 +275,36 @@ export default class Backup extends React.Component{
                         <div className="backup-latest">
                             <div>最新的备份：</div>
                             {
-                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份~</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time}/>
+                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份~</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time} />
                             }
-                        </div> 
+                        </div>
                     </div>
-                </Modal>   
+                </Modal>
                 <Modal closable={false} visible={backupFail} centered={true} footer={null} width={560}>
                     <div className="backup-icon">
-                        <CustomIcon color="#FF5500" type="hint" size={64}/>
+                        <CustomIcon color="#FF5500" type="hint" size={64} />
                         <div className="backup-result">{backupFailTip}</div>
                     </div>
                     <div className="backup-btm">
-                            <Button className="backup-btn" type="primary" onClick={this.backupFailCancle}>确定</Button>
+                        <Button className="backup-btn" type="primary" onClick={this.backupFailCancle}>确定</Button>
                     </div>
                 </Modal>
                 <Modal closable={false} visible={backupSuccess} centered={true} footer={null} width={560}>
                     <div className="backup-icon">
-                        <CustomIcon color="#87D068" type="succeed" size={64}/>
+                        <CustomIcon color="#87D068" type="succeed" size={64} />
                         <div className="backup-result">{backupSuccessTip}</div>
                     </div>
                     <section className="backup-btm">
-                            <Button className="backup-btn" type="primary" onClick={this.backupSuccessCancle}>确定</Button>
+                        <Button className="backup-btn" type="primary" onClick={this.backupSuccessCancle}>确定</Button>
                     </section>
-                </Modal> 
+                </Modal>
                 <Modal title='从云选择备份文件' visible={recoverCloud} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
                     <ul className="recover-ul">
                         <RadioGroup onChange={this.radioChange} value={radioChoose}>
-                            {recoverList}   
+                            {recoverList}
                         </RadioGroup>
                     </ul>
-                </Modal>  
+                </Modal>
             </div>
         );
     }
