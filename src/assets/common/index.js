@@ -82,7 +82,17 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                 if(response.data === ''){
                     return resolve({errcode : 0});
                 }
+
                 // 正常响应 解析响应结果
+                if(options.fileLink === true){
+                    let blob = new Blob([response.data],{type : 'application/x-targz'});
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
+                    link.click();
+                    window.URL.revokeObjectURL(link.href);
+                    return;
+                }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if(res.errcode !== 0){
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
@@ -135,7 +145,35 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     return promise;
 };
 
+/**
+ * ajax封装
+ * @param {string} data 指令和指令参数
+ * @param {object} options axios配置
+ * @param {object} loopOption 扩展配置 
+ *               loopOption.loop [boolean]是否循环 或循环 N 次, 
+ *               loopOption.interval [number]] 轮询间隔 ms
+ *               loopOption.stop [function] 轮询终止的条件
+ *               loopOption.pending [function] 已经成功响应，仍需继续轮询的条件
+ * @see
+ * fetchApi(
+ *      [{
+ *          opcode : 'ACCOUNT_LOGIN', 
+ *          data : {password : '123'}
+ *      }],
+ *      {timeout : 10000},
+ * );
+ * fetchApi(
+ *      [
+ *          {opcode : 'DHCPS_GET'},
+ *          {opcode : 'NETWORK_LAN_IPV4_GET'}
+ *      ],
+ *      {timeout : 10000},
+ *      {loop : true, interval : 1000, stop : function(){return true}},
+ *      
+ * );
+ */
 export function fetchApi(data, options = {}, loopOption = {}) {
+    data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
     options = assign({ timeout: 10000, method: 'POST' }, options);
 
     let url = __BASEAPI__ + '/';
@@ -166,6 +204,15 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     return resolve({ errcode: 0 });
                 }
                 // 正常响应 解析响应结果
+                if(options.fileLink === true){
+                    let blob = new Blob([response.data],{type : 'application/x-targz'});
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
+                    link.click();
+                    window.URL.revokeObjectURL(link.href);
+                    return;
+                }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if (res.errcode !== 0) {
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;

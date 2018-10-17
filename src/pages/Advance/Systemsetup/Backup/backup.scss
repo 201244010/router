@@ -1,75 +1,26 @@
 
-.backup {
-    padding-left: 60px;
-
-    .backup-title {
-        margin-top: 10px;
-    }
-
-    .backup-base {
-        margin-top: 35px;
-        .ant-checkbox-checked  .ant-checkbox-inner{
-            background-color: #FB8632;
-            border-color: #FB8632;
+.backup-restore {
+    .backup-list{
+        margin: 30px 0;
+        li{
+            margin: 10px 0;
         }
     }
-
-    .backup-auth {
-        margin-top: 20px;
-        margin-bottom: 30px;
-        .ant-checkbox-checked .ant-checkbox-inner{
-            background-color: #FB8632;
-            border-color: #FB8632;
+    .func-btn{
+        button{
+            margin-right: 20px;
         }
     }
-
-    .backup-info {
-        font-size: 14px;
-        color: #333C4F; 
-    }
-
-    .backup-local {
-        background: #F7F7F7;
-        display: inline-block;
-        width : 116px;
-        height: 34px;
-        margin-right : 20px;
-    }
-
-    .backup-cloud {
-        background: #F7F7F7;
-        display: inline-block;
-        width : 116px;
-        height: 34px;
-    }
-
-    .recover-local {
-        margin-top: 25px;
-        display: inline-block;
-        margin-right : 20px;
-        .ant-upload-select{
-            width : 116px;
-            z-index: 1;
-            opacity: 0;       
-            position:absolute;
+    .restore{
+        margin-top: 40px;
+        .restore-func{
+            margin-top: 40px;
+            .cloud-restore{
+                position: relative;
+                top: -32px;
+                left: 120px;
+            }
         }
-        .button-name {
-            border: 1px solid transparent;
-            color: #333C4F;
-            border-color: #fff;
-            background: #F7F7F7;
-            display: inline-block;
-            width : 116px;
-            height: 34px;
-        }
-    }
-
-    .recover-cloud {
-        margin-top: 25px;
-        background: #F7F7F7;
-        display: inline-block;
-        width : 116px;
-        height: 34px;
     }
 }
 

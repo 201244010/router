@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox } from 'antd';
+import { Button, Table, Popconfirm, Modal, Checkbox } from 'antd';
 import CustomIcon from '~/components/Icon';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
@@ -80,7 +80,7 @@ export default class Bootdevice extends React.Component {
     }
 
     selectAdd = () => {
-        this.fetchClientsInfo();
+        this.fetchBasic();
         this.setState({
             visible: true
         });
@@ -98,18 +98,16 @@ export default class Bootdevice extends React.Component {
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchWithCode(
-            'QOS_AC_WHITELIST_DELETE',
-            {
-                method: 'POST', data: {
-                    white_list: [{
-                        index: record.index,
-                        name: record.name,
-                        mac: record.mac,
-                    }]
-                }
+        let response = await common.fetchApi({
+            opcode: 'QOS_AC_WHITELIST_DELETE',
+            data: {
+                white_list: [{
+                    index: record.index,
+                    name: record.name,
+                    mac: record.mac,
+                }]
             }
-        ).catch(ex => { });
+        }).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -147,9 +145,10 @@ export default class Bootdevice extends React.Component {
                 };
             });
 
-        let response = await common.fetchWithCode(
-            directive, { method: 'POST', data: { white_list: white_list } }
-        ).catch(ex => { });
+        let response = await common.fetchApi({
+            opcode: directive,
+            data: { white_list: white_list }
+        }).catch(ex => { });
 
         this.setState({
             loading: false
@@ -158,7 +157,7 @@ export default class Bootdevice extends React.Component {
         let { errcode, message } = response;
         if (errcode == 0) {
             // refresh list
-            this.fetchWhiteList();
+            this.fetchBasic();
 
             this.setState({
                 visible: false,
@@ -181,7 +180,10 @@ export default class Bootdevice extends React.Component {
             name: this.state.name
         }];
 
-        let response = await common.fetchWithCode(directive, { method: 'POST', data: { white_list: white_list } });
+        let response = await common.fetchApi({
+            opcode: directive,
+            data: { white_list: white_list }
+        }).catch(ex => { });
 
         this.setState({
             editLoading: false
@@ -189,7 +191,7 @@ export default class Bootdevice extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchWhiteList();
+            this.fetchBasic();
             this.setState({
                 editShow: false
             })
@@ -240,93 +242,72 @@ export default class Bootdevice extends React.Component {
         return timeStr;
     }
 
-    fetchWhiteList = () => {
-        let fetchClinets = common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' });
-        let fetchWhite = common.fetchWithCode('QOS_AC_WHITELIST_GET', { method: 'POST' });
+    fetchBasic = async () => {
+        let response = await common.fetchApi([
+            { opcode: 'CLIENT_LIST_GET' },
+            { opcode: 'QOS_AC_WHITELIST_GET' }
+        ]);
 
-        Promise.all([fetchClinets, fetchWhite]).then(results => {
-            let clients, whites;
-            let { errcode, data } = results[0];
-            if (0 !== errcode) {
-                return;
-            } else {
-                clients = data[0].result.data;
-            }
-
-            if (0 !== results[1].errcode) {
-                return;
-            } else {
-                whites = results[1].data[0].result.white_list;
-            }
-
-            // merge clients && white list info
-            const modeMap = {
-                '2.4g': '2.4G Wi-Fi',
-                '5g': '5G Wi-Fi',
-                'sunmi': '商米专用Wi-Fi',
-                'not wifi': '有线'
-            };
-
-            this.setState({
-                whiteList: whites.map(item => {
-                    let mac = item.mac.toUpperCase();
-                    let client = clients.find(item => item.mac.toUpperCase() === mac) || {
-                        device: 'unknown',
-                        online: false,
-                        ontime: 0,
-                        ip: '0.0.0.0',
-                    };
-
-                    return {
-                        index: item.index,
-                        icon: iconMap[client.device] || 'unknown',
-                        name: item.name,
-                        online: (false !== client.online),  // 设备列表中的设备都是在线的
-                        ontime: this.formatTime(client.ontime),
-                        ip: client.ip,
-                        mac: mac,
-                        network: modeMap[client.wifi_mode] || '--',
-                    }
-                }),
-            });
-        }).catch((error) => {
-            console.error(error);
-        })
-    }
-
-    fetchClientsInfo = async () => {
-        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            let { data } = response.data[0].result;
-
-            // filter clients in dhcp static list
-            let restClients = data.filter(item => {
-                let mac = item.mac.toUpperCase();
-                return !!!(this.state.whiteList.find(client => {
-                    return (mac == client.mac.toUpperCase());
-                }));
-            });
-
-            this.setState({
-                onlineList: restClients.map(item => {
-                    return {
-                        icon: iconMap[item.device] || 'unknown',
-                        name: item.hostname,
-                        mac: item.mac,
-                        time: item.time,
-                        checked: false
-                    }
-                })
-            });
+        let { errcode, data, message } = response;
+        if (0 !== errcode) {
+            Modal.error({ title: '获取列表指令异常', message });
             return;
         }
 
-        Modal.error({ title: '获取客户端列表指令异常', message });
+        let clients = data[0].result.data,
+            whites = data[1].result.white_list;
+
+        // filter clients in dhcp static list
+        let restClients = clients.filter(item => {
+            let mac = item.mac.toUpperCase();
+            return !!!(this.state.whiteList.find(client => {
+                return (mac == client.mac.toUpperCase());
+            }));
+        });
+
+        // merge clients && white list info
+        const modeMap = {
+            '2.4g': '2.4G',
+            '5g': '5G',
+            'sunmi': '商米专用Wi-Fi',
+            'not wifi': '有线'
+        };
+
+        this.setState({
+            whiteList: whites.map(item => {
+                let mac = item.mac.toUpperCase();
+                let client = clients.find(item => item.mac.toUpperCase() === mac) || {
+                    device: 'unknown',
+                    online: false,
+                    ontime: 0,
+                    ip: '0.0.0.0',
+                };
+
+                return {
+                    index: item.index,
+                    icon: iconMap[item.device || 'unknown'],
+                    name: item.name,
+                    online: (false !== client.online),  // 设备列表中的设备都是在线的
+                    ontime: this.formatTime(client.ontime),
+                    ip: client.ip,
+                    mac: mac,
+                    network: modeMap[client.wifi_mode] || '--',
+                }
+            }),
+            onlineList: restClients.map(item => {
+                return {
+                    icon: iconMap[item.device] || 'unknown',
+                    name: item.hostname,
+                    mac: item.mac,
+                    time: item.time,
+                    checked: false
+                }
+            }),
+        });
     }
 
     componentDidMount() {
-        this.fetchWhiteList();
+        this.fetchBasic();
     }
 
     render() {
@@ -337,8 +318,9 @@ export default class Bootdevice extends React.Component {
             title: '',
             dataIndex: 'icon',
             width: 60,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.icon} size={32} />
+                <CustomIcon type={record.icon} size={42} />
             )
         }, {
             title: '设备名称',
@@ -395,8 +377,9 @@ export default class Bootdevice extends React.Component {
             title: '',
             dataIndex: 'icon',
             width: 60,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.icon} size={24} />
+                <CustomIcon type={record.icon} size={42} />
             )
         }, {
             title: '设备名称',
@@ -436,7 +419,7 @@ export default class Bootdevice extends React.Component {
                         left: 100,
                         border: 0,
                         padding: 0
-                    }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
+                    }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />

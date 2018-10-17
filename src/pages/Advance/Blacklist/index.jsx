@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox } from 'antd';
+import { Button, Table, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
@@ -67,7 +67,7 @@ export default class Blacklist extends React.Component {
     }
 
     selectAdd = () => {
-        this.fetchClientsInfo();
+        this.fetchBasic();
         this.setState({
             visible: true
         });
@@ -85,14 +85,16 @@ export default class Blacklist extends React.Component {
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchWithCode(
-            'QOS_AC_BLACKLIST_DELETE',
-            { method: 'POST', data: { black_list: [{
-                index: record.index,
-                name: record.name,
-                mac: record.mac,
-            }] } }
-        ).catch(ex => { });
+        let response = await common.fetchApi({
+            opcode: 'QOS_AC_BLACKLIST_DELETE',
+            data: {
+                black_list: [{
+                    index: record.index,
+                    name: record.name,
+                    mac: record.mac,
+                }]
+            }
+        }).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -130,9 +132,10 @@ export default class Blacklist extends React.Component {
                 };
             });
 
-        let response = await common.fetchWithCode(
-            directive, { method: 'POST', data: { black_list: black_list } }
-        ).catch(ex => { });
+        let response = await common.fetchApi({
+            opcode: directive,
+            data: { black_list: black_list }
+        }).catch(ex => { });
 
         this.setState({
             loading: false
@@ -141,7 +144,7 @@ export default class Blacklist extends React.Component {
         let { errcode, message } = response;
         if (errcode == 0) {
             // refresh list
-            this.fetchBlackList();
+            this.fetchBasic();
 
             this.setState({
                 visible: false,
@@ -154,17 +157,28 @@ export default class Blacklist extends React.Component {
     }
 
     onEditOk = async () => {
+        let { me, mac, name }  = this.state;
+        mac = mac.join(':').toUpperCase();
+
+        if (me === mac) {
+            message.warning('不能禁止本机上网');
+            return;
+        }
+
         this.setState({
             editLoading: true
         });
 
         let directive = 'QOS_AC_BLACKLIST_ADD';
         let black_list = [{
-            mac: this.state.mac.join(':').toUpperCase(),
-            name: this.state.name
+            mac: mac,
+            name: name
         }];
 
-        let response = await common.fetchWithCode(directive, { method: 'POST', data: { black_list: black_list } });
+        let response = await common.fetchApi({
+            opcode: directive,
+            data: { black_list: black_list }
+        }).catch(ex => { });
 
         this.setState({
             editLoading: false
@@ -172,7 +186,7 @@ export default class Blacklist extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchBlackList();
+            this.fetchBasic();
             this.setState({
                 editShow: false
             })
@@ -196,74 +210,53 @@ export default class Blacklist extends React.Component {
         })
     }
 
-    fetchBlackList = async () => {
-        let response = await common.fetchWithCode('QOS_AC_BLACKLIST_GET', { method: 'POST' })
+    fetchBasic = async () => {
+        let response = await common.fetchApi([
+            { opcode: 'CLIENT_LIST_GET' },
+            { opcode: 'QOS_AC_BLACKLIST_GET' },
+            { opcode: 'WHOAMI_GET' },
+        ]);
+
         let { errcode, data, message } = response;
-        if (errcode == 0) {
-            let { black_list } = data[0].result;
-            this.setState({
-                blockLists: black_list.map(item => {
-                    return {
-                        logo: 'unknown',
-                        name: item.name,
-                        mac: item.mac,
-                        time: new Date(parseInt(item.time) * 1000).toLocaleString(),
-                        index: item.index
-                    }
-                })
-            });
-
+        if (0 !== errcode) {
+            Modal.error({ title: '获取列表指令异常', message });
             return;
         }
 
-        Modal.error({ title: '获取黑名单列表指令异常', message });
-    }
+        let me = data[2].result.mac.toUpperCase();
+        // filter clients in dhcp static list
+        let restClients = data[0].result.data.filter(item => {
+            let mac = item.mac.toUpperCase();
+            return (mac !== me) && !!!(this.state.blockLists.find(client => {
+                return (mac == client.mac.toUpperCase());
+            }));
+        });
 
-    fetchClientsInfo = async () => {
-        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            let { data } = response.data[0].result;
-
-            // filter clients in dhcp static list
-            let restClients = data.filter(item => {
-                let mac = item.mac.toUpperCase();
-                return (mac !== this.state.me) && !!!(this.state.blockLists.find(client => {
-                    return (mac == client.mac.toUpperCase());
-                }));
-            });
-
-            this.setState({
-                onlineList: restClients.map(item => {
-                    return {
-                        logo: logoMap[item.device] || 'unknown',
-                        name: item.hostname,
-                        mac: item.mac,
-                        checked: false
-                    }
-                })
-            });
-            return;
-        }
-
-        Modal.error({ title: '获取客户端列表指令异常', message });
-    }
-
-    fetchWhoAmI = async () => {
-        let response = await common.fetchWithCode('WHOAMI_GET', { method: 'POST' })
-        let { errcode } = response;
-        if (errcode == 0) {
-            let { mac } = response.data[0].result;
-
-            this.setState({
-                me: mac.toUpperCase(),
-            });
-        }
+        let { black_list } = data[1].result;
+        this.setState({
+            me: me,
+            blockLists: black_list.map(item => {
+                return {
+                    logo: 'unknown',
+                    name: item.name,
+                    mac: item.mac,
+                    time: new Date(parseInt(item.time) * 1000).toLocaleString(),
+                    index: item.index
+                }
+            }),
+            onlineList: restClients.map(item => {
+                return {
+                    logo: logoMap[item.device] || 'unknown',
+                    name: item.hostname,
+                    mac: item.mac,
+                    checked: false
+                }
+            }),
+        });
     }
 
     componentDidMount() {
-        this.fetchBlackList();
-        this.fetchWhoAmI();
+        this.fetchBasic();
     }
 
     render() {
@@ -274,8 +267,9 @@ export default class Blacklist extends React.Component {
             title: '',
             dataIndex: 'logo',
             width: 80,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.logo} size={32} />
+                <CustomIcon type={record.logo} size={42} />
             )
         }, {
             title: '设备名称',
@@ -305,8 +299,9 @@ export default class Blacklist extends React.Component {
             title: '',
             dataIndex: 'logo',
             width: 60,
+            className: 'center',
             render: (text, record) => (
-                <CustomIcon type={record.logo} size={24} />
+                <CustomIcon type={record.logo} size={42} />
             )
         }, {
             title: '设备名称',
@@ -346,7 +341,7 @@ export default class Blacklist extends React.Component {
                         left: 100,
                         border: 0,
                         padding: 0
-                    }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
+                    }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />

@@ -2,7 +2,7 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Progress, Modal } from 'antd'
+import { Button, Table, Progress, Modal , message} from 'antd'
 
 import CustomIcon from '~/components/Icon';
 const {FormItem, Input} = Form;
@@ -81,13 +81,10 @@ export default class Bandwidth extends React.PureComponent {
 
     OnBandEnable = value => {
         if(this.state.upband === '--' || this.state.downband === '--'){
-            this.setState({
-                bandunset : true
-            });
-            setTimeout(()=>{
-                this.setState({
-                    bandunset : false
-                })},3000)
+            message.config({
+                top : 80,
+            })
+            message.error('请先设置带宽')
         }else{
             this.setState({
                 bandenable : value
@@ -96,15 +93,13 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     speedTestStatus = async ()=> {
-        common.fetchWithCode(
-            'WANWIDGET_SPEEDTEST_START',
-            {method : 'POST'}
-        ).then((resp => {
+        common.fetchApi({
+            opcode :'WANWIDGET_SPEEDTEST_START'
+        }).then((resp => {
             const {errcode} = resp;
             if(errcode === 0){
-                let status = common.fetchWithCode(
-                    'WANWIDGET_SPEEDTEST_INFO_GET',
-                    {method : 'POST'},
+                let status = common.fetchApi(
+                    {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
                     {
                         loop : 5,
                         interval : 20000,
@@ -124,10 +119,10 @@ export default class Bandwidth extends React.PureComponent {
                                 percent : 0,
                             });
                             let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
-                            common.fetchWithCode(
-                                'QOS_SET',
-                                {method : 'POST', data : payload}).catch(ex=>{}
-                            )
+                            common.fetchApi({
+                                opcode : 'QOS_SET',
+                                data : payload
+                            })
                         }else if(info.status === "fail"){
                             this.setState({
                                 speedFail : true,
@@ -167,7 +162,7 @@ export default class Bandwidth extends React.PureComponent {
             loading : true
         });
         let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
-        let response = await common.fetchWithCode(
+        let response = await common.fetchApi(
             'QOS_SET',
             {method : 'POST', data : payload}
         ).catch(ex=>{})
@@ -224,9 +219,8 @@ export default class Bandwidth extends React.PureComponent {
 
     //获取QoS数据
     getBandInfo = async ()=>{
-        let response = await common.fetchWithCode(
-            'QOS_GET',
-            {method : 'POST'},
+        let response = await common.fetchApi(
+            {opcode : 'QOS_GET'},
             {
                 loop : true,
                 interval : 3000,
@@ -278,10 +272,10 @@ export default class Bandwidth extends React.PureComponent {
             buttonloading : true
         })
         let payload = this.composeparams("default",this.state.upband,this.state.downband);
-        let response = await common.fetchWithCode(
-            'QOS_SET',
-            {method : 'POST', data : payload}).catch(ex=>{}
-        )
+        let response = await common.fetchApi({
+            opcode : 'QOS_SET',
+            data : payload
+        })
         let {errcode, message} = response;
         if (errcode == 0){
             this.setState({
@@ -418,12 +412,6 @@ export default class Bandwidth extends React.PureComponent {
                     <section className="speed-bottom">
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>
                     </section>
-                </Modal>
-                <Modal closable={false} mask={false} visible={bandunset} footer={null} width={170} style={{padding : 10,top : 78}}>
-                    <div className="band-line" style={{margin : 0, padding : 0}}>
-                        <CustomIcon color="orange" type="clean" size={14}  />
-                        <label style={{fontSize : 14,marginLeft : 6}}>请先设置总带宽</label>
-                    </div>
                 </Modal>
             </div>
         );

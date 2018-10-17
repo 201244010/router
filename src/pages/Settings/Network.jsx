@@ -284,8 +284,10 @@ export default class NETWORK extends React.Component {
             });
             return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
         }
-        let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET',{method : 'POST',data : payload})
-            .catch(ex => {})
+        let response = await common.fetchApi({
+            opcode : 'NETWORK_WAN_IPV4_SET',
+            data : payload
+        })
         let {errcode, message } = response;
         if (errcode == 0){
             this.setState({
@@ -299,9 +301,8 @@ export default class NETWORK extends React.Component {
 
     //获取信息
     getNetInfo = async ()=>{
-        let response = await common.fetchWithCode(
-            'NETWORK_WAN_IPV4_GET',
-            { method : 'POST'}
+        let response = await common.fetchApi(
+            { opcode : 'NETWORK_WAN_IPV4_GET'}
         );
         let { data, errcode, message } = response;
         if(errcode == 0){
@@ -350,7 +351,9 @@ export default class NETWORK extends React.Component {
     
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        let response = await  common.fetchWithCode('NETWORK_WAN_IPV4_GET',{method : 'POST'});
+        let response = await  common.fetchApi({
+                opcode : 'NETWORK_WAN_IPV4_GET'
+            })
             let {errcode, data} = response;
             if(errcode == 0){
                 let info = data[0].result.wan.info;
@@ -394,9 +397,10 @@ export default class NETWORK extends React.Component {
 
     componentDidMount(){
         //获取网络状况
-       this.getNetInfo();
-       this.handleTime = setInterval(() => this.refreshNetStatus(),3000);
-       this.stop = false;
+        this.getNetInfo();
+        this.refreshNetStatus();
+        this.handleTime = setInterval(this.refreshNetStatus,3000);
+        this.stop = false;
     }
 
     componentWillUnmount(){

@@ -1,11 +1,8 @@
 
-
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import { Modal ,Select ,Button ,Radio} from 'antd';
-import UploadImage from '~/components/Upload';
-
+import { Modal ,Select ,Button ,Radio, Upload, Icon,message} from 'antd';
 const {FormItem,Input} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -31,7 +28,37 @@ export default class SmsAuth extends React.Component{
         selectedSsid : [],
         children : [],
         watchValue : '1',
+        fileList : []
     }
+
+    handleWeChange = (info) => {
+        let fileList = info.fileList;
+        fileList = fileList.slice(-1);
+        fileList = fileList.map((file) => {
+          if (file.response) {
+            file.url = file.response.url;
+          }
+          return file;
+        });
+
+        fileList = fileList.filter((file) => {
+          if (file.response) {
+            return file.response.status === 'success';
+          }
+          return true;
+        });
+    
+        this.setState({ fileList });
+    }
+
+    beforeUpload = (file) => {
+        let isImage = file.type;
+        if(isImage!='image/png'&&isImage!='image/jpeg'){    
+        message.error('只能上传带.jpg、.png后缀的图片文件');
+        }
+        return isImage;
+    }  
+
 
     onEnableChange = type =>{
         this.setState({
@@ -169,9 +196,17 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <UploadImage uploadTitle={'上传Logo图'}/>
+                                <Upload onChange={this.handleWeChange} action="//192.168.100.1" fileList={this.state.fileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130}}>
+                                        <Icon type="upload" /> 上传Logo图
+                                    </Button>
+                                </Upload>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <UploadImage uploadTitle={'上传背景图'}/>
+                                <Upload  onChange={this.handleWeChange} action="//192.168.100.1" fileList={this.state.fileList} multiple={false} uploadTitle={'上传背景图'}>
+                                    <Button style={{width:130}}>
+                                            <Icon type="upload" /> 上传背景图
+                                        </Button>
+                                </Upload>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -253,8 +288,10 @@ export default class SmsAuth extends React.Component{
 
 const Choose = props =>{
         return (
+        <div className="hide-input">
             <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
                 {props.Children}
             </Select>
+        </div>
         );
 };
