@@ -131,6 +131,7 @@
                 vertical-align: middle;
             }
             .content{
+                height: 140px;
                 margin-left: 60px;
                 display:inline-block;
                 width: 150px;
@@ -173,10 +174,28 @@
                 .down{
                     color: #87D068;
                 }
-                .test-speed{
+                button{
                     margin-top: 10px;
                     font-size: 14px;
                     color: #61739D;
+                }
+                .internet-status{
+                    display: block;
+                }
+                .diagnose{
+                    margin-top: 40px;
+                    display: none;
+                }
+            }
+            .internet-error{
+                .state{
+                    color: #BF4C41 !important;
+                }
+                .internet-status{
+                    display: none;
+                }
+                .diagnose{
+                    display: inline-block;
                 }
             }
         }

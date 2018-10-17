@@ -52,7 +52,6 @@ export const getTimeZone = () => {
  *      
  * );
  */
-
 export function fetchWithCode(directive, options = {}, loopOption = {}){
     options = assign({timeout : 10000}, options);
     let code = DIRECTIVE[directive];
@@ -94,7 +93,7 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                     return false;
                 }
                 // 预处理 追加 message 字段
-                console.log("[DEBUG]]:", directive, res);
+                console.log("[DEBUG]:", directive, res);
                 return resolve(res);
             })
             .catch( error => {
@@ -136,6 +135,88 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
     return promise;
 };
 
+export function fetchApi(data, options = {}, loopOption = {}) {
+    options = assign({ timeout: 10000, method: 'POST' }, options);
+
+    let url = __BASEAPI__ + '/';
+    let { loop, interval } = assign({ loop: false, interval: 1000, pending: noop }, loopOption);
+
+    let payload = data.map(item => {
+        return {
+            opcode: DIRECTIVE[item.opcode],
+            param: item.data || {},
+        }
+    });
+
+    let count = 1, method = options.method.toLowerCase();
+    if (method === 'get') {
+        options.params = { "params": payload, count: "1" };
+    }
+    else if (method === 'post') {
+        options.data = { "params": payload, count: "1" };
+    }
+    if (loopOption.loop && typeof loopOption.stop !== 'function') {
+        throw new Error('loopOption.stop must be function, because loopOption.loop is active');
+    }
+    const promise = new Promise((resolve, reject) => {
+        function fetch() {
+            return axios(url, options).then(function (response) {
+                // 请求响应 但是响应的数据集为空
+                if (response.data === '') {
+                    return resolve({ errcode: 0 });
+                }
+                // 正常响应 解析响应结果
+                let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+                if (res.errcode !== 0) {
+                    res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
+                }
+
+                if (loopOption && loopOption.pending && loopOption.pending(res)) {
+                    setTimeout(() => fetch(), interval);
+                    return false;
+                }
+                // 预处理 追加 message 字段
+                console.log("[DEBUG]:", res);
+                return resolve(res);
+            })
+                .catch(error => {
+                    switch (typeof loop) {
+                        case 'number':
+                            if (count < loop) {
+                                count++;
+                                if (!loopOption.stop()) {
+                                    setTimeout(() => fetch(), interval);
+                                }
+                                return false;
+                            }
+                            break;
+                        case 'boolean':
+                            if (loop === true) {
+                                if (!loopOption.stop()) {
+                                    setTimeout(() => fetch(), interval);
+                                }
+                                return false;
+                            }
+                            break;
+                        case 'string':
+                            throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
+                    }
+                    if (error.toString().indexOf('403') > -1) {
+                        location.href = '/login';
+                        return reject({});
+                        // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
+                    }
+                    else if (loopOption.handleError) {
+                        Modal.error({ title: 'Error', content: <ErrorTip error={error} directive={stringify(data)} /> });
+                    }
+                    return reject(error);
+                })
+        }
+        fetch();
+    })
+
+    return promise;
+};
 
 function ErrorTip(props){
     return (
