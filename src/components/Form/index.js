@@ -165,7 +165,7 @@ class InputGroup extends React.Component {
         const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-        item.value = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-zA-Z]*/g, '');
+        item.value = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-zA-Z]*/g, '').toUpperCase();
         this.setState({ inputs });
         if(this.props.onChange){
             const values = inputs.map(input => input.value);
@@ -207,7 +207,7 @@ class InputGroup extends React.Component {
     handleKeyPress  = e => {
         let which = e.which;
         let allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
-        let isWord = (which >= 65 && which <= 90) || which == 20; // 字母 Cape Lock	
+        let isWord = (which >= 65 && which <= 70) || which == 20; // 字母 Cape Lock
         let move = which == 37 || which == 39;
         if(allow || (isWord && this.props.type == 'mac') || move ){
             return true;
