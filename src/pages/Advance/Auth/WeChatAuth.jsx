@@ -2,8 +2,7 @@
 import React from "react";
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import { Modal ,Select,Button} from 'antd';
-import UploadImage from '~/components/Upload';
+import { Modal ,Select,Button, Upload, Icon,message} from 'antd';
 
 const {FormItem,Input} = Form;
 const Option = Select.Option;
@@ -27,7 +26,35 @@ export default class WeChatAuth extends React.Component{
         secretKey : '',
         selectedSsid : [],
         children : [],
+        fileList: [],
     }
+    
+      handleWeChange = (info) => {
+        let fileList = info.fileList;
+    
+        // 1. Limit the number of uploaded files
+        // Only to show two recent uploaded files, and old ones will be replaced by the new
+        fileList = fileList.slice(-1);
+    
+        // 2. Read from response and show file link
+        fileList = fileList.map((file) => {
+          if (file.response) {
+            // Component will show file.url as link
+            file.url = file.response.url;
+          }
+          return file;
+        });
+    
+        // 3. Filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+          if (file.response) {
+            return file.response.status === 'success';
+          }
+          return true;
+        });
+    
+        this.setState({ fileList });
+      }
 
     onEnableChange = type =>{
         this.setState({
@@ -123,6 +150,14 @@ export default class WeChatAuth extends React.Component{
         Modal.error({title : '微信认证信息设置失败',content : message});
     }
 
+    beforeUpload = (file) => {
+        let isImage = file.type;
+        if(isImage!='image/png'&&isImage!='image/jpeg'){    
+        message.error('只能上传带.jpg、.png后缀的图片文件');
+        }
+        return isImage;
+    }  
+
     componentDidMount(){
         this.fetchWeChatAuthInfo();
     }
@@ -156,9 +191,17 @@ export default class WeChatAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <UploadImage uploadTitle={'上传Logo图'}/>
+                                <Upload onChange={this.handleWeChange} fileList={this.state.fileList} action="//192.168.100.1" uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130}}>
+                                        <Icon type="upload" /> 上传Logo图
+                                    </Button>
+                                </Upload>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <UploadImage uploadTitle={'上传背景图'}/>
+                                <Upload  onChange={this.handleWeChange} fileList={this.state.fileList} action="//192.168.100.1" multiple={false} uploadTitle={'上传背景图'}>
+                                    <Button style={{width:130}}>
+                                            <Icon type="upload" /> 上传背景图
+                                        </Button>
+                                </Upload>
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -224,8 +267,9 @@ export default class WeChatAuth extends React.Component{
 
 const Choose = props =>{
         return (
+        <div className="hide-input">
             <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
                 {props.Children}
             </Select>
-        );
+        </div>)
 };
