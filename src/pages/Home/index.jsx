@@ -1,5 +1,6 @@
 
 import React from 'react';
+import classnames from 'classnames';
 import { Button, Modal, Progress } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import PrimaryFooter from '~/components/PrimaryFooter';
@@ -25,6 +26,7 @@ export default class Home extends React.PureComponent {
         upUnit: 'Kbps',
         downSpeed: 0,
         downUnit: 'Kbps',
+        online: true,
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
         me: '',
@@ -115,139 +117,136 @@ export default class Home extends React.PureComponent {
         });
 
         clearTimeout(this.timer);
-        this.fetchClinetsInfo();
+        this.resreshStatus();
     }
 
-    fetchWhoAmI = async () => {
-        let response = await common.fetchWithCode('WHOAMI_GET', { method: 'POST' })
-        let { errcode } = response;
-        if (errcode == 0) {
-            let { mac } = response.data[0].result;
-
-            this.setState({
-                me: mac.toUpperCase(),
-            });
-        }
-    }
-
-    fetchQoS = async () => {
-        let response = await common.fetchWithCode('QOS_GET', { method: 'POST' })
+    fetchBasic = async () => {
+        let response = await common.fetchApi([
+            { opcode: 'QOS_GET' },
+            { opcode: 'WHOAMI_GET' }
+        ]);
         let { errcode, data } = response;
         if (errcode == 0) {
             let { qos } = data[0].result;
+            let { mac } = data[1].result;
             this.setState({
                 qosEnable: qos.enable,
                 totalBand: parseInt(qos.up_bandwidth, 10),
+                me: mac.toUpperCase(),
             });
             return;
         }
     }
 
-    fetchClinetsInfo = () => {
-        let fetchClinets = common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' });
-        let fetchTraffic = common.fetchWithCode('TRAFFIC_STATS_GET', { method: 'POST' });
+    resreshStatus = async () => {
+        if (!this.state.refresh) {
+            return;
+        }
 
-        Promise.all([fetchClinets, fetchTraffic]).then(results =>{
-            if (!this.state.refresh){
-                return;
-            }
+        let resp = await common.fetchApi([
+            { opcode:'CLIENT_LIST_GET' },
+            { opcode: 'TRAFFIC_STATS_GET' },
+            { opcode: 'WIRELESS_LIST_GET' },
+            { opcode: 'NETWORK_WAN_IPV4_GET' },
+        ]);
 
-            let clients, traffics;
-            let band = {
-                sunmi: 0,
-                whitelist: 0,
-                normal: 0,
+        let { errcode, data } = resp;
+        if (0 !== errcode) {
+            return;
+        }
+
+        let clients = data[0].result.data,
+            traffics = data[1].result.traffic_stats.hosts,
+            wifiInfo = data[2].result.rssilist || {};
+        let band = {
+            sunmi: 0,
+            whitelist: 0,
+            normal: 0,
+        };
+        // merge clients && traffic info
+        let totalList = clients.map(client => {
+            const deviceMap = {
+                iphone: 'number',
+                android: 'android',
+                ipad: 'pad',
+                pc: 'computer',
+                unknown: 'unknown',
             };
-            let { errcode, data } = results[0];
-            if (0 !== errcode){
-                return;
+            const modeMap = {
+                '2.4g': '2.4G',
+                '5g': '5G',
+                'sunmi': '商米专用Wi-Fi',
+                'not wifi': '有线'
+            };
+            let dft = {
+                total_tx_bytes: 0,
+                total_rx_bytes: 0,
+                cur_tx_bytes: 0,
+                cur_rx_bytes: 0
+            };
+            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
+            let mode = modeMap[client.wifi_mode];
+            let device = deviceMap[client.device || 'unknown'];
+            let ontime = this.formatTime(client.ontime);
+            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
+
+            let rssi;
+            if ('not wifi' == client.wifi_mode) {
+                rssi = '--';
             } else {
-                clients = data[0].result.data;
+                let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:100};
+                rssi = (wi.rssi <= 75) ? '好' : '差';
             }
 
-            if (0 !== results[1].errcode) {
-                return;
-            } else {
-                traffics = results[1].data[0].result.traffic_stats.hosts;
+            // 统计不同类型设备带宽
+            client.type = client.type || 'normal';
+            band[client.type] += tf.cur_rx_bytes;
+
+            return {
+                icon: device,
+                name: client.hostname,
+                ip: client.ip,
+                mac: client.mac.toUpperCase(),
+                type: client.type,
+                mode: mode,
+                ontime: ontime,
+                rssi: rssi,
+                tx: this.formatSpeed(tf.cur_tx_bytes),
+                rx: this.formatSpeed(tf.cur_rx_bytes),
+                flux: flux,
             }
+        });
 
-            // merge clients && traffic info
-            let totalList = clients.map(client => {
-                const deviceMap = {
-                    iphone:'number',
-                    android: 'android',
-                    ipad: 'pad',
-                    pc: 'computer',
-                    unknown: 'unknown',
-                };
-                const modeMap = {
-                    '2.4g': '2.4G',
-                    '5g': '5G',
-                    'sunmi': '商米专用Wi-Fi',
-                    'not wifi': '有线'
-                };
-                let dft = {
-                    total_tx_bytes: 0,
-                    total_rx_bytes: 0,
-                    cur_tx_bytes: 0,
-                    cur_rx_bytes: 0
-                };
-                let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
-                let rssi = ('not wifi' == client.wifi_mode) ? '--' : (('good' === client.rssi) ? '好' : '差');
-                let mode = modeMap[client.wifi_mode];
-                let device = deviceMap[client.device || 'unknown'];
-                let ontime = this.formatTime(client.ontime);
-                let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
+        let wan = data[1].result.traffic_stats.wan;
+        let tx = this.formatSpeed(wan.cur_tx_bytes);
+        let rx = this.formatSpeed(wan.cur_rx_bytes);
+        let total = this.state.totalBand;
+        let rest = total - (band.sunmi + band.whitelist + band.normal);
+        let bandCount = [band.sunmi, band.whitelist, band.normal, (rest > 0 ? rest : 0)];
 
-                // 统计不同类型设备带宽
-                client.type = client.type || 'normal';
-                band[client.type] += tf.cur_rx_bytes;
+        let { online } = data[3].result.wan.info;
 
+        this.setState({
+            online: online,
+            upSpeed: tx.match(/[0-9\.]+/g),
+            upUnit: tx.match(/[a-z]+/gi),
+            downSpeed: rx.match(/[0-9\.]+/g),
+            downUnit: rx.match(/[a-z]+/gi),
+            sunmiClients: totalList.filter(item => item.type === 'sunmi'),
+            normalClients: totalList.filter(item => item.type === 'normal'),
+            whitelistClients: totalList.filter(item => item.type === 'whitelist'),
+            qosData: this.state.qosData.map((item, index) => {
                 return {
-                    icon: device,
-                    name: client.hostname,
-                    ip: client.ip,
-                    mac: client.mac.toUpperCase(),
-                    type: client.type,
-                    mode: mode,
-                    ontime: ontime,
-                    rssi: rssi,
-                    tx: this.formatSpeed(tf.cur_tx_bytes),
-                    rx: this.formatSpeed(tf.cur_rx_bytes),
-                    flux: flux,
+                    name: item.name,
+                    value: (bandCount[index] * 100 / total).toFixed(0),
+                    color: item.color
                 }
-            });
+            }),
+        });
 
-            let wan = results[1].data[0].result.traffic_stats.wan;
-            let tx = this.formatSpeed(wan.cur_tx_bytes);
-            let rx = this.formatSpeed(wan.cur_rx_bytes);
-            let total = this.state.totalBand;
-            let rest = total - (band.sunmi + band.whitelist + band.normal);
-            let bandCount = [band.sunmi, band.whitelist, band.normal, (rest > 0 ? rest : 0)];
-
-            this.setState({
-                upSpeed: tx.match(/[0-9\.]+/g),
-                upUnit: tx.match(/[a-z]+/gi),
-                downSpeed: rx.match(/[0-9\.]+/g),
-                downUnit: rx.match(/[a-z]+/gi),
-                sunmiClients: totalList.filter(item => item.type === 'sunmi'),
-                normalClients: totalList.filter(item => item.type === 'normal'),
-                whitelistClients: totalList.filter(item => item.type === 'whitelist'),
-                qosData: this.state.qosData.map((item, index) => {
-                    return {
-                        name: item.name,
-                        value: (bandCount[index] * 100 / total).toFixed(0),
-                        color: item.color
-                    }
-                }),
-            });
-
-            this.timer = setTimeout(() => {
-                this.fetchClinetsInfo();
-            }, 3000)
-        }).catch((error) => {
-            console.log(error);
-        })
+        this.timer = setTimeout(() => {
+            this.resreshStatus();
+        }, 2000);
     }
 
     runningSpeedTest = () => {
@@ -325,9 +324,8 @@ export default class Home extends React.PureComponent {
 
     componentDidMount(){
         this.stop = false;
-        this.fetchWhoAmI();
-        this.fetchQoS();
-        this.fetchClinetsInfo();
+        this.fetchBasic();
+        this.resreshStatus();
     }
 
     componentWillUnmount(){
@@ -336,7 +334,7 @@ export default class Home extends React.PureComponent {
     }
 
     render(){
-        const { qosEnable, upSpeed, upUnit, downSpeed, downUnit,
+        const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit,
                 visible, percent, successShow, upBand, downBand, failShow, me,
                 sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
@@ -346,23 +344,26 @@ export default class Home extends React.PureComponent {
                     <li className='func-item internet'>
                         <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
                         <img className='router' src={require('~/assets/images/router.svg')} />
-                        <div className='content'>
-                            <h4><span>网络状态</span><span className='state'>正常</span></h4>
-                            <div className='up'>
-                                <label className='speed'>{upSpeed}</label>
-                                <div className='tip'>
-                                    <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
-                                    <div className='unit'>{upUnit}</div>
+                        <div className={classnames(['content', { 'internet-error': !online }])}>
+                            <h4><span>网络状态</span><span className='state'>{online ? '正常' : '异常'}</span></h4>
+                            <div className='internet-status'>
+                                <div className='up'>
+                                    <label className='speed'>{upSpeed}</label>
+                                    <div className='tip'>
+                                        <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
+                                        <div className='unit'>{upUnit}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='down'>
-                                <label className='speed'>{downSpeed}</label>
-                                <div className='tip'>
-                                    <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
-                                    <div className='unit'>{downUnit}</div>
+                                <div className='down'>
+                                    <label className='speed'>{downSpeed}</label>
+                                    <div className='tip'>
+                                        <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
+                                        <div className='unit'>{downUnit}</div>
+                                    </div>
                                 </div>
+                                <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
                             </div>
-                            <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
+                            <Button className='diagnose'><a href="/diagnose">立即诊断</a></Button>
                         </div>
                         <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
                             <h4>{percent}%</h4>

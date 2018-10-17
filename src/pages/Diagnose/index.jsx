@@ -167,7 +167,7 @@ export default class Diagnose extends React.Component {
         return (
             <div className='ui-fullscreen diagnose'>
                 <div className='doing' style={{display:('doing' === status ? 'block' : 'none')}}>
-                    <p className='title'>正在进行故障诊断，请稍后...</p>
+                    <p className='title'>正在进行故障诊断，请稍候...</p>
                     <Timeline className='time-line'>
                         <Timeline.Item dot={dot[0]}>检测网线连接状态</Timeline.Item>
                         <Timeline.Item dot={dot[1]}>检测WAN口拨号</Timeline.Item>

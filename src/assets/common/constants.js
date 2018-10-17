@@ -34,6 +34,7 @@ export const DIRECTIVE = {
     WIRELESS_GET : '0x2013',
     WIRELESS_SET : '0x2014',
     WIRELESS_CHANNEL_LIST_GET:'0x3001',
+    WIRELESS_LIST_GET: '0x3002',
 
     // sunmi mesh 按键
     SUNMIMESH_START: '0x2090',
