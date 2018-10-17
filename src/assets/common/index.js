@@ -82,7 +82,17 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                 if(response.data === ''){
                     return resolve({errcode : 0});
                 }
+
                 // 正常响应 解析响应结果
+                if(options.fileLink === true){
+                    let blob = new Blob([response.data],{type : 'application/x-targz'});
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
+                    link.click();
+                    window.URL.revokeObjectURL(link.href);
+                    return;
+                }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if(res.errcode !== 0){
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
@@ -194,6 +204,15 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     return resolve({ errcode: 0 });
                 }
                 // 正常响应 解析响应结果
+                if(options.fileLink === true){
+                    let blob = new Blob([response.data],{type : 'application/x-targz'});
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
+                    link.click();
+                    window.URL.revokeObjectURL(link.href);
+                    return;
+                }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if (res.errcode !== 0) {
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
