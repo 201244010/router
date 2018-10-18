@@ -185,4 +185,29 @@ let checkMac = function (mac, opt = {}) {
     return '';
 };
 
+let checkStr = function( val, minLength, maxLength, characterSetType){
+    let pattern,result;
+    switch (characterSetType){
+        case 'null': 
+            if(val.length >= minLength && val.length <= maxLength){
+                result= true; 
+            }else{
+                result= false;
+            }
+            break;
+        case 'ten':
+            pattern= new RegExp('^[0-9]{'+minLength+','+maxLength+'}$','g');
+            result= pattern.test(val);
+            break;
+        case 'sixteen':
+            pattern= new RegExp('^[0-9a-fA-F]{'+minLength+','+maxLength+'}$','g');
+            result=pattern.test(val);
+            break;
+        case 'english':
+            pattern= new RegExp('^[\x20-\x7E]{'+minLength+','+maxLength+'}$','g');
+            result=pattern.test(val);
+            break;
+    }
+}
+
 export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac};

@@ -87,7 +87,7 @@ export default class SetWifi extends React.Component {
                                     stop: resp => {resp!== 0},
                                 }
                             );
-                            this.props.history.push("/login");
+                            this.props.history.push("/home");
                         }
                     );
             }, 7000);
