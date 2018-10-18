@@ -27,9 +27,9 @@ export default class NETWORK extends React.Component {
         infoDns2 : [],
 
         //pppoe
-        pppoeAccount : 'eqeq',
+        pppoeAccount : '',
         pppoeAccountTip : '',
-        pppoePassword : 'eqeq',
+        pppoePassword : '',
         pppoePasswordTip : '',
         pppoeType: 'auto',
         hostSsidPasswordDisabled : false,
@@ -280,7 +280,8 @@ export default class NETWORK extends React.Component {
         let payload = this.composeParams(), info = payload.wan.info;
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
             this.setState({
-                disabled : false
+                disabled : false,
+                loading : false
             });
             return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
         }
