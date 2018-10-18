@@ -66,7 +66,7 @@ export default class Diagnose extends React.Component {
                     bgIcon: 'defeated',
                     problem: 'WAN口拨号异常',
                     reason: '上网方式设置错误，或宽带账号密码错误',
-                    solution: '请重新设置上网方式，或联系你的宽带运营商处理',
+                    solution: '请重新设置上网方式，或联系您的宽带运营商处理',
                     btnStr: '设置上网方式',
                     solutionFunc: this.setWan,
                 });
@@ -94,7 +94,7 @@ export default class Diagnose extends React.Component {
                     bgIcon: 'defeated',
                     problem: '无Internet服务',
                     reason: '上网方式设置错误，或运营商服务异常',
-                    solution: '请重新设置上网方式，或联系你的宽带运营商处理',
+                    solution: '请重新设置上网方式，或联系您的宽带运营商处理',
                     btnStr: '设置上网方式',
                     solutionFunc: this.setWan,
                 });
