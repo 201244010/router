@@ -27,9 +27,9 @@ export default class NETWORK extends React.Component {
         infoDns2 : [],
 
         //pppoe
-        pppoeAccount : 'eqeq',
+        pppoeAccount : '',
         pppoeAccountTip : '',
-        pppoePassword : 'eqeq',
+        pppoePassword : '',
         pppoePasswordTip : '',
         pppoeType: 'auto',
         hostSsidPasswordDisabled : false,

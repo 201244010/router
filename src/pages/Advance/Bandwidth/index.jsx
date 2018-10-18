@@ -15,7 +15,6 @@ export default class Bandwidth extends React.PureComponent {
         manualShow:false, //手动设置弹窗是否可见
         speedFill:false,//带宽测速完成弹窗是否可见
         speedFail:false,//带宽测速失败弹窗是否可见
-        bandunset : false,//总带宽未设置弹窗
         bandenable : false,
         upband : '--',
         downband : '--',
@@ -41,6 +40,7 @@ export default class Bandwidth extends React.PureComponent {
         downbandTmp : '',
         loading:false,
         disable : true, //按钮灰显
+        saveButton : false//按钮灰显
     }
     
     handleSpace = (val) => {
@@ -56,18 +56,10 @@ export default class Bandwidth extends React.PureComponent {
             [key]: value === "" ? value : value,
             sunmiTip : '',
             whiteTip : '',
-            normalTip : ''
+            normalTip : '',
         },() =>{ 
             const {sunmi, white, normal, upbandTmp ,downbandTmp} = this.state;
-            if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
-                this.setState({
-                    sunmiTip : '',
-                    whiteTip : '',
-                    normalTip : '',
-                    [key + 'Tip'] : tip
-                })
-            }
-            if (upbandTmp === "" || downbandTmp === ""){
+            if(upbandTmp === "" || downbandTmp === ""){
                 this.setState({
                     disable : true
                 })
@@ -76,19 +68,48 @@ export default class Bandwidth extends React.PureComponent {
                     disable : false
                 })
             }
+            if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
+                this.setState({
+                    sunmiTip : '',
+                    whiteTip : '',
+                    normalTip : '',
+                    [key + 'Tip'] : tip,
+                    saveButton : true
+                })
+            }else{
+                this.setState({
+                    saveButton : false
+                })
+            }
+            if (this.handleSpace(sunmi) === 0 || this.handleSpace(white) === 0 || this.handleSpace(normal) === 0 ){
+                this.setState({
+                    [key + 'Tip'] : '百分比例不能为空或0',
+                    saveButton : true
+                })
+            }
         })       
     }
 
-    OnBandEnable = value => {
+    OnBandEnable = async (value) => {
         if(this.state.upband === '--' || this.state.downband === '--'){
             message.config({
                 top : 80,
             })
             message.error('请先设置带宽')
         }else{
-            this.setState({
-                bandenable : value
+            this.qosdata.enable = value;
+            let response = await common.fetchApi({
+                opcode : 'QOS_SET',
+                data : {qos : this.qosdata}
             })
+            if(response.errcode === 0){
+                this.setState({
+                    bandenable : value
+                })
+                return;
+            }else{
+                Modal.error({title : '网速智能分配失败'});
+            }
         }
     }
 
@@ -98,7 +119,7 @@ export default class Bandwidth extends React.PureComponent {
         }).then((resp => {
             const {errcode} = resp;
             if(errcode === 0){
-                let status = common.fetchApi(
+                common.fetchApi(
                     {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
                     {
                         loop : 5,
@@ -231,6 +252,7 @@ export default class Bandwidth extends React.PureComponent {
         let {data, errcode, message} = response;
         if (errcode == 0){
             let qos = data[0].result.qos;
+            this.qosdata = qos;
             this.setState({
                 upband : (qos.up_bandwidth / 1024).toFixed(2),
                 downband : (qos.down_bandwidth / 1024).toFixed(2),
@@ -288,7 +310,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     render(){
-        const {bandunset, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
+        const {saveButton, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
             white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, buttonloading} = this.state;
         const columns = [{
@@ -359,7 +381,7 @@ export default class Bandwidth extends React.PureComponent {
                         <div className="speed-distribution"><CustomIcon size={16} color="gray" type="help"/></div>
                     </section>
                     {
-                        bandenable ?  <Bandon columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
+                        bandenable ?  <Bandon disable={saveButton} columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
                     }
                 </Form>
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
@@ -429,7 +451,7 @@ const Bandon = props => {
     <div key='speedbutton'>
         <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />
         <section className="wifi-setting-save" style={{marginTop:30}}>
-            <Button  style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
+            <Button disabled={props.disable} style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
         </section>
      </div>
     ]
