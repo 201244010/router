@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { message } from 'antd';
 
 import "./assets/styles/index.scss";
 
@@ -35,6 +36,15 @@ class PrimaryLayout extends React.Component {
         const pathname = location.pathname;
         const logined = document.cookie.length > 0;
         return { pathname, logined };
+    }
+
+    componentDidMount(){
+        // set global mesage conf
+        message.config({
+            top: 0,
+            duration: 2,
+            maxCount: 3,
+        });
     }
 
     render(){

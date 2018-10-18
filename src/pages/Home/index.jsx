@@ -87,7 +87,7 @@ export default class Home extends React.PureComponent {
         let mSpeed = kSpeed * 1024;
         let gSpeed = mSpeed * 1024;
 
-        speed = parseInt(speed, 10);
+        speed = parseInt(speed, 10) * 8; // byte -> bit
         if (speed >= gSpeed) {
             speed = (speed / gSpeed).toFixed(2) + "Gbps";
         }
@@ -131,7 +131,7 @@ export default class Home extends React.PureComponent {
             let { mac } = data[1].result;
             this.setState({
                 qosEnable: qos.enable,
-                totalBand: parseInt(qos.up_bandwidth, 10),
+                totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
                 me: mac.toUpperCase(),
             });
             return;
@@ -152,6 +152,7 @@ export default class Home extends React.PureComponent {
 
         let { errcode, data } = resp;
         if (0 !== errcode) {
+            message.warning('网络状态刷新失败');
             return;
         }
 
@@ -188,7 +189,7 @@ export default class Home extends React.PureComponent {
             let mode = modeMap[client.wifi_mode];
             let device = deviceMap[client.device || 'unknown'];
             let ontime = this.formatTime(client.ontime);
-            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes);
+            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('ps', '');
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
@@ -238,7 +239,7 @@ export default class Home extends React.PureComponent {
             qosData: this.state.qosData.map((item, index) => {
                 return {
                     name: item.name,
-                    value: (bandCount[index] * 100 / total).toFixed(0),
+                    value: (bandCount[index] / total * 100) + '',
                     color: item.color
                 }
             }),
