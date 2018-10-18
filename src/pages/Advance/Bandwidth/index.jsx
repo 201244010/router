@@ -121,6 +121,7 @@ export default class Bandwidth extends React.PureComponent {
             if(errcode === 0){
                 common.fetchApi(
                     {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
+                    {},
                     {
                         loop : 5,
                         interval : 20000,
@@ -183,10 +184,10 @@ export default class Bandwidth extends React.PureComponent {
             loading : true
         });
         let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
-        let response = await common.fetchApi(
-            'QOS_SET',
-            {method : 'POST', data : payload}
-        ).catch(ex=>{})
+        let response = await common.fetchApi({
+            opcode : 'QOS_SET',
+            data : payload
+        })
         let {errcode, message} = response;
         if (errcode == 0){
             this.setState({
@@ -242,12 +243,7 @@ export default class Bandwidth extends React.PureComponent {
     getBandInfo = async ()=>{
         let response = await common.fetchApi(
             {opcode : 'QOS_GET'},
-            {
-                loop : true,
-                interval : 3000,
-                stop : ()=>this.stop
-            }
-        ).catch(ex=>{});
+        )
 
         let {data, errcode, message} = response;
         if (errcode == 0){
