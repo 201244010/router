@@ -24,7 +24,7 @@ export default class Diagnose extends React.Component {
     }
 
     diagnoseWanLink = async () => {
-        let res = await common.fetchWithCode('NETWORK_WAN_IPV4_GET', { method: 'POST' });
+        let res = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode, message } = res;
         if (errcode == 0) {
             let { info } = data[0].result.wan;
@@ -52,7 +52,7 @@ export default class Diagnose extends React.Component {
     }
 
     diagnoseDialState = async () => {
-        let res = await common.fetchWithCode('NETWORK_WAN_IPV4_GET', { method: 'POST' });
+        let res = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode, message } = res;
         if (errcode == 0) {
             let { info } = data[0].result.wan;
@@ -80,7 +80,7 @@ export default class Diagnose extends React.Component {
     }
 
     diagnoseOnline = async () => {
-        let res = await common.fetchWithCode('NETWORK_WAN_IPV4_GET', { method: 'POST' });
+        let res = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode, message } = res;
         if (errcode == 0) {
             let { info } = data[0].result.wan;

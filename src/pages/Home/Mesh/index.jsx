@@ -43,7 +43,7 @@ export default class Mesh extends React.Component{
                 return;
             }
 
-            let status = common.fetchWithCode('SUNMIMESH_INFO_GET', { method: 'POST' });
+            let status = common.fetchApi({ opcode: 'SUNMIMESH_INFO_GET' });
             status.then((resp) => {
                 let { errcode, data, message } = resp;
                 if (errcode == 0) {
@@ -72,7 +72,7 @@ export default class Mesh extends React.Component{
             devices: [],
         });
 
-        let start = common.fetchWithCode('SUNMIMESH_START',{ method: 'POST'});
+        let start = common.fetchApi({ opcode: 'SUNMIMESH_START' });
 
         start.then((resp) => this.refreshMeshInfo(resp.data[0].sunmimesh.duration));
     }
@@ -84,7 +84,7 @@ export default class Mesh extends React.Component{
 
         // stop sunmi mesh
         clearInterval(this.timer);
-        common.fetchWithCode('SUNMIMESH_STOP', { method: 'POST' });
+        common.fetchApi({ opcode: 'SUNMIMESH_STOP' });
     }
 
     render() {

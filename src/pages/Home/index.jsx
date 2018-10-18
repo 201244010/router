@@ -251,14 +251,11 @@ export default class Home extends React.PureComponent {
     }
 
     runningSpeedTest = () => {
-        let start = common.fetchWithCode(
-            'WANWIDGET_SPEEDTEST_START',
-            { method: 'POST' }
-        );
+        let start = common.fetchApi({ opcode: 'WANWIDGET_SPEEDTEST_START' });
 
         start.then(() => {
-            let status = common.fetchWithCode(
-                'WANWIDGET_SPEEDTEST_INFO_GET',
+            let status = common.fetchApi(
+                { opcode: 'WANWIDGET_SPEEDTEST_INFO_GET' },
                 { method: 'POST' },
                 {
                     loop: TOTAL_TIME / 10000,
