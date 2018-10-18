@@ -73,11 +73,12 @@ export default class QoS extends React.Component {
         let cost = 0, bandList = [];
 
         total.forEach(item => {
-            cost += parseInt(item.value);
-            bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{item.value + '%'}</span></li>);
+            let val = parseFloat(item.value);
+            cost += val;
+            bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{val.toFixed(0) + '%'}</span></li>);
         });
 
-        cost = enable ? cost : '--';
+        cost = enable ? cost.toFixed(0) : '--';
 
         return (
             <li className='func-item bandwidth'>

@@ -24,10 +24,9 @@ export default class ClientList extends React.Component{
 
     handleEdit = async (record) => {
         let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
-        let response = await common.fetchWithCode(
-            directive,
-            { method: 'POST', data: { white_list: [{ name: record.name, mac: record.mac }] } }
-        ).catch(ex => { });
+        let response = await common.fetchApi(
+            { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
+        );
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -42,9 +41,8 @@ export default class ClientList extends React.Component{
             message.warning('不能禁止本机上网');
             return;
         }
-        let response = await common.fetchWithCode(
-            'QOS_AC_BLACKLIST_ADD',
-            { method: 'POST', data: { black_list: [{ name: record.name, mac: record.mac}] } }
+        let response = await common.fetchApi(
+            { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
 
         let { errcode, message } = response;
