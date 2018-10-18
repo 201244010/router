@@ -39,8 +39,8 @@ export default class Bandwidth extends React.PureComponent {
         upbandTmp : '',
         downbandTmp : '',
         loading:false,
-        disable : true, //按钮灰显
-        saveButton : false//按钮灰显
+        disable : true, //手动设置保存按钮灰显
+        saveDisable : false//保存按钮灰显
     }
     
     handleSpace = (val) => {
@@ -74,17 +74,17 @@ export default class Bandwidth extends React.PureComponent {
                     whiteTip : '',
                     normalTip : '',
                     [key + 'Tip'] : tip,
-                    saveButton : true
+                    saveDisable : true
                 })
             }else{
                 this.setState({
-                    saveButton : false
+                    saveDisable : false
                 })
             }
             if (this.handleSpace(sunmi) === 0 || this.handleSpace(white) === 0 || this.handleSpace(normal) === 0 ){
                 this.setState({
                     [key + 'Tip'] : '百分比例不能为空或0',
-                    saveButton : true
+                    saveDisable : true
                 })
             }
         })       
@@ -310,7 +310,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     render(){
-        const {saveButton, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
+        const {saveDisable, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
             white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, buttonloading} = this.state;
         const columns = [{
@@ -381,7 +381,7 @@ export default class Bandwidth extends React.PureComponent {
                         <div className="speed-distribution"><CustomIcon size={16} color="gray" type="help"/></div>
                     </section>
                     {
-                        bandenable ?  <Bandon disable={saveButton} columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
+                        bandenable ?  <Bandon disable={saveDisable} columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
                     }
                 </Form>
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
