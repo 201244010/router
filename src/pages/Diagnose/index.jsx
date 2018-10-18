@@ -157,9 +157,9 @@ export default class Diagnose extends React.Component {
         const timeTip = `网络已联通，即将返回首页（${time}秒）...`;
         const dot = [0, 1, 2].map(i => {
             if (step === i) {
-                return <Icon type={'loading'} style={{ fontSize: '14px' }}/>;
+                return <Icon type={'loading'} style={{ fontSize: '0.85em' }}/>;
             } else if (step > i) {
-                return <Icon type={'check-circle'} style={{ fontSize: '14px' }} />;
+                return <Icon type={'check-circle'} style={{ fontSize: '0.75em' }} />;
             } else {
                 return null;
             }
@@ -170,9 +170,9 @@ export default class Diagnose extends React.Component {
                 <div className='doing' style={{display:('doing' === status ? 'block' : 'none')}}>
                     <p className='title'>正在进行故障诊断，请稍候...</p>
                     <Timeline className='time-line'>
-                        <Timeline.Item dot={dot[0]}>检测网线连接状态</Timeline.Item>
-                        <Timeline.Item dot={dot[1]}>检测WAN口拨号</Timeline.Item>
-                        <Timeline.Item dot={dot[2]}>检测Internet服务</Timeline.Item>
+                        <Timeline.Item dot={dot[0]} className={0 == step ? 'now':''}>检测网线连接状态</Timeline.Item>
+                        <Timeline.Item dot={dot[1]} className={1 == step ? 'now' : ''}>检测WAN口拨号</Timeline.Item>
+                        <Timeline.Item dot={dot[2]} className={2 == step ? 'now' : ''}>检测Internet服务</Timeline.Item>
                     </Timeline>
                     <Button className='diagnose-btn' onClick={this.goBack}>取消检测</Button>
                 </div>
