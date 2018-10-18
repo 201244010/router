@@ -130,6 +130,7 @@ export default class Diagnose extends React.Component {
             status: 'doing',
             step: 0,
             time: 3,
+            bgIcon: 'detection',
         });
 
         this.diagnoseWanLink();
