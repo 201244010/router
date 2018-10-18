@@ -30,6 +30,11 @@ export default class Lan extends React.Component {
             endipTip = '';
 
         let valid = {
+            enable: {
+                func: () => {
+                    return '';
+                },
+            },
             ipv4 : {
                 func : checkIp,
                 args : {who:'IP地址'},
