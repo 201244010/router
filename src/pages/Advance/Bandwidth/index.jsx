@@ -2,7 +2,7 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Progress, Modal , message} from 'antd'
+import { Button, Table, Progress, Modal, message, Icon, Tooltip } from 'antd'
 
 import CustomIcon from '~/components/Icon';
 const {FormItem, Input} = Form;
@@ -91,25 +91,28 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     OnBandEnable = async (value) => {
-        if(this.state.upband === '--' || this.state.downband === '--'){
-            message.config({
-                top : 80,
+        let { bandenable, upband, downband } = this.state;
+
+        this.setState({
+            bandenable: value,
+        });
+
+        if(upband === '--' || downband === '--'){
+            message.error('请先设置带宽');
+            return;
+        }
+
+        this.qosdata.enable = value;
+        let response = await common.fetchApi({
+            opcode: 'QOS_SET',
+            data: { qos: this.qosdata }
+        })
+
+        if (response.errcode !== 0) {
+            Modal.error({ title: '网速智能分配失败' });
+            this.setState({
+                bandenable: bandenable
             })
-            message.error('请先设置带宽')
-        }else{
-            this.qosdata.enable = value;
-            let response = await common.fetchApi({
-                opcode : 'QOS_SET',
-                data : {qos : this.qosdata}
-            })
-            if(response.errcode === 0){
-                this.setState({
-                    bandenable : value
-                })
-                return;
-            }else{
-                Modal.error({title : '网速智能分配失败'});
-            }
         }
     }
 
@@ -374,11 +377,13 @@ export default class Bandwidth extends React.PureComponent {
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
                     <section className="wifi-setting-item">
                         <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} onChange={this.OnBandEnable}/>
-                        <div className="speed-distribution"><CustomIcon size={16} color="gray" type="help"/></div>
+                        <div className="speed-distribution">
+                            <Tooltip placement="right" title='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。'>
+                                <Icon style={{ fontSize: 16 }} type="question-circle" />
+                            </Tooltip>
+                        </div>
                     </section>
-                    {
-                        bandenable ?  <Bandon disable={saveDisable} columns={columns} data={data} post={this.post} loading={buttonloading}/> : <Bandclose />
-                    }
+                    {bandenable && <Bandon disable={saveDisable} columns={columns} data={data} post={this.post} loading={buttonloading} />}
                 </Form>
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
                     <div className="percent-position">{percent}%</div>
@@ -397,7 +402,7 @@ export default class Bandwidth extends React.PureComponent {
                         <FormItem type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
                             <Input type="text" value={upbandTmp} onChange={value => this.onChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
-                        </FormItem>                    
+                        </FormItem>
                     <label style={{ marginTop: 24 }}>下行总带宽</label>
                         <FormItem  type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
@@ -435,12 +440,6 @@ export default class Bandwidth extends React.PureComponent {
         );
     }
 };
-
-const Bandclose = props => {
-    return (
-        <p>"网速智能分配"启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。</p>
-     )
-}
 
 const Bandon = props => {
      return [
