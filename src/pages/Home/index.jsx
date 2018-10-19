@@ -82,17 +82,21 @@ export default class Home extends React.PureComponent {
         return timeStr;
     }
 
+    // 格式化网络速率，最多保留4位数字+单位
     formatSpeed = (speed) => {
         let kSpeed = 1024;
         let mSpeed = kSpeed * 1024;
         let gSpeed = mSpeed * 1024;
+        // 'xx.xx'
 
         speed = parseInt(speed, 10) * 8; // byte -> bit
         if (speed >= gSpeed) {
-            speed = (speed / gSpeed).toFixed(2) + "Gbps";
+            let val = speed / gSpeed;
+            speed = (val).toFixed(val > 99 ? 0 : 2) + "Gbps";
         }
         else if (speed >= mSpeed) {
-            speed = (speed / mSpeed).toFixed(2) + "Mbps";
+            let val = speed / gSpeed;
+            speed = (val).toFixed(val > 99 ? 0 : 2) + "Mbps";
         }
         else if (speed >= kSpeed) {
             speed = (speed / kSpeed).toFixed(0) + "Kbps";
@@ -101,7 +105,7 @@ export default class Home extends React.PureComponent {
             speed = speed.toFixed(0) + "bps";
         }
 
-        return speed.toString();
+        return speed + '';
     }
 
     stopRefresh = () => {
@@ -112,12 +116,12 @@ export default class Home extends React.PureComponent {
     }
 
     startRefresh = () => {
+        clearTimeout(this.timer);
         this.setState({
             refresh: true,
+        }, () => {
+            this.resreshStatus();
         });
-
-        clearTimeout(this.timer);
-        this.resreshStatus();
     }
 
     fetchBasic = async () => {
@@ -339,7 +343,7 @@ export default class Home extends React.PureComponent {
         return (
             [<SubLayout className='home'>
                 <ul className='func-list'>
-                    <li className='func-item internet'>
+                    <li className='func-item internet' style={{ paddingRight: 0 }}>
                         <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
                         <img className='router' src={require('~/assets/images/router.svg')} />
                         <div className={classnames(['content', { 'internet-error': !online }])}>
@@ -404,13 +408,13 @@ export default class Home extends React.PureComponent {
                 <div className='online-list'>
                     <div className='left-list'>
                         <ClientList type='sunmi' data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                         <ClientList type='normal' data={normalClients} mac={me}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                     </div>
                     <div className='whitelist-list'>
                         <ClientList type='whitelist' data={whitelistClients} mac={me}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                     </div>
                 </div>
             </SubLayout>,
