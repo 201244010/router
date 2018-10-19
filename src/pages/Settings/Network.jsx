@@ -13,7 +13,7 @@ const RadioGroup = Radio.Group;
 
 export default class NETWORK extends React.Component {
     state = {
-        type : 'pppoe',
+        type : 'dhcp',
         disabled : false,
         onlineStatus : '',
         dialType : '',
@@ -433,7 +433,7 @@ export default class NETWORK extends React.Component {
                             <label className="oneline">{infoGateway}</label>
                         </div>
                         <div style={{height :　34}}>    
-                            <ul className="ui-mute">DNS服务器:</ul>
+                            <ul className="ui-mute">DNS:</ul>
                             <label className="oneline">{infoDns}</label>
                         </div>
                     </section>

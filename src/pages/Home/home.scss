@@ -10,7 +10,7 @@
         display: flex;
         justify-content:space-between;
         margin:0;
-        li.func-item{
+        .func-item{
             flex: 0 0 auto;
             width: 392px;
             height: 180px;
@@ -124,7 +124,7 @@
             .router{
                 position: relative;
                 top: -20px;
-                left: 10px;
+                left: 0;
                 display: inline-block;
                 width: 127px;
                 height: 127px;
@@ -134,7 +134,7 @@
                 height: 140px;
                 margin-left: 60px;
                 display:inline-block;
-                width: 160px;
+                width: 180px;
                 vertical-align: middle;
                 h4{
                     font-size: 14px;

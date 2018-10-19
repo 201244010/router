@@ -16,7 +16,7 @@ export default class ClientList extends React.Component{
     }
 
     showMore = () => {
-        this.props.stopRefresh();
+        //this.props.stopRefresh();
         this.setState({
             visible: true
         });
@@ -54,7 +54,7 @@ export default class ClientList extends React.Component{
     }
 
     handleCancel = () => {
-        this.props.startRefresh();
+        //this.props.startRefresh();
         this.setState({
             visible: false
         });
