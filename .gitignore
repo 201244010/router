@@ -3,4 +3,5 @@ node_modules
 *-error.log
 .debug.json
 dist
+.idea/*
 
