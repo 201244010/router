@@ -59,6 +59,7 @@ export default class NETWORK extends React.Component {
     };
 
     onIPConifgChange = (val, key) => {
+        console.log(key,val);
         let valid = {
             ipv4:{
                 func: checkIp,

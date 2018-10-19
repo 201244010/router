@@ -4,8 +4,9 @@ import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
+import {checkStr, checkIp, checkMask} from '~/assets/common/check';
 
-const { FormItem, Input : FormInput, InputGroup  } = Form;
+const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
 const Option = Select.Option;
 
 
@@ -29,11 +30,16 @@ export default class SetWan extends React.PureComponent {
         loading : false,
 
         // 静态 ip
-        ip : [],
-        subnetmask : [],
-        gateway : [],
-        dns : [],
-        dnsbackup : []
+        ip : ["","","",""],
+        subnetmask : ["","","",""],
+        gateway : ["","","",""],
+        dns : ["","","",""],
+        dnsbackup : ["","","",""],
+        ipTip: '', 
+        subnetmaskTip: '', 
+        gatewayTip: '', 
+        dnsTip: '', 
+        dnsbackupTip: '',
     };
 
     handleChange = value => {
@@ -50,19 +56,24 @@ export default class SetWan extends React.PureComponent {
     };
 
     handleAccountChange = value => {
+        const result = checkStr(value,{who:'账号',min: 1,max: 64,characterSetType: ''});
+        const { tip, flag} = result;
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
-                disabled : !this.checkParams()
+                pppoeAccountTip: tip,
+                disabled : !this.checkParams() && !flag
             });
         });
     }
 
-    handleAccountBlur = ()=>{
-        if(this.state.pppoeAccount.length === 0 ){
+    handleAccountBlur = value =>{
+            const result = checkStr(value,{who:'账号',min: 1,max: 64,characterSetType: ''});
+            const { tip, flag} = result;
             this.setState({
-                pppoeAccountTip : "PPPOE 账号不能为空"
+                pppoeAccountTip : tip,
+                disabled : !this.checkParams() && !flag
             });
-        }
+        
     }
 
     componentWillUnmount(){
@@ -71,18 +82,24 @@ export default class SetWan extends React.PureComponent {
 
     // 处理pppoe 密码框 change
     handlePasswordChange = value => {
+        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: ''});
+        const { tip, flag} = result;
         this.setState({ pppoePassword : value }, function(){
             this.setState({
-                disabled : !this.checkParams()
+                pppoePasswordTip : tip,
+                disabled : !this.checkParams() && !flag
             });
         });
     };
 
     // pppoe 密码输入框失去焦点
-    handlePasswordBlur = ()=>{
+    handlePasswordBlur = value =>{
+        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: ''});
+        const { tip, flag} = result;
         if(this.state.pppoePassword.length === 0 ){
             this.setState({
-                pppoePasswordTip : "PPPOE 密码不能为空"
+                pppoePasswordTip : tip,
+                disabled : !this.checkParams() && !flag
             });
         }
     }
@@ -118,22 +135,37 @@ export default class SetWan extends React.PureComponent {
 
     // 提交表单
     submit = async () => {
-        let payload = this.composeParams(), info = payload.wan.info;
+        let payload = this.composeParams(), info = payload.wan.info; 
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
-            return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
+            Modal.error({title: '错误',content:'IPV4不能与网关相同'});
+            return ;
         }
         this.setState({ loading : true });
-        let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
-            .catch(ex => {})
+        let response = await common.fetchApi(
+            [
+                {opcode: 'NETWORK_WAN_IPV4_SET', data: payload}
+            ]
+        ).catch(ex => {});
         let {errcode, message } = response;
         if(errcode == 0){
             // 触发检测联网状态
-            common.fetchWithCode('WANWIDGET_ONLINETEST_START', {method : 'POST'});
+            common.fetchApi(
+                [
+                    {opcode: 'WANWIDGET_ONLINETEST_START'}
+                ]
+            );
             // 获取联网状态
-            let connectStatus = await common.fetchWithCode(
-                'WANWIDGET_ONLINETEST_GET', 
-                {method : 'POST'},
-                {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
+            let connectStatus = await common.fetchApi(
+                [
+                    {opcode: 'WANWIDGET_ONLINETEST_GET'}
+                ],
+                {},
+                {
+                    loop : true,
+                    interval : 3000, 
+                    stop : ()=> this.stop, 
+                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                }
             );
             let { errcode:code, data } = connectStatus;
             this.setState({ loading : false });
@@ -185,7 +217,11 @@ export default class SetWan extends React.PureComponent {
     
     dialDetect = async () => {
         this.setState({detect:true});
-        common.fetchWithCode('WANWIDGET_WAN_LINKSTATE_GET', {method : 'POST'}).then((resp) => {
+        common.fetchApi(
+            [
+                {opcode: 'WANWIDGET_WAN_LINKSTATE_GET'}
+            ],
+        ).then((resp) => {
             const {errcode,data} = resp;
             this.setState({detect : false});
             if(errcode == 0){
@@ -193,10 +229,16 @@ export default class SetWan extends React.PureComponent {
             }else{
                 Modal.error({title :'获取网线插拔状态失败'});
             } 
-            common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-            common.fetchWithCode(
-            'WANWIDGET_DIALDETECT_GET', 
-                { method : 'POST' },
+            common.fetchApi(
+                [
+                    {opcode: 'WANWIDGET_DIALDETECT_START'}
+                ],
+            );
+            common.fetchApi(
+                [
+                    {opcode: 'WANWIDGET_DIALDETECT_GET'}
+                ],
+                {},
                 { 
                     loop : true, 
                     interval : 2000,
@@ -223,15 +265,20 @@ export default class SetWan extends React.PureComponent {
     }
 
     getNetInfo = async ()=>{
-        let response = await common.fetchWithCode(
-            'NETWORK_WAN_IPV4_GET',
-            { method : 'POST' },
-            { loop : true, pending : res => res.data[0].result.dialdetect === 'detecting', stop : ()=> this.stop }
+        let response = await common.fetchApi(
+            [
+                {opcode: 'NETWORK_WAN_IPV4_GET'}
+            ],
+            {},
+            { 
+                loop : true, 
+                pending : res => res.data[0].result.dialdetect === 'detecting', 
+                stop : ()=> this.stop 
+            }
         ).catch(ex=>{});
         let { data, errcode, message } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
-            console.log('[GOT] IPV4: ', this.netInfo);
             return;
         }
         Modal.error({ title: '获取 ipv4 信息失败', content: message });
@@ -244,11 +291,36 @@ export default class SetWan extends React.PureComponent {
         this.getNetInfo(); 
     }
 
-    onIPConifgChange = (value, field) => {
-        this.setState({ [field] : value }, function() {
-            this.setState({
-                disabled : !this.checkParams()
-            });
+    onIPConifgChange = (val, key) => {
+        console.log(key,val);
+        let valid = {
+            ip:{
+                func: checkIp,
+                who:'IP地址',
+            },
+            subnetmask:{
+                func: checkMask,
+                who:'子网掩码',
+            },
+            gateway:{
+                func: checkIp,
+                who:'网关',
+            },
+            dns:{
+                func: checkIp,
+                who:'首选DNS',
+            },
+            dnsbackup:{
+                func: checkIp,
+                who:'备选DNS',
+            },
+        }
+        let tip = valid[key].func(val, {who : valid[key].who});
+        this.setState({
+            [key] : (typeof val == 'object' ? [...val] : val),
+            [key + 'Tip'] : tip
+        },()=>{
+            this.setState({disabled : !this.checkParams()});
         });
     }
 
@@ -269,7 +341,7 @@ export default class SetWan extends React.PureComponent {
     }
     
     render(){
-        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wanLinkState} = this.state;
+        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wanLinkState, ipTip, subnetmaskTip, gatewayTip, dnsTip, dnsbackupTip} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置上网参数</h2> 
@@ -318,7 +390,11 @@ export default class SetWan extends React.PureComponent {
                                                                     subnetmask={subnetmask}
                                                                     dnsbackup={dnsbackup} 
                                                                     onChange={this.onIPConifgChange}
-
+                                                                    ipTip={ipTip}
+                                                                    subnetmaskTip={subnetmaskTip}
+                                                                    gatewayTip={gatewayTip}
+                                                                    dnsTip={dnsTip}
+                                                                    dnsbackupTip={dnsbackupTip}
                                                             /> : ''
                                 }
                                 <FormItem label="#">
@@ -372,7 +448,9 @@ const PPPOE = props => {
                 name="pppoe-account"
                 value={props.pppoeAccount}
                 onBlur={props.handleAccountBlur}
-                onChange={props.handleAccountChange} />
+                onChange={props.handleAccountChange} 
+                maxLength='64'/>
+            <ErrorTip style={{color: '#fb8632'}}>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>,
         <FormItem key='password' label="密码">
             <FormInput 
@@ -380,7 +458,9 @@ const PPPOE = props => {
                 placeholder="密码" 
                 name="pppoe-password"
                 onBlur={props.handlePasswordBlur}
-                onChange={props.handlePasswordChange} />
+                onChange={props.handlePasswordChange} 
+                maxLength='32'/>
+            <ErrorTip style={{color: '#fb8632'}}>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
     ];
 };
@@ -388,31 +468,35 @@ const PPPOE = props => {
 // 静态 IP 配置
 const StaticIp = props => {
     return [
-        <FormItem key='ip' label="IP地址">
+        <FormItem key='ip' label="IP地址" showErrorTip={props.ipTip}>
             <InputGroup
                 inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
+                <ErrorTip>{props.ipTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='subnetmask' label="子网掩码">
+        <FormItem key='subnetmask' label="子网掩码" showErrorTip={props.subnetmaskTip}>
             <InputGroup                                                                         
                 inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
+            <ErrorTip>{props.subnetmaskTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='gateway' label="网关">
+        <FormItem key='gateway' label="网关" showErrorTip={props.gatewayTip}>
             <InputGroup 
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
+            <ErrorTip>{props.gatewayTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dns' label="首选DNS">
+        <FormItem key='dns' label="首选DNS" showErrorTip={props.dnsTip}>
             <InputGroup 
                 inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dns')} />
+            <ErrorTip>{props.dnsTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dnsbackup' label="备选DNS">
+        <FormItem key='dnsbackup' label="备选DNS" showErrorTip={props.dnsbackupTip}>
             <InputGroup 
                 inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dnsbackup')}
-            />
+                onChange={value => props.onChange(value, 'dnsbackup')} />
+            <ErrorTip>{props.dnsbackupTip}</ErrorTip>
         </FormItem>
     ];
 };

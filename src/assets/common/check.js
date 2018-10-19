@@ -185,4 +185,60 @@ let checkMac = function (mac, opt = {}) {
     return '';
 };
 
-export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac};
+let checkStr = function( val, opt = {}){
+    opt = assign({
+        who: '字符串',
+        min: 0, 
+        max: Number.POSITIVE_INFINITY,
+        characterSetType: '',
+    },opt);
+
+    const who = opt.who;
+    const min = opt.min;
+    const max = opt.max;
+    const characterSetType=opt.characterSetType;
+    var tip = '';
+    var flag = true;
+
+    switch (characterSetType){
+        case 'decimal': //十进制数字字符集
+            flag = /^[0-9]*$/g.test(val);
+            break;
+        case 'hex': //十六进制数字字符集
+            flag = /^[0-9a-fA-F]*$/g.test(val);
+            break;
+        case 'english': //英文字符集	
+            flag = /^[\x20-\x7E]*$/g.test(val);
+            break;
+        case 'number': //数字字母字符集
+            flag = /^[0-9a-zA-Z]*$/g.test(val);
+            break;
+        default:
+            flag = true;
+    }
+    
+    if(val.length === 0){
+        tip = `请输入${who}`;
+    }else if(val.length < min){
+        tip = `${who}的位数不能小于${min}位`;
+    }else if(val.length >= max){
+        tip = `${who}的位数不可以超过${max}位`;
+    }
+
+    if(flag === false && tip === ''){
+        tip= '存在不合法字符';
+    }else if(flag === true && tip !== ''){
+        flag = false;
+    }
+
+    //因为页面input设置了maxLenght,所以判断一下val.length === max的情况
+    if(flag === false && tip === `${who}的位数不可以超过${max}位`){
+        flag = true;
+    }
+
+    console.log(characterSetType,val,tip,flag);
+    return {tip,flag};
+    
+}
+
+export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac,checkStr};
