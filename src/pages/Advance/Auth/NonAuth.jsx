@@ -29,30 +29,15 @@ export default class NonAuth extends React.Component{
         wiredFree : true,
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
+        listSubmitDisabled: true,
         disabled: true,
         editLoading: false,
         editShow: false,
         name: '',
         mac: '',
-        nameTip: '',
-        macTip: '',
-        whiteList: [/*{
-            icon:'computer',
-            name:'xiongmingxiongmingxiongiongiongminxiongmingxiongmingxiongiongiongmin',
-            online: true,
-            ontime:'3分钟',
-            ip:'192.168.100.138',
-            mac:'00:11:22:AA:44:88',
-            network:'5G Wi-Fi',
-        },{
-            icon:'computer',
-            name:'Hello world',
-            online: false,
-            ontime:'--',
-            ip:'192.168.100.139',
-            mac:'00:11:22:AA:44:89',
-            network:'5G Wi-Fi',
-        }*/],
+        nameTip: '请输入备注名称',
+        macTip: '请输入MAC地址',
+        whiteList: [],
         onlineList: []
     };
 
@@ -123,7 +108,7 @@ export default class NonAuth extends React.Component{
             {
                 method: 'POST', data: {
                     auth:{
-                        white_list: [{
+                        delete_whitelis: [{
                             name: record.name,
                             mac: record.mac,
                         }]
@@ -152,7 +137,14 @@ export default class NonAuth extends React.Component{
 
                 return item;
             })
+        },() => {
+            if(this.state.onlineList.length == 0){
+                this.setState({listSubmitDisabled: true});
+            }else{
+                this.setState({listSubmitDisabled: false});
+            }
         });
+        
     }
 
     onSelectOk = async () => {
@@ -310,6 +302,12 @@ export default class NonAuth extends React.Component{
                         checked: false
                     }
                 })
+            },() => {
+                if(this.state.onlineList.length == 0){
+                    this.setState({listSubmitDisabled: true});
+                }else{
+                    this.setState({listSubmitDisabled: false});
+                }
             });
             return;
         }
@@ -323,7 +321,7 @@ export default class NonAuth extends React.Component{
 
     render() {
         const { prioritizedFree, wiredFree, whiteList, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, disabled } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, listSubmitDisabled, disabled } = this.state;
 
         const columns = [{
             title: '',
@@ -403,12 +401,17 @@ export default class NonAuth extends React.Component{
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "您还未添加任何设备" }} />
-                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
-                    width={960} style={{ position: 'relative' }}
+                <Modal title="在线列表" closable={false} maskClosable={false} width={960} style={{ position: 'relative' }}
                     visible={visible}
                     confirmLoading={loading}
                     onOk={this.onSelectOk}
-                    onCancel={this.onSelectCancle} >
+                    onCancel={this.onSelectCancle}
+                    footer={[
+                        <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
+                        <Button key="submit" type="primary" disabled={listSubmitDisabled} loading={loading} onClick={this.onSelectOk}>
+                          添加
+                        </Button>,
+                      ]} >
                     <Button size="large" style={{
                         position: "absolute",
                         top: 5,

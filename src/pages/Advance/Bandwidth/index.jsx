@@ -376,12 +376,7 @@ export default class Bandwidth extends React.PureComponent {
                 </section>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} onChange={this.OnBandEnable}/>
-                        <div className="speed-distribution">
-                            <Tooltip placement="right" title='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。'>
-                                <Icon style={{ fontSize: 16 }} type="question-circle" />
-                            </Tooltip>
-                        </div>
+                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
                     </section>
                     {bandenable && <Bandon disable={saveDisable} columns={columns} data={data} post={this.post} loading={buttonloading} />}
                 </Form>

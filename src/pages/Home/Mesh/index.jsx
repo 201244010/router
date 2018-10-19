@@ -11,8 +11,8 @@ export default class Mesh extends React.Component{
 
     state = {
         visible: false,
-        disabled: true,
-        btnStr: '已找到全部商米设备',
+        showBtn: false,
+        btnStr: '',
         state: 'running',  // running/done
         title: '',
         devices: [
@@ -36,8 +36,8 @@ export default class Mesh extends React.Component{
                 let num = this.state.devices.length;
                 this.setState({
                     title: '搜寻设备',
-                    disabled: false,
-                    btnStr: (num > 0) ? '已找到全部商米设备' : '我知道了',
+                    showBtn: true,
+                    btnStr: '我知道了',
                     state: 'done',
                 });
                 return;
@@ -53,6 +53,7 @@ export default class Mesh extends React.Component{
                     this.setState({
                         devices: devices.map(item => Object.assign({}, item)),
                         title: title,
+                        showBtn: (num > 0),
                     });
                 } else {
                     clearInterval(this.timer);
@@ -66,9 +67,10 @@ export default class Mesh extends React.Component{
         this.startTime = new Date().getTime();
         this.setState({
             visible: true,
-            disabled: true,
+            showBtn: false,
             state: 'running',
             title: '正在搜寻商米设备...',
+            btnStr: '已找到全部商米设备',
             devices: [],
         });
 
@@ -88,7 +90,7 @@ export default class Mesh extends React.Component{
     }
 
     render() {
-        const { visible, state, title, disabled, btnStr, devices }  = this.state;
+        const { visible, state, title, showBtn, btnStr, devices }  = this.state;
         const num = devices.length;
         const icon = <Icon type="loading" style={{ fontSize: 20, color: '#FB8632' }} spin />;
         let Title = [
@@ -114,7 +116,7 @@ export default class Mesh extends React.Component{
         return (
         <Modal className='sunmi-mesh-modal' title={Title} maskClosable={false} width={560} visible={visible}
             onCancel={this.stopSunmiMesh}
-            footer={<Button type="primary" disabled={disabled} onClick={this.stopSunmiMesh}>{btnStr}</Button>}>
+            footer={showBtn && <Button type="primary" onClick={this.stopSunmiMesh}>{btnStr}</Button>}>
             {'running' === state &&
             <ul className='mesh-list'>{meshList}</ul>
             }
@@ -126,7 +128,7 @@ export default class Mesh extends React.Component{
             }
             {'done' === state && num == 0 &&
             <div>
-                <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
+                <div className='status-icon'><CustomIcon color="#FF5500" type="hint" size={64} /></div>
                 <h4>没有搜寻到新商米设备</h4>
             </div>
             }

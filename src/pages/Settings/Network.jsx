@@ -13,7 +13,7 @@ const RadioGroup = Radio.Group;
 
 export default class NETWORK extends React.Component {
     state = {
-        type : 'pppoe',
+        type : 'dhcp',
         disabled : false,
         onlineStatus : '',
         dialType : '',
@@ -23,8 +23,7 @@ export default class NETWORK extends React.Component {
         infoIp : [],
         infoGateway : [],
         infoMask : [],
-        infoDns1 : [],
-        infoDns2 : [],
+        infoDns: '',
 
         //pppoe
         pppoeAccount : '',
@@ -60,6 +59,7 @@ export default class NETWORK extends React.Component {
     };
 
     onIPConifgChange = (val, key) => {
+        console.log(key,val);
         let valid = {
             ipv4:{
                 func: checkIp,
@@ -307,49 +307,77 @@ export default class NETWORK extends React.Component {
         );
         let { data, errcode, message } = response;
         if(errcode == 0){
-            let {dhcp, pppoe} = data[0].result.wan;
-            let staticMode = data[0].result.wan.static;
+            let initIp = (ip) => {  // 'x.x.x.x' / ''
+                return Object.assign(['', '', '', ''], ip.split('.'));
+            };
+
+            const wan = data[0].result.wan;
+
+            this.updateNetStatus(wan);
+
+            let {dhcp, pppoe} = wan;
+            let sm = wan.static;
+            
+            // set default data
+            pppoe.dns_info = pppoe.dns_info || {
+                dns1: '',
+                dns2: '',
+            };
+            dhcp.dns_info = dhcp.dns_info || {
+                dns1: '',
+                dns2: '',
+            };
+
             this.setState({
-                type : data[0].result.wan.dial_type,
-                dhcpType : dhcp.dns_type,
-                pppoeType : pppoe.dns_type,
+                type : wan.dial_type,
+                //static
+                ipv4: [...initIp(sm.ipv4)],
+                gateway: [...initIp(sm.gateway)],
+                subnetmask: [...initIp(sm.mask)],
+                staticDns: [...initIp(sm.dns1)],
+                staticDnsbackup: [...initIp(sm.dns2)],
 
                 //pppoe
-                pppoeAccount : atob(pppoe.user_info.username),
-                pppoePassword : atob(pppoe.user_info.password),
+                pppoeAccount: atob(pppoe.user_info.username),
+                pppoePassword: atob(pppoe.user_info.password),
+                pppoeType: pppoe.dns_type,
+                pppoeDns: [...initIp(pppoe.dns_info.dns1)],
+                pppoeDnsbackup: [...initIp(pppoe.dns_info.dns2)],
 
-            })
+                dhcpType: dhcp.dns_type,
+                dhcpDns: [...initIp(dhcp.dns_info.dns1 || '')],
+                dhcpDnsbackup: [...initIp(dhcp.dns_info.dns2 || '')],
+            });
 
-            if(this.state.type === 'static'){
-                this.setState({
-                    //static
-                    ipv4 : [...staticMode.ipv4.split('.')],
-                    gateway : [...staticMode.gateway.split('.')],
-                    subnetmask : [...staticMode.mask.split('.')],
-                    staticDns : [...staticMode.dns1.split('.')],
-                    staticDnsbackup : [...staticMode.dns2.split('.')]
-                })
-                console.log(this.state.ipv4)
-            }
-
-            if(this.state.dhcpType == "manual"){
-                this.setState({
-                    dhcpDns : [...dhcp.dns_info.dns1.split('.')],
-                    dhcpDnsbackup : [...dhcp.dns_info.dns2.split('.')]
-                })
-            }
-
-            if(this.state.pppoeType == "manual"){
-                this.setState({
-                    pppoeDns : [...pppoe.dns_info.dns1.split('.')],
-                    pppoeDnsbackup : [...pppoe.dns_info.dns2.split('.')]
-                })
-            }
             return;
         }
-        Modal.error({ title: '获取 ipv4 信息失败', content: message});
+        Modal.error({ title: '获取上网设置信息失败', content: message});
     }
-    
+
+    updateNetStatus = (wan) => {
+        const diagType = {
+            dhcp: 'DHCP自动获取',
+            pppoe: 'PPPoE拨号',
+            static: '静态获取',
+        };
+
+        let info = wan.info,
+            type = wan.dial_type;
+        let { online, ipv4, gateway, mask, dns1, dns2} = info;
+        // dns: ''  '0.0.0.0' 'x.x.x.x'
+        let infoDns = [dns1, dns2].filter(val => {
+            return (val != '' && val != '0.0.0.0');
+        }).join(', ');
+
+        this.setState({
+            onlineStatus: online ? '已联网' : '未联网',
+            dialType: diagType[type],
+            infoIp: ipv4 === "" ? '0.0.0.0' : ipv4,
+            infoGateway: gateway === "" ? '0.0.0.0' : gateway,
+            infoMask: mask === "" ? '0.0.0.0' : mask,
+            infoDns: infoDns,
+        });
+    }
     //上网信息刷新
     refreshNetStatus = async ()=>{
         let response = await  common.fetchApi({
@@ -357,50 +385,14 @@ export default class NETWORK extends React.Component {
             })
             let {errcode, data} = response;
             if(errcode == 0){
-                let info = data[0].result.wan.info;
-                this.setState({
-                    //info
-                    infoIp : info.ipv4 === "" ? '0.0.0.0' : info.ipv4,
-                    infoGateway : info.gateway === "" ? '0.0.0.0' : info.gateway,
-                    infoMask : info.mask === "" ? '0.0.0.0' : info.mask,
-                    infoDns1 : info.dns1 === "" ? '0.0.0.0' : info.dns1,
-                    infoDns2 : info.dns2 === "" ? '0.0.0.0' : info.dns2
-                })
-                
-                if(data[0].result.wan.dial_type == "dhcp"){
-                    this.setState({
-                        dialType : 'DHCP自动获取'
-                    })
-                }
-    
-                if(data[0].result.wan.dial_type == "pppoe"){
-                    this.setState({
-                        dialType : 'PPPoE拨号'
-                    })
-                }
-    
-                if(data[0].result.wan.dial_type == "static"){
-                    this.setState({
-                        dialType : '静态获取'
-                    })
-                }
-                if(info.online === true){
-                    this.setState({
-                        onlineStatus : '已联网'
-                    })
-                }else{
-                    this.setState({
-                        onlineStatus : '未联网'
-                    })
-                }
+                this.updateNetStatus(data[0].result.wan);
             }
         }
 
     componentDidMount(){
         //获取网络状况
         this.getNetInfo();
-        this.refreshNetStatus();
-        this.handleTime = setInterval(this.refreshNetStatus,3000);
+        this.handleTime = setInterval(this.refreshNetStatus, 3000);
         this.stop = false;
     }
 
@@ -410,7 +402,12 @@ export default class NETWORK extends React.Component {
     }
 
     render(){
-        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,disabled, loading, type, infoIp , dialType, onlineStatus, infoGateway, infoMask, infoDns1, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
+        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,
+                dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,
+                disabled, loading, type, infoIp ,
+                dialType, onlineStatus, infoGateway, infoMask, infoDns,
+                pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
+                ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -438,7 +435,7 @@ export default class NETWORK extends React.Component {
                         </div>
                         <div style={{height :　34}}>    
                             <ul className="ui-mute">DNS:</ul>
-                            <label className="oneline">{infoDns1}</label>
+                            <label className="oneline">{infoDns}</label>
                         </div>
                     </section>
                     <section className="wifi-setting-item">
