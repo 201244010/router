@@ -3,6 +3,7 @@ import React from 'react';
 import Form from '~/components/Form';
 import {Button} from 'antd';
 import routes from '../../routes';
+import {checkStr} from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input }  = Form;
 
@@ -20,12 +21,12 @@ export default class SetPassword extends React.Component {
     };
 
     onPassportBlur = value => {
-        if(value.length < 6){
-            this.setState({
-                tip : '请输入6位以上密码',
-                disabled : true
-            });
-        }
+        const result = checkStr(value,{who:'密码',min: 6,max: 32,characterSetType: 'english'});
+        const { tip, flag} = result;
+        this.setState({
+            tip : tip,
+            disabled : !flag,
+        });   
     };
 
     componentWillUnmount(){
@@ -37,10 +38,12 @@ export default class SetPassword extends React.Component {
         let password = this.state.password;
 
         this.setState({ loading : true });
-        const response = await common.fetchWithCode(
-            'ACCOUNT_INITIAL_PASSWORD', 
-            { 
-                method : 'POST', data : { account : { password : btoa(password), user : 'admin' } } }, 
+        const response = await common.fetchApi(
+            [{
+                opcode: 'ACCOUNT_INITIAL_PASSWORD',
+                data: { account : { password : btoa(password), user : 'admin' } }
+            }],
+            {}, 
             { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }
         ).catch(ex => { console.error(ex) })
 
@@ -55,10 +58,12 @@ export default class SetPassword extends React.Component {
 
     // 监听输入实时改变
     onPassportChange = value => {
+        const result = checkStr(value,{who:'密码',min: 6,max: 32,characterSetType: 'english'});
+        const { tip, flag} = result;
         this.setState({
             password : value,
-            tip : '',
-            disabled : value.length < 6
+            tip : tip,
+            disabled : !flag,
         });
     }
 
@@ -79,7 +84,7 @@ export default class SetPassword extends React.Component {
                 <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
                 <Form style={{margin : '24px auto'}}>
                     <FormItem label="设置密码" style={{ marginBottom : 32 }} showErrorTip={tip}>
-                        <Input placeholder="请设置密码" onChange = {this.onPassportChange} onBlur={ this.onPassportBlur } onEnter={this.onEnter} />
+                        <Input placeholder="请设置密码" onChange = {this.onPassportChange} onBlur={ this.onPassportBlur } onEnter={this.onEnter} maxLength='32'/>
                         <ErrorTip>{tip}</ErrorTip> 
                     </FormItem>
                     <FormItem label="#">

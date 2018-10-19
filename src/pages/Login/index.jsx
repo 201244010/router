@@ -32,6 +32,10 @@ class Login extends React.Component {
         this.setState({ password: '' });
     }
 
+    onEnter = () => {
+        this.post();
+    }  
+
     post = async () => {
         const password = this.state.password;
         this.setState({ loading : true });
@@ -68,7 +72,8 @@ class Login extends React.Component {
                                         type="password"
                                         value={this.state.password}
                                         onChange={this.onChange}
-                                        maxLength='32' 
+                                        maxLength='32'
+                                        onEnter={this.onEnter} 
                                         />
                                 <ErrorTip>{ tip }</ErrorTip>
                             </FormItem>
