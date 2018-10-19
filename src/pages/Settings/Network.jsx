@@ -23,8 +23,7 @@ export default class NETWORK extends React.Component {
         infoIp : [],
         infoGateway : [],
         infoMask : [],
-        infoDns1 : [],
-        infoDns2 : [],
+        infoDns: '',
 
         //pppoe
         pppoeAccount : '',
@@ -364,6 +363,10 @@ export default class NETWORK extends React.Component {
         let info = wan.info,
             type = wan.dial_type;
         let { online, ipv4, gateway, mask, dns1, dns2} = info;
+        // dns: ''  '0.0.0.0' 'x.x.x.x'
+        let infoDns = [dns1, dns2].filter(val => {
+            return (val != '' && val != '0.0.0.0');
+        }).join(', ');
 
         this.setState({
             onlineStatus: online ? '已联网' : '未联网',
@@ -371,8 +374,7 @@ export default class NETWORK extends React.Component {
             infoIp: ipv4 === "" ? '0.0.0.0' : ipv4,
             infoGateway: gateway === "" ? '0.0.0.0' : gateway,
             infoMask: mask === "" ? '0.0.0.0' : mask,
-            infoDns1: dns1 === "" ? '0.0.0.0' : dns1,
-            infoDns2: dns2 === "" ? '0.0.0.0' : dns2
+            infoDns: infoDns,
         });
     }
     //上网信息刷新
@@ -399,7 +401,12 @@ export default class NETWORK extends React.Component {
     }
 
     render(){
-        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,disabled, loading, type, infoIp , dialType, onlineStatus, infoGateway, infoMask, infoDns1, pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup, ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
+        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,
+                dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,
+                disabled, loading, type, infoIp ,
+                dialType, onlineStatus, infoGateway, infoMask, infoDns,
+                pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
+                ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -426,8 +433,8 @@ export default class NETWORK extends React.Component {
                             <label className="oneline">{infoGateway}</label>
                         </div>
                         <div style={{height :　34}}>    
-                            <ul className="ui-mute">DNS:</ul>
-                            <label className="oneline">{infoDns1}</label>
+                            <ul className="ui-mute">DNS服务器:</ul>
+                            <label className="oneline">{infoDns}</label>
                         </div>
                     </section>
                     <section className="wifi-setting-item">
