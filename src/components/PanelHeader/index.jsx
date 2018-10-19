@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Switch } from 'antd';
+import { Switch ,Tooltip, Icon } from 'antd';
 import classnames from 'classnames';
 import './panelHeader.scss';
 
@@ -16,10 +16,15 @@ export default class PanelHeader extends React.PureComponent {
     }
 
     render(){
-        const { title, checkable, checked, className } = this.props;
+        const { title, checkable, checked, className, tip} = this.props;
         return (
             <ul className={classnames(['panel-hd ui-tiled', className])}>
-                <li><span>{title}</span></li>
+                <li>
+                    <span>{title}</span>
+                    {
+                        (typeof tip === 'string' && tip.length !== 0) && <Tooltip placement="right" title={tip}><Icon style={{ fontSize: 16, marginLeft : 10 }} type="question-circle" /></Tooltip>
+                    }
+                </li>
                 {
                     checkable ? <li><Switch checked={checked} onChange={this.onChange} /></li> : ''
                 }
