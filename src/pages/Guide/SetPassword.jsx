@@ -22,10 +22,10 @@ export default class SetPassword extends React.Component {
 
     onPassportBlur = value => {
         const result = checkStr(value,{who:'密码',min: 6,max: 32,characterSetType: 'english'});
-        const { tip, flag} = result;
+        const { tip} = result;
         this.setState({
             tip : tip,
-            disabled : !flag,
+            disabled : tip === ''? false : true,
         });   
     };
 
@@ -59,11 +59,11 @@ export default class SetPassword extends React.Component {
     // 监听输入实时改变
     onPassportChange = value => {
         const result = checkStr(value,{who:'密码',min: 6,max: 32,characterSetType: 'english'});
-        const { tip, flag} = result;
+        const { tip} = result;
         this.setState({
             password : value,
             tip : tip,
-            disabled : !flag,
+            disabled : tip === ''? false : true,
         });
     }
 

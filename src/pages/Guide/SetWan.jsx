@@ -57,21 +57,21 @@ export default class SetWan extends React.PureComponent {
 
     handleAccountChange = value => {
         const result = checkStr(value,{who:'账号',min: 1,max: 64,characterSetType: ''});
-        const { tip, flag} = result;
+        const { tip } = result;
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
                 pppoeAccountTip: tip,
-                disabled : !this.checkParams() && !flag
+                disabled : !this.checkParams() && tip === ''? false : true,
             });
         });
     }
 
     handleAccountBlur = value =>{
             const result = checkStr(value,{who:'账号',min: 1,max: 64,characterSetType: ''});
-            const { tip, flag} = result;
+            const { tip } = result;
             this.setState({
                 pppoeAccountTip : tip,
-                disabled : !this.checkParams() && !flag
+                disabled : !this.checkParams() && tip === ''? false : true,
             });
         
     }
@@ -82,24 +82,24 @@ export default class SetWan extends React.PureComponent {
 
     // 处理pppoe 密码框 change
     handlePasswordChange = value => {
-        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: ''});
-        const { tip, flag} = result;
+        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: 'english'});
+        const { tip } = result;
         this.setState({ pppoePassword : value }, function(){
             this.setState({
                 pppoePasswordTip : tip,
-                disabled : !this.checkParams() && !flag
+                disabled : !this.checkParams() && tip === ''? false : true,
             });
         });
     };
 
     // pppoe 密码输入框失去焦点
     handlePasswordBlur = value =>{
-        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: ''});
-        const { tip, flag} = result;
+        const result = checkStr(value,{who:'密码',min: 1,max: 32,characterSetType: 'english'});
+        const { tip } = result;
         if(this.state.pppoePassword.length === 0 ){
             this.setState({
                 pppoePasswordTip : tip,
-                disabled : !this.checkParams() && !flag
+                disabled : !this.checkParams() && tip === ''? false : true,
             });
         }
     }

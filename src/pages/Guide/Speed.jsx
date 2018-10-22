@@ -5,6 +5,7 @@ import CustomIcon from '~/components/Icon';
 import CustomModal from '~/components/Modal';
 import Tips from '~/components/Tips';
 import Form from '~/components/Form';
+import {checkStr} from '~/assets/common/check';
 
 const { FormItem, Input } = Form;
 const reg = /\D+/;
@@ -43,17 +44,20 @@ export default class Speed extends React.Component {
   }
 
   // 测速请求函数
-  async fetchSpeed(){
-    let data = { speedtest : { acton : 'start' } };
+  async fetchSpeed(){ 
+    common.fetchApi(
+        [{
+            opcode: 'WANWIDGET_SPEEDTEST_START',
+            data: { speedtest : { acton : 'start' } }
+        }]
+        );
     
-    common.fetchWithCode('WANWIDGET_SPEEDTEST_START', { method : 'POST', data });
-    
-    let response = await common.fetchWithCode(
-        'WANWIDGET_SPEEDTEST_INFO_GET',
-        { 
-            method : 'POST', 
-            data : { speedtest : { 'force_update' : true }} 
-        },
+    let response = await common.fetchApi(
+        [{
+            opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
+            data: { speedtest : { 'force_update' : true }}
+        }],
+        {},
         { 
             loop : 10, 
             pending : resp => {
@@ -63,7 +67,6 @@ export default class Speed extends React.Component {
             interval : 1000 
         }
     ).catch(ex => {});
-    //response = { errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "200", down_bandwidth : "100"}}}]}
 
     this.setState({ speedTestdone : true, showModal : false });
     let { errcode, message } = response;
@@ -84,7 +87,7 @@ export default class Speed extends React.Component {
         upBandWidth = parseInt(upBandWidth)*1024;
         downBandWidth = parseInt(downBandWidth)*1024 ;
         let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
-        let response = await common.fetchWithCode(
+        let response = await common.fetch(
             'QOS_SET',
             { method : 'POST', data },
             { loop : 10, stop : () => this.stop }
@@ -98,9 +101,11 @@ export default class Speed extends React.Component {
 
     // 获取 qos 信息
     async fetchQOSInfo(){
-        let response = await common.fetchWithCode(
-            'QOS_GET', 
-            { method : 'POST' },
+        let response = await common.fetchApi(
+            [
+                {opcode: 'QOS_GET'}
+            ], 
+            {},
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
         let {errcode, data, message} = response;
@@ -128,6 +133,7 @@ export default class Speed extends React.Component {
   }
 
   changeBandWidth = (value, field)=>{
+      console.log(typeof(value),field);
       this.setState({ [field] : value }, () => { 
           this.setState({
               disabled : !this.checkParams()

@@ -190,55 +190,39 @@ let checkStr = function( val, opt = {}){
         who: '字符串',
         min: 0, 
         max: Number.POSITIVE_INFINITY,
-        characterSetType: '',
-    },opt);
+        type: 'all',
+    }, opt);
 
-    const who = opt.who;
-    const min = opt.min;
-    const max = opt.max;
-    const characterSetType=opt.characterSetType;
-    var tip = '';
-    var flag = true;
+    const { who, min, max, type } = opt;
 
-    switch (characterSetType){
-        case 'decimal': //十进制数字字符集
-            flag = /^[0-9]*$/g.test(val);
-            break;
-        case 'hex': //十六进制数字字符集
-            flag = /^[0-9a-fA-F]*$/g.test(val);
-            break;
-        case 'english': //英文字符集	
-            flag = /^[\x20-\x7E]*$/g.test(val);
-            break;
-        case 'number': //数字字母字符集
-            flag = /^[0-9a-zA-Z]*$/g.test(val);
-            break;
-        default:
-            flag = true;
-    }
+    const checkMap = {
+        hex: {
+            reg: /^[0-9a-f]*$/gi,
+            tip: `${who}非法，请输入0-9、A-F、a-f之间的字符`
+        },
+        english: {
+            reg: /^[\x20-\x7E]*$/g,
+            tip: `${who}非法，请输入英文字符`
+        },
+        all: {
+            reg: /[\s\S]*/g,
+        }
+    };
     
+    
+    if(!checkMap[type].reg.test(val)){
+        return checkMap[type].tip;
+    }
+
     if(val.length === 0){
-        tip = `请输入${who}`;
+        return `请输入${who}`;
     }else if(val.length < min){
-        tip = `${who}的位数不能小于${min}位`;
+        return `${who}的位数不能小于${min}位`;
     }else if(val.length >= max){
-        tip = `${who}的位数不可以超过${max}位`;
+        return `${who}的位数不可以超过${max}位`;
     }
 
-    if(flag === false && tip === ''){
-        tip= '存在不合法字符';
-    }else if(flag === true && tip !== ''){
-        flag = false;
-    }
-
-    //因为页面input设置了maxLenght,所以判断一下val.length === max的情况
-    if(flag === false && tip === `${who}的位数不可以超过${max}位`){
-        flag = true;
-    }
-
-    console.log(characterSetType,val,tip,flag);
-    return {tip,flag};
-    
+    return '';
 }
 
-export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac,checkStr};
+export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac, checkStr };
