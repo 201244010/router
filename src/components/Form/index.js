@@ -252,6 +252,7 @@ class InputGroup extends React.Component {
                                         onChange={ e => this.onInputChange(e, i, item)} 
                                         onKeyPress={ this.handleKeyPress }
                                         type='text'
+                                        disabled={this.props.disabled}
                                     /></div>;
                         if(i !== inputs.length - 1){
                             return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
