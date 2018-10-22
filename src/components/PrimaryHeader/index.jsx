@@ -3,6 +3,7 @@ import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
 import { withRouter, NavLink } from "react-router-dom";
+import { clearAll } from '~/assets/common/cookie';
 
 class PrimaryHeader extends React.Component {
 	constructor(props) {
@@ -22,25 +23,21 @@ class PrimaryHeader extends React.Component {
         };
     }
 
+    downloadPage = () =>{
+        this.props.history.push('/downloadPage');
+    }
+
     logout = async ()=>{
-        let response = await common.fetchWithCode(
-            'ACCOUNT_LOGOUT', 
-            { method : 'POST' }
-        );
+        let response = await common.fetchApi({ opcode: 'ACCOUNT_LOGOUT' });
 
         // 删除cookie
-        let keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-        if (keys) {
-            for (let i = keys.length; i--;)
-                document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
-        }
+        clearAll();
 
         let { errcode, message } = response;
         if(errcode == 0){
             this.props.history.push('/login');
             return;
         }
-        Modal.error({ title : '退出失败', content :  message });
     }
 
 	render() {
@@ -76,7 +73,7 @@ class PrimaryHeader extends React.Component {
                                     </NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
-                                    <a href="/downloadPage"  className="ui-ib">下载手机版</a>
+                                    <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
                                     <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
                                 </li>

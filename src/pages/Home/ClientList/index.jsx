@@ -64,6 +64,10 @@ export default class ClientList extends React.Component{
         this.props.startRefresh();
     }
 
+    goWhiteList = () => {
+        this.props.history.push('/advance/whitelist');
+    }
+
     render() {
         const { visible } = this.state;
         const props = this.props;
@@ -191,7 +195,7 @@ export default class ClientList extends React.Component{
             }
             {('whitelist' === props.type && clients.length <= 0) &&
                 <div className='null-tip'>
-                    <label>您还未设置优先设备，</label><a href="/advance/whitelist">设置优先设备</a>
+                    <label>您还未设置优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">设置优先设备</a>
                 </div>
             }
             <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}

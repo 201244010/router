@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
+import { clearAll } from '~/assets/common/cookie';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -34,15 +35,22 @@ class Login extends React.Component {
 
     onEnter = () => {
         this.post();
-    }  
+    }
+
+    componentWillMount() {
+        // 删除认证cookie
+        clearAll();
+    }
 
     post = async () => {
         const password = this.state.password;
         this.setState({ loading : true });
-        const response = await common.fetchWithCode('ACCOUNT_LOGIN', {
-            method : 'POST', 
-            data : { account : { password : btoa(password), user : 'admin' }}
-        });
+        const response = await common.fetchApi(
+            [{ 
+                opcode: 'ACCOUNT_LOGIN',
+                data: { account : { password : btoa(password), user : 'admin' }}
+            }]
+        );
         const { errcode, message } = response;
         this.setState({ loading : false });
         if(errcode == 0){

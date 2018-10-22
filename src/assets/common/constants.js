@@ -53,6 +53,9 @@ export const DIRECTIVE = {
     QOS_GET : '0x2021',
     QOS_SET : '0x2022',
 
+    // SYSTEM
+    SYSTEM_GET: '0x2034',
+
     // 安全防护
     DOSD_GET: '0x2047',
     DOSD_SET: '0x2048',
@@ -123,6 +126,11 @@ export const ERROR_MESSAGE = {
     "-1102" : "ERRCODE_WLAN_HOST_VAP_NOT_ENABLE" 
 };
 
+/**
+ * 后台接口正确返回标志
+ * @type {number}
+ */
+export const NO_ERROR = 0;
 
 
 

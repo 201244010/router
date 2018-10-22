@@ -5,8 +5,9 @@ import CustomIcon from '~/components/Icon';
 import CustomModal from '~/components/Modal';
 import Tips from '~/components/Tips';
 import Form from '~/components/Form';
+import {checkRange} from '~/assets/common/check';
 
-const { FormItem, Input } = Form;
+const { FormItem, Input, ErrorTip } = Form;
 const reg = /\D+/;
 
 export default class Speed extends React.Component {
@@ -19,6 +20,8 @@ export default class Speed extends React.Component {
         mode : 'auto',
         upBandWidth : '0',
         downBandWidth : '0',
+        upBandTip: '',
+        downBandTip: '',
         disabled : true
     };
   }
@@ -43,17 +46,20 @@ export default class Speed extends React.Component {
   }
 
   // 测速请求函数
-  async fetchSpeed(){
-    let data = { speedtest : { acton : 'start' } };
+  async fetchSpeed(){ 
+    common.fetchApi(
+        [{
+            opcode: 'WANWIDGET_SPEEDTEST_START',
+            data: { speedtest : { acton : 'start' } }
+        }]
+        );
     
-    common.fetchWithCode('WANWIDGET_SPEEDTEST_START', { method : 'POST', data });
-    
-    let response = await common.fetchWithCode(
-        'WANWIDGET_SPEEDTEST_INFO_GET',
-        { 
-            method : 'POST', 
-            data : { speedtest : { 'force_update' : true }} 
-        },
+    let response = await common.fetchApi(
+        [{
+            opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
+            data: { speedtest : { 'force_update' : true }}
+        }],
+        {},
         { 
             loop : 10, 
             pending : resp => {
@@ -63,7 +69,6 @@ export default class Speed extends React.Component {
             interval : 1000 
         }
     ).catch(ex => {});
-    //response = { errcode : 0, data : [{result : {speedtest : {status : 'ok', up_bandwidth : "200", down_bandwidth : "100"}}}]}
 
     this.setState({ speedTestdone : true, showModal : false });
     let { errcode, message } = response;
@@ -84,9 +89,12 @@ export default class Speed extends React.Component {
         upBandWidth = parseInt(upBandWidth)*1024;
         downBandWidth = parseInt(downBandWidth)*1024 ;
         let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
-        let response = await common.fetchWithCode(
-            'QOS_SET',
-            { method : 'POST', data },
+        let response = await common.fetchApi(
+            [{
+                opcode: 'QOS_SET',
+                data: data
+            }],
+            {},
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
         let { errcode, message } = response;
@@ -98,9 +106,11 @@ export default class Speed extends React.Component {
 
     // 获取 qos 信息
     async fetchQOSInfo(){
-        let response = await common.fetchWithCode(
-            'QOS_GET', 
-            { method : 'POST' },
+        let response = await common.fetchApi(
+            [
+                {opcode: 'QOS_GET'}
+            ], 
+            {},
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
         let {errcode, data, message} = response;
@@ -128,11 +138,27 @@ export default class Speed extends React.Component {
   }
 
   changeBandWidth = (value, field)=>{
-      this.setState({ [field] : value }, () => { 
-          this.setState({
-              disabled : !this.checkParams()
-          });
-      });
+        if('upBandWidth' === field){
+            const tip = checkRange(value, { min: 1, max: 1000, who: '上行总带宽' });
+            this.setState({
+                [field] : value,
+                upBandTip: tip,
+            },() => { 
+                this.setState({
+                    disabled: !this.checkParams() && !('' === tip),
+                });
+            })
+        }else{
+            const tip = checkRange(value, { min: 8, max: 1000, who: '下行总带宽' });
+            this.setState({
+                [field] : value,
+                downBandTip: tip,
+            },() => { 
+                this.setState({
+                    disabled: !this.checkParams()  && !('' === tip),
+                });
+            })
+        }
     }
 
     componentWillUnmount(){
@@ -144,7 +170,7 @@ export default class Speed extends React.Component {
     }
 
   render(){
-    const {showModal, mode, speedTestdone, upBandWidth, downBandWidth}  = this.state;
+    const {showModal, mode, speedTestdone, upBandWidth, downBandWidth, upBandTip, downBandTip}  = this.state;
     return (
       <div className="speed">
         <h2>设置上下行带宽</h2> 
@@ -167,6 +193,8 @@ export default class Speed extends React.Component {
                         <SpeedManualConfig back={this.back} 
                                         nextStep={this.nextStep} 
                                         upBandWidth={upBandWidth}
+                                        upBandTip={upBandTip}
+                                        downBandTip={downBandTip}
                                         downBandWidth={downBandWidth}
                                         speedTestdone={speedTestdone}
                                         changeBandWidth={this.changeBandWidth} 
@@ -200,10 +228,12 @@ export default class Speed extends React.Component {
 const SpeedAutoConfig = props => {
 	return [
         <CustomIcon key="autoSpeedIcon" type="dashboard" color="#e0e1e2" size={160} />,
-		<Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>开始测速</Button>,
-        <div key="help" className="help">
-            <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
-            <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，不需要智能带宽功能</a>
+        <div className='button-wrap'>
+            <Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>开始测速</Button>
+            <div key="help" className="help">
+                <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
+                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，不需要智能带宽功能</a>
+            </div>
         </div>
     ];
 }
@@ -255,10 +285,12 @@ const SpeedManualConfig = props => {
                 <span>为了准确分配网速，请确保带宽值输入准确</span>
             </FormItem>
             <FormItem style={{fontWeight:'bold' }} label="上行总带宽" suffix="Mbps">
-                <Input type="text" value={props.upBandWidth}  placeholder="请输入上行总带宽" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
+                <Input type="text" value={props.upBandWidth} maxLength={4} placeholder="请输入上行总带宽" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
+                <ErrorTip style={{color:'#fb8632'}}>{props.upBandTip}</ErrorTip>
             </FormItem>
             <FormItem style={{fontWeight:'bold' }} label="下行总带宽" suffix="Mbps">
-                <Input type="text" value={props.downBandWidth}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
+                <Input type="text" value={props.downBandWidth} maxLength={4}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
+                <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
             <FormItem label="#">
         		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={props.configure}>下一步</Button>
