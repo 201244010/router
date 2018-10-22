@@ -11,7 +11,7 @@ export default class Lan extends React.Component {
     state = {
         ipv4 : ['', '', '', ''],
         mask : ['', '', '', ''],
-        enable: true,
+        enable: false,
         startip : ['', '', '', ''],
         endip : ['', '', '', ''],
         leasetime : '',
@@ -219,6 +219,7 @@ export default class Lan extends React.Component {
                         <label style={{ marginTop: 24 }}>开始IP地址</label>
                         <FormItem showErrorTip={startipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
+                                disabled={!enable}
                                 inputs={[{ value: startip[0], maxLength: 3 }, { value: startip[1], maxLength: 3 }, { value: startip[2], maxLength: 3 }, { value: startip[3], maxLength: 3 }]}
                                 onChange={value => this.onChange(value, 'startip')} />
                             <ErrorTip>{startipTip}</ErrorTip>
@@ -226,6 +227,7 @@ export default class Lan extends React.Component {
                         <label>结束IP地址</label>
                         <FormItem showErrorTip={endipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
+                                disabled={!enable}
                                 inputs={[{ value: endip[0], maxLength: 3 }, { value: endip[1], maxLength: 3 }, { value: endip[2], maxLength: 3 }, { value: endip[3], maxLength: 3 }]}
                                 onChange={value => this.onChange(value, 'endip')} />
                             <ErrorTip>{endipTip}</ErrorTip>
@@ -233,7 +235,13 @@ export default class Lan extends React.Component {
                         <label>地址租期</label>
                         <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
-                            <Input type="text" value={leasetime} onChange={value => this.onChange(value, 'leasetime')} placeholder="请输入租期时间（2～1440）" maxLength={4} />
+                            <Input
+                                type='text'
+                                disabled={!enable}
+                                value={leasetime}
+                                onChange={value => this.onChange(value, 'leasetime')}
+                                placeholder="请输入租期时间（2～1440）"
+                                maxLength={4} />
                             <ErrorTip>{leasetimeTip}</ErrorTip>
                         </FormItem>
                     </section>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
+import { clearAll } from '~/assets/common/cookie';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -34,7 +35,12 @@ class Login extends React.Component {
 
     onEnter = () => {
         this.post();
-    }  
+    }
+
+    componentWillMount() {
+        // 删除认证cookie
+        clearAll();
+    }
 
     post = async () => {
         const password = this.state.password;

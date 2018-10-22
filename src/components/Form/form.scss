@@ -78,9 +78,13 @@
 
         }
         &.small {
+            line-height: 32px;
             .ui-input-group-item {
                 height: 32px;
-            }    
+            }
+            .dot{
+                line-height:32px;
+            }
         }
         .ui-input-group-item {
             flex : 1;

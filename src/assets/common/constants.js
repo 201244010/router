@@ -53,6 +53,9 @@ export const DIRECTIVE = {
     QOS_GET : '0x2021',
     QOS_SET : '0x2022',
 
+    // SYSTEM
+    SYSTEM_GET: '0x2034',
+
     // 安全防护
     DOSD_GET: '0x2047',
     DOSD_SET: '0x2048',
