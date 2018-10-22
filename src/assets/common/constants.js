@@ -123,6 +123,11 @@ export const ERROR_MESSAGE = {
     "-1102" : "ERRCODE_WLAN_HOST_VAP_NOT_ENABLE" 
 };
 
+/**
+ * 后台接口正确返回标志
+ * @type {number}
+ */
+export const NO_ERROR = 0;
 
 
 
