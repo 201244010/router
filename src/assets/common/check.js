@@ -193,10 +193,7 @@ let checkStr = function( val, opt = {}){
         type: '',
     },opt);
 
-    const who = opt.who;
-    const min = opt.min;
-    const max = opt.max;
-    const type=opt.type;
+    const { who, min, max, type} = opt;
     var tip = '';
 
     if(val.length === 0){
@@ -225,26 +222,6 @@ let checkStr = function( val, opt = {}){
             tip: `${who}非法，请输入a-z，A-Z及0-9之间的字符`
         }
     }
-    // switch (characterSetType){
-    //     case 'decimal': //十进制数字字符集
-    //         legality = /^[0-9]*$/g.test(val);
-    //         break;
-    //     case 'hex': //十六进制数字字符集
-    //         legality = /^[0-9a-fA-F]*$/g.test(val);
-    //         break;
-    //     case 'english': //英文字符集	
-    //         legality = /^[\x20-\x7E]*$/g.test(val);
-    //         break;
-    //     case 'number': //数字字母字符集
-    //         legality = /^[0-9a-zA-Z]*$/g.test(val);
-    //         break;
-    //     default:
-    //         legality = true;
-    // }
-    
-    // if(legality === false){
-    //     tip = `${who}存在不合法字符`;
-    // }
     
     if(type ==='' || checkMap[type].reg.test(val)){
         return tip;
