@@ -185,7 +185,7 @@ let checkMac = function (mac, opt = {}) {
     return '';
 };
 
-let checkStr = function( val, opt = {}){
+let checkStr = function(val, opt = {}){
     opt = assign({
         who: '字符串',
         min: 0, 
@@ -214,12 +214,13 @@ let checkStr = function( val, opt = {}){
         return checkMap[type].tip;
     }
 
-    if(val.length === 0){
+    const len = val.length;
+    if(len === 0){
         return `请输入${who}`;
-    }else if(val.length < min){
-        return `${who}的位数不能小于${min}位`;
-    }else if(val.length >= max){
-        return `${who}的位数不可以超过${max}位`;
+    }else if(len < min){
+        return `${who}长度不能小于${min}`;
+    }else if(len > max){
+        return `${who}的长度不能超过${max}`;
     }
 
     return '';

@@ -5,8 +5,9 @@ import Form from '~/components/Form';
 import CustomModal from '~/components/Modal';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
+import {checkStr} from '~/assets/common/check';
 
-const { FormItem, Input } = Form;
+const { FormItem, Input, ErrorTip } = Form;
 
 export default class SetWifi extends React.Component {
     constructor(props){
@@ -23,6 +24,10 @@ export default class SetWifi extends React.Component {
         hostWifiPsw : '',
         guestWifiName : '',
         guestWifiPsw : '',
+        hostWifiNameTip: '',
+        hostWifiPswTip: '',
+        guestWifiNameTip: '',
+        guestWifiPswTip: '',
         canSubmit : false
     };
 
@@ -30,14 +35,44 @@ export default class SetWifi extends React.Component {
         this.props.history.push("/guide/speed");
     };
 
-    openGuestSetting = () => {
-        this.setState({guestWifi : !this.state.guestWifi}, () => {
-            this.setState({ canSubmit : this.valid() });
-        });
+    openGuestSetting = value => {
+        console.log(value);
+        if ( false === value){
+            this.setState({
+                guestWifi : value,
+                guestWifiNameTip: '',
+                guestWifiPswTip: '',
+            }, () => {
+                this.setState({ canSubmit : this.valid() });
+            });
+        }else{
+            this.setState({
+                guestWifi : value,
+                guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
+                guestWifiPswTip: checkStr(this.state.guestWifiPsw, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' }),
+            }, () => {
+                this.setState({ canSubmit : this.valid() });
+            });
+        }
     }
 
     handleChange = (value, field) => {
-        this.setState({ [field] : value }, function(){
+        const type = {
+            hostWifiName: {
+                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' })
+            }, 
+            hostWifiPsw: {
+                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
+            }, 
+            guestWifiName: {
+                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' })
+            }, 
+            guestWifiPsw: {
+                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
+            }
+        }
+        
+        this.setState({ [field] : value, [field+'Tip']: type[field].tip }, function(){
             this.setState({ canSubmit : this.valid() });
         });
     }
@@ -56,9 +91,11 @@ export default class SetWifi extends React.Component {
         this.guestWireLess.encryption='psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_2g.enable = "1";
 
-        let response = await common.fetchWithCode(
-            'WIRELESS_SET',
-            { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_SET',
+                data: { main : this.mainWireLess, guest : this.guestWireLess}
+            }]
         ).catch(ex => {});
 
         this.setState({ loading : false});
@@ -70,17 +107,20 @@ export default class SetWifi extends React.Component {
                 done: false,
             });
             setTimeout(async() => {
-                await common.fetchWithCode(
-                    'WIRELESS_GET', 
-                    { method : 'POST' }
+                await common.fetchApi(
+                    [{
+                        opcode: 'WIRELESS_GET',
+                    }]
                 ).catch(ex => {
                     if(ex !== ''){
                         this.setState({done: true});  
                     }}).then(
                             async()=>{
-                            await common.fetchWithCode(
-                                'WIRELESS_GET', 
-                                { method : 'POST' },
+                            await common.fetchApi(
+                                [{
+                                    opcode: 'WIRELESS_GET',
+                                }], 
+                                {},
                                 {
                                     loop: true,
                                     interval: 500,
@@ -120,14 +160,18 @@ export default class SetWifi extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }, { handleError : true })
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_GET'
+            }],
+            {},
+            { handleError : true });
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
             this.mainWireLess = main;
             this.hostWireLess = main.host.band_2g;
             this.guestWireLess = guest;
-            // console.log(this.hostWireLess, this.guestWireLess);
             this.setState({
                 hostWifiName : this.hostWireLess.ssid,
                 hostWifiPsw : atob(this.hostWireLess.password),
@@ -151,7 +195,7 @@ export default class SetWifi extends React.Component {
     }
 
     render(){
-        const { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, canSubmit } = this.state;
+        const { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, canSubmit,hostWifiNameTip,hostWifiPswTip,guestWifiNameTip,guestWifiPswTip } = this.state;
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
@@ -161,9 +205,11 @@ export default class SetWifi extends React.Component {
                         <FormItem label="商户Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
                         <FormItem label="Wi-Fi名称">
                             <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                            <ErrorTip style={{color:'#fb8632'}}>{hostWifiNameTip}</ErrorTip>
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
-                            <Input value={hostWifiPsw} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
+                            <Input value={hostWifiPsw} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
+                            <ErrorTip style={{color:'#fb8632'}}>{hostWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                     <div className="border"></div>
@@ -173,9 +219,11 @@ export default class SetWifi extends React.Component {
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
                             <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                            <ErrorTip style={{color:'#fb8632'}}>{guestWifiNameTip}</ErrorTip>
                         </FormItem>
                         <FormItem label="Wi-Fi密码">
-                            <Input value={guestWifiPsw} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                            <Input value={guestWifiPsw} maxLength={32} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                            <ErrorTip style={{color:'#fb8632'}}>{guestWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                 </div>
