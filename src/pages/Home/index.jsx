@@ -293,6 +293,10 @@ export default class Home extends React.PureComponent {
         });
     }
 
+    startDiagnose = () => {
+        this.props.history.push('/diagnose');
+    }
+
     startSpeedTest = () => {
         this.runningSpeedTest();
 
@@ -365,7 +369,7 @@ export default class Home extends React.PureComponent {
                                 </div>
                                 <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
                             </div>
-                            <Button className='diagnose'><a href="/diagnose">立即诊断</a></Button>
+                            <Button onClick={this.startDiagnose} className='diagnose'>立即诊断</Button>
                         </div>
                         <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
                             <h4>{percent}%</h4>
@@ -393,7 +397,7 @@ export default class Home extends React.PureComponent {
                             <h4>带宽测速失败，请重试</h4>
                         </Modal>
                     </li>
-                    <QoS data={qosData} enable={qosEnable} />
+                    <QoS data={qosData} enable={qosEnable} history={this.props.history}/>
                     <li className='func-item search' style={{ padding: '20px 0px' }}>
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
@@ -413,7 +417,7 @@ export default class Home extends React.PureComponent {
                             startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                     </div>
                     <div className='whitelist-list'>
-                        <ClientList type='whitelist' data={whitelistClients} mac={me}
+                        <ClientList type='whitelist' data={whitelistClients} mac={me} history={this.props.history}
                             startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                     </div>
                 </div>

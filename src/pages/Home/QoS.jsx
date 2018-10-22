@@ -58,6 +58,10 @@ export default class QoS extends React.Component {
         bwPie.setOption(this.option);
     }
 
+    goQoS = () => {
+        this.props.history.push('/advance/bandwidth');
+    }
+
     componentDidMount() {
         this.initPie();
     }
@@ -92,7 +96,7 @@ export default class QoS extends React.Component {
                     <h4 className='nice'>当前网络畅通，可放心使用</h4>)}
                 {enable && <ul className='band-desc'>{bandList}</ul>}
                 {!enable && <div className='qos-disabled'>网速智能分配功能尚未开启</div>}
-                <Button className='set-band'><a href="/advance/bandwidth">{enable ? '设置宽带' : '前往设置'}</a></Button>
+                <Button onClick={this.goQoS} className='set-band'>{enable ? '设置宽带' : '前往设置'}</Button>
             </li>
         )
     }

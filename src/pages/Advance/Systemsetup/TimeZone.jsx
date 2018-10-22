@@ -7,7 +7,6 @@ import './TimeZone.scss';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-console.log(timeZones);
 
 export default class TimeZone extends Component {
     state = {
