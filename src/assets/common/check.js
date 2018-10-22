@@ -198,25 +198,8 @@ let checkStr = function( val, opt = {}){
     const max = opt.max;
     const characterSetType=opt.characterSetType;
     var tip = '';
-    var flag = true;
+    var legality = true;
 
-    switch (characterSetType){
-        case 'decimal': //十进制数字字符集
-            flag = /^[0-9]*$/g.test(val);
-            break;
-        case 'hex': //十六进制数字字符集
-            flag = /^[0-9a-fA-F]*$/g.test(val);
-            break;
-        case 'english': //英文字符集	
-            flag = /^[\x20-\x7E]*$/g.test(val);
-            break;
-        case 'number': //数字字母字符集
-            flag = /^[0-9a-zA-Z]*$/g.test(val);
-            break;
-        default:
-            flag = true;
-    }
-    
     if(val.length === 0){
         tip = `请输入${who}`;
     }else if(val.length < min){
@@ -225,19 +208,29 @@ let checkStr = function( val, opt = {}){
         tip = `${who}的位数不可以超过${max}位`;
     }
 
-    if(flag === false && tip === ''){
-        tip= '存在不合法字符';
-    }else if(flag === true && tip !== ''){
-        flag = false;
+    switch (characterSetType){
+        case 'decimal': //十进制数字字符集
+            legality = /^[0-9]*$/g.test(val);
+            break;
+        case 'hex': //十六进制数字字符集
+            legality = /^[0-9a-fA-F]*$/g.test(val);
+            break;
+        case 'english': //英文字符集	
+            legality = /^[\x20-\x7E]*$/g.test(val);
+            break;
+        case 'number': //数字字母字符集
+            legality = /^[0-9a-zA-Z]*$/g.test(val);
+            break;
+        default:
+            legality = true;
     }
-
-    //因为页面input设置了maxLenght,所以判断一下val.length === max的情况
-    if(flag === false && tip === `${who}的位数不可以超过${max}位`){
-        flag = true;
+    
+    if(legality === false){
+        tip = `${who}存在不合法字符`;
     }
-
-    console.log(characterSetType,val,tip,flag);
-    return {tip,flag};
+    
+    console.log(characterSetType,val,tip,legality);
+    return {tip};
     
 }
 
