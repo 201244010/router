@@ -11,7 +11,7 @@ export default class Lan extends React.Component {
     state = {
         ipv4 : ['', '', '', ''],
         mask : ['', '', '', ''],
-        enable: false,
+        enable: true,
         startip : ['', '', '', ''],
         endip : ['', '', '', ''],
         leasetime : '',
