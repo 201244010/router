@@ -190,45 +190,39 @@ let checkStr = function( val, opt = {}){
         who: '字符串',
         min: 0, 
         max: Number.POSITIVE_INFINITY,
-        type: '',
-    },opt);
+        type: 'all',
+    }, opt);
 
-    const { who, min, max, type} = opt;
-    var tip = '';
+    const { who, min, max, type } = opt;
 
-    if(val.length === 0){
-        tip = `请输入${who}`;
-    }else if(val.length < min){
-        tip = `${who}的位数不能小于${min}位`;
-    }else if(val.length >= max){
-        tip = `${who}的位数不可以超过${max}位`;
-    }
-
-    checkMap = {
-        decimal: {
-            reg: /^[0-9]*$/g,
-            tip: `${who}非法，请输入0-9之间的数字`,
-        },
+    const checkMap = {
         hex: {
-            reg: /^[0-9a-fA-F]*$/g,
-            tip: `${who}非法，请输入0-9，A-F，a-f之间的数字或字母`
+            reg: /^[0-9a-f]*$/gi,
+            tip: `${who}非法，请输入0-9、A-F、a-f之间的字符`
         },
         english: {
             reg: /^[\x20-\x7E]*$/g,
-            tip: `${who}非法，请输入ASCII：0x20-0x7E之间的字符`
+            tip: `${who}非法，请输入英文字符`
         },
-        number: {
-            reg: /^[0-9a-zA-Z]*$/g,
-            tip: `${who}非法，请输入a-z，A-Z及0-9之间的字符`
+        all: {
+            reg: /[\s\S]*/g,
         }
-    }
+    };
     
-    if(type ==='' || checkMap[type].reg.test(val)){
-        return tip;
-    }else if(!checkMap[type].reg.test(val)){
+    
+    if(!checkMap[type].reg.test(val)){
         return checkMap[type].tip;
     }
-  
+
+    if(val.length === 0){
+        return `请输入${who}`;
+    }else if(val.length < min){
+        return `${who}的位数不能小于${min}位`;
+    }else if(val.length >= max){
+        return `${who}的位数不可以超过${max}位`;
+    }
+
+    return '';
 }
 
-export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac,checkStr};
+export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac, checkStr };
