@@ -356,7 +356,7 @@ export default class Bandwidth extends React.PureComponent {
             render: (text,record) =><div>
                 <FormItem type="small" style={{marginBottom : 0}}>
                     <div className="qos-input">
-                        <Input  style={{height : 28}} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                        <Input  style={{height : 28}} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
                     </div>
                     <label>%</label>
                     <label className="qos-tip">{record.errorTip}</label>
@@ -428,13 +428,13 @@ export default class Bandwidth extends React.PureComponent {
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
                         <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={upbandTmp} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                            <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
                             <ErrorTip>{upbandTmpTip}</ErrorTip>
                         </FormItem>
                     <label style={{ marginTop: 24 }}>下行总带宽</label>
                         <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={downbandTmp} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                            <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
                             <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
