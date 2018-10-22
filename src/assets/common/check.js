@@ -190,15 +190,14 @@ let checkStr = function( val, opt = {}){
         who: '字符串',
         min: 0, 
         max: Number.POSITIVE_INFINITY,
-        characterSetType: '',
+        type: '',
     },opt);
 
     const who = opt.who;
     const min = opt.min;
     const max = opt.max;
-    const characterSetType=opt.characterSetType;
+    const type=opt.type;
     var tip = '';
-    var legality = true;
 
     if(val.length === 0){
         tip = `请输入${who}`;
@@ -208,30 +207,51 @@ let checkStr = function( val, opt = {}){
         tip = `${who}的位数不可以超过${max}位`;
     }
 
-    switch (characterSetType){
-        case 'decimal': //十进制数字字符集
-            legality = /^[0-9]*$/g.test(val);
-            break;
-        case 'hex': //十六进制数字字符集
-            legality = /^[0-9a-fA-F]*$/g.test(val);
-            break;
-        case 'english': //英文字符集	
-            legality = /^[\x20-\x7E]*$/g.test(val);
-            break;
-        case 'number': //数字字母字符集
-            legality = /^[0-9a-zA-Z]*$/g.test(val);
-            break;
-        default:
-            legality = true;
+    checkMap = {
+        decimal: {
+            reg: /^[0-9]*$/g,
+            tip: `${who}非法，请输入0-9之间的数字`,
+        },
+        hex: {
+            reg: /^[0-9a-fA-F]*$/g,
+            tip: `${who}非法，请输入0-9，A-F，a-f之间的数字或字母`
+        },
+        english: {
+            reg: /^[\x20-\x7E]*$/g,
+            tip: `${who}非法，请输入ASCII：0x20-0x7E之间的字符`
+        },
+        number: {
+            reg: /^[0-9a-zA-Z]*$/g,
+            tip: `${who}非法，请输入a-z，A-Z及0-9之间的字符`
+        }
     }
+    // switch (characterSetType){
+    //     case 'decimal': //十进制数字字符集
+    //         legality = /^[0-9]*$/g.test(val);
+    //         break;
+    //     case 'hex': //十六进制数字字符集
+    //         legality = /^[0-9a-fA-F]*$/g.test(val);
+    //         break;
+    //     case 'english': //英文字符集	
+    //         legality = /^[\x20-\x7E]*$/g.test(val);
+    //         break;
+    //     case 'number': //数字字母字符集
+    //         legality = /^[0-9a-zA-Z]*$/g.test(val);
+    //         break;
+    //     default:
+    //         legality = true;
+    // }
     
-    if(legality === false){
-        tip = `${who}存在不合法字符`;
+    // if(legality === false){
+    //     tip = `${who}存在不合法字符`;
+    // }
+    
+    if(type ==='' || checkMap[type].reg.test(val)){
+        return tip;
+    }else if(!checkMap[type].reg.test(val)){
+        return checkMap[type].tip;
     }
-    
-    console.log(characterSetType,val,tip,legality);
-    return {tip};
-    
+  
 }
 
 export { checkNum, checkRange, checkIpFormat, checkIp, transIp, checkMask, checkSameNet, checkMac,checkStr};
