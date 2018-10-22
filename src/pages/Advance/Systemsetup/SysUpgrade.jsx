@@ -23,24 +23,23 @@ export default class SysUpgrade extends React.Component{
         downloadTip : '正在下载新版本，请稍候...',
         warningTip : '下载过程中请勿断电！！！',
         downloadFailtip : '升级文件下载失败，请重试',
-        failReason : '这里是失败原因【1000】'
+        failReason : ''
     }
 
     post = async ()=> {
         this.setState({
             download : true,
         })
-        common.fetchWithCode(
-            'UPGRADE_START',
-            {method : 'POST'}
-        ).then((resp)=>{
+        common.fetchApi({
+            opcode : 'UPGRADE_START',
+        }).then((resp)=>{
             if(resp.errcode == 0){
                 this.setState({
                     duration : resp.data[0].result.upgrade.duration,
                 });
-            common.fetchWithCode(
-                'UPGRADE_STATE',
-                {method : 'POST'},
+            common.fetchApi(
+                {opcode : 'UPGRADE_STATE'},
+                {},
                 {
                     loop : true,
                     interval : 1000,
@@ -49,11 +48,13 @@ export default class SysUpgrade extends React.Component{
                 }
             ).then((resp)=>{
                 const result = resp.data[0].result.upgrade.progress;
+                const errcode = resp.data[0].result.upgrade.code;
                 switch(result){
                     case 'download failed!':
                         this.setState({
                             downloadFail : true,
-                            download : false
+                            download : false,
+                            failReason : `错误码：${errcode}`
                         });
                         return;
                     case 'check failed!':
@@ -61,7 +62,7 @@ export default class SysUpgrade extends React.Component{
                             download : false,
                             downloadFail : true,
                             downloadFailtip : '文件校验失败，请重试',
-                            failReason : '这里是失败原因【1000】'
+                            failReason : `错误码：${errcode}`
                         })
                         return;
                     case 'check success!':
@@ -99,12 +100,11 @@ export default class SysUpgrade extends React.Component{
     }
 
     getInfo = async ()=>{
-        let response = await common.fetchWithCode(
-            'FIRMWARE_GET',
-            { method : 'POST'}
-        ).catch(ex=>{})
+        let response = await common.fetchApi({
+            opcode : 'FIRMWARE_GET'
+        })
         let {data,errcode} =response;
-        let result = data[0].result.upgrade
+        let result = data[0].result.upgrade;
 
         if(errcode == 0){       
             this.setState({
@@ -112,7 +112,8 @@ export default class SysUpgrade extends React.Component{
                 latestVersion : result.newest_version,
                 releaseLog : result.release_log,
             },() => {
-                    if (this.state.currentVersion !== this.state.latestVersion && this.state.latestVersion !== ''){
+                    let {currentVersion, latestVersion} = this.state;
+                    if (currentVersion !== latestVersion && latestVersion !== ''){
                         this.setState({
                             disable : false
                         })

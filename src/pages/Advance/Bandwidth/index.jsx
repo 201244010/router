@@ -3,9 +3,11 @@ import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { Button, Table, Progress, Modal, message, Icon, Tooltip } from 'antd'
+import {checkRange} from '~/assets/common/check';
+
 
 import CustomIcon from '~/components/Icon';
-const {FormItem, Input} = Form;
+const {FormItem, Input, ErrorTip} = Form;
 
 import './bandwidth.scss'
 
@@ -40,7 +42,9 @@ export default class Bandwidth extends React.PureComponent {
         downbandTmp : '',
         loading:false,
         disable : true, //手动设置保存按钮灰显
-        saveDisable : false//保存按钮灰显
+        saveDisable : false,//保存按钮灰显
+        upbandTmpTip : '',
+        downbandTmpTip : ''
     }
     
     handleSpace = (val) => {
@@ -48,6 +52,43 @@ export default class Bandwidth extends React.PureComponent {
             val = 0
         }
         return parseInt(val);
+    }
+
+    onbandChange = (val, key) => {
+        const {upbandTmp, downbandTmp} = this.state;
+        let tip = '';
+        let valid = {
+            upbandTmp : {
+                func : checkRange,
+                args : {
+                    min : 1,
+                    max : 1000,
+                    who : '上行带宽'
+                }
+            },
+            downbandTmp : {
+                func : checkRange,
+                args : {
+                    min : 8,
+                    max : 1000,
+                    who : '下行带宽'
+                }
+            }
+        }
+        tip = valid[key].func(val,valid[key].args);
+        this.setState({
+            [key] : val,
+            [key + 'Tip'] : tip
+        },() => {
+            if(tip !== '' || upbandTmp === '' || downbandTmp === ''){
+                this.setState({
+                    disable : true
+                })}else {
+                this.setState({
+                    disable : false
+                })
+            }
+        })
     }
 
     onChange = (val, key) => {
@@ -58,16 +99,7 @@ export default class Bandwidth extends React.PureComponent {
             whiteTip : '',
             normalTip : '',
         },() =>{ 
-            const {sunmi, white, normal, upbandTmp ,downbandTmp} = this.state;
-            if(upbandTmp === "" || downbandTmp === ""){
-                this.setState({
-                    disable : true
-                })
-                }else {
-                this.setState({
-                    disable : false
-                })
-            }
+            const {sunmi, white, normal} = this.state;
             if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
                 this.setState({
                     sunmiTip : '',
@@ -311,7 +343,7 @@ export default class Bandwidth extends React.PureComponent {
     render(){
         const {saveDisable, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
-            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, buttonloading} = this.state;
+            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, buttonloading} = this.state;
         const columns = [{
             title : '设备类型',
             dataIndex : 'type'
@@ -324,7 +356,7 @@ export default class Bandwidth extends React.PureComponent {
             render: (text,record) =><div>
                 <FormItem type="small" style={{marginBottom : 0}}>
                     <div className="qos-input">
-                        <Input  style={{height : 28}} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                        <Input  style={{height : 28}} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
                     </div>
                     <label>%</label>
                     <label className="qos-tip">{record.errorTip}</label>
@@ -394,14 +426,16 @@ export default class Bandwidth extends React.PureComponent {
                     confirmLoading={loading}
                     >
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
-                        <FormItem type="small" style={{ width: 320 }}>
+                        <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={upbandTmp} onChange={value => this.onChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                            <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                            <ErrorTip>{upbandTmpTip}</ErrorTip>
                         </FormItem>
                     <label style={{ marginTop: 24 }}>下行总带宽</label>
-                        <FormItem  type="small" style={{ width: 320 }}>
+                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={downbandTmp} onChange={value => this.onChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                            <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                            <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
                 <Modal closable={false} visible={speedFill} centered={true} footer={null}>
