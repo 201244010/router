@@ -22,6 +22,10 @@ class PrimaryHeader extends React.Component {
         };
     }
 
+    downloadPage = () =>{
+        this.props.history.push('/downloadPage');
+    }
+
     logout = async ()=>{
         let response = await common.fetchWithCode(
             'ACCOUNT_LOGOUT', 
@@ -76,7 +80,7 @@ class PrimaryHeader extends React.Component {
                                     </NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
-                                    <a href="/downloadPage"  className="ui-ib">下载手机版</a>
+                                    <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">下载手机版</a>
                                     <span className="ui-ib">|</span>
                                     <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
                                 </li>

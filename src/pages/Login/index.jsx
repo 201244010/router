@@ -39,10 +39,12 @@ class Login extends React.Component {
     post = async () => {
         const password = this.state.password;
         this.setState({ loading : true });
-        const response = await common.fetchWithCode('ACCOUNT_LOGIN', {
-            method : 'POST', 
-            data : { account : { password : btoa(password), user : 'admin' }}
-        });
+        const response = await common.fetchApi(
+            [{ 
+                opcode: 'ACCOUNT_LOGIN',
+                data: { account : { password : btoa(password), user : 'admin' }}
+            }]
+        );
         const { errcode, message } = response;
         this.setState({ loading : false });
         if(errcode == 0){
