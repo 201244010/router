@@ -8,6 +8,7 @@ import React from 'react';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import { stringify } from 'qs';
+import { clearAll } from '~/assets/common/cookie';
 
 const { assign } = Object;
 const noop = () => {};
@@ -249,12 +250,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                             throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
                     }
                     if (error.toString().indexOf('403') > -1) {
-                        // 删除认证cookie
-                        let keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-                        if (keys) {
-                            for (let i = keys.length; i--;)
-                                document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
-                        }
+                        clearAll();
                         location.href = '/login';
                         return reject({});
                         // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
