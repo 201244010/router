@@ -163,17 +163,16 @@ export default class SetWan extends React.PureComponent {
                     pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
                 }
             );
-            let { errcode:code, data } = connectStatus;
+            let { errcode } = connectStatus;
             this.setState({ loading : false });
-            if(code == 0){
+            if(errcode == 0){
                 let online = data[0].result.onlinetest.online;
                 this.setState({
                     showNetWorkStatus : true,
-                    online
+                    online :online
                 });
                 if(online){
-                    // this.props.history.push("/guide/speed");
-                    setTimeout(() => { this.props.history.push("/guide/speed") }, 300);
+                    setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
                 }
                 return;
             }
@@ -212,14 +211,13 @@ export default class SetWan extends React.PureComponent {
     }
     
     dialDetect = async () => {
-        this.setState({detect:true});
+        this.setState({ detect: true });
         common.fetchApi(
             [
                 {opcode: 'WANWIDGET_WAN_LINKSTATE_GET'}
             ],
         ).then((resp) => {
             const {errcode,data} = resp;
-            this.setState({detect : false});
             if(errcode == 0){
                 this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
             }else{
@@ -242,7 +240,6 @@ export default class SetWan extends React.PureComponent {
                     stop : () => this.stop
                 }
             ).then((response)=>{
-               
                 const { errcode, data, message } = response;
                 if(errcode == 0){
                     let { dialdetect } = data[0].result;
@@ -252,12 +249,15 @@ export default class SetWan extends React.PureComponent {
                         type :  dial_type, 
                         disabled : dial_type == 'dhcp' ? false : true 
                         });
+                        this.setState({ detect: false });
                         return;
                 }else{
+                    this.setState({ detect: false });
                     Modal.error({ title: '上网方式检查', content: message });
                 }
-            });        
+            });       
         });
+        
     }
 
     getNetInfo = async ()=>{

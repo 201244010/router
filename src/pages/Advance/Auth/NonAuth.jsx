@@ -70,7 +70,12 @@ export default class NonAuth extends React.Component{
     }
     
     onTypeChange = (value,name) =>{
-        common.fetchWithCode('AUTH_WHITELIST_SET',{method : 'post',data : {auth : {name :value}}}).then((resp) => {
+        common.fetchApi(
+            [{
+                opcode: 'AUTH_WHITELIST_SET',
+                data: {auth : {name :value}}
+            }]
+        ).then((resp) => {
             let{errcode,message} = resp;
             console.log(errcode,errcode == 0);
             if(errcode == 0){
@@ -103,10 +108,10 @@ export default class NonAuth extends React.Component{
 
     handleDelete = async (record) => {
         console.log(1,record);
-        let response = await common.fetchWithCode(
-            'AUTH_WHITELIST_DELETE',
-            {
-                method: 'POST', data: {
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WHITELIST_DELETE',
+                data: {
                     auth:{
                         delete_whitelis: [{
                             name: record.name,
@@ -114,7 +119,7 @@ export default class NonAuth extends React.Component{
                         }]
                     }
                 }
-            }
+            }]
         ).catch(ex => { });
 
         let { errcode, message } = response;
@@ -152,17 +157,23 @@ export default class NonAuth extends React.Component{
             loading: true
         });
 
-        let directive = 'AUTH_WHITELIST_SET',
-            white_list = this.state.onlineList.filter(item => item.checked).map(item => {
+        let white_list = this.state.onlineList.filter(item => item.checked).map(item => {
                 return {
                     name: item.name,
                     mac: item.mac.toUpperCase()
                 };
             });
 
-        let response = await common.fetchWithCode(
-            directive, { method: 'POST', data: { auth:{whitelist: white_list}} }
-        ).catch(ex => { });
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WHITELIST_SET',
+                data: { 
+                    auth: { 
+                        whitelist: white_list 
+                    } 
+                }
+            }]
+        ).catch(ex => {});
 
         this.setState({
             loading: false
@@ -188,13 +199,21 @@ export default class NonAuth extends React.Component{
             editLoading: true
         });
 
-        let directive = 'AUTH_WHITELIST_SET';
         let white_list = [{
             mac: this.state.mac.join(':').toUpperCase(),
             name: this.state.name
         }];
 
-        let response = await common.fetchWithCode(directive, { method: 'POST', data: { auth :{whitelist: white_list }} });
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WHITELIST_SET',
+                data: { 
+                    auth: {
+                        whitelist: white_list 
+                    }
+                }
+            }]
+        );
 
         this.setState({
             editLoading: false
@@ -254,7 +273,11 @@ export default class NonAuth extends React.Component{
     }
 
     fetchWhiteList = async() => {
-        let fetchWhite = await common.fetchWithCode('AUTH_WHITELIST_GET',{method : 'post'},{handleError : true});
+        let fetchWhite = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WHITELIST_GET'
+            }]
+        );
         let {errcode,data,message} = fetchWhite;
         let whites;
         console.log(fetchWhite,errcode == 0,errcode);
@@ -279,7 +302,11 @@ export default class NonAuth extends React.Component{
     }
 
     fetchClientsInfo = async () => {
-        let response = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'POST' })
+        let response = await common.fetchApi(
+            [{
+                opcode: 'CLIENT_LIST_GET'
+            }]
+        );
         let { errcode, message } = response;
         if (errcode == 0) {
             let { data } = response.data[0].result;

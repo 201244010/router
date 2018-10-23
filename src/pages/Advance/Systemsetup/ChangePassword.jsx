@@ -2,6 +2,7 @@
 import React from 'react';
 import Form from '~/components/Form';
 import {message,Button,Modal} from 'antd';
+import {checkStr} from '~/assets/common/check';
 
 const {FormItem,Input,ErrorTip} = Form;
 
@@ -9,19 +10,32 @@ export default class ChangePassword extends React.Component{
 
     state={
         userName : 'admin',
-        oldPWD : '',
-        newPWD : '',
-        surePWD : '',
-        loading : false,
-        disabled : true,
-        errorTip : '',
+        oldPWD: '',
+        newPWD: '',
+        surePWD: '',
+        loading: false,
+        disabled: true,
+        errorTip: '',
+        newPWDTip: '',
     }
 
     onChange = (name,value) =>{
-        this.setState({
-            [name] : value, 
-            errorTip : '', 
-        },()=>{this.setState({disabled : (this.state.surePWD.trim().length<6 || this.state.newPWD.trim().length<6)})})
+        if('newPWD' === name){
+            this.setState({
+                [name] : value,
+                errorTip : '', 
+                newPWDTip: checkStr(value, { who: '新密码', min: 6,max:  32, type: 'english'})
+            }, () =>{this.setState({
+                disabled : (this.state.surePWD.trim().length<6 || this.state.newPWD.trim().length<6)
+            })});
+        }else{
+            this.setState({
+                [name] : value, 
+                errorTip : '', 
+            },()=>{this.setState({
+                disabled: (this.state.surePWD.trim().length<6 || this.state.newPWD.trim().length<6)
+            })});
+        }  
     }
 
     submit = async() =>{
@@ -34,7 +48,12 @@ export default class ChangePassword extends React.Component{
             this.oldpassword = btoa(this.state.oldPWD);
             this.password = btoa(this.state.newPWD);
             this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password};
-            common.fetchWithCode('ACCOUNT_MODIFY',{method : 'post', data : {account:this.account}}).then((resp)=>{
+            common.fetchWithCode(
+                [{
+                    opcode: 'ACCOUNT_MODIFY',
+                    data: {account:this.account}
+                }]
+            ).then((resp)=>{
                 let {errcode} = resp; 
                 if(errcode == '0'){
                     message.success('修改成功,5秒后将跳转到登陆页面');
@@ -48,7 +67,7 @@ export default class ChangePassword extends React.Component{
     }
 
     render(){
-        const {oldPWD,newPWD,surePWD,loading,disabled,errorTip} = this.state;
+        const { oldPWD, newPWD, surePWD, loading, disabled, errorTip, newPWDTip } = this.state;
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
@@ -58,13 +77,14 @@ export default class ChangePassword extends React.Component{
                             <Input type="password" placeholder={'请输入旧密码'} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
                         </FormItem>
                         <label>设置新密码</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="password" placeholder={'请输入新密码'} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
+                        <FormItem type="small" showErrorTip={newPWDTip} style={{ width : 320}}>
+                            <Input type="password" maxLength={32} placeholder={'请输入新密码'} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
+                            <ErrorTip>{newPWDTip}</ErrorTip>
                         </FormItem>
                         <label>确认新密码</label>
-                        <FormItem type="small" style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={errorTip} style={{ width : 320}}>
                             <Input type="password" placeholder={'请确认新密码'} value={surePWD} onChange={(value)=>this.onChange('surePWD',value)} />
-                            <ErrorTip style={{color: '#fb8632',paddingLeft: 10,whiteSpace: 'nowrap'}}>{errorTip}</ErrorTip>
+                            <ErrorTip>{errorTip}</ErrorTip>
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">

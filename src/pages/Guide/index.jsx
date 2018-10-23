@@ -75,7 +75,7 @@ export default class Guide extends React.Component {
                     </li>
                 </ul>
                 <div className="icon-bg">
-                    <Icon type={iconType || "lock"} size={240} />
+                    <Icon type={iconType || "lock"} size={220} />
                 </div>
                 <div className="guide-body">
                     <Switch>

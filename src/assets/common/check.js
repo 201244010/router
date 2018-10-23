@@ -1,7 +1,7 @@
 const { assign } = Object;
 
 let checkNum = (num) => {
-    if(false == /^-?\d+$/.test(num)){
+    if (false == /^-?\d+$/.test(num) || /^0\d/.test(num)){
         return '请输入正确的数字';
     };
 

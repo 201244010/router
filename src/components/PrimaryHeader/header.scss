@@ -1,6 +1,5 @@
 
 .header {
-    background: #2956C6;
     color : #fff;
     a:hover, a:active, a:visited {
         text-decoration: none;
@@ -50,11 +49,10 @@
                 margin-right : 50px; 
                 height : 36px;
                 line-height: 36px;
-                border-bottom : 2px solid #2956C6;
                 &:hover, &.active {
                     text-decoration : none;
                     font-weight: bold;
-                    border-bottom-color: #fff;
+                    border-bottom : 2px solid #fff;
                 }
             }
         }

@@ -14,7 +14,11 @@ export default class Reboot extends React.Component{
     }
     
     reboot = async() =>{
-        common.fetchWithCode('SYSTEM_RESTART',{method : 'post',data:{}}).then((resp) =>{
+        common.fetchApi(
+            [{
+                opcode: 'SYSTEMTOOLS_RESTART'
+            }]
+        ).then((resp) =>{
             this.setState({visible : false},()=>{this.setState({loadingActive :true},()=>{setTimeout(()=>{this.setState({loadingActive:false,succeedActive:true})},90000)})});
         });
     }
@@ -28,8 +32,8 @@ export default class Reboot extends React.Component{
     }
 
     login = () =>{
-        location.href='/login';
-        this.setState({succeedActive:false})
+        this.props.history.push('/login');
+        this.setState({succeedActive:false});
     }
 
     render(){

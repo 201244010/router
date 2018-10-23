@@ -24,7 +24,7 @@ class PrimaryHeader extends React.Component {
     }
 
     downloadPage = () =>{
-        this.props.history.push('/downloadPage');
+        this.props.history.push('/app');
     }
 
     logout = async ()=>{

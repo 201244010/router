@@ -29,11 +29,11 @@ export default class Diagnose extends React.Component {
         if (errcode == 0) {
             let { info } = data[0].result.wan;
             let { linkstate, dialstate, online } = info;
-            //linkstate = true;
+            //linkstate = false;
 
             if (!linkstate) {
+                this.setTheme('warning-bg');
                 this.setState({
-                    step: this.state.step + 1,
                     status: 'warning',
                     bgIcon: 'defeated',
                     problem: '网线异常',
@@ -45,7 +45,14 @@ export default class Diagnose extends React.Component {
                 return;
             }
 
-            this.diagnoseDialState();
+            this.setState({
+                step: this.state.step + 1,
+            }, () => {
+                // 诊断速度太快，延迟2秒增加用户体验
+                setTimeout(() => {
+                    this.diagnoseDialState();
+                }, 2000);
+            });
         } else {
             Modal.error({ title: '网络诊断失败', content: message });
         }
@@ -57,11 +64,11 @@ export default class Diagnose extends React.Component {
         if (errcode == 0) {
             let { info } = data[0].result.wan;
             let { linkstate, dialstate, online } = info;
-            //dialstate = 'connected';
+            //dialstate = 'disconnected';
 
             if ('connected' !== dialstate) {
+                this.setTheme('warning-bg');
                 this.setState({
-                    step: this.state.step + 1,
                     status: 'warning',
                     bgIcon: 'defeated',
                     problem: 'WAN口拨号异常',
@@ -73,7 +80,14 @@ export default class Diagnose extends React.Component {
                 return;
             }
 
-            this.diagnoseOnline();
+            this.setState({
+                step: this.state.step + 1,
+            }, () => {
+                // 诊断速度太快，延迟2秒增加用户体验
+                setTimeout(() => {
+                    this.diagnoseOnline();
+                }, 2000);
+            });
         } else {
             Modal.error({ title: '网络诊断失败', content: message });
         }
@@ -85,11 +99,11 @@ export default class Diagnose extends React.Component {
         if (errcode == 0) {
             let { info } = data[0].result.wan;
             let { linkstate, dialstate, online } = info;
-            //online = true;
+            //online = false;
 
             if (!online) {
+                this.setTheme('warning-bg');
                 this.setState({
-                    step: this.state.step + 1,
                     status: 'warning',
                     bgIcon: 'defeated',
                     problem: '无Internet服务',
@@ -100,8 +114,8 @@ export default class Diagnose extends React.Component {
                 });
                 return;
             } else {
+                this.setTheme('okay-bg');
                 this.setState({
-                    step: this.state.step + 1,
                     status: 'okay',
                     bgIcon: 'succeed',
                     time: 3,
@@ -126,6 +140,7 @@ export default class Diagnose extends React.Component {
     }
 
     start = async () => {
+        this.setTheme('dbg-bg');
         this.setState({
             status: 'doing',
             step: 0,
@@ -133,15 +148,24 @@ export default class Diagnose extends React.Component {
             bgIcon: 'detection',
         });
 
-        this.diagnoseWanLink();
+        // 诊断速度太快，延迟2秒增加用户体验
+        setTimeout(() => {
+            this.diagnoseWanLink();
+        }, 2000);
     }
 
     setWan = () => {
         this.props.history.push('/settings/network');
     }
 
+    setTheme = (theme) => {
+        const ui = 'ui-fullscreen';
+        const doc = document.getElementsByClassName(ui)[0];
+        doc.className = `${ui} ${theme}`;
+    }
+
     goBack = () => {
-        this.props.history.goBack();
+        this.props.history.push('/home');
     }
 
     componentDidMount() {
@@ -166,7 +190,7 @@ export default class Diagnose extends React.Component {
         });
 
         return (
-            <div className='ui-fullscreen diagnose'>
+            <div className='diagnose'>
                 <div className='doing' style={{display:('doing' === status ? 'block' : 'none')}}>
                     <p className='title'>正在进行故障诊断，请稍候...</p>
                     <Timeline className='time-line'>
