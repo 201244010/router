@@ -345,7 +345,7 @@ export default class Home extends React.PureComponent {
                 sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
-            [<SubLayout className='home'>
+            <SubLayout className='home'>
                 <ul className='func-list'>
                     <li className='func-item internet' style={{ paddingRight: 0 }}>
                         <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
@@ -421,8 +421,7 @@ export default class Home extends React.PureComponent {
                             startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
                     </div>
                 </div>
-            </SubLayout>,
-            <PrimaryFooter className='home-footer' />]
+            </SubLayout>
         );
     }
 };

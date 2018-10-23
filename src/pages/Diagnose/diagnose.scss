@@ -1,7 +1,17 @@
+.warning-bg{
+    background-image : linear-gradient(90deg, #CB79A4, #A050A9);
+}
+.okay-bg{
+    background-image : linear-gradient(90deg, #4FB399, #2F8C46);
+}
+.dbg-bg{
+    background-image : linear-gradient(90deg, #3C98E3, #6173EA);
+}
 .diagnose{
     color: #FFF;
     width: 65%;
-    margin: 60px auto 0;
+    padding-top: 60px;
+    margin: auto;
     .title{
         font-size: 36px;
         line-height: 1em;
@@ -119,5 +129,11 @@
             opacity: 0.3;
             color: #2F8757;
         }
+    }
+}
+.main .dbg-footer{
+    color: #F7F7F7;
+    a{
+        color: #F7F7F7;
     }
 }
