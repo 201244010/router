@@ -64,6 +64,7 @@ export default class WIFI extends React.Component {
         tip2gPsw: '',
         tip5g: '',
         tip5g:'',
+        loading: false,
     };
     onChange = (name,value) =>{
         switch (name){
@@ -256,7 +257,7 @@ export default class WIFI extends React.Component {
 
     submit = async ()=> {
         //是否双频合一
-        
+        this.setState({ loading : true});
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
 
         //guest
@@ -295,23 +296,13 @@ export default class WIFI extends React.Component {
             }]
         ).catch(ex => {});
 
-        this.setState({ loading : false});
-        
         let {errcode, message} = response;
         if(errcode == 0){
-            this.setState({active : true});
-            this.timer = setInterval(()=> {
-                this.tick++;
-                this.setState({ percent : this.state.percent += 0.1 }, function(){
-                    if(this.state.percent >= 100){
-                        this.setState({done : true});
-                        clearInterval(this.timer);
-                    }
-                });
-            }, 20);
+            this.setState({ loading : false});
             return;
         }
         Modal.error({ title : 'WI-FI设置失败', content : message });
+        this.setState({ loading : false});
     }
 
     format = ()=>{
@@ -397,7 +388,7 @@ export default class WIFI extends React.Component {
     }
     render(){
         const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Passwrod, hide_ssid5, encryption5, htmode5, channel5, current_channel5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, tipGuest, tipGuestPsw, tip2g, tip2gPsw,
-         tip5g, tip5gPsw } = this.state;
+         tip5g, tip5gPsw, loading } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -600,7 +591,7 @@ export default class WIFI extends React.Component {
                         </section>  
                     </section>
                     <section className="wifi-setting-save">
-                        <Button className="wifi-setting-button" type="primary" onClick={this.submit}>保存</Button>
+                        <Button className="wifi-setting-button" type="primary" loading={loading} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

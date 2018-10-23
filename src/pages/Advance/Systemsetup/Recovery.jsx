@@ -12,7 +12,11 @@ export default class Recovery extends React.Component{
     }
     
     reboot = async() =>{
-        common.fetchWithCode('SYSTEM_RESTORE',{method : 'post',data:{}}).then((resp) =>{
+        common.fetchApi(
+            [{
+                opcode: 'SYSTEMTOOLS_RESET'
+            }]
+        ).then((resp) =>{
             this.setState({visible : false},()=>{this.setState({loadingActive :true},()=>{setTimeout(()=>{this.setState({loadingActive:false,succeedActive:true})},90000)})});
         });
     }
