@@ -540,6 +540,10 @@ export default class WIFI extends React.Component {
                                         <label>无线信道</label> 
                                         <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
                                             <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
+                                            <Option value={'36'}>36</Option>
+                                            <Option value={'40'}>40</Option>
+                                            <Option value={'44'}>44</Option>
+                                            <Option value={'48'}>48</Option>
                                             <Option value={'149'}>149</Option>
                                             <Option value={'153'}>153</Option>
                                             <Option value={'157'}>157</Option>
