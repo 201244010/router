@@ -36,17 +36,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
     
-
-.main {
-    // height: 100%;
-    height : calc(100% - 55px);
-    min-width: 1216px;
-    background-image : linear-gradient(180deg, $primary-bg-color 175px, #f2f3f7 175px);
-
-    &.blue-bg {
+.bg{
+    background-image : linear-gradient(180deg, #2956C6 230px, #2956C6 0);
+    .main{
         color : #fff;
         height : auto;
-        background-image : linear-gradient(180deg, $primary-bg-color 175px, $primary-bg-color 0);
         position : absolute;
         left : 0;
         top : 55px;
@@ -58,6 +52,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
             margin : 40px auto 0;
         }
     }
+}
+.main {
+    // height: 100%;
+    height : calc(100% - 55px);
+    min-width: 1216px;
 
     footer {
         font-size : 12px;
