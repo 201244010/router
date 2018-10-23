@@ -2,14 +2,13 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Progress, Modal, message, Icon, Tooltip } from 'antd'
+import { Button, Table, Progress, Modal, message } from 'antd';
 import {checkRange} from '~/assets/common/check';
-
-
 import CustomIcon from '~/components/Icon';
+
 const {FormItem, Input, ErrorTip} = Form;
 
-import './bandwidth.scss'
+import './bandwidth.scss';
 
 export default class Bandwidth extends React.PureComponent {
     state = {
@@ -42,16 +41,9 @@ export default class Bandwidth extends React.PureComponent {
         downbandTmp : '',
         loading:false,
         disable : true, //手动设置保存按钮灰显
-        saveDisable : false,//保存按钮灰显
+        saveDisable : true,//保存按钮灰显
         upbandTmpTip : '',
         downbandTmpTip : ''
-    }
-    
-    handleSpace = (val) => {
-        if (val === ''){
-            val = 0
-        }
-        return parseInt(val);
     }
 
     onbandChange = (val, key) => {
@@ -92,34 +84,62 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onChange = (val, key) => {
-        let tip = '各设备百分比总和需不大于100%',value = val.replace(/\D/g,'');
+        val = val.replace(/\D/g, '');
+
+        let valid = {
+            sunmi: {
+                func: checkRange,
+                args: {
+                    min: 1,
+                    max: 100,
+                    who: '带宽比例',
+                }
+            },
+            white: {
+                func: checkRange,
+                args: {
+                    min: 1,
+                    max: 100,
+                    who: '带宽比例',
+                }
+            },
+            normal: {
+                func: checkRange,
+                args: {
+                    min: 1,
+                    max: 100,
+                    who: '带宽比例',
+                }
+            }
+        };
+
+        let tip = valid[key].func(val, valid[key].args);
         this.setState({
-            [key]: value === "" ? value : value,
-            sunmiTip : '',
-            whiteTip : '',
-            normalTip : '',
-        },() =>{ 
-            const {sunmi, white, normal} = this.state;
-            if((this.handleSpace(sunmi) + this.handleSpace(white) + this.handleSpace(normal)) > 100){
-                this.setState({
-                    sunmiTip : '',
-                    whiteTip : '',
-                    normalTip : '',
-                    [key + 'Tip'] : tip,
-                    saveDisable : true
-                })
-            }else{
-                this.setState({
-                    saveDisable : false
-                })
+            [key]: val,
+            [key + 'Tip']: tip,
+        }, () => {
+            let tips = ['sunmi', 'white', 'normal'];
+            let ok = tips.every((tip) => { return '' === this.state[tip + 'Tip'] });
+            if (ok) {
+                const { sunmi, white, normal } = this.state;
+                let total = parseInt(sunmi) + parseInt(white) + parseInt(normal);
+                if (total > 100) {
+                    this.setState({
+                        [key + 'Tip']: '带宽比例总和不能大于100%',
+                        saveDisable: true,
+                    });
+                    return;
+                }else{
+                    this.setState({
+                        saveDisable: false,
+                    })
+                }
             }
-            if (this.handleSpace(sunmi) === 0 || this.handleSpace(white) === 0 || this.handleSpace(normal) === 0 ){
-                this.setState({
-                    [key + 'Tip'] : '百分比例不能为空或0',
-                    saveDisable : true
-                })
-            }
-        })       
+
+            this.setState({
+                saveDisable: true,
+            })
+        })
     }
 
     OnBandEnable = async (value) => {
