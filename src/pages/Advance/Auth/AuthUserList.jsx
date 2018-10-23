@@ -24,60 +24,58 @@ export default class AuthUserList extends React.Component{
     }
 
     GetAuthUserList = async() =>{
-        let getClient = await common.fetchWithCode('CLIENT_LIST_GET', { method: 'post' });
-        let getAuthClient = await common.fetchWithCode('AUTH_CLIENT_LIST',{method : 'post'});
-        Promise.all([getClient,getAuthClient]).then(results => {
-            console.log(results);
-            let client,authClient;
-            let { errcode, data } = results[0];
-            if (0 !== errcode) {
-                return;
-            } else {
-                client = data[0].result.data;
-            }
-            if (0 !== results[1].errcode) {
-                return;
-            } else {
-                authClient = results[1].data[0].result.auth.clientlist;
-            }
-
-            this.setState({
-                authUserList: client.map(item => {
-                    let mac = item.mac.toUpperCase();
-                    let authclient = authClient.find(item => item.mac.toUpperCase() === mac) || {
-                        device: 'unknown',
-                        ontime: 0,
-                        ip: '0.0.0.0',
-                    };
-
-                    return {
-                        index: item.index,
-                        icon: iconMap[authclient.device] || 'unknown',
-                        name: item.name,
-                        online: (false !== item.online),  // 设备列表中的设备都是在线的
-                        ontime: this.formatTime(authclient.ontime),
-                        ip: authclient.ip,
-                        auth_type: authclient.auth_type,
-                        phone : authclient.phone,
-                        access_time : authclient.access_time,
-                        mac: mac,
-                    }
-                }),
-            });
-
-        })
+        let results = await common.fetchApi(
+            [
+                {
+                    opcode: 'CLIENT_LIST_GET'
+                },
+                {
+                    opcode: 'AUTH_CLIENT_LIST'
+                }
+            ]
+        );
+        let client,authClient;
+        let { errcode, data } = results;
+        if (0 !== errcode) {
+            return;
+        } else {
+            client = data[0].result.data;
+            authClient = data[1].result.auth.clientlist;
+        }
+        this.setState({
+            authUserList: client.map(item => {
+                let mac = item.mac.toUpperCase();
+                let authclient = authClient.find(item => item.mac.toUpperCase() === mac) || {
+                    device: 'unknown',
+                    ontime: 0,
+                    ip: '0.0.0.0',                    
+                };
+                return {
+                    index: item.index,
+                    icon: iconMap[authclient.device] || 'unknown',
+                    name: item.name,
+                    online: (false !== item.online),  // 设备列表中的设备都是在线的
+                    ontime: this.formatTime(authclient.ontime),
+                    ip: authclient.ip,
+                    auth_type: authclient.auth_type,
+                    phone : authclient.phone,
+                    access_time : authclient.access_time,
+                    mac: mac,
+                }
+            }),
+        });
     }
 
     handleDelete = async(record) =>{
-        let response = await common.fetchWithCode(
-            'AUTH_USER_OFFLINE',
-            {
-                method: 'POST', data: {
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_USER_OFFLINE',
+                data: {
                     offline_list: [{
                         mac: record.mac,
                     }]
                 }
-            }
+            }]
         ).catch(ex => { });
 
         let { errcode, message } = response;

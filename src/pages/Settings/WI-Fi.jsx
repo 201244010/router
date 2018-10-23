@@ -4,7 +4,7 @@ import { Checkbox, Select, Button, Radio, Modal } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
-import { runInDebugContext } from 'vm';
+import {checkStr} from '~/assets/common/check';
 
 const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
@@ -58,24 +58,51 @@ export default class WIFI extends React.Component {
         moreSettingType5:'pulldown',
         moreDisplaydHost5:'none',
         //tip
-        tip2g : '',
-        tipGuest : '',
-        tip2g : '',
-        tip5g : ''
+        tipGuest: '',
+        tipGuestPsw: '',
+        tip2g: '',
+        tip2gPsw: '',
+        tip5g: '',
+        tip5g:'',
     };
     onChange = (name,value) =>{
-        this.setState({
-            [name]:value
-        });
-        let tip = value.trim().length ? "" : '请输入Wi-Fi名称'
         switch (name){
-            case 'guestSsid' : this.setState({tipGuest : tip});
+            case 'hostSsid24' : this.setState({
+                [name]:value,
+                tip2g: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32 }),    
+            });
             break;
-            case 'hostSsid24' : this.setState({tip2g : tip});
+            case 'hostSsid24Password': this.setState({
+                tip2gPsw: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+                [name]:value
+            });
             break;
-            case 'hostSsid5' : this.setState({tip5g : tip});
+            case 'hostSsid5' : this.setState({
+                tip5g: checkStr(value, { who: 'Wi-Fi名称', min:1 , max: 32 }),
+                [name]:value
+            });
             break;
+            case 'hostSsid5Passwrod': this.setState({
+                tip5gPsw: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+                [name]:value
+            });
+            break;
+            case 'guestSsid' : this.setState({
+                tipGuest: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                [name]:value
+            });
+            break;
+            case 'guestStaticPassword': this.setState({
+                tipGuestPsw: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }
+                ),
+                [name]:value
+            });
+            break;
+            default: this.setState({
+                [name]:value
+            });
         }
+        
     }
     onChannelTypeChange = type =>{
         this.setState({
@@ -96,13 +123,12 @@ export default class WIFI extends React.Component {
             guestPasswordDisabled:!type,
         });
         if(type==false){
-            this.setState({tipGuest:''});
+            this.setState({ tipGuest: '', tipGuestPsw: '' });
         }else{
-            if(!this.state.guestSsid.trim().length){
-                this.setState({tipGuest:'请输入Wi-Fi名称'});
-            }else{
-                this.setState({tipGuest:''});
-            }
+            this.setState({ 
+                tipGuest: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
+                tipGuestPsw: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+            });
         }
     }
 
@@ -113,11 +139,13 @@ export default class WIFI extends React.Component {
         });
         if(e.target.checked == true){
             this.setState({
-                guestEncryption : 'none'
+                guestEncryption : 'none',
+                tipGuestPsw: ''      
             });
         }else{
             this.setState({
-                guestEncryption : 'psk-mixed/ccmp+tkip'
+                guestEncryption : 'psk-mixed/ccmp+tkip',
+                tipGuestPsw: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
             });
         }
     }
@@ -130,13 +158,12 @@ export default class WIFI extends React.Component {
             hostSsid24PasswordDisabled:!type,
         });
         if(type==false){
-            this.setState({tip2g:''});
+            this.setState({ tip2g: '', tip2gPsw: ''});
         }else{
-            if(!this.state.hostSsid24.trim().length){
-                this.setState({tip2g:'请输入Wi-Fi名称'});
-            }else{
-                this.setState({tip2g:''});
-            }
+            this.setState({
+                tip2g: checkStr(this.state.hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                tip2gPsw: checkStr(this.state.hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+            })
         }
     }
 
@@ -147,11 +174,13 @@ export default class WIFI extends React.Component {
         });
         if(e.target.checked == true){
             this.setState({
-                encryption24 : 'none'
+                encryption24 : 'none',
+                tip2gPsw: ''
             });
         }else{
             this.setState({
-                encryption24 : 'psk-mixed/ccmp+tkip'
+                encryption24 : 'psk-mixed/ccmp+tkip',
+                tip2gPsw: checkStr(this.state.hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
             });
         }
     }
@@ -169,13 +198,12 @@ export default class WIFI extends React.Component {
             hostSsid5PasswordDisabled:!type
         });
         if(type==false){
-            this.setState({tip5g:''});
+            this.setState({ tip5g: '',tip5gPsw: ''});
         }else{
-            if(!this.state.hostSsid5.trim().length){
-                this.setState({tip5g:'请输入Wi-Fi名称'});
-            }else{
-                this.setState({tip5g:''});
-            }
+            this.setState({
+                tip5g: checkStr(this.state.hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
+                tip5gPsw: checkStr(this.state.hostSsid5Passwrod, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+            })
         }
     }
 
@@ -186,11 +214,13 @@ export default class WIFI extends React.Component {
         });
         if(e.target.checked == true){
             this.setState({
-                encryption5 : 'none'
+                encryption5 : 'none',
+                tip5gPsw: ''
             });
         }else{
             this.setState({
-                encryption5 : 'psk-mixed/ccmp+tkip'
+                encryption5 : 'psk-mixed/ccmp+tkip',
+                tip5gPsw: checkStr(this.state.hostSsid5Passwrod, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
             });
         }
     } 
@@ -258,9 +288,11 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_5g.channel = this.state. channel5;
         
         this.mainWireLess.host=this.hostWireLess;
-        let response = await common.fetchWithCode(
-            'WIRELESS_SET',
-            { method : 'POST', data : { main : this.mainWireLess, guest : this.guestWireLess}}
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_SET',
+                data: { main : this.mainWireLess, guest : this.guestWireLess}
+            }]
         ).catch(ex => {});
 
         this.setState({ loading : false});
@@ -287,7 +319,11 @@ export default class WIFI extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchWithCode('WIRELESS_GET', { method : 'POST' }, { handleError : true })
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_GET',
+            }]
+        )
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
@@ -360,7 +396,8 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType,guestSsid,guestStaticPassword,guestDynamicPassword,guestPasswordDisabled,PWDType,guestEnable,disabledType2,period,displayType,guestPwdForbid,host24Enable,hostSsid24,hostSsid24PasswordDisabled,pwdForbid24,hostSsid24Password,hide_ssid24,encryption24,htmode24,channel24,current_channel24,disabledType24,host5Enable,hostSsid5,hostSsid5PasswordDisabled,pwdForbid5,hostSsid5Passwrod,hide_ssid5,encryption5,htmode5,channel5,current_channel5,disabledType5,moreSettingType,moreDisplaydHost,moreSettingType24,moreDisplaydHost24,moreSettingType5,moreDisplaydHost5,tipGuest,tip2g,tip5g} = this.state;
+        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Passwrod, hide_ssid5, encryption5, htmode5, channel5, current_channel5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, tipGuest, tipGuestPsw, tip2g, tip2gPsw,
+         tip5g, tip5gPsw } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -373,15 +410,16 @@ export default class WIFI extends React.Component {
                         <PanelHeader title="商户Wi-Fi" checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange} />
                         <label style={{marginTop:20}}>Wi-Fi名称</label>
                         <FormItem type="small" showErrorTip={tip2g} style={{ width : 320}}>
-                            <Input type="text" value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24}/>
+                            <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24}/>
                             <ErrorTip>{tip2g}</ErrorTip>
                         </FormItem>
                         <ul className="ui-tiled compact">
                             <li><label>Wi-Fi密码</label></li>
                             <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>不设密码</Checkbox></li>
                         </ul>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="password" disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
+                        <FormItem type="small" showErrorTip={tip2gPsw} style={{ width : 320}}>
+                            <Input type="password" maxLength={32} disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
+                            <ErrorTip>{tip2gPsw}</ErrorTip>
                         </FormItem>
                         {!(encryption24 =='none')?
                             <div>
@@ -410,15 +448,16 @@ export default class WIFI extends React.Component {
                                 <PanelHeader title="2.4G信号" checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
                                 <label>Wi-Fi名称</label>
                                 <FormItem type="small" showErrorTip={tip2g} style={{ width : 320}}>
-                                    <Input type="text" value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24} />
+                                    <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24} />
                                     <ErrorTip>{tip2g}</ErrorTip>
                                 </FormItem>
                                 <ul className="ui-tiled compact">
                                     <li><label>Wi-Fi密码</label></li>
                                     <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>不设密码</Checkbox></li>
                                 </ul>
-                                <FormItem type="small" style={{ width : 320}}>
-                                    <Input type="password" disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
+                                <FormItem type="small" showErrorTip={tip2gPsw} style={{ width : 320}}>
+                                    <Input type="password" maxLength={32} disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
+                                    <ErrorTip>{tip2gPsw}</ErrorTip>
                                 </FormItem>  
                                 <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting24}>
                                     更多设置 <CustomIcon type={moreSettingType24} size={14} />
@@ -469,15 +508,16 @@ export default class WIFI extends React.Component {
                                 <PanelHeader title="5G信号" checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
                                     <label>Wi-Fi名称</label>
                                     <FormItem type="small" showErrorTip={tip5g} style={{ width : 320}}>
-                                        <Input type="text" value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
+                                        <Input type="text" maxLength={32} value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
                                         <ErrorTip>{tip5g}</ErrorTip>
                                     </FormItem>
                                     <ul className="ui-tiled compact">
                                         <li><label>Wi-Fi密码</label></li>
                                         <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>不设密码</Checkbox></li>
                                     </ul>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="password" disabled={hostSsid5PasswordDisabled} value={hostSsid5Passwrod} onChange={(value)=>this.onChange('hostSsid5Passwrod',value)} />
+                                    <FormItem type="small" showErrorTip={tip5gPsw} style={{ width : 320}}>
+                                        <Input type="password" maxLength={32} disabled={hostSsid5PasswordDisabled} value={hostSsid5Passwrod} onChange={(value)=>this.onChange('hostSsid5Passwrod',value)} />
+                                        <ErrorTip>{tip5gPsw}</ErrorTip>
                                     </FormItem>  
                                     <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting5}>
                                         更多设置 <CustomIcon type={moreSettingType5} size={14}/>
@@ -523,7 +563,7 @@ export default class WIFI extends React.Component {
                         <PanelHeader title="顾客Wi-Fi" checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
                         <label style={{marginTop:20}}>Wi-Fi名称</label>
                         <FormItem type="small" showErrorTip={tipGuest} style={{ width : 320}}>
-                            <Input type="text" value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
+                            <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
                             <ErrorTip>{tipGuest}</ErrorTip>
                         </FormItem>
                         <label>密码方式</label>
@@ -552,7 +592,8 @@ export default class WIFI extends React.Component {
                             </ul>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
-                                <Input type="password" disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
+                                <Input type="password" maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
+                                <ErrorTip style={{color:'#fb8632'}}>{tipGuestPsw}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
                             </div>

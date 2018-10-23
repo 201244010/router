@@ -1,10 +1,12 @@
 
 import React from "react";
+import { Modal , Select, Button, Upload, Icon, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import { Modal ,Select,Button, Upload, Icon,message} from 'antd';
+import { checkStr, checkRange } from '~/assets/common/check';
 
-const {FormItem,Input} = Form;
+
+const { FormItem, Input, ErrorTip } = Form;
 const Option = Select.Option;
 
 export default class WeChatAuth extends React.Component{
@@ -13,19 +15,29 @@ export default class WeChatAuth extends React.Component{
     }
     
     state = {
-        enable : false,
-        onlineLimit : '',
-        idleLimit : '',
-        logo : '欢迎您',
-        welcome : '欢迎使用微信连Wi-Fi',
-        loginHint : '一键打开微信连Wi-Fi',
-        statement : '由Sunmi为您提供Wi-Fi服务',
-        ssid : '',
-        shopId :'',
-        appId : '',
-        secretKey : '',
-        selectedSsid : [],
-        children : [],
+        enable: false,
+        onlineLimit: '',
+        onlineLimitTip: '',
+        idleLimit: '',
+        idleLimitTip: '',
+        logo: '欢迎您',
+        logoTip: '',
+        welcome: '欢迎使用微信连Wi-Fi',
+        welcomeTip: '',
+        loginHint: '一键打开微信连Wi-Fi',
+        loginHintTip: '',
+        statement: '由Sunmi为您提供Wi-Fi服务',
+        statementTip: '',
+        ssid: '',
+        ssidTip: '',
+        shopId:'',
+        shopIdTip:'',
+        appId: '',
+        appIdTip: '',
+        secretKey: '',
+        secretKeyTip: '',
+        selectedSsid: [],
+        children: [],
         fileList: [],
     }
     
@@ -64,8 +76,51 @@ export default class WeChatAuth extends React.Component{
     }
 
     onChange = (name,value) =>{
+        const field = {
+            onlineLimit:{
+                func: checkRange(value, { min: 1,max: 1440,who: '上网时长' })
+            },
+            idleLimit:{
+                func: checkRange(value, { min: 1,max: 1440,who: '空闲断线' })
+            },
+            
+            logo:{
+                func: checkStr(value, { who: 'logo信息', min: 1, max: 15 })
+            },
+            
+            welcome:{
+                func: checkStr(value, { who: '欢迎信息', min: 1, max: 30 })
+            },
+            
+            loginHint:{
+                func: checkStr(value, { who: '提示文字', min: 1, max: 15 })
+            },
+            
+            statement:{
+                func: checkStr(value, { who: '版权声明', min: 1, max: 30 })
+            },
+            
+            ssid:{
+                func: checkStr(value, { who: 'SSID', min: 1, max: 32, type: 'english'})
+            },
+            
+            shopId:{
+                func: checkStr(value, { who: 'ShopID', min: 1, max: 32, type: 'english'})
+            },
+            
+            appId:{
+                func: checkStr(value, { who: 'AppID', min: 1, max: 32, type: 'english'})
+            },
+            
+            secretKey:{
+                func: checkStr(value, { who: 'SecretKey', min: 1, max: 32, type: 'english'})
+            },
+            
+        };
+        const tip = field[name].func;
         this.setState({
-            [name] : value
+            [name]: value,
+            [name + 'Tip']: tip
         })
     }
 
@@ -95,7 +150,11 @@ export default class WeChatAuth extends React.Component{
     }
 
     async fetchWeChatAuthInfo(){
-        let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_GET',{method : 'post'},{handleError : true});
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WEIXIN_CONFIG_GET',
+            }]
+            );
         let {errcode,data,message} = response;
         this.weixin =data[0].result.weixin;
         if(errcode == 0){
@@ -113,10 +172,6 @@ export default class WeChatAuth extends React.Component{
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
             });
-            this.weixin.ssidlist =[
-                {"ssid":"W1-Test-2.4G", "enable":"1"},
-                {"ssid":"W1-Test-5G", "enable":"1"}
-            ];
             for(let i= 0;i<this.weixin.ssidlist.length;i++){
                 this.weixin.ssidlist[i].enable = "0";
             }
@@ -142,7 +197,12 @@ export default class WeChatAuth extends React.Component{
         this.weixin.shopid = this.state.shopId;
         this.weixin.appid = this.state.appId;
         this.weixin.secretkey = this.state.secretKey;
-        let response = await common.fetchWithCode('AUTH_WEIXIN_CONFIG_SET',{method : 'post',data : {weixin : this.weixin}}).catch(ex => {});
+        let response = await common.Api(
+            [{
+                opcode: 'AUTH_WEIXIN_CONFIG_SET',
+                data: {weixin : this.weixin}
+            }]
+        ).catch(ex => {});
         let {errcode,message} = response;
         if(errcode == '0'){
             return ;
@@ -163,7 +223,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,loginHint,statement,ssid,shopId,appId,secretKey,children,disableType} = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType } = this.state;
         
         return (
             <div className="auth">
@@ -172,15 +232,17 @@ export default class WeChatAuth extends React.Component{
                         <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
                         <label style={{marginTop:20}}>上网时长</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入上网时长'} disabled={disableType} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                            <FormItem type="small" showErrorTip={onlineLimitTip} style={{ width : 320}}>
+                                <Input type="text" maxLength={4} disabled={false} placeholder={'请输入上网时长'} disabled={disableType} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                                <ErrorTip >{onlineLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                         <label>空闲断线</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入空闲断线'} disabled={disableType} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                            <FormItem type="small" showErrorTip={idleLimitTip} style={{ width : 320}}>
+                                <Input type="text" maxLength={4} disabled={false} placeholder={'请输入空闲断线'} disabled={disableType} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                                <ErrorTip >{idleLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
@@ -205,29 +267,33 @@ export default class WeChatAuth extends React.Component{
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                    <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={15} placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                        <ErrorTip >{logoTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
                                 </div>
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                    <FormItem type="small" showErrorTip={welcomeTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={30} placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                        <ErrorTip >{welcomeTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
                                 </div>
                                 <label>登陆按钮提示文字</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
+                                    <FormItem type="small" showErrorTip={loginHintTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={15} placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
+                                        <ErrorTip >{loginHintTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
                                 </div>
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                    <FormItem type="small" showErrorTip={statementTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={30} placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                        <ErrorTip >{statementTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
                                 </div>
@@ -240,20 +306,24 @@ export default class WeChatAuth extends React.Component{
                         </section>
                         <PanelHeader title = "微信公众平台参数设置" checkable={false} />
                         <label>SSID</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入SSID'} disabled={false} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
+                        <FormItem type="small" showErrorTip={ssidTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32}  placeholder={'请输入SSID'} disabled={false} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
+                            <ErrorTip >{ssidTip}</ErrorTip>
                         </FormItem>
                         <label>ShopID</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入ShopID'} disabled={false} value={shopId} onChange={(value)=>this.onChange('shopId',value)} />
+                        <FormItem type="small" showErrorTip={shopIdTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入ShopID'} disabled={false} value={shopId} onChange={(value)=>this.onChange('shopId',value)} />
+                            <ErrorTip >{shopIdTip}</ErrorTip>
                         </FormItem>
                         <label>AppID</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入AppID'} disabled={false} value={appId} onChange={(value)=>this.onChange('appId',value)} />
+                        <FormItem type="small" showErrorTip={appIdTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入AppID'} disabled={false} value={appId} onChange={(value)=>this.onChange('appId',value)} />
+                            <ErrorTip >{appIdTip}</ErrorTip>
                         </FormItem>
                         <label>SecretKey</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入SecretKey'} disabled={false} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
+                        <FormItem type="small" showErrorTip={secretKeyTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入SecretKey'} disabled={false} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
+                            <ErrorTip >{secretKeyTip}</ErrorTip>
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
