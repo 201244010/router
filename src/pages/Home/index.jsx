@@ -95,7 +95,7 @@ export default class Home extends React.PureComponent {
             speed = (val).toFixed(val > 99 ? 0 : 2) + "Gbps";
         }
         else if (speed >= mSpeed) {
-            let val = speed / gSpeed;
+            let val = speed / mSpeed;
             speed = (val).toFixed(val > 99 ? 0 : 2) + "Mbps";
         }
         else if (speed >= kSpeed) {
