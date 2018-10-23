@@ -339,3 +339,17 @@
   [hidden] {
     display: none;
   }
+
+/* chrome滚动条样式*/
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track{
+  border-radius: 8px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 8px;
+  background-color: #ADB1B9;
+}
