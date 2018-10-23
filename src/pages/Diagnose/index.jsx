@@ -165,7 +165,7 @@ export default class Diagnose extends React.Component {
     }
 
     goBack = () => {
-        this.props.history.goBack();
+        this.props.history.push('/home');
     }
 
     componentDidMount() {
