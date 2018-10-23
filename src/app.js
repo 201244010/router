@@ -41,6 +41,17 @@ class PrimaryLayout extends React.Component {
             duration: 2,
             maxCount: 3,
         });
+
+        //TODO: optimize me
+        const welcome = '/welcome';
+        if (this.state.pathname.indexOf(welcome) <= -1) {
+            common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
+                let { errcode, data } = res;
+                if ("1" == data[0].result.system.factory) {
+                    location.href = '/welcome';
+                }
+            });
+        }
     }
 
     render() {
