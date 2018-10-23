@@ -30,7 +30,7 @@ export default class Recovery extends React.Component{
     }
 
     guide = () =>{
-        location.href='/welcome';
+        this.props.history.push('/welcome');
         this.setState({succeedActive:false})
     }
 
