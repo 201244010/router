@@ -285,7 +285,7 @@ export default class Bootdevice extends React.Component {
 
                 return {
                     index: item.index,
-                    icon: iconMap[item.device || 'unknown'],
+                    icon: iconMap[client.device || 'unknown'],
                     name: item.name,
                     online: (false !== client.online),  // 设备列表中的设备都是在线的
                     ontime: this.formatTime(client.ontime),
