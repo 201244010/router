@@ -1,9 +1,11 @@
 
 import React from "react";
+import { Modal ,Select ,Button ,Radio, Upload, Icon,message} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
-import { Modal ,Select ,Button ,Radio, Upload, Icon,message} from 'antd';
-const {FormItem,Input} = Form;
+import { checkStr, checkRange } from '~/assets/common/check';
+
+const { FormItem, Input, ErrorTip } = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
@@ -14,21 +16,31 @@ export default class SmsAuth extends React.Component{
     
     state = {
         enable : false,
-        onlineLimit : '',
-        idleLimit : '',
-        logo : '欢迎您',
-        welcome : '欢迎使用微信连Wi-Fi',
-        statement : '由Sunmi为您提供Wi-Fi服务',
-        codeExpired : '',
-        serverProvider : 'ali',
-        accessKeyId : '',
-        accessKeySecret : '',
-        templateCode : '',
-        signName : '',
-        selectedSsid : [],
-        children : [],
-        watchValue : '1',
-        fileList : []
+        onlineLimit: '',
+        onlineLimitTip: '',
+        idleLimit: '',
+        idleLimitTip: '',
+        logo: '欢迎您',
+        logoTip: '',
+        welcome: '欢迎使用微信连Wi-Fi',
+        welcomeTip: '',
+        statement: '由Sunmi为您提供Wi-Fi服务',
+        statementTip: '',
+        codeExpired: '',
+        codeExpiredTip: '',
+        serverProvider: 'ali',
+        accessKeyId: '',
+        accessKeyIdTip: '',
+        accessKeySecret: '',
+        accessKeySecretTip: '',
+        templateCode: '',
+        templateCodeTip: '',
+        signName: '',
+        signNameTip: '',
+        selectedSsid: [],
+        children: [],
+        watchValue: '1',
+        fileList: []
     }
 
     handleWeChange = (info) => {
@@ -64,16 +76,54 @@ export default class SmsAuth extends React.Component{
         this.setState({
             enable : type,
             disableType:!type
-        })
+        });
     }
 
     onChange = (name,value) =>{
+        const field = {
+            onlineLimit:{
+                func: checkRange(value, { min: 1,max: 1440,who: '上网时长' })
+            },
+            idleLimit:{
+                func: checkRange(value, { min: 1,max: 1440,who: '空闲断线' })
+            },
+            logo:{
+                func: checkStr(value, { who: 'logo信息', min: 1, max: 15 })
+            },
+            welcome:{
+                func: checkStr(value, { who: '欢迎信息', min: 1, max: 30 })
+            },
+            statement:{
+                func: checkStr(value, { who: '版权声明', min: 1, max: 30 })
+            },
+            codeExpired:{
+                func: checkRange(value, { min: 30,max: 300,who: '验证码有效期' })
+            },
+            accessKeyId:{
+                func: checkStr(value, { who: 'Access Key ID', min: 1, max: 32, type: 'english' })
+            },
+            accessKeySecret:{
+                func: checkStr(value, { who: 'Access Key Secret', min: 1, max: 32, type: 'english' })
+            },
+            templateCode:{
+                func: checkStr(value, { who: '模板 Code', min: 1, max: 32, type: 'english' })
+            },
+            signName:{
+                func: checkStr(value, { who: '签名名称', min: 1, max: 32 })
+            }
+        };
+        const tip = field[name].func;
         this.setState({
-            [name] : value
-        })
+            [name] : value,
+            [name + 'Tip']: tip 
+        });
     }
 
-    
+    onSelectChange = (name, value) =>{
+        this.setState({
+            [name]: value
+        });
+    }
     onChooseChange = value =>{
         this.setState({
             selectedSsid:value
@@ -101,12 +151,16 @@ export default class SmsAuth extends React.Component{
     onWatchValueChange = e =>{
         this.setState({
             watchValue : e.target.value
-        })
+        });
         
     }
 
     async smsAuthInfo(){
-        let response = await common.fetchWithCode('AUTH_SHORTMESSAGE_CONFIG_GET',{method : 'post'},{handleError : true});
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET'
+            }]
+        );
         let {errcode,data,message} = response;
         if(errcode == 0){
             this.sms =data[0].result.sms;
@@ -125,10 +179,10 @@ export default class SmsAuth extends React.Component{
                 templateCode : this.sms.template_code,
                 signName : this.sms.sign_name,
             });
-            this.sms.ssidlist =[
-                {"ssid":"W1-Test-2.4G", "enable":"1"},
-                {"ssid":"W1-Test-5G", "enable":"1"}
-            ];
+            // this.sms.ssidlist =[
+            //     {"ssid":"W1-Test-2.4G", "enable":"1"},
+            //     {"ssid":"W1-Test-5G", "enable":"1"}
+            // ];
             for(let i= 0;i<this.sms.ssidlist.length;i++){
                 this.sms.ssidlist[i].enable = "0";
             }
@@ -155,7 +209,12 @@ export default class SmsAuth extends React.Component{
         this.sms.access_key_secret = this.state.accessKeySecret;
         this.sms.template_code = this.state.templateCode;
         this.sms.sign_name = this.state.signName;
-        let response = await common.fetchWithCode('AUTH_SHORTMESSAGE_CONFIG_SET',{method : 'post',data : {sms : this.sms}}).catch(ex => {});
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_SHORTMESSAGE_CONFIG_SET',
+                data: {sms : this.sms}
+            }]
+        ).catch(ex => {});
         let {errcode,message} = response;
         if(errcode == '0'){
             return ;
@@ -168,7 +227,7 @@ export default class SmsAuth extends React.Component{
     }
 
     render(){
-        const {enable,onlineLimit,idleLimit,selectedSsid,logo,welcome,statement,codeExpired,serverProvider,accessKeyId,accessKeySecret,templateCode,signName,children,disableType,watchValue} = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue } = this.state;
         
         return (
             <div className="auth">
@@ -177,15 +236,17 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
                         <label style={{marginTop:20}}>上网时长</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入上网时长'} disabled={disableType} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                            <FormItem type="small" showErrorTip={onlineLimitTip} style={{ width : 320}}>
+                                <Input type="text" maxLength={4} disabled={false} placeholder={'请输入上网时长'} disabled={disableType} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                                <ErrorTip>{onlineLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                         <label>空闲断线</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" disabled={false} placeholder={'请输入空闲断线'} disabled={disableType} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                            <FormItem type="small" showErrorTip={idleLimitTip} style={{ width : 320}}>
+                                <Input type="text" maxLength={4} disabled={false} placeholder={'请输入空闲断线'} disabled={disableType} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                                <ErrorTip>{idleLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
@@ -210,22 +271,25 @@ export default class SmsAuth extends React.Component{
                                 <span>支持扩展名：.jpg .png；图片大小：</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                    <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={15} placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                        <ErrorTip>{logoTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
                                 </div>
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                    <FormItem type="small" showErrorTip={welcomeTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={30} placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                        <ErrorTip>{welcomeTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
                                 </div>
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
-                                    <FormItem type="small" style={{ width : 320}}>
-                                        <Input type="text" placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                    <FormItem type="small" showErrorTip={statementTip} style={{ width : 320}}>
+                                        <Input type="text" maxLength={30} placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                        <ErrorTip>{statementTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
                                 </div>
@@ -251,30 +315,35 @@ export default class SmsAuth extends React.Component{
                         </section>
                         <PanelHeader title = "短信平台参数设置" checkable={false} />
                         <label>验证码有效期</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
+                        <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={3} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
+                            <ErrorTip>{codeExpiredTip}</ErrorTip>
                         </FormItem>
                         <label>短信服务商</label>
                         <div style={{marginBottom:24}}>
-                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onChange('serverProvider',value)} placeholder={'请选择短信服务商'}>
+                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'}>
                                 <Option value={'ali'}>阿里云</Option>
                             </Select>
                         </div>
                         <label>Access Key ID</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入Access Key ID'} disabled={false} value={accessKeyId} onChange={(value)=>this.onChange('accessKeyId',value)} />
+                        <FormItem type="small" showErrorTip={accessKeyIdTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入Access Key ID'} disabled={false} value={accessKeyId} onChange={(value)=>this.onChange('accessKeyId',value)} />
+                            <ErrorTip>{accessKeyIdTip}</ErrorTip>
                         </FormItem>
                         <label>Access Key Secret</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入Access Key Secret'} disabled={false} value={accessKeySecret} onChange={(value)=>this.onChange('accessKeySecret',value)} />
+                        <FormItem type="small" showErrorTip={accessKeySecretTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入Access Key Secret'} disabled={false} value={accessKeySecret} onChange={(value)=>this.onChange('accessKeySecret',value)} />
+                            <ErrorTip>{accessKeySecretTip}</ErrorTip>
                         </FormItem>
                         <label>模版 Code</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入模版 Code'} disabled={false} value={templateCode} onChange={(value)=>this.onChange('templateCode',value)} />
+                        <FormItem type="small" showErrorTip={templateCodeTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入模版 Code'} disabled={false} value={templateCode} onChange={(value)=>this.onChange('templateCode',value)} />
+                            <ErrorTip>{templateCodeTip}</ErrorTip>
                         </FormItem>
                         <label>签名名称</label>
-                        <FormItem type="small" style={{ width : 320}}>
-                            <Input type="text" placeholder={'请输入签名名称'} disabled={false} value={signName} onChange={(value)=>this.onChange('signName',value)} />
+                        <FormItem type="small" showErrorTip={signNameTip} style={{ width : 320}}>
+                            <Input type="text" maxLength={32} placeholder={'请输入签名名称'} disabled={false} value={signName} onChange={(value)=>this.onChange('signName',value)} />
+                            <ErrorTip>{signNameTip}</ErrorTip>
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
