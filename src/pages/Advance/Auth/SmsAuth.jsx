@@ -40,7 +40,8 @@ export default class SmsAuth extends React.Component{
         selectedSsid: [],
         children: [],
         watchValue: '1',
-        fileList: []
+        fileList: [],
+        loading: false
     }
 
     handleWeChange = (info) => {
@@ -197,6 +198,7 @@ export default class SmsAuth extends React.Component{
     }
 
     submit = async() =>{
+        this.setState({ loading: true });
         this.sms.enable = this.state.enable == true? '1' : '0';
         this.sms.online_limit =this.state.onlineLimit;
         this.sms.idle_limit = this.state.idleLimit;
@@ -217,9 +219,11 @@ export default class SmsAuth extends React.Component{
         ).catch(ex => {});
         let {errcode,message} = response;
         if(errcode == '0'){
+            this.setState({ loading: false });
             return ;
         }
         Modal.error({title : '短信认证信息设置失败',content : message});
+        this.setState({ loading: false });
     }
 
     componentDidMount(){
@@ -227,7 +231,7 @@ export default class SmsAuth extends React.Component{
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue } = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading } = this.state;
         
         return (
             <div className="auth">
@@ -347,7 +351,7 @@ export default class SmsAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" loading={loading} type="primary" onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

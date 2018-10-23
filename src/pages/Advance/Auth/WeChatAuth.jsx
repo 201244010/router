@@ -39,6 +39,7 @@ export default class WeChatAuth extends React.Component{
         selectedSsid: [],
         children: [],
         fileList: [],
+        loading: false
     }
     
       handleWeChange = (info) => {
@@ -186,6 +187,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     submit =async() =>{
+        this.setState({ loading: true });
         this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
@@ -197,7 +199,7 @@ export default class WeChatAuth extends React.Component{
         this.weixin.shopid = this.state.shopId;
         this.weixin.appid = this.state.appId;
         this.weixin.secretkey = this.state.secretKey;
-        let response = await common.Api(
+        let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_WEIXIN_CONFIG_SET',
                 data: {weixin : this.weixin}
@@ -205,9 +207,11 @@ export default class WeChatAuth extends React.Component{
         ).catch(ex => {});
         let {errcode,message} = response;
         if(errcode == '0'){
+            this.setState({ loading: false });
             return ;
         }
         Modal.error({title : '微信认证信息设置失败',content : message});
+        this.setState({ loading: false });
     }
 
     beforeUpload = (file) => {
@@ -223,7 +227,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType } = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading } = this.state;
         
         return (
             <div className="auth">
@@ -327,7 +331,7 @@ export default class WeChatAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" type="primary" loading={loading} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>
