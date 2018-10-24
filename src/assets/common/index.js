@@ -251,7 +251,10 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     }
                     if (error.toString().indexOf('403') > -1) {
                         clearAll();
-                        location.href = '/login';
+                        const login = '/login';
+                        if (location.pathname.indexOf(login) === -1) {
+                            location.href = login;
+                        }
                         return reject({});
                         // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
                     }

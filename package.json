@@ -24,6 +24,7 @@
     "chalk": "^2.2.0",
     "clean-webpack-plugin": "^0.1.14",
     "connect-history-api-fallback": "^1.4.0",
+    "copy-webpack-plugin": "^4.5.4",
     "core-js": "^2.4.1",
     "cross-env": "^5.1.1",
     "debug": "^2.6.3",
