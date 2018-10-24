@@ -17,7 +17,7 @@ export default class SysUpgrade extends React.Component{
         version : false,//版本说明弹窗
         download : false,//下载新版本及安装新版本弹窗
         downloadFail : false,//文件下载失败弹窗
-        downloadSuccess : false, //升级完成弹窗
+        downloadSuccess : true, //升级完成弹窗
 
         duration : 5,//文件下载时间
         downloadTip : '正在下载新版本，请稍候...',
@@ -170,7 +170,7 @@ export default class SysUpgrade extends React.Component{
                 <section className="upgrade-save" style={{marginTop : -10 ,borderTop : 'none'}}>
                     <Button disabled={disable} style={{left:0}} className="upgrade-btn" type="primary" loading={loading} onClick={this.post}>立即更新</Button>
                 </section>
-                <Modal closable={false} visible={version} centered={true} footer={null} okText="知道了"
+                <Modal closable={false} visible={version} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>我知道了</Button>} okText="知道了"
                     onCancel={this.handleCancle}
                 >
                     <div className="head-line">
@@ -180,9 +180,6 @@ export default class SysUpgrade extends React.Component{
                     <div className="head-content">
                         {releaseLog}
                     </div>
-                    <section className="button-bottom">
-                            <Button className="button-click" type="primary" onClick={this.handleCancle}>我知道了</Button>
-                    </section>
                 </Modal>
                 <Modal closable={false} visible={download} centered={true} footer={null} width={560} >
                     <div className="progress-download">
@@ -191,24 +188,18 @@ export default class SysUpgrade extends React.Component{
                     <h4 key="active-h4" className="upgrade-warning">{warningTip}</h4>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={downloadFail} centered={true} footer={null} width={560}>
+                <Modal closable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>我知道了</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="red" type="defeated" size={64}/>
                         <div className="progressfill">{downloadFailtip}</div>
                         <div className="progressfail">{failReason}</div>
                     </div>
-                    <section className="speed-btm">
-                            <Button className="speed-btn" type="primary" onClick={this.updateFail}>我知道了</Button>
-                    </section>
                 </Modal>
-                <Modal closable={false} visible={downloadSuccess} centered={true} footer={null} width={560}>
+                <Modal closable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>确定</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="lightgreen" type="succeed" size={64}/>
                         <div className="progressfill" style={{color : '#333C4F', marginBottom : 30}}>升级完成，请重新登录管理界面</div>
                     </div>
-                    <section className="speed-btm">
-                            <Button className="speed-btn" type="primary" onClick={this.updateFill}>确定</Button>
-                    </section>
                 </Modal>
             </div>
         );

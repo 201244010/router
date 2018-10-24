@@ -15,26 +15,12 @@
     color : black;
 }
 
-.button-bottom {
-    height: 60px;
-    border-top: 1px solid #d8d8d8;
-    .button-click{
-        width: 88px;
-        height: 42px;
-        left: 392px;
-        top: 20px;
-    }
-}
-
-.speed-btm{
-    height: 60px;
-    border-top: 1px solid #d8d8d8;
-    .speed-btn{
-        width: 160px;
-        height: 42px;
-        left: 180px;
-        top: 15px;
-    }
+.speed-btn{
+    display: block;
+    width: 160px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .upgrade-warning{

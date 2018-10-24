@@ -20,6 +20,9 @@
                 top: -32px;
                 left: 120px;
             }
+            .ant-upload-list-item{
+                display: none;
+            }
         }
     }
 }
@@ -52,14 +55,11 @@
 }
 
 .backup-btm{
-    height: 60px;
-    border-top: 1px solid #d8d8d8;
-    .backup-btn{
-        width: 160px;
-        height: 42px;
-        left: 180px;
-        top: 20px;
-    }
+    display: block;
+    width: 160px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .recover-ul {
@@ -110,4 +110,14 @@
     margin-top: 10px;
     font-size: 14px;
     color: #ADB1B9;
+}
+
+.circle-icon {
+    .ant-modal-content {
+        border-radius: 50%;
+        height: 64px;
+    }
+    .ant-modal-body {
+        padding : 14px;
+    }
 }
