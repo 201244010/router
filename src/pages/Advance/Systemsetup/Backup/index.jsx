@@ -13,7 +13,7 @@ export default class Backup extends React.Component{
     state = {
         loading : false,
         backupCloud : false,//备份到云弹窗
-        backupFail : false ,//备份失败，恢复失败
+        backupFail : false,//备份失败，恢复失败
         backupFailTip : '备份失败请重试',//备份失败以及网络未连接提示
         backupSuccess : false,//备份成功 , 恢复成功
         backupSuccessTip : '备份成功！',
@@ -217,10 +217,6 @@ export default class Backup extends React.Component{
 
     //从本地恢复
     postRecoverLocal = (info) => {
-        // TO DO 弹出之后的loading 框
-        if(info.file.status === 'uploading') {
-            
-        }
         if(info.file.status === 'done'){
             if(info.file.response.data[0].errcode == 0){
                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
