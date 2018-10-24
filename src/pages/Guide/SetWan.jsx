@@ -192,7 +192,7 @@ export default class SetWan extends React.PureComponent {
                 }
                 break;
             case 'static' :
-                let empty = [dns, ip, dnsbackup, subnetmask, gateway].some(field => {
+                let empty = [dns, ip, subnetmask, gateway].some(field => {
                     if(field.length === 0){
                         return true;
                     }
