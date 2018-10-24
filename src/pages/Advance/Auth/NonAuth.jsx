@@ -77,7 +77,6 @@ export default class NonAuth extends React.Component{
             }]
         ).then((resp) => {
             let{errcode,message} = resp;
-            console.log(errcode,errcode == 0);
             if(errcode == 0){
                 this.setState({
                     [name] : value
@@ -107,13 +106,12 @@ export default class NonAuth extends React.Component{
     }
 
     handleDelete = async (record) => {
-        console.log(1,record);
         let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_WHITELIST_DELETE',
                 data: {
                     auth:{
-                        delete_whitelis: [{
+                        delete_whitelist: [{
                             name: record.name,
                             mac: record.mac,
                         }]
@@ -143,10 +141,21 @@ export default class NonAuth extends React.Component{
                 return item;
             })
         },() => {
-            if(this.state.onlineList.length == 0){
-                this.setState({listSubmitDisabled: true});
+            const type = this.state.onlineList.some(item => {
+                if(item.checked === true){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+            if(type){
+                this.setState({
+                    listSubmitDisabled: false
+                });
             }else{
-                this.setState({listSubmitDisabled: false});
+                this.setState({
+                    listSubmitDisabled: true
+                });
             }
         });
         
@@ -330,10 +339,21 @@ export default class NonAuth extends React.Component{
                     }
                 })
             },() => {
-                if(this.state.onlineList.length == 0){
-                    this.setState({listSubmitDisabled: true});
+                const type = this.state.onlineList.some(item => {
+                    if(item.checked === true){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                });
+                if(type){
+                    this.setState({
+                        listSubmitDisabled: false
+                    });
                 }else{
-                    this.setState({listSubmitDisabled: false});
+                    this.setState({
+                        listSubmitDisabled: true
+                    });
                 }
             });
             return;
