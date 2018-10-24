@@ -48,16 +48,14 @@ export default class ChangePassword extends React.Component{
             this.oldpassword = btoa(this.state.oldPWD);
             this.password = btoa(this.state.newPWD);
             this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password};
-            common.fetchWithCode(
-                [{
-                    opcode: 'ACCOUNT_MODIFY',
-                    data: {account:this.account}
-                }]
-            ).then((resp)=>{
+            common.fetchApi({
+                opcode: 'ACCOUNT_MODIFY',
+                data: { account: this.account }
+            }).then((resp)=>{
                 let {errcode} = resp; 
                 if(errcode == '0'){
                     message.success('修改成功,5秒后将跳转到登陆页面');
-                    setTimeout(()=>{location.href = '/login'},5000);    
+                    setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
                     Modal.error({title : '修改失败',content : '旧密码错误'});
                     this.setState({loading : false});

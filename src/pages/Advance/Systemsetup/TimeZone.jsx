@@ -83,7 +83,7 @@ export default class TimeZone extends Component {
     };
 
     _fetchTimeConfig = () => {
-        common.fetchWithCode('TIME_SET').then((response) => {
+        common.fetchApi({ opcode: 'TIME_SET'}).then((response) => {
             const {errcode, time} = response;
             if (errcode === NO_ERROR) {
                 this.setState({
