@@ -11,7 +11,7 @@ import './backup.scss'
 
 export default class Backup extends React.Component{
     state = {
-
+        loading : false,
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
         backupFailTip : '备份失败请重试',//备份失败以及网络未连接提示
@@ -23,6 +23,8 @@ export default class Backup extends React.Component{
         authBackup : true,
 
         recoverCloud : false,//从云恢复
+        recoverDisable : true,//从云恢复保存按钮
+        backupDisable : false,//备份到云保存按钮
         radioChoose : '',
         cloudList : []
     }
@@ -49,9 +51,11 @@ export default class Backup extends React.Component{
     cloudBackup = async () => {
         this.setState({
             backupCloud : true,
+            backupDisable : this.state.filename === '' ? true : false
         });
+        
         let response = await common.fetchApi({
-            opcode : 'CONFIG_CLOUD_CONFIGLIST'
+            opcode : 'SYSTEMTOOLS_CLOUD_LIST'
         })
         
         let {errcode, data} = response;
@@ -62,7 +66,6 @@ export default class Backup extends React.Component{
                 cloudList : sortObj.map(item => {
                     return Object.assign({}, item)
                 }),
-                filename : ''
             });
 
             return;
@@ -83,7 +86,7 @@ export default class Backup extends React.Component{
             recoverCloud : true
         })
         let response = await common.fetchApi({
-            opcode : 'CONFIG_CLOUD_CONFIGLIST'
+            opcode : 'SYSTEMTOOLS_CLOUD_LIST'
         })
   
         let {errcode, data} = response;
@@ -94,9 +97,9 @@ export default class Backup extends React.Component{
                 cloudList : sortObj.map(item => {
                     
                     return Object.assign({}, item)
-                })
+                }),
+                recoverDisable : result.length === 0 ? true : false
             });
-
             return;
         }else{
             Modal.error({title : '获取备份列表失败'});
@@ -113,7 +116,10 @@ export default class Backup extends React.Component{
     backupSuccessCancle = () => {
         this.setState({
             backupSuccess : false
-        })
+        });
+        if(this.state.backupSuccessTip === '恢复成功！'){
+            window.location.href = '/login';
+        }
     }
 
     radioChange = (event) => {
@@ -124,7 +130,8 @@ export default class Backup extends React.Component{
 
     onChange = (key,feild) => {
         this.setState({
-            [feild] : key
+            [feild] : key,
+            backupDisable : key === '' ? true : false,
         })
     }
     //备份到本地
@@ -134,7 +141,7 @@ export default class Backup extends React.Component{
         backup['authbackup'] = this.state.authBackup ? 1 : 0;
 
         let response = await common.fetchApi({
-            opcode : 'CONFIG_LOCAL_BACKUP',
+            opcode : 'SYSTEMTOOLS_BACKUP',
             data : {backup}
         },
         {
@@ -156,38 +163,80 @@ export default class Backup extends React.Component{
         backup['authbackup'] = this.state.authBackup ? 1 : 0;
         backup['basebackup'] = this.state.baseBackup ? 1 : 0;
         
-        let response = await common.fetchApi({
-            opcode : 'CONFIG_CLOUD_BACKUP',
-            data : {backup}
+        await common.fetchApi(
+            {
+                opcode : 'SYSTEMTOOLS_CLOUD_BACKUP',
+                data : {backup}
+            }
+        ).then((res) => {
+            let {errcode} = res;
+            
+            if(errcode === 0){
+                this.setState({
+                    loading : true
+                });
+                common.fetchApi(
+                    {
+                        opcode : 'SYSTEMTOOLS_CLOUD_BACKUP_PROGRESS',
+                    },
+                    {},
+                    {
+                        loop : true,
+                        interval : 1000,
+                        stop : ()=>{this.stop},
+                        pending : (res) => res.data[0].result.state === 'wait'
+                    }).then((res) => {
+                        let state = res.data[0].result.state;
+                        if(res.errcode === 0){
+                            if(state === 'success'){
+                                this.setState({
+                                    backupSuccess : true,
+                                    backupCloud : false,
+                                    backupSuccessTip : '备份成功',
+                                    loading : false,
+                                });
+                                return;
+                            }else{
+                                this.setState({
+                                    backupFail : true,
+                                    backupCloud : false,
+                                    backupFailTip : '备份失败！请重试~',
+                                    loading : false,
+                                });
+                                return;
+                            }
+                        }else{
+                            Modal.error({title : '获取备份进度失败'});
+                        }
+                    })
+            }else{
+                Modal.error({title : '获取备份状态失败'});
+            }
         })
-        let {errcode} = response;
-        if(errcode == 0){
-            this.setState({
-                backupSuccess : true,
-                backupCloud : false,
-                backupSuccessTip : '备份成功',
-            })
-            return;
-        }else{
-            this.setState({
-                backupFail : true,
-                backupCloud : false,
-                backupFailTip : '备份失败！请重试~',
-            })
-        } 
     }
 
     //从本地恢复
     postRecoverLocal = (info) => {
-        if(info.file.status === 'uploading') {
-            
-        }
         if(info.file.status === 'done'){
             if(info.file.response.data[0].errcode == 0){
-                this.setState({
-                    backupSuccess : true,
-                    backupSuccessTip : '恢复成功'
-                })
+                common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
+                    if(res.errcode === 0){
+                        this.setState({
+                            loading : true
+                        });
+                        setTimeout(() => {
+                            this.setState({
+                                loading : false,
+                                backupSuccess : true,
+                                backupSuccessTip : '恢复成功！',
+                                recoverCloud : false
+                            });
+                        }, 80000);
+                        return;
+                    }else{
+                        Modal.error({title : '重启失败！'});
+                    }
+                });
             }else{
                 this.setState({
                     backupFail : true,
@@ -204,32 +253,80 @@ export default class Backup extends React.Component{
     postRecoverCloud = async () => {
         let param = {
             id : this.state.radioChoose
-        }
-
-        let response = await common.fetchApi({
-            opcode : 'CONFIG_CLOUD_RESTORE',
-            data : param
+        };
+        this.setState({
+            loading : true
+        });
+        await common.fetchApi(
+            {
+                opcode : 'SYSTEMTOOLS_CLOUD_RESTORE',
+                data : param
+            }
+        ).then((res) => {
+            let {errcode} = res;
+            if(errcode === 0){
+                common.fetchApi(
+                    {opcode : 'SYSTEMTOOLS_CLOUD_RESTORE_PROGRESS'},
+                    {},
+                    {
+                        loop : true,
+                        interval : 1000,
+                        stop : () => this.stop,
+                        pending : (res) => {
+                            let state = res.data[0].result.state;
+                            return state === 'wait' || state === 'start restore'
+                        }
+                    }
+                ).then((res) => {
+                    let state = res.data[0].result.state;
+                    if(res.errcode === 0){
+                        switch(state){
+                            case 'download fail':
+                                this.setState({
+                                    backupFail : true,
+                                    backupFailTip : '下载失败，请重试~',
+                                    recoverCloud : false,
+                                    loading : false
+                                });
+                                return;
+                            case 'restore fail':
+                                this.setState({
+                                    backupFail : true,
+                                    backupFailTip : '恢复失败！请重试~',
+                                    recoverCloud : false,
+                                    loading : false
+                                });
+                                return;
+                            case 'restore success':
+                                common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
+                                if(res.errcode === 0){
+                                    setTimeout(() => {
+                                        this.setState({
+                                            loading : false,
+                                            backupSuccess : true,
+                                            backupSuccessTip : '恢复成功！',
+                                            recoverCloud : false
+                                        });
+                                    }, 80000);
+                                    return;
+                                }else{
+                                    Modal.error({title : '重启失败！'});
+                                }
+                            })
+                        }
+                    }else{
+                        Modal.error({title : '获取云恢复状态失败'});
+                    }
+                })
+            }else{
+                Modal.error({title : '云恢复失败'})
+            }
         })
-
-        let {errcode} = response;
-        if(errcode == 0){
-            this.setState({
-                backupSuccess : true,
-                backupSuccessTip : '恢复成功',
-                recoverCloud : false
-            })
-            return;
-        }else{
-            this.setState({
-                backupFail : true,
-                backupFailTip : '恢复失败！请重试~',
-                recoverCloud : false
-            })
-        }
     }
 
     render(){
-        const {backupSuccessTip, baseBackup, authBackup, backupCloud, radioChoose, backupFail, backupSuccess, backupFailTip, recoverCloud, cloudList, options} = this.state;
+        const {backupSuccessTip, baseBackup, authBackup, backupCloud, radioChoose, backupFail, backupSuccess, 
+            backupFailTip, recoverCloud, cloudList, loading, backupDisable, recoverDisable} = this.state;
 
         const recoverList = cloudList.map(item => {
             return (
@@ -244,7 +341,7 @@ export default class Backup extends React.Component{
             <div className="backup-restore">
                 <Form>
                     <section>
-                        <PanelHeader title="备份" checkable={false} onChange={(value) => this.onChange('channelType', value)} />
+                        <PanelHeader title="备份" checkable={false} onChange={{}} />
                         <ul className='backup-list'>
                             <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、黑名单</Checkbox></li>
                             <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>
@@ -255,7 +352,7 @@ export default class Backup extends React.Component{
                         </div>
                     </section>
                     <section className='restore'>
-                        <PanelHeader title="恢复" checkable={false} onChange={(value) => this.onChange('channelType', value)} />
+                        <PanelHeader title="恢复" checkable={false} onChange={{}} />
                         <div className='restore-func'>
                             <Upload onChange={this.postRecoverLocal} name='file' data={{ opcode: '0x2018' }} multiple={false} action={__BASEAPI__}>
                                 <Button>从本地恢复</Button>
@@ -264,7 +361,7 @@ export default class Backup extends React.Component{
                         </div>
                     </section>
                 </Form>
-                <Modal title='备份到云' visible={backupCloud} centered={true} width={360} closable={false} cancelText='取消' okText='开始备份' onCancel={this.handleCancle} onOk={this.postBackupCloud}>
+                <Modal title='备份到云' visible={backupCloud} centered={true} width={360} closable={false} cancelText='取消' okText='开始备份' okButtonProps={{disabled : backupDisable}} onCancel={this.handleCancle} onOk={this.postBackupCloud}>
                     <div className="backup-modal">
                         <div className="backup-filename">文件名</div>
                         <div>
@@ -280,30 +377,29 @@ export default class Backup extends React.Component{
                         </div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={backupFail} centered={true} footer={null} width={560}>
+                <Modal closable={false} visible={backupFail} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>确定</Button>} width={560}>
                     <div className="backup-icon">
                         <CustomIcon color="#FF5500" type="hint" size={64} />
                         <div className="backup-result">{backupFailTip}</div>
                     </div>
-                    <div className="backup-btm">
-                        <Button className="backup-btn" type="primary" onClick={this.backupFailCancle}>确定</Button>
-                    </div>
                 </Modal>
-                <Modal closable={false} visible={backupSuccess} centered={true} footer={null} width={560}>
+                <Modal closable={false} visible={backupSuccess} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>确定</Button>} width={560} >
                     <div className="backup-icon">
                         <CustomIcon color="#87D068" type="succeed" size={64} />
                         <div className="backup-result">{backupSuccessTip}</div>
                     </div>
-                    <section className="backup-btm">
-                        <Button className="backup-btn" type="primary" onClick={this.backupSuccessCancle}>确定</Button>
-                    </section>
                 </Modal>
-                <Modal title='从云选择备份文件' visible={recoverCloud} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
+                <Modal title='从云选择备份文件' visible={recoverCloud} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
                     <ul className="recover-ul">
                         <RadioGroup onChange={this.radioChange} value={radioChoose}>
-                            {recoverList}
+                            {
+                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份~</div> : recoverList
+                            }
                         </RadioGroup>
                     </ul>
+                </Modal>
+                <Modal className="circle-icon" visible={loading} centered={true} closable={false} mask={false} footer={null} width={64}>
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 36,color : "#FB8632" }}  spin />                                                
                 </Modal>
             </div>
         );

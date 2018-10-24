@@ -208,9 +208,12 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 if(options.fileLink === true){
                     let blob = new Blob([response.data],{type : 'application/x-targz'});
                     let link = document.createElement('a');
+                    document.body.appendChild(link);
+                    link.style.display='none';
                     link.href = URL.createObjectURL(blob);
                     link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
                     link.click();
+                    setTimeout(function(){document.body.removeChild(link)},1000);
                     window.URL.revokeObjectURL(link.href);
                     return;
                 }
