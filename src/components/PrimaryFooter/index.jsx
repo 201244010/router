@@ -55,9 +55,7 @@ export default class PrimaryFooter extends React.PureComponent {
                 <p style={{visibility : visible}}> <span>系统版本：{version}</span> <span>MAC地址：{mac}</span></p>
                 <p>
                     @2016 上海商米科技有限公司
-                <a href="https://sunmi.com/" target='_blank'>官网</a>|
-                <a href="javascript:;">常见问题</a>|
-                    服务热线：400-902-1168
+                <a href="https://sunmi.com/" target='_blank'>官网</a>| 服务热线：400-902-1168
             </p>
             </footer>
         )
