@@ -175,7 +175,7 @@ export default class AuthUserList extends React.Component{
         return (
             <div style={{ margin: "0 60px" }}>
                <Table columns={columns} dataSource={authUserList} rowKey={record => record.index} 
-               bordered size="middle" pagination={pagination} locale={{ emptyText: "您还未添加任何设备" }} /> 
+               bordered size="middle" pagination={pagination} locale={{ emptyText: "无设备" }} /> 
             </div>
         );
     }

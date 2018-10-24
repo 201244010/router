@@ -21,7 +21,6 @@ export default class Home extends React.PureComponent {
         upBand: 0,
         downBand: 0,
         failShow: false,
-        refresh: true,
         upSpeed: 0,
         upUnit: 'Kbps',
         downSpeed: 0,
@@ -110,18 +109,12 @@ export default class Home extends React.PureComponent {
 
     stopRefresh = () => {
         clearInterval(this.timer);
-        this.setState({
-            refresh : false,
-        })
     }
 
     startRefresh = () => {
-        clearTimeout(this.timer);
-        this.setState({
-            refresh: true,
-        }, () => {
-            this.resreshStatus();
-        });
+        clearInterval(this.timer);
+        this.refreshStatus();
+        this.timer = setInterval(this.refreshStatus, 2000);
     }
 
     fetchBasic = async () => {
@@ -142,11 +135,7 @@ export default class Home extends React.PureComponent {
         }
     }
 
-    resreshStatus = async () => {
-        if (!this.state.refresh) {
-            return;
-        }
-
+    refreshStatus = async () => {
         let resp = await common.fetchApi([
             { opcode:'CLIENT_LIST_GET' },
             { opcode: 'TRAFFIC_STATS_GET' },
@@ -248,10 +237,6 @@ export default class Home extends React.PureComponent {
                 }
             }),
         });
-
-        this.timer = setTimeout(() => {
-            this.resreshStatus();
-        }, 2000);
     }
 
     runningSpeedTest = () => {
@@ -331,7 +316,7 @@ export default class Home extends React.PureComponent {
     componentDidMount(){
         this.stop = false;
         this.fetchBasic();
-        this.resreshStatus();
+        this.startRefresh();
     }
 
     componentWillUnmount(){

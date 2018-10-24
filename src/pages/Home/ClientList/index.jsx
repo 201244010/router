@@ -30,6 +30,7 @@ export default class ClientList extends React.Component{
 
         let { errcode, message } = response;
         if (errcode == 0) {
+            this.fetchClientsInfo();
             return;
         }
 
@@ -47,6 +48,7 @@ export default class ClientList extends React.Component{
 
         let { errcode, message } = response;
         if (errcode == 0) {
+            this.fetchClientsInfo();
             return;
         }
 
