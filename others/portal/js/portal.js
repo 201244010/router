@@ -15,8 +15,6 @@ var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var inputsElement = document.getElementById('inputs');
 var logoElement = document.getElementById('logo');
-var successElement = document.getElementById('success');
-var connectingElement = document.getElementById('connecting');
 var agreeProtocol = true;
 var enable = null;
 
@@ -268,8 +266,8 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "url('" + data.background + "')";
-    logoElement.src = data.logo;
+    document.body.style.background = "url('" + (data.background || "./imgs/bg.jpeg") + "')";
+    logoElement.src = data.logo || "./imgs/logo.jpg";
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }

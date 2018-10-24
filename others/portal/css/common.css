@@ -3,6 +3,6 @@ html, body {
     height: 100%;
 }
 body {
-    background: #ccc url("../wx_bg.jpg") no-repeat center;
+    background: #ccc no-repeat center;
     background-size: cover;
 }

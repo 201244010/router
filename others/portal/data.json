@@ -15,14 +15,17 @@
             "shopid": "17231844",
             "appid": "wxd7faaa125d198e2d",
             "secretkey": "c9f39b067a850901b63c1e2056f2d0",
-            "logo": "/www/portal/wx_logo.jpg",
-            "background": "/www/portal/wx_bg.jpg"
+            "logo": "./imgs/logo.jpg",
+            "background": "./imgs/bg.jpg",
+            "online_limit": "60"
           },
           "sms": {
             "enable": 1,
             "welcome": "欢迎使用微信连wifi",
             "statement": "由商米为您提供wifi服务",
-            "background": "/www/portal/wx_bg.jpg"
+            "logo": "./imgs/logo.jpg",
+            "background": "./imgs/bg.jpg",
+            "online_limit": "60"
           }
         }
       },
