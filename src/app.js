@@ -44,10 +44,14 @@ class PrimaryLayout extends React.Component {
 
         //TODO: optimize me
         const welcome = '/welcome';
-        if (this.state.pathname.indexOf(welcome) <= -1) {
+
+        // 不是在向导页面：/welcome or /guide/xxx
+        if (![welcome, 'guide'].some(url => {
+            return this.state.pathname.indexOf(url) > -1;
+        })) {
             common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
                 let { errcode, data } = res;
-                if ("1" == data[0].result.system.factory) {
+                if (0 == errcode && "1" == data[0].result.system.factory) {
                     location.href = welcome;
                 }
             });
@@ -85,13 +89,12 @@ class PrimaryLayout extends React.Component {
                 <div className="main">
                     <Switch>
                         <Route path="/login" component={Login}/>
+                        <Route path='/welcome' component={Welcome} />
                         <Route path="/guide" component={Guide}/>
                         <Route path="/home" component={Home}/>
                         <Route path="/settings" component={Settings}/>
                         <Route path="/advance" component={Advance}/>
-                        <Route path='/welcome' component={Welcome}/>
                         <Route path='/app' component={DownloadPage}/>
-                        <Route path='/welcome' component={Welcome}/>
                         <Route path='/diagnose' component={Diagnose}/>
                         <Redirect from='/' to={redirect}/>
                     </Switch>
