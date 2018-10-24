@@ -31,121 +31,6 @@ export const getTimeZone = () => {
     return new Date().getTimezoneOffset() / 60;
 };
 
-
-/**
- * ajax封装
- * @param {string} directive api指令
- * @param {object} options axios配置
- * @param {object} loopOption 扩展配置 
- *               loopOption.loop [boolean]是否循环 或循环 N 次, 
- *               loopOption.interval [number]] 轮询间隔 ms
- *               loopOption.stop [function] 轮询终止的条件
- *               loopOption.pending [function] 已经成功响应，仍需继续轮询的条件
- * @see
- * fetchWithCode(
- *      'ACCOUNT_LOGIN', 
- *      {timeout : 10000, data : {password : '123'}},
- * );
- * fetchWithCode(
- *      'DHCPS_GET', 
- *      {timeout : 10000, data : {password : '123'}},
- *      {loop : true, interval : 1000, stop : function(){return true}},
- *      
- * );
- */
-export function fetchWithCode(directive, options = {}, loopOption = {}){
-    options = assign({timeout : 10000}, options);
-    let code = DIRECTIVE[directive];
-    let url = __BASEAPI__ + '/' + directive;
-    let payload;    
-    let method = options.method ? options.method : 'get';
-    let count = 1;
-    let { loop, interval } = Object.assign({loop : false, interval : 1000, pending : noop }, loopOption);
-    method = method.toLowerCase();
-    payload = {
-        param : assign(options.data || options.params || {}),
-        opcode : code
-    };
-
-    if(method === 'get'){
-        options.params = {"params" : [payload], count : "1"};
-    }
-    else if(method === 'post'){
-        options.data = {"params" : [payload], count : "1"};
-    }
-    if(loopOption.loop && typeof loopOption.stop !== 'function'){
-        throw new Error('loopOption.stop must be function, because loopOption.loop is active');
-    }
-    const promise = new Promise((resolve, reject) => {
-        function fetch(){
-            return axios(url, options).then(function(response){
-                // 请求响应 但是响应的数据集为空
-                if(response.data === ''){
-                    return resolve({errcode : 0});
-                }
-
-                // 正常响应 解析响应结果
-                if(options.fileLink === true){
-                    let blob = new Blob([response.data],{type : 'application/x-targz'});
-                    let link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
-                    link.click();
-                    window.URL.revokeObjectURL(link.href);
-                    return;
-                }
-                let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
-                if(res.errcode !== 0){
-                    res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
-                }
-                
-                if(loopOption && loopOption.pending && loopOption.pending(res)){
-                    setTimeout(()=>fetch(), interval);
-                    return false;
-                }
-                // 预处理 追加 message 字段
-                console.log("[DEBUG]:", directive, res);
-                return resolve(res);
-            })
-            .catch( error => {
-                switch(typeof loop){
-                    case 'number' :
-                        if(count < loop){
-                            count++;
-                            if(!loopOption.stop()){
-                                setTimeout(()=>fetch(), interval);
-                            }
-                            return false;
-                        }
-                        break;
-                    case 'boolean' :
-                        if(loop === true){
-                            if(!loopOption.stop()){
-                                setTimeout(()=>fetch(), interval);
-                            }
-                            return false;
-                        }
-                        break;
-                    case 'string' :
-                        throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
-                }
-                if(error.toString().indexOf('403') > -1){
-                    location.href = '/login';
-                    return reject({});
-                    // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
-                }
-                else if(loopOption.handleError){
-                    Modal.error({ title : 'Error', content : <ErrorTip error={error} directive={directive} />});
-                }
-                return reject(error);
-            })
-        }
-        fetch();
-    })
-    
-    return promise;
-};
-
 /**
  * ajax封装
  * @param {string} data 指令和指令参数
@@ -250,7 +135,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                             }
                             break;
                         case 'string':
-                            throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
+                            throw new Error('fetchApi 要求循环参数为 boolean 或 number');
                     }
                     if (error.toString().indexOf('403') > -1) {
                         clearAll();
@@ -259,7 +144,6 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                             location.href = login;
                         }
                         return reject({});
-                        // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
                     }
                     else if (loopOption.handleError) {
                         Modal.error({ title: 'Error', content: <ErrorTip error={error} directive={stringify(data)} /> });
