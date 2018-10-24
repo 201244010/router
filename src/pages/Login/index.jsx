@@ -75,15 +75,21 @@ class Login extends React.Component {
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
-                            <FormItem showErrorTip={tip} style={{ marginBottom : 30 }}>
-                                <Input placeholder="管理密码"
+                            <FormItem style={{ margin: '45px auto 30px' }}>
+                                <Input placeholder="请输入您的登录密码"
                                         type="password"
                                         value={this.state.password}
                                         onChange={this.onChange}
                                         maxLength='32'
                                         onEnter={this.onEnter} 
                                         />
-                                <ErrorTip>{ tip }</ErrorTip>
+                            <ErrorTip style={{
+                                color: '#FF5500',
+                                position: 'absolute',
+                                right: 35,
+                                top: 10,
+                                textAlign: 'right',
+                                }}>{ tip }</ErrorTip>
                             </FormItem>
                         </Form>
                         <Button type="primary"

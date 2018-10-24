@@ -3,7 +3,6 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button, Modal, Progress } from 'antd';
 import SubLayout from '~/components/SubLayout';
-import PrimaryFooter from '~/components/PrimaryFooter';
 import CustomIcon from '~/components/Icon';
 import ClientList from "./ClientList";
 import QoS from './QoS';
