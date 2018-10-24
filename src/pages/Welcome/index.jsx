@@ -15,16 +15,7 @@ export default class Welcome extends React.Component {
     }
 
     post = async () => {
-        location.href = '/guide';
-        // this.setState({loading : true});
-        // let response = await common.fetchWithCode('',{method : 'post' ,data : {}});
-        // let {errcode,message} = response;
-        // if (errcode == 0){
-        //     location.href = '/guide';
-        // }else{
-        //     Modal.error({title : '错误', content : message});
-        //     this.setState({loading : false});
-        // } 
+        this.props.history.push('/guide');
     }
 
     onCheckBoxChange = e =>{
@@ -47,7 +38,7 @@ export default class Welcome extends React.Component {
                         开始设置
                     </Button>
                     <div>
-                        <Checkbox style={{color:'#FFFFFF',fontFamily: 'PingFangSC-Regular',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='' target='_blank' style={{textDecoration:'underline'}}>商米服务协议</a>》和《<a href='' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
+                        <Checkbox style={{color:'#FFFFFF',fontFamily: 'PingFangSC-Regular',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》和《<a href='' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
                     </div>
                 </div>
             </div>        

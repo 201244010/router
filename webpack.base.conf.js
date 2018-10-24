@@ -55,10 +55,18 @@ const options = {
             template: resolve('index.template.html'),
             inject: true
         }),
-        new CopyWebpackPlugin([{
-            from: __dirname + '/others/portal',
-            to: __dirname + '/dist/portal'
-        }])
+        new CopyWebpackPlugin(
+            [
+                {
+                    from: __dirname + '/others/portal',
+                    to: __dirname + '/dist/portal'
+                },
+                {
+                    from: __dirname + '/others/agreement',
+                    to: __dirname + '/dist/agreement'
+                }
+            ]
+        )
         // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ]
 };
