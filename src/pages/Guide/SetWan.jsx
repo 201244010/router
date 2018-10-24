@@ -163,7 +163,7 @@ export default class SetWan extends React.PureComponent {
                     pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
                 }
             );
-            let { errcode } = connectStatus;
+            let { errcode, data } = connectStatus;
             this.setState({ loading : false });
             if(errcode == 0){
                 let online = data[0].result.onlinetest.online;
