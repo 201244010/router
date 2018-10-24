@@ -17,7 +17,7 @@ export default class SysUpgrade extends React.Component{
         version : false,//版本说明弹窗
         download : false,//下载新版本及安装新版本弹窗
         downloadFail : false,//文件下载失败弹窗
-        downloadSuccess : true, //升级完成弹窗
+        downloadSuccess : false, //升级完成弹窗
 
         duration : 5,//文件下载时间
         downloadTip : '正在下载新版本，请稍候...',
