@@ -99,12 +99,28 @@ export default class Mesh extends React.Component{
         ];
 
         const iconMap = {   // TODO
-            v2pro: 'v2pro', m2: 'm2', v1s: 'v1s', l2: 'l2', v1: 'v1', m1: 'm1', p1: 'p1', s2: 's2',
-            t2: 't2', t2lite: 't2lite', t2mini: 't2mini', t1: 't1', d2: 'd2', d1s: 'd1s', d1: 'd1',
+            v2pro: 'vpro',
+            m2: 'm2',
+            v1s: 'vs',
+            l2: 'l',
+            v1: 'vs',
+            m1: 'm1',
+            m2: 'm',
+            p1: 'p',
+            p2lite: 'plite',
+            s2: 's',
+            t2: 't',
+            k1: 'k',
+            t2lite: 'tlite',
+            t2mini: 'tmini',
+            t1: 't',
+            d2: 'd1',
+            d1s: 'ds',
+            d1: 'd',
         };
 
         const meshList = devices.map(item => {
-            let icon = iconMap[item.model.replace(/ /g, '').toLowerCase()] || 'bootdevice'; //TODO
+            let icon = iconMap[item.model.replace(/ /g, '').toLowerCase()] || 'sunmi-unknown';
             return (
                 <li key={item.mac} className='mesh-device'>
                     <div><CustomIcon color="#333C4F" type={icon} size={34} /></div>

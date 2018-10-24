@@ -41,7 +41,7 @@ export default class Bandwidth extends React.PureComponent {
         downbandTmp : '',
         loading:false,
         disable : true, //手动设置保存按钮灰显
-        saveDisable : true,//保存按钮灰显
+        saveDisable : false,//保存按钮灰显
         upbandTmpTip : '',
         downbandTmpTip : ''
     }
@@ -133,6 +133,7 @@ export default class Bandwidth extends React.PureComponent {
                     this.setState({
                         saveDisable: false,
                     })
+                    return;
                 }
             }
 
