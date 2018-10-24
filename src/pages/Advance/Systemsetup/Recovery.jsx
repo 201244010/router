@@ -1,10 +1,14 @@
-
 import React from 'react';
 import {Button,Icon} from 'antd';
 import CustomModal from '~/components/Modal';
 import CustomIcon from '~/components/Icon';
 
 export default class Recovery extends React.Component{
+
+    constructor(props){
+        super(props);
+    }
+
     state = {
         visible: false,
         loadingActive:false,
@@ -30,7 +34,7 @@ export default class Recovery extends React.Component{
     }
 
     guide = () =>{
-        this.props.history.push('/welcome');
+        location.href = '/welcome';
         this.setState({succeedActive:false})
     }
 

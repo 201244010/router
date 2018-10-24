@@ -1,10 +1,13 @@
-
 import React from 'react';
 import {Button,Icon} from 'antd';
 import CustomModal from '~/components/Modal';
 import CustomIcon from '~/components/Icon';
 
 export default class Reboot extends React.Component{
+
+    constructor(props){
+        super(props);
+    }
 
     state = {
         visible: false,
@@ -32,7 +35,7 @@ export default class Reboot extends React.Component{
     }
 
     login = () =>{
-        this.props.history.push('/login');
+        location.href = '/login';
         this.setState({succeedActive:false});
     }
 
