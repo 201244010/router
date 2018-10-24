@@ -130,11 +130,7 @@ export function fetchWithCode(directive, options = {}, loopOption = {}){
                         throw new Error('fetchWithCode 要求循环参数为 boolean 或 number');
                 }
                 if(error.toString().indexOf('403') > -1){
-                    const login = '/login';
-                    const path = location.pathname;
-                    if (path.indexOf(login) > -1) {
-                        location.href = login;
-                    }
+                    location.href = '/login';
                     return reject({});
                     // Modal.error({ title : 'Error', content : <ErrorTip error={{message : '登录状态已过期'}} directive={directive} />});
                 }
