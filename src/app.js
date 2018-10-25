@@ -6,6 +6,7 @@ import {message} from 'antd';
 import "./assets/styles/index.scss";
 import PrimaryHeader from './components/PrimaryHeader';
 import PrimaryFooter from './components/PrimaryFooter';
+import CustomIcon from '~/components/Icon';
 import Login from './pages/Login';
 import Guide from "./pages/Guide";
 import Home from './pages/Home';
@@ -75,10 +76,10 @@ class PrimaryLayout extends React.Component {
 
         const conf = {
             'guide': { main: 'guide-bg', footer: false },
-            'login': {main: 'bg', footer: ''},
+            'login': { main: 'index-bg', footer: ''},
             'settings': { main: 'bg', footer: '' },
             'advance': { main: 'bg', footer: ''},
-            'welcome': { main: 'bg', footer: '' },
+            'welcome': { main: 'index-bg', footer: '' },
             'app': { main: 'bg', footer: ''},
 
             'home': { main: 'home-bg', footer: 'home-footer' },
@@ -95,25 +96,50 @@ class PrimaryLayout extends React.Component {
 
         return (
             <div className={`ui-fullscreen ${node.main}`}>
-                {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
-                <PrimaryHeader logined={logined} />
-                <div className="main">
-                    <Switch>
-                        <Route path="/login" component={Login}/>
-                        <Route path='/welcome' component={Welcome} />
-                        <Route path="/guide" component={Guide}/>
-                        <Route path="/home" component={Home}/>
-                        <Route path="/settings" component={Settings}/>
-                        <Route path="/advance" component={Advance}/>
-                        <Route path='/app' component={DownloadPage}/>
-                        <Route path='/diagnose' component={Diagnose}/>
-                        <Redirect from='/' to={redirect}/>
-                    </Switch>
-                    {false !== node.footer && <PrimaryFooter className={node.footer}/>}
+                <div className='main-content'>
+                    {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
+                    <PrimaryHeader logined={logined} />
+                    <div className="main">
+                        <Switch>
+                            <Route path="/login" component={Login} />
+                            <Route path='/welcome' component={Welcome} />
+                            <Route path="/guide" component={Guide} />
+                            <Route path="/home" component={Home} />
+                            <Route path="/settings" component={Settings} />
+                            <Route path="/advance" component={Advance} />
+                            <Route path='/app' component={DownloadPage} />
+                            <Route path='/diagnose' component={Diagnose} />
+                            <Redirect from='/' to={redirect} />
+                        </Switch>
+                        {false !== node.footer && <PrimaryFooter className={node.footer} />}
+                    </div>
                 </div>
+                <Background />
             </div>
         );
     }
+}
+
+function Background(props) {
+    return (
+        <div className='bg-items'>
+            <i className='noise'></i>
+            <CustomIcon type='earth' size={500} style={{
+                color: '#FFF',
+                opacity: 0.05,
+                position: 'fixed',
+                top: '-88px',
+                right: '-129px',
+            }} />
+            <CustomIcon type='earth' size={600} style={{
+                color: '#FFF',
+                opacity: 0.1,
+                position: 'fixed',
+                bottom: '-40px',
+                left: '-220px',
+            }} />
+        </div>
+    )
 }
 
 const App = () => (
