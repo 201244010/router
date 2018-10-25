@@ -17,7 +17,7 @@ export default function CustomIcon(props){
       size = props.size;
   }
   
-  const styles = { color : props.color, fontSize : size, lineHeight : 1 };
+  const styles = Object.assign({ color : props.color, fontSize : size, lineHeight : 1 }, props.style);
 
   return <div className={klass} style={styles} ></div>;
 }
