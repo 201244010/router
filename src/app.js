@@ -2,7 +2,7 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import {message} from 'antd';
+import {message, Modal, Icon} from 'antd';
 import "./assets/styles/index.scss";
 import PrimaryHeader from './components/PrimaryHeader';
 import PrimaryFooter from './components/PrimaryFooter';
@@ -53,7 +53,6 @@ class PrimaryLayout extends React.Component {
             duration: 2,
             maxCount: 3,
         });
-
         //TODO: optimize me
         const welcome = '/welcome';
 
@@ -115,6 +114,9 @@ class PrimaryLayout extends React.Component {
                     </div>
                 </div>
                 <Background />
+                <Modal wrapClassName="fetch-load" className="circle-icon" zIndex={10000} visible={true} centered={true} closable={false} mask={false} footer={null} width={64}>
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 36,color : "#FB8632" }}  spin />
+                </Modal>
             </div>
         );
     }
