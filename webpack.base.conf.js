@@ -66,8 +66,8 @@ const options = {
                     to: __dirname + '/dist/portal'
                 },
                 {
-                    from: __dirname + '/others/artBoard',
-                    to: __dirname + '/dist/artBoard'
+                    from: __dirname + '/others/mobile',
+                    to: __dirname + '/dist/mobile'
                 },
                 {
                     from: __dirname + '/others/agreement',

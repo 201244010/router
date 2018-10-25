@@ -40,7 +40,7 @@ class PrimaryLayout extends React.Component {
                 window.location.href = '/artBoard/index.html';
             }
         } catch (e) {
-            alert('浏览器不支持');
+            alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
         }
 
         return { pathname, logined };
