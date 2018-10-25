@@ -190,7 +190,7 @@ export default class Diagnose extends React.Component {
         });
 
         return (
-            <div className='diagnose'>
+            <div className='diagnose-con'>
                 <div className='doing' style={{display:('doing' === status ? 'block' : 'none')}}>
                     <p className='title'>正在进行故障诊断，请稍候...</p>
                     <Timeline className='time-line'>
