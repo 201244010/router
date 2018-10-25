@@ -1,26 +1,25 @@
-
-
 import Loadable from 'react-loadable';
-import { DIRECTIVE, ERROR_MESSAGE} from './constants';
+import {DIRECTIVE, ERROR_MESSAGE} from './constants';
 import axios from 'axios';
-import { Modal } from 'antd';
+import {Modal} from 'antd';
 import React from 'react';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
-import { stringify } from 'qs';
-import { clearAll } from '~/assets/common/cookie';
+import {stringify} from 'qs';
+import {clearAll} from '~/assets/common/cookie';
 
-const { assign } = Object;
-const noop = () => {};
+const {assign} = Object;
+const noop = () => {
+};
 
 /**
  * 异步加载组件
- * @param {component} component 
+ * @param {component} component
  */
 export const asyncImport = component => {
     return Loadable({
-        loader : () => import(component),
-        loading : "Loading" 
+        loader: () => import(component),
+        loading: "Loading"
     });
 };
 
@@ -35,8 +34,8 @@ export const getTimeZone = () => {
  * ajax封装
  * @param {string} data 指令和指令参数
  * @param {object} options axios配置
- * @param {object} loopOption 扩展配置 
- *               loopOption.loop [boolean]是否循环 或循环 N 次, 
+ * @param {object} loopOption 扩展配置
+ *               loopOption.loop [boolean]是否循环 或循环 N 次,
  *               loopOption.interval [number]] 轮询间隔 ms
  *               loopOption.stop [function] 轮询终止的条件
  *               loopOption.pending [function] 已经成功响应，仍需继续轮询的条件
@@ -55,15 +54,17 @@ export const getTimeZone = () => {
  *      ],
  *      {timeout : 10000},
  *      {loop : true, interval : 1000, stop : function(){return true}},
- *      
+ *
  * );
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({ timeout: 10000, method: 'POST' }, options);
-
+    options = assign({ timeout: 10000, method: 'POST', loading : false }, options);
+    if(options.loading){
+        document.getElementsByClassName('fetch-load')[0].style.visibility = 'visible';
+    }
     let url = __BASEAPI__ + '/';
-    let { loop, interval } = assign({ loop: false, interval: 1000, pending: noop }, loopOption);
+    let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
 
     let payload = data.map(item => {
         return {
@@ -74,10 +75,10 @@ export function fetchApi(data, options = {}, loopOption = {}) {
 
     let count = 1, method = options.method.toLowerCase();
     if (method === 'get') {
-        options.params = { "params": payload, count: "1" };
+        options.params = {"params": payload, count: "1"};
     }
     else if (method === 'post') {
-        options.data = { "params": payload, count: "1" };
+        options.data = {"params": payload, count: "1"};
     }
     if (loopOption.loop && typeof loopOption.stop !== 'function') {
         throw new Error('loopOption.stop must be function, because loopOption.loop is active');
@@ -87,24 +88,39 @@ export function fetchApi(data, options = {}, loopOption = {}) {
             return axios(url, options).then(function (response) {
                 // 请求响应 但是响应的数据集为空
                 if (response.data === '') {
-                    return resolve({ errcode: 0 });
+                    return resolve({errcode: 0});
                 }
                 // 正常响应 解析响应结果
-                if(options.fileLink === true){
-                    let blob = new Blob([response.data],{type : 'application/x-targz'});
-                    let link = document.createElement('a');
-                    document.body.appendChild(link);
-                    link.style.display='none';
-                    link.href = URL.createObjectURL(blob);
-                    link.download = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
-                    link.click();
-                    setTimeout(function(){document.body.removeChild(link)},1000);
-                    window.URL.revokeObjectURL(link.href);
+                if (options.fileLink === true) {
+                    try{
+                        let blob = new Blob([response.data], {type: 'application/x-targz'});
+                        const fileName = response.headers["content-disposition"].match(/\"(.*)\"/)[1];
+                        if(window.navigator.msSaveBlob){
+                            // for ie 10 and later
+                            window.navigator.msSaveBlob(blob, fileName);
+                        } else {
+                            let link = document.createElement('a');
+                            document.body.appendChild(link);
+                            link.style.display = 'none';
+                            link.href = URL.createObjectURL(blob);
+                            console.log(response.headers);
+                            link.download = fileName;
+                            link.click();
+                            setTimeout(function () {
+                                document.body.removeChild(link)
+                            }, 1000);
+                            window.URL.revokeObjectURL(link.href);
+                        }
+                    } catch(e) {
+                        console.log(e);
+                    }
                     return;
                 }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if (res.errcode !== 0) {
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
+                }else{
+                    document.getElementsByClassName('fetch-load')[0].style.visibility = 'hidden';
                 }
 
                 if (loopOption && loopOption.pending && loopOption.pending(res)) {
@@ -114,50 +130,51 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 // 预处理 追加 message 字段
                 console.log("[DEBUG]:", res);
                 return resolve(res);
-            })
-                .catch(error => {
-                    switch (typeof loop) {
-                        case 'number':
-                            if (count < loop) {
-                                count++;
-                                if (!loopOption.stop()) {
-                                    setTimeout(() => fetch(), interval);
-                                }
-                                return false;
+            }).catch(error => {
+                console.log(error);
+                switch (typeof loop) {
+                    case 'number':
+                        if (count < loop) {
+                            count++;
+                            if (!loopOption.stop()) {
+                                setTimeout(() => fetch(), interval);
                             }
-                            break;
-                        case 'boolean':
-                            if (loop === true) {
-                                if (!loopOption.stop()) {
-                                    setTimeout(() => fetch(), interval);
-                                }
-                                return false;
-                            }
-                            break;
-                        case 'string':
-                            throw new Error('fetchApi 要求循环参数为 boolean 或 number');
-                    }
-                    if (error.toString().indexOf('403') > -1) {
-                        clearAll();
-                        const login = '/login';
-                        if (location.pathname.indexOf(login) === -1) {
-                            location.href = login;
+                            return false;
                         }
-                        return reject({});
+                        break;
+                    case 'boolean':
+                        if (loop === true) {
+                            if (!loopOption.stop()) {
+                                setTimeout(() => fetch(), interval);
+                            }
+                            return false;
+                        }
+                        break;
+                    case 'string':
+                        throw new Error('fetchApi 要求循环参数为 boolean 或 number');
+                }
+                if (error.toString().indexOf('403') > -1) {
+                    clearAll();
+                    const login = '/login';
+                    if (location.pathname.indexOf(login) === -1) {
+                        location.href = login;
                     }
-                    else if (loopOption.handleError) {
-                        Modal.error({ title: 'Error', content: <ErrorTip error={error} directive={stringify(data)} /> });
-                    }
-                    return reject(error);
-                })
+                    return reject({});
+                }
+                else if (loopOption.handleError) {
+                    Modal.error({title: 'Error', content: <ErrorTip error={error} directive={stringify(data)}/>});
+                }
+                return reject(error);
+            })
         }
+
         fetch();
-    })
+    });
 
     return promise;
-};
+}
 
-function ErrorTip(props){
+function ErrorTip(props) {
     return (
         <div>
             <div>{props.error.message}</div>
@@ -170,15 +187,12 @@ function ErrorTip(props){
 // export const TIMEZONES = TIMEZONE;;
 // export const timersManager = timersManager;
 
-export const mockResponse = function(data){
+export const mockResponse = function (data) {
     return {
-        errcode : 0,
-        data : [{
-            result : data
+        errcode: 0,
+        data: [{
+            result: data
         }],
-        message : 'success'
+        message: 'success'
     };
-}
-
-
-
+};

@@ -52,36 +52,36 @@ export default class Speed extends React.Component {
             opcode: 'WANWIDGET_SPEEDTEST_START',
             data: { speedtest : { acton : 'start' } }
         }]
-        );
-    
-    let response = await common.fetchApi(
-        [{
-            opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
-            data: { speedtest : { 'force_update' : true }}
-        }],
-        {},
-        { 
-            loop : 10, 
-            pending : resp => {
-                return resp.data[0].result.speedtest.status === 'testing';
-            }, 
-            stop : () => this.stop, 
-            interval : 1000 
-        }
-    ).catch(ex => {});
-
-    this.setState({ speedTestdone : true, showModal : false });
-    let { errcode, message } = response;
-    if(errcode == 0){
-        let info = response.data[0].result.speedtest;
-        this.setState({
-            upBandWidth : (info.up_bandwidth / 1024).toFixed(2),
-            downBandWidth : (info.down_bandwidth / 1024).toFixed(2)
+        ).then(async()=>{
+            let response = await common.fetchApi(
+                [{
+                    opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
+                    data: { speedtest : { 'force_update' : true }}
+                }],
+                {},
+                { 
+                    loop : 10, 
+                    pending : resp => {
+                        return resp.data[0].result.speedtest.status === 'testing';
+                    }, 
+                    stop : () => this.stop, 
+                    interval : 1000 
+                }
+            ).catch(ex => {});
+            console.log(response);
+            this.setState({ speedTestdone : true, showModal : false });
+            let { errcode, message } = response;
+            if(errcode == 0){
+                let info = response.data[0].result.speedtest;
+                this.setState({
+                    upBandWidth : (info.up_bandwidth / 1024).toFixed(2),
+                    downBandWidth : (info.down_bandwidth / 1024).toFixed(2)
+                });
+                return;
+            }
+            Modal.error({ title : '测速指令异常', message });
         });
-        return;
     }
-    Modal.error({ title : '测速指令异常', message });
-  }
 
   //  手动配速  
     configure = async () => {
@@ -244,23 +244,23 @@ const SpeedAutoBoard = props => {
             <span>网络测试完成，您的网络带宽为</span>
             <div className="board">
                 <div className="board-item">
-                    <ul>
-                        <li>{props.upBandWidth}</li>
-                        <li>
-                            <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">上行带宽<CustomIcon type="bandwidthdown" size={12} color="#4687FF" /></div>
-                        </li>
-                    </ul>
+                    <span>
+                        <span className="band-width">{props.upBandWidth}</span>
+                        <span className="band-result">
+                            <em className="ui-tips">Mbps</em>
+                            <strong className="ui-tips">上行带宽<CustomIcon type="bandwidthdown" size={12} color="#4687FF"/></strong>
+                        </span>
+                    </span>
                 </div>
-                <div className="board-item"></div>
+                <div className="board-split"/>
                 <div className="board-item">
-                    <ul>
-                        <li>{props.downBandWidth}</li>
-                        <li>
-                            <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">下行带宽 <CustomIcon type="bandwidthup" size={12} color="#87D068" /></div>
-                        </li>
-                    </ul>
+                    <span>
+                        <span className="band-width">{props.downBandWidth}</span>
+                        <span className="band-result">
+                            <em className="ui-tips">Mbps</em>
+                            <strong className="ui-tips">下行带宽 <CustomIcon type="bandwidthup" size={12} color="#87D068"/></strong>
+                        </span>
+                    </span>
                 </div>
             </div>
             <div className="button-wrap">

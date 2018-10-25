@@ -172,6 +172,33 @@ export default class NETWORK extends React.Component {
         })
     }
 
+    checkbackupDns = value => {
+        return value.every(item => {return item.length === 0}) || value.every(item => {return item.length !== 0})
+    }
+
+    checkDns = value =>{
+        return value.some(f => {
+            if(f == null || typeof f === 'undefined' || f === ''){
+                return true;
+            }
+        });
+    }
+
+    checkSameDns = (dns1,dns2) => {
+        let length1 = dns1.length;
+        let length2 = dns2.length;
+        if(length1 !== length2){
+            return false;
+        }
+        let i;
+        for(i = 0; i < length1 ;i++){
+            if(dns1[i] !== dns2[i] ){
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 校验参数
     checkParams(){
         let { type, pppoeAccount, pppoePassword,pppoeType, dhcpType, staticDns, staticDnsbackup, ipv4, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
@@ -181,25 +208,19 @@ export default class NETWORK extends React.Component {
                     return false;
                 }
                 if(pppoeType === 'manual'){
-                    let empty = [pppoeDns, pppoeDnsbackup].some(field => {
-                        if(field.length === 0){
-                            return true;
-                        }
-                        return field.some(f => {
-                            if(f == null || typeof f === 'undefined' || f === ''){
-                                return true;
-                            }
+                    if(this.checkSameDns(pppoeDns,pppoeDnsbackup) && pppoeDnsbackup.every(item => {return item.length !== 0})){
+                        this.setState({
+                            pppoeDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
-                    })
-                    if(empty){
-
                         return false;
-                    } 
+                    }
+                    if (pppoeDns.length === 0 || this.checkDns(pppoeDns) || !this.checkbackupDns(pppoeDnsbackup)){
+                        return false
+                    };
                 }
-
                 break;
             case 'static' :
-               let empty = [staticDns, staticDnsbackup, ipv4, subnetmask, gateway].some(field => {
+               let empty = [staticDns, ipv4, subnetmask, gateway].some(field => {
                     if(field.length === 0){
                         return true;
                     }
@@ -211,21 +232,26 @@ export default class NETWORK extends React.Component {
                 })
                 if(empty){
                     return false;
-                }            
+                }
+                if(this.checkSameDns(staticDns,staticDnsbackup) && staticDnsbackup.every(item => {return item.length !== 0})){
+                    this.setState({
+                        staticDnsbackupTip : '备选DNS不能与首选DNS相同'
+                    });
+                    return false;
+                }
+                if(!this.checkbackupDns(staticDnsbackup)){
+                    return false;
+                }
                 break;
             case 'dhcp':
                 if (dhcpType === 'manual'){
-                    let empty = [dhcpDns, dhcpDnsbackup].some(field => {
-                        if(field.length === 0){
-                            return true;
-                        }
-                        return field.some(f => {
-                            if(f == null || typeof f === 'undefined' || f === ''){
-                                return true;
-                            }
+                    if(this.checkSameDns(dhcpDns,dhcpDnsbackup) && dhcpDnsbackup.every(item => {return item.length !== 0})){
+                        this.setState({
+                            dhcpDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
-                    })
-                    if(empty){
+                        return false;
+                    }
+                    if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup)){
                         return false;
                     }
                 }
@@ -440,12 +466,14 @@ export default class NETWORK extends React.Component {
                     </section>
                     <section className="wifi-setting-item">
                         <PanelHeader title="上网设置" checkable={false} checked={true} />
-                        <label>上网方式</label>
-                        <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange}>
-                            <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
-                            <Option value='dhcp'>自动获取IP（DHCP）</Option>
-                            <Option value='static'>手动输入IP（静态IP）</Option>
-                        </Select>
+                        <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                            <label>上网方式</label>
+                            <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
+                                <Option value='dhcp'>自动获取IP（DHCP）</Option>
+                                <Option value='static'>手动输入IP（静态IP）</Option>
+                            </Select>
+                        </div>
                         {
         
                             type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}

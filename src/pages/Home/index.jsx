@@ -333,7 +333,7 @@ export default class Home extends React.PureComponent {
                 <ul className='func-list'>
                     <li className='func-item internet' style={{ paddingRight: 0 }}>
                         <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
-                        <img className='router' src={require('~/assets/images/router.svg')} />
+                        <img className='router' src={require('~/assets/images/router.png')} />
                         <div className={classnames(['content', { 'internet-error': !online }])}>
                             <h4><span>网络状态</span><span className='state'>{online ? '正常' : '异常'}</span></h4>
                             <div className='internet-status'>

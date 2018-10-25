@@ -2,10 +2,11 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import {message} from 'antd';
+import {message, Modal, Icon} from 'antd';
 import "./assets/styles/index.scss";
 import PrimaryHeader from './components/PrimaryHeader';
 import PrimaryFooter from './components/PrimaryFooter';
+import CustomIcon from '~/components/Icon';
 import Login from './pages/Login';
 import Guide from "./pages/Guide";
 import Home from './pages/Home';
@@ -14,6 +15,7 @@ import Advance from './pages/Advance';
 import Welcome from './pages/Welcome';
 import DownloadPage from './pages/DownloadPage';
 import Diagnose from './pages/Diagnose';
+import {brower} from './utils';
 import {UserInfoContext} from './context';
 // import UserBox from './components/UserBox';
 // import configurestore from './pub/store/configureStore';
@@ -31,6 +33,16 @@ class PrimaryLayout extends React.Component {
     static getDerivedStateFromProps() {
         const pathname = location.pathname;
         const logined = document.cookie.length > 0;
+        try {
+            const hasVisited = Boolean(window.sessionStorage.getItem('__visited__'));
+            if (!hasVisited && !logined && (brower.android || brower.ios)) {
+                window.sessionStorage.setItem('__visited__', true);
+                window.location.href = '/artBoard/index.html';
+            }
+        } catch (e) {
+            alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
+        }
+
         return { pathname, logined };
     }
 
@@ -41,7 +53,6 @@ class PrimaryLayout extends React.Component {
             duration: 2,
             maxCount: 3,
         });
-
         //TODO: optimize me
         const welcome = '/welcome';
 
@@ -64,10 +75,10 @@ class PrimaryLayout extends React.Component {
 
         const conf = {
             'guide': { main: 'guide-bg', footer: false },
-            'login': {main: 'bg', footer: ''},
+            'login': { main: 'index-bg', footer: ''},
             'settings': { main: 'bg', footer: '' },
             'advance': { main: 'bg', footer: ''},
-            'welcome': { main: 'bg', footer: '' },
+            'welcome': { main: 'index-bg', footer: '' },
             'app': { main: 'bg', footer: ''},
 
             'home': { main: 'home-bg', footer: 'home-footer' },
@@ -84,25 +95,53 @@ class PrimaryLayout extends React.Component {
 
         return (
             <div className={`ui-fullscreen ${node.main}`}>
-                {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
-                <PrimaryHeader logined={logined} />
-                <div className="main">
-                    <Switch>
-                        <Route path="/login" component={Login}/>
-                        <Route path='/welcome' component={Welcome} />
-                        <Route path="/guide" component={Guide}/>
-                        <Route path="/home" component={Home}/>
-                        <Route path="/settings" component={Settings}/>
-                        <Route path="/advance" component={Advance}/>
-                        <Route path='/app' component={DownloadPage}/>
-                        <Route path='/diagnose' component={Diagnose}/>
-                        <Redirect from='/' to={redirect}/>
-                    </Switch>
-                    {false !== node.footer && <PrimaryFooter className={node.footer}/>}
+                <div className='main-content'>
+                    {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
+                    <PrimaryHeader logined={logined} />
+                    <div className="main">
+                        <Switch>
+                            <Route path="/login" component={Login} />
+                            <Route path='/welcome' component={Welcome} />
+                            <Route path="/guide" component={Guide} />
+                            <Route path="/home" component={Home} />
+                            <Route path="/settings" component={Settings} />
+                            <Route path="/advance" component={Advance} />
+                            <Route path='/app' component={DownloadPage} />
+                            <Route path='/diagnose' component={Diagnose} />
+                            <Redirect from='/' to={redirect} />
+                        </Switch>
+                        {false !== node.footer && <PrimaryFooter className={node.footer} />}
+                    </div>
                 </div>
+                <Background />
+                <Modal wrapClassName="fetch-load" className="circle-icon" zIndex={10000} visible={true} centered={true} closable={false} mask={false} footer={null} width={64}>
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 36,color : "#FB8632" }}  spin />
+                </Modal>
             </div>
         );
     }
+}
+
+function Background(props) {
+    return (
+        <div className='bg-items'>
+            <i className='noise'></i>
+            <CustomIcon type='earth' size={500} style={{
+                color: '#FFF',
+                opacity: 0.05,
+                position: 'fixed',
+                top: '-88px',
+                right: '-129px',
+            }} />
+            <CustomIcon type='earth' size={600} style={{
+                color: '#FFF',
+                opacity: 0.1,
+                position: 'fixed',
+                bottom: '-40px',
+                left: '-220px',
+            }} />
+        </div>
+    )
 }
 
 const App = () => (

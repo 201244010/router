@@ -49,7 +49,10 @@ class Login extends React.Component {
             [{ 
                 opcode: 'ACCOUNT_LOGIN',
                 data: { account : { password : btoa(password), user : 'admin' }}
-            }]
+            }],
+            {
+                loading: true,
+            }
         );
         const { errcode, message } = response;
         this.setState({ loading : false });
@@ -97,7 +100,7 @@ class Login extends React.Component {
                                 onClick={this.post}
                                 style={{ margin: "0 0 10px", width: 320 }}
                                 loading={this.state.loading}>登录</Button>
-                        <p style={{ fontSize : 12, lineHeight : 1.5 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
                     </div>
                     <div className="qr">
                         <img src="QRcode.png"></img>
