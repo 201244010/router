@@ -135,26 +135,27 @@ export default class Backup extends React.Component{
         })
     }
     //备份到本地
-    postBackupLocal = async () => {
+    postBackupLocal = () => {
+        console.log(123);
         let backup = {};
         backup['basebackup'] = this.state.baseBackup ? 1 : 0;
         backup['authbackup'] = this.state.authBackup ? 1 : 0;
 
-        let response = await common.fetchApi({
+        common.fetchApi({
             opcode : 'SYSTEMTOOLS_BACKUP',
             data : {backup}
-        },
-        {
+        }, {
             fileLink : true, responseType : 'blob'
-        })
-
-        let {errcode} = response;
-        if(errcode == 0){
-            return;
-        }else{
-            Modal.error({title : '备份到本地失败'});
-        }
-    }
+        }).then(res => {
+            console.log(res);
+            if (res.errcode) {
+                Modal.error({title : '备份到本地失败'});
+            }
+        }).catch(error => {
+            console.log(error);
+            console.log(error);
+        });
+    };
 
     //备份到云
     postBackupCloud = async () => {
