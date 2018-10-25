@@ -58,8 +58,16 @@ const options = {
         new CopyWebpackPlugin(
             [
                 {
+                    from: __dirname + '/others/common',
+                    to: __dirname + '/dist/common'
+                },
+                {
                     from: __dirname + '/others/portal',
                     to: __dirname + '/dist/portal'
+                },
+                {
+                    from: __dirname + '/others/artBoard',
+                    to: __dirname + '/dist/artBoard'
                 },
                 {
                     from: __dirname + '/others/agreement',
