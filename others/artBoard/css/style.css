@@ -14,7 +14,7 @@ body {
     position: relative;
     overflow: hidden;
     line-height: 1.5;
-    font-family: "Helvetica", "PingFang SC", "Arial", "sans-serif";
+    font-family: "PingFang SC", "sans-serif";
     background-image: -webkit-linear-gradient(-135deg, #529CF4 0%, #545DED 64%, #4441E2 100%);
     background-image: linear-gradient(-135deg, #529CF4 0%, #545DED 64%, #4441E2 100%);
 }
