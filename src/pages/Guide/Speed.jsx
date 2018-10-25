@@ -244,23 +244,23 @@ const SpeedAutoBoard = props => {
             <span>网络测试完成，您的网络带宽为</span>
             <div className="board">
                 <div className="board-item">
-                    <ul>
-                        <li>{props.upBandWidth}</li>
-                        <li>
-                            <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">上行带宽<CustomIcon type="bandwidthdown" size={12} color="#4687FF" /></div>
-                        </li>
-                    </ul>
+                    <span>
+                        <span className="band-width">{props.upBandWidth}</span>
+                        <span className="band-result">
+                            <em className="ui-tips">Mbps</em>
+                            <strong className="ui-tips">上行带宽<CustomIcon type="bandwidthdown" size={12} color="#4687FF"/></strong>
+                        </span>
+                    </span>
                 </div>
-                <div className="board-item"></div>
+                <div className="board-split"/>
                 <div className="board-item">
-                    <ul>
-                        <li>{props.downBandWidth}</li>
-                        <li>
-                            <div className="ui-tips">Mbps</div>
-                            <div className="ui-tips">下行带宽 <CustomIcon type="bandwidthup" size={12} color="#87D068" /></div>
-                        </li>
-                    </ul>
+                    <span>
+                        <span className="band-width">{props.downBandWidth}</span>
+                        <span className="band-result">
+                            <em className="ui-tips">Mbps</em>
+                            <strong className="ui-tips">下行带宽 <CustomIcon type="bandwidthup" size={12} color="#87D068"/></strong>
+                        </span>
+                    </span>
                 </div>
             </div>
             <div className="button-wrap">

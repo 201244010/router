@@ -15,6 +15,7 @@ import Advance from './pages/Advance';
 import Welcome from './pages/Welcome';
 import DownloadPage from './pages/DownloadPage';
 import Diagnose from './pages/Diagnose';
+import {brower} from './utils';
 import {UserInfoContext} from './context';
 // import UserBox from './components/UserBox';
 // import configurestore from './pub/store/configureStore';
@@ -32,6 +33,16 @@ class PrimaryLayout extends React.Component {
     static getDerivedStateFromProps() {
         const pathname = location.pathname;
         const logined = document.cookie.length > 0;
+        try {
+            const hasVisited = Boolean(window.sessionStorage.getItem('__visited__'));
+            if (!hasVisited && !logined && (brower.android || brower.ios)) {
+                window.sessionStorage.setItem('__visited__', true);
+                window.location.href = '/artBoard/index.html';
+            }
+        } catch (e) {
+            alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
+        }
+
         return { pathname, logined };
     }
 
