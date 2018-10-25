@@ -350,8 +350,8 @@ export default class WeChatAuth extends React.Component{
 
 const Choose = props =>{
         return (
-        <div className="hide-input">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
+        <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="weixinSelectedSsidArea">
+            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('weixinSelectedSsidArea')}>
                 {props.Children}
             </Select>
         </div>)

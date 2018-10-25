@@ -276,7 +276,7 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleSmsLogoChange} name='smsLogo' data={{ opcode: '' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleSmsLogoChange} name='smsLogo' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
@@ -376,8 +376,8 @@ export default class SmsAuth extends React.Component{
 
 const Choose = props =>{
         return (
-        <div className="hide-input">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
+        <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="smsSelectedSsidArea">
+            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('smsSelectedSsidArea')}>
                 {props.Children}
             </Select>
         </div>
