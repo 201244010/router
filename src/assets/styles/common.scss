@@ -31,8 +31,7 @@ input::-moz-placeholder, textarea::-moz-placeholder {
     opacity: .3;
 } 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-    color: #333C4F;
-    opacity: .3;
+    color: #ccc !important;
 }
 
 .bg-items{

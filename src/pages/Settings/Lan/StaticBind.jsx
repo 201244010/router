@@ -72,6 +72,7 @@ export default class StaticBind extends React.Component {
             editType: 'add',
             editShow: true,
             editLoading: false,
+            disabled: true,
             editIndex: -1,
             editName: '',
             editIp: ['', '', '', ''],
@@ -120,7 +121,11 @@ export default class StaticBind extends React.Component {
             editIndex: record.index,
             editName: record.note,
             editIp: [...ip],
-            editMac: [...mac]
+            editMac: [...mac],
+            editNameTip: '',
+            editIpTip: '',
+            editMacTip: '',
+            disabled: false
         });
     }
 
