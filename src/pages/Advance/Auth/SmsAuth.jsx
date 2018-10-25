@@ -149,7 +149,7 @@ export default class SmsAuth extends React.Component{
 
     onDeselect = value =>{
         for(let i=0;i<this.sms.ssidlist.length;i++){
-            if(value == this.sms.ssidlist[i].ssid){
+            if(value == this.sms.ssidlist[i].name){
                 this.sms.ssidlist[i].enable = "0";
             }
         }
@@ -157,7 +157,7 @@ export default class SmsAuth extends React.Component{
 
     onSelect = value =>{
         for(let i=0;i<this.sms.ssidlist.length;i++){
-            if(value == this.sms.ssidlist[i].ssid){
+            if(value == this.sms.ssidlist[i].name){
                 this.sms.ssidlist[i].enable = "1";
             }
         }
@@ -195,18 +195,18 @@ export default class SmsAuth extends React.Component{
                 templateCode : this.sms.template_code,
                 signName : this.sms.sign_name,
             });
-            // this.sms.ssidlist =[
-            //     {"ssid":"W1-Test-2.4G", "enable":"1"},
-            //     {"ssid":"W1-Test-5G", "enable":"1"}
-            // ];
-            for(let i= 0;i<this.sms.ssidlist.length;i++){
-                this.sms.ssidlist[i].enable = "0";
-            }
             const childrenList = [];
+            let selectedSsid = [];
             for (let i = 0; i < this.sms.ssidlist.length; i++) {
-                childrenList.push(<Option value={this.sms.ssidlist[i].ssid}>{this.sms.ssidlist[i].ssid}</Option>);
+                if(this.sms.ssidlist[i].enable === '1'){
+                    selectedSsid.push(this.sms.ssidlist[i].name);
+                }
+                childrenList.push(<Option value={this.sms.ssidlist[i].name} >{this.sms.ssidlist[i].name}</Option>);    
             }
-            this.setState({children:childrenList});
+            this.setState({
+                children: childrenList,
+                selectedSsid: selectedSsid
+            });
             return ;
         }
         Modal.error({title  : '短信认证的信息获取失败', content : message});
@@ -271,7 +271,7 @@ export default class SmsAuth extends React.Component{
                         </div>
                         <div style={{width:320,display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Choose Children={children} selectedSsid={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
+                            <Choose Children={children} value={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
@@ -377,7 +377,7 @@ export default class SmsAuth extends React.Component{
 const Choose = props =>{
         return (
         <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="smsSelectedSsidArea">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('smsSelectedSsidArea')}>
+            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('smsSelectedSsidArea')}>
                 {props.Children}
             </Select>
         </div>
