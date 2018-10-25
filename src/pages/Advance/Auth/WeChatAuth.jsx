@@ -38,37 +38,54 @@ export default class WeChatAuth extends React.Component{
         secretKeyTip: '',
         selectedSsid: [],
         children: [],
-        fileList: [],
+        weixinLogoFileList: [],
+        weixinBgFileList: [],
         loading: false
     }
     
-      handleWeChange = (info) => {
+    handleWeixinLogoChange = (info) => {
         let fileList = info.fileList;
     
         // 1. Limit the number of uploaded files
-        // Only to show two recent uploaded files, and old ones will be replaced by the new
         fileList = fileList.slice(-1);
     
-        // 2. Read from response and show file link
-        fileList = fileList.map((file) => {
-          if (file.response) {
-            // Component will show file.url as link
-            file.url = file.response.url;
-          }
-          return file;
-        });
-    
-        // 3. Filter successfully uploaded files according to response from server
+        //2.Filter successfully uploaded files according to response from server
         fileList = fileList.filter((file) => {
-          if (file.response) {
-            return file.response.status === 'success';
-          }
-          return true;
+            if (file.type == 'image/png' || file.type == 'image/jpeg') {
+                
+                return true;
+            }
+            return false;
         });
-    
-        this.setState({ fileList });
+        this.setState({ weixinLogoFileList: fileList });
       }
 
+    handleWeixinBgChange = (info) => {
+        let fileList = info.fileList;
+    
+        // 1. Limit the number of uploaded files
+        fileList = fileList.slice(-1);
+    
+        //2.Filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+            if (file.type == 'image/png' || file.type == 'image/jpeg') {
+                
+                return true;
+            }
+            return false;
+        });
+        this.setState({ weixinBgFileList: fileList });
+    }
+
+    beforeUpload = (file) => {
+        let isImage = file.type;
+        if( isImage === "image/png" || isImage === "image/jpeg" ){    
+        return true;
+        }
+        message.error('只能上传带.jpg、.png后缀的图片文件');
+        return false;
+    }  
+    
     onEnableChange = type =>{
         this.setState({
             enable : type,
@@ -135,7 +152,7 @@ export default class WeChatAuth extends React.Component{
 
     onDeselect = value =>{
         for(let i=0;i<this.weixin.ssidlist.length;i++){
-            if(value == this.weixin.ssidlist[i].ssid){
+            if(value == this.weixin.ssidlist[i].name){
                 this.weixin.ssidlist[i].enable = "0";
             }
         }
@@ -143,7 +160,7 @@ export default class WeChatAuth extends React.Component{
 
     onSelect = value =>{
         for(let i=0;i<this.weixin.ssidlist.length;i++){
-            if(value == this.weixin.ssidlist[i].ssid){
+            if(value == this.weixin.ssidlist[i].name){
                 this.weixin.ssidlist[i].enable = "1";
             }
         }
@@ -173,14 +190,18 @@ export default class WeChatAuth extends React.Component{
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
             });
-            for(let i= 0;i<this.weixin.ssidlist.length;i++){
-                this.weixin.ssidlist[i].enable = "0";
-            }
             const childrenList = [];
+            let selectedSsid = [];
             for (let i = 0; i < this.weixin.ssidlist.length; i++) {
-                childrenList.push(<Option value={this.weixin.ssidlist[i].ssid}>{this.weixin.ssidlist[i].ssid}</Option>);
+                if(this.weixin.ssidlist[i].enable === '1'){
+                    selectedSsid.push(this.weixin.ssidlist[i].name);
+                }
+                childrenList.push(<Option value={this.weixin.ssidlist[i].name} >{this.weixin.ssidlist[i].name}</Option>);    
             }
-            this.setState({children:childrenList});
+            this.setState({
+                children: childrenList,
+                selectedSsid: selectedSsid
+            });
             return ;
         }
         Modal.error({title  : '微信认证的信息获取失败', content : message});
@@ -214,14 +235,6 @@ export default class WeChatAuth extends React.Component{
         this.setState({ loading: false });
     }
 
-    beforeUpload = (file) => {
-        let isImage = file.type;
-        if(isImage!='image/png'&&isImage!='image/jpeg'){    
-        message.error('只能上传带.jpg、.png后缀的图片文件');
-        }
-        return isImage;
-    }  
-
     componentDidMount(){
         this.fetchWeChatAuthInfo();
     }
@@ -252,23 +265,23 @@ export default class WeChatAuth extends React.Component{
                         </div>
                         <div style={{width:320,display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
-                            <Choose Children={children} selectedSsid={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
+                            <Choose Children={children} value={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
                         </div>
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleWeChange} fileList={this.state.fileList} action="//192.168.100.1" uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
-                                    <Button style={{width:130}}>
+                                <Upload onChange={this.handleWeixinLogoChange} name='weixinLogo' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <Upload  onChange={this.handleWeChange} fileList={this.state.fileList} action="//192.168.100.1" multiple={false} uploadTitle={'上传背景图'}>
-                                    <Button style={{width:130}}>
+                                <span>支持扩展名：.jpg .png</span>
+                                <Upload onChange={this.handleWeixinBgChange} name='weixinBg'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png；图片大小：</span>
+                                <span>支持扩展名：.jpg .png</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
@@ -341,8 +354,8 @@ export default class WeChatAuth extends React.Component{
 
 const Choose = props =>{
         return (
-        <div className="hide-input">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.selectedSsid} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID">
+        <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="weixinSelectedSsidArea">
+            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('weixinSelectedSsidArea')}>
                 {props.Children}
             </Select>
         </div>)

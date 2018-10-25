@@ -360,11 +360,13 @@ export default class SetWan extends React.PureComponent {
                         <div className={classnames(['wan', {'block' : !detect}])}>
                             <Form style={{ margin : '0 auto' }}>
                                 <FormItem label="上网方式">
-                                    <Select value={type} style={{ width: "100%" }} onChange={this.handleChange}>
-                                        <Option value="pppoe">宽带账号上网（PPPoE）</Option>
-                                        <Option value="dhcp">自动获取IP（DHCP）</Option>
-                                        <Option value="static">手动输入IP（静态IP）</Option>
-                                    </Select>
+                                    <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                                        <Select value={type} style={{ width: "100%" }} onChange={this.handleChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                            <Option value="pppoe">宽带账号上网（PPPoE）</Option>
+                                            <Option value="dhcp">自动获取IP（DHCP）</Option>
+                                            <Option value="static">手动输入IP（静态IP）</Option>
+                                        </Select>
+                                    </div>
                                 </FormItem>
                                 {/* pppoe 输入组件 */}
                                 {

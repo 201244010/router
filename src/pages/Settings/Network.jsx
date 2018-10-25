@@ -466,12 +466,14 @@ export default class NETWORK extends React.Component {
                     </section>
                     <section className="wifi-setting-item">
                         <PanelHeader title="上网设置" checkable={false} checked={true} />
-                        <label>上网方式</label>
-                        <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange}>
-                            <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
-                            <Option value='dhcp'>自动获取IP（DHCP）</Option>
-                            <Option value='static'>手动输入IP（静态IP）</Option>
-                        </Select>
+                        <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                            <label>上网方式</label>
+                            <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
+                                <Option value='dhcp'>自动获取IP（DHCP）</Option>
+                                <Option value='static'>手动输入IP（静态IP）</Option>
+                            </Select>
+                        </div>
                         {
         
                             type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}

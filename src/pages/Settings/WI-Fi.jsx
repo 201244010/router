@@ -418,9 +418,9 @@ export default class WIFI extends React.Component {
                                     更多设置 <CustomIcon type={moreSettingType} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost}}>
-                                    <div>
+                                    <div style={{ padding: 0, position: 'relative' }} id="encryption24Area">
                                         <label>加密方式</label>
-                                        <Select value={encryption24} style={{ width: 320 }} disabled={disabledType24} onChange={(value)=>this.onChange('encryption24',value)}>
+                                        <Select value={encryption24} style={{ width: 320 }} disabled={disabledType24} onChange={(value)=>this.onChange('encryption24',value)} getPopupContainer={() => document.getElementById('encryption24Area')}>
                                             <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
                                             <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
                                             <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
@@ -459,40 +459,44 @@ export default class WIFI extends React.Component {
                                     </ul>
                                     {!(encryption24 =='none')?
                                         (
-                                            <div>
-                                            <label>加密方式</label>
-                                            <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24}>
-                                                <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                                <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                                <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                                <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                            </Select>
+                                            <div style={{ padding: 0, position: 'relative' }} id="encryption24Area">
+                                                <label>加密方式</label>
+                                                <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('encryption24Area')}>
+                                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                                </Select>
                                             </div>
                                         ) : ''
                                     }
-                                    <label>频道带宽</label>
-                                    <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24}>
-                                        <Option value={'auto'}>自动</Option>
-                                        <Option value={'HT20'}>20M</Option>
-                                        <Option value={'HT40'}>40M</Option>
-                                    </Select>
-                                    <label>无线信道</label> 
-                                    <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24}>
-                                        <Option value={'auto'}>自动(当前信道{current_channel24})</Option>
-                                        <Option value={'1'}>1</Option>
-                                        <Option value={'2'}>2</Option>
-                                        <Option value={'3'}>3</Option>
-                                        <Option value={'4'}>4</Option>
-                                        <Option value={'5'}>5</Option>
-                                        <Option value={'6'}>6</Option>
-                                        <Option value={'7'}>7</Option>
-                                        <Option value={'8'}>8</Option>
-                                        <Option value={'9'}>9</Option>
-                                        <Option value={'10'}>10</Option>
-                                        <Option value={'11'}>11</Option>
-                                        <Option value={'12'}>12</Option>
-                                        <Option value={'13'}>13</Option>
-                                    </Select>
+                                    <div style={{ padding: 0, position: 'relative' }} id="htmode24Area">
+                                        <label>频道带宽</label>
+                                        <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('htmode24Area')}>
+                                            <Option value={'auto'}>自动</Option>
+                                            <Option value={'HT20'}>20M</Option>
+                                            <Option value={'HT40'}>40M</Option>
+                                        </Select>
+                                    </div>
+                                    <div style={{ padding: 0, position: 'relative' }} id="channel24Area">
+                                        <label>无线信道</label> 
+                                        <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24} getPopupContainer={() => document.getElementById('channel24Area')}>
+                                            <Option value={'auto'}>自动(当前信道{current_channel24})</Option>
+                                            <Option value={'1'}>1</Option>
+                                            <Option value={'2'}>2</Option>
+                                            <Option value={'3'}>3</Option>
+                                            <Option value={'4'}>4</Option>
+                                            <Option value={'5'}>5</Option>
+                                            <Option value={'6'}>6</Option>
+                                            <Option value={'7'}>7</Option>
+                                            <Option value={'8'}>8</Option>
+                                            <Option value={'9'}>9</Option>
+                                            <Option value={'10'}>10</Option>
+                                            <Option value={'11'}>11</Option>
+                                            <Option value={'12'}>12</Option>
+                                            <Option value={'13'}>13</Option>
+                                        </Select>
+                                    </div>
                                 </div>
                             </section>
                             <section>
@@ -519,36 +523,40 @@ export default class WIFI extends React.Component {
                                         </ul>
                                         {!(encryption5 =='none')?
                                             (
-                                                <div>
-                                                <label>加密方式</label>
-                                                <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                                </Select>
+                                                <div style={{ padding: 0, position: 'relative' }} id="encryption5Area">
+                                                    <label>加密方式</label>
+                                                    <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('encryption5Area')}>
+                                                        <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
+                                                        <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
+                                                        <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
+                                                        <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                                    </Select>
                                                 </div>
                                             ) : ''
                                         }
-                                        <label>频道带宽</label>
-                                        <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5}>
-                                            <Option value={'auto'}>自动</Option>
-                                            <Option value={'HT20'}>20M</Option>
-                                            <Option value={'HT40'}>40M</Option>
-                                            <Option value={'HT80'}>80M</Option>
+                                        <div style={{ padding: 0, position: 'relative' }} id="htmode5Area">
+                                            <label>频道带宽</label>
+                                            <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('htmode5Area')}>
+                                                <Option value={'auto'}>自动</Option>
+                                                <Option value={'HT20'}>20M</Option>
+                                                <Option value={'HT40'}>40M</Option>
+                                                <Option value={'HT80'}>80M</Option>
+                                            </Select>
+                                        </div>
+                                        <div style={{ padding: 0, position: 'relative' }} id="channel5Area">
+                                            <label>无线信道</label> 
+                                            <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
+                                                <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
+                                                <Option value={'36'}>36</Option>
+                                                <Option value={'40'}>40</Option>
+                                                <Option value={'44'}>44</Option>
+                                                <Option value={'48'}>48</Option>
+                                                <Option value={'149'}>149</Option>
+                                                <Option value={'153'}>153</Option>
+                                                <Option value={'157'}>157</Option>
+                                                <Option value={'161'}>161</Option>
                                         </Select>
-                                        <label>无线信道</label> 
-                                        <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5}>
-                                            <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
-                                            <Option value={'36'}>36</Option>
-                                            <Option value={'40'}>40</Option>
-                                            <Option value={'44'}>44</Option>
-                                            <Option value={'48'}>48</Option>
-                                            <Option value={'149'}>149</Option>
-                                            <Option value={'153'}>153</Option>
-                                            <Option value={'157'}>157</Option>
-                                            <Option value={'161'}>161</Option>
-                                        </Select>
+                                        </div>
                                     </div>
                             </section>
                         </section>
