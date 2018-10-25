@@ -136,10 +136,9 @@ export default class Backup extends React.Component{
     }
     //备份到本地
     postBackupLocal = () => {
-        console.log(123);
         let backup = {};
         backup['basebackup'] = this.state.baseBackup ? 1 : 0;
-        backup['authbackup'] = this.state.authBackup ? 1 : 0;
+        backup['authbackup'] = this.state.authBbaackup ? 1 : 0;
 
         common.fetchApi({
             opcode : 'SYSTEMTOOLS_BACKUP',
@@ -147,12 +146,10 @@ export default class Backup extends React.Component{
         }, {
             fileLink : true, responseType : 'blob'
         }).then(res => {
-            console.log(res);
             if (res.errcode) {
                 Modal.error({title : '备份到本地失败'});
             }
         }).catch(error => {
-            console.log(error);
             console.log(error);
         });
     };
