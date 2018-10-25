@@ -35,9 +35,30 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
     opacity: .3;
 }
 
-    
+.bg-items{
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    .noise{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-image: url('/noise.png');
+    }
+}
+.index-bg{
+    background-image : linear-gradient(135deg, #529CF4 , #545DED, #4441E2);
+    .bg-items{
+        visibility: visible;
+    }
+}
 .bg{
-    background-image : linear-gradient(180deg, #2956C6 230px, #2956C6 0);
+    background-image : linear-gradient(180deg, #446CE6 230px, #446CE6 0);
     .main{
         color : #fff;
         height : auto;
@@ -52,6 +73,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
             margin : 40px auto 0;
         }
     }
+}
+.main-content{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
 }
 .main {
     // height: 100%;
