@@ -105,7 +105,7 @@ export default class ClientList extends React.Component{
             }
         });
 
-        const onlineCols = [{
+        let onlineCols = [{
             dataIndex: 'icon',
             width: 60,
             render: (icon, record) => (
@@ -158,35 +158,30 @@ export default class ClientList extends React.Component{
             title: '流量消耗',
             dataIndex: 'flux',
             width: 100
-        }, {
-            title: '操作',
-            width:160,
-            render: (text, record) => {
-                let type = record.type;
-                switch (type){
-                    case 'sunmi':
-                        if ('sunmi' !== record.mode) {
-                            return <a href="javascript:;" style={{ color: "#3D76F6" }}>请使用Sunmi Mesh接入专用网络</a>;
-                        } else {
-                            return '';
-                        }
-                    case 'whitelist':
-                    case 'normal':
-                    default:
+        }];
+
+        if ('sunmi' !== props.type) {
+            onlineCols.push(
+                {
+                    title: '操作',
+                    width: 160,
+                    render: (text, record) => {
                         return (
                             <span>
-                                <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === type ? '解除优先' : '优先上网'}</a>
+                                <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>
                                 <Divider type="vertical" />
                                 <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
                             </span>
                         );
-                }}
-        }];
+                    }
+                }
+            );
+        }
 
         return (
         <div className={classnames(['list-content', props.type + '-list'])}>
             <div className='list-header'>
-                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{current}/{total}）</span>
+                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
                 <Button className='more' onClick={this.showMore}>查看全部</Button>
             </div>
             <ul>{listItems}</ul>
