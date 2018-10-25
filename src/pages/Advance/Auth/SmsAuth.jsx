@@ -40,38 +40,53 @@ export default class SmsAuth extends React.Component{
         selectedSsid: [],
         children: [],
         watchValue: '1',
-        fileList: [],
+        smsLogoFileList: [],
+        smsBgFileList: [],
         loading: false
     }
 
-    handleWeChange = (info) => {
+    handleSmsLogoChange = (info) => {
         let fileList = info.fileList;
-        fileList = fileList.slice(-1);
-        fileList = fileList.map((file) => {
-          if (file.response) {
-            file.url = file.response.url;
-          }
-          return file;
-        });
-
-        fileList = fileList.filter((file) => {
-          if (file.response) {
-            return file.response.status === 'success';
-          }
-          return true;
-        });
     
-        this.setState({ fileList });
+        // 1. Limit the number of uploaded files
+        fileList = fileList.slice(-1);
+    
+        //2.Filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+            if (file.type == 'image/png' || file.type == 'image/jpeg') {
+                
+                return true;
+            }
+            return false;
+        });
+        this.setState({ smsLogoFileList: fileList });
+    }
+
+    handleSmsBgChange = (info) => {
+        let fileList = info.fileList;
+    
+        // 1. Limit the number of uploaded files
+        fileList = fileList.slice(-1);
+    
+        //2.Filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+            if (file.type == 'image/png' || file.type == 'image/jpeg') {
+                
+                return true;
+            }
+            return false;
+        });
+        this.setState({ smsBgFileList: fileList });
     }
 
     beforeUpload = (file) => {
         let isImage = file.type;
-        if(isImage!='image/png'&&isImage!='image/jpeg'){    
-        message.error('只能上传带.jpg、.png后缀的图片文件');
+        if( isImage === "image/png" || isImage === "image/jpeg" ){    
+        return true;
         }
-        return isImage;
+        message.error('只能上传带.jpg、.png后缀的图片文件');
+        return false;
     }  
-
 
     onEnableChange = type =>{
         this.setState({
@@ -261,18 +276,18 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleWeChange} action="//192.168.100.1" fileList={this.state.fileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
-                                    <Button style={{width:130}}>
+                                <Upload onChange={this.handleSmsLogoChange} name='smsLogo' data={{ opcode: '' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png；图片大小：</span>
-                                <Upload  onChange={this.handleWeChange} action="//192.168.100.1" fileList={this.state.fileList} multiple={false} uploadTitle={'上传背景图'}>
-                                    <Button style={{width:130}}>
+                                <span>支持扩展名：.jpg .png</span>
+                                <Upload  onChange={this.handleSmsBgChange} name='smsBg' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png；图片大小：</span>
+                                <span>支持扩展名：.jpg .png</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
