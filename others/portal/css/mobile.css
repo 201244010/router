@@ -20,6 +20,8 @@ body {
 .logo {
     width: 1.6rem;
     height: 1.6rem;
+    border-radius: 50%;
+    overflow: hidden;
 }
 .logo img {
     width: 100%;
@@ -49,6 +51,9 @@ body {
 .btn .btn-text {
     font-size: 0.43rem;
     color: #fff;
+}
+.btn.btn-disabled {
+    background: #999;
 }
 .protocol {
     position: relative;
