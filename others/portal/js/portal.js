@@ -289,6 +289,7 @@ function smsDataToPage(data) {
 
 function commonDataToPage(data) {
     document.body.style.background = "url('" + (data.background || "./imgs/bg.jpeg") + "')";
+    document.body.style.backgroundSize = "cover";
     logoElement.src = data.logo || "./imgs/logo.jpg";
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';

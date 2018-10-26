@@ -103,7 +103,7 @@ body {
     font-size: 16px;
     color: #fff;
 }
-.btn-disabled {
+.btn.btn-disabled {
     background: #999;
 }
 .protocol {
