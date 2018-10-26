@@ -20,11 +20,11 @@ export default class SmsAuth extends React.Component{
         onlineLimitTip: '',
         idleLimit: '',
         idleLimitTip: '',
-        logo: '欢迎您',
+        logo: '',
         logoTip: '',
-        welcome: '欢迎使用微信连Wi-Fi',
+        welcome: '',
         welcomeTip: '',
-        statement: '由Sunmi为您提供Wi-Fi服务',
+        statement: '',
         statementTip: '',
         codeExpired: '',
         codeExpiredTip: '',
@@ -190,7 +190,7 @@ export default class SmsAuth extends React.Component{
                 disableType :this.sms.enable == '1'? false : true,
                 onlineLimit : this.sms.online_limit,
                 idleLimit : this.sms.idle_limit,
-                logo : this.sms.logo,
+                logo : this.sms.logo_info,
                 welcome : this.sms.welcome,
                 statement : this.sms.statement,
                 codeExpired : this.sms.code_expired,
@@ -231,7 +231,7 @@ export default class SmsAuth extends React.Component{
         this.sms.enable = this.state.enable == true? '1' : '0';
         this.sms.online_limit =this.state.onlineLimit;
         this.sms.idle_limit = this.state.idleLimit;
-        this.sms.logo = this.state.logo;
+        this.sms.logo_info = this.state.logo;
         this.sms.welcome = this.state.welcome;
         this.sms.statement = this.state.statement;
         this.sms.code_expired = this.state.codeExpired;

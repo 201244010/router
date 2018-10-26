@@ -20,13 +20,13 @@ export default class WeChatAuth extends React.Component{
         onlineLimitTip: '',
         idleLimit: '',
         idleLimitTip: '',
-        logo: '欢迎您',
+        logo: '',
         logoTip: '',
-        welcome: '欢迎使用微信连Wi-Fi',
+        welcome: '',
         welcomeTip: '',
-        loginHint: '一键打开微信连Wi-Fi',
+        loginHint: '',
         loginHintTip: '',
-        statement: '由Sunmi为您提供Wi-Fi服务',
+        statement: '',
         statementTip: '',
         ssid: '',
         ssidTip: '',
@@ -184,7 +184,7 @@ export default class WeChatAuth extends React.Component{
                 disableType :this.weixin.enable == '1'? false : true,
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
-                logo : this.weixin.logo,
+                logo : this.weixin.logo_info,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
                 statement : this.weixin.statement,
@@ -222,7 +222,7 @@ export default class WeChatAuth extends React.Component{
         this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
-        this.weixin.logo = this.state.logo;
+        this.weixin.logo_info = this.state.logo;
         this.weixin.welcome = this.state.welcome;
         this.weixin.login_hint = this.state.loginHint;
         this.weixin.statement = this.state.statement;

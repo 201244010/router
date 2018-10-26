@@ -73,7 +73,7 @@ export default class NonAuth extends React.Component{
         common.fetchApi(
             [{
                 opcode: 'AUTH_WHITELIST_SET',
-                data: {auth : {name :value}}
+                data: {auth : {[name] :value === true ? '1' : '0' }}
             }]
         ).then((resp) => {
             let{errcode,message} = resp;
@@ -289,7 +289,6 @@ export default class NonAuth extends React.Component{
         );
         let {errcode,data,message} = fetchWhite;
         let whites;
-        console.log(fetchWhite,errcode == 0,errcode);
         if(errcode == 0){
             this.auth = data[0].result.auth;
             whites = data[0].result.auth.whitelist;
