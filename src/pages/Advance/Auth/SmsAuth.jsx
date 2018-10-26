@@ -37,8 +37,11 @@ export default class SmsAuth extends React.Component{
         templateCodeTip: '',
         signName: '',
         signNameTip: '',
-        selectedSsid: [],
-        children: [],
+        //生效SSID Input 方式的字段
+        selectedSsid: '',
+        //生效SSID Select 方式的字段
+        // selectedSsid: [],
+        // children: [],
         watchValue: '1',
         smsLogoFileList: [],
         smsBgFileList: [],
@@ -140,29 +143,31 @@ export default class SmsAuth extends React.Component{
             [name]: value
         });
     }
-    onChooseChange = value =>{
-        this.setState({
-            selectedSsid:value
-        });
+
+    //生效SSID 的 Select 方式，下个版本会用，注释保留
+    // onChooseChange = value =>{
+    //     this.setState({
+    //         selectedSsid:value
+    //     });
         
-    }
+    // }
 
-    onDeselect = value =>{
-        for(let i=0;i<this.sms.ssidlist.length;i++){
-            if(value == this.sms.ssidlist[i].name){
-                this.sms.ssidlist[i].enable = "0";
-            }
-        }
-    }
+    // onDeselect = value =>{
+    //     for(let i=0;i<this.sms.ssidlist.length;i++){
+    //         if(value == this.sms.ssidlist[i].name){
+    //             this.sms.ssidlist[i].enable = "0";
+    //         }
+    //     }
+    // }
 
-    onSelect = value =>{
-        for(let i=0;i<this.sms.ssidlist.length;i++){
-            if(value == this.sms.ssidlist[i].name){
-                this.sms.ssidlist[i].enable = "1";
-            }
-        }
+    // onSelect = value =>{
+    //     for(let i=0;i<this.sms.ssidlist.length;i++){
+    //         if(value == this.sms.ssidlist[i].name){
+    //             this.sms.ssidlist[i].enable = "1";
+    //         }
+    //     }
 
-    }
+    // }
 
     onWatchValueChange = e =>{
         this.setState({
@@ -194,19 +199,28 @@ export default class SmsAuth extends React.Component{
                 accessKeySecret : this.sms.access_key_secret,
                 templateCode : this.sms.template_code,
                 signName : this.sms.sign_name,
+                //input 方式的生效SSID赋值
+                selectedSsid: this.sms.ssidlist[0].name,
             });
-            const childrenList = [];
-            let selectedSsid = [];
+
+            //生效SSID 的 Input 方式,默认enable全部为 ‘1’
             for (let i = 0; i < this.sms.ssidlist.length; i++) {
-                if(this.sms.ssidlist[i].enable === '1'){
-                    selectedSsid.push(this.sms.ssidlist[i].name);
-                }
-                childrenList.push(<Option value={this.sms.ssidlist[i].name} >{this.sms.ssidlist[i].name}</Option>);    
+                this.sms.ssidlist[i].enable = '1' ;
             }
-            this.setState({
-                children: childrenList,
-                selectedSsid: selectedSsid
-            });
+
+            //生效SSID 的 Select 方式，下个版本会用，注释保留
+            // const childrenList = [];
+            // let selectedSsid = [];
+            // for (let i = 0; i < this.sms.ssidlist.length; i++) {
+            //     if(this.sms.ssidlist[i].enable === '1'){
+            //         selectedSsid.push(this.sms.ssidlist[i].name);
+            //     }
+            //     childrenList.push(<Option value={this.sms.ssidlist[i].name} >{this.sms.ssidlist[i].name}</Option>);    
+            // }
+            // this.setState({
+            //     children: childrenList,
+            //     selectedSsid: selectedSsid
+            // });
             return ;
         }
         Modal.error({title  : '短信认证的信息获取失败', content : message});
@@ -269,10 +283,15 @@ export default class SmsAuth extends React.Component{
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
-                        <div style={{width:320,display:'flex',flexDirection:'column'}}>
+                        <label>生效SSID</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" disabled={true} value={selectedSsid}/>
+                        </FormItem>
+                        {/* 生效SSID 的 Select 方式，下个版本会用，注释保留 */}
+                        {/* <div style={{width:320,display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
                             <Choose Children={children} value={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
-                        </div>
+                        </div> */}
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
@@ -334,10 +353,13 @@ export default class SmsAuth extends React.Component{
                         </section>
                         <PanelHeader title = "短信平台参数设置" checkable={false} />
                         <label>验证码有效期</label>
-                        <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
-                            <Input type="text" maxLength={3} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
-                            <ErrorTip>{codeExpiredTip}</ErrorTip>
-                        </FormItem>
+                        <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
+                            <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
+                                <Input type="text" maxLength={3} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
+                                <ErrorTip>{codeExpiredTip}</ErrorTip>
+                            </FormItem>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
+                        </div>
                         <label>短信服务商</label>
                         <div style={{marginBottom:24}}>
                             <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'}>
@@ -374,12 +396,13 @@ export default class SmsAuth extends React.Component{
     }
 }
 
-const Choose = props =>{
-        return (
-        <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="smsSelectedSsidArea">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('smsSelectedSsidArea')}>
-                {props.Children}
-            </Select>
-        </div>
-        );
-};
+//生效SSID 的 Select 方式，下个版本会用，注释保留
+// const Choose = props =>{
+//         return (
+//         <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="smsSelectedSsidArea">
+//             <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('smsSelectedSsidArea')}>
+//                 {props.Children}
+//             </Select>
+//         </div>
+//         );
+// };
