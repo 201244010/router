@@ -87,7 +87,7 @@ export default class SmsAuth extends React.Component{
         if( isImage === "image/png" || isImage === "image/jpeg" ){    
         return true;
         }
-        message.error('只能上传带.jpg、.png后缀的图片文件');
+        message.error('只支持.jpg、.png后缀的图片');
         return false;
     }  
 

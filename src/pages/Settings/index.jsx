@@ -24,7 +24,7 @@ export default class Setting extends React.Component {
                     <NavLink to={match.path + "/wifi"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="wifiset" size={28} />
-                            <span>WI-FI设置</span>
+                            <span>Wi-Fi设置</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/network"} activeClassName="active">
