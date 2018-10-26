@@ -73,7 +73,7 @@ export default class NonAuth extends React.Component{
         common.fetchApi(
             [{
                 opcode: 'AUTH_WHITELIST_SET',
-                data: {auth : {name :value}}
+                data: {auth : {[name] :value === true ? '1' : '0' }}
             }]
         ).then((resp) => {
             let{errcode,message} = resp;
@@ -254,33 +254,6 @@ export default class NonAuth extends React.Component{
         })
     }
 
-    formatTime = (total) => {
-        let seconds = parseInt(total, 10);
-        let day = parseInt(seconds / 86400);
-        let hour = parseInt((seconds % 86400) / 3600);
-        let minute = parseInt((seconds % 3600) / 60);
-        let second = parseInt(seconds % 60);
-
-        let timeStr = "";
-        if (day > 0) {
-            timeStr += day + "天";
-        }
-
-        if (hour > 0) {
-            timeStr += hour + "时";
-        }
-
-        if (minute > 0) {
-            timeStr += minute + "分";
-        }
-
-        if (second >= 0) {
-            timeStr += second + "秒";
-        }
-
-        return timeStr;
-    }
-
     fetchWhiteList = async() => {
         let fetchWhite = await common.fetchApi(
             [{
@@ -289,7 +262,6 @@ export default class NonAuth extends React.Component{
         );
         let {errcode,data,message} = fetchWhite;
         let whites;
-        console.log(fetchWhite,errcode == 0,errcode);
         if(errcode == 0){
             this.auth = data[0].result.auth;
             whites = data[0].result.auth.whitelist;

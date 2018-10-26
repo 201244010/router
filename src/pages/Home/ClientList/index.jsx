@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Divider, Popover, Modal, Table, message } from 'antd';
+import Loading from '~/components/Loading';
 
 import CustomIcon from '~/components/Icon';
 
@@ -24,6 +25,8 @@ export default class ClientList extends React.Component{
 
     handleEdit = async (record) => {
         let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+
+        Loading.show({ duration: 5 });
         let response = await common.fetchApi(
             { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
         );
@@ -42,6 +45,8 @@ export default class ClientList extends React.Component{
             message.warning('不能禁止本机上网');
             return;
         }
+
+        Loading.show({ duration: 5 });
         let response = await common.fetchApi(
             { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
@@ -105,7 +110,7 @@ export default class ClientList extends React.Component{
             }
         });
 
-        const onlineCols = [{
+        let onlineCols = [{
             dataIndex: 'icon',
             width: 60,
             render: (icon, record) => (
@@ -158,35 +163,30 @@ export default class ClientList extends React.Component{
             title: '流量消耗',
             dataIndex: 'flux',
             width: 100
-        }, {
-            title: '操作',
-            width:160,
-            render: (text, record) => {
-                let type = record.type;
-                switch (type){
-                    case 'sunmi':
-                        if ('sunmi' !== record.mode) {
-                            return <a href="javascript:;" style={{ color: "#3D76F6" }}>请使用Sunmi Mesh接入专用网络</a>;
-                        } else {
-                            return '';
-                        }
-                    case 'whitelist':
-                    case 'normal':
-                    default:
+        }];
+
+        if ('sunmi' !== props.type) {
+            onlineCols.push(
+                {
+                    title: '操作',
+                    width: 160,
+                    render: (text, record) => {
                         return (
                             <span>
-                                <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === type ? '解除优先' : '优先上网'}</a>
+                                <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>
                                 <Divider type="vertical" />
                                 <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
                             </span>
                         );
-                }}
-        }];
+                    }
+                }
+            );
+        }
 
         return (
         <div className={classnames(['list-content', props.type + '-list'])}>
             <div className='list-header'>
-                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{current}/{total}）</span>
+                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
                 <Button className='more' onClick={this.showMore}>查看全部</Button>
             </div>
             <ul>{listItems}</ul>

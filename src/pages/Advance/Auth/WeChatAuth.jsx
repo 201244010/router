@@ -20,13 +20,13 @@ export default class WeChatAuth extends React.Component{
         onlineLimitTip: '',
         idleLimit: '',
         idleLimitTip: '',
-        logo: '欢迎您',
+        logo: '',
         logoTip: '',
-        welcome: '欢迎使用微信连Wi-Fi',
+        welcome: '',
         welcomeTip: '',
-        loginHint: '一键打开微信连Wi-Fi',
+        loginHint: '',
         loginHintTip: '',
-        statement: '由Sunmi为您提供Wi-Fi服务',
+        statement: '',
         statementTip: '',
         ssid: '',
         ssidTip: '',
@@ -36,8 +36,11 @@ export default class WeChatAuth extends React.Component{
         appIdTip: '',
         secretKey: '',
         secretKeyTip: '',
-        selectedSsid: [],
-        children: [],
+        //生效SSID Input 方式的字段
+        selectedSsid: '',
+        //生效SSID Select 方式的字段
+        // selectedSsid: [],
+        // children: [],
         weixinLogoFileList: [],
         weixinBgFileList: [],
         loading: false
@@ -82,7 +85,7 @@ export default class WeChatAuth extends React.Component{
         if( isImage === "image/png" || isImage === "image/jpeg" ){    
         return true;
         }
-        message.error('只能上传带.jpg、.png后缀的图片文件');
+        message.error('只支持.jpg、.png后缀的图片');
         return false;
     }  
     
@@ -142,30 +145,30 @@ export default class WeChatAuth extends React.Component{
         })
     }
 
-    
-    onChooseChange = value =>{
-        this.setState({
-            selectedSsid:value
-        });
+    //生效SSID Select 方式的 函数
+    // onChooseChange = value =>{
+    //     this.setState({
+    //         selectedSsid:value
+    //     });
         
-    }
+    // }
 
-    onDeselect = value =>{
-        for(let i=0;i<this.weixin.ssidlist.length;i++){
-            if(value == this.weixin.ssidlist[i].name){
-                this.weixin.ssidlist[i].enable = "0";
-            }
-        }
-    }
+    // onDeselect = value =>{
+    //     for(let i=0;i<this.weixin.ssidlist.length;i++){
+    //         if(value == this.weixin.ssidlist[i].name){
+    //             this.weixin.ssidlist[i].enable = "0";
+    //         }
+    //     }
+    // }
 
-    onSelect = value =>{
-        for(let i=0;i<this.weixin.ssidlist.length;i++){
-            if(value == this.weixin.ssidlist[i].name){
-                this.weixin.ssidlist[i].enable = "1";
-            }
-        }
+    // onSelect = value =>{
+    //     for(let i=0;i<this.weixin.ssidlist.length;i++){
+    //         if(value == this.weixin.ssidlist[i].name){
+    //             this.weixin.ssidlist[i].enable = "1";
+    //         }
+    //     }
 
-    }
+    // }
 
     async fetchWeChatAuthInfo(){
         let response = await common.fetchApi(
@@ -181,7 +184,7 @@ export default class WeChatAuth extends React.Component{
                 disableType :this.weixin.enable == '1'? false : true,
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
-                logo : this.weixin.logo,
+                logo : this.weixin.logo_info,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
                 statement : this.weixin.statement,
@@ -189,19 +192,26 @@ export default class WeChatAuth extends React.Component{
                 shopId : this.weixin.shopid,
                 appId : this.weixin.appid,
                 secretKey : this.weixin.secretkey,
+                //input 方式的生效SSID赋值
+                selectedSsid: this.weixin.ssidlist[0].name,
             });
-            const childrenList = [];
-            let selectedSsid = [];
+            //生效SSID 的 Input 方式,默认enable全部为 ‘1’
             for (let i = 0; i < this.weixin.ssidlist.length; i++) {
-                if(this.weixin.ssidlist[i].enable === '1'){
-                    selectedSsid.push(this.weixin.ssidlist[i].name);
-                }
-                childrenList.push(<Option value={this.weixin.ssidlist[i].name} >{this.weixin.ssidlist[i].name}</Option>);    
+                this.weixin.ssidlist[i].enable = '1' ;
             }
-            this.setState({
-                children: childrenList,
-                selectedSsid: selectedSsid
-            });
+            //生效SSID 的 Select 方式，下个版本会用，注释保留
+            // const childrenList = [];
+            // let selectedSsid = [];
+            // for (let i = 0; i < this.weixin.ssidlist.length; i++) {
+            //     if(this.weixin.ssidlist[i].enable === '1'){
+            //         selectedSsid.push(this.weixin.ssidlist[i].name);
+            //     }
+            //     childrenList.push(<Option value={this.weixin.ssidlist[i].name} >{this.weixin.ssidlist[i].name}</Option>);    
+            // }
+            // this.setState({
+            //     children: childrenList,
+            //     selectedSsid: selectedSsid
+            // });
             return ;
         }
         Modal.error({title  : '微信认证的信息获取失败', content : message});
@@ -212,7 +222,7 @@ export default class WeChatAuth extends React.Component{
         this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
-        this.weixin.logo = this.state.logo;
+        this.weixin.logo_info = this.state.logo;
         this.weixin.welcome = this.state.welcome;
         this.weixin.login_hint = this.state.loginHint;
         this.weixin.statement = this.state.statement;
@@ -263,10 +273,15 @@ export default class WeChatAuth extends React.Component{
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
-                        <div style={{width:320,display:'flex',flexDirection:'column'}}>
+                        <label>生效SSID</label>
+                        <FormItem type="small" style={{ width : 320}}>
+                            <Input type="text" disabled={true} value={selectedSsid}/>
+                        </FormItem>
+                        {/* 生效SSID 的 Select 方式，下个版本会用，注释保留 */}
+                        {/* <div style={{width:320,display:'flex',flexDirection:'column'}}>
                             <label>生效SSID</label>
                             <Choose Children={children} value={selectedSsid} disableType={disableType} onDeselect={this.onDeselect} onSelect={this.onSelect} onChooseChange={this.onChooseChange}/>
-                        </div>
+                        </div> */}
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
@@ -352,11 +367,12 @@ export default class WeChatAuth extends React.Component{
     }
 }
 
-const Choose = props =>{
-        return (
-        <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="weixinSelectedSsidArea">
-            <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('weixinSelectedSsidArea')}>
-                {props.Children}
-            </Select>
-        </div>)
-};
+//生效SSID 的 Select 方式，下个版本会用，注释保留
+// const Choose = props =>{
+//         return (
+//         <div className="hide-input" style={{ padding: 0, position: 'relative' }} id="weixinSelectedSsidArea">
+//             <Select mode="multiple" style={{ width: '100%' }} onDeselect={props.onDeselect} disabled={props.disableType} onSelect={props.onSelect} value={props.value} onChange={props.onChooseChange} placeholder="&nbsp;请选择生效SSID" getPopupContainer={() => document.getElementById('weixinSelectedSsidArea')}>
+//                 {props.Children}
+//             </Select>
+//         </div>)
+// };

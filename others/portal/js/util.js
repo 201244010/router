@@ -24,7 +24,11 @@ function ajax(options) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                callback && callback(JSON.parse(xhr.response));
+                try {
+                    callback && callback(JSON.parse(xhr.response));
+                } catch (e) {
+                    callback && callback({errcode: -1});
+                }
             }
         }
     };

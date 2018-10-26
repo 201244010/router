@@ -2,7 +2,7 @@ var mobileInput = document.getElementById('mobileInput');
 var mobileError = document.getElementById('mobileError');
 var codeInput = document.getElementById('codeInput');
 var codeGetter = document.getElementById('codeGetter');
-var codeError = document.getElementById('codeError');
+//var codeError = document.getElementById('codeError');
 var countDown = document.getElementById('countDown');
 var cleanIcon = document.getElementById('cleanIcon');
 var cleanCodeIcon = document.getElementById('cleanCodeIcon');
@@ -15,8 +15,14 @@ var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var inputsElement = document.getElementById('inputs');
 var logoElement = document.getElementById('logo');
+var connectingElement = document.getElementById('connecting');
+var agreementElement = document.getElementById('agreement');
+var lawMaskElement = document.getElementById('lawMask');
+var lawContentElement = document.getElementById('lawContent');
+var iKnowElement = document.getElementById('iKnow');
 var agreeProtocol = true;
 var enable = null;
+var btnDisabled = true;
 
 window.onload = function () {
     ajax({
@@ -43,16 +49,40 @@ window.onload = function () {
                         data: sms
                     };
                 } else {
+                    connectingElement.style.display = 'none';
                     inputsElement.style.display = 'none';
+                    protocol.style.display = 'none';
                     showToast('不支持微信及短信方式连接wifi');
                 }
+            } else {
+                showToast('请求失败，请稍后再试');
             }
         }
     });
 };
 
+agreementElement.addEventListener('click', function () {
+    lawMaskElement.classList.remove('not-show');
+    lawContentElement.classList.remove('not-show');
+    lawMaskElement.classList.add('show');
+    lawContentElement.classList.add('show');
+}, false);
+iKnowElement.addEventListener('click', function () {
+    lawMaskElement.classList.add('not-show');
+    lawContentElement.classList.add('not-show');
+    lawMaskElement.classList.remove('show');
+    lawContentElement.classList.remove('show');
+}, false);
+
 mobileInput.addEventListener('input', function () {
     mobileInput.value = mobileInput.value.replace(/[^\d]/g, '');
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+        connectBtn.classList.remove('btn-disabled');
+        btnDisabled = false;
+    } else {
+        connectBtn.classList.add('btn-disabled');
+        btnDisabled = true;
+    }
 }, false);
 
 mobileInput.addEventListener('focus', function () {
@@ -86,12 +116,19 @@ cleanCodeIcon.addEventListener('click', function (ev) {
     codeInput.classList.remove('error');
     codeGetter.classList.add('show');
     codeGetter.classList.remove('not-show');
-    codeError.classList.add('not-show');
-    codeError.classList.remove('show');
+    //codeError.classList.add('not-show');
+    //codeError.classList.remove('show');
 }, false);
 
 codeInput.addEventListener('input', function () {
     codeInput.value = codeInput.value.replace(/[^\d]/g, '');
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+        connectBtn.classList.remove('btn-disabled');
+        btnDisabled = false;
+    } else {
+        connectBtn.classList.add('btn-disabled');
+        btnDisabled = true;
+    }
 }, false);
 
 codeInput.addEventListener('focus', function () {
@@ -134,17 +171,18 @@ codeGetter.addEventListener('click', function () {
         codeGetter.classList.add('not-show');
         countDown.classList.add('show');
         countDown.classList.remove('not-show');
+        countDown.innerText = waitTime + 's';
         codeGetter.timer = setInterval(function () {
-            countDown.innerText = waitTime-- + 's';
+            countDown.innerText = waitTime + 's';
             if (waitTime === 0) {
                 clearInterval(codeGetter.timer);
-                countDown.innerText = '重新获取';
                 countDown.classList.remove('show');
                 countDown.classList.add('not-show');
+                codeGetter.innerText = '重新获取';
                 codeGetter.classList.add('show');
                 codeGetter.classList.remove('not-show');
-                waitTime = 59;
             }
+            waitTime--;
         }, 1000);
 
         ajax({
@@ -154,6 +192,8 @@ codeGetter.addEventListener('click', function () {
             callback: function (response) {
                 if (response.errcode === 0) {
                     showToast('短信验证码发送成功');
+                } else if (response.errcode === -1) {
+                    showToast('请求失败，请稍后再试');
                 } else {
                     showToast('短信验证码发送失败');
                 }
@@ -170,6 +210,10 @@ protocol.addEventListener('click', function () {
 
 connectBtn.addEventListener('click', function () {
     var isMobilePhone = isMobile();
+
+    if (btnDisabled) {
+        return;
+    }
     if (!validate()) {
         return;
     }
@@ -207,14 +251,9 @@ connectBtn.addEventListener('click', function () {
             params: JSON.stringify(params),
             callback: function (response) {
                 if (response.errcode === 0) {
-                    // showToast('连接Wi-Fi成功');
                     window.location.href = response.data[0].result.redirect_url;
-                    // connectingElement.style.display = 'none';
-                    // successElement.style.display = '';
-                    // ajax({
-                    //     url: response.data[0].result.redirect_url,
-                    //     type: 'get'
-                    // });
+                } else if (response.errcode === -1) {
+                    showToast('请求失败，请稍后再试');
                 } else {
                     showToast('连接Wi-Fi失败');
                 }
@@ -267,6 +306,7 @@ function smsDataToPage(data) {
 
 function commonDataToPage(data) {
     document.body.style.background = "url('" + (data.background || "./imgs/bg.jpeg") + "')";
+    document.body.style.backgroundSize = "cover";
     logoElement.src = data.logo || "./imgs/logo.jpg";
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';

@@ -48,6 +48,12 @@ export default class StaticBind extends React.Component {
         };
 
         let tip = valid[key].func(val, valid[key].args);
+        if(key === 'editMac' && val.every(item => item.length !== 0)){
+            tip = this.onEditMac(val);
+        }
+        if(key === 'editIp' && val.every(item => item.length !== 0)){
+            tip = (val.join('.') === this.lanIp ? '静态IP地址与局域网IP地址冲突' : '')
+        }
         this.setState({
             [key]: (typeof val == 'object' ? [...val] : val),
             [key + 'Tip']: tip,
@@ -108,6 +114,11 @@ export default class StaticBind extends React.Component {
 
             return item;
         }) });
+    }
+
+    onEditMac = (value) => {
+        let staticLists = this.state.staticLists;
+        return  staticLists.some(item => item.mac === value.join(':').toUpperCase()) ? '设备Mac地址已存在' : '';
     }
 
     handleEdit = (record) => {
@@ -243,7 +254,8 @@ export default class StaticBind extends React.Component {
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'DHCPS_RESERVEDIP_LIST_GET' },
-            { opcode: 'CLIENT_LIST_GET' }
+            { opcode: 'CLIENT_LIST_GET' },
+            { opcode: 'NETWORK_LAN_IPV4_GET'}
         ]);
 
         let { errcode, data, message } = response;
@@ -265,7 +277,7 @@ export default class StaticBind extends React.Component {
                     return (mac == client.mac.toUpperCase());
                 }));
             });
-
+            this.lanIp = data[2].result.lan.info.ipv4;
             this.setState({
                 staticLists: reserved_ip_list.map(item => {
                     return Object.assign({}, item);

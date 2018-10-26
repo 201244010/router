@@ -23,10 +23,13 @@ export default class PrimaryFooter extends React.PureComponent {
                 {opcode :'NETWORK_WAN_IPV4_GET' }
             ]
         ).then(result => {
-            this.setState({
-                version : result.data[0].result.upgrade.current_version,
-                mac : result.data[1].result.wan.info.mac
-            })
+            let {errcode, data} = result;
+            if(errcode === 0){
+                this.setState({
+                    version : data[0].result.upgrade.current_version,
+                    mac : data[1].result.wan.info.mac
+                })
+            }
         })
     }
 
