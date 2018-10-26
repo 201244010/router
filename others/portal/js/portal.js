@@ -2,7 +2,7 @@ var mobileInput = document.getElementById('mobileInput');
 var mobileError = document.getElementById('mobileError');
 var codeInput = document.getElementById('codeInput');
 var codeGetter = document.getElementById('codeGetter');
-var codeError = document.getElementById('codeError');
+//var codeError = document.getElementById('codeError');
 var countDown = document.getElementById('countDown');
 var cleanIcon = document.getElementById('cleanIcon');
 var cleanCodeIcon = document.getElementById('cleanCodeIcon');
@@ -99,8 +99,8 @@ cleanCodeIcon.addEventListener('click', function (ev) {
     codeInput.classList.remove('error');
     codeGetter.classList.add('show');
     codeGetter.classList.remove('not-show');
-    codeError.classList.add('not-show');
-    codeError.classList.remove('show');
+    //codeError.classList.add('not-show');
+    //codeError.classList.remove('show');
 }, false);
 
 codeInput.addEventListener('input', function () {
