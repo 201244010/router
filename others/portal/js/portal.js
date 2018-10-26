@@ -2,7 +2,7 @@ var mobileInput = document.getElementById('mobileInput');
 var mobileError = document.getElementById('mobileError');
 var codeInput = document.getElementById('codeInput');
 var codeGetter = document.getElementById('codeGetter');
-var codeError = document.getElementById('codeError');
+//var codeError = document.getElementById('codeError');
 var countDown = document.getElementById('countDown');
 var cleanIcon = document.getElementById('cleanIcon');
 var cleanCodeIcon = document.getElementById('cleanCodeIcon');
@@ -16,6 +16,10 @@ var serviceElement = document.getElementById('service');
 var inputsElement = document.getElementById('inputs');
 var logoElement = document.getElementById('logo');
 var connectingElement = document.getElementById('connecting');
+var agreementElement = document.getElementById('agreement');
+var lawMaskElement = document.getElementById('lawMask');
+var lawContentElement = document.getElementById('lawContent');
+var iKnowElement = document.getElementById('iKnow');
 var agreeProtocol = true;
 var enable = null;
 var btnDisabled = true;
@@ -57,9 +61,22 @@ window.onload = function () {
     });
 };
 
+agreementElement.addEventListener('click', function () {
+    lawMaskElement.classList.remove('not-show');
+    lawContentElement.classList.remove('not-show');
+    lawMaskElement.classList.add('show');
+    lawContentElement.classList.add('show');
+}, false);
+iKnowElement.addEventListener('click', function () {
+    lawMaskElement.classList.add('not-show');
+    lawContentElement.classList.add('not-show');
+    lawMaskElement.classList.remove('show');
+    lawContentElement.classList.remove('show');
+}, false);
+
 mobileInput.addEventListener('input', function () {
     mobileInput.value = mobileInput.value.replace(/[^\d]/g, '');
-    if (checkMobileWithBlank() && checkCodeWithBlank()) {
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
         connectBtn.classList.remove('btn-disabled');
         btnDisabled = false;
     } else {
@@ -99,13 +116,13 @@ cleanCodeIcon.addEventListener('click', function (ev) {
     codeInput.classList.remove('error');
     codeGetter.classList.add('show');
     codeGetter.classList.remove('not-show');
-    codeError.classList.add('not-show');
-    codeError.classList.remove('show');
+    //codeError.classList.add('not-show');
+    //codeError.classList.remove('show');
 }, false);
 
 codeInput.addEventListener('input', function () {
     codeInput.value = codeInput.value.replace(/[^\d]/g, '');
-    if (checkMobileWithBlank() && checkCodeWithBlank()) {
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
         connectBtn.classList.remove('btn-disabled');
         btnDisabled = false;
     } else {

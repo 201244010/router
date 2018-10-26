@@ -198,3 +198,75 @@ body {
     font-size: 0.37rem;
     color: #fff;
 }
+
+.law-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.3;
+    background: #060A16;
+}
+.law-content {
+    width: 8.78rem;
+    height: 60%;
+    position: absolute;
+    left: 0.61rem;
+    top: 20%;
+    background: #fff;
+    border-radius: 0.21rem;
+    overflow: hidden;
+    opacity: 1;
+}
+.law-header {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1.52rem;
+    line-height: 1.52rem;
+    background: #fff;
+    text-align: center;
+    font-size: 0.48rem;
+    color: #333C4F;
+    font-weight: bold;
+}
+.law-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.22rem;
+    line-height: 1.22rem;
+    background: #E8EAED;
+    border-top: 1px solid rgba(0,0,0,0.10);
+    opacity: 0.9;
+    font-size: 0.43rem;
+    color: #333C4F;
+    text-align: center;
+}
+.law-main {
+    position: absolute;
+    top: 1.52rem;
+    left: 0;
+    bottom: 1.22rem;
+    right: 0;
+    padding: 0 0.48rem 0.12rem 0.48rem;
+    overflow-y: auto;
+}
+.law-main .law-sub-title {
+    margin-top: 0.32rem;
+    font-size: 0.37rem;
+    color: #333C4F;
+    line-height: 0.53rem;
+    font-weight: bold;
+}
+.law-main .law-sub-content {
+    margin-top: 0.16rem;
+    width: 100%;
+    opacity: 0.8;
+    font-size: 0.32rem;
+    color: #333C4F;
+    line-height: 0.48rem;
+}
