@@ -24,10 +24,12 @@ export default class PrimaryFooter extends React.PureComponent {
             ]
         ).then(result => {
             let {errcode, data} = result;
-            this.setState({
-                version : errcode === 0 ? data[0].result.upgrade.current_version : '',
-                mac : errcode === 0 ? data[1].result.wan.info.mac : ''
-            })
+            if(errcode === 0){
+                this.setState({
+                    version : data[0].result.upgrade.current_version,
+                    mac : data[1].result.wan.info.mac
+                })
+            }
         })
     }
 

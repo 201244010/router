@@ -3,9 +3,14 @@ import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
-import { Button, Modal} from 'antd';
+import { Button, Modal, message} from 'antd';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
+
+const error = {
+    '-1061' : '局域网IP地址与WAN口IP地址冲突' ,
+    '-1001' : '下发参数错误',
+};
 
 export default class Lan extends React.Component {
     state = {
@@ -139,16 +144,11 @@ export default class Lan extends React.Component {
 
         let { errcode, data } = response;
         if (errcode == 0) {
-            let { lan } = data[0].result;
-            this.lanInfo = lan.info;
+            let { lan } = data[0].result, { dhcps } = data[1].result;
+            this.lanInfo = lan.info, this.dhcps = dhcps;
             this.setState({
                 ipv4: [...this.lanInfo.ipv4.split('.')],
-                mask: [...this.lanInfo.mask.split('.')]
-            });
-
-            let { dhcps } = data[1].result;
-            this.dhcps = dhcps;
-            this.setState({
+                mask: [...this.lanInfo.mask.split('.')],
                 enable: this.dhcps.enable,
                 startip: [...this.dhcps.startip.split('.')],
                 endip: [...this.dhcps.endip.split('.')],
@@ -161,13 +161,16 @@ export default class Lan extends React.Component {
     }
 
     submitAll = async () => {
-        this.lanInfo.ipv4 = this.state.ipv4.join('.');
-        this.lanInfo.mask = this.state.mask.join('.');
+        let lan = this.lanInfo, state = this.state;
+        let ipv4 = state.ipv4.join('.'), mask = state.mask.join('.');
+        let changed = ((lan.ipv4 !== ipv4) || (lan.mask !== mask));
+        this.lanInfo.ipv4 = ipv4;
+        this.lanInfo.mask = mask;
 
-        this.dhcps.enable = this.state.enable;
-        this.dhcps.startip = this.state.startip.join('.');
-        this.dhcps.endip = this.state.endip.join('.');
-        this.dhcps.leasetime = this.state.leasetime;
+        this.dhcps.enable = state.enable;
+        this.dhcps.startip = state.startip.join('.');
+        this.dhcps.endip = state.endip.join('.');
+        this.dhcps.leasetime = state.leasetime;
 
         this.setState({ loading: true });
         let response = await common.fetchApi(
@@ -183,9 +186,21 @@ export default class Lan extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
+            if (changed) {
+                setTimeout(() => {
+                    const reg = /\d+\.\d+\.\d+\.\d+/g;
+                    if (reg.test(location.hostname)){
+                        // user login by ip
+                        location.href = location.href.replace(reg, ipv4);
+                    } else {
+                        // user login by sunmi.link
+                        location.reload();
+                    }
+                }, 20000);
+            }
             return;
         }
-        Modal.error({ title: '配置保存失败', content: message });
+        message.error(error[errcode] || '配置保存失败' );
     }
 
     componentDidMount() {

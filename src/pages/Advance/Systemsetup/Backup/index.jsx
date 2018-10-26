@@ -99,7 +99,7 @@ export default class Backup extends React.Component{
                     
                     return Object.assign({}, item)
                 }),
-                recoverDisable : result.length === 0 ? true : false
+                recoverDisable : (result.length === 0 || this.state.radioChoose === '') ? true : false
             });
             return;
         }else{
@@ -126,6 +126,7 @@ export default class Backup extends React.Component{
     radioChange = (event) => {
         this.setState({
             radioChoose : event.target.value,
+            recoverDisable : false
         })
     }
 
