@@ -49,9 +49,10 @@ export default class Backup extends React.Component{
     }
 
     cloudBackup = async () => {
+        const {filename} = this.state;
         this.setState({
             backupCloud : true,
-            backupDisable : this.state.filename === '' ? true : false
+            backupDisable : filename === '' ? true : false,
         });
         
         let response = await common.fetchApi({
@@ -192,6 +193,7 @@ export default class Backup extends React.Component{
                                     backupCloud : false,
                                     backupSuccessTip : '备份成功',
                                     loading : false,
+                                    filename : '',
                                 });
                                 return;
                             }else{
@@ -324,7 +326,7 @@ export default class Backup extends React.Component{
 
     render(){
         const {backupSuccessTip, baseBackup, authBackup, backupCloud, radioChoose, backupFail, backupSuccess, 
-            backupFailTip, recoverCloud, cloudList, loading, backupDisable, recoverDisable} = this.state;
+            backupFailTip, recoverCloud, cloudList, loading, backupDisable, recoverDisable, filename} = this.state;
 
         const recoverList = cloudList.map(item => {
             return (
@@ -364,7 +366,7 @@ export default class Backup extends React.Component{
                         <div className="backup-filename">文件名</div>
                         <div>
                             <FormItem type="small" style={{ width: 320 }}>
-                                <Input type="text" onChange={value => this.onChange(value, 'filename')} placeholder="请输入文件名" />
+                                <Input type="text" value={filename} maxLength={32} onChange={value => this.onChange(value, 'filename')} placeholder="请输入文件名" />
                             </FormItem>
                         </div>
                         <div className="backup-latest">

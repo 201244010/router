@@ -59,8 +59,10 @@ export const getTimeZone = () => {
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({timeout: 10000, method: 'POST'}, options);
-
+    options = assign({ timeout: 10000, method: 'POST', loading : false }, options);
+    if(options.loading){
+        document.getElementsByClassName('fetch-load')[0].style.visibility = 'visible';
+    }
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
 
@@ -117,6 +119,8 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if (res.errcode !== 0) {
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
+                }else{
+                    document.getElementsByClassName('fetch-load')[0].style.visibility = 'hidden';
                 }
 
                 if (loopOption && loopOption.pending && loopOption.pending(res)) {

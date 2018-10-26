@@ -105,7 +105,6 @@ export default class SysUpgrade extends React.Component{
         })
         let {data,errcode} =response;
         let result = data[0].result.upgrade;
-
         if(errcode == 0){       
             this.setState({
                 currentVersion : result.current_version,
@@ -177,9 +176,9 @@ export default class SysUpgrade extends React.Component{
                         <CustomIcon type="mistake" size={16} color='black'/>
                         <label className="head-title">版本说明</label>
                     </div>
-                    <div className="head-content">
+                    <pre className="head-content">
                         {releaseLog}
-                    </div>
+                    </pre>
                 </Modal>
                 <Modal closable={false} visible={download} centered={true} footer={null} width={560} >
                     <div className="progress-download">

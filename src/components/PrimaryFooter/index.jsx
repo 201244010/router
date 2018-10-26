@@ -23,21 +23,11 @@ export default class PrimaryFooter extends React.PureComponent {
                 {opcode :'NETWORK_WAN_IPV4_GET' }
             ]
         ).then(result => {
-            if(result.data[0].errcode == 0){
-                this.setState({
-                    version : result.data[0].result.upgrade.current_version
-                })
-            }else{
-                Modal.error({title : '版本信息获取失败'});
-            }
-
-            if(result.data[1].errcode == 0){
-                this.setState({
-                    mac : result.data[1].result.wan.info.mac
-                })
-            }else{
-                Modal.error({title : 'MAC地址获取失败'});
-            }
+            let {errcode, data} = result;
+            this.setState({
+                version : errcode === 0 ? data[0].result.upgrade.current_version : '',
+                mac : errcode === 0 ? data[1].result.wan.info.mac : ''
+            })
         })
     }
 
