@@ -8,6 +8,7 @@ import Tips from '~/components/Tips';
 import {checkStr} from '~/assets/common/check';
 
 const { FormItem, Input, ErrorTip } = Form;
+const confirm = Modal.confirm;
 
 export default class SetWifi extends React.Component {
     constructor(props){
@@ -36,7 +37,6 @@ export default class SetWifi extends React.Component {
     };
 
     openGuestSetting = value => {
-        console.log(value);
         if ( false === value){
             this.setState({
                 guestWifi : value,
@@ -46,13 +46,23 @@ export default class SetWifi extends React.Component {
                 this.setState({ canSubmit : this.valid() });
             });
         }else{
-            this.setState({
-                guestWifi : value,
-                guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
-                guestWifiPswTip: checkStr(this.state.guestWifiPsw, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' }),
-            }, () => {
-                this.setState({ canSubmit : this.valid() });
-            });
+            if(this.state.guestWifiPsw.length === 0){
+                this.setState({
+                    guestWifi : value,
+                    guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
+                    guestWifiPswTip: '',
+                }, () => {
+                    this.setState({ canSubmit : this.valid() });
+                });
+            }else{
+                this.setState({
+                    guestWifi : value,
+                    guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
+                    guestWifiPswTip: checkStr(this.state.guestWifiPsw, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' }),
+                }, () => {
+                    this.setState({ canSubmit : this.valid() });
+                });
+            }    
         }
     }
 
@@ -71,14 +81,25 @@ export default class SetWifi extends React.Component {
                 tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
             }
         }
-        
-        this.setState({ [field] : value, [field+'Tip']: type[field].tip }, function(){
-            this.setState({ canSubmit : this.valid() });
-        });
+        if(value.length === 0 && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
+            console.log(value.length,field);
+            this.setState({
+                [field]: value,
+                [field + 'Tip']: ''
+            },()=>{
+                this.setState({ canSubmit : this.valid() });
+            });
+        }else{
+            this.setState({ 
+                [field] : value, 
+                [field+'Tip']: type[field].tip 
+            }, ()=>{
+                this.setState({ canSubmit : this.valid() });
+            });
+        }   
     }
 
-    submit = async ()=> {
-        this.setState({ loading : true});
+    dataSet = async() =>{
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
         this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName;
@@ -86,9 +107,9 @@ export default class SetWifi extends React.Component {
         this.guestWireLess.ssid = this.state.guestWifiName;
         this.guestWireLess.static_password = btoa(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
-        this.mainWireLess.host.band_2g.encryption='psk-mixed/ccmp+tkip';
-        this.mainWireLess.host.band_5g.encryption='psk-mixed/ccmp+tkip';
-        this.guestWireLess.encryption='psk-mixed/ccmp+tkip';
+        this.mainWireLess.host.band_2g.encryption= this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.mainWireLess.host.band_5g.encryption=this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.guestWireLess.encryption=this.state.guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_2g.enable = "1";
 
         let response = await common.fetchApi(
@@ -136,6 +157,28 @@ export default class SetWifi extends React.Component {
         Modal.error({ title : 'WI-FI设置失败', content : message });
     }
 
+    submit = async ()=> {
+        this.setState({ loading : true });
+        if(this.state.hostWifiPsw.length === 0 || (this.state.guestWifi ? this.state.guestWifiPsw.length === 0 : false)){
+            confirm({
+                title: '提示：',
+                content: (this.state.hostWifiPsw.length === 0 ?'商户Wi-Fi' : '') + 
+                (this.state.hostWifiPsw.length === 0 && this.state.guestWifi && this.state.guestWifiPsw.length === 0 ? '、' : '')+
+                (this.state.guestWifi ? (this.state.guestWifiPsw.length === 0 ? '顾客Wi-Fi':'') : '') +'密码未设置，确定继续?' ,
+                onOk: this.dataSet,
+                onCancel(){   
+
+                },
+                cancelText: '取消',
+                okText: '确定',
+                centered: true
+            });
+            this.setState({ loading : false }); 
+        }else{
+            this.dataSet();
+        }       
+    }
+
     format = ()=>{
         return this.tick + 'S';
     }
@@ -143,18 +186,15 @@ export default class SetWifi extends React.Component {
     valid(){
         let ret = true;
         let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
+
+        if( hostWifiName.length === 0 || ( hostWifiPsw.length < 8 && hostWifiPsw.length >0 )){
+            ret = false;
+        }
         
-        [hostWifiName, hostWifiPsw].forEach( item => {
-            if(item.length === 0 || hostWifiPsw.length < 8){
-                ret = false;
-            }
-        })
-        if(guestWifi){
-            [guestWifiName, guestWifiPsw].forEach( item => {
-                if(item.length === 0 || guestWifiPsw.length < 8){
+        if(guestWifi){    
+            if( guestWifiName.length === 0 || ( guestWifiPsw.length < 8 && guestWifiPsw.length >0 )){
                     ret = false;
-                }
-            })  
+            }
         }
         return ret;
     }
@@ -228,7 +268,7 @@ export default class SetWifi extends React.Component {
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
-                    <Button size='large' type="primary" loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
                     <div className="help">
                         <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
                     </div>

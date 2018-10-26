@@ -23,6 +23,33 @@ export default class AuthUserList extends React.Component{
         authUserList :[]
     }
 
+    formatTime = (total) => {
+        let seconds = parseInt(total, 10);
+        let day = parseInt(seconds / 86400);
+        let hour = parseInt((seconds % 86400) / 3600);
+        let minute = parseInt((seconds % 3600) / 60);
+        let second = parseInt(seconds % 60);
+
+        let timeStr = "";
+        if (day > 0) {
+            timeStr += day + "天";
+        }
+
+        if (hour > 0) {
+            timeStr += hour + "时";
+        }
+
+        if (minute > 0) {
+            timeStr += minute + "分";
+        }
+
+        if (second >= 0) {
+            timeStr += second + "秒";
+        }
+
+        return timeStr;
+    }
+
     GetAuthUserList = async() =>{
         let results = await common.fetchApi(
             [
@@ -71,12 +98,14 @@ export default class AuthUserList extends React.Component{
             [{
                 opcode: 'AUTH_USER_OFFLINE',
                 data: {
-                    offline_list: [{
-                        mac: record.mac,
-                    }]
+                    auth:{
+                        offline_list: [{
+                            mac: record.mac,
+                        }]
+                    }    
                 }
             }]
-        ).catch(ex => { });
+        );
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -88,10 +117,22 @@ export default class AuthUserList extends React.Component{
         Modal.error({ title: '删除失败', content: message });
     }
 
-    componentDidMount(){
-        this.GetAuthUserList();
+    startRefresh = () =>{
+        this.timer = setInterval(this.GetAuthUserList,3000);
     }
 
+    stopRefresh =() =>{
+        clearInterval(this.timer);
+    }
+
+    componentDidMount(){
+        this.GetAuthUserList();
+        this.startRefresh();
+    }
+
+    componentWillUnmount(){
+        this.stopRefresh();
+    }
     render(){
 
         const {authUserList} = this.state;
