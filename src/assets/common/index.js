@@ -3,6 +3,7 @@ import {DIRECTIVE, ERROR_MESSAGE} from './constants';
 import axios from 'axios';
 import {Modal} from 'antd';
 import React from 'react';
+import loading from '~/components/Loading';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import {stringify} from 'qs';
@@ -60,9 +61,7 @@ export const getTimeZone = () => {
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
     options = assign({ timeout: 10000, method: 'POST', loading : false }, options);
-    if(options.loading){
-        document.getElementsByClassName('fetch-load')[0].style.visibility = 'visible';
-    }
+
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
 
@@ -85,7 +84,11 @@ export function fetchApi(data, options = {}, loopOption = {}) {
     }
     const promise = new Promise((resolve, reject) => {
         function fetch() {
+            options.loading && loading.show();
+
             return axios(url, options).then(function (response) {
+                options.loading && loading.close();
+
                 // 请求响应 但是响应的数据集为空
                 if (response.data === '') {
                     return resolve({errcode: 0});
@@ -112,26 +115,25 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                             window.URL.revokeObjectURL(link.href);
                         }
                     } catch(e) {
-                        console.log(e);
+                        console.error(e);
                     }
                     return;
                 }
                 let res = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
                 if (res.errcode !== 0) {
+                    // 预处理 追加 message 字段
                     res.message = ERROR_MESSAGE[res.errcode] || res.errcode;
-                }else{
-                    document.getElementsByClassName('fetch-load')[0].style.visibility = 'hidden';
                 }
 
                 if (loopOption && loopOption.pending && loopOption.pending(res)) {
                     setTimeout(() => fetch(), interval);
                     return false;
                 }
-                // 预处理 追加 message 字段
-                console.log("[DEBUG]:", res);
+
                 return resolve(res);
             }).catch(error => {
-                console.log(error);
+                options.loading && loading.close();
+                console.error(error);
                 switch (typeof loop) {
                     case 'number':
                         if (count < loop) {

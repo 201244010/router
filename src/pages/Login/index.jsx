@@ -49,10 +49,7 @@ class Login extends React.Component {
             [{ 
                 opcode: 'ACCOUNT_LOGIN',
                 data: { account : { password : btoa(password), user : 'admin' }}
-            }],
-            {
-                loading: true,
-            }
+            }]
         );
         const { errcode, message } = response;
         this.setState({ loading : false });

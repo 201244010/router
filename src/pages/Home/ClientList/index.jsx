@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Divider, Popover, Modal, Table, message } from 'antd';
+import Loading from '~/components/Loading';
 
 import CustomIcon from '~/components/Icon';
 
@@ -24,6 +25,8 @@ export default class ClientList extends React.Component{
 
     handleEdit = async (record) => {
         let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+
+        Loading.show({ duration: 5 });
         let response = await common.fetchApi(
             { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
         );
@@ -42,6 +45,8 @@ export default class ClientList extends React.Component{
             message.warning('不能禁止本机上网');
             return;
         }
+
+        Loading.show({ duration: 5 });
         let response = await common.fetchApi(
             { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
