@@ -183,6 +183,10 @@
             border-width: 0;
             width: 140px;
         }
+        button.single{
+            width: 100%;
+            border-right: 0;
+        }
         button:first-child{
             color: #3D76F6;
             border-radius: 0;
