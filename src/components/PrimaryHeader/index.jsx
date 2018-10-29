@@ -62,15 +62,12 @@ class PrimaryHeader extends React.Component {
 						{
                             logined && !isLoginPage && !isGuidePage && !isWelcomPage ? [
                                 <nav key="1" className="menu">
-                                    <NavLink to={match.path + "home"} activeClassName="active">
-                                        <Icon type="netstat"></Icon> 网络状态
-                                    </NavLink>
-                                    <NavLink to={match.path + "settings"} activeClassName="active">
-                                        <Icon type="set"></Icon> 基础设置
-                                    </NavLink>
-                                    <NavLink to={match.path + "advance"} activeClassName="active">
-                                        <Icon type="advancedsetup"></Icon> 高级设置
-                                    </NavLink>
+                                    <Icon type="netstat"></Icon>
+                                    <NavLink to={match.path + "home"} activeClassName="active">网络状态</NavLink>
+                                    <Icon type="set"></Icon>
+                                    <NavLink to={match.path + "settings"} activeClassName="active">基础设置</NavLink>
+                                    <Icon type="advancedsetup"></Icon>
+                                    <NavLink to={match.path + "advance"} activeClassName="active">高级设置</NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
                                     <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">下载手机版</a>
