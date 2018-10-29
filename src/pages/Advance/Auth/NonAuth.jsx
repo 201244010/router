@@ -70,10 +70,11 @@ export default class NonAuth extends React.Component{
     }
     
     onTypeChange = (value,name) =>{
+        let type = name ==='prioritizedFree' ? 'prioritized_free' : 'wired_free';
         common.fetchApi(
             [{
                 opcode: 'AUTH_WHITELIST_SET',
-                data: {auth : {[name] :value === true ? '1' : '0' }}
+                data: { auth : { [type] :value === true ? '1' : '0' } }
             }]
         ).then((resp) => {
             let{errcode,message} = resp;
@@ -266,8 +267,8 @@ export default class NonAuth extends React.Component{
             this.auth = data[0].result.auth;
             whites = data[0].result.auth.whitelist;
             this.setState({
-                prioritizedFree : this.auth.prioritized_free == '1' ,
-                wiredFree : this.auth.wired_free,
+                prioritizedFree : this.auth.prioritized_free === '1' ,
+                wiredFree : this.auth.wired_free === '1',
                 whiteList: whites.map(item => {
                     return {
                         index: item.index,
@@ -276,7 +277,7 @@ export default class NonAuth extends React.Component{
                         mac: item.mac.toUpperCase(),
                     }
                 }),
-            },()=>{console.log(this.state.whiteList);});
+            });
             return ;
         }
         Modal.error({ title: '获取免认证设备列表指令异常', message });
