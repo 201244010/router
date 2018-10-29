@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Modal , Select, Button, Upload, Icon, message } from 'antd';
+import { Modal , Select, Button, Upload, Icon, message, Checkbox } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import { checkStr, checkRange } from '~/assets/common/check';
@@ -331,8 +331,19 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div style={{width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25}}>
-
+                                <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
+                                    <div style={{paddingLeft:20,height:383}}>
+                                        <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
+                                        <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
+                                        <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
+                                        <div style={{marginTop:18}}>
+                                            <Button type="primary" style={{width:286,height:40,fontSize:14,borderRadius:8}}>{loginHint}</Button>
+                                        </div>
+                                        <div>
+                                            <Checkbox checked={true} style={{fontSize:10,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
+                                        </div>
+                                    </div>
+                                    <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                 </div>
                             </section>                  
                         </section>
