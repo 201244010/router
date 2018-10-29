@@ -49,7 +49,7 @@ export default class Mesh extends React.Component{
                 if (errcode == 0) {
                     let { devices } = data[0].sunmimesh;
                     let num = devices.length;
-                    let title = (num > 0) ? `搜寻到附近 ${num} 台商米设备` : '正在搜寻商米设备...';
+                    let title = (num > 0) ? `搜寻到 ${num} 台商米设备，已自动接入商米网络` : '正在搜寻商米设备...';
                     this.setState({
                         devices: devices.map(item => Object.assign({}, item)),
                         title: title,
@@ -139,7 +139,7 @@ export default class Mesh extends React.Component{
             {'done' === state && num > 0 &&
             <div>
                 <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                <h4>搜寻到<span>{num}</span>台附近的新商米设备，已自动为其连上专属网络</h4>
+                <h4>搜寻到<span>{num}</span>台新商米设备，已自动接入商米网络</h4>
             </div>
             }
             {'done' === state && num == 0 &&

@@ -362,7 +362,7 @@ export default class SetWan extends React.PureComponent {
                                 <FormItem label="上网方式">
                                     <div style={{ padding: 0, position: 'relative' }} id="typeArea">
                                         <Select value={type} style={{ width: "100%" }} onChange={this.handleChange} getPopupContainer={() => document.getElementById('typeArea')}>
-                                            <Option value="pppoe">宽带账号上网（PPPoE）</Option>
+                                            <Option value="pppoe">宽带拨号上网（PPPoE）</Option>
                                             <Option value="dhcp">自动获取IP（DHCP）</Option>
                                             <Option value="static">手动输入IP（静态IP）</Option>
                                         </Select>
@@ -414,7 +414,7 @@ const LinkState = props =>{
             <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
             <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
             <div className="help">
-                    <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过，直接设置</a>
+                    <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过</a>
             </div>
         </div>
     );
@@ -433,7 +433,7 @@ const NetStatus = props => {
             <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
-                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，直接设置无线网络</a>
+                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
             </div>
         </div>)
 }
@@ -490,7 +490,7 @@ const StaticIp = props => {
                 onChange={value => props.onChange(value, 'dns')} />
             <ErrorTip>{props.dnsTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dnsbackup' label="备选DNS" showErrorTip={props.dnsbackupTip}>
+        <FormItem key='dnsbackup' label="备选DNS(选填)" showErrorTip={props.dnsbackupTip}>
             <InputGroup 
                 inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dnsbackup')} />

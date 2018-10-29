@@ -144,7 +144,7 @@ export default class Dosd extends React.Component {
                 <Form>
                     <PanelHeader title="已阻止的DoS主机列表" />
                     <Table columns={columns} dataSource={blockList} rowKey={record => record.mac}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: "无设备" }} />
+                    bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
                 </Form>
             </section>
         </div>

@@ -57,7 +57,7 @@ export default class ChangePassword extends React.Component{
                     message.success('修改成功,5秒后将跳转到登陆页面');
                     setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
-                    Modal.error({title : '修改失败',content : '旧密码错误'});
+                    Modal.error({title : '修改失败',content : '原密码错误'});
                     this.setState({loading : false});
                 }
             });  
@@ -70,11 +70,11 @@ export default class ChangePassword extends React.Component{
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div style={{paddingLeft:60,marginTop:30,marginBottom:100}}>
-                        <label>输入旧密码</label>
+                        <label>原密码</label>
                         <FormItem type="small" style={{ width : 320}}>
-                            <Input type="password" placeholder={'请输入旧密码'} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
+                            <Input type="password" placeholder={'请输入原密码'} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
                         </FormItem>
-                        <label>设置新密码</label>
+                        <label>新密码</label>
                         <FormItem type="small" showErrorTip={newPWDTip} style={{ width : 320}}>
                             <Input type="password" maxLength={32} placeholder={'请输入新密码'} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
                             <ErrorTip>{newPWDTip}</ErrorTip>

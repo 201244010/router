@@ -301,7 +301,7 @@ export default class WIFI extends React.Component {
             this.setState({ loading : false});
             return;
         }
-        Modal.error({ title : 'WI-FI设置失败', content : message });
+        Modal.error({ title : 'Wi-Fi设置失败', content : message });
         this.setState({ loading : false});
     }
 
@@ -575,7 +575,7 @@ export default class WIFI extends React.Component {
                             <Radio style={{display:'inline-block'}} value={'dynamic'}>动态密码</Radio>
                         </RadioGroup>
                         <section style={{display:displayType}}>
-                            <label>动态变更周期</label>
+                            <label style={{marginTop:10}}>动态变更周期</label>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" style={{ width : 320}}>
                                 <Input type="text" value={period} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>    
@@ -586,7 +586,7 @@ export default class WIFI extends React.Component {
                                 <label>当前密码是：</label>
                                 <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
                             </div> 
-                            <span style={{opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>   
+                            <span style={{visibility: 'hidden', opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>   
                         </section>
                         <section style={{display:displayType=='none'?'block':'none'}}>
                             <ul className="ui-tiled compact">
@@ -598,7 +598,7 @@ export default class WIFI extends React.Component {
                                 <Input type="password" maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                                 <ErrorTip style={{color:'#fb8632'}}>{tipGuestPsw}</ErrorTip>
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
+                            <span style={{visibility:'hidden',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
                             </div>
                         </section>  
                     </section>
