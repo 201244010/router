@@ -17,6 +17,7 @@ import DownloadPage from './pages/DownloadPage';
 import Diagnose from './pages/Diagnose';
 import {brower} from './utils';
 import {UserInfoContext} from './context';
+import UpdateDetect from './pages/UpgradeDetect'
 // import UserBox from './components/UserBox';
 // import configurestore from './pub/store/configureStore';
 // const store = configurestore();
@@ -111,6 +112,7 @@ class PrimaryLayout extends React.Component {
                             <Redirect from='/' to={redirect} />
                         </Switch>
                         {false !== node.footer && <PrimaryFooter className={node.footer} />}
+                        {logined && <UpdateDetect />}
                     </div>
                 </div>
                 <Background image={require('~/assets/images/noise.png')} />
