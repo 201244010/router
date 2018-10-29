@@ -165,11 +165,22 @@ class InputGroup extends React.Component {
         const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-        item.value = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-zA-Z]*/g, '').toUpperCase();
+        let val = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-f]*/gi, '').toUpperCase();
+        item.value = val;
         this.setState({ inputs });
         if(this.props.onChange){
             const values = inputs.map(input => input.value);
             this.props.onChange(values, this.state.inputs);
+        }
+
+        // 自动focus到下一个Input
+        const maxLen = target.getAttribute('maxLength');
+        if (maxLen && val.length >= maxLen) {
+            let next = target.parentNode.nextElementSibling;
+            if (next) {
+                next = next.nextElementSibling;
+                next.querySelector('.ui-input-group-item').focus();
+            }
         }
     }
 
@@ -250,7 +261,7 @@ class InputGroup extends React.Component {
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}
                                         onChange={ e => this.onInputChange(e, i, item)} 
-                                        onKeyPress={ this.handleKeyPress }
+                                        //onKeyPress={ this.handleKeyPress }
                                         type='text'
                                         disabled={this.props.disabled}
                                     /></div>;
