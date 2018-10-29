@@ -1,8 +1,9 @@
 
 import React from "react";
-import { Modal ,Select ,Button ,Radio, Upload, Icon,message} from 'antd';
+import { Modal ,Select ,Button ,Radio, Upload, Icon, message, Checkbox } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
+import CustomIcon from '~/components/Icon';
 import { checkStr, checkRange } from '~/assets/common/check';
 
 const { FormItem, Input, ErrorTip } = Form;
@@ -339,12 +340,48 @@ export default class SmsAuth extends React.Component{
                             </RadioGroup>
                             {(watchValue == '1')?
                                 (
-                                    <div style={{width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:20}}>
-
+                                    <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
+                                        <div style={{paddingLeft:20,height:383}}>
+                                            <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
+                                            <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
+                                            <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
+                                            <div style={{width:286,height:40,marginTop:18,borderRadius:8,padding:10,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='number'  size={20} style={{marginRight:6}}/><span style={{fontSize:12,color:'#333C4F'}}>请输入手机号</span>
+                                            </div>
+                                            <div style={{width:286,height:40,marginTop:12,borderRadius:8,padding:10,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='verification' size={20} style={{marginRight:6}}/><span style={{fontSize:12,color:'#333C4F'}}>请输入验证码</span>
+                                                <span style={{float:'right',fontSize:12,color:'#333C4F'}}>获取验证码</span>
+                                            </div>
+                                            <div style={{marginTop:16}}>
+                                                <Button type="primary" style={{width:286,height:40,fontSize:14,borderRadius:8}}>连接Wi-Fi</Button>
+                                            </div>
+                                            <div>
+                                                <Checkbox checked={true} style={{fontSize:2,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
+                                            </div>
+                                        </div>
+                                        <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                     </div>
                                 ):(
-                                    <div style={{width:467,height:262,border:'1px solid grey',borderRadius:8,marginTop:20}}>
-
+                                    <div style={{width:467,height:262,border:'1px solid grey',borderRadius:8,marginTop:20,backgroundColor:'blue',color:'#FFFFFF'}}>
+                                        <div style={{height:251,padding:'36px 175px 0 175px'}}>
+                                            <div style={{width:30,height:30,borderRadius:15,border:'1px solid #FFFFFF'}}></div>
+                                            <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',transform:'scale(0.33,0.33)'}}>{logo}</div>
+                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',transform:'scale(0.33,0.33)'}}>“{welcome}”</div>
+                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='number'  size={24} style={{marginRight:12,transform:'scale(0.33,0.33)'}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入手机号</span>
+                                            </div>
+                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='verification' size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入验证码</span>
+                                                <span style={{float:'right',fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>获取验证码</span>
+                                            </div>
+                                            <div style={{marginTop:27}}>
+                                                <Button type="primary" style={{width:348,height:48,fontSize:18,borderRadius:6,transform:'scale(0.33,0.33)'}}><span style={{transform:'scale(0.33,0.33)'}}>连接Wi-Fi</span></Button>
+                                            </div>
+                                            <div>
+                                                <Checkbox checked={true} style={{fontSize:12,color:'#FFFFFF',transform:'scale(0.33,0.33)'}}>我已阅读并同意《上网协议》</Checkbox>
+                                            </div>
+                                        </div>
+                                        <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                     </div>
                                 )
     
