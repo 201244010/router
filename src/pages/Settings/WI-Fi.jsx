@@ -37,6 +37,7 @@ export default class WIFI extends React.Component {
         htmode24:'HT80',
         channel24:'',
         current_channel24 : '',
+        channelList24: [],
         disabledType24:false,
         //5G
         host5Enable:true,
@@ -49,6 +50,7 @@ export default class WIFI extends React.Component {
         htmode5:'HT80',
         channel5:'',
         current_channel5 : '',
+        channelList5: [],
         disabledType5:false,
         //more
         moreSettingType:'pulldown',
@@ -311,13 +313,34 @@ export default class WIFI extends React.Component {
 
     async fetchWireLessInfo(){
         let response = await common.fetchApi(
-            [{
-                opcode: 'WIRELESS_GET',
-            }]
-        )
+            [
+                {
+                    opcode: 'WIRELESS_GET',
+                },
+                {
+                    opcode: 'WIRELESS_CHANNEL_LIST_GET',
+                }
+            ]
+        );
+        console.log('response',response);
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
+            let { channel_list } = data[1].result;
+            this.channel_list = channel_list;
+            //channelList24
+            const channelList24 = [];
+            const channelList5 = [];
+            for(let i = 0; i < this.channel_list.band_2g.length; i++){
+                channelList24.push(<Option value={this.channel_list.band_2g[i]} >{this.channel_list.band_2g[i]}</Option>);
+            }
+            for(let i = 0; i < this.channel_list.band_5g.length; i++){
+                channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+            }
+            this.setState({
+                channelList24: channelList24,
+                channelList5: channelList5
+            });
             this.mainWireLess = main;
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
@@ -387,7 +410,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Passwrod, hide_ssid5, encryption5, htmode5, channel5, current_channel5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, tipGuest, tipGuestPsw, tip2g, tip2gPsw,
+        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Passwrod, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, tipGuest, tipGuestPsw, tip2g, tip2gPsw,
          tip5g, tip5gPsw, loading } = this.state;
         return (
             <div className="wifi-settings">
@@ -482,19 +505,7 @@ export default class WIFI extends React.Component {
                                         <label>无线信道</label> 
                                         <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24} getPopupContainer={() => document.getElementById('channel24Area')}>
                                             <Option value={'auto'}>自动(当前信道{current_channel24})</Option>
-                                            <Option value={'1'}>1</Option>
-                                            <Option value={'2'}>2</Option>
-                                            <Option value={'3'}>3</Option>
-                                            <Option value={'4'}>4</Option>
-                                            <Option value={'5'}>5</Option>
-                                            <Option value={'6'}>6</Option>
-                                            <Option value={'7'}>7</Option>
-                                            <Option value={'8'}>8</Option>
-                                            <Option value={'9'}>9</Option>
-                                            <Option value={'10'}>10</Option>
-                                            <Option value={'11'}>11</Option>
-                                            <Option value={'12'}>12</Option>
-                                            <Option value={'13'}>13</Option>
+                                            {channelList24}
                                         </Select>
                                     </div>
                                 </div>
@@ -547,14 +558,7 @@ export default class WIFI extends React.Component {
                                             <label>无线信道</label> 
                                             <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
                                                 <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
-                                                <Option value={'36'}>36</Option>
-                                                <Option value={'40'}>40</Option>
-                                                <Option value={'44'}>44</Option>
-                                                <Option value={'48'}>48</Option>
-                                                <Option value={'149'}>149</Option>
-                                                <Option value={'153'}>153</Option>
-                                                <Option value={'157'}>157</Option>
-                                                <Option value={'161'}>161</Option>
+                                                {channelList5}
                                         </Select>
                                         </div>
                                     </div>
