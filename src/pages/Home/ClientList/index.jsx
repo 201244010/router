@@ -7,17 +7,17 @@ import CustomIcon from '~/components/Icon';
 
 import './clients.scss';
 
-export default class ClientList extends React.Component{
+export default class ClientList extends React.Component {
     constructor(props) {
         super(props);
     }
 
     state = {
-        visible:false,
+        visible: false,
     }
 
     showMore = () => {
-        //this.props.stopRefresh();
+        this.props.stopRefresh();
         this.setState({
             visible: true
         });
@@ -33,7 +33,7 @@ export default class ClientList extends React.Component{
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchClientsInfo();
+            this.updateClientsInfo();
             return;
         }
 
@@ -41,7 +41,7 @@ export default class ClientList extends React.Component{
     }
 
     handleDelete = async (record) => {
-        if (this.props.mac === record.mac){
+        if (this.props.mac === record.mac) {
             message.warning('不能禁止本机上网');
             return;
         }
@@ -53,7 +53,7 @@ export default class ClientList extends React.Component{
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchClientsInfo();
+            this.updateClientsInfo();
             return;
         }
 
@@ -61,14 +61,17 @@ export default class ClientList extends React.Component{
     }
 
     handleCancel = () => {
-        //this.props.startRefresh();
+        this.props.startRefresh();
         this.setState({
             visible: false
         });
     }
 
-    fetchClientsInfo = () => {
-        this.props.startRefresh();
+    updateClientsInfo = () => {
+        // 后台生效需要1秒左右，延迟2秒刷新数据，
+        setTimeout(() => {
+            this.props.startRefresh(true);
+        }, 2000);
     }
 
     goWhiteList = () => {
@@ -100,7 +103,7 @@ export default class ClientList extends React.Component{
             if (index < max) {
                 return (
                     <li key={client.mac} className='client-item'>
-                        <Popover placement={placement} trigger='click' 
+                        <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
                             <div className='icon'><CustomIcon type={client.icon} size={42} /></div>
                         </Popover>
@@ -124,7 +127,7 @@ export default class ClientList extends React.Component{
                     <div style={{
                         width: 140,
                         overflow: 'hidden',
-                        textOverflow:'ellipsis',
+                        textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
                     }} title={record.name}>{record.name}</div>
                     <div><label style={{ marginRight: 3 }}>在线时长:</label><label>{record.ontime}</label></div>
@@ -155,7 +158,7 @@ export default class ClientList extends React.Component{
             width: 100,
             render: (text, record) => (
                 <div>
-                    <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{marginLeft:5}}>{record.tx}</span></div>
+                    <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{ marginLeft: 5 }}>{record.tx}</span></div>
                     <div><CustomIcon type="downloadtraffic" color='#87D068' size={12} /><span style={{ marginLeft: 5 }}>{record.rx}</span></div>
                 </div>
             )
@@ -163,61 +166,56 @@ export default class ClientList extends React.Component{
             title: '流量消耗',
             dataIndex: 'flux',
             width: 100
+        }, {
+            title: '操作',
+            width: 160,
+            render: (text, record) => {
+                let type = record.type;
+                return (
+                    <span>
+                        {'sunmi' !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>}
+                        {'sunmi' !== type && <Divider type="vertical" />}
+                        <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
+                    </span>
+                );
+            }
         }];
 
-        if ('sunmi' !== props.type) {
-            onlineCols.push(
-                {
-                    title: '操作',
-                    width: 160,
-                    render: (text, record) => {
-                        return (
-                            <span>
-                                <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>
-                                <Divider type="vertical" />
-                                <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
-                            </span>
-                        );
-                    }
-                }
-            );
-        }
-
         return (
-        <div className={classnames(['list-content', props.type + '-list'])}>
-            <div className='list-header'>
-                <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
-                <Button className='more' onClick={this.showMore}>查看全部</Button>
-            </div>
-            <ul>{listItems}</ul>
-            {('sunmi' === props.type && clients.length <= 0) &&
-                <div className='null-tip'>
-                    <label>没有商米设备连接到该网络，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
+            <div className={classnames(['list-content', props.type + '-list'])}>
+                <div className='list-header'>
+                    <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
+                    <Button className='more' onClick={this.showMore}>查看全部</Button>
                 </div>
-            }
-            {('whitelist' === props.type && clients.length <= 0) &&
-                <div className='null-tip'>
-                    <label>您还未设置优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">设置优先设备</a>
-                </div>
-            }
-            <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
-                width={960} style={{ position: 'relative' }}
-                visible={visible}
-                footer={[
-                    <Button key='cancel' onClick={this.handleCancel}>取消</Button>
-                ]}>
-                <Button style={{
-                    position: "absolute",
-                    top: 10,
-                    left: 160,
-                    border: 0,
-                    padding: 0
-                }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
-                <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
-                    style={{ height: 360, overflowY: 'auto' }}
-                    className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "无设备~" }} />
-            </Modal>
-        </div>);
+                <ul>{listItems}</ul>
+                {('sunmi' === props.type && clients.length <= 0) &&
+                    <div className='null-tip'>
+                        <label>没有商米设备连接到该网络，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
+                    </div>
+                }
+                {('whitelist' === props.type && clients.length <= 0) &&
+                    <div className='null-tip'>
+                        <label>您还未设置优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">设置优先设备</a>
+                    </div>
+                }
+                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
+                    width={960} style={{ position: 'relative' }}
+                    visible={visible}
+                    footer={[
+                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
+                    ]}>
+                    <Button style={{
+                        position: "absolute",
+                        top: 10,
+                        left: 160,
+                        border: 0,
+                        padding: 0
+                    }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" /></Button>
+                    <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
+                        style={{ height: 360, overflowY: 'auto' }}
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "无设备~" }} />
+                </Modal>
+            </div>);
     }
 }
 
@@ -252,6 +250,9 @@ class Item extends React.Component {
                     <div className='client-info'>
                         <p>{client.name}</p>
                         {info}
+                        <div>
+                            <Button className='single' onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
+                        </div>
                     </div>
                 );
             case 'whitelist':
@@ -271,7 +272,7 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac})}>优先上网</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>优先上网</Button>
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);

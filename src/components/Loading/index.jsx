@@ -50,27 +50,30 @@ let show = (opt = {}) => {
 	}, opt);
 
 	const { mount, className, duration, icon } = opt, doc = document;
+
 	let div = doc.createElement('div');
 	ReactDOM.render(<Loading className={className} icon={icon} duration={duration} />, div);
-	doc.querySelector(mount).appendChild(div);
+
+	let mounter = doc.querySelector(mount);
+	mounter && mounter.appendChild(div);
 }
 
 let close = (opt = {}) => {
 	opt = Object.assign({
-		//remve: false,		// 是否要删除loading，默认隐藏loading而是不删除
 		mount: 'body',		// 节点
 	}, opt);
 
-	const { mount, remove } = opt, doc = document;
+	const { mount } = opt, doc = document;
 
-	let parent = doc.querySelector(mount);
-	let child = parent.getElementsByClassName('sm-loading-wrap')[0];
-	parent.removeChild(child);
-	/*if (remove) {
-		parent.removeChild(child);
-	} else{
-		child.style.visibility = 'hidden';
-	}*/
+	let mounter = doc.querySelector(mount);
+	if (mounter) {
+		let loading = mounter.querySelector('div>.sm-loading-wrap');
+		if (loading) {
+			mounter.removeChild(loading.parentNode);
+		}
+	} else {
+		console.error('[Loading]Not found: ' + mount);
+	}
 }
 
 const loading = { show, close }
