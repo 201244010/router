@@ -17,10 +17,10 @@
         <div class="content">
             <h1>欢迎使用商米路由器</h1>
             <h3>下载商米管家APP，随时随地管理您的网络</h3>
-            <div class="btn-download btn-wrapper btn-color">
+            <div class="btn-download btn-wrapper btn-color" id="download">
                 <a href="javascript: void (0);">下载APP</a>
             </div>
-            <div class="btn-direct btn-wrapper btn-border">
+            <div class="btn-direct btn-wrapper btn-border" id="openDirect">
                 <a href="javascript: void (0);">已安装，直接打开</a>
             </div>
             <p class="link">
@@ -28,5 +28,19 @@
             </p>
         </div>
         <script type="application/javascript" src="../common/js/flexible.js"></script>
+        <script>
+            var download = document.getElementById('download');
+            var openDirect = document.getElementById('openDirect');
+            download.addEventListener('click', function () {
+                window.location.href = 'https://webapi.sunmi.com/webapi/wap/web/appstore/1.0/?service=AppStore.getAppFromHome';
+            }, false);
+            openDirect.addEventListener('click', function () {
+                if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                    window.location = 'sunmiapp://';
+                } else if (navigator.userAgent.match(/android/i)) {
+                    window.location = 'scheme://wireless.android.com.androidwireless';
+                }
+            }, false);
+        </script>
     </body>
 </html>
