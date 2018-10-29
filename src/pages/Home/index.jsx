@@ -110,10 +110,12 @@ export default class Home extends React.PureComponent {
         clearInterval(this.timer);
     }
 
-    startRefresh = () => {
-        clearInterval(this.timer);
+    startRefresh = (once = false) => {
         this.refreshStatus();
-        this.timer = setInterval(this.refreshStatus, 2000);
+        if (!once) {
+            clearInterval(this.timer);
+            this.timer = setInterval(this.refreshStatus, 3000);
+        }
     }
 
     fetchBasic = async () => {
@@ -396,13 +398,13 @@ export default class Home extends React.PureComponent {
                 <div className='online-list'>
                     <div className='left-list'>
                         <ClientList type='sunmi' data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
-                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                         <ClientList type='normal' data={normalClients} mac={me}
-                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                     <div className='whitelist-list'>
                         <ClientList type='whitelist' data={whitelistClients} mac={me} history={this.props.history}
-                            startRefresh={this.startRefresh} /*stopRefresh={this.stopRefresh}*/ />
+                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                 </div>
             </SubLayout>
