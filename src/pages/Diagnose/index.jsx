@@ -173,7 +173,9 @@ export default class Diagnose extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setTheme('');
+        this.setTheme = () => {
+            //noop
+        };
         clearInterval(this.timer);
     }
 
