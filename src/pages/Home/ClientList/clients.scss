@@ -8,7 +8,7 @@
             font-weight: bold;
             color: #333C4F;
             position: relative;
-            margin: 10px 10px 20px;
+            margin: 16px 10px 14px;
             .divider{
                 width:4px;
                 height: 20px;
@@ -58,10 +58,22 @@
             .sunmi-list{
                 width: 804px;
                 height: 150px;
+                .icon:hover, .icon:focus{
+                    border-color: #FF8F00;
+                    .ui-icon{
+                        color: #FF8F00;
+                    }
+                }
             }
             .normal-list{
                 width: 804px;
                 height: 240px;
+                .icon:hover, .icon:focus{
+                    border-color: #4687ff;
+                    .ui-icon{
+                        color: #4687ff;
+                    }
+                }
             }
         }
         .whitelist-list{
@@ -70,6 +82,12 @@
             background-color:#FFF;
             border: 1px solid rgba(0,0,0,0.04);
             border-radius: 8px;
+            .icon:hover, .icon:focus{
+                border-color: #87d068;
+                .ui-icon{
+                    color: #87d068;
+                }
+            }
         }
         .client-item{
             color: #9B9B9B;
@@ -89,12 +107,6 @@
                     color: #333C4F;
                     line-height: 50px !important ;
                     vertical-align: middle;
-                }
-            }
-            .icon:hover, .icon:focus{
-                border-color: #FF8F00;
-                .ui-icon{
-                    color: #FF8F00;
                 }
             }
             .under-desc{
