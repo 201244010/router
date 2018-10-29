@@ -70,10 +70,11 @@ export default class NonAuth extends React.Component{
     }
     
     onTypeChange = (value,name) =>{
+        let type = name ==='prioritizedFree' ? 'prioritized_free' : 'wired_free';
         common.fetchApi(
             [{
                 opcode: 'AUTH_WHITELIST_SET',
-                data: {auth : {[name] :value === true ? '1' : '0' }}
+                data: { auth : { [type] :value === true ? '1' : '0' } }
             }]
         ).then((resp) => {
             let{errcode,message} = resp;
@@ -266,8 +267,8 @@ export default class NonAuth extends React.Component{
             this.auth = data[0].result.auth;
             whites = data[0].result.auth.whitelist;
             this.setState({
-                prioritizedFree : this.auth.prioritized_free == '1' ,
-                wiredFree : this.auth.wired_free,
+                prioritizedFree : this.auth.prioritized_free === '1' ,
+                wiredFree : this.auth.wired_free === '1',
                 whiteList: whites.map(item => {
                     return {
                         index: item.index,
@@ -276,7 +277,7 @@ export default class NonAuth extends React.Component{
                         mac: item.mac.toUpperCase(),
                     }
                 }),
-            },()=>{console.log(this.state.whiteList);});
+            });
             return ;
         }
         Modal.error({ title: '获取免认证设备列表指令异常', message });
@@ -412,14 +413,14 @@ export default class NonAuth extends React.Component{
             <div style={{ margin: "0 60px" }}>
                 <div style={{borderBottom:'1px solid #ECECEC'}}>
                     <PanelHeader className='unauth-header' title="优先设备免认证" checkable={true} checked={prioritizedFree} onChange={value => this.onTypeChange(value,'prioritizedFree')}/>
-                    <PanelHeader className='unauth-header' title="有线端口免认证" checkable={true} checked={wiredFree} onChange={value => this.onTypeChange(value,'wiredFree')}/>
+                    <PanelHeader className='ui-none unauth-header' title="有线端口免认证" checkable={true} checked={wiredFree} onChange={value => this.onTypeChange(value,'wiredFree')}/>
                 </div>
                 <div style={{ margin: "20px 20px 20px 0" }}>
                     <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>列表添加</Button>
                     <Button onClick={this.manualAdd}>手动添加</Button>
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: "您还未添加任何设备" }} />
+                    bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
                 <Modal title="在线列表" closable={false} maskClosable={false} width={960} style={{ position: 'relative' }}
                     visible={visible}
                     confirmLoading={loading}
@@ -440,7 +441,7 @@ export default class NonAuth extends React.Component{
                     }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
                 <Modal title='添加免认证设备'
                     cancelText="取消" okText='添加'

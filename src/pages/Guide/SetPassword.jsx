@@ -78,8 +78,8 @@ export default class SetPassword extends React.Component {
         const { tip, disabled, loading } = this.state;
         return (
             <div className="setpassword"> 
-                <h2>设置管理员密码</h2> 
-                <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
+                <h2>设置管理密码</h2>
+                <p className="ui-tips guide-tip">管理密码是进入路由器管理页面的凭证 </p>
                 <Form style={{margin : '24px auto'}}>
                     <FormItem label="设置密码" style={{ marginBottom : 32 }} showErrorTip={tip}>
                         <Input placeholder="请设置密码" onChange = {this.onPassportChange} onBlur={ this.onPassportBlur } onEnter={this.onEnter} maxLength='32'/>

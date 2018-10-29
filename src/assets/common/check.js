@@ -30,6 +30,10 @@ let checkIpFormat = (ip, opt = {}) => {
 
     // ip format ['xxx', 'xxx', 'xxx', 'xxx']
     let valid = ip.every((val) => {
+        if (/^0\d/.test(val)) {
+            return false;
+        }
+
         let len = val.length;
         if (len == 0 || len > 3) {
             return false;

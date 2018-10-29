@@ -70,9 +70,9 @@ export default class AuthUserList extends React.Component{
             authClient = data[1].result.auth.clientlist;
         }
         this.setState({
-            authUserList: client.map(item => {
+            authUserList: authClient.map(item => {
                 let mac = item.mac.toUpperCase();
-                let authclient = authClient.find(item => item.mac.toUpperCase() === mac) || {
+                let authclient = client.find(item => item.mac.toUpperCase() === mac) || {
                     device: 'unknown',
                     ontime: 0,
                     ip: '0.0.0.0',                    
@@ -216,7 +216,7 @@ export default class AuthUserList extends React.Component{
         return (
             <div style={{ margin: "0 60px" }}>
                <Table columns={columns} dataSource={authUserList} rowKey={record => record.index} 
-               bordered size="middle" pagination={pagination} locale={{ emptyText: "无设备" }} /> 
+               bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
             </div>
         );
     }
