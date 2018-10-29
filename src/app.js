@@ -113,7 +113,7 @@ class PrimaryLayout extends React.Component {
                         {false !== node.footer && <PrimaryFooter className={node.footer} />}
                     </div>
                 </div>
-                <Background />
+                <Background image={require('~/assets/images/noise.png')} />
             </div>
         );
     }
@@ -122,7 +122,9 @@ class PrimaryLayout extends React.Component {
 function Background(props) {
     return (
         <div className='bg-items'>
-            <i className='noise'></i>
+            <i className='noise' style={{
+                backgroundImage: `url(${props.image})`,
+            }}></i>
             <CustomIcon type='earth' size={500} style={{
                 color: '#FFF',
                 opacity: 0.05,
