@@ -17,7 +17,7 @@ export default class ClientList extends React.Component {
     }
 
     showMore = () => {
-        //this.props.stopRefresh();
+        this.props.stopRefresh();
         this.setState({
             visible: true
         });
@@ -33,7 +33,7 @@ export default class ClientList extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchClientsInfo();
+            this.updateClientsInfo();
             return;
         }
 
@@ -53,7 +53,7 @@ export default class ClientList extends React.Component {
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchClientsInfo();
+            this.updateClientsInfo();
             return;
         }
 
@@ -61,14 +61,17 @@ export default class ClientList extends React.Component {
     }
 
     handleCancel = () => {
-        //this.props.startRefresh();
+        this.props.startRefresh();
         this.setState({
             visible: false
         });
     }
 
-    fetchClientsInfo = () => {
-        this.props.startRefresh();
+    updateClientsInfo = () => {
+        // 后台生效需要1秒左右，延迟2秒刷新数据，
+        setTimeout(() => {
+            this.props.startRefresh(true);
+        }, 2000);
     }
 
     goWhiteList = () => {
@@ -207,7 +210,7 @@ export default class ClientList extends React.Component {
                         left: 160,
                         border: 0,
                         padding: 0
-                    }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
+                    }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "无设备~" }} />
