@@ -415,12 +415,12 @@ export default class Bandwidth extends React.PureComponent {
                 <section className="band-value">
                     <div className="band-size">{upband}
                         <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
+                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
                     </div>
                     <div className="band-line"></div> 
                     <div className="band-size">{downband}
                         <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
+                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
                     </div>
                 </section>
                 <section style={{margin:"20px 20px 20px 0"}}>

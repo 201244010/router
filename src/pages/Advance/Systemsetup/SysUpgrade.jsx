@@ -163,7 +163,7 @@ export default class SysUpgrade extends React.Component{
                     <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{currentVersion}</label>
                 </div>
                 {
-                    (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>你的版本是最新，无需升级</div>
+                    (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>当前已是最新版本，无需升级</div>
                     : <LatestVer latestVersion={latestVersion} versionClick={this.versionClick}/>
                 }
                 <section className="upgrade-save" style={{marginTop : -10 ,borderTop : 'none'}}>

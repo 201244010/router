@@ -154,7 +154,7 @@ export default class SetWifi extends React.Component {
             }, 7000);
             return ;
         }
-        Modal.error({ title : 'WI-FI设置失败', content : message });
+        Modal.error({ title : 'Wi-Fi设置失败', content : message });
     }
 
     submit = async ()=> {
@@ -279,8 +279,8 @@ export default class SetWifi extends React.Component {
                             <div className="progress">
                                 {/* <Progress type="circle" showInfo={false} percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} /> */}
                                 <Icon type="loading" style={{ fontSize: 80, color : "#FB8632", marginBottom : 20 }} spin />
-                                {/* <h3>正在等待WI-FI重启，请稍候...</h3> */}
-                                <Tips size="16" top={5}>正在等待WI-FI重启，请稍候...</Tips>
+                                {/* <h3>正在等待Wi-Fi重启，请稍候...</h3> */}
+                                <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
                             </div>
                             : 
                             <div className="success">

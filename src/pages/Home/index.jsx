@@ -170,7 +170,7 @@ export default class Home extends React.PureComponent {
             const modeMap = {
                 '2.4g': '2.4G',
                 '5g': '5G',
-                'sunmi': '商米专用Wi-Fi',
+                'sunmi': '商米专用',
                 'not wifi': '有线'
             };
             let dft = {
@@ -190,7 +190,7 @@ export default class Home extends React.PureComponent {
                 rssi = '--';
             } else {
                 let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:100};
-                rssi = (wi.rssi <= 75) ? '好' : '差';
+                rssi = (wi.rssi <= 75) ? '较好' : '较差';
             }
 
             // 统计不同类型设备带宽
