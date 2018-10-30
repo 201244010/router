@@ -135,11 +135,6 @@ export default class WeChatAuth extends React.Component{
 
     onEnableChange = type =>{
         if(type === true){
-            common.fetchApi(
-                [{
-                    opcode: 'AUTH_ENABLE_MSG'
-                }]
-            );
             this.smsAuthInfo().then(response =>{
                 if(response === false){
                     this.setState({
@@ -281,8 +276,7 @@ export default class WeChatAuth extends React.Component{
         Modal.error({title  : '微信认证的信息获取失败', content : message});
     }
 
-    submit =async() =>{
-        this.setState({ loading: true });
+    dataSet = async() =>{
         this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
@@ -294,6 +288,13 @@ export default class WeChatAuth extends React.Component{
         this.weixin.shopid = this.state.shopId;
         this.weixin.appid = this.state.appId;
         this.weixin.secretkey = this.state.secretKey;
+        if(this.state.enable === true){
+            common.fetchApi(
+                [{
+                    opcode: 'AUTH_ENABLE_MSG'
+                }]
+            );
+        }
         let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_WEIXIN_CONFIG_SET',
@@ -307,6 +308,24 @@ export default class WeChatAuth extends React.Component{
         }
         Modal.error({title : '微信认证信息设置失败',content : message});
         this.setState({ loading: false });
+    }
+    
+    submit = async() =>{
+        this.setState({ loading: true });
+        if(this.state.enable === true){
+            Modal.confirm({
+                title: '提示',
+                content: '微信认证开启后，顾客Wi-Fi密码将被清空，确定继续？',
+                onOk:this.dataSet,
+                onCancel(){},
+                cancelText: '取消',
+                okText: '确定',
+                centered: true    
+            });
+            this.setState({ loading: false });
+        }else{
+            this.dataSet();
+        }
     }
 
     componentDidMount(){

@@ -179,11 +179,6 @@ export default class SmsAuth extends React.Component{
 
     onEnableChange = type =>{
         if(type === true){
-            common.fetchApi(
-                [{
-                    opcode: 'AUTH_ENABLE_MSG'
-                }]
-            );
             this.fetchWeChatAuthInfo().then(response =>{
                 if(response === false){
                     this.setState({
@@ -293,8 +288,7 @@ export default class SmsAuth extends React.Component{
         Modal.error({title  : '短信认证的信息获取失败', content : message});
     }
 
-    submit = async() =>{
-        this.setState({ loading: true });
+    dataSet = async() =>{
         this.sms.enable = this.state.enable == true? '1' : '0';
         this.sms.online_limit =this.state.onlineLimit;
         this.sms.idle_limit = this.state.idleLimit;
@@ -307,6 +301,13 @@ export default class SmsAuth extends React.Component{
         this.sms.access_key_secret = this.state.accessKeySecret;
         this.sms.template_code = this.state.templateCode;
         this.sms.sign_name = this.state.signName;
+        if( this.state.enable === true){
+            common.fetchApi(
+                [{
+                    opcode: 'AUTH_ENABLE_MSG'
+                }]
+            );
+        }
         let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_SHORTMESSAGE_CONFIG_SET',
@@ -320,6 +321,24 @@ export default class SmsAuth extends React.Component{
         }
         Modal.error({title : '短信认证信息设置失败',content : message});
         this.setState({ loading: false });
+    }
+
+    submit = async() =>{
+        this.setState({ loading: true });
+        if(this.state.enable === true){
+            Modal.confirm({
+                title: '提示',
+                content: '短信认证开启后，顾客Wi-Fi密码将被清空，确定继续？',
+                onOk:this.dataSet,
+                onCancel(){},
+                cancelText: '取消',
+                okText: '确定',
+                centered: true    
+            });
+            this.setState({ loading: false });
+        }else{
+            this.dataSet();
+        }
     }
 
     componentDidMount(){
@@ -407,8 +426,8 @@ export default class SmsAuth extends React.Component{
                             </RadioGroup>
                             {(watchValue == '1')?
                                 (
-                                    <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
-                                        <div style={{paddingLeft:20,height:383}}>
+                                    <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'34px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
+                                        <div style={{paddingLeft:20,height:422}}>
                                             <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
                                             <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
                                             <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
