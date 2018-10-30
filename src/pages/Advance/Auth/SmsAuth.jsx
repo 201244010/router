@@ -161,11 +161,42 @@ export default class SmsAuth extends React.Component{
         },()=>{this.checkSaveDisabled()});
     }
 
+    fetchWeChatAuthInfo = async() =>{
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WEIXIN_CONFIG_GET',
+            }]
+            );
+        let { errcode,data } = response;
+        if(errcode == 0){
+            this.weixin =data[0].result.weixin;
+            return this.weixin.enable === '1';
+        }else{
+            return '微信认证信息获取失败';
+        }
+        
+    }
+
     onEnableChange = type =>{
-        this.setState({
-            enable : type,
-            disableType:!type
-        },()=>{this.checkSaveDisabled()});
+        if(type === true){
+            this.fetchWeChatAuthInfo().then(response =>{
+                if(response === false){
+                    this.setState({
+                        enable : type,
+                        disableType:!type
+                    },()=>{this.checkSaveDisabled()});
+                }else if(response === '微信认证信息获取失败'){
+                    Modal.warning({ title: '提示', content: '微信认证信息获取失败，不可以改变状态！' });
+                }else{
+                    Modal.warning({ title: '提示', content: '微信认证与短信认证不可以同时开启！' });
+                }
+            });    
+        }else{
+            this.setState({
+                enable : type,
+                disableType:!type
+            },()=>{this.checkSaveDisabled()});
+        }
     }
 
 
