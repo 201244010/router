@@ -135,6 +135,11 @@ export default class WeChatAuth extends React.Component{
 
     onEnableChange = type =>{
         if(type === true){
+            common.fetchApi(
+                [{
+                    opcode: 'AUTH_ENABLE_MSG'
+                }]
+            );
             this.smsAuthInfo().then(response =>{
                 if(response === false){
                     this.setState({
@@ -144,7 +149,7 @@ export default class WeChatAuth extends React.Component{
                 }else if(response === '短信认证信息获取失败'){
                     Modal.warning({ title: '提示', content: '短信认证信息获取失败，不可以改变状态！' });
                 }else{
-                    Modal.warning({ title: '提示', content: '微信认证与短信认证不可以同时开启！' });
+                    Modal.warning({ title: '提示', content: '微信认证和短信认证无法同时开启！' });
                 }
             });    
         }else{
