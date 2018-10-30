@@ -12,7 +12,7 @@ import './home.scss';
 
 const TOTAL_TIME = 60 * 1000;
 
-export default class Home extends React.PureComponent {
+export default class Home extends React.Component {
     state = {
         visible: false,
         percent: 0,
@@ -142,11 +142,11 @@ export default class Home extends React.PureComponent {
             { opcode: 'TRAFFIC_STATS_GET' },
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
-        ]);
+        ]/*, {}, { handleError: true }*/);
 
         let { errcode, data } = resp;
         if (0 !== errcode) {
-            message.warning('网络状态刷新失败');
+            message.warning(`网络状态请求异常[${errcode}]`);
             return;
         }
 

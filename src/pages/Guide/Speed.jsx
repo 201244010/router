@@ -74,8 +74,8 @@ export default class Speed extends React.Component {
             if(errcode == 0){
                 let info = response.data[0].result.speedtest;
                 this.setState({
-                    upBandWidth : (info.up_bandwidth / 1024).toFixed(2),
-                    downBandWidth : (info.down_bandwidth / 1024).toFixed(2)
+                    upBandWidth : (info.up_bandwidth / 1024).toFixed(0),
+                    downBandWidth : (info.down_bandwidth / 1024).toFixed(0)
                 });
                 return;
             }

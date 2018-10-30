@@ -1,7 +1,7 @@
 import Loadable from 'react-loadable';
 import {DIRECTIVE, ERROR_MESSAGE} from './constants';
 import axios from 'axios';
-import {Modal} from 'antd';
+import {message} from 'antd';
 import React from 'react';
 import loading from '~/components/Loading';
 // import timersManager from './timersManager';
@@ -133,7 +133,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 return resolve(res);
             }).catch(error => {
                 options.loading && loading.close();
-                console.error(error);
+
                 switch (typeof loop) {
                     case 'number':
                         if (count < loop) {
@@ -164,7 +164,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     return reject({});
                 }
                 else if (loopOption.handleError) {
-                    Modal.error({title: 'Error', content: <ErrorTip error={error} directive={stringify(data)}/>});
+                    message.error(`网络异常[${error.toString()}]`);
                 }
                 return reject(error);
             })
@@ -175,16 +175,6 @@ export function fetchApi(data, options = {}, loopOption = {}) {
 
     return promise;
 }
-
-function ErrorTip(props) {
-    return (
-        <div>
-            <div>{props.error.message}</div>
-            <span className="ui-tips">({props.directive})</span>
-        </div>
-    )
-}
-
 
 // export const TIMEZONES = TIMEZONE;;
 // export const timersManager = timersManager;
