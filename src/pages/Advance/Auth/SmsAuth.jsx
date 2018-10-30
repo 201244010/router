@@ -16,6 +16,8 @@ export default class SmsAuth extends React.Component{
     }
     
     state = {
+        logoRandom: Math.random(),
+        BgRandom: Math.random(),
         enable : false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -64,7 +66,7 @@ export default class SmsAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ smsLogoFileList: fileList });
+        this.setState({ smsLogoFileList: fileList, logoRandom: Math.random()});
     }
 
     handleSmsBgChange = (info) => {
@@ -81,7 +83,7 @@ export default class SmsAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ smsBgFileList: fileList });
+        this.setState({ smsBgFileList: fileList, BgRandom: Math.random() });
     }
 
     beforeUpload = (file) => {
@@ -347,7 +349,7 @@ export default class SmsAuth extends React.Component{
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading, saveDisabled } = this.state;
+        const { BgRandom, logoRandom ,enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -382,13 +384,13 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleSmsLogoChange} name='smsLogo' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleSmsLogoChange} name='file' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png</span>
-                                <Upload  onChange={this.handleSmsBgChange} name='smsBg' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload  onChange={this.handleSmsBgChange} name='file' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
@@ -426,11 +428,41 @@ export default class SmsAuth extends React.Component{
                             </RadioGroup>
                             {(watchValue == '1')?
                                 (
-                                    <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'34px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
-                                        <div style={{paddingLeft:20,height:422}}>
-                                            <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
-                                            <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
-                                            <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
+                                    <div style={{
+                                        display:'block',
+                                        width:325,
+                                        height:488,
+                                        border:'1px solid grey',
+                                        borderRadius:8,
+                                        marginTop:25,padding:'34px 0 0 0',
+                                        color:'#FFFFFF',
+                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundRepeat:'no-repeat', 
+                                        backgroundPosition:'center',
+                                        }}>
+                                        <div style={{
+                                            paddingLeft:20,
+                                            height:422
+                                            }}>
+                                            <div style={{
+                                                width:52,
+                                                height:52,
+                                                border:'2px solid #FFFFFF',
+                                                borderRadius:26,
+                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundRepeat:'no-repeat', 
+                                                backgroundPosition:'center',
+                                                }}></div>
+                                            <div style={{
+                                                minHeight:25,
+                                                marginTop:17,
+                                                fontSize:18
+                                                }}>{logo}</div>
+                                            <div style={{
+                                                minHeight:33,
+                                                marginTop:18,
+                                                fontSize:24
+                                                }}>“{welcome}”</div>
                                             <div style={{width:286,height:40,marginTop:18,borderRadius:8,padding:10,backgroundColor:'#FFFFFF'}}>
                                                 <CustomIcon type='number'  size={20} style={{marginRight:6}}/><span style={{fontSize:12,color:'#333C4F'}}>请输入手机号</span>
                                             </div>
@@ -448,23 +480,46 @@ export default class SmsAuth extends React.Component{
                                         <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                     </div>
                                 ):(
-                                    <div style={{width:467,height:262,border:'1px solid grey',borderRadius:8,marginTop:20,backgroundColor:'blue',color:'#FFFFFF'}}>
-                                        <div style={{height:251,padding:'36px 175px 0 175px'}}>
-                                            <div style={{width:30,height:30,borderRadius:15,border:'1px solid #FFFFFF'}}></div>
-                                            <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',transform:'scale(0.33,0.33)'}}>{logo}</div>
-                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',transform:'scale(0.33,0.33)'}}>“{welcome}”</div>
-                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
-                                                <CustomIcon type='number'  size={24} style={{marginRight:12,transform:'scale(0.33,0.33)'}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入手机号</span>
+                                    <div style={{
+                                        position:'absolute',
+                                        top:175,
+                                        left:60, 
+                                        width:1401,
+                                        height:786,
+                                        border:'3px solid grey',
+                                        borderRadius:24,
+                                        marginTop:60,
+                                        color:'#FFFFFF',
+                                        transform:'scale(0.33,0.33)',
+                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundRepeat:'no-repeat', 
+                                        backgroundSize:'100% 100%'
+                                        }}>
+                                        <div style={{height:747,padding:'108px 525px 0 525px'}}>
+                                            <div style={{
+                                                width:90,
+                                                height:90,
+                                                borderRadius:45,
+                                                border:'3px solid #FFFFFF',
+                                                margin:'0 auto 0',
+                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundRepeat:'no-repeat', 
+                                                backgroundPosition:'center',
+                                                }}></div>
+                                            <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',textAlign:'center'}}>{logo}</div>
+                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',textAlign:'center'}}>“{welcome}”</div>
+                                            <div style={{width:348,height:48,marginTop:36,borderRadius:6,padding:12,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='number'  size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F'}}>请输入手机号</span>
                                             </div>
-                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
-                                                <CustomIcon type='verification' size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入验证码</span>
-                                                <span style={{float:'right',fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>获取验证码</span>
+                                            <div style={{width:348,height:48,marginTop:36,borderRadius:6,padding:12,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='verification' size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F'}}>请输入验证码</span>
+                                                <span style={{float:'right',fontSize:18,color:'#333C4F'}}>获取验证码</span>
                                             </div>
                                             <div style={{marginTop:27}}>
-                                                <Button type="primary" style={{width:348,height:48,fontSize:18,borderRadius:6,transform:'scale(0.33,0.33)'}}><span style={{transform:'scale(0.33,0.33)'}}>连接Wi-Fi</span></Button>
+                                                <Button type="primary" style={{width:348,height:48,fontSize:18,borderRadius:6}}><span>连接Wi-Fi</span></Button>
                                             </div>
                                             <div>
-                                                <Checkbox checked={true} style={{fontSize:12,color:'#FFFFFF',transform:'scale(0.33,0.33)'}}>我已阅读并同意《上网协议》</Checkbox>
+                                                <Checkbox checked={true} style={{fontSize:12,color:'#FFFFFF'}}>我已阅读并同意《上网协议》</Checkbox>
                                             </div>
                                         </div>
                                         <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>

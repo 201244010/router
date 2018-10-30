@@ -15,6 +15,8 @@ export default class WeChatAuth extends React.Component{
     }
     
     state = {
+        logoRandom: Math.random(),
+        BgRandom: Math.random(),
         enable: false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -61,7 +63,7 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinLogoFileList: fileList });
+        this.setState({ weixinLogoFileList: fileList, logoRandom: Math.random() });
       }
 
     handleWeixinBgChange = (info) => {
@@ -78,7 +80,7 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinBgFileList: fileList });
+        this.setState({ weixinBgFileList: fileList, BgRandom: Math.random() });
     }
 
     beforeUpload = (file) => {
@@ -334,7 +336,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
+        const { BgRandom, logoRandom, enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -369,13 +371,13 @@ export default class WeChatAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleWeixinLogoChange} name='weixinLogo' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleWeixinLogoChange} name='file' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png</span>
-                                <Upload onChange={this.handleWeixinBgChange} name='weixinBg'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleWeixinBgChange} name='file'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
@@ -415,9 +417,29 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
+                                <div style={{
+                                    display:'block',
+                                    width:325,
+                                    height:488,
+                                    border:'1px solid grey',
+                                    borderRadius:8,
+                                    marginTop:25,
+                                    padding:'73px 0 0 0',
+                                    color:'#FFFFFF',
+                                    backgroundImage:'url('+`/portal/wx_bg.jpg?${BgRandom}`+')',
+                                    backgroundRepeat:'no-repeat', 
+                                    backgroundPosition:'center',
+                                    }}>
                                     <div style={{paddingLeft:20,height:383}}>
-                                        <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
+                                        <div style={{
+                                            width:52,
+                                            height:52,
+                                            border:'2px solid #FFFFFF',
+                                            borderRadius:26,
+                                            backgroundImage:'url('+`/portal/wx_logo.jpg?${logoRandom}`+')',
+                                            backgroundRepeat:'no-repeat', 
+                                            backgroundPosition:'center',
+                                            }}></div>
                                         <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
                                         <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
                                         <div style={{marginTop:18}}>
