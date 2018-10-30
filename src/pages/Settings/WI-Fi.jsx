@@ -187,7 +187,8 @@ export default class WIFI extends React.Component {
         if(e.target.checked == true){
             this.setState({
                 guestEncryption : 'none',
-                guestStaticPasswordTip: ''      
+                guestStaticPasswordTip: '',
+                guestStaticPassword: '',    
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
@@ -222,7 +223,8 @@ export default class WIFI extends React.Component {
         if(e.target.checked == true){
             this.setState({
                 encryption24 : 'none',
-                hostSsid24PasswordTip: ''
+                hostSsid24PasswordTip: '',
+                hostSsid24Password : '',
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
@@ -262,7 +264,8 @@ export default class WIFI extends React.Component {
         if(e.target.checked == true){
             this.setState({
                 encryption5 : 'none',
-                hostSsid5PasswrodTip: ''
+                hostSsid5PasswrodTip: '',
+                hostSsid5Passwrod: '',
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
@@ -366,7 +369,6 @@ export default class WIFI extends React.Component {
                 }
             ]
         );
-        console.log('response',response);
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
@@ -395,7 +397,7 @@ export default class WIFI extends React.Component {
                 //guest
                 guestSsid : this.guestWireLess.ssid,
                 guestEncryption : this.guestWireLess.encryption,
-                guestStaticPassword : atob(this.guestWireLess.static_password),
+                guestStaticPassword : this.guestWireLess.encryption == 'none' ? '' : atob(this.guestWireLess.static_password),
                 guestPasswordDisabled : (this.guestWireLess.enable != '1') || (this.guestWireLess.encryption == 'none'),
                 PWDType : this.guestWireLess.password_type,
                 displayType : this.guestWireLess.password_type == 'static'? 'none' : 'block',
@@ -409,7 +411,7 @@ export default class WIFI extends React.Component {
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
-                hostSsid24Password : atob(this.hostWireLess.band_2g.password),
+                hostSsid24Password :this.hostWireLess.band_2g.encryption == 'none'? '' : atob(this.hostWireLess.band_2g.password),
                 hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
                 encryption24 : this.hostWireLess.band_2g.encryption,
                 pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ? true :false,
@@ -422,7 +424,7 @@ export default class WIFI extends React.Component {
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
-                hostSsid5Passwrod : atob(this.hostWireLess.band_5g.password),
+                hostSsid5Passwrod : this.hostWireLess.band_5g.encryption == 'none' ? '' : atob(this.hostWireLess.band_5g.password),
                 hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
