@@ -71,6 +71,9 @@ export default class SysUpgrade extends React.Component{
     }
 
     render(){
+        let Title = [
+            <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />版本说明</span>
+        ];
         const {releaseLog, loading, disable, version, currentVersion, latestVersion} = this.state;
 
         return (
@@ -91,13 +94,9 @@ export default class SysUpgrade extends React.Component{
                 <section className="upgrade-save" style={{marginTop : -10 ,borderTop : 'none'}}>
                     <Button disabled={disable} style={{left:0}} className="upgrade-btn" type="primary" loading={loading} onClick={this.post}>立即更新</Button>
                 </section>
-                <Modal closable={false} visible={version} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>我知道了</Button>} okText="知道了"
+                <Modal title={Title} closable={false} visible={version} maskClosable={false} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>我知道了</Button>} okText="知道了"
                     onCancel={this.handleCancle}
                 >
-                    <div className="head-line">
-                        <CustomIcon type="mistake" size={16} color='black'/>
-                        <label className="head-title">版本说明</label>
-                    </div>
                     <pre className="head-content">
                         {releaseLog}
                     </pre>

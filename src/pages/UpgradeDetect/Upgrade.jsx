@@ -99,21 +99,21 @@ export default class Upgrade extends React.Component{
 
         return (
             <div>
-                <Modal closable={false} visible={download} centered={true} footer={null} width={560} >
+                <Modal closable={false} maskClosable={false} visible={download} centered={true} footer={null} width={560} >
                     <div className="progress-download">
                     <Icon key="progress-icon" type="loading" style={{ fontSize: 65, marginTop : 30, marginBottom : 10, color : "#FB8632" }}  spin />,
                     <h3 key="active-h3" className="upgrade-download">{downloadTip}</h3>
                     <h4 key="active-h4" className="upgrade-warning">{warningTip}</h4>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>我知道了</Button>} width={560}>
+                <Modal closable={false} maskClosable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>我知道了</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="red" type="defeated" size={64}/>
                         <div className="progressfill">{downloadFailtip}</div>
                         <div className="progressfail">{failReason}</div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>确定</Button>} width={560}>
+                <Modal closable={false} maskClosable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>确定</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="lightgreen" type="succeed" size={64}/>
                         <div className="progressfill" style={{color : '#333C4F', marginBottom : 30}}>升级完成，请重新登录管理界面</div>
