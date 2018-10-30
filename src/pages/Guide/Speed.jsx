@@ -18,8 +18,10 @@ export default class Speed extends React.Component {
 	  	showModal : false,
 	 	speedTestdone : false,
         mode : 'auto',
-        upBandWidth : '0',
+        upBandWidth : '0',//手动设置上行带宽
         downBandWidth : '0',
+        autoUpband : '0',//自动测速上行带宽
+        autoDownband : '0',
         upBandTip: '',
         downBandTip: '',
         disabled : true
@@ -68,14 +70,13 @@ export default class Speed extends React.Component {
                     interval : 1000 
                 }
             ).catch(ex => {});
-            console.log(response);
             this.setState({ speedTestdone : true, showModal : false });
             let { errcode, message } = response;
             if(errcode == 0){
                 let info = response.data[0].result.speedtest;
                 this.setState({
-                    upBandWidth : (info.up_bandwidth / 1024).toFixed(0),
-                    downBandWidth : (info.down_bandwidth / 1024).toFixed(0)
+                    autoUpband: (info.up_bandwidth / 1024).toFixed(0),
+                    autoDownband : (info.down_bandwidth / 1024).toFixed(0)
                 });
                 return;
             }
@@ -84,32 +85,31 @@ export default class Speed extends React.Component {
     }
 
   //  手动配速  
-    configure = async () => {
-        let { upBandWidth, downBandWidth } = this.state;
-        upBandWidth = parseInt(upBandWidth)*1024;
-        downBandWidth = parseInt(downBandWidth)*1024 ;
-        let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth})};
-        let response = await common.fetchApi(
-            [{
-                opcode: 'QOS_SET',
-                data: data
-            }],
-            {},
-            { loop : 10, stop : () => this.stop }
-        ).catch(ex => {});
-        let { errcode, message } = response;
-        if(errcode == 0){
-            return this.props.history.push('/guide/setwifi');
-        }
-        Modal.error({ title : '手动配置QOS异常', content : message == 'ERRCODE_PARAMS_INVALID' ? '参数设置失败':message });
+    configure = async (upband,downband) => {
+        let state = this.state;
+        let upBandWidth = parseInt(state[upband]) * 1024 + '';
+        let downBandWidth = parseInt(state[downband]) * 1024 + '';
+        let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth, enable : true})};
+        await common.fetchApi(
+                {
+                    opcode: 'QOS_SET',
+                    data: data
+                },
+                {},
+                { loop : 10, stop : () => this.stop }
+            ).then(refs => {
+            let { errcode, message } = refs;
+            if(errcode == 0){
+                return this.props.history.push('/guide/setwifi');
+            }
+            Modal.error({ title : '手动配置QOS异常', content : message == 'ERRCODE_PARAMS_INVALID' ? '参数设置失败':message });
+        })
     }
 
     // 获取 qos 信息
     async fetchQOSInfo(){
         let response = await common.fetchApi(
-            [
-                {opcode: 'QOS_GET'}
-            ], 
+            {opcode: 'QOS_GET'},
             {},
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
@@ -145,7 +145,7 @@ export default class Speed extends React.Component {
                 upBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams() && !('' === tip),
+                    disabled: !this.checkParams() || ('' !== tip),
                 });
             })
         }else{
@@ -155,7 +155,7 @@ export default class Speed extends React.Component {
                 downBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams()  && !('' === tip),
+                    disabled: !this.checkParams()  || ('' !== tip),
                 });
             })
         }
@@ -170,7 +170,7 @@ export default class Speed extends React.Component {
     }
 
   render(){
-    const {showModal, mode, speedTestdone, upBandWidth, downBandWidth, upBandTip, downBandTip}  = this.state;
+    const {showModal, mode, speedTestdone, upBandWidth, downBandWidth ,autoUpband, autoDownband, upBandTip, downBandTip}  = this.state;
     return (
       <div className="speed">
         <h2>设置上下行带宽</h2> 
@@ -211,8 +211,8 @@ export default class Speed extends React.Component {
                                 back={this.back} 
                                 reTest={this.reTest}
                                 configure={this.configure}
-                                upBandWidth={upBandWidth} 
-                                downBandWidth={downBandWidth} /></div> : ""}
+                                upBandWidth={autoUpband}
+                                downBandWidth={autoDownband} /></div> : ""}
             <CustomModal active={showModal} >
                 {/* <h4 style={{ fontSize : 32 }}>60%</h4> */}
                 {/* <Progress percent={50} status="active" showInfo={false} strokeWidth={10} /> */}
@@ -264,7 +264,7 @@ const SpeedAutoBoard = props => {
                 </div>
             </div>
             <div className="button-wrap">
-                <Button type="primary" size='large' style={{ width : "100%" }} onClick={props.configure}>下一步</Button>
+                <Button type="primary" size='large' style={{ width : "100%" }} onClick={() => props.configure('autoUpband','autoDownband')}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                 </div>
@@ -289,7 +289,7 @@ const SpeedManualConfig = props => {
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
             <FormItem label="#">
-        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={props.configure}>下一步</Button>
+        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={() => props.configure('upBandWidth','downBandWidth')}>下一步</Button>
             </FormItem>
             <FormItem label="#" style={{ marginTop : -30 }}>
                 <div className="help">
