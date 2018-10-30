@@ -20,6 +20,7 @@ var agreementElement = document.getElementById('agreement');
 var lawMaskElement = document.getElementById('lawMask');
 var lawContentElement = document.getElementById('lawContent');
 var iKnowElement = document.getElementById('iKnow');
+var logoIcon = document.getElementById('logoIcon');
 var agreeProtocol = true;
 var enable = null;
 var btnDisabled = true;
@@ -28,7 +29,7 @@ window.onload = function () {
     ajax({
         type: 'POST',
         url: '/api/AUTH_PORTAL',
-        //url: '/portal/data.json',
+        //url: '/web-w1/others/portal/data.json',
         params: JSON.stringify({params: [{param: {}, opcode: "0x2088"}], count: "1"}),
         callback: function (response) {
             if (response.errcode === 0) {
@@ -311,9 +312,17 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "url('" + (data.background || "./imgs/bg.jpeg") + "')";
+    console.log(data);
+    document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
     document.body.style.backgroundSize = "cover";
-    logoElement.src = data.logo || "./imgs/logo.jpg";
+    if (data.logo) {
+        logoIcon.style.display = 'none';
+        logoElement.style.display = 'block';
+        logoElement.src = data.logo;
+    } else {
+        logoElement.style.display = 'none';
+        logoIcon.style.display = 'block';
+    }
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }
