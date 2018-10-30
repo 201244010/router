@@ -37,7 +37,7 @@ class PrimaryLayout extends React.Component {
             const hasVisited = Boolean(window.sessionStorage.getItem('__visited__'));
             if (!hasVisited && !logined && (brower.android || brower.ios)) {
                 window.sessionStorage.setItem('__visited__', true);
-                window.location.href = '/artBoard/index.html';
+                window.location.href = '/mobile/index.html';
             }
         } catch (e) {
             alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
