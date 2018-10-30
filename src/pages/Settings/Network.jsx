@@ -311,19 +311,24 @@ export default class NETWORK extends React.Component {
             });
             return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
         }
-        let response = await common.fetchApi({
-            opcode : 'NETWORK_WAN_IPV4_SET',
-            data : payload
+        await common.fetchApi(
+            {
+                opcode : 'NETWORK_WAN_IPV4_SET',
+                data : payload
+            },
+            {
+                loading : true
+            }).then(refs => {
+            let {errcode, message } = refs;
+            if (errcode == 0){
+                this.setState({
+                    loading : false,
+                    disabled : false
+                });
+                return;
+            }
+            Modal.error({ title : 'WAN口设置失败', content : message});
         })
-        let {errcode, message } = response;
-        if (errcode == 0){
-            this.setState({
-                loading : false,
-                disabled : false
-            });
-            return;
-        }   
-        Modal.error({ title : 'WAN口设置失败', content : message});
     }
 
     //获取信息

@@ -38,7 +38,7 @@ class PrimaryLayout extends React.Component {
             const hasVisited = Boolean(window.sessionStorage.getItem('__visited__'));
             if (!hasVisited && !logined && (brower.android || brower.ios)) {
                 window.sessionStorage.setItem('__visited__', true);
-                window.location.href = '/artBoard/index.html';
+                window.location.href = '/mobile/index.html';
             }
         } catch (e) {
             alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
@@ -50,7 +50,7 @@ class PrimaryLayout extends React.Component {
     componentDidMount() {
         // set global mesage conf
         message.config({
-            top: 0,
+            top: 92,
             duration: 2,
             maxCount: 3,
         });
@@ -63,7 +63,7 @@ class PrimaryLayout extends React.Component {
         })) {
             common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
                 let { errcode, data } = res;
-                if (0 == errcode && "1" == data[0].result.system.factory) {
+                if (0 == errcode && 1 === parseInt(data[0].result.system.factory)) {
                     location.href = welcome;
                 }
             });

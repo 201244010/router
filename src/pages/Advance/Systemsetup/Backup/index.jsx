@@ -2,7 +2,7 @@ import React from 'react';
 
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import {Checkbox, Button, Modal, Radio, Upload,Icon} from 'antd';
+import {Checkbox, Button, Modal, Radio, Upload} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 
@@ -10,6 +10,13 @@ const {FormItem, Input} = Form;
 const RadioGroup = Radio.Group;
 
 import './backup.scss'
+
+const error = {
+    '-1500' : '未绑定商米账号，请先下载商米管家APP进行绑定',
+    '-1501' : '云端响应超时',
+    '-1502' : '云端响应失败',
+    '-1503' : '未找到对应的备份文件'
+}
 
 export default class Backup extends React.Component{
     state = {
@@ -72,9 +79,8 @@ export default class Backup extends React.Component{
 
             return;
         }else{
-            Modal.error({title : '获取备份列表失败'});
+            Modal.error({title : '获取备份列表失败',content : error[errcode]});
         }
-
     }
 
     compare = (id) => {
@@ -104,7 +110,7 @@ export default class Backup extends React.Component{
             });
             return;
         }else{
-            Modal.error({title : '获取备份列表失败'});
+            Modal.error({title : '获取备份列表失败',content : error[errcode]});
         }
     }
 
@@ -203,11 +209,18 @@ export default class Backup extends React.Component{
                                 return;
                             }
                         }else{
-                            Modal.error({title : '获取备份进度失败'});
+                            Modal.error({title : '获取备份进度失败',content : error[errcode]} );
                         }
                     })
             }else{
-                Modal.error({title : '获取备份状态失败'});
+                if(errcode === '-1501'){
+                    this.setState({
+                        backupFail : true,
+                        backupFailTip : '路由器无法连接网络，请检查～'
+                    })
+                }else{
+                    Modal.error({title : '无法进行云备份',content : error[errcode]});
+                }
             }
         })
     }
@@ -215,8 +228,8 @@ export default class Backup extends React.Component{
     //从本地恢复
     postRecoverLocal = (info) => {
         if(info.file.status === 'done'){
+            Loading.show({duration : 0});
             if(info.file.response.data[0].errcode == 0){
-                Loading.show({duration : 0});
                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
                     if(res.errcode === 0){
                         setTimeout(() => {
@@ -232,6 +245,7 @@ export default class Backup extends React.Component{
                     }else{
                         Loading.close();
                         Modal.error({title : '重启失败！'});
+                        return;
                     }
                 });
             }else{
@@ -239,7 +253,8 @@ export default class Backup extends React.Component{
                 this.setState({
                     backupFail : true,
                     backupFailTip : '恢复失败'
-                })
+                });
+                return;
             }
         }
         if(info.file.status === 'error'){
@@ -281,7 +296,7 @@ export default class Backup extends React.Component{
                                 Loading.close();
                                 this.setState({
                                     backupFail : true,
-                                    backupFailTip : '下载失败，请重试~',
+                                    backupFailTip : '下载失败，请重试',
                                     recoverCloud : false,
                                 });
                                 return;
@@ -289,7 +304,7 @@ export default class Backup extends React.Component{
                                 Loading.close();
                                 this.setState({
                                     backupFail : true,
-                                    backupFailTip : '恢复失败！请重试~',
+                                    backupFailTip : '恢复失败！请重试',
                                     recoverCloud : false,
                                 });
                                 return;
@@ -318,7 +333,7 @@ export default class Backup extends React.Component{
                     }
                 })
             }else{
-                Modal.error({title : '云恢复失败'})
+                Modal.error({title : '无法进行云恢复', content : error[errcode]});
             }
         })
     }
@@ -360,7 +375,7 @@ export default class Backup extends React.Component{
                         </div>
                     </section>
                 </Form>
-                <Modal title='备份到云' visible={backupCloud} centered={true} width={360} closable={false} cancelText='取消' okText='开始备份' okButtonProps={{disabled : backupDisable}} onCancel={this.handleCancle} onOk={this.postBackupCloud}>
+                <Modal title='备份到云' visible={backupCloud} maskClosable={false} centered={true} width={360} closable={false} cancelText='取消' okText='开始备份' okButtonProps={{disabled : backupDisable}} onCancel={this.handleCancle} onOk={this.postBackupCloud}>
                     <div className="backup-modal">
                         <div className="backup-filename">文件名</div>
                         <div>
@@ -376,23 +391,23 @@ export default class Backup extends React.Component{
                         </div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={backupFail} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>确定</Button>} width={560}>
+                <Modal closable={false} visible={backupFail} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>确定</Button>} width={560}>
                     <div className="backup-icon">
-                        <CustomIcon color="#FF5500" type="hint" size={64} />
+                        <CustomIcon color="#FF5500" type="defeated" size={64} />
                         <div className="backup-result">{backupFailTip}</div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={backupSuccess} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>确定</Button>} width={560} >
+                <Modal closable={false} visible={backupSuccess} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>确定</Button>} width={560} >
                     <div className="backup-icon">
                         <CustomIcon color="#87D068" type="succeed" size={64} />
                         <div className="backup-result">{backupSuccessTip}</div>
                     </div>
                 </Modal>
-                <Modal title='从云选择备份文件' visible={recoverCloud} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
+                <Modal title='从云选择备份文件' visible={recoverCloud} maskClosable={false} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
                     <ul className="recover-ul">
                         <RadioGroup onChange={this.radioChange} value={radioChoose}>
                             {
-                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份~</div> : recoverList
+                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份</div> : recoverList
                             }
                         </RadioGroup>
                     </ul>

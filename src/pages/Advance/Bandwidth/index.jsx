@@ -189,8 +189,8 @@ export default class Bandwidth extends React.PureComponent {
                             this.setState({
                                 speedFill : true,
                                 visible : false,
-                                upband : (info.up_bandwidth / 1024).toFixed(2),
-                                downband : (info.down_bandwidth / 1024).toFixed(2),
+                                upband : (info.up_bandwidth / 1024).toFixed(0),
+                                downband : (info.down_bandwidth / 1024).toFixed(0),
                                 percent : 0,
                             });
                             let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
@@ -304,8 +304,8 @@ export default class Bandwidth extends React.PureComponent {
             this.qosdata = qos;
             this.setState({
                 source : qos.source,
-                upband : qos.source === 'default' ? '--' :(qos.up_bandwidth / 1024).toFixed(2),
-                downband : qos.source === 'default' ? '--' : (qos.down_bandwidth / 1024).toFixed(2),
+                upband : qos.source === 'default' ? '--' :(qos.up_bandwidth / 1024).toFixed(0),
+                downband : qos.source === 'default' ? '--' : (qos.down_bandwidth / 1024).toFixed(0),
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
@@ -343,7 +343,7 @@ export default class Bandwidth extends React.PureComponent {
         this.setState({
             buttonloading : true
         })
-        let payload = this.composeparams("default",this.state.upband,this.state.downband);
+        let payload = this.composeparams("manual",this.state.upband,this.state.downband);
         let response = await common.fetchApi({
             opcode : 'QOS_SET',
             data : payload

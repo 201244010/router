@@ -105,7 +105,8 @@ button.ant-btn-primary.ant-btn-loading {
         padding:12px 0 !important;
     }
     .ant-tabs-tab-active{
-        color: #FB8632;
+        font-weight: bold !important;
+        color: #FB8632 !important;
     }
     .ant-tabs-ink-bar{
         height:3px !important;
@@ -117,6 +118,18 @@ button.ant-btn-primary.ant-btn-loading {
     .ant-checkbox-inner{
         background-color: #FB8632!important;
         border-color: #FB8632!important;
+    }
+}
+
+.ant-radio-checked{
+    .ant-radio-inner{
+        border-color: #FB8632!important;
+        &:hover{
+            background-color: #FB8632!important;
+        }
+        &:after{
+            background-color: #FB8632!important;
+        }
     }
 }
 

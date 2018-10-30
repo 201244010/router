@@ -105,9 +105,9 @@ export default class ClientList extends React.Component {
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
-                            <div className='icon'><CustomIcon type={client.icon} size={42} /></div>
+                            <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
                         </Popover>
-                        <div className='under-desc'><i className='dot'></i><p title={client.name}>{client.name}</p></div>
+                        <div className='under-desc'><i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i><p title={client.name}>{client.name}</p></div>
                     </li>
                 );
             }
@@ -151,7 +151,7 @@ export default class ClientList extends React.Component {
             dataIndex: 'rssi',
             width: 80,
             render: (rssi, record) => (
-                <div><i className={'dot ' + ('差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
+                <div><i className={'dot ' + ('较差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
             title: '实时速率',
