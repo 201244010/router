@@ -100,11 +100,10 @@ class Login extends React.Component {
                         <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
                     </div>
                     <div className="qr">
-                        <img src="QRcode.png"></img>
+                        <img src={require('~/assets/images/qr.png')} />
                         <p>扫描二维码下载APP</p>
                     </div>
                 </div>
-                
         ];
     }
 }
