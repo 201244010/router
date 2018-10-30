@@ -63,7 +63,7 @@ class PrimaryLayout extends React.Component {
         })) {
             common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
                 let { errcode, data } = res;
-                if (0 == errcode && "1" == data[0].result.system.factory) {
+                if (0 == errcode && 1 === parseInt(data[0].result.system.factory)) {
                     location.href = welcome;
                 }
             });

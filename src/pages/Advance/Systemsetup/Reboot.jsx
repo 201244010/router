@@ -44,7 +44,7 @@ export default class Reboot extends React.Component{
         return (
             <div>
                 <div>
-                    <span style={{marginLeft:65}}>说明：路由器系统将立即重新启动</span>
+                    <span style={{marginLeft:60}}>说明：路由器系统将立即重新启动</span>
                     <section style={{borderTop:0,marginTop:20}} className="weixin-auth-save">
                         <Button style={{width:130}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即重启</Button>
                     </section>

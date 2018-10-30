@@ -113,6 +113,7 @@
                 position: relative;
                 left: -4px;
                 .dot{
+                    margin-right: 0;
                     display: inline-block;
                     width: 8px;
                     height: 8px;
@@ -135,23 +136,14 @@
             .divider{
                 background-color:#FF8F00;
             }
-            .dot{
-                background-color:#FF8F00;
-            }
         }
         & .normal-list{
             .divider{
                 background-color:#4687FF;
             }
-            .dot{
-                background-color:#4687FF;
-            }
         }
         & .whitelist-list{
             .divider{
-                background-color:#87D068;
-            }
-            .dot{
                 background-color:#87D068;
             }
         }
@@ -218,6 +210,6 @@ i.dot{
     margin-right: 5px;
     border-radius: 50%;
     &.warning{
-        background-color:#BF4C41;
+        background-color:#FF5500;
     }
 }
