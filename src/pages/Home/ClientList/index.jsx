@@ -105,7 +105,7 @@ export default class ClientList extends React.Component {
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
-                            <div className='icon'><CustomIcon type={client.icon} size={42} /></div>
+                            <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
                         </Popover>
                         <div className='under-desc'><i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i><p title={client.name}>{client.name}</p></div>
                     </li>
