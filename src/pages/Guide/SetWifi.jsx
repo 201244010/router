@@ -19,7 +19,7 @@ export default class SetWifi extends React.Component {
     state = {
         guestWifi : false,
         loading : false,
-        done : false,
+        done : true,
         visibile: 'hidden',
         hostWifiName : '',
         hostWifiPsw : '',
