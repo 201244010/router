@@ -87,15 +87,15 @@ export default class NETWORK extends React.Component {
             },
             staticDnsbackup:{
                 func: checkIp,
-                who:'次选DNS',
+                who:'备选DNS',
             },
             dhcpDnsbackup:{
                 func: checkIp,
-                who:'次选DNS',
+                who:'备选DNS',
             },
             pppoeDnsbackup:{
                 func: checkIp,
-                who:'次选DNS',
+                who:'备选DNS',
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
@@ -311,19 +311,24 @@ export default class NETWORK extends React.Component {
             });
             return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
         }
-        let response = await common.fetchApi({
-            opcode : 'NETWORK_WAN_IPV4_SET',
-            data : payload
+        await common.fetchApi(
+            {
+                opcode : 'NETWORK_WAN_IPV4_SET',
+                data : payload
+            },
+            {
+                loading : true
+            }).then(refs => {
+            let {errcode, message } = refs;
+            if (errcode == 0){
+                this.setState({
+                    loading : false,
+                    disabled : false
+                });
+                return;
+            }
+            Modal.error({ title : 'WAN口设置失败', content : message});
         })
-        let {errcode, message } = response;
-        if (errcode == 0){
-            this.setState({
-                loading : false,
-                disabled : false
-            });
-            return;
-        }   
-        Modal.error({ title : 'WAN口设置失败', content : message});
     }
 
     //获取信息
@@ -469,7 +474,7 @@ export default class NETWORK extends React.Component {
                         <div style={{ padding: 0, position: 'relative' }} id="typeArea">
                             <label>上网方式</label>
                             <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
-                                <Option value='pppoe'>宽带账号上网（PPPoE）</Option>
+                                <Option value='pppoe'>宽带拨号上网（PPPoE）</Option>
                                 <Option value='dhcp'>自动获取IP（DHCP）</Option>
                                 <Option value='static'>手动输入IP（静态IP）</Option>
                             </Select>
@@ -604,7 +609,7 @@ class Dns extends React.Component  {
                         onChange={value => props.onChange(value, props.dnsname)} />
                     <ErrorTip>{props.dnsTip}</ErrorTip>
                 </FormItem>
-                <label>备选DNS</label>
+                <label>备选DNS(选填)</label>
                 <FormItem key={props.dnsbackupname} showErrorTip={props.dnsbackupTip} style={{ width : 320}}>
                     <InputGroup
                         inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 

@@ -38,7 +38,7 @@ export default class Welcome extends React.Component {
                         开始设置
                     </Button>
                     <div>
-                        <Checkbox style={{color:'#FFFFFF',fontFamily: 'PingFangSC-Regular',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》和《<a href='' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
+                        <Checkbox style={{color:'#FFFFFF',fontFamily: 'PingFangSC-Regular',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》和《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
                     </div>
                 </div>
             </div>        

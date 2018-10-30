@@ -1,5 +1,5 @@
 .home-bg {
-    background-image : linear-gradient(180deg, #446CE6 245px, #f2f3f7 245px);
+    background-image : linear-gradient(180deg, #446CE6 239px, #f2f3f7 239px);
     .main{
         .home{
             height : auto;
@@ -11,11 +11,11 @@
             .func-item{
                 flex: 0 0 auto;
                 width: 392px;
-                height: 180px;
+                height: 169px;
                 background: #FFF;
                 border: 1px solid rgba(0,0,0,0.10);
                 border-radius: 8px;
-                padding: 20px;
+                padding: 10px;
                 button{
                     color: #61739D;
                     background-color: rgba(206,212,218,0.10);
@@ -51,8 +51,8 @@
                 position: relative;
                 .title{
                     position: absolute;
-                    top: 65px;
-                    left: 40px;
+                    top: 55px;
+                    left: 30px;
                     color: #333C4F;
                     text-align: center;
                     .percent{
@@ -60,6 +60,7 @@
                         font-size: 18px;
                     }
                     .desc{
+                        opacity: 0.7;
                         font-size: 12px;
                     }
                 }
@@ -77,7 +78,7 @@
                     color: #87D068;
                     width: 200px;
                     top: 10px;
-                    left: 160px;
+                    left: 150px;
                     line-height: 18px;
                 }
                 .warning{
@@ -89,8 +90,8 @@
                 .band-desc{
                     position: absolute;
                     font-size: 12px;
-                    left: 240px;
-                    top: 54px;
+                    left: 235px;
+                    top: 44px;
                     color: #9B9B9B;
                     label{
                         margin-right: 8px;
@@ -101,13 +102,13 @@
                     font-size: 18px;
                     font-weight: bold;
                     color: #333C4F;
-                    left: 160px;
-                    top: 30px;
+                    left: 150px;
+                    top: 20px;
                 }
                 .set-band{
                     position: absolute;
-                    left: 160px;
-                    top: 125px;
+                    left: 150px;
+                    top: 120px;
                 }
             }
             .internet{
@@ -173,7 +174,7 @@
                         color: #87D068;
                     }
                     button{
-                        margin-top: 10px;
+                        margin-top: 12px;
                         font-size: 14px;
                         color: #61739D;
                     }
@@ -201,7 +202,7 @@
         .online-clinet{
             font-size: 16px;
             color: #333C4F;
-            margin: 20px 0 10px;
+            margin: 32px 0 8px;
         }
         .online-list{
             display: flex;
@@ -212,11 +213,11 @@
         }
         .home-footer{
             position: static;
+            opacity: 1;
             color: #ADB1B9;
             margin-top: 5px;
             a {
                 color: #ADB1B9;
-                text-decoration: underline;
             }
         }
     }

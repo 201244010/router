@@ -8,7 +8,7 @@
             font-weight: bold;
             color: #333C4F;
             position: relative;
-            margin: 10px 10px 20px;
+            margin: 16px 10px 14px;
             .divider{
                 width:4px;
                 height: 20px;
@@ -58,10 +58,22 @@
             .sunmi-list{
                 width: 804px;
                 height: 150px;
+                .icon:hover, .icon:focus{
+                    border-color: #FF8F00;
+                    .ui-icon{
+                        color: #FF8F00;
+                    }
+                }
             }
             .normal-list{
                 width: 804px;
                 height: 240px;
+                .icon:hover, .icon:focus{
+                    border-color: #4687ff;
+                    .ui-icon{
+                        color: #4687ff;
+                    }
+                }
             }
         }
         .whitelist-list{
@@ -70,6 +82,12 @@
             background-color:#FFF;
             border: 1px solid rgba(0,0,0,0.04);
             border-radius: 8px;
+            .icon:hover, .icon:focus{
+                border-color: #87d068;
+                .ui-icon{
+                    color: #87d068;
+                }
+            }
         }
         .client-item{
             color: #9B9B9B;
@@ -91,16 +109,11 @@
                     vertical-align: middle;
                 }
             }
-            .icon:hover, .icon:focus{
-                border-color: #FF8F00;
-                .ui-icon{
-                    color: #FF8F00;
-                }
-            }
             .under-desc{
                 position: relative;
                 left: -4px;
                 .dot{
+                    margin-right: 0;
                     display: inline-block;
                     width: 8px;
                     height: 8px;
@@ -123,23 +136,14 @@
             .divider{
                 background-color:#FF8F00;
             }
-            .dot{
-                background-color:#FF8F00;
-            }
         }
         & .normal-list{
             .divider{
                 background-color:#4687FF;
             }
-            .dot{
-                background-color:#4687FF;
-            }
         }
         & .whitelist-list{
             .divider{
-                background-color:#87D068;
-            }
-            .dot{
                 background-color:#87D068;
             }
         }
@@ -206,6 +210,6 @@ i.dot{
     margin-right: 5px;
     border-radius: 50%;
     &.warning{
-        background-color:#BF4C41;
+        background-color:#FF5500;
     }
 }

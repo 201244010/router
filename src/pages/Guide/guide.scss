@@ -84,16 +84,16 @@
     margin-top: 10px;
     width: 100%;
     border-radius: 8px;
-    border: 1px solid #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     height: calc(100% - 85px);
-    background-color: #fff;
+    background-color: #FAFBFC;
     padding: 20px 35px 35px;
     position: relative;
     z-index: 200;
     h2 {
       height: 60px;
       line-height: 60px;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #ECECEC;
       margin-bottom: 10px;
     }
     .guide-tip {

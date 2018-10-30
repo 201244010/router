@@ -21,9 +21,9 @@ export default class Home extends React.PureComponent {
         downBand: 0,
         failShow: false,
         upSpeed: 0,
-        upUnit: 'Kbps',
+        upUnit: 'KB/s',
         downSpeed: 0,
-        downUnit: 'Kbps',
+        downUnit: 'KB/s',
         online: true,
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
@@ -87,20 +87,20 @@ export default class Home extends React.PureComponent {
         let gSpeed = mSpeed * 1024;
         // 'xx.xx'
 
-        speed = parseInt(speed, 10) * 8; // byte -> bit
+        speed = parseInt(speed, 10);
         if (speed >= gSpeed) {
             let val = speed / gSpeed;
-            speed = (val).toFixed(val > 99 ? 0 : 2) + "Gbps";
+            speed = (val).toFixed(val > 99 ? 0 : 2) + "GB/s";
         }
         else if (speed >= mSpeed) {
             let val = speed / mSpeed;
-            speed = (val).toFixed(val > 99 ? 0 : 2) + "Mbps";
+            speed = (val).toFixed(val > 99 ? 0 : 2) + "MB/s";
         }
         else if (speed >= kSpeed) {
-            speed = (speed / kSpeed).toFixed(0) + "Kbps";
+            speed = (speed / kSpeed).toFixed(0) + "KB/s";
         }
         else {
-            speed = speed.toFixed(0) + "bps";
+            speed = speed.toFixed(0) + "B/s";
         }
 
         return speed + '';
@@ -170,7 +170,7 @@ export default class Home extends React.PureComponent {
             const modeMap = {
                 '2.4g': '2.4G',
                 '5g': '5G',
-                'sunmi': '商米专用Wi-Fi',
+                'sunmi': '商米专用',
                 'not wifi': '有线'
             };
             let dft = {
@@ -183,14 +183,14 @@ export default class Home extends React.PureComponent {
             let mode = modeMap[client.wifi_mode];
             let device = deviceMap[client.device || 'unknown'];
             let ontime = this.formatTime(client.ontime);
-            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('ps', '');
+            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('/s', '');
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
                 rssi = '--';
             } else {
                 let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:100};
-                rssi = (wi.rssi <= 75) ? '好' : '差';
+                rssi = (wi.rssi <= 75) ? '较好' : '较差';
             }
 
             // 统计不同类型设备带宽
@@ -224,9 +224,9 @@ export default class Home extends React.PureComponent {
         this.setState({
             online: online,
             upSpeed: tx.match(/[0-9\.]+/g),
-            upUnit: tx.match(/[a-z]+/gi),
+            upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
-            downUnit: rx.match(/[a-z]+/gi),
+            downUnit: rx.match(/[a-z/]+/gi),
             sunmiClients: totalList.filter(item => item.type === 'sunmi'),
             normalClients: totalList.filter(item => item.type === 'normal'),
             whitelistClients: totalList.filter(item => item.type === 'whitelist'),
@@ -384,7 +384,7 @@ export default class Home extends React.PureComponent {
                         </Modal>
                     </li>
                     <QoS data={qosData} enable={qosEnable} history={this.props.history}/>
-                    <li className='func-item search' style={{ padding: '20px 0px' }}>
+                    <li className='func-item search' style={{ padding: '10px 0px' }}>
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
                             <h3>搜寻商米设备</h3>

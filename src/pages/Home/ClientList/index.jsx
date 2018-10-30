@@ -107,7 +107,7 @@ export default class ClientList extends React.Component {
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
                             <div className='icon'><CustomIcon type={client.icon} size={42} /></div>
                         </Popover>
-                        <div className='under-desc'><i className='dot'></i><p title={client.name}>{client.name}</p></div>
+                        <div className='under-desc'><i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i><p title={client.name}>{client.name}</p></div>
                     </li>
                 );
             }
@@ -151,7 +151,7 @@ export default class ClientList extends React.Component {
             dataIndex: 'rssi',
             width: 80,
             render: (rssi, record) => (
-                <div><i className={'dot ' + ('差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
+                <div><i className={'dot ' + ('较差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
             title: '实时速率',
@@ -190,12 +190,12 @@ export default class ClientList extends React.Component {
                 <ul>{listItems}</ul>
                 {('sunmi' === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
-                        <label>没有商米设备连接到该网络，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
+                        <label>暂无商米设备，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
                     </div>
                 }
                 {('whitelist' === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
-                        <label>您还未设置优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">设置优先设备</a>
+                        <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
                 }
                 <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
@@ -213,7 +213,7 @@ export default class ClientList extends React.Component {
                     }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "无设备~" }} />
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
             </div>);
     }

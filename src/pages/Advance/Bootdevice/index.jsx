@@ -406,7 +406,7 @@ export default class Bootdevice extends React.Component {
                     <Button onClick={this.manualAdd}>手动添加</Button>
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: "您还未添加任何设备" }} />
+                    bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
                 <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
@@ -422,7 +422,7 @@ export default class Bootdevice extends React.Component {
                     }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无新设备可添加~" }} />
+                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
                 <Modal title='添加优先设备'
                     cancelText="取消" okText='添加'

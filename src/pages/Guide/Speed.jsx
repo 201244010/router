@@ -232,7 +232,7 @@ const SpeedAutoConfig = props => {
             <Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>开始测速</Button>
             <div key="help" className="help">
                 <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
-                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，不需要智能带宽功能</a>
+                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
             </div>
         </div>
     ];
@@ -267,10 +267,6 @@ const SpeedAutoBoard = props => {
                 <Button type="primary" size='large' style={{ width : "100%" }} onClick={props.configure}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
-                    <div className="more">
-                        <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a> 或  
-                        <a href="javascript:;" className="ui-tips" onClick={props.configByManual}>手动设置</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -303,7 +299,7 @@ const SpeedManualConfig = props => {
                             (<div className="more">
                                 <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
                             </div>) :
-                            <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，不需要智能带宽功能</a>
+                            <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
                     }
                     
                 </div>

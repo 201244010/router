@@ -144,28 +144,25 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     OnBandEnable = async (value) => {
-        let { bandenable, upband, downband } = this.state;
-
-        this.setState({
-            bandenable: value,
-        });
-
-        if(upband === '--' || downband === '--'){
+        let { bandenable, source} = this.state;
+        if(source === 'default'){
             message.error('请先设置带宽');
             return;
-        }
-
-        this.qosdata.enable = value;
-        let response = await common.fetchApi({
-            opcode: 'QOS_SET',
-            data: { qos: this.qosdata }
-        })
-
-        if (response.errcode !== 0) {
-            Modal.error({ title: '网速智能分配失败' });
+        }else{
             this.setState({
-                bandenable: bandenable
+                bandenable: value,
+            });
+            this.qosdata.enable = value;
+            let response = await common.fetchApi({
+                opcode: 'QOS_SET',
+                data: { qos: this.qosdata }
             })
+            if (response.errcode !== 0) {
+                Modal.error({ title: '网速智能分配失败' });
+                this.setState({
+                    bandenable: bandenable
+                })
+            }
         }
     }
 
@@ -306,8 +303,9 @@ export default class Bandwidth extends React.PureComponent {
             let qos = data[0].result.qos;
             this.qosdata = qos;
             this.setState({
-                upband : (qos.up_bandwidth / 1024).toFixed(2),
-                downband : (qos.down_bandwidth / 1024).toFixed(2),
+                source : qos.source,
+                upband : qos.source === 'default' ? '--' :(qos.up_bandwidth / 1024).toFixed(2),
+                downband : qos.source === 'default' ? '--' : (qos.down_bandwidth / 1024).toFixed(2),
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
@@ -415,12 +413,12 @@ export default class Bandwidth extends React.PureComponent {
                 <section className="band-value">
                     <div className="band-size">{upband}
                         <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="blue" type="kbyte"/></span></span>
+                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
                     </div>
                     <div className="band-line"></div> 
                     <div className="band-size">{downband}
                         <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="green" type="downloadtraffic"/></span></span>
+                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
                     </div>
                 </section>
                 <section style={{margin:"20px 20px 20px 0"}}>

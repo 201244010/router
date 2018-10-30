@@ -4,6 +4,8 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import {Checkbox, Button, Modal, Radio, Upload,Icon} from 'antd';
 import CustomIcon from '~/components/Icon';
+import Loading from '~/components/Loading';
+
 const {FormItem, Input} = Form;
 const RadioGroup = Radio.Group;
 
@@ -11,7 +13,6 @@ import './backup.scss'
 
 export default class Backup extends React.Component{
     state = {
-        loading : false,
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
         backupFailTip : '备份失败请重试',//备份失败以及网络未连接提示
@@ -162,7 +163,6 @@ export default class Backup extends React.Component{
         backup['filename'] = this.state.filename;
         backup['authbackup'] = this.state.authBackup ? 1 : 0;
         backup['basebackup'] = this.state.baseBackup ? 1 : 0;
-        
         await common.fetchApi(
             {
                 opcode : 'SYSTEMTOOLS_CLOUD_BACKUP',
@@ -170,11 +170,8 @@ export default class Backup extends React.Component{
             }
         ).then((res) => {
             let {errcode} = res;
-            
+            Loading.show({duration : 0});
             if(errcode === 0){
-                this.setState({
-                    loading : true
-                });
                 common.fetchApi(
                     {
                         opcode : 'SYSTEMTOOLS_CLOUD_BACKUP_PROGRESS',
@@ -186,6 +183,7 @@ export default class Backup extends React.Component{
                         stop : ()=>{this.stop},
                         pending : (res) => res.data[0].result.state === 'wait'
                     }).then((res) => {
+                        Loading.close();
                         let state = res.data[0].result.state;
                         if(res.errcode === 0){
                             if(state === 'success'){
@@ -193,7 +191,6 @@ export default class Backup extends React.Component{
                                     backupSuccess : true,
                                     backupCloud : false,
                                     backupSuccessTip : '备份成功',
-                                    loading : false,
                                     filename : '',
                                 });
                                 return;
@@ -202,7 +199,6 @@ export default class Backup extends React.Component{
                                     backupFail : true,
                                     backupCloud : false,
                                     backupFailTip : '备份失败！请重试~',
-                                    loading : false,
                                 });
                                 return;
                             }
@@ -220,25 +216,26 @@ export default class Backup extends React.Component{
     postRecoverLocal = (info) => {
         if(info.file.status === 'done'){
             if(info.file.response.data[0].errcode == 0){
+                Loading.show({duration : 0});
                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
                     if(res.errcode === 0){
-                        this.setState({
-                            loading : true
-                        });
                         setTimeout(() => {
                             this.setState({
-                                loading : false,
                                 backupSuccess : true,
                                 backupSuccessTip : '恢复成功！',
                                 recoverCloud : false
+                            },() =>{
+                                Loading.close();
                             });
                         }, 80000);
                         return;
                     }else{
+                        Loading.close();
                         Modal.error({title : '重启失败！'});
                     }
                 });
             }else{
+                Loading.close();
                 this.setState({
                     backupFail : true,
                     backupFailTip : '恢复失败'
@@ -255,9 +252,6 @@ export default class Backup extends React.Component{
         let param = {
             id : this.state.radioChoose
         };
-        this.setState({
-            loading : true
-        });
         await common.fetchApi(
             {
                 opcode : 'SYSTEMTOOLS_CLOUD_RESTORE',
@@ -265,6 +259,7 @@ export default class Backup extends React.Component{
             }
         ).then((res) => {
             let {errcode} = res;
+            Loading.show({duration : 0});
             if(errcode === 0){
                 common.fetchApi(
                     {opcode : 'SYSTEMTOOLS_CLOUD_RESTORE_PROGRESS'},
@@ -283,19 +278,19 @@ export default class Backup extends React.Component{
                     if(res.errcode === 0){
                         switch(state){
                             case 'download fail':
+                                Loading.close();
                                 this.setState({
                                     backupFail : true,
                                     backupFailTip : '下载失败，请重试~',
                                     recoverCloud : false,
-                                    loading : false
                                 });
                                 return;
                             case 'restore fail':
+                                Loading.close();
                                 this.setState({
                                     backupFail : true,
                                     backupFailTip : '恢复失败！请重试~',
                                     recoverCloud : false,
-                                    loading : false
                                 });
                                 return;
                             case 'restore success':
@@ -303,19 +298,22 @@ export default class Backup extends React.Component{
                                 if(res.errcode === 0){
                                     setTimeout(() => {
                                         this.setState({
-                                            loading : false,
                                             backupSuccess : true,
                                             backupSuccessTip : '恢复成功！',
                                             recoverCloud : false
+                                        },() => {
+                                            Loading.close();
                                         });
                                     }, 80000);
                                     return;
                                 }else{
+                                    Loading.close();
                                     Modal.error({title : '重启失败！'});
                                 }
                             })
                         }
                     }else{
+                        Loading.close();
                         Modal.error({title : '获取云恢复状态失败'});
                     }
                 })
@@ -327,7 +325,7 @@ export default class Backup extends React.Component{
 
     render(){
         const {backupSuccessTip, baseBackup, authBackup, backupCloud, radioChoose, backupFail, backupSuccess, 
-            backupFailTip, recoverCloud, cloudList, loading, backupDisable, recoverDisable, filename} = this.state;
+            backupFailTip, recoverCloud, cloudList, backupDisable, recoverDisable, filename} = this.state;
 
         const recoverList = cloudList.map(item => {
             return (
@@ -398,9 +396,6 @@ export default class Backup extends React.Component{
                             }
                         </RadioGroup>
                     </ul>
-                </Modal>
-                <Modal className="circle-icon" visible={loading} centered={true} closable={false} mask={false} footer={null} width={64}>
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 36,color : "#FB8632" }}  spin />                                                
                 </Modal>
             </div>
         );
