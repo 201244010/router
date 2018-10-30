@@ -4,6 +4,7 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
+import Loading from '~/components/Loading';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
@@ -173,6 +174,7 @@ export default class Lan extends React.Component {
         this.dhcps.leasetime = state.leasetime;
 
         this.setState({ loading: true });
+        Loading.show({duration : 0});
         let response = await common.fetchApi(
             [{
                 opcode: 'NETWORK_LAN_IPV4_SET',
@@ -188,6 +190,7 @@ export default class Lan extends React.Component {
         if (errcode == 0) {
             if (changed) {
                 setTimeout(() => {
+                    Loading.close();
                     const reg = /\d+\.\d+\.\d+\.\d+/g;
                     if (reg.test(location.hostname)){
                         // user login by ip
@@ -197,6 +200,8 @@ export default class Lan extends React.Component {
                         location.reload();
                     }
                 }, 20000);
+            }else{
+                Loading.close();
             }
             return;
         }
