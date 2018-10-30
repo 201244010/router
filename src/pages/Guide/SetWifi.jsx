@@ -20,7 +20,7 @@ export default class SetWifi extends React.Component {
         guestWifi : false,
         loading : false,
         done : false,
-        active : false,
+        visibile: 'hidden',
         hostWifiName : '',
         hostWifiPsw : '',
         guestWifiName : '',
@@ -124,7 +124,7 @@ export default class SetWifi extends React.Component {
         let {errcode, message} = response;
         if(errcode === 0){
             this.setState({
-                active : true,
+                visibile: 'visible',
                 done: false,
             });
             setTimeout(async() => {
@@ -273,13 +273,11 @@ export default class SetWifi extends React.Component {
                         <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
                     </div>
                 </div>
-                <CustomModal active={this.state.active}>
+                <CustomModal active={true} style={{ visibility: this.state.visibile }}>
                     {
                         !this.state.done ? 
                             <div className="progress">
-                                {/* <Progress type="circle" showInfo={false} percent={this.state.percent} width={92} format={this.format} style={{ marginBottom : 20 }} /> */}
                                 <Icon type="loading" style={{ fontSize: 80, color : "#FB8632", marginBottom : 20 }} spin />
-                                {/* <h3>正在等待Wi-Fi重启，请稍候...</h3> */}
                                 <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
                             </div>
                             : 
@@ -290,9 +288,12 @@ export default class SetWifi extends React.Component {
                                 {
                                     this.state.guestWifi ? <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div> : ''
                                 }
-                                <div className="ui-center" style={{ border : "1px solid #ccc", margin : "10px auto 5px", height : 100, width : 100 }}>
-                                    假装有二维码
-                                </div>
+                                <img className='ui-center' src={require('~/assets/images/qr.png')} style={{
+                                    height: 100,
+                                    width: 100,
+                                    border: "1px solid #ccc",
+                                    margin: "10px auto 5px",
+                                }}/>
                                 <div className="ui-tips">扫描二维码下载APP</div>
                             </div>
                     }
