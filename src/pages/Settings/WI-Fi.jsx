@@ -366,7 +366,6 @@ export default class WIFI extends React.Component {
                 }
             ]
         );
-        console.log('response',response);
         let { errcode, data, message } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;

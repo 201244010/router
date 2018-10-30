@@ -43,7 +43,8 @@ export default class WeChatAuth extends React.Component{
         // children: [],
         weixinLogoFileList: [],
         weixinBgFileList: [],
-        loading: false
+        loading: false,
+        saveDisabled: true
     }
     
     handleWeixinLogoChange = (info) => {
@@ -89,11 +90,39 @@ export default class WeChatAuth extends React.Component{
         return false;
     }  
     
+    checkSaveDisabled = () =>{
+        const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.loginHint, this.state.statement, this.state.ssid, this.state.shopId, this.state.appId, this.state.secretKey];
+        const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.loginHintTip, this.state.statementTip, this.state.ssidTip, this.state.shopIdTip, this.state.appIdTip, this.state.secretKeyTip];
+        if(this.state.enable === false ){
+            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
+                this.setState({
+                    saveDisabled: true
+                });
+            }else{
+                this.setState({
+                    saveDisabled: false
+                });
+            }       
+        }else{
+            for(let i = 0; i < field.length; i++){
+                if(field[i] === '' || fieldTip[i] !== '' ){
+                    this.setState({
+                        saveDisabled: true
+                    });
+                    return ;
+                }
+            }
+            this.setState({
+                saveDisabled: false
+            })
+        }
+    }
+
     onEnableChange = type =>{
         this.setState({
             enable : type,
             disableType:!type
-        })
+        },()=>{this.checkSaveDisabled()});
     }
 
     onChange = (name,value) =>{
@@ -142,7 +171,7 @@ export default class WeChatAuth extends React.Component{
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
-        })
+        },()=>{this.checkSaveDisabled()});
     }
 
     //生效SSID Select 方式的 函数
@@ -246,11 +275,12 @@ export default class WeChatAuth extends React.Component{
     }
 
     componentDidMount(){
-        this.fetchWeChatAuthInfo();
+        const response = this.fetchWeChatAuthInfo();
+        response.then(this.checkSaveDisabled());
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading } = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -370,7 +400,7 @@ export default class WeChatAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" loading={loading} onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" type="primary" loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

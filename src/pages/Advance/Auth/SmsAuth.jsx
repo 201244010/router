@@ -46,7 +46,8 @@ export default class SmsAuth extends React.Component{
         watchValue: '1',
         smsLogoFileList: [],
         smsBgFileList: [],
-        loading: false
+        loading: false,
+        saveDisabled: false
     }
 
     handleSmsLogoChange = (info) => {
@@ -92,11 +93,32 @@ export default class SmsAuth extends React.Component{
         return false;
     }  
 
-    onEnableChange = type =>{
-        this.setState({
-            enable : type,
-            disableType:!type
-        });
+    checkSaveDisabled = () =>{
+        const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.statement, this.state.codeExpired, this.state.accessKeyId, this.state.accessKeySecret, this.state.templateCode, this.state.signName ];
+        const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.statementTip, this.state.codeExpiredTip, this.state.accessKeyIdTip, this.state.accessKeySecretTip, this.state.templateCodeTip, this.state.signNameTip ];
+        if(this.state.enable === false){
+            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
+                this.setState({
+                    saveDisabled: true
+                });
+            }else{
+                this.setState({
+                    saveDisabled: false
+                });
+            }       
+        }else{
+            for(let i = 0; i < field.length; i++){
+                if(field[i] === '' || fieldTip[i] !== '' ){
+                    this.setState({
+                        saveDisabled: true
+                    });
+                    return ;
+                }
+            }
+            this.setState({
+                saveDisabled: false
+            })
+        }
     }
 
     onChange = (name,value) =>{
@@ -136,13 +158,21 @@ export default class SmsAuth extends React.Component{
         this.setState({
             [name] : value,
             [name + 'Tip']: tip 
-        });
+        },()=>{this.checkSaveDisabled()});
     }
+
+    onEnableChange = type =>{
+        this.setState({
+            enable : type,
+            disableType:!type
+        },()=>{this.checkSaveDisabled()});
+    }
+
 
     onSelectChange = (name, value) =>{
         this.setState({
             [name]: value
-        });
+        },()=>{this.checkSaveDisabled()});
     }
 
     //生效SSID 的 Select 方式，下个版本会用，注释保留
@@ -173,7 +203,7 @@ export default class SmsAuth extends React.Component{
     onWatchValueChange = e =>{
         this.setState({
             watchValue : e.target.value
-        });
+        },()=>{this.checkSaveDisabled()});
         
     }
 
@@ -257,11 +287,12 @@ export default class SmsAuth extends React.Component{
     }
 
     componentDidMount(){
-        this.smsAuthInfo();
+        const response = this.smsAuthInfo();
+        response.then(this.checkSaveDisabled());
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading } = this.state;
+        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -425,7 +456,7 @@ export default class SmsAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" loading={loading} type="primary" onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" loading={loading} type="primary" disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>
