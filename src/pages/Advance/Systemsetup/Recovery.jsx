@@ -43,7 +43,7 @@ export default class Recovery extends React.Component{
         return (
             <div>
                 <div>
-                    <span style={{marginLeft:65}}>说明：恢复出厂设置后，需重新设置后才能正常上网，请注意备份配置信息</span>
+                    <span style={{marginLeft:60}}>说明：恢复出厂设置后，需重新设置后才能正常上网，请注意备份配置信息</span>
                     <section style={{borderTop:0,marginTop:20}} className="weixin-auth-save">
                         <Button style={{width:130}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即恢复</Button>
                     </section>
