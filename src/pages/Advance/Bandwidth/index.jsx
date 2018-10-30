@@ -343,7 +343,7 @@ export default class Bandwidth extends React.PureComponent {
         this.setState({
             buttonloading : true
         })
-        let payload = this.composeparams("default",this.state.upband,this.state.downband);
+        let payload = this.composeparams("manual",this.state.upband,this.state.downband);
         let response = await common.fetchApi({
             opcode : 'QOS_SET',
             data : payload
