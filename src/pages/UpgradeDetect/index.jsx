@@ -65,7 +65,7 @@ export default class UpdateDetect extends React.Component{
         ];
         return (
             <div>
-                <Modal visible={update} title={Title} centered={true} closable={false} maskClosable={true} okText='立即升级' cancelText='暂不升级' onCancel={this.cancle} onOk={this.post}>
+                <Modal visible={update} maskClosable={false} title={Title} centered={true} closable={false} okText='立即升级' cancelText='暂不升级' onCancel={this.cancle} onOk={this.post}>
                     <pre style={{color : '#333C4F'}}>{releaseLog}</pre>
                 </Modal>
                 <Upgrade ref='Upgrade'/>
