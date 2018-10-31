@@ -382,13 +382,13 @@ export default class SmsAuth extends React.Component{
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：128KB</span>
                                 <Upload  onChange={this.handleSmsBgChange} name='file' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
-                                        </Button>
+                                    </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：512KB</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
