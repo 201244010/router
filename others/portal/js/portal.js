@@ -78,13 +78,7 @@ iKnowElement.addEventListener('click', function () {
 
 mobileInput.addEventListener('input', function () {
     mobileInput.value = mobileInput.value.replace(/[^\d]/g, '');
-    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
-        connectBtn.classList.remove('btn-disabled');
-        btnDisabled = false;
-    } else {
-        connectBtn.classList.add('btn-disabled');
-        btnDisabled = true;
-    }
+    canConnect();
 }, false);
 
 mobileInput.addEventListener('focus', function () {
@@ -113,13 +107,7 @@ cleanIcon.addEventListener('click', function () {
 
 codeInput.addEventListener('input', function () {
     codeInput.value = codeInput.value.replace(/[^\d]/g, '');
-    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
-        connectBtn.classList.remove('btn-disabled');
-        btnDisabled = false;
-    } else {
-        connectBtn.classList.add('btn-disabled');
-        btnDisabled = true;
-    }
+    canConnect();
 }, false);
 
 codeInput.addEventListener('focus', function () {
@@ -197,6 +185,7 @@ codeGetter.addEventListener('click', function () {
 
 protocol.addEventListener('click', function () {
     agreeProtocol = !agreeProtocol;
+    canConnect();
 }, false);
 
 connectBtn.addEventListener('click', function () {
@@ -339,4 +328,14 @@ function parseUrl(name) {
     var url = location.search.slice(0);
     var reg = new RegExp(name + '\=([^&]+)'), ret = reg.exec(url);
     return ret ? ret[1] : null;
+}
+
+function canConnect() {
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+        connectBtn.classList.remove('btn-disabled');
+        btnDisabled = false;
+    } else {
+        connectBtn.classList.add('btn-disabled');
+        btnDisabled = true;
+    }
 }
