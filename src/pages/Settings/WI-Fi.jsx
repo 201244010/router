@@ -73,12 +73,14 @@ export default class WIFI extends React.Component {
     checkDisabled =() =>{
         let checkDisabled24=false,checkDisabled5= false,checkDisabled245= false,checkDisabledGuest= false;
         if(this.state.host24Enable === true){
-            checkDisabled24 = this.state.hostSsid24 === '' || (this.state.hostSsid24Password === '' && this.state.pwdForbid24 !== true);
+            checkDisabled24 = this.state.hostSsid24Tip !== '' || this.state.hostSsid24PasswordTip !== '' ||
+            typeof(this.state.hostSsid24) === 'undefined' || this.state.hostSsid24 === '';
         }else{
             checkDisabled24 = false;
         }
         if(this.state.host5Enable === true){
-            checkDisabled5 = this.state.hostSsid5 === '' || (this.state.hostSsid5Passwrod === '' && this.state.pwdForbid5 !== true);
+            checkDisabled5 = this.state.hostSsid5Tip !== '' || this.state.hostSsid5PasswrodTip !== '' || 
+            typeof(this.state.hostSsid5) === 'undefined' || this.state.hostSsid5 === '';
         }else{
             checkDisabled5 = false;
         }
@@ -88,22 +90,15 @@ export default class WIFI extends React.Component {
             checkDisabled245 = checkDisabled24 || checkDisabled5;
         }
         if(this.state.guestEnable === true){
-            checkDisabledGuest = this.state.guestSsid === '' || (this.state.guestStaticPassword === '' && this.state.guestPwdForbid !== true);
+            checkDisabledGuest = this.state.guestSsidTip !== '' || this.state.guestStaticPasswordTip !== '' ||
+            typeof(this.state.guestSsid) === 'undefined' || this.state.guestSsid === '';
         }else{
             checkDisabledGuest = false;
         }
-        return checkDisabled24 || checkDisabled5 || checkDisabled245 || checkDisabledGuest;
+        return checkDisabled245 || checkDisabledGuest;
     }
 
     onChange = (name,value) =>{
-        // const field = [ 'hostSsid24', 'hostSsid24Password', 'hostSsid5', 'hostSsid5Passwrod', 'guestSsid', 'guestStaticPassword' ];
-        // const saveDisabled24;
-        // if(value === ''){
-            
-        //     this.setState({ saveDisabled: true });
-        // }else{
-        //     this.setState({ saveDisabled: false });
-        // }
         switch (name){
             case 'hostSsid24' : this.setState({
                 [name]:value,
@@ -138,7 +133,26 @@ export default class WIFI extends React.Component {
             break;
             default: this.setState({
                 [name]:value
-            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+            },()=>{
+                let channelList5 = [];
+                if(this.state.htmode5 === 'HT20'){
+                    for(let i = 0; i < this.channel_list.band_5g.length; i++){
+                        channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+                    }
+                    this.setState({
+                        channelList5: channelList5,
+                        saveDisabled:  this.checkDisabled()
+                    })
+                }else{
+                    for(let i = 0; i < (this.channel_list.band_5g.length - 1); i++){
+                        channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+                    }
+                    this.setState({
+                        channelList5: channelList5,
+                        saveDisabled:  this.checkDisabled()
+                    })
+                }
+            });
         }
         
     }
@@ -374,26 +388,33 @@ export default class WIFI extends React.Component {
             let { main, guest } = data[0].result;
             let { channel_list } = data[1].result;
             this.channel_list = channel_list;
+            this.mainWireLess = main;
+            this.hostWireLess = main.host;
+            this.guestWireLess = guest;
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
             for(let i = 0; i < this.channel_list.band_2g.length; i++){
                 channelList24.push(<Option value={this.channel_list.band_2g[i]} >{this.channel_list.band_2g[i]}</Option>);
             }
-            for(let i = 0; i < this.channel_list.band_5g.length; i++){
-                channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+            if(this.hostWireLess.band_5g.htmode === 'HT20'){
+                for(let i = 0; i < this.channel_list.band_5g.length; i++){
+                    channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+                }
+            }else{
+                for(let i = 0; i < (this.channel_list.band_5g.length - 1); i++){
+                    channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
+                }
             }
+            
             this.setState({
                 channelList24: channelList24,
                 channelList5: channelList5
             });
-            this.mainWireLess = main;
-            this.hostWireLess = main.host;
-            this.guestWireLess = guest;
+            
             this.setState({
                 //host
                 channelType : this.hostWireLess.band_division == '0'? true : false,
-
                 //guest
                 guestSsid : this.guestWireLess.ssid,
                 guestEncryption : this.guestWireLess.encryption,
