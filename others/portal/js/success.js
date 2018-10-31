@@ -1,14 +1,15 @@
 var nameElement = document.getElementById('name');
-var descElement = document.getElementById('desc');
+//var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var logoElement = document.getElementById('logo');
+var logoIcon = document.getElementById('logoIcon');
 var timeDownElement = document.getElementById('timeDown');
 
 window.onload = function () {
     ajax({
         type: 'POST',
         url: '/api/AUTH_PORTAL',
-        //url: '../portal/data.json',
+        //url: '/web-w1/others/portal/data.json',
         params: JSON.stringify({params: [{param: {}, opcode: "0x2088"}], count: "1"}),
         callback: function (response) {
             if (response.errcode === 0) {
@@ -19,7 +20,6 @@ window.onload = function () {
                     countDown(Number(weixin.online_limit) * 60);
                 } else if (Number(sms.enable)) {
                     commonDataToPage(sms);
-                    console.log(sms);
                     countDown(Number(sms.online_limit) * 60);
                 }
             }
@@ -28,9 +28,16 @@ window.onload = function () {
 };
 
 function commonDataToPage(data) {
-    document.body.style.background = "url('" + (data.background || "./imgs/bg.jpeg") + "')";
-    logoElement.src = data.logo || "./imgs/logo.jpg";
-    descElement.innerText = data.welcome || '欢迎';
+    document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
+    document.body.style.backgroundSize = "cover";
+    if (data.logo) {
+        logoIcon.style.display = 'none';
+        logoElement.style.display = 'block';
+        logoElement.src = data.logo;
+    } else {
+        logoElement.style.display = 'none';
+        logoIcon.style.display = 'block';
+    }
     serviceElement.innerText = data.statement || '欢迎';
     nameElement.innerText = data.logo_info || '欢迎';
 }

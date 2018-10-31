@@ -5,7 +5,6 @@ var codeGetter = document.getElementById('codeGetter');
 //var codeError = document.getElementById('codeError');
 var countDown = document.getElementById('countDown');
 var cleanIcon = document.getElementById('cleanIcon');
-// var cleanCodeIcon = document.getElementById('cleanCodeIcon');
 var connectBtn = document.getElementById('connectBtn');
 var connectText = document.getElementById('connectText');
 var protocol = document.getElementById('protocol');
@@ -45,6 +44,7 @@ window.onload = function () {
                         data: weixin
                     };
                 } else if (Number(sms.enable)) {
+                    connectingElement.style.display = 'block';
                     inputsElement.style.display = 'block';
                     smsDataToPage(sms);
                     enable = {
@@ -52,7 +52,6 @@ window.onload = function () {
                         data: sms
                     };
                 } else {
-                    connectingElement.style.display = 'none';
                     inputsElement.style.display = 'none';
                     protocol.style.display = 'none';
                     showToast('不支持微信及短信方式连接wifi');
@@ -111,19 +110,6 @@ cleanIcon.addEventListener('click', function () {
     mobileError.classList.remove('show');
     mobileError.classList.add('not-show');
 }, false);
-
-/*
-cleanCodeIcon.addEventListener('click', function (ev) {
-    ev.stopPropagation();
-    codeInput.value = '';
-    codeInput.focus();
-    codeInput.classList.remove('error');
-    codeGetter.classList.add('show');
-    codeGetter.classList.remove('not-show');
-    //codeError.classList.add('not-show');
-    //codeError.classList.remove('show');
-}, false);
-*/
 
 codeInput.addEventListener('input', function () {
     codeInput.value = codeInput.value.replace(/[^\d]/g, '');
@@ -232,7 +218,6 @@ connectBtn.addEventListener('click', function () {
         var timestamp = new Date().getTime();
         var address = window.location.protocol + '//' + window.location.host;
         var authUrl = address + "/api/wifidog/weixin.html?gw_address=" + parseUrl("gw_address") + "&gw_port=" + parseUrl('gw_port');
-        alert(authUrl);
         var sign = hex_md5(appId + shopId + authUrl + extend + timestamp + secretkey);
         window.location = 'weixin://connectToFreeWifi/?apKey=_p33beta&appId=' + appId + '&shopId=' + shopId + '&authUrl=' + encodeURIComponent(authUrl) + '&extend=' + extend + '&timestamp=' + timestamp + '&sign=' + sign;
     } else if (enable.type === 'sms') {
@@ -312,7 +297,6 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    console.log(data);
     document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
     document.body.style.backgroundSize = "cover";
     if (data.logo) {

@@ -35,9 +35,8 @@ class PrimaryLayout extends React.Component {
         const pathname = location.pathname;
         const logined = document.cookie.length > 0;
         try {
-            const hasVisited = Boolean(window.sessionStorage.getItem('__visited__'));
-            if (!hasVisited && !logined && (brower.android || brower.ios)) {
-                window.sessionStorage.setItem('__visited__', true);
+            const hasVisited = window.sessionStorage.getItem('__visited__');
+            if (hasVisited !== '1' && !logined && (brower.android || brower.ios)) {
                 window.location.href = '/mobile/index.html';
             }
         } catch (e) {
