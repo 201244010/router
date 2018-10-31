@@ -26,6 +26,7 @@ export default class Bootdevice extends React.Component {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
         disabled: true,
+        disAddBtn: true,
         editLoading: false,
         editShow: false,
         name: '',
@@ -129,6 +130,13 @@ export default class Bootdevice extends React.Component {
 
                 return item;
             })
+        }, () => {
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
+            });
+            this.setState({
+                disAddBtn: !checked,
+            });
         });
     }
 
@@ -274,6 +282,7 @@ export default class Bootdevice extends React.Component {
         };
 
         this.setState({
+            disAddBtn: true,
             whiteList: whites.map(item => {
                 let mac = item.mac.toUpperCase();
                 let client = clients.find(item => item.mac.toUpperCase() === mac) || {
@@ -312,7 +321,7 @@ export default class Bootdevice extends React.Component {
 
     render() {
         const { whiteList, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, disabled } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn, disabled } = this.state;
 
         const columns = [{
             title: '',
@@ -410,9 +419,12 @@ export default class Bootdevice extends React.Component {
                 <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
-                    confirmLoading={loading}
-                    onOk={this.onSelectOk}
-                    onCancel={this.onSelectCancle} >
+                    footer={[
+                        <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
+                        <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
+                            添加
+                        </Button>,
+                    ]} >
                     <Button size="large" style={{
                         position: "absolute",
                         top: 5,

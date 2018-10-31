@@ -53,25 +53,10 @@ class PrimaryLayout extends React.Component {
             duration: 2,
             maxCount: 3,
         });
-        //TODO: optimize me
-        const welcome = '/welcome';
-
-        // 不是在向导页面：/welcome or /guide/xxx
-        if (![welcome, 'guide'].some(url => {
-            return this.state.pathname.indexOf(url) > -1;
-        })) {
-            common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
-                let { errcode, data } = res;
-                if (0 == errcode && 1 === parseInt(data[0].result.system.factory)) {
-                    location.href = welcome;
-                }
-            });
-        }
     }
 
     render() {
         const { pathname, logined } = this.state;
-        const redirect = logined ? '/home' : '/login';
 
         const conf = {
             'guide': { main: 'guide-bg', footer: false },
@@ -80,7 +65,6 @@ class PrimaryLayout extends React.Component {
             'advance': { main: 'bg', footer: ''},
             'welcome': { main: 'index-bg', footer: '' },
             'app': { main: 'bg', footer: ''},
-
             'home': { main: 'home-bg', footer: 'home-footer' },
             'diagnose': { main: 'dbg-bg', footer: 'dbg-footer' },
         };
@@ -108,7 +92,7 @@ class PrimaryLayout extends React.Component {
                             <Route path="/advance" component={Advance} />
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
-                            <Redirect from='/' to={redirect} />
+                            <Route path="/" component={Default} />
                         </Switch>
                         {false !== node.footer && <PrimaryFooter className={node.footer} />}
                         {logined && <UpdateDetect />}
@@ -117,6 +101,54 @@ class PrimaryLayout extends React.Component {
                 <Background image={require('~/assets/images/noise.png')} />
             </div>
         );
+    }
+}
+
+class Default extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    redirect() {
+        const path = location.pathname;
+        const welcome = '/welcome';
+        const logined = document.cookie.length > 0;
+        const redirect = logined ? '/home' : '/login';
+
+        // 向导页面（/welcome or /guide/xxx）不跳转
+        if ([welcome, '/guide'].some(url => {
+            return path.indexOf(url) > -1;
+        })) {
+            return;
+        }
+
+        // for local debug
+        if ("localhost" === location.hostname) {
+            this.props.history.push(redirect);
+            return;
+        }
+
+        /**
+         * factory -> redirect to /welcome
+         * logined -> redirect to /home
+         * unauth -> redirect to /login
+         */
+        common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
+            let { errcode, data } = res;
+            if (0 == errcode && 1 === parseInt(data[0].result.system.factory)) {
+                this.props.history.push(welcome);
+            } else {
+                this.props.history.push(redirect);
+            }
+        });
+    }
+
+    componentDidMount() {
+        this.redirect();
+    }
+
+    render() {
+        return null;
     }
 }
 

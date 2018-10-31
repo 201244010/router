@@ -653,10 +653,10 @@ export default class WIFI extends React.Component {
                             </div>
                         </section>  
                     </section>
-                    <section className="wifi-setting-save">
-                        <Button className="wifi-setting-button" type="primary" disabled={saveDisabled} loading={loading} onClick={this.submit}>保存</Button>
-                    </section>
                 </Form>
+                <section className="save">
+                        <Button type="primary" size="large" style={{ width: 320, margin: "20px 60px 30px" }} disabled={saveDisabled} loading={loading} onClick={this.submit}>保存</Button>
+                </section>
             </div>
         );
     }

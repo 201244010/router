@@ -119,7 +119,11 @@ export default class Bandwidth extends React.PureComponent {
             [key + 'Tip']: tip,
         }, () => {
             let tips = ['sunmi', 'white', 'normal'];
-            let ok = tips.every((tip) => { return '' === this.state[tip + 'Tip'] });
+            let ok = tips.every((tip) => { 
+                let stateTip = this.state[tip + 'Tip'];
+                return '带宽比例总和不能大于100%' === stateTip || '' === stateTip
+             });
+
             if (ok) {
                 const { sunmi, white, normal } = this.state;
                 let total = parseInt(sunmi) + parseInt(white) + parseInt(normal);
@@ -131,8 +135,11 @@ export default class Bandwidth extends React.PureComponent {
                     return;
                 }else{
                     this.setState({
-                        saveDisable: false,
-                    })
+                        sunmiTip : '',
+                        whiteTip : '',
+                        normalTip : '',
+                        saveDisable: false
+                    });
                     return;
                 }
             }
@@ -421,7 +428,7 @@ export default class Bandwidth extends React.PureComponent {
                         <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
                     </div>
                 </section>
-                <section style={{margin:"20px 20px 20px 0"}}>
+                <section style={{margin:"20px 20px 28px 0"}}>
                         <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动测速</Button>
                         <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
                 </section>
