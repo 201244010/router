@@ -99,18 +99,12 @@ export default class SmsAuth extends React.Component{
         const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.statement, this.state.codeExpired, this.state.accessKeyId, this.state.accessKeySecret, this.state.templateCode, this.state.signName ];
         const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.statementTip, this.state.codeExpiredTip, this.state.accessKeyIdTip, this.state.accessKeySecretTip, this.state.templateCodeTip, this.state.signNameTip ];
         if(this.state.enable === false){
-            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
-                this.setState({
-                    saveDisabled: true
-                });
-            }else{
-                this.setState({
-                    saveDisabled: false
-                });
-            }       
+            this.setState({
+                saveDisabled: field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== '',
+            });     
         }else{
             for(let i = 0; i < field.length; i++){
-                if(field[i] === '' || fieldTip[i] !== '' ){
+                if(field[i] === '' || typeof(field[i]) === 'undefined' || fieldTip[i] !== '' ){
                     this.setState({
                         saveDisabled: true
                     });
@@ -265,7 +259,7 @@ export default class SmsAuth extends React.Component{
                 signName : this.sms.sign_name,
                 //input 方式的生效SSID赋值
                 selectedSsid: this.sms.ssidlist[0].name,
-            });
+            },()=>{ this.checkSaveDisabled(); });
 
             //生效SSID 的 Input 方式,默认enable全部为 ‘1’
             for (let i = 0; i < this.sms.ssidlist.length; i++) {
@@ -344,8 +338,7 @@ export default class SmsAuth extends React.Component{
     }
 
     componentDidMount(){
-        const response = this.smsAuthInfo();
-        response.then(this.checkSaveDisabled());
+        this.smsAuthInfo();
     }
 
     render(){
@@ -389,17 +382,17 @@ export default class SmsAuth extends React.Component{
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：128KB</span>
                                 <Upload  onChange={this.handleSmsBgChange} name='file' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
-                                        </Button>
+                                    </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：512KB</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={15} placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                        <Input type="text" maxLength={15} placeholder={'请输入Logo信息'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
                                         <ErrorTip>{logoTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
@@ -407,7 +400,7 @@ export default class SmsAuth extends React.Component{
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={welcomeTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={30} placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                        <Input type="text" maxLength={30} placeholder={'请输入欢迎信息'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
                                         <ErrorTip>{welcomeTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
@@ -415,7 +408,7 @@ export default class SmsAuth extends React.Component{
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={statementTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={30} placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                        <Input type="text" maxLength={30} placeholder={'请输入版权声明'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
                                         <ErrorTip>{statementTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
@@ -432,12 +425,12 @@ export default class SmsAuth extends React.Component{
                                         display:'block',
                                         width:325,
                                         height:488,
-                                        border:'1px solid grey',
                                         borderRadius:8,
                                         marginTop:25,padding:'34px 0 0 0',
                                         color:'#FFFFFF',
                                         backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
-                                        backgroundRepeat:'no-repeat', 
+                                        backgroundRepeat:'no-repeat',
+                                        backgroundSize: 'cover',
                                         backgroundPosition:'center',
                                         }}>
                                         <div style={{
@@ -450,8 +443,8 @@ export default class SmsAuth extends React.Component{
                                                 border:'2px solid #FFFFFF',
                                                 borderRadius:26,
                                                 backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
-                                                backgroundRepeat:'no-repeat', 
-                                                backgroundPosition:'center',
+                                                backgroundRepeat:'no-repeat',
+                                                backgroundSize: '100% 100%', 
                                                 }}></div>
                                             <div style={{
                                                 minHeight:25,
@@ -486,14 +479,13 @@ export default class SmsAuth extends React.Component{
                                         left:60, 
                                         width:1401,
                                         height:786,
-                                        border:'3px solid grey',
                                         borderRadius:24,
                                         marginTop:60,
                                         color:'#FFFFFF',
                                         transform:'scale(0.33,0.33)',
                                         backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
-                                        backgroundRepeat:'no-repeat', 
-                                        backgroundSize:'100% 100%'
+                                        backgroundRepeat:'no-repeat',
+                                        backgroundSize: 'cover',
                                         }}>
                                         <div style={{height:747,padding:'108px 525px 0 525px'}}>
                                             <div style={{
@@ -503,8 +495,8 @@ export default class SmsAuth extends React.Component{
                                                 border:'3px solid #FFFFFF',
                                                 margin:'0 auto 0',
                                                 backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
-                                                backgroundRepeat:'no-repeat', 
-                                                backgroundPosition:'center',
+                                                backgroundRepeat:'no-repeat',
+                                                backgroundSize: '100% 100%', 
                                                 }}></div>
                                             <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',textAlign:'center'}}>{logo}</div>
                                             <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',textAlign:'center'}}>“{welcome}”</div>

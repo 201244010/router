@@ -8,12 +8,8 @@
         <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
-        <div class="earth_top_left">
-            <img src="./assets/earth.svg">
-        </div>
-        <div class="earth_bottom_right">
-            <img src="./assets/earth.svg">
-        </div>
+        <img src="./assets/earth.svg" class="left-img">
+        <img src="./assets/earth.svg" class="right-img">
         <div class="content">
             <h1>欢迎使用商米路由器</h1>
             <h3>下载商米管家APP，随时随地管理您的网络</h3>
@@ -24,7 +20,7 @@
                 <a href="javascript: void (0);">已安装，直接打开</a>
             </div>
             <p class="link">
-                <a href="/">进入网页版配置</a>
+                <a href="javascript: void (0);" id="goToWeb">进入网页版配置</a>
             </p>
         </div>
         <script type="application/javascript" src="../common/js/flexible.js"></script>
@@ -33,16 +29,18 @@
             var openDirect = document.getElementById('openDirect');
             var goToWeb = document.getElementById('goToWeb');
             download.addEventListener('click', function () {
-                window.sessionStorage.setItem('__visited__', '1');
                 window.location.href = 'https://webapi.sunmi.com/webapi/wap/web/appstore/1.0/?service=AppStore.getAppFromHome';
             }, false);
             openDirect.addEventListener('click', function () {
-                window.sessionStorage.setItem('__visited__', '1');
                 if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
                     window.location = 'sunmiapp://';
                 } else if (navigator.userAgent.match(/android/i)) {
-                    window.location = 'scheme://wireless.android.com.androidwireless';
+                    window.location = 'xl://sunmi:8080/androidapp';
                 }
+            }, false);
+            goToWeb.addEventListener('click', function () {
+                window.sessionStorage.setItem('__visited__', '1');
+                window.location.href = '/';
             }, false);
         </script>
     </body>
