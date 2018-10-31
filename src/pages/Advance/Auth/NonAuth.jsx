@@ -29,7 +29,7 @@ export default class NonAuth extends React.Component{
         wiredFree : true,
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
-        listSubmitDisabled: true,
+        disAddBtn: true,
         disabled: true,
         editLoading: false,
         editShow: false,
@@ -89,7 +89,7 @@ export default class NonAuth extends React.Component{
     }
 
     selectAdd = () => {
-        this.fetchClientsInfo();
+        this.fetchBasic();
         this.setState({
             visible: true
         });
@@ -142,24 +142,13 @@ export default class NonAuth extends React.Component{
                 return item;
             })
         },() => {
-            const type = this.state.onlineList.some(item => {
-                if(item.checked === true){
-                    return true;
-                }else{
-                    return false;
-                }
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
             });
-            if(type){
-                this.setState({
-                    listSubmitDisabled: false
-                });
-            }else{
-                this.setState({
-                    listSubmitDisabled: true
-                });
-            }
+            this.setState({
+                disAddBtn: !checked,
+            });
         });
-        
     }
 
     onSelectOk = async () => {
@@ -192,7 +181,7 @@ export default class NonAuth extends React.Component{
         let { errcode, message } = response;
         if (errcode == 0) {
             // refresh list
-            this.fetchWhiteList();
+            this.fetchBasic();
 
             this.setState({
                 visible: false,
@@ -231,7 +220,7 @@ export default class NonAuth extends React.Component{
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            this.fetchWhiteList();
+            this.fetchBasic();
             this.setState({
                 editShow: false
             })
@@ -255,93 +244,64 @@ export default class NonAuth extends React.Component{
         })
     }
 
-    fetchWhiteList = async() => {
-        let fetchWhite = await common.fetchApi(
-            [{
-                opcode: 'AUTH_WHITELIST_GET'
-            }]
-        );
-        let {errcode,data,message} = fetchWhite;
-        let whites;
-        if(errcode == 0){
-            this.auth = data[0].result.auth;
-            whites = data[0].result.auth.whitelist;
-            this.setState({
-                prioritizedFree : this.auth.prioritized_free === '1' ,
-                wiredFree : this.auth.wired_free === '1',
-                whiteList: whites.map(item => {
-                    return {
-                        index: item.index,
-                        icon: iconMap[item.device] || 'unknown',
-                        name: item.name,
-                        mac: item.mac.toUpperCase(),
-                    }
-                }),
-            });
-            return ;
-        }
-        Modal.error({ title: '获取免认证设备列表指令异常', message });
-    }
+    fetchBasic = async() => {
+        let response = await common.fetchApi([
+            { opcode: 'CLIENT_LIST_GET' },
+            { opcode: 'AUTH_WHITELIST_GET' }
+        ]);
 
-    fetchClientsInfo = async () => {
-        let response = await common.fetchApi(
-            [{
-                opcode: 'CLIENT_LIST_GET'
-            }]
-        );
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            let { data } = response.data[0].result;
-
-            // filter clients in dhcp static list
-            let restClients = data.filter(item => {
-                let mac = item.mac.toUpperCase();
-                return !!!(this.state.whiteList.find(client => {
-                    return (mac == client.mac.toUpperCase());
-                }));
-            });
-
-            this.setState({
-                onlineList: restClients.map(item => {
-                    return {
-                        icon: iconMap[item.device] || 'unknown',
-                        name: item.hostname,
-                        mac: item.mac,
-                        time: item.time,
-                        checked: false
-                    }
-                })
-            },() => {
-                const type = this.state.onlineList.some(item => {
-                    if(item.checked === true){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                });
-                if(type){
-                    this.setState({
-                        listSubmitDisabled: false
-                    });
-                }else{
-                    this.setState({
-                        listSubmitDisabled: true
-                    });
-                }
-            });
+        let { errcode, data, message } = response;
+        if (0 !== errcode) {
+            Modal.error({ title: '获取免认证设备列表指令异常', message });
             return;
         }
 
-        Modal.error({ title: '获取客户端列表指令异常', message });
+        let clients = data[0].result.data,
+            auth = data[1].result.auth,
+            whites = data[1].result.auth.whitelist;
+
+        // filter clients in dhcp static list
+        let restClients = clients.filter(item => {
+            let mac = item.mac.toUpperCase();
+            return !!!(this.state.whiteList.find(client => {
+                return (mac == client.mac.toUpperCase());
+            }));
+        });
+
+        this.setState({
+            onlineList: restClients.map(item => {
+                return {
+                    icon: iconMap[item.device] || 'unknown',
+                    name: item.hostname,
+                    mac: item.mac,
+                    time: item.time,
+                    checked: false
+                }
+            }),
+            disAddBtn: true,
+            prioritizedFree: auth.prioritized_free === '1',
+            wiredFree: auth.wired_free === '1',
+            whiteList: whites.map(item => {
+                let mac = item.mac.toUpperCase();
+                let client = clients.find(item => item.mac.toUpperCase() === mac) || { device: 'unknown' };
+
+                return {
+                    index: item.index,
+                    icon: iconMap[client.device || 'unknown'],
+                    name: item.name,
+                    mac: mac,
+                }
+            }),
+        });
     }
 
     componentDidMount() {
-        this.fetchWhiteList();
+        this.fetchBasic();
     }
 
     render() {
         const { prioritizedFree, wiredFree, whiteList, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, listSubmitDisabled, disabled } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn, disabled } = this.state;
 
         const columns = [{
             title: '',
@@ -423,12 +383,9 @@ export default class NonAuth extends React.Component{
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
                 <Modal title="在线列表" closable={false} maskClosable={false} width={960} style={{ position: 'relative' }}
                     visible={visible}
-                    confirmLoading={loading}
-                    onOk={this.onSelectOk}
-                    onCancel={this.onSelectCancle}
                     footer={[
                         <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
-                        <Button key="submit" type="primary" disabled={listSubmitDisabled} loading={loading} onClick={this.onSelectOk}>
+                        <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
                           添加
                         </Button>,
                       ]} >
@@ -438,7 +395,7 @@ export default class NonAuth extends React.Component{
                         left: 100,
                         border: 0,
                         padding: 0
-                    }} onClick={this.fetchClientsInfo}><CustomIcon type="refresh" /></Button>
+                    }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         style={{ height: 360, overflowY: 'auto' }}
                         className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
