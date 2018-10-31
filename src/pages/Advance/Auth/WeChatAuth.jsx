@@ -46,7 +46,7 @@ export default class WeChatAuth extends React.Component{
         weixinLogoFileList: [],
         weixinBgFileList: [],
         loading: false,
-        saveDisabled: true
+        saveDisabled: false
     }
     
     handleWeixinLogoChange = (info) => {
@@ -95,19 +95,13 @@ export default class WeChatAuth extends React.Component{
     checkSaveDisabled = () =>{
         const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.loginHint, this.state.statement, this.state.ssid, this.state.shopId, this.state.appId, this.state.secretKey];
         const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.loginHintTip, this.state.statementTip, this.state.ssidTip, this.state.shopIdTip, this.state.appIdTip, this.state.secretKeyTip];
-        if(this.state.enable === false ){
-            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
-                this.setState({
-                    saveDisabled: true
-                });
-            }else{
-                this.setState({
-                    saveDisabled: false
-                });
-            }       
+        if(this.state.enable === false ){    
+            this.setState({
+                saveDisabled: field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== '',
+            });
         }else{
             for(let i = 0; i < field.length; i++){
-                if(field[i] === '' || fieldTip[i] !== '' ){
+                if(field[i] === ''|| typeof(field[i]) === 'undefined' || fieldTip[i] !== ''){
                     this.setState({
                         saveDisabled: true
                     });
@@ -154,11 +148,11 @@ export default class WeChatAuth extends React.Component{
                 enable : type,
                 disableType:!type
             },()=>{this.checkSaveDisabled()});
-        }   
+        }
     }
 
     onChange = (name,value) =>{
-        const field = {
+        const inputField = {
             onlineLimit:{
                 func: checkRange(value, { min: 1,max: 1440,who: '上网时长' })
             },
@@ -199,7 +193,7 @@ export default class WeChatAuth extends React.Component{
             },
             
         };
-        const tip = field[name].func;
+        const tip = inputField[name].func;
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
@@ -255,7 +249,7 @@ export default class WeChatAuth extends React.Component{
                 secretKey : this.weixin.secretkey,
                 //input 方式的生效SSID赋值
                 selectedSsid: this.weixin.ssidlist[0].name,
-            });
+            },()=>{this.checkSaveDisabled()});
             //生效SSID 的 Input 方式,默认enable全部为 ‘1’
             for (let i = 0; i < this.weixin.ssidlist.length; i++) {
                 this.weixin.ssidlist[i].enable = '1' ;
@@ -331,8 +325,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     componentDidMount(){
-        const response = this.fetchWeChatAuthInfo();
-        response.then(this.checkSaveDisabled());
+        this.fetchWeChatAuthInfo();
     }
 
     render(){
@@ -376,17 +369,17 @@ export default class WeChatAuth extends React.Component{
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：128KB</span>
                                 <Upload onChange={this.handleWeixinBgChange} name='file'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
-                                        </Button>
+                                    </Button>
                                 </Upload>
-                                <span>支持扩展名：.jpg .png</span>
+                                <span>支持扩展名：.jpg .png；最大上传大小：512KB</span>
                                 <label style={{marginTop:20}}>Logo信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={logoTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={15} placeholder={'欢迎您'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
+                                        <Input type="text" maxLength={15} placeholder={'请输入Logo信息'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
                                         <ErrorTip >{logoTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
@@ -394,7 +387,7 @@ export default class WeChatAuth extends React.Component{
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={welcomeTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={30} placeholder={'欢迎使用微信连Wi-Fi'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
+                                        <Input type="text" maxLength={30} placeholder={'请输入欢迎信息'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
                                         <ErrorTip >{welcomeTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
@@ -402,7 +395,7 @@ export default class WeChatAuth extends React.Component{
                                 <label>登陆按钮提示文字</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={loginHintTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={15} placeholder={'一键打开微信连Wi-Fi'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
+                                        <Input type="text" maxLength={15} placeholder={'请输入登陆按钮提示文字'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
                                         <ErrorTip >{loginHintTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
@@ -410,7 +403,7 @@ export default class WeChatAuth extends React.Component{
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={statementTip} style={{ width : 320}}>
-                                        <Input type="text" maxLength={30} placeholder={'由Sunmi为您提供Wi-Fi服务'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
+                                        <Input type="text" maxLength={30} placeholder={'请输入版权声明'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
                                         <ErrorTip >{statementTip}</ErrorTip>
                                     </FormItem>
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
@@ -421,13 +414,13 @@ export default class WeChatAuth extends React.Component{
                                     display:'block',
                                     width:325,
                                     height:488,
-                                    border:'1px solid grey',
                                     borderRadius:8,
                                     marginTop:25,
                                     padding:'73px 0 0 0',
                                     color:'#FFFFFF',
                                     backgroundImage:'url('+`/portal/wx_bg.jpg?${BgRandom}`+')',
-                                    backgroundRepeat:'no-repeat', 
+                                    backgroundRepeat:'no-repeat',
+                                    backgroundSize: 'cover',
                                     backgroundPosition:'center',
                                     }}>
                                     <div style={{paddingLeft:20,height:383}}>
@@ -437,8 +430,8 @@ export default class WeChatAuth extends React.Component{
                                             border:'2px solid #FFFFFF',
                                             borderRadius:26,
                                             backgroundImage:'url('+`/portal/wx_logo.jpg?${logoRandom}`+')',
-                                            backgroundRepeat:'no-repeat', 
-                                            backgroundPosition:'center',
+                                            backgroundRepeat:'no-repeat',
+                                            backgroundSize: '100% 100%', 
                                             }}></div>
                                         <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
                                         <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>

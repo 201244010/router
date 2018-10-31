@@ -61,33 +61,33 @@ export default class AuthUserList extends React.Component{
                 }
             ]
         );
-        let client,authClient;
+        let clients,authClient;
         let { errcode, data } = results;
         if (0 !== errcode) {
             return;
         } else {
-            client = data[0].result.data;
+            clients = data[0].result.data;
             authClient = data[1].result.auth.clientlist;
         }
         this.setState({
             authUserList: authClient.map(item => {
                 let mac = item.mac.toUpperCase();
-                let authclient = client.find(item => item.mac.toUpperCase() === mac) || {
+                let client = clients.find(item => item.mac.toUpperCase() === mac) || {
                     device: 'unknown',
-                    ontime: 0,
-                    ip: '0.0.0.0',                    
+                    ontime: 0, 
+                    name:'unknown',                  
                 };
                 return {
                     index: item.index,
-                    icon: iconMap[authclient.device] || 'unknown',
-                    name: item.name,
-                    online: (false !== item.online),  // 设备列表中的设备都是在线的
-                    ontime: this.formatTime(authclient.ontime),
-                    ip: authclient.ip,
-                    auth_type: authclient.auth_type,
-                    phone : authclient.phone,
-                    access_time : authclient.access_time,
-                    mac: mac,
+                    icon: iconMap[client.device] || 'unknown',
+                    name: client.hostname,
+                    online: (false !== item.online),
+                    ontime: this.formatTime(client.ontime),
+                    ip: item.ip, 
+                    auth_type: item.auth_type,
+                    phone : item.phone,
+                    access_time : item.access_time,
+                    mac: item.mac,
                 }
             }),
         });
@@ -147,7 +147,7 @@ export default class AuthUserList extends React.Component{
             )
         }, {
             title: '设备名称',
-            width: 300,
+            width: 250,
             render: (text, record) => (
                 <div>
                     <div style={{
@@ -173,7 +173,7 @@ export default class AuthUserList extends React.Component{
             )
         }, {
             title: 'IP/MAC地址',
-            width: 220,
+            width: 260,
             render: (text, record) => (
                 <span>
                     {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
@@ -197,7 +197,7 @@ export default class AuthUserList extends React.Component{
         },{
             title: '接入时间',
             dataIndex: 'access_time',
-            width: 210,
+            width: 240,
             render : (text, record) => (
                 <span>{record.access_time}</span>
             )

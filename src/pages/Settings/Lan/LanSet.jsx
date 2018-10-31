@@ -204,8 +204,10 @@ export default class Lan extends React.Component {
                 Loading.close();
             }
             return;
+        }else{
+            message.error(error[errcode] || '配置保存失败' );
+            Loading.close();
         }
-        message.error(error[errcode] || '配置保存失败' );
     }
 
     componentDidMount() {
