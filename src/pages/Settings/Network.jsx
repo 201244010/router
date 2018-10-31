@@ -523,10 +523,10 @@ export default class NETWORK extends React.Component {
                             dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                     </section>
-                    <section className="wifi-setting-save">
-                            <Button className="wifi-setting-button" type="primary" disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
-                    </section>
                 </Form>
+                <section className="save">
+                            <Button type="primary" size='large' style={{ width: 320, margin: "20px 60px 30px" }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
+                </section>
             </div>
         );
     }
