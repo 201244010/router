@@ -272,7 +272,7 @@ export default class NonAuth extends React.Component{
                 whiteList: whites.map(item => {
                     return {
                         index: item.index,
-                        icon: 'unknown',
+                        icon: iconMap[item.device] || 'unknown',
                         name: item.name,
                         mac: item.mac.toUpperCase(),
                     }

@@ -92,6 +92,7 @@ export const DIRECTIVE = {
     AUTH_WEIXIN_LOGO: '0x2086',
     AUTH_WEIXIN_BACKGROUND: '0x2087',
     AUTH_PORTAL: '0x2088',
+    AUTH_ENABLE_MSG: '0x208a',
     
     //系统升级
     FIRMWARE_GET : '0x2071',

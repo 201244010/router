@@ -16,6 +16,8 @@ export default class SmsAuth extends React.Component{
     }
     
     state = {
+        logoRandom: Math.random(),
+        BgRandom: Math.random(),
         enable : false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -46,7 +48,8 @@ export default class SmsAuth extends React.Component{
         watchValue: '1',
         smsLogoFileList: [],
         smsBgFileList: [],
-        loading: false
+        loading: false,
+        saveDisabled: false
     }
 
     handleSmsLogoChange = (info) => {
@@ -63,7 +66,7 @@ export default class SmsAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ smsLogoFileList: fileList });
+        this.setState({ smsLogoFileList: fileList, logoRandom: Math.random()});
     }
 
     handleSmsBgChange = (info) => {
@@ -80,7 +83,7 @@ export default class SmsAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ smsBgFileList: fileList });
+        this.setState({ smsBgFileList: fileList, BgRandom: Math.random() });
     }
 
     beforeUpload = (file) => {
@@ -92,11 +95,32 @@ export default class SmsAuth extends React.Component{
         return false;
     }  
 
-    onEnableChange = type =>{
-        this.setState({
-            enable : type,
-            disableType:!type
-        });
+    checkSaveDisabled = () =>{
+        const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.statement, this.state.codeExpired, this.state.accessKeyId, this.state.accessKeySecret, this.state.templateCode, this.state.signName ];
+        const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.statementTip, this.state.codeExpiredTip, this.state.accessKeyIdTip, this.state.accessKeySecretTip, this.state.templateCodeTip, this.state.signNameTip ];
+        if(this.state.enable === false){
+            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
+                this.setState({
+                    saveDisabled: true
+                });
+            }else{
+                this.setState({
+                    saveDisabled: false
+                });
+            }       
+        }else{
+            for(let i = 0; i < field.length; i++){
+                if(field[i] === '' || fieldTip[i] !== '' ){
+                    this.setState({
+                        saveDisabled: true
+                    });
+                    return ;
+                }
+            }
+            this.setState({
+                saveDisabled: false
+            })
+        }
     }
 
     onChange = (name,value) =>{
@@ -136,13 +160,52 @@ export default class SmsAuth extends React.Component{
         this.setState({
             [name] : value,
             [name + 'Tip']: tip 
-        });
+        },()=>{this.checkSaveDisabled()});
     }
+
+    fetchWeChatAuthInfo = async() =>{
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_WEIXIN_CONFIG_GET',
+            }]
+            );
+        let { errcode,data } = response;
+        if(errcode == 0){
+            this.weixin =data[0].result.weixin;
+            return this.weixin.enable === '1';
+        }else{
+            return '微信认证信息获取失败';
+        }
+        
+    }
+
+    onEnableChange = type =>{
+        if(type === true){
+            this.fetchWeChatAuthInfo().then(response =>{
+                if(response === false){
+                    this.setState({
+                        enable : type,
+                        disableType:!type
+                    },()=>{this.checkSaveDisabled()});
+                }else if(response === '微信认证信息获取失败'){
+                    Modal.warning({ title: '提示', content: '微信认证信息获取失败，不可以改变状态！' });
+                }else{
+                    Modal.warning({ title: '提示', content: '微信认证和短信认证无法同时开启！' });
+                }
+            });    
+        }else{
+            this.setState({
+                enable : type,
+                disableType:!type
+            },()=>{this.checkSaveDisabled()});
+        }
+    }
+
 
     onSelectChange = (name, value) =>{
         this.setState({
             [name]: value
-        });
+        },()=>{this.checkSaveDisabled()});
     }
 
     //生效SSID 的 Select 方式，下个版本会用，注释保留
@@ -173,7 +236,7 @@ export default class SmsAuth extends React.Component{
     onWatchValueChange = e =>{
         this.setState({
             watchValue : e.target.value
-        });
+        },()=>{this.checkSaveDisabled()});
         
     }
 
@@ -227,8 +290,7 @@ export default class SmsAuth extends React.Component{
         Modal.error({title  : '短信认证的信息获取失败', content : message});
     }
 
-    submit = async() =>{
-        this.setState({ loading: true });
+    dataSet = async() =>{
         this.sms.enable = this.state.enable == true? '1' : '0';
         this.sms.online_limit =this.state.onlineLimit;
         this.sms.idle_limit = this.state.idleLimit;
@@ -241,6 +303,13 @@ export default class SmsAuth extends React.Component{
         this.sms.access_key_secret = this.state.accessKeySecret;
         this.sms.template_code = this.state.templateCode;
         this.sms.sign_name = this.state.signName;
+        if( this.state.enable === true){
+            common.fetchApi(
+                [{
+                    opcode: 'AUTH_ENABLE_MSG'
+                }]
+            );
+        }
         let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_SHORTMESSAGE_CONFIG_SET',
@@ -256,12 +325,31 @@ export default class SmsAuth extends React.Component{
         this.setState({ loading: false });
     }
 
+    submit = async() =>{
+        this.setState({ loading: true });
+        if(this.state.enable === true){
+            Modal.confirm({
+                title: '提示',
+                content: '短信认证开启后，顾客Wi-Fi密码将被清空，确定继续？',
+                onOk:this.dataSet,
+                onCancel(){},
+                cancelText: '取消',
+                okText: '确定',
+                centered: true    
+            });
+            this.setState({ loading: false });
+        }else{
+            this.dataSet();
+        }
+    }
+
     componentDidMount(){
-        this.smsAuthInfo();
+        const response = this.smsAuthInfo();
+        response.then(this.checkSaveDisabled());
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading } = this.state;
+        const { BgRandom, logoRandom ,enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, statement, statementTip, codeExpired, codeExpiredTip, serverProvider, accessKeyId, accessKeyIdTip, accessKeySecret, accessKeySecretTip, templateCode, templateCodeTip, signName, signNameTip, children, disableType, watchValue, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -296,13 +384,13 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleSmsLogoChange} name='smsLogo' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleSmsLogoChange} name='file' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png</span>
-                                <Upload  onChange={this.handleSmsBgChange} name='smsBg' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload  onChange={this.handleSmsBgChange} name='file' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
@@ -340,11 +428,41 @@ export default class SmsAuth extends React.Component{
                             </RadioGroup>
                             {(watchValue == '1')?
                                 (
-                                    <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
-                                        <div style={{paddingLeft:20,height:383}}>
-                                            <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
-                                            <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
-                                            <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
+                                    <div style={{
+                                        display:'block',
+                                        width:325,
+                                        height:488,
+                                        border:'1px solid grey',
+                                        borderRadius:8,
+                                        marginTop:25,padding:'34px 0 0 0',
+                                        color:'#FFFFFF',
+                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundRepeat:'no-repeat', 
+                                        backgroundPosition:'center',
+                                        }}>
+                                        <div style={{
+                                            paddingLeft:20,
+                                            height:422
+                                            }}>
+                                            <div style={{
+                                                width:52,
+                                                height:52,
+                                                border:'2px solid #FFFFFF',
+                                                borderRadius:26,
+                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundRepeat:'no-repeat', 
+                                                backgroundPosition:'center',
+                                                }}></div>
+                                            <div style={{
+                                                minHeight:25,
+                                                marginTop:17,
+                                                fontSize:18
+                                                }}>{logo}</div>
+                                            <div style={{
+                                                minHeight:33,
+                                                marginTop:18,
+                                                fontSize:24
+                                                }}>“{welcome}”</div>
                                             <div style={{width:286,height:40,marginTop:18,borderRadius:8,padding:10,backgroundColor:'#FFFFFF'}}>
                                                 <CustomIcon type='number'  size={20} style={{marginRight:6}}/><span style={{fontSize:12,color:'#333C4F'}}>请输入手机号</span>
                                             </div>
@@ -362,23 +480,46 @@ export default class SmsAuth extends React.Component{
                                         <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                     </div>
                                 ):(
-                                    <div style={{width:467,height:262,border:'1px solid grey',borderRadius:8,marginTop:20,backgroundColor:'blue',color:'#FFFFFF'}}>
-                                        <div style={{height:251,padding:'36px 175px 0 175px'}}>
-                                            <div style={{width:30,height:30,borderRadius:15,border:'1px solid #FFFFFF'}}></div>
-                                            <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',transform:'scale(0.33,0.33)'}}>{logo}</div>
-                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',transform:'scale(0.33,0.33)'}}>“{welcome}”</div>
-                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
-                                                <CustomIcon type='number'  size={24} style={{marginRight:12,transform:'scale(0.33,0.33)'}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入手机号</span>
+                                    <div style={{
+                                        position:'absolute',
+                                        top:175,
+                                        left:60, 
+                                        width:1401,
+                                        height:786,
+                                        border:'3px solid grey',
+                                        borderRadius:24,
+                                        marginTop:60,
+                                        color:'#FFFFFF',
+                                        transform:'scale(0.33,0.33)',
+                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundRepeat:'no-repeat', 
+                                        backgroundSize:'100% 100%'
+                                        }}>
+                                        <div style={{height:747,padding:'108px 525px 0 525px'}}>
+                                            <div style={{
+                                                width:90,
+                                                height:90,
+                                                borderRadius:45,
+                                                border:'3px solid #FFFFFF',
+                                                margin:'0 auto 0',
+                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundRepeat:'no-repeat', 
+                                                backgroundPosition:'center',
+                                                }}></div>
+                                            <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',textAlign:'center'}}>{logo}</div>
+                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',textAlign:'center'}}>“{welcome}”</div>
+                                            <div style={{width:348,height:48,marginTop:36,borderRadius:6,padding:12,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='number'  size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F'}}>请输入手机号</span>
                                             </div>
-                                            <div style={{width:116,height:16,marginTop:12,borderRadius:2,padding:4,backgroundColor:'#FFFFFF'}}>
-                                                <CustomIcon type='verification' size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>请输入验证码</span>
-                                                <span style={{float:'right',fontSize:18,color:'#333C4F',transform:'scale(0.33,0.33)'}}>获取验证码</span>
+                                            <div style={{width:348,height:48,marginTop:36,borderRadius:6,padding:12,backgroundColor:'#FFFFFF'}}>
+                                                <CustomIcon type='verification' size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F'}}>请输入验证码</span>
+                                                <span style={{float:'right',fontSize:18,color:'#333C4F'}}>获取验证码</span>
                                             </div>
                                             <div style={{marginTop:27}}>
-                                                <Button type="primary" style={{width:348,height:48,fontSize:18,borderRadius:6,transform:'scale(0.33,0.33)'}}><span style={{transform:'scale(0.33,0.33)'}}>连接Wi-Fi</span></Button>
+                                                <Button type="primary" style={{width:348,height:48,fontSize:18,borderRadius:6}}><span>连接Wi-Fi</span></Button>
                                             </div>
                                             <div>
-                                                <Checkbox checked={true} style={{fontSize:12,color:'#FFFFFF',transform:'scale(0.33,0.33)'}}>我已阅读并同意《上网协议》</Checkbox>
+                                                <Checkbox checked={true} style={{fontSize:12,color:'#FFFFFF'}}>我已阅读并同意《上网协议》</Checkbox>
                                             </div>
                                         </div>
                                         <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
@@ -425,7 +566,7 @@ export default class SmsAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" loading={loading} type="primary" onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" loading={loading} type="primary" disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

@@ -12,9 +12,7 @@ export default class DownloadPage extends Component{
                     <p>下载商米管家APP，支持本地和远程管理路由器，随时随地查看店铺设备状态。</p>
                 </div>
                 <div className='QRcode'>
-                    <div className='QRcode-img'>
-                          
-                    </div>
+                    <img className='QRcode-img' src={require('~/assets/images/qr.png')} />
                     <p>扫码下载APP</p>
                 </div>
             </div>

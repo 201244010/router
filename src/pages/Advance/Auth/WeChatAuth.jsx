@@ -15,6 +15,8 @@ export default class WeChatAuth extends React.Component{
     }
     
     state = {
+        logoRandom: Math.random(),
+        BgRandom: Math.random(),
         enable: false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -43,7 +45,8 @@ export default class WeChatAuth extends React.Component{
         // children: [],
         weixinLogoFileList: [],
         weixinBgFileList: [],
-        loading: false
+        loading: false,
+        saveDisabled: true
     }
     
     handleWeixinLogoChange = (info) => {
@@ -60,7 +63,7 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinLogoFileList: fileList });
+        this.setState({ weixinLogoFileList: fileList, logoRandom: Math.random() });
       }
 
     handleWeixinBgChange = (info) => {
@@ -77,7 +80,7 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinBgFileList: fileList });
+        this.setState({ weixinBgFileList: fileList, BgRandom: Math.random() });
     }
 
     beforeUpload = (file) => {
@@ -89,11 +92,69 @@ export default class WeChatAuth extends React.Component{
         return false;
     }  
     
+    checkSaveDisabled = () =>{
+        const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.loginHint, this.state.statement, this.state.ssid, this.state.shopId, this.state.appId, this.state.secretKey];
+        const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.loginHintTip, this.state.statementTip, this.state.ssidTip, this.state.shopIdTip, this.state.appIdTip, this.state.secretKeyTip];
+        if(this.state.enable === false ){
+            if(field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== ''){
+                this.setState({
+                    saveDisabled: true
+                });
+            }else{
+                this.setState({
+                    saveDisabled: false
+                });
+            }       
+        }else{
+            for(let i = 0; i < field.length; i++){
+                if(field[i] === '' || fieldTip[i] !== '' ){
+                    this.setState({
+                        saveDisabled: true
+                    });
+                    return ;
+                }
+            }
+            this.setState({
+                saveDisabled: false
+            })
+        }
+    }
+
+    smsAuthInfo = async() =>{
+        let response = await common.fetchApi(
+            [{
+                opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET'
+            }]
+        );
+        let { errcode, data } = response;
+        if(errcode == 0){
+            this.sms =data[0].result.sms;
+            return this.sms.enable === '1';
+        }else{
+            return '短信认证信息获取失败'; 
+        }
+    }
+
     onEnableChange = type =>{
-        this.setState({
-            enable : type,
-            disableType:!type
-        })
+        if(type === true){
+            this.smsAuthInfo().then(response =>{
+                if(response === false){
+                    this.setState({
+                        enable : type,
+                        disableType:!type
+                    },()=>{this.checkSaveDisabled()});
+                }else if(response === '短信认证信息获取失败'){
+                    Modal.warning({ title: '提示', content: '短信认证信息获取失败，不可以改变状态！' });
+                }else{
+                    Modal.warning({ title: '提示', content: '微信认证和短信认证无法同时开启！' });
+                }
+            });    
+        }else{
+            this.setState({
+                enable : type,
+                disableType:!type
+            },()=>{this.checkSaveDisabled()});
+        }   
     }
 
     onChange = (name,value) =>{
@@ -142,7 +203,7 @@ export default class WeChatAuth extends React.Component{
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
-        })
+        },()=>{this.checkSaveDisabled()});
     }
 
     //生效SSID Select 方式的 函数
@@ -217,8 +278,7 @@ export default class WeChatAuth extends React.Component{
         Modal.error({title  : '微信认证的信息获取失败', content : message});
     }
 
-    submit =async() =>{
-        this.setState({ loading: true });
+    dataSet = async() =>{
         this.weixin.enable = this.state.enable == true? '1' : '0';
         this.weixin.online_limit =this.state.onlineLimit;
         this.weixin.idle_limit = this.state.idleLimit;
@@ -230,6 +290,13 @@ export default class WeChatAuth extends React.Component{
         this.weixin.shopid = this.state.shopId;
         this.weixin.appid = this.state.appId;
         this.weixin.secretkey = this.state.secretKey;
+        if(this.state.enable === true){
+            common.fetchApi(
+                [{
+                    opcode: 'AUTH_ENABLE_MSG'
+                }]
+            );
+        }
         let response = await common.fetchApi(
             [{
                 opcode: 'AUTH_WEIXIN_CONFIG_SET',
@@ -244,13 +311,32 @@ export default class WeChatAuth extends React.Component{
         Modal.error({title : '微信认证信息设置失败',content : message});
         this.setState({ loading: false });
     }
+    
+    submit = async() =>{
+        this.setState({ loading: true });
+        if(this.state.enable === true){
+            Modal.confirm({
+                title: '提示',
+                content: '微信认证开启后，顾客Wi-Fi密码将被清空，确定继续？',
+                onOk:this.dataSet,
+                onCancel(){},
+                cancelText: '取消',
+                okText: '确定',
+                centered: true    
+            });
+            this.setState({ loading: false });
+        }else{
+            this.dataSet();
+        }
+    }
 
     componentDidMount(){
-        this.fetchWeChatAuthInfo();
+        const response = this.fetchWeChatAuthInfo();
+        response.then(this.checkSaveDisabled());
     }
 
     render(){
-        const { enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading } = this.state;
+        const { BgRandom, logoRandom, enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -285,13 +371,13 @@ export default class WeChatAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleWeixinLogoChange} name='weixinLogo' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleWeixinLogoChange} name='file' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                         <Icon type="upload" /> 上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png</span>
-                                <Upload onChange={this.handleWeixinBgChange} name='weixinBg'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload onChange={this.handleWeixinBgChange} name='file'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
                                             <Icon type="upload" /> 上传背景图
                                         </Button>
@@ -331,9 +417,29 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div style={{display:'block',width:325,height:488,border:'1px solid grey',borderRadius:8,marginTop:25,padding:'73px 0 0 0',backgroundColor:'blue',color:'#FFFFFF'}}>
+                                <div style={{
+                                    display:'block',
+                                    width:325,
+                                    height:488,
+                                    border:'1px solid grey',
+                                    borderRadius:8,
+                                    marginTop:25,
+                                    padding:'73px 0 0 0',
+                                    color:'#FFFFFF',
+                                    backgroundImage:'url('+`/portal/wx_bg.jpg?${BgRandom}`+')',
+                                    backgroundRepeat:'no-repeat', 
+                                    backgroundPosition:'center',
+                                    }}>
                                     <div style={{paddingLeft:20,height:383}}>
-                                        <div style={{width:52,height:52,border:'2px solid #FFFFFF',borderRadius:26}}></div>
+                                        <div style={{
+                                            width:52,
+                                            height:52,
+                                            border:'2px solid #FFFFFF',
+                                            borderRadius:26,
+                                            backgroundImage:'url('+`/portal/wx_logo.jpg?${logoRandom}`+')',
+                                            backgroundRepeat:'no-repeat', 
+                                            backgroundPosition:'center',
+                                            }}></div>
                                         <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
                                         <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
                                         <div style={{marginTop:18}}>
@@ -370,7 +476,7 @@ export default class WeChatAuth extends React.Component{
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" loading={loading} onClick={this.submit}>保存</Button>
+                        <Button className="weixin-auth-button" type="primary" loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

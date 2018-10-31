@@ -76,7 +76,7 @@ class Login extends React.Component {
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
                             <FormItem style={{ margin: '45px auto 30px' }}>
-                                <Input placeholder="请输入您的登录密码"
+                                <Input placeholder="请输入您的管理密码"
                                         type="password"
                                         value={this.state.password}
                                         onChange={this.onChange}
@@ -97,14 +97,13 @@ class Login extends React.Component {
                                 onClick={this.post}
                                 style={{ margin: "0 0 10px", width: 320 }}
                                 loading={this.state.loading}>登录</Button>
-                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>忘记密码请按RESET键1秒复位，重新设置路由器 <br/>或通过APP找回密码，无需重新设置路由器 </p>
+                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>忘记密码请按RESET键5秒复位，重新设置路由器</p>
                     </div>
                     <div className="qr">
-                        <img src="QRcode.png"></img>
+                        <img src={require('~/assets/images/qr.png')} />
                         <p>扫描二维码下载APP</p>
                     </div>
                 </div>
-                
         ];
     }
 }

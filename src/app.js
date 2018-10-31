@@ -49,7 +49,7 @@ class PrimaryLayout extends React.Component {
     componentDidMount() {
         // set global mesage conf
         message.config({
-            top: 0,
+            top: 92,
             duration: 2,
             maxCount: 3,
         });
