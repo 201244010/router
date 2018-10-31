@@ -42,7 +42,7 @@ export default class WIFI extends React.Component {
         //5G
         host5Enable:true,
         hostSsid5:'',
-        hostSsid5Passwrod:'',
+        hostSsid5Password:'',
         hostSsid5PasswordDisabled:false,
         pwdForbid5:false,
         hide_ssid5:false,
@@ -65,22 +65,22 @@ export default class WIFI extends React.Component {
         hostSsid24Tip: '',
         hostSsid24PasswordTip: '',
         hostSsid5Tip: '',
-        hostSsid5Tip:'',
+        hostSsid5PasswordTip:'',
         loading: false,
         saveDisabled: false,
     };
 
     checkDisabled =() =>{
-        let checkDisabled24=false,checkDisabled5= false,checkDisabled245= false,checkDisabledGuest= false;
+        let checkDisabled24=false,checkDisabled5= false,checkDisabled245=false,checkDisabledGuest=false;
         if(this.state.host24Enable === true){
-            checkDisabled24 = this.state.hostSsid24Tip !== '' || this.state.hostSsid24PasswordTip !== '' ||
-            typeof(this.state.hostSsid24) === 'undefined' || this.state.hostSsid24 === '';
+            checkDisabled24 = this.state.hostSsid24Tip !== '' || this.state.hostSsid24PasswordTip !== '' || 
+            this.state.hostSsid24 === '';
         }else{
             checkDisabled24 = false;
         }
         if(this.state.host5Enable === true){
-            checkDisabled5 = this.state.hostSsid5Tip !== '' || this.state.hostSsid5PasswrodTip !== '' || 
-            typeof(this.state.hostSsid5) === 'undefined' || this.state.hostSsid5 === '';
+            checkDisabled5 = this.state.hostSsid5Tip !== '' || this.state.hostSsid5PasswordTip !== '' || 
+            this.state.hostSsid5 === '';
         }else{
             checkDisabled5 = false;
         }
@@ -90,8 +90,7 @@ export default class WIFI extends React.Component {
             checkDisabled245 = checkDisabled24 || checkDisabled5;
         }
         if(this.state.guestEnable === true){
-            checkDisabledGuest = this.state.guestSsidTip !== '' || this.state.guestStaticPasswordTip !== '' ||
-            typeof(this.state.guestSsid) === 'undefined' || this.state.guestSsid === '';
+            checkDisabledGuest = this.state.guestSsidTip !== '' || this.state.guestStaticPasswordTip !== '' || this.state.guestSsid === '';
         }else{
             checkDisabledGuest = false;
         }
@@ -115,8 +114,8 @@ export default class WIFI extends React.Component {
                 [name]:value
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             break;
-            case 'hostSsid5Passwrod': this.setState({
-                hostSsid5PasswrodTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+            case 'hostSsid5Password': this.setState({
+                hostSsid5PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
                 [name]:value
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             break;
@@ -140,17 +139,18 @@ export default class WIFI extends React.Component {
                         channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
                     }
                     this.setState({
-                        channelList5: channelList5,
-                        saveDisabled:  this.checkDisabled()
+                        channelList5: channelList5,    
                     })
                 }else{
                     for(let i = 0; i < (this.channel_list.band_5g.length - 1); i++){
                         channelList5.push(<Option value={this.channel_list.band_5g[i]} >{this.channel_list.band_5g[i]}</Option>);
                     }
+                    let channel5 =  this.state.channel5;
                     this.setState({
                         channelList5: channelList5,
-                        saveDisabled:  this.checkDisabled()
+                        channel5: ('165' === channel5) ? 'auto' : channel5,
                     })
+                    
                 }
             });
         }
@@ -261,11 +261,11 @@ export default class WIFI extends React.Component {
             hostSsid5PasswordDisabled:!type
         });
         if(type==false){
-            this.setState({ hostSsid5Tip: '',hostSsid5PasswrodTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+            this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
                 hostSsid5Tip: checkStr(this.state.hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                hostSsid5PasswrodTip: checkStr(this.state.hostSsid5Passwrod, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+                hostSsid5PasswordTip: checkStr(this.state.hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
         }
     }
@@ -278,13 +278,13 @@ export default class WIFI extends React.Component {
         if(e.target.checked == true){
             this.setState({
                 encryption5 : 'none',
-                hostSsid5PasswrodTip: '',
-                hostSsid5Passwrod: '',
+                hostSsid5PasswordTip: '',
+                hostSsid5Password: '',
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
                 encryption5 : 'psk-mixed/ccmp+tkip',
-                hostSsid5PasswrodTip: checkStr(this.state.hostSsid5Passwrod, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
+                hostSsid5PasswordTip: checkStr(this.state.hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }
     } 
@@ -345,7 +345,7 @@ export default class WIFI extends React.Component {
         //5G
         this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
         this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
-        this.hostWireLess.band_5g.password = btoa(this.state.hostSsid5Passwrod);
+        this.hostWireLess.band_5g.password = btoa(this.state.hostSsid5Password);
         this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
         this.hostWireLess.band_5g.encryption = this.state.encryption5;
         this.hostWireLess.band_5g.htmode = this.state.htmode5;
@@ -445,7 +445,7 @@ export default class WIFI extends React.Component {
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
-                hostSsid5Passwrod : this.hostWireLess.band_5g.encryption == 'none' ? '' : atob(this.hostWireLess.band_5g.password),
+                hostSsid5Password : this.hostWireLess.band_5g.encryption == 'none' ? '' : atob(this.hostWireLess.band_5g.password),
                 hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
@@ -478,8 +478,8 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Passwrod, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
-         hostSsid5Tip, hostSsid5PasswrodTip, loading, saveDisabled } = this.state;
+        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
+         hostSsid5Tip, hostSsid5PasswordTip, loading, saveDisabled } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -589,9 +589,9 @@ export default class WIFI extends React.Component {
                                         <li><label>Wi-Fi密码</label></li>
                                         <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>不设密码</Checkbox></li>
                                     </ul>
-                                    <FormItem type="small" showErrorTip={hostSsid5PasswrodTip} style={{ width : 320}}>
-                                        <Input type="password" maxLength={32} disabled={hostSsid5PasswordDisabled} value={hostSsid5Passwrod} onChange={(value)=>this.onChange('hostSsid5Passwrod',value)} />
-                                        <ErrorTip>{hostSsid5PasswrodTip}</ErrorTip>
+                                    <FormItem type="small" showErrorTip={hostSsid5PasswordTip} style={{ width : 320}}>
+                                        <Input type="password" maxLength={32} disabled={hostSsid5PasswordDisabled} value={hostSsid5Password} onChange={(value)=>this.onChange('hostSsid5Password',value)} />
+                                        <ErrorTip>{hostSsid5PasswordTip}</ErrorTip>
                                     </FormItem>  
                                     <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting5}>
                                         更多设置 <CustomIcon type={moreSettingType5} size={14}/>
