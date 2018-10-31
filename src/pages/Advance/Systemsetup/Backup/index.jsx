@@ -57,21 +57,17 @@ export default class Backup extends React.Component{
     }
 
     cloudBackup = async () => {
-        const {filename} = this.state;
-        this.setState({
-            backupCloud : true,
-            backupDisable : filename === '' ? true : false,
-        });
-        
+        const {filename} = this.state; 
         let response = await common.fetchApi({
             opcode : 'SYSTEMTOOLS_CLOUD_LIST'
         })
-        
         let {errcode, data} = response;
         if(errcode == 0){
             let result = data[0].result.configlist;
             let sortObj = result.sort(this.compare('id'))
             this.setState({
+                backupCloud : true,
+                backupDisable : filename === '' ? true : false,
                 cloudList : sortObj.map(item => {
                     return Object.assign({}, item)
                 }),
@@ -90,9 +86,6 @@ export default class Backup extends React.Component{
     }
 
     cloudRecover = async () => {
-        this.setState({
-            recoverCloud : true
-        })
         let response = await common.fetchApi({
             opcode : 'SYSTEMTOOLS_CLOUD_LIST'
         })
@@ -102,6 +95,7 @@ export default class Backup extends React.Component{
             let result = data[0].result.configlist;
             let sortObj = result.sort(this.compare('id'))
             this.setState({
+                recoverCloud : true,
                 cloudList : sortObj.map(item => {
                     
                     return Object.assign({}, item)
@@ -354,8 +348,10 @@ export default class Backup extends React.Component{
         return (
             <div className="backup-restore">
                 <Form>
-                    <section>
+                    <section style={{marginTop:10}}>
                         <PanelHeader title="备份" checkable={false} onChange={{}} />
+                    </section>
+                    <section>
                         <ul className='backup-list'>
                             <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、黑名单</Checkbox></li>
                             <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>

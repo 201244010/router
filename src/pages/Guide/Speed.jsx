@@ -85,11 +85,11 @@ export default class Speed extends React.Component {
     }
 
   //  手动配速  
-    configure = async (upband,downband) => {
+    configure = async (upband,downband,speedtest) => {
         let state = this.state;
         let upBandWidth = parseInt(state[upband]) * 1024 + '';
         let downBandWidth = parseInt(state[downband]) * 1024 + '';
-        let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth, enable : true})};
+        let data = {qos : Object.assign(this.qos || {}, {up_bandwidth : upBandWidth, down_bandwidth : downBandWidth, source : speedtest , enable : true})};
         await common.fetchApi(
                 {
                     opcode: 'QOS_SET',
@@ -264,7 +264,7 @@ const SpeedAutoBoard = props => {
                 </div>
             </div>
             <div className="button-wrap">
-                <Button type="primary" size='large' style={{ width : "100%" }} onClick={() => props.configure('autoUpband','autoDownband')}>下一步</Button>
+                <Button type="primary" size='large' style={{ width : "100%" }} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                 </div>
@@ -289,7 +289,7 @@ const SpeedManualConfig = props => {
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
             <FormItem label="#">
-        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={() => props.configure('upBandWidth','downBandWidth')}>下一步</Button>
+        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={() => props.configure('upBandWidth','downBandWidth','manual')}>下一步</Button>
             </FormItem>
             <FormItem label="#" style={{ marginTop : -30 }}>
                 <div className="help">
