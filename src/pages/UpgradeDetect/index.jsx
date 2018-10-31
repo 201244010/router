@@ -14,12 +14,12 @@ export default class UpdateDetect extends React.Component{
     }
 
     static getDerivedStateFromProps(){
-        const pathname = location.pathname;
-        const guide = ['/welcome', 'guide'].some(url => {
-            return pathname.indexOf(url) > -1;
+        const path = location.pathname;
+        const guide = ['/welcome', '/guide'].some(url => {
+            return path.indexOf(url) > -1;
         });
 
-        return {guide};
+        return { guide };
     }
 
     cancle = () => {
@@ -36,8 +36,7 @@ export default class UpdateDetect extends React.Component{
     }
 
     componentDidMount(){
-        let {guide} = this.state;
-        if(!guide){
+        if (!this.state.guide){
             this.getInfo();
         }
     }
@@ -45,16 +44,20 @@ export default class UpdateDetect extends React.Component{
     getInfo = async () => {
         let response = await common.fetchApi({
             opcode : 'FIRMWARE_GET'
-        })
-        let {data,errcode} =response;
-        let result = data[0].result.upgrade;
-        if(errcode === 0){
+        });
+
+        // 防止 Default组件重定向到 guide 显示升级弹窗提示
+        if (this.state.guide) {
+            return;
+        }
+
+        let {data, errcode} = response;
+        if (0 === errcode) {
+            let { newest_version, release_log } = data[0].result.upgrade;
             this.setState({
-                update : result.newest_version === '' ? false : true,
-                releaseLog : result.release_log,
-            })
-        }else{
-            Modal.error({title : '获取路由器当前版本信息和最新版本信息失败'});
+                update : newest_version !== '',
+                releaseLog : release_log,
+            });
         }
     }
 
