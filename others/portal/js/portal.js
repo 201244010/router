@@ -14,7 +14,6 @@ var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var inputsElement = document.getElementById('inputs');
 var logoElement = document.getElementById('logo');
-var connectingElement = document.getElementById('connecting');
 var agreementElement = document.getElementById('agreement');
 var lawMaskElement = document.getElementById('lawMask');
 var lawContentElement = document.getElementById('lawContent');
@@ -44,7 +43,6 @@ window.onload = function () {
                         data: weixin
                     };
                 } else if (Number(sms.enable)) {
-                    connectingElement.style.display = 'block';
                     inputsElement.style.display = 'block';
                     smsDataToPage(sms);
                     enable = {
