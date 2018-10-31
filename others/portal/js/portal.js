@@ -14,7 +14,6 @@ var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var inputsElement = document.getElementById('inputs');
 var logoElement = document.getElementById('logo');
-var connectingElement = document.getElementById('connecting');
 var agreementElement = document.getElementById('agreement');
 var lawMaskElement = document.getElementById('lawMask');
 var lawContentElement = document.getElementById('lawContent');
@@ -44,7 +43,6 @@ window.onload = function () {
                         data: weixin
                     };
                 } else if (Number(sms.enable)) {
-                    connectingElement.style.display = 'block';
                     inputsElement.style.display = 'block';
                     smsDataToPage(sms);
                     enable = {
@@ -78,13 +76,7 @@ iKnowElement.addEventListener('click', function () {
 
 mobileInput.addEventListener('input', function () {
     mobileInput.value = mobileInput.value.replace(/[^\d]/g, '');
-    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
-        connectBtn.classList.remove('btn-disabled');
-        btnDisabled = false;
-    } else {
-        connectBtn.classList.add('btn-disabled');
-        btnDisabled = true;
-    }
+    canConnect();
 }, false);
 
 mobileInput.addEventListener('focus', function () {
@@ -113,13 +105,7 @@ cleanIcon.addEventListener('click', function () {
 
 codeInput.addEventListener('input', function () {
     codeInput.value = codeInput.value.replace(/[^\d]/g, '');
-    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
-        connectBtn.classList.remove('btn-disabled');
-        btnDisabled = false;
-    } else {
-        connectBtn.classList.add('btn-disabled');
-        btnDisabled = true;
-    }
+    canConnect();
 }, false);
 
 codeInput.addEventListener('focus', function () {
@@ -197,6 +183,7 @@ codeGetter.addEventListener('click', function () {
 
 protocol.addEventListener('click', function () {
     agreeProtocol = !agreeProtocol;
+    canConnect();
 }, false);
 
 connectBtn.addEventListener('click', function () {
@@ -339,4 +326,14 @@ function parseUrl(name) {
     var url = location.search.slice(0);
     var reg = new RegExp(name + '\=([^&]+)'), ret = reg.exec(url);
     return ret ? ret[1] : null;
+}
+
+function canConnect() {
+    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+        connectBtn.classList.remove('btn-disabled');
+        btnDisabled = false;
+    } else {
+        connectBtn.classList.add('btn-disabled');
+        btnDisabled = true;
+    }
 }

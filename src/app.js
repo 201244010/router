@@ -34,13 +34,16 @@ class PrimaryLayout extends React.Component {
     static getDerivedStateFromProps() {
         const pathname = location.pathname;
         const logined = document.cookie.length > 0;
+
+        let hasVisited = '0';
         try {
-            const hasVisited = window.sessionStorage.getItem('__visited__');
-            if (hasVisited !== '1' && !logined && (brower.android || brower.ios)) {
-                window.location.href = '/mobile/index.html';
-            }
+            hasVisited = window.sessionStorage.getItem('__visited__');
         } catch (e) {
+            hasVisited = '0';
             alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
+        }
+        if (hasVisited !== '1' && (brower.android || brower.ios)) {
+            window.location.href = '/mobile/index.html';
         }
 
         return { pathname, logined };
