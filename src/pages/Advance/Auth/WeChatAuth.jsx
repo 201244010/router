@@ -15,8 +15,8 @@ export default class WeChatAuth extends React.Component{
     }
     
     state = {
-        logoRandom: '',
-        BgRandom: '',
+        logo_img: '',
+        bg_img: '',
         enable: false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -48,6 +48,17 @@ export default class WeChatAuth extends React.Component{
         loading: false,
         saveDisabled: false
     }
+
+    updateImg = async (key) => {
+        let response = await common.fetchApi({ opcode: 'AUTH_WEIXIN_CONFIG_GET' });
+        let { errcode, data } = response;
+        if (errcode == 0) {
+            const img = data[0].result.weixin[key];
+            this.setState({
+                [key]: img
+            })
+        }
+    }
     
     handleWeixinLogoChange = (info) => {
         let fileList = info.fileList;
@@ -63,7 +74,9 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinLogoFileList: fileList, logoRandom: Math.random() });
+        this.setState({ weixinLogoFileList: fileList }, () => {
+            this.updateImg('logo_img');
+        });
       }
 
     handleWeixinBgChange = (info) => {
@@ -80,7 +93,9 @@ export default class WeChatAuth extends React.Component{
             }
             return false;
         });
-        this.setState({ weixinBgFileList: fileList, BgRandom: Math.random() });
+        this.setState({ weixinBgFileList: fileList }, () => {
+            this.updateImg('bg_img');
+        });
     }
 
     beforeUpload = (file) => {
@@ -240,8 +255,8 @@ export default class WeChatAuth extends React.Component{
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
                 logo : this.weixin.logo_info,
-                logoRandom : this.weixin.logo_img,
-                BgRandom: this.weixin.bg_img,
+                logo_img : this.weixin.logo_img,
+                bg_img: this.weixin.bg_img,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
                 statement : this.weixin.statement,
@@ -331,7 +346,7 @@ export default class WeChatAuth extends React.Component{
     }
 
     render(){
-        const { BgRandom, logoRandom, enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
+        const { bg_img, logo_img, enable, onlineLimit, onlineLimitTip, idleLimit, idleLimitTip, selectedSsid, logo, logoTip, welcome, welcomeTip, loginHint, loginHintTip, statement,  statementTip, ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, children, disableType, loading, saveDisabled } = this.state;
         
         return (
             <div className="auth">
@@ -420,7 +435,7 @@ export default class WeChatAuth extends React.Component{
                                     marginTop:25,
                                     padding:'73px 0 0 0',
                                     color:'#FFFFFF',
-                                    backgroundImage:'url('+{BgRandom}+')',
+                                    backgroundImage: `url(${bg_img})`,
                                     backgroundRepeat:'no-repeat',
                                     backgroundSize: 'cover',
                                     backgroundPosition:'center',
@@ -431,7 +446,7 @@ export default class WeChatAuth extends React.Component{
                                             height:52,
                                             border:'2px solid #FFFFFF',
                                             borderRadius:26,
-                                            backgroundImage:'url('+{logoRandom}+')',
+                                            backgroundImage: `url(${logo_img})`,
                                             backgroundRepeat:'no-repeat',
                                             backgroundSize: '100% 100%', 
                                             }}></div>
