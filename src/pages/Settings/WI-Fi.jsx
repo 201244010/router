@@ -4,7 +4,7 @@ import { Checkbox, Select, Button, Radio, Modal } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
-import {checkStr} from '~/assets/common/check';
+import { checkStr ,checkRange } from '~/assets/common/check';
 
 const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
@@ -25,6 +25,7 @@ export default class WIFI extends React.Component {
         guestEnable:true,
         disabledType2:false,
         period : '',
+        periodTip: '',
         displayType:'none',
         //2.4G
         host24Enable:true,
@@ -130,6 +131,11 @@ export default class WIFI extends React.Component {
                 [name]:value
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             break;
+            case 'period': this.setState({
+                periodTip: checkRange(value, { min: 1,max: 72,who: '动态变更周期' }),
+                [name]:value
+            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+            break;
             default: this.setState({
                 [name]:value
             },()=>{
@@ -175,19 +181,20 @@ export default class WIFI extends React.Component {
             guestPasswordDisabled:!type || this.state.guestPwdForbid,
         });
         if(type==false){
-            this.setState({ guestSsidTip: '', guestStaticPasswordTip: '' },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+            this.setState({ guestSsidTip: '', guestStaticPasswordTip: '',periodTip: '' },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             
         }else{
-            if(this.state.guestPwdForbid){
-                
+            if(this.state.guestPwdForbid){ 
                 this.setState({
                     guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
-                    guestStaticPasswordTip: ''
+                    guestStaticPasswordTip: '',
+                    periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
                 },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }else{
                 this.setState({ 
                     guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
-                    guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+                    guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+                    periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
                 },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }      
         }
@@ -361,7 +368,22 @@ export default class WIFI extends React.Component {
 
         let {errcode, message} = response;
         if(errcode == 0){
-            this.setState({ loading : false});
+            let response = await common.fetchApi(
+                [
+                    {
+                        opcode: 'WIRELESS_GET',
+                    }
+                ]
+            );
+            let { errcode, data } = response;
+            if(errcode === 0){
+                let { guest } = data[0].result;
+                this.guestWireLess = guest;
+            }
+            this.setState({ 
+                loading : false,
+                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : atob(this.guestWireLess.password),
+            });
             return;
         }
         Modal.error({ title : 'Wi-Fi设置失败', content : message });
@@ -478,7 +500,7 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
     render(){
-        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
+        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
          hostSsid5Tip, hostSsid5PasswordTip, loading, saveDisabled } = this.state;
         return (
             <div className="wifi-settings">
@@ -649,8 +671,9 @@ export default class WIFI extends React.Component {
                         <section style={{display:displayType}}>
                             <label style={{marginTop:10}}>动态变更周期</label>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="text" value={period} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>    
+                            <FormItem type="small" showErrorTip={periodTip} style={{ width : 320}}>
+                                <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>
+                                <ErrorTip>{periodTip}</ErrorTip>    
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1}}>小时</span>
                             </div>
@@ -670,7 +693,7 @@ export default class WIFI extends React.Component {
                                 <Input type="password" maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                                 <ErrorTip style={{color:'#fb8632'}}>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
-                            <span style={{visibility:'hidden',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
+                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
                             </div>
                         </section>  
                     </section>

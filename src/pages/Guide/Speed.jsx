@@ -69,7 +69,7 @@ export default class Speed extends React.Component {
                     stop : () => this.stop, 
                     interval : 1000 
                 }
-            ).catch(ex => {});
+            );
             this.setState({ speedTestdone : true, showModal : false });
             let { errcode, message } = response;
             if(errcode == 0){

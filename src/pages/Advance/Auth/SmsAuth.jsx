@@ -143,7 +143,7 @@ export default class SmsAuth extends React.Component{
                 func: checkStr(value, { who: '版权声明', min: 1, max: 30 })
             },
             codeExpired:{
-                func: checkRange(value, { min: 30,max: 300,who: '验证码有效期' })
+                func: checkRange(value, { min: 1,max: 30,who: '验证码有效期' })
             },
             accessKeyId:{
                 func: checkStr(value, { who: 'Access Key ID', min: 1, max: 32, type: 'english' })
@@ -556,7 +556,7 @@ export default class SmsAuth extends React.Component{
                         <label>验证码有效期</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
-                                <Input type="text" maxLength={3} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
+                                <Input type="text" maxLength={2} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
                                 <ErrorTip>{codeExpiredTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
