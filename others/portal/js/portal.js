@@ -18,7 +18,6 @@ var agreementElement = document.getElementById('agreement');
 var lawMaskElement = document.getElementById('lawMask');
 var lawContentElement = document.getElementById('lawContent');
 var iKnowElement = document.getElementById('iKnow');
-var logoIcon = document.getElementById('logoIcon');
 var agreeProtocol = true;
 var enable = null;
 var btnDisabled = true;
@@ -63,15 +62,13 @@ window.onload = function () {
 
 agreementElement.addEventListener('click', function () {
     lawMaskElement.classList.remove('not-show');
-    lawContentElement.classList.remove('not-show');
     lawMaskElement.classList.add('show');
-    lawContentElement.classList.add('show');
+    lawContentElement.style.display = 'block';
 }, false);
 iKnowElement.addEventListener('click', function () {
     lawMaskElement.classList.add('not-show');
-    lawContentElement.classList.add('not-show');
     lawMaskElement.classList.remove('show');
-    lawContentElement.classList.remove('show');
+    lawContentElement.style.display = 'none';
 }, false);
 
 mobileInput.addEventListener('input', function () {
@@ -286,14 +283,7 @@ function smsDataToPage(data) {
 function commonDataToPage(data) {
     document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
     document.body.style.backgroundSize = "cover";
-    if (data.logo) {
-        logoIcon.style.display = 'none';
-        logoElement.style.display = 'block';
-        logoElement.src = data.logo;
-    } else {
-        logoElement.style.display = 'none';
-        logoIcon.style.display = 'block';
-    }
+    logoElement.src = data.logo || '../common/imgs/logo.png';
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }
