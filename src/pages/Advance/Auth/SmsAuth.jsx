@@ -52,60 +52,53 @@ export default class SmsAuth extends React.Component{
         saveDisabled: false
     }
 
-    handleSmsLogoChange = (info) => {
-        let fileList = info.fileList;
-    
-        // 1. Limit the number of uploaded files
-        fileList = fileList.slice(-1);
-    
-        //2.Filter successfully uploaded files according to response from server
-        fileList = fileList.filter((file) => {
-            if (file.type == 'image/png' || file.type == 'image/jpeg') {
-                
-                return true;
-            }
-            return false;
-        });
-        this.setState({ smsLogoFileList: fileList }, () => {
-            this.updateImg('logo_img');
-        });
-    }
-
     updateImg = async (key) => {
         let response = await common.fetchApi({ opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET' });
         let { errcode, data } = response;
         if (errcode == 0) {
             const img = data[0].result.sms[key];
             this.setState({
-                [key]: img
+                [key]: `${img}?${Math.random()}`
             })
         }
     }
 
-    handleSmsBgChange = (info) => {
+    handleUploadChange = (info, fileKey, imgKey) => {
         let fileList = info.fileList;
-    
+
         // 1. Limit the number of uploaded files
         fileList = fileList.slice(-1);
-    
+
         //2.Filter successfully uploaded files according to response from server
         fileList = fileList.filter((file) => {
-            if (file.type == 'image/png' || file.type == 'image/jpeg') {
-                
-                return true;
-            }
-            return false;
+            const type = file.type;
+            return (type === 'image/png' || type === 'image/jpeg');
         });
-        this.setState({ smsBgFileList: fileList }, () => {
-            this.updateImg('bg_img');
-        });
+
+        this.setState({ [fileKey]: fileList });
+
+        const file = info.file;
+        switch (file.status) {
+            case 'done':
+                if (0 === file.response.errcode) {
+                    message.success('上传成功');
+                    this.updateImg(imgKey);
+                } else {
+                    message.error('上传失败，请检查图片格式、大小是否符合要求');
+                }
+                break;
+            case 'error':
+                message.error('上传失败，请检查图片格式、大小是否符合要求');
+                break;
+        }
     }
 
     beforeUpload = (file) => {
-        let isImage = file.type;
-        if( isImage === "image/png" || isImage === "image/jpeg" ){    
-        return true;
+        let type = file.type;
+        if (type === "image/png" || type === "image/jpeg") {
+            return true;
         }
+
         message.error('只支持.jpg、.png后缀的图片');
         return false;
     }  
@@ -150,7 +143,7 @@ export default class SmsAuth extends React.Component{
                 func: checkStr(value, { who: '版权声明', min: 1, max: 30 })
             },
             codeExpired:{
-                func: checkRange(value, { min: 30,max: 300,who: '验证码有效期' })
+                func: checkRange(value, { min: 1,max: 30,who: '验证码有效期' })
             },
             accessKeyId:{
                 func: checkStr(value, { who: 'Access Key ID', min: 1, max: 32, type: 'english' })
@@ -264,8 +257,8 @@ export default class SmsAuth extends React.Component{
                 onlineLimit : this.sms.online_limit,
                 idleLimit : this.sms.idle_limit,
                 logo : this.sms.logo_info,
-                logo_img: this.sms.logo_img,
-                bg_img: this.sms.bg_img,
+                logo_img: `${this.sms.logo_img}?${Math.random()}`,
+                bg_img: `${this.sms.bg_img}?${Math.random()}`,
                 welcome : this.sms.welcome,
                 statement : this.sms.statement,
                 codeExpired : this.sms.code_expired,
@@ -394,15 +387,36 @@ export default class SmsAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleSmsLogoChange} name='file' data={{ opcode: '0x2089' }} action={__BASEAPI__} fileList={this.state.smsLogoFileList} multiple={false} uploadTitle={'上传Logo图'} beforeUpload={this.beforeUpload}>
+                                <Upload
+                                    onChange={(file) => {
+                                        this.handleUploadChange(file, 'smsLogoFileList', 'logo_img');
+                                    }}
+                                    name='file' data={{ opcode: '0x2089' }}
+                                    action={__BASEAPI__}
+                                    fileList={this.state.smsLogoFileList}
+                                    multiple={false}
+                                    uploadTitle={'上传Logo图'}
+                                    beforeUpload={this.beforeUpload}
+                                >
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
-                                        <Icon type="upload" /> 上传Logo图
+                                        <Icon type="upload" />上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png；最大上传大小：128KB</span>
-                                <Upload  onChange={this.handleSmsBgChange} name='file' data={{ opcode: '0x2085' }} action={__BASEAPI__} fileList={this.state.smsBgFileList} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload
+                                    onChange={(file) => {
+                                        this.handleUploadChange(file, 'smsBgFileList', 'bg_img');
+                                    }}
+                                    name='file'
+                                    data={{ opcode: '0x2085' }}
+                                    action={__BASEAPI__}
+                                    fileList={this.state.smsBgFileList}
+                                    multiple={false}
+                                    uploadTitle={'上传背景图'}
+                                    beforeUpload={this.beforeUpload}
+                                >
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
-                                            <Icon type="upload" /> 上传背景图
+                                            <Icon type="upload" />上传背景图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png；最大上传大小：512KB</span>
@@ -542,7 +556,7 @@ export default class SmsAuth extends React.Component{
                         <label>验证码有效期</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
-                                <Input type="text" maxLength={3} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
+                                <Input type="text" maxLength={2} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />
                                 <ErrorTip>{codeExpiredTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>

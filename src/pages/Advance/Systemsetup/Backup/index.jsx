@@ -2,7 +2,7 @@ import React from 'react';
 
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import {Checkbox, Button, Modal, Radio, Upload} from 'antd';
+import {Checkbox, Button, Modal, Radio, Upload, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 
@@ -13,9 +13,9 @@ import './backup.scss'
 
 const error = {
     '-1500' : '未绑定商米账号，请先下载商米管家APP进行绑定',
-    '-1501' : '云端响应超时',
-    '-1502' : '云端响应失败',
-    '-1503' : '未找到对应的备份文件'
+    '-1501' : '响应超时，请检查网络连接并重试',
+    '-1502' : '响应超时，请检查网络连接并重试',
+    '-1503' : '抱歉，服务暂时不可用，请稍后再试'
 }
 
 export default class Backup extends React.Component{
@@ -75,7 +75,7 @@ export default class Backup extends React.Component{
 
             return;
         }else{
-            Modal.error({title : '获取备份列表失败',content : error[errcode]});
+            message.error(`获取备份列表失败[${error[errcode]}]`)
         }
     }
 
@@ -104,7 +104,7 @@ export default class Backup extends React.Component{
             });
             return;
         }else{
-            Modal.error({title : '获取备份列表失败',content : error[errcode]});
+            message.error(`获取备份列表失败[${error[errcode]}]`);
         }
     }
 
@@ -141,7 +141,7 @@ export default class Backup extends React.Component{
     postBackupLocal = () => {
         let backup = {};
         backup['basebackup'] = this.state.baseBackup ? 1 : 0;
-        backup['authbackup'] = this.state.authBbaackup ? 1 : 0;
+        backup['authbackup'] = this.state.authBackup ? 1 : 0;
 
         common.fetchApi({
             opcode : 'SYSTEMTOOLS_BACKUP',
@@ -150,7 +150,7 @@ export default class Backup extends React.Component{
             fileLink : true, responseType : 'blob'
         }).then(res => {
             if (res.errcode) {
-                Modal.error({title : '备份到本地失败'});
+                message.error('备份到本地失败');
             }
         }).catch(error => {
             console.log(error);
@@ -203,7 +203,7 @@ export default class Backup extends React.Component{
                                 return;
                             }
                         }else{
-                            Modal.error({title : '获取备份进度失败',content : error[errcode]} );
+                            message.error(`获取备份进度失败${error[errcode]}`)
                         }
                     })
             }else{
@@ -213,7 +213,7 @@ export default class Backup extends React.Component{
                         backupFailTip : '路由器无法连接网络，请检查～'
                     })
                 }else{
-                    Modal.error({title : '无法进行云备份',content : error[errcode]});
+                    message.error(`无法完成操作${error[errcode]}`);
                 }
             }
         })
@@ -238,7 +238,7 @@ export default class Backup extends React.Component{
                         return;
                     }else{
                         Loading.close();
-                        Modal.error({title : '重启失败！'});
+                        message.error('重启失败!');
                         return;
                     }
                 });
@@ -252,7 +252,7 @@ export default class Backup extends React.Component{
             }
         }
         if(info.file.status === 'error'){
-            Modal.error({title : '上传失败'})
+            message.error('上传失败');
         }
     }
 
@@ -317,17 +317,17 @@ export default class Backup extends React.Component{
                                     return;
                                 }else{
                                     Loading.close();
-                                    Modal.error({title : '重启失败！'});
+                                    message.error('重启失败!');
                                 }
                             })
                         }
                     }else{
                         Loading.close();
-                        Modal.error({title : '获取云恢复状态失败'});
+                        message.error('获取云恢复状态失败');
                     }
                 })
             }else{
-                Modal.error({title : '无法进行云恢复', content : error[errcode]});
+                message.error(`无法完成操作${error[errcode]}`);
             }
         })
     }

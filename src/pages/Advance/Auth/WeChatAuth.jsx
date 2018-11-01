@@ -55,62 +55,55 @@ export default class WeChatAuth extends React.Component{
         if (errcode == 0) {
             const img = data[0].result.weixin[key];
             this.setState({
-                [key]: img
+                [key]: `${img}?${Math.random()}`
             })
         }
     }
     
-    handleWeixinLogoChange = (info) => {
+    handleUploadChange = (info, fileKey, imgKey) => {
         let fileList = info.fileList;
-    
-        // 1. Limit the number of uploaded files
-        fileList = fileList.slice(-1);
-    
-        //2.Filter successfully uploaded files according to response from server
-        fileList = fileList.filter((file) => {
-            if (file.type == 'image/png' || file.type == 'image/jpeg') {
-                
-                return true;
-            }
-            return false;
-        });
-        this.setState({ weixinLogoFileList: fileList }, () => {
-            this.updateImg('logo_img');
-        });
-      }
 
-    handleWeixinBgChange = (info) => {
-        let fileList = info.fileList;
-    
         // 1. Limit the number of uploaded files
         fileList = fileList.slice(-1);
-    
+
         //2.Filter successfully uploaded files according to response from server
         fileList = fileList.filter((file) => {
-            if (file.type == 'image/png' || file.type == 'image/jpeg') {
-                
-                return true;
-            }
-            return false;
+            const type = file.type;
+            return (type === 'image/png' || type === 'image/jpeg');
         });
-        this.setState({ weixinBgFileList: fileList }, () => {
-            this.updateImg('bg_img');
-        });
+
+        this.setState({ [fileKey]: fileList });
+
+        const file = info.file;
+        switch (file.status) {
+            case 'done':
+                if (0 === file.response.errcode) {
+                    message.success('上传成功');
+                    this.updateImg(imgKey);
+                } else {
+                    message.error('上传失败，请检查图片格式、大小是否符合要求');
+                }
+                break;
+            case 'error':
+                message.error('上传失败，请检查图片格式、大小是否符合要求');
+                break;
+        }
     }
 
     beforeUpload = (file) => {
-        let isImage = file.type;
-        if( isImage === "image/png" || isImage === "image/jpeg" ){    
-        return true;
+        let type = file.type;
+        if (type === "image/png" || type === "image/jpeg" ){
+            return true;
         }
+
         message.error('只支持.jpg、.png后缀的图片');
         return false;
-    }  
+    }
     
-    checkSaveDisabled = () =>{
+    checkSaveDisabled = () => {
         const field = [ this.state.onlineLimit, this.state.idleLimit, this.state.logo, this.state.welcome, this.state.loginHint, this.state.statement, this.state.ssid, this.state.shopId, this.state.appId, this.state.secretKey];
         const fieldTip = [ this.state.onlineLimitTip, this.state.idleLimitTip, this.state.logoTip, this.state.welcomeTip, this.state.loginHintTip, this.state.statementTip, this.state.ssidTip, this.state.shopIdTip, this.state.appIdTip, this.state.secretKeyTip];
-        if(this.state.enable === false ){    
+        if(this.state.enable === false ){
             this.setState({
                 saveDisabled: field[0] === '' || field[1] === '' || fieldTip[0] !=='' || fieldTip[1] !== '',
             });
@@ -255,8 +248,8 @@ export default class WeChatAuth extends React.Component{
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
                 logo : this.weixin.logo_info,
-                logo_img : this.weixin.logo_img,
-                bg_img: this.weixin.bg_img,
+                logo_img: `${this.weixin.logo_img}?${Math.random()}`,
+                bg_img: `${this.weixin.bg_img}?${Math.random()}`,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
                 statement : this.weixin.statement,
@@ -381,15 +374,37 @@ export default class WeChatAuth extends React.Component{
                         <PanelHeader title = "认证页面设置" checkable={false} />
                         <section className='twosection'>
                             <section>    
-                                <Upload onChange={this.handleWeixinLogoChange} name='file' fileList={this.state.weixinLogoFileList} data={{ opcode: '0x2086' }} action={__BASEAPI__} uploadTitle={'上传Logo图'} multiple={false} beforeUpload={this.beforeUpload}>
+                                <Upload
+                                    onChange={(file) => {
+                                        this.handleUploadChange(file, 'weixinLogoFileList', 'logo_img');
+                                    }}
+                                    name='file'
+                                    fileList={this.state.weixinLogoFileList}
+                                    data={{ opcode: '0x2086' }}
+                                    action={__BASEAPI__}
+                                    uploadTitle={'上传Logo图'}
+                                    multiple={false}
+                                    beforeUpload={this.beforeUpload}
+                                >
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
-                                        <Icon type="upload" /> 上传Logo图
+                                        <Icon type="upload" />上传Logo图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png；最大上传大小：128KB</span>
-                                <Upload onChange={this.handleWeixinBgChange} name='file'  fileList={this.state.weixinBgFileList} data={{ opcode: '0x2087' }}  action={__BASEAPI__} multiple={false} uploadTitle={'上传背景图'} beforeUpload={this.beforeUpload}>
+                                <Upload
+                                    onChange={(file) => {
+                                        this.handleUploadChange(file, 'weixinBgFileList', 'bg_img');
+                                    }}
+                                    name='file'
+                                    fileList={this.state.weixinBgFileList}
+                                    data={{ opcode: '0x2087' }}
+                                    action={__BASEAPI__}
+                                    multiple={false}
+                                    uploadTitle={'上传背景图'}
+                                    beforeUpload={this.beforeUpload}
+                                >
                                     <Button style={{width:130,marginTop:10,marginBottom:5}}>
-                                            <Icon type="upload" /> 上传背景图
+                                        <Icon type="upload" />上传背景图
                                     </Button>
                                 </Upload>
                                 <span>支持扩展名：.jpg .png；最大上传大小：512KB</span>
