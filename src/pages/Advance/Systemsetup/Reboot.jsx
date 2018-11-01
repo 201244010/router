@@ -1,46 +1,56 @@
 import React from 'react';
-import {Button,Icon} from 'antd';
-import CustomModal from '~/components/Modal';
+import { Button, Icon, Modal, message } from 'antd';
 import CustomIcon from '~/components/Icon';
+import { clearAll } from '~/assets/common/cookie';
 
 export default class Reboot extends React.Component{
-
     constructor(props){
         super(props);
     }
 
     state = {
-        visible: false,
         loadingActive:false,
         succeedActive:false,
 
     }
-    
+
     reboot = async() =>{
-        common.fetchApi(
-            [{
-                opcode: 'SYSTEMTOOLS_RESTART'
-            }]
-        ).then((resp) =>{
-            this.setState({visible : false},()=>{this.setState({loadingActive :true},()=>{setTimeout(()=>{this.setState({loadingActive:false,succeedActive:true})},90000)})});
-        });
+        let resp = await common.fetchApi({ opcode: 'SYSTEMTOOLS_RESTART' });
+        const errcode = resp.errcode;
+        if (0 === errcode) {
+            clearAll();
+            this.setState({
+                loadingActive: true
+            });
+
+            setTimeout(() => {
+                this.setState({
+                    loadingActive: false,
+                    succeedActive: true,
+                });
+            }, 90000);
+        } else {
+            message.error(`操作失败[${errcode}]`);
+        }
     }
 
     showModal = () => {
-        this.setState({visible: true,});
-    }
-
-    handleCancel = () => {
-        this.setState({ visible: false });
+        Modal.confirm({
+            centered: true,
+            title: '提示',
+            content: '确定要立即重启路由器？',
+            okText: '立即重启',
+            cancelText: '取消',
+            onOk: this.reboot,
+        });
     }
 
     login = () =>{
         location.href = '/login';
-        this.setState({succeedActive:false});
     }
 
     render(){
-        const {visible,loadingActive,succeedActive} = this.state;
+        const {loadingActive,succeedActive} = this.state;
         return (
             <div>
                 <div style={{marginTop : 6}}>
@@ -48,34 +58,30 @@ export default class Reboot extends React.Component{
                     <section style={{borderTop:0,marginTop:8}} className="weixin-auth-save">
                         <Button style={{width:116}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即重启</Button>
                     </section>
-                    <CustomModal style={{padding : 0}} active={visible}>
-                        <div className='div-header'>
-                            <CustomIcon key="progress-icon2" type="hint" size={14} color='grey'/>
-                            <span style={{marginLeft:8}}>提示</span>
-                        </div>
-                        <div className='div-body'>
-                            <p>确定要立即重启路由器？</p>
-                        </div>
-                        <div className='div-footer'>
-                            <Button key="back" style={{fontSize:12,marginRight:16}} onClick={this.handleCancel}>取消</Button>
-                            <Button key="submit" style={{fontSize:12}} type="primary" onClick={this.reboot}>
-                                立即重启
-                            </Button>
-                        </div>  
-                    </CustomModal>
                 </div>
-                <CustomModal active={loadingActive}>
-                    <Icon key="progress-icon1" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
-                    <h3 key="active-h3">正在重启路由器，请稍候...</h3>
-                    <span style={{color:'#D33419'}}>重启过程中请勿断电！！！</span>
-                </CustomModal>
-                <CustomModal style={{paddingLeft:0,paddingRight:0}} active={succeedActive}>
-                    <CustomIcon key="progress-icon2" type="succeed" size="large" color='#87D068'/>
-                    <h3 style={{marginTop:10}} key="active-h3">重启完成，请重新登录管理界面</h3>
-                    <div style={{borderTop:'1px solid #d8d8d8',marginTop:25}}>
-                        <Button style={{width:160,bottom:-20}} className="weixin-auth-button" type="primary" onClick={this.login}>确定</Button>
-                    </div>
-                </CustomModal>
+                <Modal
+                    visible={loadingActive}
+                    className='recovery-modal'
+                    closable={false}
+                    centered={true}
+                    style={{ textAlign: 'center' }}
+                    footer={null}
+                >
+                    <Icon key="progress-icon1" type="loading" style={{ fontSize: 64, marginBottom: 10, color: "#FB8632" }} spin />
+                    <h3>正在重启路由器，请稍候...</h3>
+                    <span style={{ color: '#D33419' }}>重启过程中请勿断电！！！</span>
+                </Modal>
+                <Modal
+                    visible={succeedActive}
+                    className='recovery-modal'
+                    closable={false}
+                    centered={true}
+                    style={{ textAlign: 'center' }}
+                    footer={[<Button type="primary" onClick={this.login}>确定</Button>]}
+                >
+                    <CustomIcon key="progress-icon2" type="succeed" size={64} color='#87D068' style={{ marginTop: 20 }} />
+                    <h3 style={{ marginTop: 15 }}>重启完成，请重新登录管理界面</h3>
+                </Modal>
         </div>
         );
     }
