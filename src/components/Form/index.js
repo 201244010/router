@@ -245,7 +245,7 @@ class InputGroup extends React.Component {
         let { inputs, focus } = this.state;
         let size = this.props.size;
         let type = this.props.type;
-        let classes = ['ui-input-outline ui-input-group', {focus}];
+        let classes = ['ui-input-outline ui-input-group', { focus }, { disabled: this.props.disabled}];
         if(this.props.size){
             classes.push({[size] : true});
         }
