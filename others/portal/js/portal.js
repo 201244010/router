@@ -50,9 +50,9 @@ window.onload = function () {
                     };
                 } else {
                     inputsElement.style.display = 'none';
-                    document.body.style.background = "url('../common/imgs/bg.png')";
+                    document.body.style.background = "url(../common/imgs/bg.png?r=" + Math.random() + ")";
                     document.body.style.backgroundSize = "cover";
-                    logoElement.src = '../common/imgs/logo.png';
+                    logoElement.src = '../common/imgs/logo.png?r=' + Math.random();
                     showToast('不支持微信及短信方式连接wifi');
                 }
             } else {
@@ -283,7 +283,7 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
+    document.body.style.background = "url(" + ((data.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
     document.body.style.backgroundSize = "cover";
     logoElement.src = (data.logo || '../common/imgs/logo.png') + '?r=' + Math.random();
     descElement.innerText = data.welcome || '欢迎';
