@@ -26,7 +26,7 @@ export default class ClientList extends React.Component {
     handleEdit = async (record) => {
         let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
 
-        Loading.show({ duration: 5 });
+        Loading.show({ duration: 4 });
         let response = await common.fetchApi(
             { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
         );
@@ -37,7 +37,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        Modal.error({ title: '操作失败', content: message });
+        message.error(`操作失败[${errcode}]`);
     }
 
     handleDelete = async (record) => {
@@ -46,7 +46,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        Loading.show({ duration: 5 });
+        Loading.show({ duration: 4 });
         let response = await common.fetchApi(
             { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
@@ -57,7 +57,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        Modal.error({ title: '操作失败', content: message });
+        message.error(`操作失败[${errcode}]`);
     }
 
     handleCancel = () => {

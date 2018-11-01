@@ -21,9 +21,12 @@ class Loading extends React.PureComponent {
 		const duration = this.props.duration;
 		if (duration > 0) {
 			this.timer = setTimeout(() => {
+				close();
+				/*
 				this.setState({
 					visible: 'hidden'
 				});
+				*/
 			}, duration * 1000);
 		}
 	}
