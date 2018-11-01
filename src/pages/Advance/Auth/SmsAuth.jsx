@@ -16,8 +16,8 @@ export default class SmsAuth extends React.Component{
     }
     
     state = {
-        logoRandom: Math.random(),
-        BgRandom: Math.random(),
+        logoRandom: '',
+        BgRandom: '',
         enable : false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -249,6 +249,8 @@ export default class SmsAuth extends React.Component{
                 onlineLimit : this.sms.online_limit,
                 idleLimit : this.sms.idle_limit,
                 logo : this.sms.logo_info,
+                logoRandom: this.sms.logo_img,
+                BgRandom: this.sms.bg_img,
                 welcome : this.sms.welcome,
                 statement : this.sms.statement,
                 codeExpired : this.sms.code_expired,
@@ -428,7 +430,7 @@ export default class SmsAuth extends React.Component{
                                         borderRadius:8,
                                         marginTop:25,padding:'34px 0 0 0',
                                         color:'#FFFFFF',
-                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundImage:'url('+{BgRandom}+')',
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         backgroundPosition:'center',
@@ -442,7 +444,7 @@ export default class SmsAuth extends React.Component{
                                                 height:52,
                                                 border:'2px solid #FFFFFF',
                                                 borderRadius:26,
-                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundImage:'url('+{logoRandom}+')',
                                                 backgroundRepeat:'no-repeat',
                                                 backgroundSize: '100% 100%', 
                                                 }}></div>
@@ -483,7 +485,7 @@ export default class SmsAuth extends React.Component{
                                         marginTop:60,
                                         color:'#FFFFFF',
                                         transform:'scale(0.33,0.33)',
-                                        backgroundImage:'url('+`/portal/sms_bg.jpg?${BgRandom}`+')',
+                                        backgroundImage:'url('+{BgRandom}+')',
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         }}>
@@ -494,7 +496,7 @@ export default class SmsAuth extends React.Component{
                                                 borderRadius:45,
                                                 border:'3px solid #FFFFFF',
                                                 margin:'0 auto 0',
-                                                backgroundImage:'url('+`/portal/sms_logo.jpg?${logoRandom}`+')',
+                                                backgroundImage:'url('+{logoRandom}+')',
                                                 backgroundRepeat:'no-repeat',
                                                 backgroundSize: '100% 100%', 
                                                 }}></div>
