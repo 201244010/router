@@ -158,7 +158,7 @@ export default class Lan extends React.Component {
             return;
         }
 
-        Modal.error({ title: '获取局域网配置指令异常', message });
+        message.error(`获取局域网配置指令异常[${errcode}]`);
     }
 
     submitAll = async () => {

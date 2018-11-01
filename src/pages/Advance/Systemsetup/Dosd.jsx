@@ -2,7 +2,7 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Checkbox, Popconfirm, Modal } from 'antd';
+import { Button, Table, Checkbox, Popconfirm, message } from 'antd';
 
 const { FormItem } = Form;
 
@@ -44,7 +44,7 @@ export default class Dosd extends React.Component {
         if (errcode == 0) {
             return;
         }
-        Modal.error({ title: 'DoS设置失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     fetchDosInfo = async () => {
@@ -55,7 +55,7 @@ export default class Dosd extends React.Component {
 
         let { errcode, data, message } = response;
         if (0 !== errcode) {
-            Modal.error({ title: 'DoS指令异常', message });
+            message.error(`DoS指令异常[${errcode}]`);
             return;
         }
 
@@ -78,16 +78,17 @@ export default class Dosd extends React.Component {
             data: {
                 block_list: [record]
             }
+        }, {
+            loading: true
         });
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            const blockList = [...this.state.blockList];
-            this.setState({ blockList: blockList.filter(item => item.index !== record.index) });
+            this.fetchDosInfo();
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`删除失败[${errcode}]`);
     }
 
     onChange = (key) => {

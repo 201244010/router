@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Popconfirm, Modal, Checkbox } from 'antd';
+import { Button, Table, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
@@ -108,16 +108,17 @@ export default class Bootdevice extends React.Component {
                     mac: record.mac,
                 }]
             }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            const whiteList = [...this.state.whiteList];
-            this.setState({ whiteList: whiteList.filter(item => item.index !== record.index) });
+            this.fetchBasic();
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`删除失败[${errcode}]`);
     }
 
     handleSelect = (mac) => {
@@ -156,6 +157,8 @@ export default class Bootdevice extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { white_list: white_list }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -174,7 +177,7 @@ export default class Bootdevice extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onEditOk = async () => {
@@ -191,6 +194,8 @@ export default class Bootdevice extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { white_list: white_list }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -206,7 +211,7 @@ export default class Bootdevice extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -258,7 +263,7 @@ export default class Bootdevice extends React.Component {
 
         let { errcode, data, message } = response;
         if (0 !== errcode) {
-            Modal.error({ title: '获取列表指令异常', message });
+            message.error(`获取列表指令异常[${errcode}]`);
             return;
         }
 

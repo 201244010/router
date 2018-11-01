@@ -27,6 +27,7 @@ export default class Blacklist extends React.Component {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
         disabled: true,
+        disAddBtn: true,
         editLoading: false,
         editShow: false,
         name: '',
@@ -94,16 +95,17 @@ export default class Blacklist extends React.Component {
                     mac: record.mac,
                 }]
             }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            const blockLists = [...this.state.blockLists];
-            this.setState({ blockLists: blockLists.filter(item => item.index !== record.index) });
+            this.fetchBasic();
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`删除失败[${errcode}]`);
     }
 
     handleSelect = (mac) => {
@@ -116,6 +118,13 @@ export default class Blacklist extends React.Component {
 
                 return item;
             })
+        }, () => {
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
+            });
+            this.setState({
+                disAddBtn: !checked,
+            });
         });
     }
 
@@ -135,6 +144,8 @@ export default class Blacklist extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { black_list: black_list }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -153,7 +164,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onEditOk = async () => {
@@ -178,6 +189,8 @@ export default class Blacklist extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { black_list: black_list }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -193,7 +206,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -219,7 +232,7 @@ export default class Blacklist extends React.Component {
 
         let { errcode, data, message } = response;
         if (0 !== errcode) {
-            Modal.error({ title: '获取列表指令异常', message });
+            message.error(`获取列表指令异常[${errcode}]`);
             return;
         }
 
@@ -261,7 +274,7 @@ export default class Blacklist extends React.Component {
 
     render() {
         const { blockLists, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, disabled } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn, disabled } = this.state;
 
         const columns = [{
             title: '',
@@ -332,9 +345,12 @@ export default class Blacklist extends React.Component {
                 <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
-                    confirmLoading={loading}
-                    onOk={this.onSelectOk}
-                    onCancel={this.onSelectCancle} >
+                    footer={[
+                        <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
+                        <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
+                            添加
+                        </Button>,
+                    ]} >
                     <Button size="large" style={{
                         position: "absolute",
                         top: 5,
@@ -352,7 +368,7 @@ export default class Blacklist extends React.Component {
                     visible={editShow}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
-                    okButtonProps={{disabled:disabled}}
+                    okButtonProps={{ disabled: disabled }}
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
                     <FormItem showErrorTip={nameTip} type="small" style={{ width: 320 }}>
