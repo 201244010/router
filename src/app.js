@@ -15,7 +15,7 @@ import Advance from './pages/Advance';
 import Welcome from './pages/Welcome';
 import DownloadPage from './pages/DownloadPage';
 import Diagnose from './pages/Diagnose';
-import {brower} from './utils';
+import {browser} from './utils';
 import {UserInfoContext} from './context';
 import UpdateDetect from './pages/UpgradeDetect'
 // import UserBox from './components/UserBox';
@@ -42,7 +42,7 @@ class PrimaryLayout extends React.Component {
             hasVisited = '0';
             alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
         }
-        if (hasVisited !== '1' && (brower.android || brower.ios)) {
+        if (hasVisited !== '1' && browser.mobile) {
             window.location.href = '/mobile/index.html';
         }
 

@@ -20,8 +20,8 @@
             "online_limit": "60"
           },
           "sms": {
-            "enable": 1,
-            "welcome": "欢迎使用微信连wifi",
+            "enable": 0,
+            "welcome": "欢迎使用短信连wifi",
             "statement": "由商米为您提供wifi服务",
             "logo": "",
             "background": "",
