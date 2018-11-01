@@ -15,8 +15,8 @@ export default class WeChatAuth extends React.Component{
     }
     
     state = {
-        logoRandom: Math.random(),
-        BgRandom: Math.random(),
+        logoRandom: '',
+        BgRandom: '',
         enable: false,
         onlineLimit: '',
         onlineLimitTip: '',
@@ -240,6 +240,8 @@ export default class WeChatAuth extends React.Component{
                 onlineLimit : this.weixin.online_limit,
                 idleLimit : this.weixin.idle_limit,
                 logo : this.weixin.logo_info,
+                logoRandom : this.weixin.logo_img,
+                BgRandom: this.weixin.bg_img,
                 welcome : this.weixin.welcome,
                 loginHint : this.weixin.login_hint,
                 statement : this.weixin.statement,
@@ -418,7 +420,7 @@ export default class WeChatAuth extends React.Component{
                                     marginTop:25,
                                     padding:'73px 0 0 0',
                                     color:'#FFFFFF',
-                                    backgroundImage:'url('+`/portal/wx_bg.jpg?${BgRandom}`+')',
+                                    backgroundImage:'url('+{BgRandom}+')',
                                     backgroundRepeat:'no-repeat',
                                     backgroundSize: 'cover',
                                     backgroundPosition:'center',
@@ -429,7 +431,7 @@ export default class WeChatAuth extends React.Component{
                                             height:52,
                                             border:'2px solid #FFFFFF',
                                             borderRadius:26,
-                                            backgroundImage:'url('+`/portal/wx_logo.jpg?${logoRandom}`+')',
+                                            backgroundImage:'url('+{logoRandom}+')',
                                             backgroundRepeat:'no-repeat',
                                             backgroundSize: '100% 100%', 
                                             }}></div>
