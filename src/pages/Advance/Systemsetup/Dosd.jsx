@@ -130,13 +130,13 @@ export default class Dosd extends React.Component {
                 <Form>
                     <PanelHeader title="DoS防护" checkable={true} checked={enable} onChange={value => this.onChange('enable')} />
                     <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={icmp} onChange={() => this.onChange('icmp')}>ICMP-FLOOD攻击防护</Checkbox>
+                        <Checkbox checked={icmp} disabled={!enable} onChange={() => this.onChange('icmp')}>ICMP-FLOOD攻击防护</Checkbox>
                     </FormItem>
                     <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={udp} onChange={() => this.onChange('udp')}>UDP-FLOOD攻击防护</Checkbox>
+                        <Checkbox checked={udp} disabled={!enable} onChange={() => this.onChange('udp')}>UDP-FLOOD攻击防护</Checkbox>
                     </FormItem>
                     <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={tcp_syn} onChange={() => this.onChange('tcp_syn')}>TCP-SYN-FLOOD攻击防护</Checkbox>
+                        <Checkbox checked={tcp_syn} disabled={!enable} onChange={() => this.onChange('tcp_syn')}>TCP-SYN-FLOOD攻击防护</Checkbox>
                     </FormItem>
                     <Button disabled={disabled} loading={loading} onClick={this.submit} style={{ width: 117, marginTop: 20, marginBottom:40 }}>保存</Button>
                 </Form>
