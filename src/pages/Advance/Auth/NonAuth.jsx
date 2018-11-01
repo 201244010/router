@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox } from 'antd';
+import { Button, Table, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
@@ -71,19 +71,19 @@ export default class NonAuth extends React.Component{
     
     onTypeChange = (value,name) =>{
         let type = name ==='prioritizedFree' ? 'prioritized_free' : 'wired_free';
-        common.fetchApi(
-            [{
-                opcode: 'AUTH_WHITELIST_SET',
-                data: { auth : { [type] :value === true ? '1' : '0' } }
-            }]
-        ).then((resp) => {
+        common.fetchApi({
+            opcode: 'AUTH_WHITELIST_SET',
+            data: { auth: { [type]: value === true ? '1' : '0' } }
+        }, {
+            loading: true
+        }).then((resp) => {
             let{errcode,message} = resp;
             if(errcode == 0){
                 this.setState({
                     [name] : value
                 })
             }else{
-                Modal.error({title : '状态更改失败' ,message});
+                message.error(`状态更改失败[${errcode}]`);
             }
         });
     }
@@ -108,27 +108,28 @@ export default class NonAuth extends React.Component{
 
     handleDelete = async (record) => {
         let response = await common.fetchApi(
-            [{
+            {
                 opcode: 'AUTH_WHITELIST_DELETE',
                 data: {
-                    auth:{
+                    auth: {
                         delete_whitelist: [{
                             name: record.name,
                             mac: record.mac,
                         }]
                     }
                 }
-            }]
+            }, {
+                loading: true
+            }
         ).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            const whiteList = [...this.state.whiteList];
-            this.setState({ whiteList: whiteList.filter(item =>{return item.mac !== record.mac;})});
+            this.fetchBasic();
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`删除失败[${errcode}]`);
     }
 
     handleSelect = (mac) => {
@@ -171,7 +172,9 @@ export default class NonAuth extends React.Component{
                         whitelist: white_list 
                     } 
                 }
-            }]
+            }], {
+                loading: true
+            }
         ).catch(ex => {});
 
         this.setState({
@@ -190,7 +193,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onEditOk = async () => {
@@ -211,7 +214,9 @@ export default class NonAuth extends React.Component{
                         whitelist: white_list 
                     }
                 }
-            }]
+            }], {
+                loading: true
+            }
         );
 
         this.setState({
@@ -227,7 +232,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -252,7 +257,7 @@ export default class NonAuth extends React.Component{
 
         let { errcode, data, message } = response;
         if (0 !== errcode) {
-            Modal.error({ title: '获取免认证设备列表指令异常', message });
+            message.error(`获取列表指令异常[${errcode}]`);
             return;
         }
 

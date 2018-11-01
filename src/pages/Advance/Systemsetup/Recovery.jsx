@@ -1,6 +1,7 @@
 import React from 'react';
-import {Modal, Button, Icon} from 'antd';
+import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
+import { clearAll } from '~/assets/common/cookie';
 
 export default class Recovery extends React.Component{
 
@@ -13,19 +14,24 @@ export default class Recovery extends React.Component{
         succeedActive: false,
     }
 
-    reboot = async () =>{
-        await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET'});
+    reset = async () =>{
+        let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET'});
+        const errcode = resp.errcode;
+        if (0 === errcode) {
+            clearAll();
+            this.setState({
+                loadingActive: true
+            });
 
-        this.setState({
-            loadingActive: true
-        }, () => {
             setTimeout(() => {
                 this.setState({
                     loadingActive: false,
                     succeedActive: true,
                 });
             }, 90000);
-        });
+        } else {
+            message.error(`操作失败[${errcode}]`);
+        }
     }
 
     showModal = () => {
@@ -35,7 +41,7 @@ export default class Recovery extends React.Component{
             content: '确定要立即恢复出厂设置？',
             okText: '立即恢复',
             cancelText: '取消',
-            onOk: this.reboot,
+            onOk: this.reset,
         });
     }
 

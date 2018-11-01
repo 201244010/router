@@ -5,6 +5,7 @@ import Form from "~/components/Form";
 import { Button, Table, Progress, Modal, message } from 'antd';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
+import Loading from '~/components/Loading';
 
 const {FormItem, Input, ErrorTip} = Form;
 
@@ -20,7 +21,6 @@ export default class Bandwidth extends React.PureComponent {
         upband : '--',
         downband : '--',
         source : '', //测速方式
-        buttonloading : false,
         unit : 'Mbps',
 
         //自动设置
@@ -39,7 +39,6 @@ export default class Bandwidth extends React.PureComponent {
         //手动设置
         upbandTmp : '',
         downbandTmp : '',
-        loading:false,
         disable : true, //手动设置保存按钮灰显
         saveDisable : true,//保存按钮灰显
         upbandTmpTip : '',
@@ -240,27 +239,21 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onEditOk = async ()=>{
-        this.setState({
-            loading : true
-        });
         let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
-        let response = await common.fetchApi({
+        await common.fetchApi({
             opcode : 'QOS_SET',
             data : payload
+        },{loading : true}).then(response => {
+            let {errcode, message} = response;
+            if (errcode == 0){
+                this.setState({
+                    manualShow :false,
+                });
+                this.getBandInfo();
+                return;
+            }
+            Modal.error({titile : 'QOS设置失败', content : message});
         })
-        let {errcode, message} = response;
-        if (errcode == 0){
-            this.setState({
-                manualShow :false,
-                loading : false
-            });
-            this.getBandInfo();
-            return;
-        }
-        this.setState({
-            loading : false
-        })
-        Modal.error({titile : 'QOS设置失败', content : message});
     }
 
     onSpeedFailCancle = () => {
@@ -347,29 +340,24 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     post = async ()=>{
-        this.setState({
-            buttonloading : true
-        })
         let payload = this.composeparams("manual",this.state.upband,this.state.downband);
-        let response = await common.fetchApi({
+        await common.fetchApi({
             opcode : 'QOS_SET',
             data : payload
+        },{loading : true}).then(response => {
+            let {errcode, message} = response;
+            if (errcode == 0){
+                this.getBandInfo();
+                return;
+            }
+            Modal.error({titile : 'QOS设置失败', content : message});
         })
-        let {errcode, message} = response;
-        if (errcode == 0){
-            this.setState({
-                buttonloading : false
-            });
-            this.getBandInfo();
-            return;
-        }
-        Modal.error({titile : 'QOS设置失败', content : message});
     }
 
     render(){
-        const {saveDisable, unit,loading, bandenable, visible, percent, manualShow, speedFail, 
+        const {saveDisable, unit, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
-            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, buttonloading} = this.state;
+            white,normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip} = this.state;
         const columns = [{
             title : '设备类型',
             dataIndex : 'type'
@@ -411,45 +399,42 @@ export default class Bandwidth extends React.PureComponent {
         }]  
 
         return (
-            <div style={{paddingLeft : 60}}>
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
+            <div>
+                <Form style={{width : '100%',marginTop : 0, paddingLeft : 60}}>
                     <section className="wifi-setting-item">
                         <PanelHeader title="总带宽" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
-                </Form>
-                <section className="band-value">
-                    <div className="band-size">{upband}
-                        <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
-                    </div>
-                    <div className="band-line"></div> 
-                    <div className="band-size">{downband}
-                        <span className="band-unit">{unit}</span>
-                        <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
-                    </div>
-                </section>
-                <section style={{margin:"20px 20px 28px 0"}}>
-                        <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动测速</Button>
-                        <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
-                </section>
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 0}}>
-                    <section className="wifi-setting-item">
-                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
+                    <section className="band-value">
+                        <div className="band-size">{upband}
+                            <span className="band-unit">{unit}</span>
+                            <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
+                        </div>
+                        <div className="band-line"></div> 
+                        <div className="band-size">{downband}
+                            <span className="band-unit">{unit}</span>
+                            <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
+                        </div>
                     </section>
-                    {bandenable && <Bandon disable={saveDisable} columns={columns} data={data} post={this.post} loading={buttonloading} />}
+                    <section style={{margin:"20px 20px 28px 0"}}>
+                            <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动测速</Button>
+                            <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
+                    </section>
+                    <section>
+                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
+                        {bandenable && <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />}
+                    </section>
                 </Form>
+                {bandenable && <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" onClick={this.post}>保存</Button></section>}
                 <Modal closable={false} footer={null} visible={visible} centered={true}>
                     <div className="percent-position">{percent}%</div>
                     <Progress percent={percent} className="color-change" showInfo={false}/>
                     <div className="progress-position">测速中，请稍候...</div>
                 </Modal>
-
                 <Modal title='手动设置带宽' okText="确定" cancelText="取消" 
                     onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable}}
-                    confirmLoading={loading}
                     >
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
                         <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
@@ -496,14 +481,4 @@ export default class Bandwidth extends React.PureComponent {
     }
 };
 
-const Bandon = props => {
-     return [
-    <div key='speedbutton'>
-        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={props.columns} dataSource={props.data} />
-        <section className="wifi-setting-save" style={{marginTop:30}}>
-            <Button disabled={props.disable} style={{left:0}} className="wifi-setting-button" type="primary" loading={props.loading} onClick={props.post}>保存</Button>
-        </section>
-     </div>
-    ]
-} 
 

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox} from 'antd';
+import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Form from "~/components/Form";
 import { checkIp, checkMac } from '~/assets/common/check';
@@ -18,6 +18,7 @@ export default class StaticBind extends React.Component {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
         disabled: true,
+        disAddBtn: true,
         editLoading: false,
         editShow: false,
         editType: 'add',         // add/edit
@@ -93,27 +94,36 @@ export default class StaticBind extends React.Component {
         let response = await common.fetchApi({
             opcode: 'DHCPS_RESERVEDIP_DELETE',
             data: { reserved_ip: [Object.assign({}, record)] }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         let { errcode, message } = response;
         if (errcode == 0) {
-            const staticLists = [...this.state.staticLists];
-            this.setState({ staticLists: staticLists.filter(item => item.index !== record.index) });
+            this.fetchBasic();
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`删除失败[${errcode}]`);
     }
 
     handleSelect = (mac) => {
         const onlineList = [...this.state.onlineList];
-        this.setState({ onlineList: onlineList.map(item => {
-            if (item.address.mac === mac){
-                item.checked = !item.checked;
-            }
+        this.setState({
+            onlineList: onlineList.map(item => {
+                if (item.address.mac === mac){
+                    item.checked = !item.checked;
+                }
 
-            return item;
-        }) });
+                return item;
+        })}, () => {
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
+            });
+            this.setState({
+                disAddBtn: !checked,
+            });
+        });
     }
 
     onEditMac = (value) => {
@@ -158,6 +168,8 @@ export default class StaticBind extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { reserved_ip: reservedIp }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -176,7 +188,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onEditOk = async () => {
@@ -219,6 +231,8 @@ export default class StaticBind extends React.Component {
         let response = await common.fetchApi({
             opcode: directive,
             data: { reserved_ip: reservedIp }
+        }, {
+            loading: true
         }).catch(ex => { });
 
         this.setState({
@@ -234,7 +248,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        Modal.error({ title: '保存失败', content: message });
+        message.error(`保存失败[${errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -294,7 +308,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        Modal.error({ title: '获取列表指令异常', message });
+        message.error(`获取列表指令异常[${errcode}]`);
     }
 
     componentDidMount() {
@@ -304,7 +318,7 @@ export default class StaticBind extends React.Component {
     render() {
         const { staticLists, onlineList, visible, loading, 
             editLoading, editShow, editType, editName, editIp, editMac, 
-            editNameTip, editIpTip, editMacTip, disabled } = this.state;
+            editNameTip, editIpTip, editMacTip, disAddBtn, disabled } = this.state;
 
         const columns = [{
             title: '设备名称',
@@ -383,9 +397,12 @@ export default class StaticBind extends React.Component {
                 <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
                     width={960} style={{ position:'relative'}}
                     visible={visible}
-                    confirmLoading={loading}
-                    onOk={this.onSelectOk}
-                    onCancel={this.onSelectCancle} >
+                    footer={[
+                        <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
+                        <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
+                            添加
+                        </Button>,
+                    ]} >
                     <Button size="large" style={{
                         position: "absolute",
                         top: 5,
