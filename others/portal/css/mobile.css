@@ -20,24 +20,13 @@ body {
 .logo {
     width: 1.6rem;
     height: 1.6rem;
+    border-radius: 50%;
+    border: 0.06rem solid #fff;
+    overflow: hidden;
 }
 .logo img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-}
-.logo-icon {
-    position: relative;
-    height: 1rem;
-    color: #fb8632;
-}
-.icon-logo {
-    font-size: 1.4rem;
-}
-.logo img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
 }
 
 .name {
