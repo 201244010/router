@@ -6,7 +6,7 @@
       "result": {
         "portal": {
           "weixin": {
-            "enable": 0,
+            "enable": 1,
             "logo_info": "欢迎你",
             "welcome": "欢迎使用微信连wifi",
             "login_hint": "一键打开微信连wifi",
@@ -21,10 +21,10 @@
           },
           "sms": {
             "enable": 1,
-            "welcome": "欢迎使用微信连wifi",
+            "welcome": "欢迎使用短信连wifi",
             "statement": "由商米为您提供wifi服务",
-            "logo": "",
-            "background": "",
+            "logo": "/web-w1/others/common/imgs/logo.png",
+            "background": "/web-w1/others/common/imgs/bg.png",
             "online_limit": "60"
           }
         }

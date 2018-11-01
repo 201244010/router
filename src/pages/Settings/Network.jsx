@@ -9,7 +9,10 @@ const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-
+const error = {
+    '-1001' : '传参格式不合法' ,
+    '-1002' : '数据值不符合要求'
+}
 
 export default class NETWORK extends React.Component {
     state = {
@@ -17,7 +20,6 @@ export default class NETWORK extends React.Component {
         disabled : false,
         onlineStatus : '',
         dialType : '',
-        loading : false,
 
         //info
         infoIp : [],
@@ -30,6 +32,7 @@ export default class NETWORK extends React.Component {
         pppoeAccountTip : '',
         pppoePassword : '',
         pppoePasswordTip : '',
+        service : '',
         pppoeType: 'auto',
         hostSsidPasswordDisabled : false,
         pppoeDns:["","","",""],
@@ -59,7 +62,6 @@ export default class NETWORK extends React.Component {
     };
 
     onIPConifgChange = (val, key) => {
-        console.log(key,val);
         let valid = {
             ipv4:{
                 func: checkIp,
@@ -116,17 +118,21 @@ export default class NETWORK extends React.Component {
     }
 
     handleAccountBlur = ()=>{
-        if(this.state.pppoeAccount.length === 0 ){
-            this.setState({
-                pppoeAccountTip : "PPPOE 账号不能为空"
-            });
-        }
+        this.setState({
+            pppoeAccountTip : this.state.pppoeAccount.length === 0 ? "PPPOE 账号不能为空" : ''
+        });
     }
 
-    handleHostPassword = checked => {
+    handleHostPassword = () => {
         this.setState({
             hostSsidPasswordDisabled : this.state.hostSsidPasswordDisabled
         });
+    }
+
+    handleServiceChange = value => {
+        this.setState({
+            service : value
+        })
     }
 
     // 处理pppoe 密码框 change
@@ -140,11 +146,9 @@ export default class NETWORK extends React.Component {
 
     // pppoe 密码输入框失去焦点
     handlePasswordBlur = ()=>{
-        if(this.state.pppoePassword.length === 0 ){
-            this.setState({
-                pppoePasswordTip : "PPPOE 密码不能为空"
-            });
-        }
+        this.setState({
+            pppoePasswordTip :this.state.pppoePassword.length === 0 ? "PPPOE 密码不能为空" : ''
+        });
     }
     
     onTypeChange = value => {
@@ -263,7 +267,7 @@ export default class NETWORK extends React.Component {
 
     //表单提交参数
     composeParams(){
-        let wan = {}, {type, pppoeAccount, pppoePassword, pppoeType, pppoeDns, pppoeDnsbackup, dhcpType, dhcpDns, dhcpDnsbackup, ipv4, staticDns, staticDnsbackup, gateway, subnetmask} = this.state;
+        let wan = {}, {type, pppoeAccount, service, pppoePassword, pppoeType, pppoeDns, pppoeDnsbackup, dhcpType, dhcpDns, dhcpDnsbackup, ipv4, staticDns, staticDnsbackup, gateway, subnetmask} = this.state;
         wan['dial_type'] = type;
         switch(type){
             case 'pppoe' :
@@ -274,8 +278,9 @@ export default class NETWORK extends React.Component {
                 };
                 wan['dns_info'] = {
                     dns1 : pppoeDns.join('.'),
-                    dns2 : pppoeDnsbackup.join('.')
+                    dns2 : pppoeDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
                 };
+                wan['service'] = service;
                 break;
             case 'static' :
                 wan['info'] = {
@@ -283,14 +288,14 @@ export default class NETWORK extends React.Component {
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : staticDns.join('.'),
-                    dns2 : staticDnsbackup.join('.')
+                    dns2 : staticDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
                 wan['dns_type'] = dhcpType,
                 wan['dns_info'] = {
                     dns1 : dhcpDns.join('.'),
-                    dns2 : dhcpDnsbackup.join('.')
+                    dns2 : dhcpDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
                 };
                 break;
         }
@@ -300,14 +305,12 @@ export default class NETWORK extends React.Component {
     //表单提交
     post = async() => {
         this.setState({
-            loading : true,
             disabled : true,
         });
         let payload = this.composeParams(), info = payload.wan.info;
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
             this.setState({
                 disabled : false,
-                loading : false
             });
             return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
         }
@@ -319,12 +322,11 @@ export default class NETWORK extends React.Component {
             {
                 loading : true
             }).then(refs => {
+            this.setState({
+                disabled : false
+            });
             let {errcode, message } = refs;
             if (errcode == 0){
-                this.setState({
-                    loading : false,
-                    disabled : false
-                });
                 return;
             }
             Modal.error({ title : 'WAN口设置失败', content : message});
@@ -374,6 +376,7 @@ export default class NETWORK extends React.Component {
                 pppoeType: pppoe.dns_type,
                 pppoeDns: [...initIp(pppoe.dns_info.dns1)],
                 pppoeDnsbackup: [...initIp(pppoe.dns_info.dns2)],
+                service : pppoe.service,
 
                 dhcpType: dhcp.dns_type,
                 dhcpDns: [...initIp(dhcp.dns_info.dns1 || '')],
@@ -438,7 +441,7 @@ export default class NETWORK extends React.Component {
                 disabled, loading, type, infoIp ,
                 dialType, onlineStatus, infoGateway, infoMask, infoDns,
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
-                ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount} = this.state;
+                ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -482,7 +485,10 @@ export default class NETWORK extends React.Component {
                         {
         
                             type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}
-                                    pppoePassword={this.state.pppoePassword}
+                                    pppoeAccountTip={pppoeAccountTip}
+                                    pppoePasswordTip={pppoePasswordTip}
+                                    pppoePassword={pppoePassword}
+                                    service={service}
                                     handlePasswordChange={this.handlePasswordChange}
                                     pppoeType={this.state.pppoeType}
                                     onPppoeRadioChange={this.onPppoeRadioChange}
@@ -490,6 +496,17 @@ export default class NETWORK extends React.Component {
                                     handlePasswordBlur={this.handlePasswordBlur}
                                     handleAccountBlur={this.handleAccountBlur}
                             />: ''
+                        }
+                        {
+                            type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
+                            dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
+                            dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
+                        }
+                        {
+                            type === 'pppoe' ?  <div><label>服务名(可选)</label>
+                            <FormItem key="pppoeservice" type="small" style={{ width : 320}}>
+                                <Input maxLength={64} type="text" value={service} onChange={this.handleServiceChange}/>
+                            </FormItem></div> : ''
                         }
                         {   
                             type === 'dhcp' ? <Dhcp onDhcpRadioChange={this.onDhcpRadioChange}
@@ -508,11 +525,6 @@ export default class NETWORK extends React.Component {
                             /> : ''
                         } 
                         {
-                            type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
-                            dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
-                            dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
-                        }
-                        {
                             type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
                             dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
                             dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
@@ -522,10 +534,11 @@ export default class NETWORK extends React.Component {
                             dnsbackupTip={staticDnsbackupTip} dnsbackup={staticDnsbackup}
                             dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
+
                     </section>
                 </Form>
                 <section className="save">
-                            <Button type="primary" size='large' style={{ width: 320, margin: "20px 60px 30px" }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
+                    <Button type="primary" size='large' style={{ width: 320, margin: "20px 60px 30px" }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
                 </section>
             </div>
         );
@@ -536,12 +549,14 @@ const PPPoE = props => {
     return [
     <div key="pppoe" className="wifi-settings">
         <label>账号</label>
-        <FormItem key="pppoessid" type="small" style={{ width : 320}}>
+        <FormItem showErrorTip={props.pppoeAccountTip} key="pppoessid" type="small" style={{ width : 320}}>
             <Input type="text" value={props.pppoeAccount} onChange={props.handleAccountChange} onBlur={props.handleAccountBlur}/>
+            <ErrorTip>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>
         <label>密码</label>
-        <FormItem key="pppoepassword" type="small" style={{ width : 320}}>
+        <FormItem showErrorTip={props.pppoePasswordTip} key="pppoepassword" type="small" style={{ width : 320}}>
             <Input type="password" disabled={props.hostSsidPasswordDisabled} onBlur={props.handlePasswordBlur} value={props.pppoePassword} onChange={props.handlePasswordChange} />
+            <ErrorTip>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
         <label>DNS配置</label>
         <RadioGroup key="pppoedns" className="radio" onChange={props.onPppoeRadioChange} value={props.pppoeType}>
