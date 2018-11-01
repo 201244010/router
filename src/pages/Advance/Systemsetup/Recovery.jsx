@@ -35,7 +35,7 @@ export default class Recovery extends React.Component{
     }
 
     showModal = () => {
-        Modal.warning({
+        Modal.confirm({
             centered: true,
             title: '警告',
             content: '确定要立即恢复出厂设置？',
