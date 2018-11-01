@@ -342,14 +342,14 @@ export default class Home extends React.Component {
                                 <div className='up'>
                                     <label className='speed'>{upSpeed}</label>
                                     <div className='tip'>
-                                        <span>上行带宽</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
+                                        <span>上行速率</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
                                         <div className='unit'>{upUnit}</div>
                                     </div>
                                 </div>
                                 <div className='down'>
                                     <label className='speed'>{downSpeed}</label>
                                     <div className='tip'>
-                                        <span>下行带宽</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
+                                        <span>下行速率</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
                                         <div className='unit'>{downUnit}</div>
                                     </div>
                                 </div>
