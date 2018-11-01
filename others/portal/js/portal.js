@@ -32,7 +32,7 @@ window.onload = function () {
             if (response.errcode === 0) {
                 var weixin = response.data[0].result.portal.weixin;
                 var sms = response.data[0].result.portal.sms;
-                if (Number(weixin.enable) === 1) {
+                if (Number(weixin.enable) === 1 && isMobile()) {
                     inputsElement.style.display = 'none';
                     connectBtn.classList.remove('btn-disabled');
                     btnDisabled = false;
@@ -41,7 +41,7 @@ window.onload = function () {
                         type: 'weixin',
                         data: weixin
                     };
-                } else if (Number(sms.enable)) {
+                } else if (Number(sms.enable) === 1) {
                     inputsElement.style.display = 'block';
                     smsDataToPage(sms);
                     enable = {
@@ -50,7 +50,9 @@ window.onload = function () {
                     };
                 } else {
                     inputsElement.style.display = 'none';
-                    protocol.style.display = 'none';
+                    document.body.style.background = "url(../common/imgs/bg.png?r=" + Math.random() + ")";
+                    document.body.style.backgroundSize = "cover";
+                    logoElement.src = '../common/imgs/logo.png?r=' + Math.random();
                     showToast('不支持微信及短信方式连接wifi');
                 }
             } else {
@@ -281,9 +283,9 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "url('" + (data.background || "../common/imgs/bg.png") + "')";
+    document.body.style.background = "url(" + ((data.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
     document.body.style.backgroundSize = "cover";
-    logoElement.src = data.logo || '../common/imgs/logo.png';
+    logoElement.src = (data.logo || '../common/imgs/logo.png') + '?r=' + Math.random();
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }
@@ -319,11 +321,21 @@ function parseUrl(name) {
 }
 
 function canConnect() {
-    if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
-        connectBtn.classList.remove('btn-disabled');
-        btnDisabled = false;
+    if (enable.type === 'weixin') {
+        if (agreeProtocol) {
+            connectBtn.classList.remove('btn-disabled');
+            btnDisabled = false;
+        } else {
+            connectBtn.classList.add('btn-disabled');
+            btnDisabled = true;
+        }
     } else {
-        connectBtn.classList.add('btn-disabled');
-        btnDisabled = true;
+        if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+            connectBtn.classList.remove('btn-disabled');
+            btnDisabled = false;
+        } else {
+            connectBtn.classList.add('btn-disabled');
+            btnDisabled = true;
+        }
     }
 }
