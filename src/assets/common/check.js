@@ -222,9 +222,9 @@ let checkStr = function(val, opt = {}){
     if(len === 0){
         return `请输入${who}`;
     }else if(len < min){
-        return `${who}长度不能小于${min}`;
+        return `${who}长度不能小于${min}位`;
     }else if(len > max){
-        return `${who}的长度不能超过${max}`;
+        return `${who}长度不能超过${max}位`;
     }
 
     return '';
