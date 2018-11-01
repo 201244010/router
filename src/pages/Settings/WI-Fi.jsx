@@ -91,7 +91,7 @@ export default class WIFI extends React.Component {
             checkDisabled245 = checkDisabled24 || checkDisabled5;
         }
         if(this.state.guestEnable === true){
-            checkDisabledGuest = this.state.guestSsidTip !== '' || this.state.guestStaticPasswordTip !== '' || this.state.guestSsid === '';
+            checkDisabledGuest = this.state.guestSsidTip !== '' || this.state.guestStaticPasswordTip !== '' || this.state.guestSsid === '' || this.state.periodTip !== '';
         }else{
             checkDisabledGuest = false;
         }
@@ -168,10 +168,19 @@ export default class WIFI extends React.Component {
         },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
     }
     onPWDTypeChange = e =>{
-        this.setState({
-            PWDType:e.target.value,
-            displayType:e.target.value == 'static'? 'none' : 'block'
-        });
+        if(e.target.value === 'static'){
+            this.setState({
+                periodTip: '',
+                PWDType:e.target.value,
+                displayType:e.target.value == 'static'? 'none' : 'block'
+            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+        }else{
+            this.setState({
+                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
+                PWDType:e.target.value,
+                displayType:e.target.value == 'static'? 'none' : 'block'
+            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+        }
     }
 
     onGuestEnableChange = type =>{
@@ -336,7 +345,7 @@ export default class WIFI extends React.Component {
         this.guestWireLess.encryption = this.state.guestEncryption;
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
-        this.guestWireLess.period = this.state.period,
+        this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
         this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword);
         this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
 
@@ -364,7 +373,7 @@ export default class WIFI extends React.Component {
                 opcode: 'WIRELESS_SET',
                 data: { main : this.mainWireLess, guest : this.guestWireLess}
             }]
-        ).catch(ex => {});
+        );
 
         let {errcode, message} = response;
         if(errcode == 0){
@@ -383,6 +392,7 @@ export default class WIFI extends React.Component {
             this.setState({ 
                 loading : false,
                 guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : atob(this.guestWireLess.password),
+                period: this.guestWireLess.period,
             });
             return;
         }
