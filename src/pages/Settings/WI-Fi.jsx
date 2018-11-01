@@ -387,13 +387,12 @@ export default class WIFI extends React.Component {
             let { errcode, data } = response;
             if(errcode === 0){
                 let { guest } = data[0].result;
-                this.guestWireLess = guest;
+                this.setState({ 
+                    loading : false,
+                    guestDynamicPassword : guest.password_type == 'static'? '' : atob(guest.password),
+                    period: guest.period,
+                });
             }
-            this.setState({ 
-                loading : false,
-                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : atob(this.guestWireLess.password),
-                period: this.guestWireLess.period,
-            });
             return;
         }
         Modal.error({ title : 'Wi-Fi设置失败', content : message });
