@@ -101,7 +101,7 @@ export default class Upgrade extends React.Component{
             <div>
                 <Modal closable={false} maskClosable={false} visible={download} centered={true} footer={null} width={560} >
                     <div className="progress-download">
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 65, marginTop : 30, marginBottom : 10, color : "#FB8632" }}  spin />,
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 65, marginTop : 30, marginBottom : 10, color : "#FB8632" }}  spin />
                     <h3 key="active-h3" className="upgrade-download">{downloadTip}</h3>
                     <h4 key="active-h4" className="upgrade-warning">{warningTip}</h4>
                     </div>
