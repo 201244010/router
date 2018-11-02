@@ -118,7 +118,7 @@ export default class SetWan extends React.PureComponent {
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : dns.join('.'),
-                    dns2 : dnsbackup.join('.')
+                    dns2 : dnsbackup.every(item => item.length === 0)? '' : dnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
@@ -141,7 +141,7 @@ export default class SetWan extends React.PureComponent {
             [
                 {opcode: 'NETWORK_WAN_IPV4_SET', data: payload}
             ]
-        ).catch(ex => {});
+        );
         let {errcode, message } = response;
         if(errcode == 0){
             // 触发检测联网状态
@@ -288,7 +288,6 @@ export default class SetWan extends React.PureComponent {
     }
 
     onIPConifgChange = (val, key) => {
-        console.log(key,val);
         let valid = {
             ip:{
                 func: checkIp,
