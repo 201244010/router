@@ -143,7 +143,7 @@ export default class Speed extends React.Component {
                 upBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams() || ('' !== tip),
+                    disabled: !this.checkParams() || ('' !== tip) || this.state.downBandTip !== '',
                 });
             })
         }else{
@@ -153,7 +153,7 @@ export default class Speed extends React.Component {
                 downBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams()  || ('' !== tip),
+                    disabled: !this.checkParams()  || ('' !== tip || this.state.upBandTip !== ''),
                 });
             })
         }
