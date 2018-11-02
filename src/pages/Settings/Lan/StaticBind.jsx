@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message } from 'antd';
+import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Form from "~/components/Form";
 import { checkIp, checkMac } from '~/assets/common/check';
@@ -12,6 +12,13 @@ const pagination = {
     hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
 };
+
+const error = {
+    '-1001' : '下发参数错误',
+    '-1050' : '添加失败，相同条目(MAC, IP)已存在',
+    '-1051' : '修改失败，待修改条目(MAC, IP)不存在，或修改后(MAC, IP)与其它条目相同',
+    '-1052' : '删除失败 待删除条目(MAC, IP)不存在'
+}
 
 export default class StaticBind extends React.Component {
     state = {
@@ -50,7 +57,7 @@ export default class StaticBind extends React.Component {
 
         let tip = valid[key].func(val, valid[key].args);
         if(key === 'editMac' && val.every(item => item.length !== 0)){
-            tip = this.onEditMac(val);
+            tip = this.onEditMac(val) || tip;
         }
         if(key === 'editIp' && val.every(item => item.length !== 0)){
             tip = (val.join('.') === this.lanIp ? '静态IP地址与局域网IP地址冲突' : '')
@@ -61,7 +68,7 @@ export default class StaticBind extends React.Component {
         }, () => {
             const keys = ['editName', 'editIp', 'editMac'];
             let disabled = keys.some(k => {
-                return this.state[k + 'Tip'].length > 0
+                return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0 || (k !== 'editName' && this.state[k].every(item => item.length === 0))
             });
             this.setState({ disabled: disabled });
         });
@@ -84,9 +91,9 @@ export default class StaticBind extends React.Component {
             editName: '',
             editIp: ['', '', '', ''],
             editMac: ['', '', '', '', '', ''],
-            editNameTip: '请输入备注名称',
-            editIpTip: '请输入IP地址',
-            editMacTip: '请输入MAC地址',
+            editNameTip: '',
+            editIpTip: '',
+            editMacTip: '',
         });
     }
 
@@ -98,13 +105,13 @@ export default class StaticBind extends React.Component {
             loading: true
         }).catch(ex => { });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             return;
         }
 
-        message.error(`删除失败[${errcode}]`);
+        message.error(`删除失败[${error[errcode] || errcode}]`);
     }
 
     handleSelect = (mac) => {
@@ -176,7 +183,7 @@ export default class StaticBind extends React.Component {
             loading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             // refresh staic bind list
             this.fetchBasic();
@@ -188,7 +195,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(`保存失败[${error[errcode] || errcode}]`);
     }
 
     onEditOk = async () => {
@@ -239,7 +246,7 @@ export default class StaticBind extends React.Component {
             editLoading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             this.setState({
@@ -248,7 +255,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(`保存失败[${error[errcode] || errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -272,7 +279,7 @@ export default class StaticBind extends React.Component {
             { opcode: 'NETWORK_LAN_IPV4_GET'}
         ]);
 
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
 
@@ -308,7 +315,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(`获取列表指令异常[${errcode}]`);
+        message.error(`获取列表指令异常[${error[errcode] || errcode}]`);
     }
 
     componentDidMount() {

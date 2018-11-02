@@ -90,6 +90,7 @@
     padding: 20px 35px 35px;
     position: relative;
     z-index: 200;
+    overflow: auto;
     h2 {
       height: 60px;
       line-height: 60px;
@@ -199,7 +200,7 @@
         width: 260px;
       }
       .speed-result {
-        color: #333;
+        color: #333C4F;;
         font-size: 14px;
         padding-bottom: 20px;
         padding-top: 30px;

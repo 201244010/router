@@ -30,7 +30,7 @@ export default class Reboot extends React.Component{
                 });
             }, 90000);
         } else {
-            message.error(`操作失败[${errcode}]`);
+            message.error(`路由器重启失败[${errcode}]`);
         }
     }
 
@@ -61,7 +61,7 @@ export default class Reboot extends React.Component{
                 </div>
                 <Modal
                     visible={loadingActive}
-                    className='recovery-modal'
+                    className='modal-center'
                     closable={false}
                     centered={true}
                     style={{ textAlign: 'center' }}
@@ -73,7 +73,7 @@ export default class Reboot extends React.Component{
                 </Modal>
                 <Modal
                     visible={succeedActive}
-                    className='recovery-modal'
+                    className='modal-center'
                     closable={false}
                     centered={true}
                     style={{ textAlign: 'center' }}

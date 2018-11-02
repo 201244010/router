@@ -158,6 +158,7 @@ export default class Bandwidth extends React.PureComponent {
             this.setState({
                 bandenable: value,
             });
+            message.success('保存成功！');
             this.qosdata.enable = value;
             let response = await common.fetchApi({
                 opcode: 'QOS_SET',
@@ -182,8 +183,7 @@ export default class Bandwidth extends React.PureComponent {
                     {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
                     {},
                     {
-                        loop : 5,
-                        interval : 20000,
+                        interval : 3000,
                         stop : ()=>this.stop,
                         pending : res => res.data[0].result.speedtest.status === "testing"
                     }
@@ -198,6 +198,7 @@ export default class Bandwidth extends React.PureComponent {
                                 upband : (info.up_bandwidth / 1024).toFixed(0),
                                 downband : (info.down_bandwidth / 1024).toFixed(0),
                                 percent : 0,
+                                source : 'speedtest'
                             });
                             let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
                             common.fetchApi({

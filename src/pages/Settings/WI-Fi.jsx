@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Checkbox, Select, Button, Radio, Modal } from 'antd';
+import { Checkbox, Select, Button, Radio, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
@@ -169,13 +169,21 @@ export default class WIFI extends React.Component {
     }
     onPWDTypeChange = e =>{
         if(e.target.value === 'static'){
+            let check ;
+            if(this.state.guestPwdForbid == true){
+                check = '';
+            }else{
+                check = checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+            }
             this.setState({
+                guestStaticPasswordTip: check,
                 periodTip: '',
                 PWDType:e.target.value,
                 displayType:e.target.value == 'static'? 'none' : 'block'
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
+                guestStaticPasswordTip: '',
                 periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
                 PWDType:e.target.value,
                 displayType:e.target.value == 'static'? 'none' : 'block'
@@ -339,15 +347,15 @@ export default class WIFI extends React.Component {
         this.setState({ loading : true});
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
 
+        
         //guest
         this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
-        this.guestWireLess.encryption = this.state.guestEncryption;
+        this.guestWireLess.static_password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
+        this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
         this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword);
-        this.guestWireLess.static_password = btoa(this.state.guestStaticPassword);
 
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
@@ -375,7 +383,7 @@ export default class WIFI extends React.Component {
             }]
         );
 
-        let {errcode, message} = response;
+        let { errcode } = response;
         if(errcode == 0){
             let response = await common.fetchApi(
                 [
@@ -389,13 +397,16 @@ export default class WIFI extends React.Component {
                 let { guest } = data[0].result;
                 this.setState({ 
                     loading : false,
+                    guestStaticPassword : atob(guest.static_password),
                     guestDynamicPassword : guest.password_type == 'static'? '' : atob(guest.password),
+                    guestPwdForbid: guest.encryption == 'none',
+                    guestPasswordDisabled : (guest.enable != '1') || (guest.encryption == 'none'),
                     period: guest.period,
                 });
             }
             return;
         }
-        Modal.error({ title : 'Wi-Fi设置失败', content : message });
+        message.error(`Wi-Fi设置失败[${errcode}]`);
         this.setState({ loading : false});
     }
 
@@ -414,7 +425,7 @@ export default class WIFI extends React.Component {
                 }
             ]
         );
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
             let { channel_list } = data[1].result;
@@ -498,7 +509,7 @@ export default class WIFI extends React.Component {
             });
             return;
         }
-        Modal.error({title : 'wifi设置异常', message}); 
+        message.error(`Wi-Fi信息获取失败[${errcode}]`); 
     }
 
     componentDidMount(){

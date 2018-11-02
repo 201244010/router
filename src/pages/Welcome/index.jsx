@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Button ,Checkbox, Modal} from 'antd';
+import { Button, Checkbox } from 'antd';
+import Icon from '~/components/Icon';
 
 export default class Welcome extends React.Component {
     constructor(props) {
@@ -8,10 +9,7 @@ export default class Welcome extends React.Component {
     }
  
     state ={
-
-        loading:false,
-        checkBox : true,
-        disabled : false
+        checked : true,
     }
 
     post = async () => {
@@ -20,25 +18,47 @@ export default class Welcome extends React.Component {
 
     onCheckBoxChange = e =>{
         this.setState({
-            checkBox : e.target.checked,
-            disabled : !e.target.checked
+            checked : e.target.checked,
         })
     }
 
     render() {
-        const {loading,checkBox,disabled} = this.state;
+        const { checked } = this.state;
         return (
-            <div key='welcome-content' className="ui-center ui-fullscreen">
+            <div className="ui-center ui-fullscreen">
+                <div style={{
+                    position: 'absolute',
+                    left: '2.5%',
+                    top: '3.6%',
+                }}>
+                    <Icon type="logo" size={40} color="#fff" />
+                </div>
                 <div className="form-box" style={{ textAlign : 'center' }}>
-                    <h1 style={{fontSize :46,fontFamily: 'PingFangSC-Semibold',color: '#FFFFFF',textAlign: 'center',lineHeight: '46px',marginBottom:15}}>欢迎使用商米路由器</h1>
-                    <div>
-                        <span style={{fontSize: 18,color: '#FFFFFF'}}>简单几步设置，路由器就可以上网啦</span>
-                    </div>
-                    <Button type="primary" size='large' disabled={disabled} onClick={this.post} style={{ margin: "39px 0 12px", width: 320 }} loading={loading}>
+                    <h1 style={{
+                        fontSize :46,
+                        color: '#FFF',
+                        textAlign: 'center',
+                        lineHeight: '46px',
+                        marginBottom:15
+                    }}>欢迎使用商米路由器</h1>
+                    <p style={{ fontSize: 18, color: '#FFF' }}>简单几步设置，路由器就可以上网啦</p>
+                    <Button
+                        type="primary"
+                        size='large'
+                        disabled={!checked}
+                        onClick={this.post}
+                        style={{ margin: "39px 0 12px", width: 320 }}>
                         开始设置
                     </Button>
                     <div>
-                        <Checkbox style={{color:'#FFFFFF',fontSize: 14}} checked={checkBox} onChange={this.onCheckBoxChange}>同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》和《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》</Checkbox>
+                        <Checkbox
+                            style={{ color: '#FFF' }}
+                            checked={checked}
+                            onChange={this.onCheckBoxChange}>
+                            同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》
+                            和
+                            《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》
+                        </Checkbox>
                     </div>
                 </div>
             </div>        

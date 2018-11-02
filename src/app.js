@@ -40,7 +40,7 @@ class PrimaryLayout extends React.Component {
             hasVisited = window.sessionStorage.getItem('__visited__');
         } catch (e) {
             hasVisited = '0';
-            alert('您可能开启了无痕浏览/隐私模式，请关闭后再重试');
+            alert('您可能开启了无痕浏览/隐私模式，请关闭后再试');
         }
         if (hasVisited !== '1' && browser.mobile) {
             window.location.href = '/mobile/index.html';
@@ -62,17 +62,17 @@ class PrimaryLayout extends React.Component {
         const { pathname, logined } = this.state;
 
         const conf = {
-            'guide': { main: 'guide-bg', footer: false },
-            'login': { main: 'index-bg', footer: ''},
-            'settings': { main: 'bg', footer: '' },
-            'advance': { main: 'bg', footer: ''},
-            'welcome': { main: 'index-bg', footer: '' },
-            'app': { main: 'bg', footer: ''},
-            'home': { main: 'home-bg', footer: 'home-footer' },
-            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer' },
+            'guide': { main: 'guide-bg', footer: false, header: false },
+            'login': { main: 'index-bg', footer: '', header: false},
+            'settings': { main: 'bg', footer: '', header: true },
+            'advance': { main: 'bg', footer: '', header: true },
+            'welcome': { main: 'index-bg', footer: '', header: false },
+            'app': { main: 'bg', footer: '', header: true },
+            'home': { main: 'home-bg', footer: 'home-footer', header: true },
+            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
         };
 
-        let node = {main: '', footer: false};
+        let node = {main: '', footer: false, header: true};
         for (let url in conf) {
             if (pathname.indexOf(url) > -1){
                 node = conf[url];
@@ -84,7 +84,7 @@ class PrimaryLayout extends React.Component {
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {/* <UserInfoContext.Provider></UserInfoContext.Provider> */}
-                    <PrimaryHeader logined={logined} />
+                    {node.header && <PrimaryHeader /> }
                     <div className="main">
                         <Switch>
                             <Route path="/login" component={Login} />
