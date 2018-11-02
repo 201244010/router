@@ -2,11 +2,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
+import SubLayout from '~/components/SubLayout';
 import SetPassword from './SetPassword';
 import SetWan from './SetWan';
 import Speed from './Speed';
 import SetWifi from './SetWifi';
-import SubLayout from '~/components/SubLayout';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
@@ -49,6 +49,15 @@ export default class Guide extends React.Component {
         const iconType = { setpassword : 'lock', setwan : 'browser', speed : 'bandwidth', setwifi : 'wifi' }[activeRouteName];
         return (
             <SubLayout className="steps ui-relative">
+                <div className="header">
+                    <ul>
+                        <li>
+                            <div className="ui-ib logo">
+                                <Icon type="logo" size={40} color="#fff" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <ul className="guide-header">
                     <li className={this.initStepMenu('setpassword')}>
                         <i className="ui-ib order-num">1</i>
