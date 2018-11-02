@@ -101,6 +101,11 @@ export default class NETWORK extends React.Component {
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
+        if (['staticDnsbackup', 'dhcpDnsbackup', 'pppoeDnsbackup'].some(k => { 
+           return k === key && val.every(item => item.length === 0)
+        })) {
+            tip = '';
+        }
         this.setState({
             [key] : (typeof val == 'object' ? [...val] : val),
             [key + 'Tip'] : tip

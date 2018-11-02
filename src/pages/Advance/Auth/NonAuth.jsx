@@ -63,7 +63,7 @@ export default class NonAuth extends React.Component{
         }, () => {
             const keys = ['name', 'mac'];
             let disabled = keys.some(k => {
-                return this.state[k + 'Tip'].length > 0
+                return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0 || (k !== 'name' && this.state[k].every(item => item.length === 0))
             });
             this.setState({ disabled: disabled });
         });
@@ -101,8 +101,8 @@ export default class NonAuth extends React.Component{
             editLoading: false,
             name: '',
             mac: ['', '', '', '', '', ''],
-            nameTip: '请输入备注名称',
-            macTip: '请输入MAC地址',
+            nameTip: '',
+            macTip: '',
         });
     }
 
