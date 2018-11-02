@@ -57,7 +57,7 @@ export default class StaticBind extends React.Component {
 
         let tip = valid[key].func(val, valid[key].args);
         if(key === 'editMac' && val.every(item => item.length !== 0)){
-            tip = this.onEditMac(val);
+            tip = this.onEditMac(val) || tip;
         }
         if(key === 'editIp' && val.every(item => item.length !== 0)){
             tip = (val.join('.') === this.lanIp ? '静态IP地址与局域网IP地址冲突' : '')
@@ -68,7 +68,7 @@ export default class StaticBind extends React.Component {
         }, () => {
             const keys = ['editName', 'editIp', 'editMac'];
             let disabled = keys.some(k => {
-                return this.state[k + 'Tip'].length > 0
+                return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0 || (k !== 'editName' && this.state[k].every(item => item.length === 0))
             });
             this.setState({ disabled: disabled });
         });
@@ -91,9 +91,9 @@ export default class StaticBind extends React.Component {
             editName: '',
             editIp: ['', '', '', ''],
             editMac: ['', '', '', '', '', ''],
-            editNameTip: '请输入备注名称',
-            editIpTip: '请输入IP地址',
-            editMacTip: '请输入MAC地址',
+            editNameTip: '',
+            editIpTip: '',
+            editMacTip: '',
         });
     }
 
