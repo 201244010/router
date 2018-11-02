@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button, Switch, Modal, Icon } from 'antd';
 import Form from '~/components/Form';
-import CustomModal from '~/components/Modal';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
 import {checkStr} from '~/assets/common/check';
@@ -273,31 +272,38 @@ export default class SetWifi extends React.Component {
                         <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
                     </div>
                 </div>
-                <CustomModal active={true} style={{ visibility: this.state.visibile }}>
-                    {
-                        !this.state.done ? 
-                            <div className="progress">
-                                <Icon type="loading" style={{ fontSize: 80, color : "#FB8632", marginBottom : 20 }} spin />
-                                <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
-                            </div>
-                            : 
-                            <div className="success">
-                                <div style={{ marginBottom : 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
-                                <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
-                                <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
-                                {
-                                    this.state.guestWifi ? <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div> : ''
-                                }
-                                <img className='ui-center' src={require('~/assets/images/qr.png')} style={{
-                                    height: 100,
-                                    width: 100,
-                                    border: "1px solid #ccc",
-                                    margin: "10px auto 5px",
-                                }}/>
-                                <div className="ui-tips">扫描二维码下载APP</div>
-                            </div>
+                <Modal
+                    visible={true}
+                    maskStyle={{ visibility: this.state.visibile }}
+                    closable={false}
+                    wrapClassName={'hidden' === this.state.visibile && 'ui-hidden'}
+                    centered={true}
+                    style={{ textAlign: 'center', visibility: this.state.visibile }}
+                    footer={null}
+                >
+                    { !this.state.done ?
+                        <div className="progress">
+                            <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
+                            <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
+                        </div>
+                        :
+                        <div className="success">
+                            <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
+                            <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
+                            <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
+                            {
+                                this.state.guestWifi ? <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div> : ''
+                            }
+                            <img className='ui-center' src={require('~/assets/images/qr.png')} style={{
+                                height: 100,
+                                width: 100,
+                                border: "1px solid #ccc",
+                                margin: "10px auto 5px",
+                            }} />
+                            <div className="ui-tips">扫描二维码下载APP</div>
+                        </div>
                     }
-                </CustomModal>
+                </Modal>
             </div> 
         );
     }

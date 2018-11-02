@@ -61,7 +61,7 @@ export default class Recovery extends React.Component{
                 </div>
                 <Modal
                     visible={loadingActive}
-                    className='recovery-modal'
+                    className='modal-center'
                     closable={false}
                     centered={true}
                     style={{ textAlign: 'center' }}
@@ -73,7 +73,7 @@ export default class Recovery extends React.Component{
                 </Modal>
                 <Modal
                     visible={succeedActive}
-                    className='recovery-modal'
+                    className='modal-center'
                     closable={false}
                     centered={true}
                     style={{textAlign:'center'}}
