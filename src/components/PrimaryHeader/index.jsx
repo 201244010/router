@@ -22,16 +22,11 @@ class PrimaryHeader extends React.Component {
     }
 
     logout = async ()=>{
-        let response = await common.fetchApi({ opcode: 'ACCOUNT_LOGOUT' });
+        let resp = await common.fetchApi({ opcode: 'ACCOUNT_LOGOUT' });
 
         // 删除cookie
         clearAll();
-
-        let { errcode, message } = response;
-        if(errcode == 0){
-            this.props.history.push('/login');
-            return;
-        }
+        this.props.history.push('/login');
     }
 
 	render() {
