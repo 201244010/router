@@ -406,7 +406,7 @@ export default class WIFI extends React.Component {
             }
             return;
         }
-        message.error(`错误信息(Wi-Fi设置失败)`);
+        message.error(`Wi-Fi设置失败[${errcode}]`);
         this.setState({ loading : false});
     }
 
@@ -509,7 +509,7 @@ export default class WIFI extends React.Component {
             });
             return;
         }
-        message.error(`错误信息(Wi-Fi设置异常)`); 
+        message.error(`Wi-Fi信息获取失败[${errcode}]`); 
     }
 
     componentDidMount(){

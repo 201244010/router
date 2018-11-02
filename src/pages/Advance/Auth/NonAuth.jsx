@@ -83,7 +83,7 @@ export default class NonAuth extends React.Component{
                     [name] : value
                 })
             }else{
-                message.error(`错误信息(状态更改失败)`);
+                message.error(`状态更改失败[${errcode}]`);
             }
         });
     }
@@ -129,7 +129,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        message.error(`错误信息(删除失败)`);
+        message.error(`删除失败[${errcode}]`);
     }
 
     handleSelect = (mac) => {
@@ -193,7 +193,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        message.error(`错误信息(保存失败)`);
+        message.error(`添加失败[${errcode}]`);
     }
 
     onEditOk = async () => {
@@ -232,7 +232,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        message.error(`错误信息(保存失败)`);
+        message.error(`添加失败[${errcode}]`);
     }
 
     onSelectCancle = () => {
@@ -257,7 +257,7 @@ export default class NonAuth extends React.Component{
 
         let { errcode, data } = response;
         if (0 !== errcode) {
-            message.error(`错误信息(获取列表指令异常)`);
+            message.error(`列表获取失败[${errcode}]`);
             return;
         }
 

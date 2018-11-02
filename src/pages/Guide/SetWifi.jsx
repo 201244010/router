@@ -153,7 +153,7 @@ export default class SetWifi extends React.Component {
             }, 7000);
             return ;
         }
-        message.error(`错误信息(Wi-Fi设置失败)`);
+        message.error(`Wi-Fi设置失败[${errcode}]`);
     }
 
     submit = async ()=> {
@@ -222,7 +222,7 @@ export default class SetWifi extends React.Component {
             });
             return;
         }
-        message.error(`错误信息(Wi-Fi信息获取失败)`);
+        message.error(`Wi-Fi信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){

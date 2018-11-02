@@ -134,7 +134,7 @@ export default class SetWan extends React.PureComponent {
     submit = async () => {
         let payload = this.composeParams(), info = payload.wan.info; 
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
-            message.error(`IP地址与网关不可以相同`);
+            message.error(`IP地址与网关不能相同`);
             return ;
         }
         this.setState({ loading : true });
@@ -179,7 +179,7 @@ export default class SetWan extends React.PureComponent {
             }
             return;
         }
-        message.error(`错误信息(wan口的设置参数不合法)`);
+        message.error(`参数设置不合法[${errcode}]`);
         this.setState({loading : false});
     }
 
@@ -224,7 +224,7 @@ export default class SetWan extends React.PureComponent {
             if(errcode == 0){
                 this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
             }else{
-                message.error(`获取网线插拔状态失败`);
+                message.error(`获取网线插拔状态失败[${errcode}]`);
             } 
             common.fetchApi(
                 [
@@ -256,7 +256,7 @@ export default class SetWan extends React.PureComponent {
                         return;
                 }else{
                     this.setState({ detect: false });
-                    message.error(`错误信息(上网方式检查检测失败)`);
+                    message.error(`上网方式检查检测失败[${errcode}]`);
                 }
             });       
         });
@@ -280,7 +280,7 @@ export default class SetWan extends React.PureComponent {
             this.netInfo = data[0].result.wan;
             return;
         }
-        message.error(`错误信息(IP信息获取失败)`);
+        message.error(`IP信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){

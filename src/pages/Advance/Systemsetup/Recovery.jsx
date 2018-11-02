@@ -30,7 +30,7 @@ export default class Recovery extends React.Component{
                 });
             }, 90000);
         } else {
-            message.error(`错误信息(操作失败)`);
+            message.error(`恢复出厂失败[${errcode}]`);
         }
     }
 

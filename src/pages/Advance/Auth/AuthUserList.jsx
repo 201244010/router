@@ -114,7 +114,7 @@ export default class AuthUserList extends React.Component{
             return;
         }
 
-        message.error(`错误信息(删除失败)`);
+        message.error(`删除失败[${errcode}]`);
     }
 
     startRefresh = () =>{

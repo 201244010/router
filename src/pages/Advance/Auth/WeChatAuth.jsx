@@ -279,7 +279,7 @@ export default class WeChatAuth extends React.Component{
             // });
             return ;
         }
-        message.error(`错误信息(微信认证信息获取失败)`);
+        message.error(`微信认证信息获取失败[${errcode}]`);
     }
 
     dataSet = async() =>{
@@ -312,7 +312,7 @@ export default class WeChatAuth extends React.Component{
             this.setState({ loading: false });
             return ;
         }
-        message.error(`错误信息(微信认证信息设置失败)`);
+        message.error(`微信认证信息设置失败[${errcode}]`);
         this.setState({ loading: false });
     }
     

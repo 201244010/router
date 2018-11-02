@@ -57,7 +57,7 @@ export default class ChangePassword extends React.Component{
                     message.success('修改成功,5秒后将跳转到登陆页面');
                     setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
-                    message.error(`错误信息(原密码错误)`);
+                    message.error(`原密码错误`);
                     this.setState({loading : false});
                 }
             });  

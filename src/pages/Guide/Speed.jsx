@@ -78,7 +78,7 @@ export default class Speed extends React.Component {
                 });
                 return;
             }
-            message.error(`错误信息(测速信息获取失败)`);
+            message.error(`测速信息获取失败[${errcode}]`);
         });
     }
 
@@ -100,7 +100,7 @@ export default class Speed extends React.Component {
             if(errcode == 0){
                 return this.props.history.push('/guide/setwifi');
             }
-            message.error(`错误信息(手动配速设置失败)`);
+            message.error(`手动配速设置失败[${errcode}]`);
         })
     }
 
@@ -115,7 +115,7 @@ export default class Speed extends React.Component {
         if(errcode == 0){
             return this.qos = data[0].result.qos;
         }
-        message.error(`错误信息(QOS信息获取失败)`);
+        message.error(`QOS信息获取失败[${errcode}]`);
     }
 
   autoSpeedTest = () => {

@@ -291,7 +291,7 @@ export default class SmsAuth extends React.Component{
             // });
             return ;
         }
-        message.error(`错误信息(短信认证信息获取失败)`);
+        message.error(`短信认证信息获取失败[${errcode}]`);
     }
 
     dataSet = async() =>{
@@ -325,7 +325,7 @@ export default class SmsAuth extends React.Component{
             this.setState({ loading: false });
             return ;
         }
-        message.error(`错误信息(短信认证信息设置失败)`);
+        message.error(`短信认证信息设置失败[${errcode}]`);
         this.setState({ loading: false });
     }
 
