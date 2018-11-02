@@ -77,13 +77,13 @@ export default class NonAuth extends React.Component{
         }, {
             loading: true
         }).then((resp) => {
-            let{errcode,message} = resp;
+            let{ errcode } = resp;
             if(errcode == 0){
                 this.setState({
                     [name] : value
                 })
             }else{
-                message.error(`状态更改失败[${errcode}]`);
+                message.error(`错误信息(状态更改失败)`);
             }
         });
     }
@@ -123,13 +123,13 @@ export default class NonAuth extends React.Component{
             }
         ).catch(ex => { });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             return;
         }
 
-        message.error(`删除失败[${errcode}]`);
+        message.error(`错误信息(删除失败)`);
     }
 
     handleSelect = (mac) => {
@@ -181,7 +181,7 @@ export default class NonAuth extends React.Component{
             loading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             // refresh list
             this.fetchBasic();
@@ -193,7 +193,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(`错误信息(保存失败)`);
     }
 
     onEditOk = async () => {
@@ -223,7 +223,7 @@ export default class NonAuth extends React.Component{
             editLoading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             this.setState({
@@ -232,7 +232,7 @@ export default class NonAuth extends React.Component{
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(`错误信息(保存失败)`);
     }
 
     onSelectCancle = () => {
@@ -255,9 +255,9 @@ export default class NonAuth extends React.Component{
             { opcode: 'AUTH_WHITELIST_GET' }
         ]);
 
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if (0 !== errcode) {
-            message.error(`获取列表指令异常[${errcode}]`);
+            message.error(`错误信息(获取列表指令异常)`);
             return;
         }
 

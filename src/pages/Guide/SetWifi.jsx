@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Switch, Modal, Icon } from 'antd';
+import { Button, Switch, Modal, Icon, message } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
@@ -120,7 +120,7 @@ export default class SetWifi extends React.Component {
 
         this.setState({ loading : false});
         
-        let {errcode, message} = response;
+        let {errcode} = response;
         if(errcode === 0){
             this.setState({
                 visibile: 'visible',
@@ -153,7 +153,7 @@ export default class SetWifi extends React.Component {
             }, 7000);
             return ;
         }
-        Modal.error({ title : 'Wi-Fi设置失败', content : message });
+        message.error(`错误信息(Wi-Fi设置失败)`);
     }
 
     submit = async ()=> {
@@ -205,7 +205,7 @@ export default class SetWifi extends React.Component {
             }],
             {},
             { handleError : true });
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
             this.mainWireLess = main;
@@ -222,7 +222,7 @@ export default class SetWifi extends React.Component {
             });
             return;
         }
-        Modal.error({title : '无线配置指令异常', message});
+        message.error(`错误信息(Wi-Fi信息获取失败)`);
     }
 
     componentDidMount(){

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Table, Divider, Popconfirm, Modal, Checkbox } from 'antd';
+import { Table, Popconfirm, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 
 const pagination = {
@@ -107,14 +107,14 @@ export default class AuthUserList extends React.Component{
             }]
         );
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             const authUserList = [...this.state.authUserList];
             this.setState({ authUserList: authUserList.filter(item => item.index !== record.index) });
             return;
         }
 
-        Modal.error({ title: '删除失败', content: message });
+        message.error(`错误信息(删除失败)`);
     }
 
     startRefresh = () =>{

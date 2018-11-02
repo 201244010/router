@@ -239,7 +239,7 @@ export default class WeChatAuth extends React.Component{
                 opcode: 'AUTH_WEIXIN_CONFIG_GET',
             }]
             );
-        let {errcode,data,message} = response;
+        let { errcode,data } = response;
         this.weixin =data[0].result.weixin;
         if(errcode == 0){
             this.setState({
@@ -279,7 +279,7 @@ export default class WeChatAuth extends React.Component{
             // });
             return ;
         }
-        Modal.error({title  : '微信认证的信息获取失败', content : message});
+        message.error(`错误信息(微信认证信息获取失败)`);
     }
 
     dataSet = async() =>{
@@ -307,12 +307,12 @@ export default class WeChatAuth extends React.Component{
                 data: {weixin : this.weixin}
             }]
         ).catch(ex => {});
-        let {errcode,message} = response;
+        let { errcode } = response;
         if(errcode == '0'){
             this.setState({ loading: false });
             return ;
         }
-        Modal.error({title : '微信认证信息设置失败',content : message});
+        message.error(`错误信息(微信认证信息设置失败)`);
         this.setState({ loading: false });
     }
     
