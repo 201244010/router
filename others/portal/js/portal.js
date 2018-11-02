@@ -283,7 +283,7 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "url(" + ((data.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
+    document.body.style.background = "url(" + ((data.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ") no-repeat center";
     document.body.style.backgroundSize = "cover";
     logoElement.src = (data.logo || '../common/imgs/logo.png') + '?r=' + Math.random();
     descElement.innerText = data.welcome || '欢迎';
