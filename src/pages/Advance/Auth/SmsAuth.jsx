@@ -248,7 +248,7 @@ export default class SmsAuth extends React.Component{
                 opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET'
             }]
         );
-        let {errcode,data,message} = response;
+        let { errcode,data } = response;
         if(errcode == 0){
             this.sms =data[0].result.sms;
             this.setState({
@@ -291,7 +291,7 @@ export default class SmsAuth extends React.Component{
             // });
             return ;
         }
-        Modal.error({title  : '短信认证的信息获取失败', content : message});
+        message.error(`短信认证信息获取失败[${errcode}]`);
     }
 
     dataSet = async() =>{
@@ -320,12 +320,12 @@ export default class SmsAuth extends React.Component{
                 data: {sms : this.sms}
             }]
         ).catch(ex => {});
-        let {errcode,message} = response;
+        let { errcode } = response;
         if(errcode == '0'){
             this.setState({ loading: false });
             return ;
         }
-        Modal.error({title : '短信认证信息设置失败',content : message});
+        message.error(`短信认证信息设置失败[${errcode}]`);
         this.setState({ loading: false });
     }
 

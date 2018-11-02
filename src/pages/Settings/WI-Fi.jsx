@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Checkbox, Select, Button, Radio, Modal } from 'antd';
+import { Checkbox, Select, Button, Radio, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
@@ -383,7 +383,7 @@ export default class WIFI extends React.Component {
             }]
         );
 
-        let {errcode, message} = response;
+        let { errcode } = response;
         if(errcode == 0){
             let response = await common.fetchApi(
                 [
@@ -406,7 +406,7 @@ export default class WIFI extends React.Component {
             }
             return;
         }
-        Modal.error({ title : 'Wi-Fi设置失败', content : message });
+        message.error(`Wi-Fi设置失败[${errcode}]`);
         this.setState({ loading : false});
     }
 
@@ -425,7 +425,7 @@ export default class WIFI extends React.Component {
                 }
             ]
         );
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
             let { channel_list } = data[1].result;
@@ -509,7 +509,7 @@ export default class WIFI extends React.Component {
             });
             return;
         }
-        Modal.error({title : 'wifi设置异常', message}); 
+        message.error(`Wi-Fi信息获取失败[${errcode}]`); 
     }
 
     componentDidMount(){

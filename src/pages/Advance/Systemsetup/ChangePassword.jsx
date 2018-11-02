@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {message,Button,Modal} from 'antd';
+import { message, Button } from 'antd';
 import {checkStr} from '~/assets/common/check';
 
 const {FormItem,Input,ErrorTip} = Form;
@@ -52,12 +52,12 @@ export default class ChangePassword extends React.Component{
                 opcode: 'ACCOUNT_MODIFY',
                 data: { account: this.account }
             }).then((resp)=>{
-                let {errcode} = resp; 
+                let { errcode } = resp; 
                 if(errcode == '0'){
                     message.success('修改成功,5秒后将跳转到登陆页面');
                     setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
-                    Modal.error({title : '修改失败',content : '原密码错误'});
+                    message.error(`原密码错误`);
                     this.setState({loading : false});
                 }
             });  

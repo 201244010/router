@@ -1,10 +1,11 @@
 import React from 'react';
-import { Modal, Icon } from 'antd';
+import { Icon,message } from 'antd';
 import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
 import {checkStr, checkIp, checkMask} from '~/assets/common/check';
+
 
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
 const Option = Select.Option;
@@ -118,7 +119,7 @@ export default class SetWan extends React.PureComponent {
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : dns.join('.'),
-                    dns2 : dnsbackup.join('.')
+                    dns2 : dnsbackup.every(item => item.length === 0)? '' : dnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
@@ -133,7 +134,7 @@ export default class SetWan extends React.PureComponent {
     submit = async () => {
         let payload = this.composeParams(), info = payload.wan.info; 
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
-            Modal.error({title: '错误',content:'IPV4不能与网关相同'});
+            message.error(`IP地址与网关不能相同`);
             return ;
         }
         this.setState({ loading : true });
@@ -141,8 +142,8 @@ export default class SetWan extends React.PureComponent {
             [
                 {opcode: 'NETWORK_WAN_IPV4_SET', data: payload}
             ]
-        ).catch(ex => {});
-        let {errcode, message } = response;
+        );
+        let { errcode } = response;
         if(errcode == 0){
             // 触发检测联网状态
             common.fetchApi(
@@ -178,13 +179,13 @@ export default class SetWan extends React.PureComponent {
             }
             return;
         }
-        Modal.error({ title : 'WAN口设置失败', content :  message == "ERRCODE_PARAM_VALUE_INVALID" ? "wan口的设置参数不合法" : "" ,onOk:()=>{this.setState({loading : false})}});
-        
+        message.error(`参数设置不合法[${errcode}]`);
+        this.setState({loading : false});
     }
 
     // 校验参数
     checkParams(){
-        let { type, pppoeAccount, pppoePassword, dns, ip, dnsbackup, gateway, subnetmask } = this.state;
+        let { type, pppoeAccount, pppoePassword, dns, ip, dnsbackup, dnsbackupTip, gateway, subnetmask } = this.state;
         switch(type){
             case 'pppoe' :
                 if(pppoeAccount.length === 0 || pppoePassword.length === 0){
@@ -192,19 +193,21 @@ export default class SetWan extends React.PureComponent {
                 }
                 break;
             case 'static' :
+                let ckDnsbackup = (dnsbackup.every(item => item.length === 0)?  false : dnsbackupTip !== '');
                 let empty = [dns, ip, subnetmask, gateway].some(field => {
-                    if(field.length === 0){
+                    if(field.length === 0 || ckDnsbackup){
                         return true;
                     }
                     return field.some(f => {
-                        if(f == null || typeof f === 'undefined' || f === ''){
+                        if(f == null || typeof f === 'undefined' || f === '' || dnsbackup == null || typeof dnsbackup === 'undefined' ){
                             return true;
                         }
                     });
                 })
                 if(empty){
                     return false;
-                }            
+                }
+                            
                 break;
         }
         return true;
@@ -221,7 +224,7 @@ export default class SetWan extends React.PureComponent {
             if(errcode == 0){
                 this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
             }else{
-                Modal.error({title :'获取网线插拔状态失败'});
+                message.error(`获取网线插拔状态失败[${errcode}]`);
             } 
             common.fetchApi(
                 [
@@ -240,7 +243,7 @@ export default class SetWan extends React.PureComponent {
                     stop : () => this.stop
                 }
             ).then((response)=>{
-                const { errcode, data, message } = response;
+                const { errcode, data } = response;
                 if(errcode == 0){
                     let { dialdetect } = data[0].result;
                     let { dial_type } = dialdetect;
@@ -253,7 +256,7 @@ export default class SetWan extends React.PureComponent {
                         return;
                 }else{
                     this.setState({ detect: false });
-                    Modal.error({ title: '上网方式检查', content: message });
+                    message.error(`上网方式检查检测失败[${errcode}]`);
                 }
             });       
         });
@@ -272,12 +275,12 @@ export default class SetWan extends React.PureComponent {
                 stop : ()=> this.stop 
             }
         ).catch(ex=>{});
-        let { data, errcode, message } = response;
+        let { data, errcode } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
             return;
         }
-        Modal.error({ title: '获取 ipv4 信息失败', content: message });
+        message.error(`IP信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){
@@ -288,7 +291,6 @@ export default class SetWan extends React.PureComponent {
     }
 
     onIPConifgChange = (val, key) => {
-        console.log(key,val);
         let valid = {
             ip:{
                 func: checkIp,

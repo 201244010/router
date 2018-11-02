@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Modal } from 'antd';
+import { Button, Icon, Modal, message } from 'antd';
 import classnames from 'classnames';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
@@ -69,7 +69,7 @@ export default class Speed extends React.Component {
                 }
             );
             this.setState({ speedTestdone : true, showModal : false });
-            let { errcode, message } = response;
+            let { errcode } = response;
             if(errcode == 0){
                 let info = response.data[0].result.speedtest;
                 this.setState({
@@ -78,7 +78,7 @@ export default class Speed extends React.Component {
                 });
                 return;
             }
-            Modal.error({ title : '测速指令异常', message });
+            message.error(`测速信息获取失败[${errcode}]`);
         });
     }
 
@@ -96,11 +96,11 @@ export default class Speed extends React.Component {
                 {},
                 { loop : 10, stop : () => this.stop }
             ).then(refs => {
-            let { errcode, message } = refs;
+            let { errcode } = refs;
             if(errcode == 0){
                 return this.props.history.push('/guide/setwifi');
             }
-            Modal.error({ title : '手动配置QOS异常', content : message == 'ERRCODE_PARAMS_INVALID' ? '参数设置失败':message });
+            message.error(`手动配速设置失败[${errcode}]`);
         })
     }
 
@@ -111,11 +111,11 @@ export default class Speed extends React.Component {
             {},
             { loop : 10, stop : () => this.stop }
         ).catch(ex => {});
-        let {errcode, data, message} = response;
+        let { errcode, data } = response;
         if(errcode == 0){
             return this.qos = data[0].result.qos;
         }
-        Modal.error({ title : 'QOS信息获取失败', content : message });
+        message.error(`QOS信息获取失败[${errcode}]`);
     }
 
   autoSpeedTest = () => {
@@ -143,7 +143,7 @@ export default class Speed extends React.Component {
                 upBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams() || ('' !== tip),
+                    disabled: !this.checkParams() || ('' !== tip) || this.state.downBandTip !== '',
                 });
             })
         }else{
@@ -153,7 +153,7 @@ export default class Speed extends React.Component {
                 downBandTip: tip,
             },() => { 
                 this.setState({
-                    disabled: !this.checkParams()  || ('' !== tip),
+                    disabled: !this.checkParams()  || ('' !== tip || this.state.upBandTip !== ''),
                 });
             })
         }
