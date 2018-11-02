@@ -69,7 +69,7 @@ class PrimaryLayout extends React.Component {
             'welcome': { main: 'index-bg', footer: '', header: false },
             'app': { main: 'bg', footer: '', header: true },
             'home': { main: 'home-bg', footer: 'home-footer', header: true },
-            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: false },
+            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
         };
 
         let node = {main: '', footer: false, header: true};
