@@ -7,7 +7,7 @@ import loading from '~/components/Loading';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import {stringify} from 'qs';
-import {clearAll} from '~/assets/common/cookie';
+import {clear} from '~/assets/common/cookie';
 
 const {assign} = Object;
 const noop = () => {
@@ -156,7 +156,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                         throw new Error('fetchApi 要求循环参数为 boolean 或 number');
                 }
                 if (error.toString().indexOf('403') > -1) {
-                    clearAll();
+                    clear();
                     const login = '/login';
                     if (location.pathname.indexOf(login) === -1) {
                         location.href = login;

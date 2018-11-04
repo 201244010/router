@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
-import { clearAll } from '~/assets/common/cookie';
+import { clear } from '~/assets/common/cookie';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -39,7 +39,7 @@ class Login extends React.Component {
 
     componentWillMount() {
         // 删除认证cookie
-        clearAll();
+        clear();
     }
 
     post = async () => {
