@@ -3,11 +3,15 @@ import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
 import { withRouter, NavLink } from "react-router-dom";
-import { clearAll } from '~/assets/common/cookie';
+import { get, clear } from '~/assets/common/cookie';
 
 class PrimaryHeader extends React.Component {
 	constructor(props) {
         super(props);
+    }
+
+    state = {
+        isGuidePage: false
     }
 
     static getDerivedStateFromProps(){
@@ -22,10 +26,17 @@ class PrimaryHeader extends React.Component {
     }
 
     logout = async ()=>{
-        let resp = await common.fetchApi({ opcode: 'ACCOUNT_LOGOUT' });
+        let resp = await common.fetchApi({
+            opcode: 'ACCOUNT_LOGOUT',
+            data:{
+                account: {
+                    token: get('sysauth')
+                }
+            }
+        });
 
         // 删除cookie
-        clearAll();
+        clear();
         this.props.history.push('/login');
     }
 

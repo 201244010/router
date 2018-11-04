@@ -58,6 +58,10 @@ const options = {
         new CopyWebpackPlugin(
             [
                 {
+                    from: __dirname + '/src/assets/static',
+                    to: __dirname + '/dist/'
+                },
+                {
                     from: __dirname + '/others/common',
                     to: __dirname + '/dist/common'
                 },
