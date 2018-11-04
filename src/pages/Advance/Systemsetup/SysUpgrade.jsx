@@ -112,7 +112,7 @@ const LatestVer = props => {
         <div key='latest' style={{height :　44}}>
             <ul className="ui-mute">最新版本:</ul>
             <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{props.latestVersion}</label>
-            <label style={{color : 'blue',marginLeft : 6}} onClick={props.versionClick}>（版本说明）</label>
+            <label style={{ cursor: 'pointer', color : 'blue',marginLeft : 6}} onClick={props.versionClick}>（版本说明）</label>
         </div>
     ]
 }
