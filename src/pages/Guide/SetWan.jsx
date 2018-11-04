@@ -61,7 +61,7 @@ export default class SetWan extends React.PureComponent {
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
                 pppoeAccountTip: tip,
-                disabled : !this.checkParams() && !( tip === '' ),
+                disabled : !this.checkParams() ||  tip !== '',
             });
         });
     }
@@ -70,7 +70,7 @@ export default class SetWan extends React.PureComponent {
             const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
             this.setState({
                 pppoeAccountTip : tip,
-                disabled : !this.checkParams() && !( tip === '' ),
+                disabled : !this.checkParams() ||  tip !== '',
             });
         
     }
@@ -85,7 +85,7 @@ export default class SetWan extends React.PureComponent {
         this.setState({ pppoePassword : value }, function(){
             this.setState({
                 pppoePasswordTip : tip,
-                disabled : !this.checkParams() && !( tip === '' ),
+                disabled : !this.checkParams() ||  tip !== '',
             });
         });
     };
@@ -96,7 +96,7 @@ export default class SetWan extends React.PureComponent {
         if(this.state.pppoePassword.length === 0 ){
             this.setState({
                 pppoePasswordTip : tip,
-                disabled : !this.checkParams() && !( tip === '' ),
+                disabled : !this.checkParams() ||  tip !== '',
             });
         }
     }
@@ -314,6 +314,9 @@ export default class SetWan extends React.PureComponent {
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
+        if(key === 'dnsbackup' && val.every(item => item.length === 0)){
+            tip = '';
+        }
         this.setState({
             [key] : (typeof val == 'object' ? [...val] : val),
             [key + 'Tip'] : tip
@@ -346,7 +349,7 @@ export default class SetWan extends React.PureComponent {
                 <p className="ui-tips guide-tip">上网参数设置完成后，即可连接网络 </p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />,
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
                     <h3 key="active-h3">正在检查上网方式，请稍候...</h3>
                 </div>
                 {/* 显示网络连接状态 */}
