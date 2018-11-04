@@ -238,17 +238,17 @@ export default class WIFI extends React.Component {
      
     //2.4G
     onHost24EnableChange = type =>{
+        const {hostSsid24, hostSsid24PasswordDisabled, hostSsid24Password} = this.state;
         this.setState({
             host24Enable: type,
             disabledType24:!type,
-            hostSsid24PasswordDisabled:!type,
         });
         if(type==false){
             this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
-                hostSsid24Tip: checkStr(this.state.hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
-                hostSsid24PasswordTip: checkStr(this.state.hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+                hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                hostSsid24PasswordTip: !hostSsid24PasswordDisabled && checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
         }
     }
@@ -279,17 +279,17 @@ export default class WIFI extends React.Component {
 
     //5G
     onHost5EnableChange = type =>{
+        const {hostSsid5PasswordDisabled, hostSsid5, hostSsid5Password} = this.state;
         this.setState({
             host5Enable:type,
             disabledType5:!type,
-            hostSsid5PasswordDisabled:!type
         });
         if(type==false){
             this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
             this.setState({
-                hostSsid5Tip: checkStr(this.state.hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                hostSsid5PasswordTip: checkStr(this.state.hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+                hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
+                hostSsid5PasswordTip: !hostSsid5PasswordDisabled && checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
             },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
         }
     }
