@@ -122,41 +122,26 @@ export default class WeChatAuth extends React.Component{
         }
     }
 
-    smsAuthInfo = async() =>{
-        let response = await common.fetchApi(
-            [{
-                opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET'
-            }]
-        );
-        let { errcode, data } = response;
-        if(errcode == 0){
-            this.sms =data[0].result.sms;
-            return this.sms.enable === '1';
-        }else{
-            return '短信认证信息获取失败'; 
-        }
-    }
-
-    onEnableChange = type =>{
-        if(type === true){
-            this.smsAuthInfo().then(response =>{
-                if(response === false){
-                    this.setState({
-                        enable : type,
-                        disableType:!type
-                    },()=>{this.checkSaveDisabled()});
-                }else if(response === '短信认证信息获取失败'){
-                    Modal.warning({ title: '提示', content: '短信认证信息获取失败，不可以改变状态！' });
-                }else{
-                    Modal.warning({ title: '提示', content: '微信认证和短信认证无法同时开启！' });
+    onEnableChange = async (type) =>{
+        if (true === type) {
+            let resp = await common.fetchApi({ opcode: 'AUTH_SHORTMESSAGE_CONFIG_GET' });
+            let { errcode, data } = resp;
+            if (errcode == 0) {
+                if ('1' === data[0].result.sms.enable) {
+                    Modal.warning({
+                        title: '提示',
+                        content: '微信认证和短信认证不能同时开启，请先关闭短信认证',
+                        okText: '确定'
+                    });
+                    return;
                 }
-            });    
-        }else{
-            this.setState({
-                enable : type,
-                disableType:!type
-            },()=>{this.checkSaveDisabled()});
+            }
         }
+
+        this.setState({
+            enable: type,
+            disableType: !type
+        }, this.checkSaveDisabled);
     }
 
     onChange = (name,value) =>{

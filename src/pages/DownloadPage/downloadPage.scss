@@ -1,19 +1,14 @@
 .app-download{
     border-radius : 8px;
     background-color : #fff;
-    display : flex;
-    flex-flow : column nowrap;
-    justify-content : flex-start;
-    flex : 1;
     color : #333;
-    padding : 41px 60px 126px 60px;
+    padding: 60px;
+    overflow: auto;
     .app-header{
-        padding: 0 0 20px 0;
-        border-bottom : 1px solid #ECECEC;
-        display: flex;
-        flex-flow: row nowrap;
+        position: relative;
+        border-bottom : 1px dashed #ECECEC;
+        padding-bottom: 20px;
         .title{
-            margin-top:17px;
             h1{
                 font-size : 28px;
                 color : #333C4F;
@@ -26,11 +21,8 @@
             }
         }
         .QRcode{
-            flex:1;
-            display: flex;
-            flex-flow: column nowrap;
-            align-items: flex-end;
-            top : 10px;
+            position: absolute;
+            top : -20px;
             right : 0;
             .QRcode-img{
                 height : 80px;
@@ -46,44 +38,33 @@
         }
     }
     .app-body{
-        
-        height:300px;
-        width: 100%;
-        margin: 0;
-        padding: 59px 0 0 0;
-        ul{
-            flex:1;
-            display:flex;
-            flex-flow: row nowrap;
-            li{
-                flex:1;
-                .category{
-                    flex : 1;
-                    display: flex;
-                    flex-flow: row nowrap;
-                    align-items: center;
-                    .image{
-                        width: 80px;
-                        height: 80px;
-                    }
-                    .summary{
-                        display: flex;
-                        flex-flow: column nowrap;
-                        justify-content: center;
-                        margin-left : 12px;
-                        height: 80px;
-                        h2{    
-                            font-size : 20px;
-                            color : #333C4F;
-                            margin-bottom: 8px;
-                        }
-                        p{
-                            font-size : 16px;
-                            color : #333C4F;
-                        }
-                    }
+        font-size: 0;
+        li{
+            display: inline-block;
+            width: 50%;
+            margin-top: 60px;
+            .image{
+                display: inline-block;
+                width: 80px;
+                height: 80px;
+                vertical-align: middle;
+            }
+            .summary{
+                display: inline-block;
+                margin-left : 12px;
+                padding-top: 15px;
+                height: 80px;
+                vertical-align: middle;
+                h2{
+                    font-size : 20px;
+                    color : #333C4F;
+                    margin-bottom: 8px;
                 }
-            } 
-        }   
+                p{
+                    font-size : 16px;
+                    color : #333C4F;
+                }
+            }
+        }  
     }    
 }

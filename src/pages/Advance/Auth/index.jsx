@@ -13,11 +13,11 @@ const TabPane = Tabs.TabPane;
 export default class Auth extends React.PureComponent {
     render(){
         return (
-            <Tabs className="weixin-tabs" defaultActiveKey="WeChatAuth">
-                <TabPane tab="微信认证" key="WeChatAuth"><WeChatAuth /></TabPane>
-                <TabPane tab="短信认证" key="SmsAuth"><SmsAuth /></TabPane>
-                <TabPane tab="免认证策略" key="NonAuth"><NonAuth /></TabPane>
-                <TabPane tab="认证用户列表" key="AuthUserList"><AuthUserList /></TabPane>
+            <Tabs className="weixin-tabs">
+                <TabPane tab="微信认证" key="1"><WeChatAuth /></TabPane>
+                <TabPane tab="短信认证" key="2"><SmsAuth /></TabPane>
+                <TabPane tab="免认证策略" key="3"><NonAuth /></TabPane>
+                <TabPane tab="认证用户列表" key="4"><AuthUserList /></TabPane>
             </Tabs>
         );
     }

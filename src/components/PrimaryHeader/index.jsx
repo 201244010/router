@@ -10,6 +10,10 @@ class PrimaryHeader extends React.Component {
         super(props);
     }
 
+    state = {
+        isGuidePage: false
+    }
+
     static getDerivedStateFromProps(){
         const pathname = location.pathname;
         return {
