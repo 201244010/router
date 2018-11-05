@@ -443,7 +443,7 @@ export default class SmsAuth extends React.Component{
                                         borderRadius:8,
                                         marginTop:25,padding:'34px 0 0 0',
                                         color:'#FFFFFF',
-                                        backgroundImage: `url(${bg_img})`,
+                                        backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         backgroundPosition:'center',
@@ -498,7 +498,7 @@ export default class SmsAuth extends React.Component{
                                         marginTop:60,
                                         color:'#FFFFFF',
                                         transform:'scale(0.33,0.33)',
-                                        backgroundImage: `url(${bg_img})`,
+                                        backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         }}>
@@ -546,8 +546,8 @@ export default class SmsAuth extends React.Component{
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                         <label>短信服务商</label>
-                        <div style={{marginBottom:24}}>
-                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'}>
+                        <div style={{marginBottom:24}} id="serverProviderArea">
+                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'} getPopupContainer={() => document.getElementById('serverProviderArea')}>
                                 <Option value={'ali'}>阿里云</Option>
                             </Select>
                         </div>
