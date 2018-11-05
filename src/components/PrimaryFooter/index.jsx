@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from '~/assets/common/cookie';
 
 export default class PrimaryFooter extends React.PureComponent {
     constructor(props) {
@@ -6,11 +7,12 @@ export default class PrimaryFooter extends React.PureComponent {
     }
 
     static getDerivedStateFromProps (){
-        const logined = document.cookie.length > 0;
+        const logined = get('sysauth').length > 0;
         return {logined};
     }
 
     state = {
+        logined: false,
         version : '',
         mac : ''
     }

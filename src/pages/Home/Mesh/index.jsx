@@ -33,7 +33,6 @@ export default class Mesh extends React.Component{
             let currentTime = new Date().getTime();
             if ((currentTime - this.startTime) > duration * 1000){
                 clearInterval(this.timer);
-                let num = this.state.devices.length;
                 this.setState({
                     title: '搜寻设备',
                     showBtn: true,
