@@ -546,8 +546,8 @@ export default class SmsAuth extends React.Component{
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                         <label>短信服务商</label>
-                        <div style={{marginBottom:24}}>
-                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'}>
+                        <div style={{marginBottom:24}} id="serverProviderArea">
+                            <Select style={{width : 320}} value={serverProvider} onChange={(value)=>this.onSelectChange('serverProvider',value)} placeholder={'请选择短信服务商'} getPopupContainer={() => document.getElementById('serverProviderArea')}>
                                 <Option value={'ali'}>阿里云</Option>
                             </Select>
                         </div>
