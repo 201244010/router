@@ -10,7 +10,7 @@ let get = (key) => {
     });
 
     if ('string' === typeof key) {
-        return cookie[key];
+        return cookie[key] || '';
     } else {
         return cookie;
     }

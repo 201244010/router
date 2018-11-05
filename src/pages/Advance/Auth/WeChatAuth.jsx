@@ -434,12 +434,13 @@ export default class WeChatAuth extends React.Component{
                                     borderRadius:8,
                                     marginTop:25,
                                     padding:'73px 0 0 0',
-                                    color:'#FFFFFF',
-                                    backgroundImage: `url(${bg_img})`,
+                                    color:'#FFFFFF',   
+                                    backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                     backgroundRepeat:'no-repeat',
                                     backgroundSize: 'cover',
                                     backgroundPosition:'center',
                                     }}>
+                                    
                                     <div style={{paddingLeft:20,height:383}}>
                                         <div style={{
                                             width:52,
@@ -460,6 +461,7 @@ export default class WeChatAuth extends React.Component{
                                         </div>
                                     </div>
                                     <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
+                                    
                                 </div>
                             </section>                  
                         </section>

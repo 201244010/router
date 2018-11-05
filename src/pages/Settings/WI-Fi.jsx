@@ -554,11 +554,9 @@ export default class WIFI extends React.Component {
                                     <div style={{ padding: 0, position: 'relative' }} id="encryption24Area">
                                         <label>加密方式</label>
                                         <Select value={encryption24} style={{ width: 320 }} disabled={disabledType24} onChange={(value)=>this.onChange('encryption24',value)} getPopupContainer={() => document.getElementById('encryption24Area')}>
-                                            <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                            <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                            <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                            <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
-                                            </Select>
+                                            <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
+                                            <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
+                                        </Select>
                                     </div> 
                                 </div>
                             </div>: ''
@@ -595,10 +593,8 @@ export default class WIFI extends React.Component {
                                             <div style={{ padding: 0, position: 'relative' }} id="encryption24Area">
                                                 <label>加密方式</label>
                                                 <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('encryption24Area')}>
-                                                    <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                                    <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                                    <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                                    <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                                    <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
+                                                    <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
                                                 </Select>
                                             </div>
                                         ) : ''
@@ -647,10 +643,8 @@ export default class WIFI extends React.Component {
                                                 <div style={{ padding: 0, position: 'relative' }} id="encryption5Area">
                                                     <label>加密方式</label>
                                                     <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('encryption5Area')}>
-                                                        <Option value={'psk2+ccmp'}>psk2+ccmp</Option>
-                                                        <Option value={'psk2+ccmp+tkip'}>psk2+ccmp+tkip</Option>
-                                                        <Option value={'psk-mixed/ccmp'}>psk-mixed/ccmp</Option>
-                                                        <Option value={'psk-mixed/ccmp+tkip'}>psk-mixed/ccmp+tkip</Option>
+                                                        <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
+                                                        <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
                                                     </Select>
                                                 </div>
                                             ) : ''
