@@ -165,7 +165,16 @@ class InputGroup extends React.Component {
         const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-        let val = this.props.type === 'ip' ? target.value.replace(/\D*/g, '') : target.value.replace(/[^0-9a-f]*/gi, '').toUpperCase();
+
+        let val = target.value, goNext = false;
+        if ('ip' === this.props.type) {
+            let len = val.length;
+            goNext = (len >= 2 && '.' === val[len - 1]);
+            val = val.replace(/\D*/g, '');
+        } else {
+            val = val.replace(/[^0-9a-f]*/gi, '').toUpperCase();
+        }
+
         item.value = val;
         this.setState({ inputs });
         if(this.props.onChange){
@@ -175,7 +184,7 @@ class InputGroup extends React.Component {
 
         // 自动focus到下一个Input
         const maxLen = target.getAttribute('maxLength');
-        if (maxLen && val.length >= maxLen) {
+        if (goNext || (maxLen && val.length >= maxLen)) {
             let next = target.parentNode.nextElementSibling;
             if (next) {
                 next = next.nextElementSibling;
@@ -226,6 +235,17 @@ class InputGroup extends React.Component {
         e.preventDefault();
     }
 
+    handleKeyDown = e => {
+        // BackSpace
+        if ('' === e.target.value && 8 === e.which) {
+            let previous = e.target.parentNode.previousElementSibling;
+            if (previous) {
+                previous = previous.previousElementSibling;
+                previous.querySelector('.ui-input-group-item').focus();
+            }
+        }
+    }
+
 
     formItemFocus(){
         return this.state.inputs.some(item => item.focus);
@@ -262,6 +282,7 @@ class InputGroup extends React.Component {
                                         onFocus={ e => this.onInputFocus(e, i, item)}
                                         onChange={ e => this.onInputChange(e, i, item)} 
                                         //onKeyPress={ this.handleKeyPress }
+                                        onKeyDown={ this.handleKeyDown }
                                         type='text'
                                         disabled={this.props.disabled}
                                     /></div>;
