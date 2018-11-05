@@ -443,7 +443,7 @@ export default class SmsAuth extends React.Component{
                                         borderRadius:8,
                                         marginTop:25,padding:'34px 0 0 0',
                                         color:'#FFFFFF',
-                                        backgroundImage: `url(${bg_img})`,
+                                        backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         backgroundPosition:'center',
@@ -498,7 +498,7 @@ export default class SmsAuth extends React.Component{
                                         marginTop:60,
                                         color:'#FFFFFF',
                                         transform:'scale(0.33,0.33)',
-                                        backgroundImage: `url(${bg_img})`,
+                                        backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                         backgroundRepeat:'no-repeat',
                                         backgroundSize: 'cover',
                                         }}>
