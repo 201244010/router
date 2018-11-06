@@ -3,6 +3,7 @@ import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { clear } from '~/assets/common/cookie';
+import { Base64 } from 'js-base64';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -24,15 +25,6 @@ class Login extends React.Component {
         })
     }
 
-    onKeyUp = e => {
-        this.setState({ tip : '' });
-    }
-
-    flush = () => {
-        this.passwordInput.focus();
-        this.setState({ password: '' });
-    }
-
     onEnter = () => {
         this.post();
     }
@@ -48,28 +40,28 @@ class Login extends React.Component {
         const response = await common.fetchApi(
             [{ 
                 opcode: 'ACCOUNT_LOGIN',
-                data: { account : { password : btoa(password), user : 'admin' }}
+                data: { account : { password : Base64.encode(password), user : 'admin' }}
             }]
         );
-        const { errcode, message } = response;
+        const { errcode } = response;
         this.setState({ loading : false });
         if(errcode == 0){
             this.props.history.push('/');
             return;
         }
-        if(message === 'ERRCODE_PARAMS_INVALID'){
+        if(errcode === '-1605'){
             this.setState({tip : "密码错误"});
-        }else if(message === 'ERRCODE_PERMISSION'){
+        }else if(errcode === '-1606'){
             this.setState({tip : '密码错误次数过多，请5分钟后再试'});
+        }else if(errcode === '-1604'){
+            this.setState({tip : '未设置过密码'});
         }else{
-            this.setState({tip : message});
-        }    
+            this.setState({tip : errcode});
+        }   
     }
 
     render() {
-        // const password = this.state.password.trim();
         const {tip} = this.state;
-        // const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
         return [
             <div key='login-content' className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>

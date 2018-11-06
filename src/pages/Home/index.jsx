@@ -181,7 +181,7 @@ export default class Home extends React.Component {
             };
             let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
             let mode = modeMap[client.wifi_mode];
-            let device = deviceMap[client.device || 'unknown'];
+            let device = deviceMap[client.device] || 'unknown';
             let ontime = this.formatTime(client.ontime);
             let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('/s', '');
 
@@ -264,8 +264,8 @@ export default class Home extends React.Component {
                             successShow: true,
                             visible: false,
                             percent: 0,
-                            upBand: (info.up_bandwidth / 1024).toFixed(2),
-                            downBand: (info.down_bandwidth / 1024).toFixed(2),
+                            upBand: (info.up_bandwidth / 1024).toFixed(0),
+                            downBand: (info.down_bandwidth / 1024).toFixed(0),
                         });
                     } else if (info.status === "fail") {
                         this.setState({
@@ -388,7 +388,7 @@ export default class Home extends React.Component {
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
                             <h3>搜寻商米设备</h3>
-                            <p>商米设备一键连接上网快速安全</p>
+                            <p>一键连接附近商米设备</p>
                             <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
                         </div>
                         <Mesh ref="sunmiMesh" />

@@ -261,7 +261,7 @@ export default class Blacklist extends React.Component {
                 return {
                     logo: logoMap[item.device] || 'unknown',
                     name: item.hostname,
-                    mac: item.mac,
+                    mac: item.mac.toUpperCase(),
                     checked: false
                 }
             }),

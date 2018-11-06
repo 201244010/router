@@ -14,10 +14,11 @@ const pagination = {
 };
 
 const error = {
-    '-1001' : '下发参数错误',
-    '-1050' : '添加失败，相同条目(MAC, IP)已存在',
-    '-1051' : '修改失败，待修改条目(MAC, IP)不存在，或修改后(MAC, IP)与其它条目相同',
-    '-1052' : '删除失败 待删除条目(MAC, IP)不存在'
+    '-1001': '参数错误',
+    '-1050': '添加失败[IP、MAC和已有相同]',
+    '-1051': '修改失败[待修改条目(IP、MAC)不存在，或修改后(IP、MAC)与其它条目相同]',
+    '-1052': '删除失败[条目不存在]',
+    '-1053': '保存失败[IP地址和LAN不在同一网段]',
 }
 
 export default class StaticBind extends React.Component {
@@ -305,9 +306,9 @@ export default class StaticBind extends React.Component {
                 }),
                 onlineList: restClients.map(item => {
                     return {
-                        logo: deviceMap[item.device || 'unknown'],
+                        logo: deviceMap[item.device] || 'unknown',
                         name: item.hostname,
-                        address: { ip: item.ip, mac: item.mac },
+                        address: { ip: item.ip, mac: item.mac.toUpperCase() },
                         checked: false
                     }
                 })

@@ -1,7 +1,8 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {Button} from 'antd';
+import { Button, Modal } from 'antd';
+import { Base64 } from 'js-base64';
 import routes from '../../routes';
 import {checkStr} from '~/assets/common/check';
 
@@ -40,19 +41,29 @@ export default class SetPassword extends React.Component {
         const response = await common.fetchApi(
             [{
                 opcode: 'ACCOUNT_INITIAL_PASSWORD',
-                data: { account : { password : btoa(password), user : 'admin' } }
+                data: { account : { password : Base64.encode(password), user : 'admin' } }
             }],
             {}, 
             { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }
         ).catch(ex => { console.error(ex) })
 
         this.setState({ loading : false });
-        let { errcode, message } = response;
+        let { errcode } = response;
         if(errcode == 0){
             this.props.history.push(routes.guideSetWan);
             return;
         }
-        this.setState({ tip : message == "ERRCODE_PERMISSION" ? "已设置过密码" : message});
+        if(errcode === "-1608"){
+            Modal.info({
+                title: '提示',
+                content: '已设置过密码',
+                okText: '确定',
+                onOk() {
+                    location.href = '/';
+                },
+            });
+        }
+        this.setState({ tip : errcode === "-1608" ? "已设置过密码" : errcode});
     }
 
     // 监听输入实时改变

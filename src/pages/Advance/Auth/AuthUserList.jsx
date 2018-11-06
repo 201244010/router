@@ -87,7 +87,7 @@ export default class AuthUserList extends React.Component{
                     auth_type: item.auth_type,
                     phone : item.phone,
                     access_time : item.access_time,
-                    mac: item.mac,
+                    mac: mac,
                 }
             }),
         });
@@ -154,7 +154,7 @@ export default class AuthUserList extends React.Component{
                         width:'280px',
                         overflow: 'hidden',
                         textOverflow:'ellipsis',
-                        whiteSpace: 'nowrap',
+                        whiteSpace: 'pre',
                     }} title={record.name}>{record.name}</div>
                     <i style={{
                         display: 'inline-block',
