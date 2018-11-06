@@ -119,7 +119,7 @@
                 position: relative;
                 left: -4px;
                 .dot{
-                    margin-right: 0;
+                    margin-right: 3px;
                     display: inline-block;
                     width: 8px;
                     height: 8px;
@@ -133,7 +133,7 @@
                     margin-bottom: 0;
                     overflow: hidden;
                     text-overflow:ellipsis;
-                    white-space: nowrap;
+                    white-space: pre;
                     vertical-align: bottom;
                 }
             }
@@ -165,7 +165,7 @@
         color: #333C4F;
         overflow: hidden;
         text-overflow:ellipsis;
-        white-space: nowrap;
+        white-space: pre;
         margin-bottom:10px;
     }
     ul{
@@ -174,7 +174,7 @@
             width: 140px;
             overflow: hidden;
             text-overflow:ellipsis;
-            white-space: nowrap;
+            white-space: pre;
             font-size: 10px;
             display: inline-block;
             margin-bottom: 5px;
