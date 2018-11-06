@@ -54,15 +54,12 @@ export default class SetPassword extends React.Component {
             return;
         }
         if(errcode === "-1608"){
-            Modal.confirm({
+            Modal.info({
                 title: '提示',
                 content: '已设置过密码',
                 okText: '确定',
-                cancelText: '取消',
                 onOk() {
                     location.href = '/';
-                },
-                onCancel() {
                 },
             });
         }
