@@ -200,19 +200,17 @@ export default class WIFI extends React.Component {
             this.setState({ guestSsidTip: '', guestStaticPasswordTip: '',periodTip: '' },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             
         }else{
+            let tip ;
             if(this.state.guestPwdForbid){ 
-                this.setState({
-                    guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
-                    guestStaticPasswordTip: '',
-                    periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
+                tip = '';
             }else{
-                this.setState({ 
-                    guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
-                    guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
-                    periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-            }      
+                tip = checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+            }
+            this.setState({
+                guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
+                guestStaticPasswordTip: tip,
+                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
+            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }
     }
 
@@ -245,17 +243,16 @@ export default class WIFI extends React.Component {
         if(type==false){
             this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }else{
+            let tip;
             if(hostSsid24PasswordDisabled){
-                this.setState({
-                    hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
-                    hostSsid24PasswordTip: ''
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
+                tip = '';
             }else{
-                this.setState({
-                    hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
-                    hostSsid24PasswordTip: checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
-            }    
+                tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+            }
+            this.setState({
+                hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                hostSsid24PasswordTip: tip,
+            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
         }
     }
 

@@ -66,6 +66,7 @@
     "classnames": "^2.2.6",
     "css-loader": "^0.28.11",
     "echarts": "^4.2.0-rc.1",
+    "js-base64": "^2.4.9",
     "koa2-cors": "^2.0.6",
     "mockjs": "^1.0.1-beta3",
     "nodemon": "^1.8.1",

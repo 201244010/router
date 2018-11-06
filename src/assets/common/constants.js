@@ -135,17 +135,6 @@ export const ERROR_MESSAGE = {
     "-1100" : "ERRCODE_WLAN_ERROR_SSID", 
     "-1101" : "ERRCODE_WLAN_ERROR_PASSWORD",
     "-1102" : "ERRCODE_WLAN_HOST_VAP_NOT_ENABLE",
-    "-1600" : "ERRCODE_ACCOUNT_USERNAME_INVALID",                   //账户登录缺少用户名  
-    "-1601" : "ERRCODE_ACCOUNT_PASSWORD_INVALID",                   //账户登录缺少密码
-    "-1602" : "ERRCODE_ACCOUNT_IP_UNRESOLVED",                      //账户登录的终端ip无法解析
-    "-1603" : "ERRCODE_ACCOUNT_PASSWORD_DECODE_FAILED",             //账户密码解析失败
-    "-1604" : "ERRCODE_ACCOUNT_PASSWORD_NOT_SET",                   //账户密码未设置
-    "-1605" : "ERRCODE_ACCOUNT_PASSWORD_ERROR",                     //账户密码错误
-    "-1606" : "ERRCODE_ACCOUNT_PASSWORD_ERROR_OVER_THREE_TIMES",    //账户密码错误次数过多
-    "-1607" : "ERRCODE_ACCOUNT_USER_UNKNOWN",                       //账户未识别
-    "-1608" : "ERRCODE_ACCOUNT_PASSWORD_ALREADY_INITIALIZED",       //账户密码已初始化
-    "-1609" : "ERRCODE_ACCOUNT_NEWPASSWORD_INVALID",                //修改密码时缺少新密码 
-    "-1610" : "ERRCODE_ACCOUNT_NEWPASSWORD_DECODE_FAILED"           //修改密码时新密码解析失败
 };
 
 /**

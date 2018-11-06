@@ -26,7 +26,7 @@ export default class ChangePassword extends React.Component{
                 func: checkStr(value, { who: '新密码', min: 6,max:  32, type: 'english'}),
             },
             oldPWD: {
-                func: checkStr(value, { who: '原密码', min: 1,max:  32, type: 'english'}),
+                func: '',
             },
             surePWD: {
                 func: '',
@@ -39,7 +39,7 @@ export default class ChangePassword extends React.Component{
         },() =>{
             const { oldPWDTip, newPWD, newPWDTip, surePWD, surePWDTip } = this.state;
             this.setState({
-            disabled : (surePWD.trim().length<6 || newPWD.trim().length<6 || oldPWDTip !=='' || newPWDTip !== '' || surePWDTip !== '')
+            disabled : (surePWD.length<6 || newPWD.length<6 || oldPWDTip !=='' || newPWDTip !== '' || surePWDTip !== '')
         })});
     }
 
@@ -58,13 +58,13 @@ export default class ChangePassword extends React.Component{
                 data: { account: this.account }
             }).then((resp)=>{
                 let { errcode } = resp; 
-                if(errcode == 0){
+                if(errcode === 0){
                     message.success('修改成功,5秒后将跳转到登陆页面');
                     setTimeout(()=>{location.href = '/login'}, 5000);
-                }else if(errcode == '1605'){
+                }else if(errcode === '-1605'){
                         message.error('原密码错误');
                         this.setState({loading : false});
-                }else if( errcode =='1606'){
+                }else if( errcode === '-1606'){
                     message.error(`原密码错误次数过多，请5分钟后再试`);
                     this.setState({loading : false});
                 }else{

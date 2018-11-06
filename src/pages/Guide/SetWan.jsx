@@ -57,7 +57,7 @@ export default class SetWan extends React.PureComponent {
     };
 
     handleAccountChange = value => {
-        const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'english'});
+        const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
                 pppoeAccountTip: tip,
@@ -67,7 +67,7 @@ export default class SetWan extends React.PureComponent {
     }
 
     handleAccountBlur = value =>{
-            const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'english'});
+            const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
             this.setState({
                 pppoeAccountTip : tip,
                 disabled : !this.checkParams() ||  tip !== '',

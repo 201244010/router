@@ -47,12 +47,12 @@ export default class SetPassword extends React.Component {
         ).catch(ex => { console.error(ex) })
 
         this.setState({ loading : false });
-        let { errcode, message } = response;
+        let { errcode } = response;
         if(errcode == 0){
             this.props.history.push(routes.guideSetWan);
             return;
         }
-        this.setState({ tip : message == "ERRCODE_ACCOUNT_PASSWORD_ALREADY_INITIALIZED" ? "已设置过密码" : message});
+        this.setState({ tip : errcode == "-1608" ? "已设置过密码" : errcode});
     }
 
     // 监听输入实时改变

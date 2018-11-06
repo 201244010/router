@@ -3,7 +3,6 @@ import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { clear } from '~/assets/common/cookie';
-import { checkStr } from '~/assets/common/check';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -20,21 +19,10 @@ class Login extends React.Component {
     };
 
     onChange = value => {
-        const tip = checkStr(value,{who:'密码',min: 1,max: 32,type: 'english'});
         this.setState({ 
             password: value,
-            tip: tip
         })
     }
-
-    // onKeyUp = e => {
-    //     this.setState({ tip : '' });
-    // }
-
-    // flush = () => {
-    //     this.passwordInput.focus();
-    //     this.setState({ password: '' });
-    // }
 
     onEnter = () => {
         this.post();
@@ -54,27 +42,25 @@ class Login extends React.Component {
                 data: { account : { password : btoa(password), user : 'admin' }}
             }]
         );
-        const { errcode, message } = response;
+        const { errcode } = response;
         this.setState({ loading : false });
         if(errcode == 0){
             this.props.history.push('/');
             return;
         }
-        if(message === 'ERRCODE_ACCOUNT_PASSWORD_ERROR'){
+        if(errcode === '-1605'){
             this.setState({tip : "密码错误"});
-        }else if(message === 'ERRCODE_ACCOUNT_PASSWORD_ERROR_OVER_THREE_TIMES'){
+        }else if(errcode === '-1606'){
             this.setState({tip : '密码错误次数过多，请5分钟后再试'});
-        }else if(message === 'ERRCODE_ACCOUNT_PASSWORD_NOT_SET'){
+        }else if(errcode === '-1604'){
             this.setState({tip : '未设置过密码'});
         }else{
-            this.setState({tip : message});
+            this.setState({tip : errcode});
         }   
     }
 
     render() {
-        // const password = this.state.password.trim();
         const {tip} = this.state;
-        // const suffix = password.length ? <Icon type="close-circle" onClick={this.flush} /> : null;
         return [
             <div key='login-content' className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>
