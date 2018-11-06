@@ -3,6 +3,7 @@ import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { clear } from '~/assets/common/cookie';
+import { checkStr } from '~/assets/common/check';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -19,19 +20,21 @@ class Login extends React.Component {
     };
 
     onChange = value => {
+        const tip = checkStr(value,{who:'密码',min: 1,max: 32,type: 'english'});
         this.setState({ 
             password: value,
+            tip: tip
         })
     }
 
-    onKeyUp = e => {
-        this.setState({ tip : '' });
-    }
+    // onKeyUp = e => {
+    //     this.setState({ tip : '' });
+    // }
 
-    flush = () => {
-        this.passwordInput.focus();
-        this.setState({ password: '' });
-    }
+    // flush = () => {
+    //     this.passwordInput.focus();
+    //     this.setState({ password: '' });
+    // }
 
     onEnter = () => {
         this.post();

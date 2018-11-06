@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
-import {checkStr, checkIp, checkMask} from '~/assets/common/check';
+import { checkStr, checkIp, checkMask } from '~/assets/common/check';
 
 
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
@@ -57,7 +57,7 @@ export default class SetWan extends React.PureComponent {
     };
 
     handleAccountChange = value => {
-        const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
+        const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'english'});
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
                 pppoeAccountTip: tip,
@@ -67,7 +67,7 @@ export default class SetWan extends React.PureComponent {
     }
 
     handleAccountBlur = value =>{
-            const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
+            const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'english'});
             this.setState({
                 pppoeAccountTip : tip,
                 disabled : !this.checkParams() ||  tip !== '',

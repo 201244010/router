@@ -15,32 +15,37 @@ export default class ChangePassword extends React.Component{
         surePWD: '',
         loading: false,
         disabled: true,
-        errorTip: '',
+        surePWDTip: '',
+        oldPWDTip: '',
         newPWDTip: '',
     }
 
     onChange = (name,value) =>{
-        if('newPWD' === name){
+        const field = {
+            newPWD: {
+                func: checkStr(value, { who: '新密码', min: 6,max:  32, type: 'english'}),
+            },
+            oldPWD: {
+                func: checkStr(value, { who: '原密码', min: 1,max:  32, type: 'english'}),
+            },
+            surePWD: {
+                func: '',
+            }
+        };
+        let tip = field[name].func;
+        this.setState({
+            [name]: value,
+            [name + 'Tip']: tip,
+        },() =>{
+            const { oldPWDTip, newPWD, newPWDTip, surePWD, surePWDTip } = this.state;
             this.setState({
-                [name] : value,
-                errorTip : '', 
-                newPWDTip: checkStr(value, { who: '新密码', min: 6,max:  32, type: 'english'})
-            }, () =>{this.setState({
-                disabled : (this.state.surePWD.trim().length<6 || this.state.newPWD.trim().length<6)
-            })});
-        }else{
-            this.setState({
-                [name] : value, 
-                errorTip : '', 
-            },()=>{this.setState({
-                disabled: (this.state.surePWD.trim().length<6 || this.state.newPWD.trim().length<6)
-            })});
-        }  
+            disabled : (surePWD.trim().length<6 || newPWD.trim().length<6 || oldPWDTip !=='' || newPWDTip !== '' || surePWDTip !== '')
+        })});
     }
 
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
-            this.setState({surePWD : '',disabled : true,errorTip : '请保持两次输入新密码一致'});
+            this.setState({surePWD : '',disabled : true,surePWDTip : '请保持两次输入新密码一致'});
             return ;
         }else{
             this.setState({loading : true});
@@ -65,14 +70,15 @@ export default class ChangePassword extends React.Component{
     }
 
     render(){
-        const { oldPWD, newPWD, surePWD, loading, disabled, errorTip, newPWDTip } = this.state;
+        const { oldPWD, newPWD, surePWD, loading, disabled, surePWDTip, oldPWDTip, newPWDTip } = this.state;
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div style={{paddingLeft:60,marginTop:30,marginBottom:100}}>
                         <label>原密码</label>
-                        <FormItem type="small" style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={oldPWDTip} style={{ width : 320}}>
                             <Input type="password" placeholder={'请输入原密码'} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
+                            <ErrorTip>{oldPWDTip}</ErrorTip>
                         </FormItem>
                         <label>新密码</label>
                         <FormItem type="small" showErrorTip={newPWDTip} style={{ width : 320}}>
@@ -80,9 +86,9 @@ export default class ChangePassword extends React.Component{
                             <ErrorTip>{newPWDTip}</ErrorTip>
                         </FormItem>
                         <label>确认新密码</label>
-                        <FormItem type="small" showErrorTip={errorTip} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={surePWDTip} style={{ width : 320}}>
                             <Input type="password" placeholder={'请确认新密码'} value={surePWD} onChange={(value)=>this.onChange('surePWD',value)} />
-                            <ErrorTip>{errorTip}</ErrorTip>
+                            <ErrorTip>{surePWDTip}</ErrorTip>
                         </FormItem>
                     </div>
                     <section className="weixin-auth-save">
