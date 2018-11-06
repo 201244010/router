@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button, Switch, Modal, Icon, message } from 'antd';
+import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
@@ -100,11 +101,11 @@ export default class SetWifi extends React.Component {
 
     dataSet = async() =>{
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
-        this.mainWireLess.host.band_2g.password = btoa(this.state.hostWifiPsw);
+        this.mainWireLess.host.band_2g.password = Base64.encode(this.state.hostWifiPsw);
         this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName;
-        this.mainWireLess.host.band_5g.password = btoa(this.state.hostWifiPsw);
+        this.mainWireLess.host.band_5g.password = Base64.encode(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
-        this.guestWireLess.static_password = btoa(this.state.guestWifiPsw);
+        this.guestWireLess.static_password = Base64.encode(this.state.guestWifiPsw);
         this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
         this.mainWireLess.host.band_2g.encryption= this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_5g.encryption=this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
@@ -213,10 +214,10 @@ export default class SetWifi extends React.Component {
             this.guestWireLess = guest;
             this.setState({
                 hostWifiName : this.hostWireLess.ssid,
-                hostWifiPsw : atob(this.hostWireLess.password),
+                hostWifiPsw : Base64.decode(this.hostWireLess.password),
                 guestWifiName : this.guestWireLess.ssid,
                 guestWifi : this.guestWireLess.enable !== '0',
-                guestWifiPsw : atob(guest.static_password)   
+                guestWifiPsw : Base64.decode(guest.static_password)   
             }, () => {
                 this.setState({canSubmit : this.valid()})
             });

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
 import { message, Button } from 'antd';
 import {checkStr} from '~/assets/common/check';
@@ -50,8 +51,8 @@ export default class ChangePassword extends React.Component{
         }else{
             this.setState({loading : true});
             this.user= this.state.userName;
-            this.oldpassword = btoa(this.state.oldPWD);
-            this.password = btoa(this.state.newPWD);
+            this.oldpassword = Base64.encode(this.state.oldPWD);
+            this.password = Base64.encode(this.state.newPWD);
             this.account={'user':this.user,'oldpassword':this.oldpassword,'password':this.password};
             common.fetchApi({
                 opcode: 'ACCOUNT_MODIFY',

@@ -2,6 +2,7 @@
 import React from 'react';
 import Form from '~/components/Form';
 import {Button} from 'antd';
+import { Base64 } from 'js-base64';
 import routes from '../../routes';
 import {checkStr} from '~/assets/common/check';
 
@@ -40,7 +41,7 @@ export default class SetPassword extends React.Component {
         const response = await common.fetchApi(
             [{
                 opcode: 'ACCOUNT_INITIAL_PASSWORD',
-                data: { account : { password : btoa(password), user : 'admin' } }
+                data: { account : { password : Base64.encode(password), user : 'admin' } }
             }],
             {}, 
             { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }

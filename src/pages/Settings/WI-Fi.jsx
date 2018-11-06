@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message } from 'antd';
+import { Base64 } from 'js-base64';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
@@ -360,17 +361,17 @@ export default class WIFI extends React.Component {
         
         //guest
         this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
+        this.guestWireLess.static_password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
         this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? btoa(this.state.guestStaticPassword) : btoa(this.state.guestDynamicPassword);
+        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : Base64.encode(this.state.guestDynamicPassword);
 
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
         this.hostWireLess.band_2g.ssid = this.state.hostSsid24;
-        this.hostWireLess.band_2g.password = btoa(this.state.hostSsid24Password);
+        this.hostWireLess.band_2g.password = Base64.encode(this.state.hostSsid24Password);
         this.hostWireLess.band_2g.hide_ssid = this.state.hide_ssid24 == true? '1' : '0';
         this.hostWireLess.band_2g.encryption = this.state.encryption24;
         this.hostWireLess.band_2g.htmode = this.state.htmode24;
@@ -379,7 +380,7 @@ export default class WIFI extends React.Component {
         //5G
         this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
         this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
-        this.hostWireLess.band_5g.password = btoa(this.state.hostSsid5Password);
+        this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
         this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
         this.hostWireLess.band_5g.encryption = this.state.encryption5;
         this.hostWireLess.band_5g.htmode = this.state.htmode5;
@@ -407,8 +408,8 @@ export default class WIFI extends React.Component {
                 let { guest } = data[0].result;
                 this.setState({ 
                     loading : false,
-                    guestStaticPassword : atob(guest.static_password),
-                    guestDynamicPassword : guest.password_type == 'static'? '' : atob(guest.password),
+                    guestStaticPassword : Base64.encode(guest.static_password),
+                    guestDynamicPassword : guest.password_type == 'static'? '' : Base64.encode(guest.password),
                     guestPwdForbid: guest.encryption == 'none',
                     guestPasswordDisabled : (guest.enable != '1') || (guest.encryption == 'none'),
                     period: guest.period,
@@ -470,21 +471,21 @@ export default class WIFI extends React.Component {
                 //guest
                 guestSsid : this.guestWireLess.ssid,
                 guestEncryption : this.guestWireLess.encryption,
-                guestStaticPassword : this.guestWireLess.encryption == 'none' ? '' : atob(this.guestWireLess.static_password),
+                guestStaticPassword : this.guestWireLess.encryption == 'none' ? '' : Base64.decode(this.guestWireLess.static_password),
                 guestPasswordDisabled : (this.guestWireLess.enable != '1') || (this.guestWireLess.encryption == 'none'),
                 PWDType : this.guestWireLess.password_type,
                 displayType : this.guestWireLess.password_type == 'static'? 'none' : 'block',
                 guestEnable : this.guestWireLess.enable == '1'? true : false,
                 disabledType2 : this.guestWireLess.enable == '1'? false : true,
                 period : this.guestWireLess.period,
-                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : atob(this.guestWireLess.password),
-                guestStaticPassword : atob(this.guestWireLess.static_password), 
+                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : Base64.decode(this.guestWireLess.password),
+                guestStaticPassword : Base64.decode(this.guestWireLess.static_password), 
                 guestPwdForbid: this.guestWireLess.encryption == 'none',
                 
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
-                hostSsid24Password :this.hostWireLess.band_2g.encryption == 'none'? '' : atob(this.hostWireLess.band_2g.password),
+                hostSsid24Password :this.hostWireLess.band_2g.encryption == 'none'? '' : Base64.decode(this.hostWireLess.band_2g.password),
                 hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
                 encryption24 : this.hostWireLess.band_2g.encryption,
                 pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ? true :false,
@@ -497,7 +498,7 @@ export default class WIFI extends React.Component {
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
-                hostSsid5Password : this.hostWireLess.band_5g.encryption == 'none' ? '' : atob(this.hostWireLess.band_5g.password),
+                hostSsid5Password : this.hostWireLess.band_5g.encryption == 'none' ? '' : Base64.decode(this.hostWireLess.band_5g.password),
                 hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,

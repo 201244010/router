@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon,message } from 'antd';
+import { Base64 } from 'js-base64';
 import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
@@ -109,8 +110,8 @@ export default class SetWan extends React.PureComponent {
                 let { pppoe } = this.netInfo;
                 wan['dns_type'] = pppoe.dns_type === "dynamic" ? 'auto' : pppoe.dns_type;
                 wan['user_info'] = {
-                    username : btoa(pppoeAccount),
-                    password : btoa(pppoePassword)
+                    username : Base64.encode(pppoeAccount),
+                    password : Base64.encode(pppoePassword)
                 };
                 break;
             case 'static' :

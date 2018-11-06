@@ -3,6 +3,7 @@ import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { clear } from '~/assets/common/cookie';
+import { Base64 } from 'js-base64';
 import "./QRcode.scss";
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -39,7 +40,7 @@ class Login extends React.Component {
         const response = await common.fetchApi(
             [{ 
                 opcode: 'ACCOUNT_LOGIN',
-                data: { account : { password : btoa(password), user : 'admin' }}
+                data: { account : { password : Base64.encode(password), user : 'admin' }}
             }]
         );
         const { errcode } = response;
