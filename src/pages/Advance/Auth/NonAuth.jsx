@@ -278,7 +278,7 @@ export default class NonAuth extends React.Component{
                 return {
                     icon: iconMap[item.device] || 'unknown',
                     name: item.hostname,
-                    mac: item.mac,
+                    mac: item.mac.toUpperCase(),
                     time: item.time,
                     checked: false
                 }
@@ -292,7 +292,7 @@ export default class NonAuth extends React.Component{
 
                 return {
                     index: item.index,
-                    icon: iconMap[client.device || 'unknown'],
+                    icon: iconMap[client.device] || 'unknown',
                     name: item.name,
                     mac: mac,
                 }
@@ -325,7 +325,7 @@ export default class NonAuth extends React.Component{
                         width:'280px',
                         overflow: 'hidden',
                         textOverflow:'ellipsis',
-                        whiteSpace: 'nowrap',
+                        whiteSpace: 'pre',
                     }} title={record.name}>{record.name}</div>
                 </div>
             )

@@ -139,9 +139,11 @@ export default class Backup extends React.Component{
     }
     //备份到本地
     postBackupLocal = () => {
-        let backup = {};
-        backup['basebackup'] = this.state.baseBackup ? 1 : 0;
-        backup['authbackup'] = this.state.authBackup ? 1 : 0;
+        const {  baseBackup, authBackup } = this.state;
+        let backup = {
+            basebackup: baseBackup ? 1 : 0,
+            authbackup: authBackup ? 1 : 0,
+        };
 
         common.fetchApi({
             opcode : 'SYSTEMTOOLS_BACKUP',
@@ -159,10 +161,13 @@ export default class Backup extends React.Component{
 
     //备份到云
     postBackupCloud = async () => {
-        let backup = {};
-        backup['filename'] = this.state.filename;
-        backup['authbackup'] = this.state.authBackup ? 1 : 0;
-        backup['basebackup'] = this.state.baseBackup ? 1 : 0;
+        const { filename, baseBackup, authBackup } = this.state;
+        let backup = {
+            filename: filename,
+            basebackup: baseBackup ? 1 : 0,
+            authbackup: authBackup ? 1 : 0,
+        };
+
         await common.fetchApi(
             {
                 opcode : 'SYSTEMTOOLS_CLOUD_BACKUP',
@@ -357,17 +362,17 @@ export default class Backup extends React.Component{
                             <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>
                         </ul>
                         <div className='func-btn'>
-                            <Button onClick={this.postBackupLocal}>备份到本地</Button>
-                            <Button onClick={this.cloudBackup}>备份到云</Button>
+                            <Button type='primary' onClick={this.postBackupLocal}>备份到本地</Button>
+                            <Button type='primary' onClick={this.cloudBackup}>备份到云</Button>
                         </div>
                     </section>
                     <section className='restore'>
                         <PanelHeader title="恢复" checkable={false} onChange={{}} />
                         <div className='restore-func'>
                             <Upload onChange={this.postRecoverLocal} name='file' data={{ opcode: '0x2018' }} multiple={false} action={__BASEAPI__}>
-                                <Button>从本地恢复</Button>
+                                <Button type='primary'>从本地恢复</Button>
                             </Upload>
-                            <Button className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>
+                            <Button type='primary' className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>
                         </div>
                     </section>
                 </Form>

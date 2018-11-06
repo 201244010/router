@@ -312,7 +312,7 @@ export default class Bootdevice extends React.Component {
                 return {
                     icon: iconMap[item.device] || 'unknown',
                     name: item.hostname,
-                    mac: item.mac,
+                    mac: item.mac.toUpperCase(),
                     time: item.time,
                     checked: false
                 }
@@ -345,7 +345,7 @@ export default class Bootdevice extends React.Component {
                         width:'280px',
                         overflow: 'hidden',
                         textOverflow:'ellipsis',
-                        whiteSpace: 'nowrap',
+                        whiteSpace: 'pre',
                     }} title={record.name}>{record.name}</div>
                     <i style={{
                         display: 'inline-block',
