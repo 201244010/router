@@ -53,7 +53,7 @@ window.onload = function () {
                     document.body.style.background = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(../common/imgs/bg.png?r=" + Math.random() + ")";
                     document.body.style.backgroundSize = "cover";
                     logoElement.src = '../common/imgs/logo.png?r=' + Math.random();
-                    showToast('不支持微信及短信方式连接wifi');
+                    showToast('PC端暂不支持微信连Wi-Fi功能', 0);
                 }
             } else {
                 showToast('请求失败，请稍后再试');
@@ -240,15 +240,21 @@ connectBtn.addEventListener('click', function () {
     }
 }, false);
 
-function showToast(msg) {
+function showToast(msg, duration) {
+    if (undefined === duration) {
+        duration = 3000;
+    }
+
     toast.innerText = msg;
     toast.classList.remove('not-show');
     toast.classList.add('show');
     clearTimeout(toast.timer);
-    toast.timer = setTimeout(function () {
-        toast.classList.remove('show');
-        toast.classList.add('not-show');
-    }, 3000);
+    if (0 !== duration) {
+        toast.timer = setTimeout(function () {
+            toast.classList.remove('show');
+            toast.classList.add('not-show');
+        }, duration);
+    }
 }
 
 function validate() {
