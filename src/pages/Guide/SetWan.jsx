@@ -18,7 +18,7 @@ export default class SetWan extends React.PureComponent {
 
     state = {
         detect : true,
-        type : 'pppoe', // pppoe | dhcp | static
+        type : 'dhcp', // pppoe | dhcp | static
         showNetWorkStatus : false,
         wanLinkState: true,
 
@@ -27,7 +27,7 @@ export default class SetWan extends React.PureComponent {
         pppoeAccountTip : '',
         pppoePassword : '',
         pppoePasswordTip : '',
-        disabled : true,
+        disabled : false,
         loading : false,
 
         // 静态 ip
@@ -150,37 +150,38 @@ export default class SetWan extends React.PureComponent {
                 [
                     {opcode: 'WANWIDGET_ONLINETEST_START'}
                 ]
-            );
-            // 获取联网状态
-            let connectStatus = await common.fetchApi(
-                [
-                    {opcode: 'WANWIDGET_ONLINETEST_GET'}
-                ],
-                {},
-                {
-                    loop : true,
-                    interval : 3000, 
-                    stop : ()=> this.stop, 
-                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+            ).then( async() =>{
+                // 获取联网状态
+                let connectStatus = await common.fetchApi(
+                    [
+                        {opcode: 'WANWIDGET_ONLINETEST_GET'}
+                    ],
+                    {},
+                    {
+                        loop : true,
+                        interval : 3000, 
+                        stop : ()=> this.stop, 
+                        pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                    }
+                );
+                let { errcode, data } = connectStatus;
+                this.setState({ loading : false });
+                if(errcode == 0){
+                    let online = data[0].result.onlinetest.online;
+                    this.setState({
+                        showNetWorkStatus : true,
+                        online :online
+                    });
+                    if(online){
+                        setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
+                    }
+                    return;
                 }
-            );
-            let { errcode, data } = connectStatus;
-            this.setState({ loading : false });
-            if(errcode == 0){
-                let online = data[0].result.onlinetest.online;
-                this.setState({
-                    showNetWorkStatus : true,
-                    online :online
-                });
-                if(online){
-                    setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
-                }
-                return;
-            }
-            return;
-        }
-        message.error(`参数设置不合法[${errcode}]`);
-        this.setState({loading : false});
+            });  
+        }else{
+            message.error(`参数设置不合法[${errcode}]`);
+            this.setState({loading : false});
+        }   
     }
 
     // 校验参数
@@ -220,45 +221,50 @@ export default class SetWan extends React.PureComponent {
                 {opcode: 'WANWIDGET_WAN_LINKSTATE_GET'}
             ],
         ).then((resp) => {
-            const {errcode,data} = resp;
+            const { errcode,data } = resp;
             if(errcode == 0){
                 this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
-            }else{
-                message.error(`获取网线插拔状态失败[${errcode}]`);
-            } 
-            common.fetchApi(
-                [
-                    {opcode: 'WANWIDGET_DIALDETECT_START'}
-                ],
-            );
-            common.fetchApi(
-                [
-                    {opcode: 'WANWIDGET_DIALDETECT_GET'}
-                ],
-                {},
-                { 
-                    loop : true, 
-                    interval : 2000,
-                    pending : res => res.data[0].result.dialdetect.status === 'detecting', 
-                    stop : () => this.stop
-                }
-            ).then((response)=>{
-                const { errcode, data } = response;
-                if(errcode == 0){
-                    let { dialdetect } = data[0].result;
-                    let { dial_type } = dialdetect;
-                        dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-                        this.setState({ 
-                        type :  dial_type, 
-                        disabled : dial_type == 'dhcp' ? false : true 
-                        });
-                        this.setState({ detect: false });
-                        return;
+                if(data[0].result.wan_linkstate.linkstate){
+                    common.fetchApi(
+                        [
+                            {opcode: 'WANWIDGET_DIALDETECT_START'}
+                        ],
+                    ).then(()=>{
+                        common.fetchApi(
+                            [
+                                {opcode: 'WANWIDGET_DIALDETECT_GET'}
+                            ],
+                            {},
+                            { 
+                                loop : true, 
+                                interval : 2000,
+                                pending : res => res.data[0].result.dialdetect.status === 'detecting', 
+                                stop : () => this.stop
+                            }
+                        ).then((response)=>{
+                            const { errcode, data } = response;
+                            if(errcode == 0){
+                                let { dialdetect } = data[0].result;
+                                let { dial_type } = dialdetect;
+                                    dial_type  = dial_type === 'none' ? 'dhcp' : dial_type;
+                                    this.setState({ 
+                                    type :  dial_type, 
+                                    disabled : dial_type == 'dhcp' ? false : true 
+                                    });
+                                    this.setState({ detect: false });
+                                    return;
+                            }else{
+                                this.setState({ detect: false });
+                                message.error(`上网方式检查检测失败[${errcode}]`);
+                            }
+                        }); 
+                    }); 
                 }else{
                     this.setState({ detect: false });
-                    message.error(`上网方式检查检测失败[${errcode}]`);
-                }
-            });       
+                }   
+            }else{
+                message.error(`获取网线插拔状态失败[${errcode}]`);
+            }          
         });
         
     }
