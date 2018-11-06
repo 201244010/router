@@ -60,13 +60,15 @@ class Login extends React.Component {
             this.props.history.push('/');
             return;
         }
-        if(message === 'ERRCODE_PARAMS_INVALID'){
+        if(message === 'ERRCODE_ACCOUNT_PASSWORD_ERROR'){
             this.setState({tip : "密码错误"});
-        }else if(message === 'ERRCODE_PERMISSION'){
+        }else if(message === 'ERRCODE_ACCOUNT_PASSWORD_ERROR_OVER_THREE_TIMES'){
             this.setState({tip : '密码错误次数过多，请5分钟后再试'});
+        }else if(message === 'ERRCODE_ACCOUNT_PASSWORD_NOT_SET'){
+            this.setState({tip : '未设置过密码'});
         }else{
             this.setState({tip : message});
-        }    
+        }   
     }
 
     render() {

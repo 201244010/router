@@ -58,11 +58,17 @@ export default class ChangePassword extends React.Component{
                 data: { account: this.account }
             }).then((resp)=>{
                 let { errcode } = resp; 
-                if(errcode == '0'){
+                if(errcode == 0){
                     message.success('修改成功,5秒后将跳转到登陆页面');
                     setTimeout(()=>{location.href = '/login'}, 5000);
+                }else if(errcode == '1605'){
+                        message.error('原密码错误');
+                        this.setState({loading : false});
+                }else if( errcode =='1606'){
+                    message.error(`原密码错误次数过多，请5分钟后再试`);
+                    this.setState({loading : false});
                 }else{
-                    message.error(`原密码错误`);
+                    message.error(`${errcode}`);
                     this.setState({loading : false});
                 }
             });  
