@@ -46,7 +46,7 @@ export default class ChangePassword extends React.Component{
 
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
-            this.setState({surePWD : '',disabled : true,surePWDTip : '请保持两次输入新密码一致'});
+            this.setState({surePWD : '',disabled : true,surePWDTip : '两次密码不一致'});
             return ;
         }else{
             this.setState({loading : true});

@@ -180,7 +180,7 @@ export default class SetWan extends React.PureComponent {
                 }
             });  
         }else{
-            message.error(`参数设置不合法[${errcode}]`);
+            message.error(`参数不合法[${errcode}]`);
             this.setState({loading : false});
         }   
     }

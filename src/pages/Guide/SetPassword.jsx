@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {Button} from 'antd';
+import { Button, Modal } from 'antd';
 import { Base64 } from 'js-base64';
 import routes from '../../routes';
 import {checkStr} from '~/assets/common/check';
@@ -53,7 +53,20 @@ export default class SetPassword extends React.Component {
             this.props.history.push(routes.guideSetWan);
             return;
         }
-        this.setState({ tip : errcode == "-1608" ? "已设置过密码" : errcode});
+        if(errcode === "-1608"){
+            Modal.confirm({
+                title: '提示',
+                content: '已设置过密码',
+                okText: '确定',
+                cancelText: '取消',
+                onOk() {
+                    location.href = '/';
+                },
+                onCancel() {
+                },
+            });
+        }
+        this.setState({ tip : errcode === "-1608" ? "已设置过密码" : errcode});
     }
 
     // 监听输入实时改变
