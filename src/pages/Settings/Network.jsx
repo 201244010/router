@@ -73,7 +73,7 @@ export default class NETWORK extends React.Component {
             },
             gateway:{
                 func: checkIp,
-                who:'网关',
+                who:'默认网关',
             },
             staticDns:{
                 func: checkIp,
@@ -601,7 +601,7 @@ const Static = props => {
                     onChange={value => props.onChange(value, 'subnetmask')} />
                 <ErrorTip>{props.subnetmaskTip}</ErrorTip>
             </FormItem>
-            <label>网关</label>
+            <label>默认网关</label>
             <FormItem key='gateway' showErrorTip={props.gatewayTip} style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
