@@ -378,14 +378,17 @@ export default class WIFI extends React.Component {
         this.hostWireLess.band_2g.channel = this.state.channel24;
 
         //5G
-        this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
-        this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
-        this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
-        this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
-        this.hostWireLess.band_5g.encryption = this.state.encryption5;
-        this.hostWireLess.band_5g.htmode = this.state.htmode5;
-        this.hostWireLess.band_5g.channel = this.state. channel5;
-        
+        if( this.state.channelType ){
+            this.hostWireLess.band_5g = this.hostWireLess.band_5g;
+        }else{
+            this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
+            this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
+            this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
+            this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
+            this.hostWireLess.band_5g.encryption = this.state.encryption5;
+            this.hostWireLess.band_5g.htmode = this.state.htmode5;
+            this.hostWireLess.band_5g.channel = this.state. channel5;
+        }
         this.mainWireLess.host=this.hostWireLess;
         let response = await common.fetchApi(
             [{
@@ -396,29 +399,12 @@ export default class WIFI extends React.Component {
 
         let { errcode } = response;
         if(errcode == 0){
-            let response = await common.fetchApi(
-                [
-                    {
-                        opcode: 'WIRELESS_GET',
-                    }
-                ]
-            );
-            let { errcode, data } = response;
-            if(errcode === 0){
-                let { guest } = data[0].result;
-                this.setState({ 
-                    loading : false,
-                    guestStaticPassword : Base64.encode(guest.static_password),
-                    guestDynamicPassword : guest.password_type == 'static'? '' : Base64.encode(guest.password),
-                    guestPwdForbid: guest.encryption == 'none',
-                    guestPasswordDisabled : (guest.enable != '1') || (guest.encryption == 'none'),
-                    period: guest.period,
-                });
-            }
-            return;
-        }
-        message.error(`Wi-Fi设置失败[${errcode}]`);
-        this.setState({ loading : false});
+            this.fetchWireLessInfo();
+            this.setState({ loading : false});
+        }else{
+            message.error(`Wi-Fi设置失败[${errcode}]`);
+            this.setState({ loading : false});
+        }   
     }
 
     format = ()=>{
