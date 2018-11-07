@@ -395,9 +395,9 @@ export default class NETWORK extends React.Component {
 
     updateNetStatus = (wan) => {
         const diagType = {
-            dhcp: 'DHCP自动获取',
-            pppoe: 'PPPoE拨号',
-            static: '静态获取',
+            dhcp: '自动获取IP（DHCP）',
+            pppoe: '宽带拨号上网（PPPoE）',
+            static: '手动输入IP（静态IP）',
         };
 
         let info = wan.info,
