@@ -49,11 +49,11 @@ class Login extends React.Component {
             this.props.history.push('/');
             return;
         }
-        if(errcode === '-1605'){
+        if(errcode == '-1605'){
             this.setState({tip : "密码错误"});
-        }else if(errcode === '-1606'){
+        }else if(errcode == '-1606'){
             this.setState({tip : '密码错误次数过多，请5分钟后再试'});
-        }else if(errcode === '-1604'){
+        }else if(errcode == '-1604'){
             this.setState({tip : '未设置过密码'});
         }else{
             this.setState({tip : errcode});
