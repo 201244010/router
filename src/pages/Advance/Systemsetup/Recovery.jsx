@@ -50,7 +50,7 @@ export default class Recovery extends React.Component{
     }
 
     render(){
-        const {loadingActive,succeedActive} = this.state;
+        const { loadingActive,succeedActive } = this.state;
         return (
             <div>
                 <div style={{marginTop : 6}}>

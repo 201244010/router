@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Modal, message } from 'antd';
 import CustomIcon from '~/components/Icon';
-import { clearAll } from '~/assets/common/cookie';
+import { clear } from '~/assets/common/cookie';
 
 export default class Reboot extends React.Component{
     constructor(props){
@@ -18,7 +18,7 @@ export default class Reboot extends React.Component{
         let resp = await common.fetchApi({ opcode: 'SYSTEMTOOLS_RESTART' });
         const errcode = resp.errcode;
         if (0 === errcode) {
-            clearAll();
+            clear();
             this.setState({
                 loadingActive: true
             });
@@ -50,7 +50,7 @@ export default class Reboot extends React.Component{
     }
 
     render(){
-        const {loadingActive,succeedActive} = this.state;
+        const { loadingActive, succeedActive } = this.state;
         return (
             <div>
                 <div style={{marginTop : 6}}>
