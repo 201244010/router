@@ -147,7 +147,7 @@ export default class Speed extends React.Component {
                 });
             })
         }else{
-            const tip = checkRange(value, { min: 8, max: 1000, who: '下行总带宽' });
+            const tip = checkRange(value, { min: 1, max: 1000, who: '下行总带宽' });
             this.setState({
                 [field] : value,
                 downBandTip: tip,

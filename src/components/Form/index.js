@@ -127,6 +127,7 @@ class Input extends React.Component {
                         disabled={this.props.disabled}
                         name={this.props.name}
                         placeholder={this.props.placeholder}
+                        autocomplete="new-password" // 修复chrome上密码自动填充问题
                         type={this.state.type}/>
             </div>
         );

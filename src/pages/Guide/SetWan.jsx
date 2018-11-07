@@ -135,7 +135,7 @@ export default class SetWan extends React.PureComponent {
     submit = async () => {
         let payload = this.composeParams(), info = payload.wan.info; 
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
-            message.error(`IP地址与网关不能相同`);
+            message.error(`IP地址与默认网关不能相同`);
             return ;
         }
         this.setState({ loading : true });
@@ -309,7 +309,7 @@ export default class SetWan extends React.PureComponent {
             },
             gateway:{
                 func: checkIp,
-                who:'网关',
+                who:'默认网关',
             },
             dns:{
                 func: checkIp,
@@ -490,7 +490,7 @@ const StaticIp = props => {
                 onChange={value => props.onChange(value, 'subnetmask')} />
             <ErrorTip>{props.subnetmaskTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='gateway' label="网关" showErrorTip={props.gatewayTip}>
+        <FormItem key='gateway' label="默认网关" showErrorTip={props.gatewayTip}>
             <InputGroup 
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
