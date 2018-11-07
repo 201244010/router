@@ -48,16 +48,22 @@ class Login extends React.Component {
         if(errcode == 0){
             this.props.history.push('/');
             return;
-        }
-        if(errcode === '-1605'){
-            this.setState({tip : "密码错误"});
-        }else if(errcode === '-1606'){
-            this.setState({tip : '密码错误次数过多，请5分钟后再试'});
-        }else if(errcode === '-1604'){
-            this.setState({tip : '未设置过密码'});
         }else{
-            this.setState({tip : errcode});
-        }   
+            const field = {
+                '-1605':{
+                    tip: '密码错误'
+                },
+                '-1606':{
+                    tip: '密码错误次数过多，请5分钟后再试'
+                },
+                '-1604':{
+                    tip: '未设置过密码'
+                }
+            };
+            this.setState({
+                tip: field[errcode].tip || `未知错误[${errcode}]`,
+            });
+        }
     }
 
     render() {
