@@ -61,7 +61,7 @@ class Login extends React.Component {
                 }
             };
             this.setState({
-                tip: field[errcode].tip || `未知错误${errcode}`,
+                tip: field[errcode].tip || `未知错误[${errcode}]`,
             });
         }
     }
