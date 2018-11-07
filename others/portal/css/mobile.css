@@ -57,6 +57,16 @@ body {
 .btn.btn-disabled {
     background: #999;
 }
+.tip{
+    position: relative;
+    height: 0.44rem;
+    line-height: 0.44rem;
+    margin-top: 0.32rem;
+    margin-bottom: 0.88rem;
+    opacity: 0.8;
+    font-size: 0.32rem;
+    color: #fff;
+}
 .protocol {
     position: relative;
     height: 0.44rem;

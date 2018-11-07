@@ -108,6 +108,15 @@ body {
 .btn.btn-disabled {
     background: #999;
 }
+.tip{
+    position: relative;
+    height: 18px;
+    width: 320px;
+    margin: 8px auto 36px;
+    font-size: 14px;
+    color: #fff;
+    line-height: 18px;    
+}
 .protocol {
     position: relative;
     height: 18px;
