@@ -401,8 +401,9 @@ export default class WIFI extends React.Component {
         if(errcode == 0){
             this.fetchWireLessInfo();
             this.setState({ loading : false});
+            message.success(`配置生效`);
         }else{
-            message.error(`Wi-Fi设置失败[${errcode}]`);
+            message.error(`配置失败！[${errcode}]`);
             this.setState({ loading : false});
         }   
     }

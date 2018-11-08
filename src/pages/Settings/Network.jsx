@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {Select ,Radio,Button, Modal} from 'antd';
+import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import {checkIp, checkMask} from '~/assets/common/check';
@@ -58,7 +58,9 @@ export default class NETWORK extends React.Component {
         dhcpDnsTip : '',
         dhcpDnsbackupTip : '',
         pppoeDnsTip : '',
-        pppoeDnsbackupTip : ''
+        pppoeDnsbackupTip : '',
+
+        loading: false
     };
 
     onIPConifgChange = (val, key) => {
@@ -276,15 +278,17 @@ export default class NETWORK extends React.Component {
         wan['dial_type'] = type;
         switch(type){
             case 'pppoe' :
-                wan['dns_type'] = pppoeType,
+                wan['dns_type'] = pppoeType;
                 wan['user_info'] = {
                     username : btoa(pppoeAccount),
                     password : btoa(pppoePassword)
                 };
-                wan['dns_info'] = {
-                    dns1 : pppoeDns.join('.'),
-                    dns2 : pppoeDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
-                };
+                if(pppoeType === 'manual'){
+                    wan['dns_info'] = {
+                        dns1 : pppoeDns.join('.'),
+                        dns2 : pppoeDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
+                    };
+                }
                 wan['service'] = service;
                 break;
             case 'static' :
@@ -297,11 +301,13 @@ export default class NETWORK extends React.Component {
                 };
                 break;
             case 'dhcp' :
-                wan['dns_type'] = dhcpType,
-                wan['dns_info'] = {
-                    dns1 : dhcpDns.join('.'),
-                    dns2 : dhcpDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
-                };
+                wan['dns_type'] = dhcpType;
+                if(dhcpType === 'manual'){
+                    wan['dns_info'] = {
+                        dns1 : dhcpDns.join('.'),
+                        dns2 : dhcpDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
+                    };
+                }
                 break;
         }
         return { wan };
@@ -310,31 +316,30 @@ export default class NETWORK extends React.Component {
     //表单提交
     post = async() => {
         this.setState({
-            disabled : true,
+            loading : true,
         });
         let payload = this.composeParams(), info = payload.wan.info;
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
             this.setState({
                 disabled : false,
             });
-            return Modal.error({ title : '参数校验失败', content :  'IPV4不能跟网关相同' });
+            return message.error( `IP地址与默认网关不能相同` );
         }
         await common.fetchApi(
             {
                 opcode : 'NETWORK_WAN_IPV4_SET',
                 data : payload
             },
-            {
-                loading : true
-            }).then(refs => {
-            this.setState({
-                disabled : false
-            });
-            let {errcode, message } = refs;
-            if (errcode == 0){
+            ).then(refs => {
+            let { errcode } = refs;
+            if (errcode === 0){
+                this.setState({ loading: false });
+                message.success(`配置生效`);
+                this.getNetInfo();
                 return;
             }
-            Modal.error({ title : 'WAN口设置失败', content : message});
+            this.setState({ loading: false });
+            message.error(`配置失败![${errcode}]`);
         })
     }
 
@@ -343,7 +348,7 @@ export default class NETWORK extends React.Component {
         let response = await common.fetchApi(
             { opcode : 'NETWORK_WAN_IPV4_GET'}
         );
-        let { data, errcode, message } = response;
+        let { data, errcode } = response;
         if(errcode == 0){
             let initIp = (ip) => {  // 'x.x.x.x' / ''
                 return Object.assign(['', '', '', ''], ip.split('.'));
@@ -390,7 +395,7 @@ export default class NETWORK extends React.Component {
 
             return;
         }
-        Modal.error({ title: '获取上网设置信息失败', content: message});
+        message.error(`信息获取失败[${errcode}]`);
     }
 
     updateNetStatus = (wan) => {

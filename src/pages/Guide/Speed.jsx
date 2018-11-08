@@ -23,7 +23,8 @@ export default class Speed extends React.Component {
         autoDownband : '0',
         upBandTip: '',
         downBandTip: '',
-        disabled : true
+        disabled : true,
+        loading: false
     };
   }
 
@@ -84,6 +85,7 @@ export default class Speed extends React.Component {
 
   //  手动配速  
     configure = async (upband,downband,speedtest) => {
+        this.setState({ loading: true });
         let state = this.state;
         let upBandWidth = parseInt(state[upband]) * 1024 + '';
         let downBandWidth = parseInt(state[downband]) * 1024 + '';
@@ -98,8 +100,10 @@ export default class Speed extends React.Component {
             ).then(refs => {
             let { errcode } = refs;
             if(errcode == 0){
+                this.setState({ loading: false });
                 return this.props.history.push('/guide/setwifi');
             }
+            this.setState({ loading: false });
             message.error(`手动配速设置失败[${errcode}]`);
         })
     }
@@ -168,7 +172,7 @@ export default class Speed extends React.Component {
     }
 
   render(){
-    const {showModal, mode, speedTestdone, upBandWidth, downBandWidth ,autoUpband, autoDownband, upBandTip, downBandTip}  = this.state;
+    const { showModal, mode, speedTestdone, upBandWidth, downBandWidth ,autoUpband, autoDownband, upBandTip, downBandTip, loading }  = this.state;
     return (
       <div className="speed">
         <h2>设置上下行带宽</h2> 
@@ -199,7 +203,9 @@ export default class Speed extends React.Component {
                                         configure={this.configure}
                                         reTest={this.reTest}
                                         disabled={this.state.disabled}
-                                        nextStep={this.nextStep} /> </div> 
+                                        nextStep={this.nextStep}
+                                        loading={loading} 
+                                        /> </div> 
                 )
             }
             {/* 自动测速结果看板 */}
@@ -210,7 +216,9 @@ export default class Speed extends React.Component {
                                 reTest={this.reTest}
                                 configure={this.configure}
                                 upBandWidth={autoUpband}
-                                downBandWidth={autoDownband} /></div> : ""}
+                                downBandWidth={autoDownband}
+                                loading={loading}
+                                /></div> : ""}
                 <Modal
                     visible={showModal}
                     className='modal-center'
@@ -267,7 +275,7 @@ const SpeedAutoBoard = props => {
                 </div>
             </div>
             <div className="button-wrap">
-                <Button type="primary" size='large' style={{ width : "100%" }} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
+                <Button type="primary" size='large' style={{ width : "100%" }} loading={props.loading} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                 </div>
@@ -292,7 +300,7 @@ const SpeedManualConfig = props => {
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
             <FormItem label="#">
-        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} onClick={() => props.configure('upBandWidth','downBandWidth','manual')}>下一步</Button>
+        		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} loading={props.loading} onClick={() => props.configure('upBandWidth','downBandWidth','manual')}>下一步</Button>
             </FormItem>
             <FormItem label="#" style={{ marginTop : -30 }}>
                 <div className="help">
