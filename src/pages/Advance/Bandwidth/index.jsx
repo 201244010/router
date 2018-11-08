@@ -43,6 +43,7 @@ export default class Bandwidth extends React.PureComponent {
         saveDisable : false,//保存按钮灰显
         upbandTmpTip : '',
         downbandTmpTip : '',
+        btloading: false,
     }
 
     onbandChange = (val, key) => {
@@ -153,7 +154,7 @@ export default class Bandwidth extends React.PureComponent {
             this.setState({
                 bandenable: value,
             });
-            message.success('保存成功！');
+            message.success('配置生效');
             this.qosdata.enable = value;
             let response = await common.fetchApi({
                 opcode: 'QOS_SET',
@@ -235,6 +236,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onEditOk = async ()=>{
+        this.setState({ btloading: true });
         let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
         await common.fetchApi({
             opcode : 'QOS_SET',
@@ -244,10 +246,15 @@ export default class Bandwidth extends React.PureComponent {
             if (errcode == 0){
                 this.setState({
                     manualShow :false,
+                    btloading: false,
                 });
                 this.getBandInfo();
                 return;
             }
+            this.setState({
+                manualShow :false,
+                btloading: false,
+            });
             message.error(`配置失败![${errcode}]`);
         })
     }
@@ -357,7 +364,7 @@ export default class Bandwidth extends React.PureComponent {
     render(){
         const { saveDisable, unit, bandenable, visible, percent, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
-            white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading } = this.state;
+            white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
         const columns = [{
             title : '设备类型',
             dataIndex : 'type'
@@ -434,7 +441,7 @@ export default class Bandwidth extends React.PureComponent {
                     onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
-                    okButtonProps={{disabled : this.state.disable}}
+                    okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
                         <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>

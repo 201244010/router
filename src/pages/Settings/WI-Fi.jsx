@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Checkbox, Select, Button, Radio, message } from 'antd';
+import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
+import Tips from '~/components/Tips';
 import { checkStr ,checkRange } from '~/assets/common/check';
 
 const {FormItem, ErrorTip, Input} = Form;
@@ -68,8 +69,11 @@ export default class WIFI extends React.Component {
         hostSsid24PasswordTip: '',
         hostSsid5Tip: '',
         hostSsid5PasswordTip:'',
-        loading: false,
         saveDisabled: false,
+        visibile: 'hidden',
+        result: true,
+        err: '',
+        done: true
     };
 
     checkDisabled =() =>{
@@ -355,7 +359,10 @@ export default class WIFI extends React.Component {
 
     submit = async ()=> {
         //是否双频合一
-        this.setState({ loading : true});
+        this.setState({
+            visibile: 'visible',
+            done: false,
+        });
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
 
         
@@ -398,13 +405,46 @@ export default class WIFI extends React.Component {
         );
 
         let { errcode } = response;
-        if(errcode == 0){
-            this.fetchWireLessInfo();
-            this.setState({ loading : false});
-            message.success(`配置生效`);
+        if(errcode === 0){
+            this.setState({
+                done: true,
+                result: true,
+            });
+            
+            setTimeout(async() => {
+                await common.fetchApi(
+                    [{
+                        opcode: 'WIRELESS_GET',
+                    }]
+                ).catch(ex => {
+                    if(ex !== ''){
+                        this.setState({done: true});  
+                    }}).then(
+                            async()=>{
+                            await common.fetchApi(
+                                [{
+                                    opcode: 'WIRELESS_GET',
+                                }], 
+                                {},
+                                {
+                                    loop: true,
+                                    interval: 2000,
+                                    stop: resp => {resp!== 0},
+                                }
+                            );
+                            this.fetchWireLessInfo();
+                            this.setState({
+                                visibile: 'hidden',
+                            }); 
+                        }
+                    );
+            }, 7000);       
         }else{
-            message.error(`配置失败！[${errcode}]`);
-            this.setState({ loading : false});
+            this.setState({
+                done: false,
+                result: false,
+                err: errcode,
+            });    
         }   
     }
 
@@ -519,7 +559,7 @@ export default class WIFI extends React.Component {
     }
     render(){
         const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
-         hostSsid5Tip, hostSsid5PasswordTip, loading, saveDisabled } = this.state;
+         hostSsid5Tip, hostSsid5PasswordTip, saveDisabled, visibile, done } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -711,8 +751,34 @@ export default class WIFI extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                        <Button type="primary" size="large" style={{ width: 320, margin: "20px 60px 30px" }} disabled={saveDisabled} loading={loading} onClick={this.submit}>保存</Button>
+                        <Button type="primary" size="large" style={{ width: 320, margin: "20px 60px 30px" }} disabled={saveDisabled} onClick={this.submit}>保存</Button>
                 </section>
+                <Modal
+                    visible={true}
+                    maskStyle={{ visibility: visibile }}
+                    closable={false}
+                    wrapClassName={'hidden' === visibile && 'ui-hidden'}
+                    centered={true}
+                    style={{ textAlign: 'center', visibility: visibile }}
+                    footer={null}
+                >
+                    { !done ?
+                        <div className="progress">
+                            <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
+                            <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
+                        </div>
+                        :
+                        <div className="success">
+                            <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
+                            { this.state.result ?
+                                <div className="ui-t2">配置生效，请重新连接无线网络</div>
+                                :
+                                <div className="ui-t2">配置失败！{this.state.err}</div>
+                            }
+                            
+                        </div>
+                    }
+                </Modal>
             </div>
         );
     }
