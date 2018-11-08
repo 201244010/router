@@ -140,7 +140,7 @@ let checkSameNet = (ip1, ip2, netmask) => {
 let validMacFormat = function (value, who = 'MAC地址') {
     let result = /^([0-9a-f]{2}:){5}([0-9a-f]{2})$/gi.test(value);
 
-    return (result == true ? '' : `${who}非法（形如XX:XX:XX:XX:XX:XX，X为[0-9A-F]）`);
+    return (result == true ? '' : `${who}非法（形如XX:XX:XX:XX:XX:XX，X为[0-9,A-F]）`);
 };
 
 /* 检查MAC地址范围是否合法 */
