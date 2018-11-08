@@ -46,7 +46,6 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onbandChange = (val, key) => {
-        const {upbandTmp, downbandTmp} = this.state;
         let tip = '';
         let valid = {
             upbandTmp : {
@@ -60,7 +59,7 @@ export default class Bandwidth extends React.PureComponent {
             downbandTmp : {
                 func : checkRange,
                 args : {
-                    min : 8,
+                    min : 1,
                     max : 1000,
                     who : '下行带宽'
                 }
@@ -71,15 +70,11 @@ export default class Bandwidth extends React.PureComponent {
             [key] : val,
             [key + 'Tip'] : tip
         },() => {
-            if(tip !== '' || upbandTmp === '' || downbandTmp === ''){
-                this.setState({
-                    disable : true
-                })}else {
-                this.setState({
-                    disable : false
-                })
-            }
-        })
+            const { upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip } = this.state;
+            this.setState({
+                disable: upbandTmpTip !== '' || downbandTmpTip!=='' || upbandTmp === '' || downbandTmp === '',
+            });
+        });
     }
 
     onChange = (val, key) => {
