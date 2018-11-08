@@ -18,7 +18,6 @@ export default class Recovery extends React.Component{
         let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET'});
         const errcode = resp.errcode;
         if (0 === errcode) {
-            clear();
             this.setState({
                 loadingActive: true
             });
@@ -45,7 +44,8 @@ export default class Recovery extends React.Component{
         });
     }
 
-    guide = () =>{
+    guide = () => {
+        clear();
         location.href = '/welcome';
     }
 
