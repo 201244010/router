@@ -34,6 +34,7 @@ window.onload = function () {
                 var sms = response.data[0].result.portal.sms;
                 if (Number(weixin.enable) === 1 && isMobile()) {
                     inputsElement.style.display = 'none';
+                    document.getElementById('tip').style.display = 'block';
                     connectBtn.classList.remove('btn-disabled');
                     btnDisabled = false;
                     weixinDataToPage(weixin);
@@ -43,6 +44,7 @@ window.onload = function () {
                     };
                 } else if (Number(sms.enable) === 1) {
                     inputsElement.style.display = 'block';
+                    document.getElementById('tip').style.display = 'none';
                     smsDataToPage(sms);
                     enable = {
                         type: 'sms',

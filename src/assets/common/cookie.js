@@ -5,8 +5,10 @@ let get = (key) => {
     let cookie = {};
 
     document.cookie.split(';').forEach(item => {
-        let kv = item.split('=');
-        cookie[kv[0]] = kv[1];
+        if (item.length > 0) {
+            let kv = item.trim().split('=');
+            cookie[kv[0]] = kv[1];
+        }
     });
 
     if ('string' === typeof key) {

@@ -4,10 +4,8 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
-import Loading from '~/components/Loading';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
-
 const error = {
     '-1061' : '局域网IP地址与WAN口IP地址冲突' ,
     '-1001' : '下发参数错误',
@@ -26,7 +24,7 @@ export default class Lan extends React.Component {
         startipTip :"",
         endipTip :"",
         leasetimeTip :"",
-        disabled : true,
+        disabled : false,
         loading : false
     };
 
@@ -51,7 +49,7 @@ export default class Lan extends React.Component {
             },
             startip : {
                 func : checkIp,
-                args : {who : '开始IP地址'},
+                args : {who : '起始IP地址'},
             },
             endip : {
                 func : checkIp,
@@ -70,7 +68,7 @@ export default class Lan extends React.Component {
         tip = valid[key].func(val, valid[key].args);
 
         if ('startip' !== key){
-            startipTip = checkIp(this.state.startip, {who : '开始IP地址'});
+            startipTip = checkIp(this.state.startip, {who : '起始IP地址'});
         } else {
             startipTip = tip;
         }
@@ -107,20 +105,28 @@ export default class Lan extends React.Component {
                 let maxStr = num2ip((netId + netMax - 1));
                 let range = `(${minStr} - ${maxStr})`;
                 if (!checkSameNet(st.ipv4, st.startip, st.mask)) {
-                    this.setState({ startipTip: '地址池与局域网IP应处于同一网段' + range });
+                    this.setState({ 
+                        startipTip: '地址池与局域网IP应处于同一网段' + range,
+                        disabled: true 
+                    });
                     return;
                 }
 
                 if (!checkSameNet(st.ipv4, st.endip, st.mask)) {
-                    this.setState({ endipTip: '地址池与局域网IP应处于同一网段' + range });
+                    this.setState({ 
+                        endipTip: '地址池与局域网IP应处于同一网段' + range,
+                        disabled: true
+                    });
                     return;
                 }
 
                 if (transIp(st.startip) >= transIp(st.endip)) {
-                    this.setState({ endipTip: '结束IP需大于开始IP' });
+                    this.setState({ 
+                        endipTip: '结束IP需大于开始IP',
+                        disabled: true
+                    });
                     return;
                 }
-
                 this.setState({ disabled: false });
             } else {
                 this.setState({ disabled: true });
@@ -174,7 +180,6 @@ export default class Lan extends React.Component {
         this.dhcps.leasetime = state.leasetime;
 
         this.setState({ loading: true });
-        Loading.show({duration : 0});
         let response = await common.fetchApi(
             [{
                 opcode: 'NETWORK_LAN_IPV4_SET',
@@ -182,7 +187,7 @@ export default class Lan extends React.Component {
             }, {
                 opcode: 'DHCPS_SET',
                 data: { dhcps: this.dhcps }
-            }]).catch(ex => { });
+            }]);
 
         this.setState({ loading: false });
 
@@ -190,7 +195,6 @@ export default class Lan extends React.Component {
         if (errcode == 0) {
             if (changed) {
                 setTimeout(() => {
-                    Loading.close();
                     const reg = /\d+\.\d+\.\d+\.\d+/g;
                     if (reg.test(location.hostname)){
                         // user login by ip
@@ -200,13 +204,11 @@ export default class Lan extends React.Component {
                         location.reload();
                     }
                 }, 20000);
-            }else{
-                Loading.close();
             }
+            message.success(`配置生效`);
             return;
         }else{
-            message.error(error[errcode] || '配置保存失败' );
-            Loading.close();
+            message.error(`配置失败![${ error[errcode] || errcode }]` );
         }
     }
 
@@ -238,7 +240,7 @@ export default class Lan extends React.Component {
                     </section>
                     <section className="content-item">
                         <PanelHeader title="DHCP服务" checkable={true} checked={enable} onChange={value => this.onChange(value, 'enable')} />
-                        <label style={{ marginTop: 24 }}>开始IP地址</label>
+                        <label style={{ marginTop: 24 }}>起始IP地址</label>
                         <FormItem showErrorTip={startipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 disabled={!enable}

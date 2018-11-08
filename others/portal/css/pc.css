@@ -108,6 +108,9 @@ body {
 .btn.btn-disabled {
     background: #999;
 }
+#tip{
+    display: none;
+}
 .protocol {
     position: relative;
     height: 18px;
