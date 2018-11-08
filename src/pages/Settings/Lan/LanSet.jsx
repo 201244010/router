@@ -51,7 +51,7 @@ export default class Lan extends React.Component {
             },
             startip : {
                 func : checkIp,
-                args : {who : '开始IP地址'},
+                args : {who : '起始IP地址'},
             },
             endip : {
                 func : checkIp,
@@ -70,7 +70,7 @@ export default class Lan extends React.Component {
         tip = valid[key].func(val, valid[key].args);
 
         if ('startip' !== key){
-            startipTip = checkIp(this.state.startip, {who : '开始IP地址'});
+            startipTip = checkIp(this.state.startip, {who : '起始IP地址'});
         } else {
             startipTip = tip;
         }
@@ -238,7 +238,7 @@ export default class Lan extends React.Component {
                     </section>
                     <section className="content-item">
                         <PanelHeader title="DHCP服务" checkable={true} checked={enable} onChange={value => this.onChange(value, 'enable')} />
-                        <label style={{ marginTop: 24 }}>开始IP地址</label>
+                        <label style={{ marginTop: 24 }}>起始IP地址</label>
                         <FormItem showErrorTip={startipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 disabled={!enable}
