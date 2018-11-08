@@ -27,7 +27,7 @@ let clear = (del) => {
         for (let i = keys.length; i--;) {
             const key = keys[i];
             if (undefined === del || del.indexOf(key) > -1) {
-                document.cookie = key + '=0;expires=' + new Date(0).toUTCString();
+                document.cookie = `${key}=0;expires=${new Date(0).toUTCString()};path=/`;
             }
         }
     }
