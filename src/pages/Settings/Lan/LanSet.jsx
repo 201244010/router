@@ -6,6 +6,10 @@ import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/c
 import { Button, Modal, message} from 'antd';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
+const error = {
+    '-1061' : '局域网IP地址与WAN口IP地址冲突' ,
+    '-1001' : '下发参数错误',
+};
 
 export default class Lan extends React.Component {
     state = {
@@ -204,7 +208,7 @@ export default class Lan extends React.Component {
             message.success(`配置生效`);
             return;
         }else{
-            message.error(`配置失败![${errcode}]` );
+            message.error(`配置失败![${ error[errcode] || errcode }]` );
         }
     }
 
