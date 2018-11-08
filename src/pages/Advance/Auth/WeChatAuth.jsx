@@ -294,10 +294,11 @@ export default class WeChatAuth extends React.Component{
         ).catch(ex => {});
         let { errcode } = response;
         if(errcode == '0'){
+            message.success(`配置生效`);
             this.setState({ loading: false });
             return ;
         }
-        message.error(`微信认证信息设置失败[${errcode}]`);
+        message.error(`配置失败![${errcode}]`);
         this.setState({ loading: false });
     }
     

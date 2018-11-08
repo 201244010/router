@@ -18,7 +18,6 @@ export default class Dosd extends React.Component {
         udp: false,
         icmp: false,
         tcp_syn: false,
-        disabled : false,
         loading : false,
         blockList: [],
     };
@@ -27,7 +26,6 @@ export default class Dosd extends React.Component {
         let { enable, icmp, udp, tcp_syn } = this.state;
         this.setState({
             loading: true,
-            disabled: true,
         });
 
         let response = await common.fetchApi({
@@ -37,14 +35,14 @@ export default class Dosd extends React.Component {
 
         this.setState({
             loading: false,
-            disabled: false,
         });
 
         let { errcode, message } = response;
         if (errcode == 0) {
+            message.success(`配置生效`);
             return;
         }
-        message.error(`保存失败[${errcode}]`);
+        message.error(`配置失败![${errcode}]`);
     }
 
     fetchDosInfo = async () => {
@@ -102,7 +100,7 @@ export default class Dosd extends React.Component {
     }
 
     render(){
-        const { enable, udp, icmp, tcp_syn, loading, disabled, blockList } = this.state;
+        const { enable, udp, icmp, tcp_syn, loading, blockList } = this.state;
 
         const columns = [{
             title: 'IP地址',
@@ -138,7 +136,7 @@ export default class Dosd extends React.Component {
                     <FormItem style={{ marginBottom: 0 }}>
                         <Checkbox checked={tcp_syn} disabled={!enable} onChange={() => this.onChange('tcp_syn')}>TCP-SYN-FLOOD攻击防护</Checkbox>
                     </FormItem>
-                    <Button disabled={disabled} loading={loading} onClick={this.submit} type='primary' style={{ width: 117, marginTop: 20, marginBottom:40 }}>保存</Button>
+                    <Button loading={loading} onClick={this.submit} type='primary' style={{ width: 117, marginTop: 20, marginBottom:40 }}>保存</Button>
                 </Form>
             </section>
             <section>
