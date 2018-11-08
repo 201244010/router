@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
-import { clear } from '~/assets/common/cookie';
+import { get, clear } from '~/assets/common/cookie';
 
 export default class Recovery extends React.Component{
 
@@ -18,7 +18,6 @@ export default class Recovery extends React.Component{
         let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET'});
         const errcode = resp.errcode;
         if (0 === errcode) {
-            clear();
             this.setState({
                 loadingActive: true
             });
@@ -45,7 +44,8 @@ export default class Recovery extends React.Component{
         });
     }
 
-    guide = () =>{
+    guide = () => {
+        clear();
         location.href = '/welcome';
     }
 
