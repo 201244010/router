@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
-import { get, clear } from '~/assets/common/cookie';
+import { clear } from '~/assets/common/cookie';
 
 export default class Recovery extends React.Component{
 
