@@ -109,11 +109,7 @@ body {
     background: #999;
 }
 #tip{
-    height: 18px;
-    width: 320px;
-    margin: 8px auto 36px;
-    font-size: 14px;
-    color: #fff;  
+    display: none;
 }
 .protocol {
     position: relative;

@@ -52,7 +52,6 @@ window.onload = function () {
                     };
                 } else {
                     inputsElement.style.display = 'none';
-                    document.getElementById('tip').style.display = 'none';
                     document.body.style.background = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(../common/imgs/bg.png?r=" + Math.random() + ")";
                     document.body.style.backgroundSize = "cover";
                     logoElement.src = '../common/imgs/logo.png?r=' + Math.random();
