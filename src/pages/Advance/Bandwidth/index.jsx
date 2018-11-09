@@ -44,7 +44,7 @@ export default class Bandwidth extends React.PureComponent {
         upbandTmpTip : '',
         downbandTmpTip : '',
         btloading: false,
-    }
+    };
 
     onbandChange = (val, key) => {
         let tip = '';

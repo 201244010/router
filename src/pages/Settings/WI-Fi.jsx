@@ -240,25 +240,27 @@ export default class WIFI extends React.Component {
      
     //2.4G
     onHost24EnableChange = type =>{
-        const {hostSsid24, hostSsid24PasswordDisabled, hostSsid24Password} = this.state;
+        const { hostSsid24, pwdForbid24, hostSsid24Password } = this.state;
         this.setState({
             host24Enable: type,
             disabledType24:!type,
-        });
-        if(type==false){
-            this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }else{
-            let tip;
-            if(hostSsid24PasswordDisabled){
-                tip = '';
+            hostSsid24PasswordDisabled: !type || pwdForbid24
+        },() => {
+            if(type==false){
+                this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }else{
-                tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                let tip;
+                if(this.state.hostSsid24PasswordDisabled){
+                    tip = '';
+                }else{
+                    tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                }
+                this.setState({
+                    hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                    hostSsid24PasswordTip: tip,
+                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }
-            this.setState({
-                hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
-                hostSsid24PasswordTip: tip,
-            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }
+        });   
     }
 
     onPwdForbid24Change = e =>{
@@ -287,26 +289,27 @@ export default class WIFI extends React.Component {
 
     //5G
     onHost5EnableChange = type =>{
-        const {hostSsid5PasswordDisabled, hostSsid5, hostSsid5Password} = this.state;
+        const { pwdForbid5, hostSsid5, hostSsid5Password } = this.state;
         this.setState({
             host5Enable:type,
             disabledType5:!type,
-        });
-        if(type==false){
-            this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }else{
-            if(hostSsid5PasswordDisabled){
-                this.setState({
-                    hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                    hostSsid5PasswordTip: ''
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
+            hostSsid5PasswordDisabled: !type || pwdForbid5
+        },()=>{
+            if(type==false){
+                this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }else{
+                let tip;
+                if(this.state.hostSsid5PasswordDisabled){
+                    tip = '';
+                }else{
+                    tip = checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                }
                 this.setState({
                     hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                    hostSsid5PasswordTip: checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
+                    hostSsid5PasswordTip: tip,
+                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }
-        }
+        });    
     }
 
     onPwdForbid5Change = e =>{
@@ -510,31 +513,30 @@ export default class WIFI extends React.Component {
                 guestPwdForbid: this.guestWireLess.encryption == 'none',
                 
                 //2.4G
-                host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
+                host24Enable : this.hostWireLess.band_2g.enable == '1',
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
                 hostSsid24Password :this.hostWireLess.band_2g.encryption == 'none'? '' : Base64.decode(this.hostWireLess.band_2g.password),
-                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
+                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1',
                 encryption24 : this.hostWireLess.band_2g.encryption,
-                pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ? true :false,
-                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.encryption == 'none' ? true :false,
+                pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ,
+                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.encryption === 'none' || this.hostWireLess.band_2g.enable !== '1',
                 htmode24 : this.hostWireLess.band_2g.htmode,
                 channel24 : this.hostWireLess.band_2g.channel,
                 current_channel24 : this.hostWireLess.band_2g.current_channel,
-                disabledType24 : this.hostWireLess.band_2g.enable == '1'? false : true,
+                disabledType24 : this.hostWireLess.band_2g.enable !== '1' ,
 
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
                 hostSsid5Password : this.hostWireLess.band_5g.encryption == 'none' ? '' : Base64.decode(this.hostWireLess.band_5g.password),
-                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
                 pwdForbid5 :this.hostWireLess.band_5g.encryption == 'none' ? true :false,
-                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.encryption == 'none' ? true :false,
+                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.encryption === 'none' || this.hostWireLess.band_5g.enable !== '1',
                 htmode5 : this.hostWireLess.band_5g.htmode,
                 channel5 : this.hostWireLess.band_5g.channel,
                 current_channel5 : this.hostWireLess.band_5g.current_channel,
-                disabledType5 : this.hostWireLess.band_5g.enable == '1'? false : true,
+                disabledType5 : this.hostWireLess.band_5g.enable !== '1',
 
                 //more设置
                 moreSettingType:'pulldown',
