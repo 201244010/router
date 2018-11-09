@@ -2,7 +2,9 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Progress, Modal, message } from 'antd';
+import { Button, Table, Modal, message } from 'antd';
+import Progress from '~/components/Progress';
+import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
 
@@ -26,7 +28,6 @@ export default class Bandwidth extends React.PureComponent {
         //自动设置
         failTip:'网络未连接',
         speedTest : false, //1测速成功，0测速失败
-        percent: 0 ,//测速百分比
 
         //设备权重
         sunmi : '50',
@@ -43,7 +44,8 @@ export default class Bandwidth extends React.PureComponent {
         saveDisable : false,//保存按钮灰显
         upbandTmpTip : '',
         downbandTmpTip : '',
-    }
+        btloading: false,
+    };
 
     onbandChange = (val, key) => {
         let tip = '';
@@ -153,7 +155,7 @@ export default class Bandwidth extends React.PureComponent {
             this.setState({
                 bandenable: value,
             });
-            message.success('保存成功！');
+            message.success('配置生效');
             this.qosdata.enable = value;
             let response = await common.fetchApi({
                 opcode: 'QOS_SET',
@@ -192,7 +194,6 @@ export default class Bandwidth extends React.PureComponent {
                                 visible : false,
                                 upband : (info.up_bandwidth / 1024).toFixed(0),
                                 downband : (info.down_bandwidth / 1024).toFixed(0),
-                                percent : 0,
                                 source : 'speedtest'
                             });
                             let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
@@ -204,7 +205,6 @@ export default class Bandwidth extends React.PureComponent {
                             this.setState({
                                 speedFail : true,
                                 visible : false,
-                                percent : 0
                             });
                             return;
                         }
@@ -235,6 +235,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onEditOk = async ()=>{
+        this.setState({ btloading: true });
         let payload = this.composeparams("manual",this.state.upbandTmp,this.state.downbandTmp);
         await common.fetchApi({
             opcode : 'QOS_SET',
@@ -244,10 +245,15 @@ export default class Bandwidth extends React.PureComponent {
             if (errcode == 0){
                 this.setState({
                     manualShow :false,
+                    btloading: false,
                 });
                 this.getBandInfo();
                 return;
             }
+            this.setState({
+                manualShow :false,
+                btloading: false,
+            });
             message.error(`配置失败![${errcode}]`);
         })
     }
@@ -268,23 +274,6 @@ export default class Bandwidth extends React.PureComponent {
         this.setState({
             visible:true,
         });
-        let handleTime = setInterval(() => {
-            this.setState({
-                    percent: this.state.percent + 1
-            }, () =>{
-                if (this.state.percent >= 100){
-                    this.setState({
-                        visible: false,
-                        percent: 0
-                    });
-                    message.error(`自动测速失败`);
-                    clearInterval(handleTime); 
-                }
-                if (this.state.speedFail === true || this.state.speedFill === true ){
-                    clearInterval(handleTime); 
-                }
-            })
-        }, 1000);
         this.speedTestStatus();
     }
 
@@ -355,9 +344,9 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     render(){
-        const { saveDisable, unit, bandenable, visible, percent, manualShow, speedFail, 
+        const { saveDisable, unit, bandenable, visible, manualShow, speedFail, 
             speedFill, failTip, upband, downband, disable, sunmi, 
-            white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading } = this.state;
+            white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
         const columns = [{
             title : '设备类型',
             dataIndex : 'type'
@@ -425,16 +414,18 @@ export default class Bandwidth extends React.PureComponent {
                     </section>
                 </Form>
                 {bandenable && <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>}
-                <Modal closable={false} footer={null} visible={visible} centered={true}>
-                    <div className="percent-position">{percent}%</div>
-                    <Progress percent={percent} className="color-change" showInfo={false}/>
-                    <div className="progress-position">测速中，请稍候...</div>
-                </Modal>
+                {visible &&
+                    <Progress
+                        duration={TIME_SPEED_TEST}
+                        title='正在进行网络测速，请耐心等待…'
+                        showPercent={true}
+                    />
+                }
                 <Modal title='手动设置带宽' okText="确定" cancelText="取消" 
                     onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
-                    okButtonProps={{disabled : this.state.disable}}
+                    okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
                     <label style={{ marginTop: 24 }}>上行总带宽</label>
                         <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>

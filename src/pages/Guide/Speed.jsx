@@ -4,7 +4,9 @@ import classnames from 'classnames';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
 import Form from '~/components/Form';
+import Progress from '~/components/Progress';
 import {checkRange} from '~/assets/common/check';
+import { TIME_SPEED_TEST } from '~/assets/common/constants';
 
 const { FormItem, Input, ErrorTip } = Form;
 const reg = /\D+/;
@@ -211,7 +213,7 @@ export default class Speed extends React.Component {
             {/* 自动测速结果看板 */}
             { speedTestdone && mode === 'auto' ? 
                 <div className="ui-center entry">
-                <SpeedAutoBoard configByManual={this.switchMode('Manual')} 
+                <SpeedAutoBoard configByManual={this.switchMode('Manual')}
                                 back={this.back} 
                                 reTest={this.reTest}
                                 configure={this.configure}
@@ -219,17 +221,13 @@ export default class Speed extends React.Component {
                                 downBandWidth={autoDownband}
                                 loading={loading}
                                 /></div> : ""}
-                <Modal
-                    visible={showModal}
-                    className='modal-center'
-                    closable={false}
-                    centered={true}
-                    style={{ textAlign: 'center' }}
-                    footer={null}
-                >
-                    <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
-                    <Tips size="16" top={5}>测速中，请稍候...</Tips>
-                </Modal>
+            {showModal &&
+                <Progress
+                    duration={TIME_SPEED_TEST}
+                    title='正在进行网络测速，请耐心等待…'
+                    showPercent={true}
+                />
+            }
         </div>
       </div>
     )
@@ -278,6 +276,7 @@ const SpeedAutoBoard = props => {
                 <Button type="primary" size='large' style={{ width : "100%" }} loading={props.loading} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
+                    <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
                 </div>
             </div>
         </div>
@@ -307,9 +306,7 @@ const SpeedManualConfig = props => {
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     {
                         props.speedTestdone ? 
-                            (<div className="more">
-                                <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
-                            </div>) :
+                            '' :
                             <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
                     }
                     

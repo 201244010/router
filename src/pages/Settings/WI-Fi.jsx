@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Checkbox, Select, Button, Radio, message } from 'antd';
+import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
+import Tips from '~/components/Tips';
 import { checkStr ,checkRange } from '~/assets/common/check';
 
 const {FormItem, ErrorTip, Input} = Form;
@@ -68,8 +69,11 @@ export default class WIFI extends React.Component {
         hostSsid24PasswordTip: '',
         hostSsid5Tip: '',
         hostSsid5PasswordTip:'',
-        loading: false,
         saveDisabled: false,
+        visibile: 'hidden',
+        result: true,
+        err: '',
+        done: true
     };
 
     checkDisabled =() =>{
@@ -236,25 +240,27 @@ export default class WIFI extends React.Component {
      
     //2.4G
     onHost24EnableChange = type =>{
-        const {hostSsid24, hostSsid24PasswordDisabled, hostSsid24Password} = this.state;
+        const { hostSsid24, pwdForbid24, hostSsid24Password } = this.state;
         this.setState({
             host24Enable: type,
             disabledType24:!type,
-        });
-        if(type==false){
-            this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }else{
-            let tip;
-            if(hostSsid24PasswordDisabled){
-                tip = '';
+            hostSsid24PasswordDisabled: !type || pwdForbid24
+        },() => {
+            if(type==false){
+                this.setState({ hostSsid24Tip: '', hostSsid24PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }else{
-                tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                let tip;
+                if(this.state.hostSsid24PasswordDisabled){
+                    tip = '';
+                }else{
+                    tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                }
+                this.setState({
+                    hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                    hostSsid24PasswordTip: tip,
+                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }
-            this.setState({
-                hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
-                hostSsid24PasswordTip: tip,
-            },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }
+        });   
     }
 
     onPwdForbid24Change = e =>{
@@ -283,26 +289,27 @@ export default class WIFI extends React.Component {
 
     //5G
     onHost5EnableChange = type =>{
-        const {hostSsid5PasswordDisabled, hostSsid5, hostSsid5Password} = this.state;
+        const { pwdForbid5, hostSsid5, hostSsid5Password } = this.state;
         this.setState({
             host5Enable:type,
             disabledType5:!type,
-        });
-        if(type==false){
-            this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
-        }else{
-            if(hostSsid5PasswordDisabled){
-                this.setState({
-                    hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                    hostSsid5PasswordTip: ''
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
+            hostSsid5PasswordDisabled: !type || pwdForbid5
+        },()=>{
+            if(type==false){
+                this.setState({ hostSsid5Tip: '',hostSsid5PasswordTip: ''},()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }else{
+                let tip;
+                if(this.state.hostSsid5PasswordDisabled){
+                    tip = '';
+                }else{
+                    tip = checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                }
                 this.setState({
                     hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
-                    hostSsid5PasswordTip: checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
-                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})})
+                    hostSsid5PasswordTip: tip,
+                },()=>{this.setState({ saveDisabled:  this.checkDisabled()})});
             }
-        }
+        });    
     }
 
     onPwdForbid5Change = e =>{
@@ -354,8 +361,28 @@ export default class WIFI extends React.Component {
     }
 
     submit = async ()=> {
+        const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
+
+        //商户Wi-Fi 2.4G和5G ssid不能相同
+        if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
+            message.error('2.4G、5G Wi-Fi名称不能相同');
+            return;
+        }
+
+        if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
+            message.error(channelType ? '商户、顾客Wi-Fi名称不能相同':'2.4G、顾客Wi-Fi名称不能相同');
+            return;
+        }
+
+        if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
+            message.error('5G、顾客Wi-Fi名称不能相同');
+            return;
+        }
         //是否双频合一
-        this.setState({ loading : true});
+        this.setState({
+            visibile: 'visible',
+            done: false,
+        });
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
 
         
@@ -398,13 +425,46 @@ export default class WIFI extends React.Component {
         );
 
         let { errcode } = response;
-        if(errcode == 0){
-            this.fetchWireLessInfo();
-            this.setState({ loading : false});
-            message.success(`配置生效`);
+        if(errcode === 0){
+            this.setState({
+                done: true,
+                result: true,
+            });
+            
+            setTimeout(async() => {
+                await common.fetchApi(
+                    [{
+                        opcode: 'WIRELESS_GET',
+                    }]
+                ).catch(ex => {
+                    if(ex !== ''){
+                        this.setState({done: true});  
+                    }}).then(
+                            async()=>{
+                            await common.fetchApi(
+                                [{
+                                    opcode: 'WIRELESS_GET',
+                                }], 
+                                {},
+                                {
+                                    loop: true,
+                                    interval: 2000,
+                                    stop: resp => {resp!== 0},
+                                }
+                            );
+                            this.fetchWireLessInfo();
+                            this.setState({
+                                visibile: 'hidden',
+                            }); 
+                        }
+                    );
+            }, 7000);       
         }else{
-            message.error(`配置失败！[${errcode}]`);
-            this.setState({ loading : false});
+            this.setState({
+                done: false,
+                result: false,
+                err: errcode,
+            });    
         }   
     }
 
@@ -470,31 +530,30 @@ export default class WIFI extends React.Component {
                 guestPwdForbid: this.guestWireLess.encryption == 'none',
                 
                 //2.4G
-                host24Enable : this.hostWireLess.band_2g.enable == '1'? true : false,
+                host24Enable : this.hostWireLess.band_2g.enable == '1',
                 hostSsid24 : this.hostWireLess.band_2g.ssid,
                 hostSsid24Password :this.hostWireLess.band_2g.encryption == 'none'? '' : Base64.decode(this.hostWireLess.band_2g.password),
-                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1'? true : false,
+                hide_ssid24 : this.hostWireLess.band_2g.hide_ssid == '1',
                 encryption24 : this.hostWireLess.band_2g.encryption,
-                pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ? true :false,
-                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.encryption == 'none' ? true :false,
+                pwdForbid24 :this.hostWireLess.band_2g.encryption == 'none' ,
+                hostSsid24PasswordDisabled : this.hostWireLess.band_2g.encryption === 'none' || this.hostWireLess.band_2g.enable !== '1',
                 htmode24 : this.hostWireLess.band_2g.htmode,
                 channel24 : this.hostWireLess.band_2g.channel,
                 current_channel24 : this.hostWireLess.band_2g.current_channel,
-                disabledType24 : this.hostWireLess.band_2g.enable == '1'? false : true,
+                disabledType24 : this.hostWireLess.band_2g.enable !== '1' ,
 
                 //5G
                 host5Enable : this.hostWireLess.band_5g.enable == '1'? true : false,
                 hostSsid5 : this.hostWireLess.band_5g.ssid,
                 hostSsid5Password : this.hostWireLess.band_5g.encryption == 'none' ? '' : Base64.decode(this.hostWireLess.band_5g.password),
-                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.enable == '1'? false : true,
                 hide_ssid5 : this.hostWireLess.band_5g.hide_ssid == '1'? true : false,
                 encryption5 : this.hostWireLess.band_5g.encryption,
                 pwdForbid5 :this.hostWireLess.band_5g.encryption == 'none' ? true :false,
-                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.encryption == 'none' ? true :false,
+                hostSsid5PasswordDisabled : this.hostWireLess.band_5g.encryption === 'none' || this.hostWireLess.band_5g.enable !== '1',
                 htmode5 : this.hostWireLess.band_5g.htmode,
                 channel5 : this.hostWireLess.band_5g.channel,
                 current_channel5 : this.hostWireLess.band_5g.current_channel,
-                disabledType5 : this.hostWireLess.band_5g.enable == '1'? false : true,
+                disabledType5 : this.hostWireLess.band_5g.enable !== '1',
 
                 //more设置
                 moreSettingType:'pulldown',
@@ -519,7 +578,7 @@ export default class WIFI extends React.Component {
     }
     render(){
         const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
-         hostSsid5Tip, hostSsid5PasswordTip, loading, saveDisabled } = this.state;
+         hostSsid5Tip, hostSsid5PasswordTip, saveDisabled, visibile, done } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -711,8 +770,34 @@ export default class WIFI extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                        <Button type="primary" size="large" style={{ width: 320, margin: "20px 60px 30px" }} disabled={saveDisabled} loading={loading} onClick={this.submit}>保存</Button>
+                        <Button type="primary" size="large" style={{ width: 320, margin: "20px 60px 30px" }} disabled={saveDisabled} onClick={this.submit}>保存</Button>
                 </section>
+                <Modal
+                    visible={true}
+                    maskStyle={{ visibility: visibile }}
+                    closable={false}
+                    wrapClassName={'hidden' === visibile && 'ui-hidden'}
+                    centered={true}
+                    style={{ textAlign: 'center', visibility: visibile }}
+                    footer={null}
+                >
+                    { !done ?
+                        <div className="progress">
+                            <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
+                            <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
+                        </div>
+                        :
+                        <div className="success">
+                            <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
+                            { this.state.result ?
+                                <div className="ui-t2">配置生效，请重新连接无线网络</div>
+                                :
+                                <div className="ui-t2">配置失败！{this.state.err}</div>
+                            }
+                            
+                        </div>
+                    }
+                </Modal>
             </div>
         );
     }

@@ -1,8 +1,10 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Modal, Progress } from 'antd';
+import { Button, Modal } from 'antd';
 import SubLayout from '~/components/SubLayout';
+import Progress from '~/components/Progress';
+import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import CustomIcon from '~/components/Icon';
 import ClientList from "./ClientList";
 import QoS from './QoS';
@@ -10,12 +12,10 @@ import Mesh from './Mesh';
 
 import './home.scss';
 
-const TOTAL_TIME = 60 * 1000;
 
 export default class Home extends React.Component {
     state = {
         visible: false,
-        percent: 0,
         successShow: false,
         upBand: 0,
         downBand: 0,
@@ -248,7 +248,7 @@ export default class Home extends React.Component {
                 { opcode: 'WANWIDGET_SPEEDTEST_INFO_GET' },
                 { method: 'POST' },
                 {
-                    loop: TOTAL_TIME / 10000,
+                    loop: TIME_SPEED_TEST / 10,
                     interval: 10000,
                     stop: () => this.stop,
                     pending: res => res.data[0].result.speedtest.status === "testing"
@@ -263,7 +263,6 @@ export default class Home extends React.Component {
                         this.setState({
                             successShow: true,
                             visible: false,
-                            percent: 0,
                             upBand: (info.up_bandwidth / 1024).toFixed(0),
                             downBand: (info.down_bandwidth / 1024).toFixed(0),
                         });
@@ -271,7 +270,6 @@ export default class Home extends React.Component {
                         this.setState({
                             failShow: true,
                             visible: false,
-                            percent: 0,
                         });
                     }
                 }
@@ -289,17 +287,6 @@ export default class Home extends React.Component {
         this.setState({
             visible: true,
         });
-
-        this.speedTimer = setInterval(() => {
-            let percent = this.state.percent + 1;
-            if (percent <= 100){
-                this.setState({
-                    percent: percent,
-                });
-            }else{
-                clearInterval(this.speedTimer);
-            }
-        }, TOTAL_TIME / 100);
     }
 
     closeSpeedTest = () => {
@@ -327,7 +314,7 @@ export default class Home extends React.Component {
 
     render(){
         const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit,
-                visible, percent, successShow, upBand, downBand, failShow, me,
+                visible, successShow, upBand, downBand, failShow, me,
                 sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
         const total = sunmiClients.length + normalClients.length + whitelistClients.length;
         return (
@@ -357,11 +344,13 @@ export default class Home extends React.Component {
                             </div>
                             <Button onClick={this.startDiagnose} className='diagnose'>立即诊断</Button>
                         </div>
-                        <Modal className='speed-testing-modal' closable={false} footer={null} visible={visible} centered={true}>
-                            <h4>{percent}%</h4>
-                            <Progress percent={percent} strokeColor="linear-gradient(to right, #FAD961, #FB8632)" showInfo={false} />
-                            <p>测速中，请稍候...</p>
-                        </Modal>
+                        {visible && 
+                            <Progress
+                                duration={TIME_SPEED_TEST}
+                                title='正在进行网络测速，请耐心等待…'
+                                showPercent={true}
+                            />
+                        }
                         <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
                             footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
                             <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>

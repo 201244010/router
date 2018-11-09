@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
+import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/cookie';
 
 export default class Recovery extends React.Component{
@@ -10,16 +11,19 @@ export default class Recovery extends React.Component{
     }
 
     state = {
+        duration: 120,
         loadingActive: false,
         succeedActive: false,
     }
 
     reset = async () =>{
         let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET'});
-        const errcode = resp.errcode;
+        const { errcode, data } = resp;
+        const duration = parseInt(data[0].result.restart_duration);
         if (0 === errcode) {
             this.setState({
-                loadingActive: true
+                loadingActive: true,
+                duration: duration,
             });
 
             setTimeout(() => {
@@ -27,7 +31,7 @@ export default class Recovery extends React.Component{
                     loadingActive: false,
                     succeedActive: true,
                 });
-            }, 90000);
+            }, duration * 1000);
         } else {
             message.error(`恢复出厂失败[${errcode}]`);
         }
@@ -59,27 +63,21 @@ export default class Recovery extends React.Component{
                         <Button style={{width:116}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即恢复</Button>
                     </section>
                 </div>
-                <Modal
-                    visible={loadingActive}
-                    className='modal-center'
-                    closable={false}
-                    centered={true}
-                    style={{ textAlign: 'center' }}
-                    footer={null}
-                >
-                    <Icon key="progress-icon1" type="loading" style={{ fontSize: 64, marginBottom: 10, color: "#FB8632" }} spin />
-                    <h3>正在恢复出厂设置，请稍候...</h3>
-                    <span style={{ color: '#D33419' }}>恢复出厂过程中请勿断电！！！</span>
-                </Modal>
+                {loadingActive &&
+                    <Progress
+                        duration={duration}
+                        title='正在恢复出厂设置，请耐心等待...'
+                        tips='恢复出厂过程中请勿断电！'
+                    />
+                }
                 <Modal
                     visible={succeedActive}
                     className='modal-center'
                     closable={false}
                     centered={true}
-                    style={{textAlign:'center'}}
                     footer={[<Button type="primary" onClick={this.guide}>确定</Button>]}
                 >
-                    <CustomIcon key="progress-icon2" type="succeed" size={64} color='#87D068' style={{marginTop:20}} />
+                    <CustomIcon type="succeed" size={64} color='#87D068' style={{marginTop:20}} />
                     <h3 style={{ marginTop: 15 }}>恢复出厂完成，请重新登录管理界面</h3>
                 </Modal>
         </div>
