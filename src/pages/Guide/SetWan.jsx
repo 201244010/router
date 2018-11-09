@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
-import { checkStr, checkIp, checkMask } from '~/assets/common/check';
+import { checkStr, checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 
 
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
@@ -138,7 +138,7 @@ export default class SetWan extends React.PureComponent {
             message.error(`IP地址与默认网关不能相同`);
             return ;
         }
-        if(this.state.ip[0] !== this.state.gateway[0] || this.state.ip[1] !== this.state.gateway[1] || this.state.ip[2] !== this.state.gateway[2]){
+        if(!checkSameNet(this.state.ip,this.state.gateway,this.state.subnetmask)){
             this.setState({
                 disabled: false,
                 loading: false,

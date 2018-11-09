@@ -363,45 +363,20 @@ export default class WIFI extends React.Component {
     submit = async ()=> {
         const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
 
-        // 商户Wi-Fi 2.4G和5G ssid不能相同
-        // if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
-        //     message.error('2.4G、5G Wi-Fi名称不能相同');
-        //     return;
-        // }
+        //商户Wi-Fi 2.4G和5G ssid不能相同
+        if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
+            message.error('2.4G、5G Wi-Fi名称不能相同');
+            return;
+        }
 
-        // if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-        //     message.error('2.4G、顾客Wi-Fi名称不能相同');
-        //     return;
-        // }
+        if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
+            message.error(channelType ? '商户、顾客Wi-Fi名称不能相同':'2.4G、顾客Wi-Fi名称不能相同');
+            return;
+        }
 
-        // if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-        //     message.error('5G、顾客Wi-Fi名称不能相同');
-        //     return;
-        // }
-
-        // 商户Wi-Fi 2.4G和5G ssid不能相同
-        if(!channelType){
-            if (host5Enable && host24Enable && guestEnable && hostSsid24 === hostSsid5 ){
-                message.error('2.4G、5G、顾客 Wi-Fi名称不能相同');
-                return;
-            }
-            if (host24Enable && host5Enable && hostSsid24 === hostSsid5) {
-                message.error('2.4G、5G Wi-Fi名称不能相同');
-                return;
-            }
-            if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-                message.error('2.4G、顾客Wi-Fi名称不能相同');
-                return;
-            }
-            if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-                message.error('5G、顾客Wi-Fi名称不能相同');
-                return;
-            }
-        }else{
-            if(guestEnable && host24Enable && guestSsid === hostSsid24){
-                message.error('商户、顾客Wi-Fi名称不能相同');
-                return;
-            }
+        if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
+            message.error('5G、顾客Wi-Fi名称不能相同');
+            return;
         }
         //是否双频合一
         this.setState({

@@ -3,7 +3,7 @@ import React from 'react';
 import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import {checkIp, checkMask} from '~/assets/common/check';
+import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 
 const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
@@ -327,7 +327,7 @@ export default class NETWORK extends React.Component {
             message.error( 'IP地址与默认网关不能相同' );
             return ;
         }
-        if(this.state.ipv4[0] !== this.state.gateway[0] || this.state.ipv4[1] !== this.state.gateway[1] || this.state.ipv4[2] !== this.state.gateway[2]){
+        if(!checkSameNet(this.state.ipv4,this.state.gateway,this.state.subnetmask)){
             this.setState({
                 disabled: false,
                 loading: false,
