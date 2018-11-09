@@ -138,6 +138,14 @@ export default class SetWan extends React.PureComponent {
             message.error(`IP地址与默认网关不能相同`);
             return ;
         }
+        if(this.state.ip[0] !== this.state.gateway[0] || this.state.ip[1] !== this.state.gateway[1] || this.state.ip[2] !== this.state.gateway[2]){
+            this.setState({
+                disabled: false,
+                loading: false,
+            });
+            message.error( 'IP地址与默认网关需在同一网段上' );
+            return ;
+        }
         this.setState({ loading : true });
         let response = await common.fetchApi(
             [

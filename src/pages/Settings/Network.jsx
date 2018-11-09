@@ -321,9 +321,19 @@ export default class NETWORK extends React.Component {
         let payload = this.composeParams(), info = payload.wan.info;
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
             this.setState({
-                disabled : false,
+                disabled: false,
+                loading: false,
             });
-            return message.error( `IP地址与默认网关不能相同` );
+            message.error( 'IP地址与默认网关不能相同' );
+            return ;
+        }
+        if(this.state.ipv4[0] !== this.state.gateway[0] || this.state.ipv4[1] !== this.state.gateway[1] || this.state.ipv4[2] !== this.state.gateway[2]){
+            this.setState({
+                disabled: false,
+                loading: false,
+            });
+            message.error( 'IP地址与默认网关需在同一网段上' );
+            return ;
         }
         await common.fetchApi(
             {
