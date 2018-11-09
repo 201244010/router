@@ -278,6 +278,7 @@ const SpeedAutoBoard = props => {
                 <Button type="primary" size='large' style={{ width : "100%" }} loading={props.loading} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
+                    <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
                 </div>
             </div>
         </div>
@@ -307,9 +308,7 @@ const SpeedManualConfig = props => {
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     {
                         props.speedTestdone ? 
-                            (<div className="more">
-                                <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
-                            </div>) :
+                            '' :
                             <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
                     }
                     
