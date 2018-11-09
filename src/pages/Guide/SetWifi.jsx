@@ -82,7 +82,6 @@ export default class SetWifi extends React.Component {
             }
         }
         if(value.length === 0 && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-            console.log(value.length,field);
             this.setState({
                 [field]: value,
                 [field + 'Tip']: ''
