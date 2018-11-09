@@ -143,5 +143,5 @@ export const ERROR_MESSAGE = {
  */
 export const NO_ERROR = 0;
 
-
+export const TIME_SPEED_TEST = 30;
 
