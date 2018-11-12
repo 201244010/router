@@ -6,6 +6,9 @@ import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 
+const err ={
+    '-1073':'设备已存在，请勿重复添加',
+};
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
 const pagination = {
@@ -206,7 +209,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(`${err[errcode]}`);
     }
 
     onSelectCancle = () => {
