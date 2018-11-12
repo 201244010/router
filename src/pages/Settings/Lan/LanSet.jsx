@@ -4,7 +4,7 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
-import Loading from '~/components/loading';
+import Loading from '~/components/Loading';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 const error = {
