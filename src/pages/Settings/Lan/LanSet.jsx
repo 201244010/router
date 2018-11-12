@@ -4,6 +4,7 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
+import Loading from '~/components/loading';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 const error = {
@@ -203,11 +204,14 @@ export default class Lan extends React.Component {
                         // user login by sunmi.link
                         location.reload();
                     }
-                }, 20000);
+                    Loading.close();
+                }, 15000);
             }
-            message.success(`配置生效`);
+            Loading.show({duration : 20});
+            message.success('配置生效,15秒后跳转',4);
             return;
         }else{
+            Loading.close();
             message.error(`配置失败![${ error[errcode] || errcode }]` );
         }
     }

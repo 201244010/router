@@ -515,7 +515,7 @@ export default class SmsAuth extends React.Component{
                                                 backgroundSize: '100% 100%', 
                                                 }}></div>
                                             <div style={{minHeight:33,fontSize:24,margin:'21 auto 0',textAlign:'center'}}>{logo}</div>
-                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',textAlign:'center'}}>“{welcome}”</div>
+                                            <div style={{minHeight:51,fontSize:36,margin:'36 auto 0',textAlign:'center',wordBreak:'break-all'}}>“{welcome}”</div>
                                             <div style={{width:348,height:48,marginTop:36,borderRadius:6,padding:12,backgroundColor:'#FFFFFF'}}>
                                                 <CustomIcon type='number'  size={24} style={{marginRight:12}}/><span style={{fontSize:18,color:'#333C4F'}}>请输入手机号</span>
                                             </div>
