@@ -192,7 +192,13 @@ export default class SetWifi extends React.Component {
         
         if(guestWifi){    
             if( guestWifiName.length === 0 || ( guestWifiPsw.length < 8 && guestWifiPsw.length >0 )){
-                    ret = false;
+                ret = false;
+            }
+            if(guestWifiName === hostWifiName){
+                ret = false;
+                this.setState({
+                    guestWifiNameTip: '商户、顾客Wi-Fi 不能相同',
+                });
             }
         }
         return ret;
