@@ -7,6 +7,10 @@ import Form from "~/components/Form";
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
+const err = {
+    '-1070': '设备已存在，请勿重复添加',
+};
+
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
@@ -211,7 +215,7 @@ export default class Bootdevice extends React.Component {
             return;
         }
 
-        message.error(`保存失败[${errcode}]`);
+        message.error(err[errcode]);
     }
 
     onSelectCancle = () => {

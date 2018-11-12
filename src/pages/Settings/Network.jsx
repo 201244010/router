@@ -224,6 +224,10 @@ export default class NETWORK extends React.Component {
                             pppoeDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
                         return false;
+                    }else{
+                        this.setState({
+                            pppoeDnsbackupTip : ''
+                        });
                     }
                     if (pppoeDns.length === 0 || this.checkDns(pppoeDns) || !this.checkbackupDns(pppoeDnsbackup)){
                         return false
@@ -249,6 +253,10 @@ export default class NETWORK extends React.Component {
                         staticDnsbackupTip : '备选DNS不能与首选DNS相同'
                     });
                     return false;
+                }else{
+                    this.setState({
+                        staticDnsbackupTip : ''
+                    });
                 }
                 if(!this.checkbackupDns(staticDnsbackup)){
                     return false;
@@ -261,6 +269,10 @@ export default class NETWORK extends React.Component {
                             dhcpDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
                         return false;
+                    }else{
+                        this.setState({
+                            dhcpDnsbackupTip : ''
+                        });
                     }
                     if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup)){
                         return false;
@@ -297,7 +309,7 @@ export default class NETWORK extends React.Component {
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : staticDns.join('.'),
-                    dns2 : staticDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
+                    dns2 : staticDnsbackup.every(item => item.length === 0) ? '' : staticDnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
@@ -305,7 +317,7 @@ export default class NETWORK extends React.Component {
                 if(dhcpType === 'manual'){
                     wan['dns_info'] = {
                         dns1 : dhcpDns.join('.'),
-                        dns2 : dhcpDnsbackup.every(item => item.length === 0) ? '' : pppoeDnsbackup.join('.')
+                        dns2 : dhcpDnsbackup.every(item => item.length === 0) ? '' : dhcpDnsbackup.join('.')
                     };
                 }
                 break;
