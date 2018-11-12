@@ -209,7 +209,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        message.error(`${err[errcode]}`);
+        message.error(err[errcode]);
     }
 
     onSelectCancle = () => {

@@ -215,7 +215,7 @@ export default class Bootdevice extends React.Component {
             return;
         }
 
-        message.error(`${err[errcode]}`);
+        message.error(err[errcode]);
     }
 
     onSelectCancle = () => {
