@@ -483,7 +483,7 @@ export default class SmsAuth extends React.Component{
                                                 <Button type="primary" style={{width:286,height:40,fontSize:14,borderRadius:8}}>连接Wi-Fi</Button>
                                             </div>
                                             <div>
-                                                <Checkbox checked={true} style={{fontSize:2,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
+                                                <Checkbox checked={true} style={{fontSize:10,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
                                             </div>
                                         </div>
                                         <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
