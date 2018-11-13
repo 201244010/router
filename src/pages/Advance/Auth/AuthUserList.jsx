@@ -147,7 +147,7 @@ export default class AuthUserList extends React.Component{
             )
         }, {
             title: '设备名称',
-            width: 250,
+            width: 216,
             render: (text, record) => (
                 <div>
                     <div style={{
@@ -173,7 +173,7 @@ export default class AuthUserList extends React.Component{
             )
         }, {
             title: 'IP/MAC地址',
-            width: 260,
+            // width: 178,
             render: (text, record) => (
                 <span>
                     {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
@@ -183,27 +183,27 @@ export default class AuthUserList extends React.Component{
         }, {
             title: '认证方式',
             dataIndex: 'auth_type',
-            width: 150,
+            // width: 107,
             render : (text, record) => (
                 <span>{record.auth_type == '0'?'微信':'短信'}</span>
             )
         },{
             title: '手机号码',
             dataIndex: 'phone',
-            width: 210,
+            // width: 116,
             render : (text, record) => (
                 <span>{record.phone == ''? '--' :record.phone}</span>
             )
         },{
             title: '接入时间',
             dataIndex: 'access_time',
-            width: 240,
+            // width: 162,
             render : (text, record) => (
                 <span>{record.access_time}</span>
             )
         },{
             title: '操作',
-            width: 143,
+            width: 94,
             render: (text, record) => (
                 <span>
                     <Popconfirm title="确定使此设备下线？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
@@ -216,7 +216,7 @@ export default class AuthUserList extends React.Component{
         return (
             <div style={{ margin: "0 60px" }}>
                <Table columns={columns} dataSource={authUserList} rowKey={record => record.index} 
-               bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
+               bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} scroll={{ x: 563 }} />
             </div>
         );
     }

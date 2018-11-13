@@ -147,7 +147,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     OnBandEnable = async (value) => {
-        let { bandenable, source } = this.state;
+        let { source } = this.state;
         if(source === 'default'){
             message.error('请先设置带宽');
             return;
@@ -155,18 +155,6 @@ export default class Bandwidth extends React.PureComponent {
             this.setState({
                 bandenable: value,
             });
-            message.success('配置生效');
-            this.qosdata.enable = value;
-            let response = await common.fetchApi({
-                opcode: 'QOS_SET',
-                data: { qos: this.qosdata }
-            })
-            if (response.errcode !== 0) {
-                message.error(`配置失败![${response.errcode}]`);
-                this.setState({
-                    bandenable: bandenable
-                })
-            }
         }
     }
 

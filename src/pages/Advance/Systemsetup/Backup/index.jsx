@@ -170,7 +170,7 @@ export default class Backup extends React.Component{
             basebackup: baseBackup ? 1 : 0,
             authbackup: authBackup ? 1 : 0,
         };
-
+        console.log('backup',backup);
         await common.fetchApi(
             {
                 opcode : 'SYSTEMTOOLS_CLOUD_BACKUP',
@@ -230,14 +230,14 @@ export default class Backup extends React.Component{
     //从本地恢复
     postRecoverLocal = (info) => {
         if(info.file.status === 'done'){
-            this.setState({
-                loadingActive: true,
-                duration: 40
-            });
             if(info.file.response.data[0].errcode == 0){
                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
-                 const errcode = 0 ;
-                    if(errcode === 0){   
+                    const duration = res.data[0].result.restart_duration;
+                    if(res.errcode === 0){
+                        this.setState({
+                            loadingActive: true,
+                            duration: duration,
+                        });   
                         setTimeout(() => {
                             this.setState({
                                 loadingActive: false,
@@ -245,7 +245,7 @@ export default class Backup extends React.Component{
                                 backupSuccessTip : '恢复成功！请重新连接无线网络',
                                 recoverCloud : false
                             });
-                        }, 90000);
+                        }, duration * 1000);
                         return;
                     }else{
                         this.setState({
