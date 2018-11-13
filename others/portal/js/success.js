@@ -33,7 +33,7 @@ function commonDataToPage(data) {
     if (data.logo) {
         logoIcon.style.display = 'none';
         logoElement.style.display = 'block';
-        logoElement.src = data.logo;
+        logoElement.style.backgroundImage = 'url('+ data.logo +')';
     } else {
         logoElement.style.display = 'none';
         logoIcon.style.display = 'block';

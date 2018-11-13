@@ -54,7 +54,7 @@ window.onload = function () {
                     inputsElement.style.display = 'none';
                     document.body.style.background = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(../common/imgs/bg.png?r=" + Math.random() + ")";
                     document.body.style.backgroundSize = "cover";
-                    logoElement.src = '../common/imgs/logo.png?r=' + Math.random();
+                    logoElement.style.backgroundImage = 'url(../common/imgs/logo.png?r=' + Math.random()+')';
                     showToast('PC端暂不支持微信连Wi-Fi功能', 0);
                 }
             } else {
@@ -294,7 +294,7 @@ function commonDataToPage(data) {
     document.body.style.background = "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),"+"url(" + ((data.background ||
          "../common/imgs/bg.png") + "?r=") + Math.random() + ") no-repeat center";
     document.body.style.backgroundSize = "cover";
-    logoElement.src = (data.logo || '../common/imgs/logo.png') + '?r=' + Math.random();
+    logoElement.style.backgroundImage = 'url('+ (data.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }
