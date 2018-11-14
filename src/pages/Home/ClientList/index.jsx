@@ -175,9 +175,7 @@ export default class ClientList extends React.Component {
                     <span>
                         {'sunmi' !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>}
                         {'sunmi' !== type && <Divider type="vertical" />}
-                        {/* <Popconfirm title="确定禁止此设备上网?如需恢复，可在高级设置-防蹭网中删除" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}> */}
                             <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
-                        {/* </Popconfirm> */}
                     </span>
                 );
             }
@@ -253,9 +251,7 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            {/* <Popconfirm title="确定使此设备下线？" okText="确定" cancelText="取消" onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}> */}
-                                <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>禁止上网</Button>
-                            {/* </Popconfirm> */}
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>禁止上网</Button>
                         </div>
                     </div>
                 );
@@ -266,9 +262,7 @@ class Item extends React.Component {
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>解除优先</Button>
-                            {/* <Popconfirm title="确定禁止此设备上网?如需恢复，可在高级设置-防蹭网中删除" okText="确定" cancelText="取消" onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}> */}
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
-                            {/* </Popconfirm> */}
                         </div>
                     </div>);
             case 'normal':
@@ -279,9 +273,8 @@ class Item extends React.Component {
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>优先上网</Button>
-                            {/* <Popconfirm title="确定使此设备下线？" okText="确定" cancelText="取消" onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}> */}
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
-                            {/* </Popconfirm> */}
+
                         </div>
                     </div>);
         }

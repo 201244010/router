@@ -119,12 +119,12 @@ export default class Backup extends React.Component{
     }
 
     backupSuccessCancle = () => {
-        this.setState({
-            backupSuccess : false
-        });
-        if(this.state.backupSuccessTip === '恢复成功！请重新连接无线网络'){
+        if(this.state.backupSuccess){
             location.href = '/login';
         }
+        this.setState({
+            backupSuccess : false
+        });   
     }
 
     radioChange = (event) => {
