@@ -282,7 +282,7 @@ export default class Bandwidth extends React.PureComponent {
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
-                bandenable : qos.enable
+                bandenable : qos.enable,
             })
             return;
         }
@@ -333,7 +333,7 @@ export default class Bandwidth extends React.PureComponent {
 
     render(){
         const { saveDisable, unit, bandenable, visible, manualShow, speedFail, 
-            speedFill, failTip, upband, downband, disable, sunmi, 
+            speedFill, failTip, upband, downband, disable, sunmi,  
             white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
         const columns = [{
             title : '设备类型',
@@ -347,7 +347,7 @@ export default class Bandwidth extends React.PureComponent {
             render: (text,record) =><div>
                 <FormItem type="small" style={{marginBottom : 0}}>
                     <div className="qos-input">
-                        <Input  style={{height : 28}} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                        <Input  style={{height : 28}} disabled={!bandenable} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
                     </div>
                     <label>%</label>
                     <label className="qos-tip">{record.errorTip}</label>
@@ -398,10 +398,10 @@ export default class Bandwidth extends React.PureComponent {
                     </section>
                     <section>
                         <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
-                        {bandenable && <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />}
+                        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
-                {bandenable && <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>}
+                <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}
