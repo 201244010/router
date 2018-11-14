@@ -36,6 +36,7 @@ export default class Bandwidth extends React.PureComponent {
         sunmiTip : '',
         whiteTip : '',
         normalTip : '',
+        tableDisabled: true,
 
         //手动设置
         upbandTmp : '',
@@ -154,6 +155,7 @@ export default class Bandwidth extends React.PureComponent {
         }else{
             this.setState({
                 bandenable: value,
+                tableDisabled: !value,
             });
         }
     }
@@ -282,7 +284,8 @@ export default class Bandwidth extends React.PureComponent {
                 sunmi : qos.sunmi_weight,
                 white : qos.white_weight,
                 normal : qos.normal_weight,
-                bandenable : qos.enable
+                bandenable : qos.enable,
+                tableDisabled: !qos.enable,
             })
             return;
         }
@@ -333,7 +336,7 @@ export default class Bandwidth extends React.PureComponent {
 
     render(){
         const { saveDisable, unit, bandenable, visible, manualShow, speedFail, 
-            speedFill, failTip, upband, downband, disable, sunmi, 
+            speedFill, failTip, upband, downband, disable, sunmi, tableDisabled, 
             white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
         const columns = [{
             title : '设备类型',
@@ -347,7 +350,7 @@ export default class Bandwidth extends React.PureComponent {
             render: (text,record) =><div>
                 <FormItem type="small" style={{marginBottom : 0}}>
                     <div className="qos-input">
-                        <Input  style={{height : 28}} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                        <Input  style={{height : 28}} disabled={tableDisabled} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
                     </div>
                     <label>%</label>
                     <label className="qos-tip">{record.errorTip}</label>
