@@ -103,8 +103,15 @@ export default class NETWORK extends React.Component {
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
+        // const backup = ['staticDnsbackup', 'dhcpDnsbackup', 'pppoeDnsbackup'];
+        // console.log(key,backup[key]);
+        // if (backup[key] && val.length === 0){
+            
+        //     tip = '';
+        // }
         if (['staticDnsbackup', 'dhcpDnsbackup', 'pppoeDnsbackup'].some(k => { 
-           return k === key && val.every(item => item.length === 0)
+            console.log('k',k,key,val,val.every(item => item.length === 0),k === key && val.every(item => item.length === 0));
+           return k === key && val.every(item => item.length === 0);
         })) {
             tip = '';
         }
@@ -224,10 +231,6 @@ export default class NETWORK extends React.Component {
                             pppoeDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
                         return false;
-                    }else{
-                        this.setState({
-                            pppoeDnsbackupTip : ''
-                        });
                     }
                     if (pppoeDns.length === 0 || this.checkDns(pppoeDns) || !this.checkbackupDns(pppoeDnsbackup)){
                         return false
@@ -253,10 +256,6 @@ export default class NETWORK extends React.Component {
                         staticDnsbackupTip : '备选DNS不能与首选DNS相同'
                     });
                     return false;
-                }else{
-                    this.setState({
-                        staticDnsbackupTip : ''
-                    });
                 }
                 if(!this.checkbackupDns(staticDnsbackup)){
                     return false;
@@ -269,10 +268,6 @@ export default class NETWORK extends React.Component {
                             dhcpDnsbackupTip : '备选DNS不能与首选DNS相同'
                         });
                         return false;
-                    }else{
-                        this.setState({
-                            dhcpDnsbackupTip : ''
-                        });
                     }
                     if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup)){
                         return false;
