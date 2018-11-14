@@ -398,10 +398,10 @@ export default class Bandwidth extends React.PureComponent {
                     </section>
                     <section>
                         <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
-                        {bandenable && <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />}
+                        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
-                {bandenable && <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>}
+                <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}
