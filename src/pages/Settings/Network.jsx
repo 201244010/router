@@ -103,14 +103,7 @@ export default class NETWORK extends React.Component {
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
-        // const backup = ['staticDnsbackup', 'dhcpDnsbackup', 'pppoeDnsbackup'];
-        // console.log(key,backup[key]);
-        // if (backup[key] && val.length === 0){
-            
-        //     tip = '';
-        // }
         if (['staticDnsbackup', 'dhcpDnsbackup', 'pppoeDnsbackup'].some(k => { 
-            console.log('k',k,key,val,val.every(item => item.length === 0),k === key && val.every(item => item.length === 0));
            return k === key && val.every(item => item.length === 0);
         })) {
             tip = '';
