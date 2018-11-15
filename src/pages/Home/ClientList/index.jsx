@@ -130,7 +130,12 @@ export default class ClientList extends React.Component {
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
                     }} title={record.name}>{record.name}</div>
-                    <div><label style={{ marginRight: 3 }}>在线时长:</label><label>{record.ontime}</label></div>
+                    <div style={{
+                        width: 140,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    }} title={record.ontime}><label style={{ marginRight: 3 }}>在线时长:</label><label>{record.ontime}</label></div>
                 </div>
             )
         }, {
@@ -155,7 +160,7 @@ export default class ClientList extends React.Component {
             )
         }, {
             title: '实时速率',
-            width: 100,
+            width: 110,
             render: (text, record) => (
                 <div>
                     <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{ marginLeft: 5 }}>{record.tx}</span></div>
@@ -165,10 +170,9 @@ export default class ClientList extends React.Component {
         }, {
             title: '流量消耗',
             dataIndex: 'flux',
-            width: 100
         }, {
             title: '操作',
-            width: 160,
+            width: 150,
             render: (text, record) => {
                 let type = record.type;
                 return (
@@ -199,7 +203,7 @@ export default class ClientList extends React.Component {
                     </div>
                 }
                 <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
-                    width={960} style={{ position: 'relative' }}
+                    width={980} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>取消</Button>
@@ -212,8 +216,9 @@ export default class ClientList extends React.Component {
                         padding: 0
                     }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
-                        style={{ height: 360, overflowY: 'auto' }}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
+                        scroll={{ y: 336 }}
+                        style={{ minHeight: 360 }}
+                        bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
             </div>);
     }

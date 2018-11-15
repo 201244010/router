@@ -442,8 +442,9 @@ export default class Bootdevice extends React.Component {
                         padding: 0
                     }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
-                        style={{ height: 360, overflowY: 'auto' }}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
+                        scroll={{ y: 336 }}
+                        style={{ minHeight: 360 }}
+                        bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
                 <Modal title='添加优先设备'
                     cancelText="取消" okText='添加'
