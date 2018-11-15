@@ -419,8 +419,9 @@ export default class StaticBind extends React.Component {
                         padding: 0
                     }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
-                        style={{height:360, overflowY: 'auto'}}
-                        className="tab-online-list" bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
+                        scroll={{ y: 336 }}
+                        style={{ minHeight: 360 }}
+                        bordered bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
                 <Modal title={editType === 'edit' ? '编辑静态地址' : '添加静态地址'}
                     cancelText="取消" okText={editType === 'edit' ? '保存' : '添加'}
