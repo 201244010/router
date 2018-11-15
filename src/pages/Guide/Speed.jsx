@@ -239,7 +239,7 @@ const SpeedAutoConfig = props => {
         <CustomIcon key="autoSpeedIcon" type="dashboard" color="#e0e1e2" size={160} />,
         <div className='button-wrap'>
             <Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>开始测速</Button>
-            <div key="help" className="help">
+            <div key="help" className="help" style={{ marginTop : -1 }}>
                 <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                 <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
             </div>
@@ -274,7 +274,7 @@ const SpeedAutoBoard = props => {
             </div>
             <div className="button-wrap">
                 <Button type="primary" size='large' style={{ width : "100%" }} loading={props.loading} onClick={() => props.configure('autoUpband','autoDownband','speedtest')}>下一步</Button>
-                <div className="help">
+                <div className="help" style={{ marginTop : 2 }}>
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     <a href="javascript:;" className="ui-tips" onClick={props.reTest}>重新测速</a>
                 </div>
@@ -287,21 +287,21 @@ const SpeedManualConfig = props => {
 	return (
         <div className="ui-center speed-result">
         <Form style={{ width : 385,left:-52 }}>
-            <FormItem label="#" style={{ marginBottom : 15 }}>
+            <FormItem label="#" style={{ marginBottom : 26 }}>
                 <span>为了准确分配网速，请确保带宽值输入准确</span>
             </FormItem>
-            <FormItem style={{fontWeight:'bold' }} label="上行总带宽" suffix="Mbps">
+            <FormItem style={{marginBottom:26 }} label="上行总带宽" suffix="Mbps">
                 <Input type="text" value={props.upBandWidth} maxLength={4} placeholder="请输入上行总带宽" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
                 <ErrorTip style={{color:'#fb8632'}}>{props.upBandTip}</ErrorTip>
             </FormItem>
-            <FormItem style={{fontWeight:'bold' }} label="下行总带宽" suffix="Mbps">
+            <FormItem style={{marginBottom:32 }} label="下行总带宽" suffix="Mbps">
                 <Input type="text" value={props.downBandWidth} maxLength={4}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
             <FormItem label="#">
         		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} loading={props.loading} onClick={() => props.configure('upBandWidth','downBandWidth','manual')}>下一步</Button>
             </FormItem>
-            <FormItem label="#" style={{ marginTop : -30 }}>
+            <FormItem label="#" style={{ marginTop : -40 }}>
                 <div className="help">
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     {

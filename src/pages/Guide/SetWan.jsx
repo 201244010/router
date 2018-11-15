@@ -378,7 +378,7 @@ export default class SetWan extends React.PureComponent {
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
-                            <Form style={{ margin : '0 auto' }}>
+                            <Form style={{ margin : '0 auto',width:375 }}>
                                 <FormItem label="上网方式">
                                     <div style={{ padding: 0, position: 'relative' }} id="typeArea">
                                         <Select value={type} style={{ width: "100%" }} onChange={this.handleChange} getPopupContainer={() => document.getElementById('typeArea')}>
