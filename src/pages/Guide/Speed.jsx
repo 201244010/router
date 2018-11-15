@@ -290,11 +290,11 @@ const SpeedManualConfig = props => {
             <FormItem label="#" style={{ marginBottom : 26 }}>
                 <span>为了准确分配网速，请确保带宽值输入准确</span>
             </FormItem>
-            <FormItem style={{fontWeight:'regular',marginBottom:26 }} label="上行总带宽" suffix="Mbps">
+            <FormItem style={{marginBottom:26 }} label="上行总带宽" suffix="Mbps">
                 <Input type="text" value={props.upBandWidth} maxLength={4} placeholder="请输入上行总带宽" onChange={value => props.changeBandWidth(value, 'upBandWidth')} name="up" />
                 <ErrorTip style={{color:'#fb8632'}}>{props.upBandTip}</ErrorTip>
             </FormItem>
-            <FormItem style={{fontWeight:'regular',marginBottom:32 }} label="下行总带宽" suffix="Mbps">
+            <FormItem style={{marginBottom:32 }} label="下行总带宽" suffix="Mbps">
                 <Input type="text" value={props.downBandWidth} maxLength={4}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>

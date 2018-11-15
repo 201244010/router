@@ -55,7 +55,7 @@ export default class Welcome extends React.Component {
                             style={{ color: '#FFF' }}
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
-                            <span style={{opacity:'0.6',fontWeight:'regular'}}>
+                            <span style={{opacity:'0.6'}}>
                             同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》
                             和
                             《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》
