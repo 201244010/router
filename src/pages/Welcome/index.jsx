@@ -39,7 +39,7 @@ export default class Welcome extends React.Component {
                         color: '#FFF',
                         textAlign: 'center',
                         lineHeight: '46px',
-                        marginBottom:15
+                        marginBottom:12
                     }}>欢迎使用商米路由器</h1>
                     <p style={{ fontSize: 18, color: '#FFF' }}>简单几步设置，路由器就可以上网啦</p>
                     <Button
@@ -47,7 +47,7 @@ export default class Welcome extends React.Component {
                         size='large'
                         disabled={!checked}
                         onClick={this.post}
-                        style={{ margin: "39px 0 12px", width: 320 }}>
+                        style={{ margin: "40px 0 12px", width: 320 }}>
                         开始设置
                     </Button>
                     <div>
@@ -55,9 +55,11 @@ export default class Welcome extends React.Component {
                             style={{ color: '#FFF' }}
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
+                            <span style={{opacity:'0.6',fontWeight:'regular'}}>
                             同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》
                             和
                             《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》
+                            </span>
                         </Checkbox>
                     </div>
                 </div>
