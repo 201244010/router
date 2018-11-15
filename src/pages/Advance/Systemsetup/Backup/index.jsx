@@ -119,12 +119,12 @@ export default class Backup extends React.Component{
     }
 
     backupSuccessCancle = () => {
+        if(this.state.backupSuccess){
+            location.href = '/login';
+        }
         this.setState({
             backupSuccess : false
-        });
-        if(this.state.backupSuccessTip === '恢复成功！'){
-            window.location.href = '/login';
-        }
+        });   
     }
 
     radioChange = (event) => {
@@ -274,6 +274,7 @@ export default class Backup extends React.Component{
     //从云恢复
     postRecoverCloud = async () => {
         this.setState({
+            recoverCloud: false,
             loadingActive: true,
             duration: 90
         });
@@ -309,7 +310,6 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     backupFailTip : '下载失败，请重试～',
-                                    recoverCloud : false,
                                 });
                                 return;
                             case 'restore fail':
@@ -317,7 +317,6 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     backupFailTip : '恢复失败！请重试～',
-                                    recoverCloud : false,
                                 });
                                 return;
                             case 'restore success':
@@ -328,7 +327,6 @@ export default class Backup extends React.Component{
                                             loadingActive: false,
                                             backupSuccess : true,
                                             backupSuccessTip : '恢复成功！请重新连接无线网络',
-                                            recoverCloud : false
                                         });
                                     }, 90000);
                                     return;

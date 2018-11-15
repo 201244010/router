@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Divider, Popover, Modal, Table, message } from 'antd';
+import { Button, Divider, Popover, Modal, Table, message, Popconfirm } from 'antd';
 import Loading from '~/components/Loading';
 
 import CustomIcon from '~/components/Icon';
@@ -31,7 +31,7 @@ export default class ClientList extends React.Component {
             { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
         );
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.updateClientsInfo();
             return;
@@ -51,7 +51,7 @@ export default class ClientList extends React.Component {
             { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.updateClientsInfo();
             return;
@@ -104,7 +104,7 @@ export default class ClientList extends React.Component {
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
-                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete} />} >
+                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
                             <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
                         </Popover>
                         <div className='under-desc'><i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i><p title={client.name}>{client.name}</p></div>
@@ -175,7 +175,7 @@ export default class ClientList extends React.Component {
                     <span>
                         {'sunmi' !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>}
                         {'sunmi' !== type && <Divider type="vertical" />}
-                        <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
+                            <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
                     </span>
                 );
             }
@@ -251,7 +251,7 @@ class Item extends React.Component {
                         <p>{client.name}</p>
                         {info}
                         <div>
-                            <Button className='single' onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>禁止上网</Button>
                         </div>
                     </div>
                 );
@@ -274,6 +274,7 @@ class Item extends React.Component {
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>优先上网</Button>
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
+
                         </div>
                     </div>);
         }

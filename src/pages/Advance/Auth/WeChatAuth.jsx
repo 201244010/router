@@ -453,7 +453,7 @@ export default class WeChatAuth extends React.Component{
                                             backgroundSize: '100% 100%', 
                                             }}></div>
                                         <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
-                                        <div style={{minHeight:33,marginTop:18,fontSize:24}}>“{welcome}”</div>
+                                        <div style={{minHeight:33,marginTop:18,fontSize:24}}>{welcome}</div>
                                         <div style={{marginTop:18}}>
                                             <Button type="primary" style={{width:286,height:40,fontSize:14,borderRadius:8}}>{loginHint}</Button>
                                         </div>

@@ -372,7 +372,7 @@ export default class Home extends React.Component {
                             <h4>带宽测速失败，请重试</h4>
                         </Modal>
                     </li>
-                    <QoS data={qosData} enable={qosEnable} history={this.props.history}/>
+                    <QoS data={qosData} enable={qosEnable} online={online} history={this.props.history}/>
                     <li className='func-item search' style={{ padding: '10px 0px' }}>
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
