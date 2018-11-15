@@ -29,7 +29,125 @@ export default class Home extends React.Component {
         totalBand: 8 * 1024 * 1024,
         me: '',
         sunmiClients:[],
-        normalClients: [],
+        normalClients: [/*
+            {
+                "icon": "computer",
+                "name": "PC-20180711HEOR",
+                "ip": "192.168.100.181",
+                "mac": "40:8D:5C:EC:24:69",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "88.54MB/s",
+                "flux": "10.90MB"
+            },
+            {
+                "icon": "computer",
+                "name": "WIN-NTSFVIF9B7A",
+                "ip": "192.168.100.140",
+                "mac": "68:F7:28:F1:10:D4",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "43分26秒",
+                "rssi": "--",
+                "tx": "830B/s",
+                "rx": "5KB/s",
+                "flux": "771MB"
+            },
+            {
+                "icon": "android",
+                "name": "Honor_9-11984856d914199b",
+                "ip": "192.168.100.196",
+                "mac": "C8:14:51:B3:09:80",
+                "type": "normal",
+                "mode": "5G",
+                "ontime": "21分44秒",
+                "rssi": "较好",
+                "tx": "0B/s",
+                "rx": "1B/s",
+                "flux": "186KB"
+            },
+            {
+                "icon": "computer",
+                "name": "PC-20180711HEOR",
+                "ip": "192.168.100.181",
+                "mac": "40:8D:5C:EC:24:69",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "232B/s",
+                "flux": "10.90MB"
+            },
+            {
+                "icon": "computer",
+                "name": "WIN-NTSFVIF9B7A",
+                "ip": "192.168.100.140",
+                "mac": "68:F7:28:F1:10:D4",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "43分26秒",
+                "rssi": "--",
+                "tx": "830B/s",
+                "rx": "5KB/s",
+                "flux": "771MB"
+            },
+            {
+                "icon": "android",
+                "name": "Honor_9-11984856d914199b",
+                "ip": "192.168.100.196",
+                "mac": "C8:14:51:B3:09:80",
+                "type": "normal",
+                "mode": "5G",
+                "ontime": "21分44秒",
+                "rssi": "较好",
+                "tx": "0B/s",
+                "rx": "1B/s",
+                "flux": "186KB"
+            },
+            {
+                "icon": "computer",
+                "name": "PC-20180711HEOR",
+                "ip": "192.168.100.181",
+                "mac": "40:8D:5C:EC:24:69",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "232B/s",
+                "flux": "10.90MB"
+            },
+            {
+                "icon": "computer",
+                "name": "WIN-NTSFVIF9B7A",
+                "ip": "192.168.100.140",
+                "mac": "68:F7:28:F1:10:D4",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "43分26秒",
+                "rssi": "--",
+                "tx": "830B/s",
+                "rx": "5KB/s",
+                "flux": "771MB"
+            },
+            {
+                "icon": "android",
+                "name": "Honor_9-11984856d914199b",
+                "ip": "192.168.100.196",
+                "mac": "C8:14:51:B3:09:80",
+                "type": "normal",
+                "mode": "5G",
+                "ontime": "21分44秒",
+                "rssi": "较好",
+                "tx": "0B/s",
+                "rx": "1B/s",
+                "flux": "186KB"
+            }*/
+        ],
         whitelistClients: [],
         qosData: [{
             name: '商米设备',
@@ -144,6 +262,7 @@ export default class Home extends React.Component {
             { opcode: 'NETWORK_WAN_IPV4_GET' },
         ]/*, {}, { handleError: true }*/);
 
+        const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
             message.warning(`网络状态请求异常[${errcode}]`);
@@ -160,6 +279,7 @@ export default class Home extends React.Component {
         };
         // merge clients && traffic info
         let totalList = clients.map(client => {
+            client.mac = client.mac.toUpperCase();
             const deviceMap = {
                 iphone: 'number',
                 android: 'android',
@@ -179,7 +299,7 @@ export default class Home extends React.Component {
                 cur_tx_bytes: 0,
                 cur_rx_bytes: 0
             };
-            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
+            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
             let mode = modeMap[client.wifi_mode];
             let device = deviceMap[client.device] || 'unknown';
             let ontime = this.formatTime(client.ontime);
@@ -199,9 +319,10 @@ export default class Home extends React.Component {
 
             return {
                 icon: device,
-                name: client.hostname,
+                //me: (client.mac === ME),
+                name: (client.mac === ME) ? '本机' : client.hostname,
                 ip: client.ip,
-                mac: client.mac.toUpperCase(),
+                mac: client.mac,
                 type: client.type,
                 mode: mode,
                 ontime: ontime,

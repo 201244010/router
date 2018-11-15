@@ -93,17 +93,17 @@ export default class SetPassword extends React.Component {
             <div className="setpassword"> 
                 <h2>设置管理密码</h2>
                 <p className="ui-tips guide-tip">管理密码是进入路由器管理页面的凭证 </p>
-                <Form style={{margin : '24px auto'}}>
+                <Form style={{margin : '24px auto',width:335}}>
                     <FormItem label="设置密码" style={{ marginBottom : 28 }} showErrorTip={PWDTip}>
                         <Input placeholder="请设置密码" value={PWD} onChange = {value => this.onChange('PWD',value)}    maxLength='32'/>
                         <ErrorTip>{PWDTip}</ErrorTip> 
                     </FormItem>
                     <FormItem label="确认密码" style={{ marginBottom : 32 }} showErrorTip={surePWDTip}>
-                        <Input placeholder="请确认密码" value={surePWD} onChange = {value => this.onChange('surePWD',value)}  maxLength='32'/>
+                        <Input placeholder="请确认密码" value={surePWD}  onChange = {value => this.onChange('surePWD',value)}  maxLength='32'/>
                         <ErrorTip>{surePWDTip}</ErrorTip> 
                     </FormItem>
                     <FormItem label="#">
-                        <Button disabled={disabled} loading={loading} style={{ width : "100%" }} onClick={this.post} size="large" type="primary">下一步</Button>
+                        <Button disabled={disabled} loading={loading} style={{ width : '100%',height: 42 }} onClick={this.post} size="large" type="primary">下一步</Button>
                     </FormItem>
                 </Form>
             </div>
