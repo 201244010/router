@@ -262,6 +262,7 @@ export default class Home extends React.Component {
             { opcode: 'NETWORK_WAN_IPV4_GET' },
         ]/*, {}, { handleError: true }*/);
 
+        const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
             message.warning(`网络状态请求异常[${errcode}]`);
@@ -278,6 +279,7 @@ export default class Home extends React.Component {
         };
         // merge clients && traffic info
         let totalList = clients.map(client => {
+            client.mac = client.mac.toUpperCase();
             const deviceMap = {
                 iphone: 'number',
                 android: 'android',
@@ -297,7 +299,7 @@ export default class Home extends React.Component {
                 cur_tx_bytes: 0,
                 cur_rx_bytes: 0
             };
-            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac.toUpperCase()) || dft;
+            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
             let mode = modeMap[client.wifi_mode];
             let device = deviceMap[client.device] || 'unknown';
             let ontime = this.formatTime(client.ontime);
@@ -317,9 +319,10 @@ export default class Home extends React.Component {
 
             return {
                 icon: device,
-                name: client.hostname,
+                //me: (client.mac === ME),
+                name: (client.mac === ME) ? '本机' : client.hostname,
                 ip: client.ip,
-                mac: client.mac.toUpperCase(),
+                mac: client.mac,
                 type: client.type,
                 mode: mode,
                 ontime: ontime,
