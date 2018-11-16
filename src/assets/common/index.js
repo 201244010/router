@@ -155,6 +155,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     case 'string':
                         throw new Error('fetchApi 要求循环参数为 boolean 或 number');
                 }
+
                 if (error.toString().indexOf('403') > -1) {
                     clear();
                     const login = '/login';
@@ -163,9 +164,14 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     }
                     return reject({});
                 }
-                else if (loopOption.handleError) {
-                    message.error(`网络异常[${error.toString()}]`);
+
+                if (error.toString().indexOf('Network Error') > -1) {
+                    message.error('网络异常，请检查');
                 }
+                else if (loopOption.handleError) {
+                    message.error(`请求失败[${error.toString()}]`);
+                }
+
                 return reject(error);
             })
         }
