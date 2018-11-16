@@ -184,14 +184,14 @@ export default class SetWifi extends React.Component {
 
     valid(){
         let ret = true;
-        let { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
+        let { guestWifi, hostWifiName, hostWifiPsw, hostWifiPswTip, guestWifiName, guestWifiPsw, guestWifiPswTip } = this.state;
 
-        if( hostWifiName.length === 0 || ( hostWifiPsw.length < 8 && hostWifiPsw.length >0 )){
+        if( hostWifiName.length === 0 || guestWifiPswTip !== '' || (hostWifiPsw.trim() === ''&& hostWifiPsw.length !== 0)){
             ret = false;
         }
         
         if(guestWifi){    
-            if( guestWifiName.length === 0 || ( guestWifiPsw.length < 8 && guestWifiPsw.length >0 )){
+            if( guestWifiName.length === 0 || hostWifiPswTip !== '' || (guestWifiPsw.trim() === '' && guestWifiPsw.length !== 0)){
                 ret = false;
             }
             if(guestWifiName === hostWifiName){
