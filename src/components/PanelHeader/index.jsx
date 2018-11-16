@@ -2,6 +2,8 @@
 import React from 'react';
 import { Switch ,Tooltip, Icon } from 'antd';
 import classnames from 'classnames';
+import PropTypes from "prop-types";
+
 import './panelHeader.scss';
 
 export default class PanelHeader extends React.PureComponent {
@@ -16,13 +18,24 @@ export default class PanelHeader extends React.PureComponent {
     }
 
     render(){
+        const id = `__panel-${new Date().getTime()}`;
         const { title, checkable, checked, className, tip} = this.props;
         return (
-            <ul className={classnames(['panel-hd ui-tiled', className])}>
+            <ul className={classnames(['panel-hd ui-tiled', className])} id={id}>
                 <li>
                     <span>{title}</span>
-                    {
-                        (typeof tip === 'string' && tip.length !== 0) && <Tooltip placement="right" title={tip}><Icon style={{ fontSize: 16, marginLeft : 10 }} type="question-circle" /></Tooltip>
+                    {tip &&
+                    <Tooltip
+                        trigger='click'
+                        placement="right"
+                        title={tip}
+                        overlayStyle={{maxWidth:360}}
+                        getPopupContainer={() => {
+                            return document.getElementById(id);
+                        }}
+                    >
+                        <Icon style={{ fontSize: 16, marginLeft : 10 }} type="question-circle" />
+                    </Tooltip>
                     }
                 </li>
                 {
@@ -33,3 +46,9 @@ export default class PanelHeader extends React.PureComponent {
     }
 };
 
+PanelHeader.propTypes = {
+    tip: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element
+    ])
+};

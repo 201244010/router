@@ -331,7 +331,13 @@ export default class WeChatAuth extends React.Component{
             <div className="auth">
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div className='left'>
-                        <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
+                        <PanelHeader
+                            title="功能设置"
+                            tip='微信认证是微信推出的快速连接Wi-Fi热点的功能。启用后，顾客仅需通过微信“扫一扫”二维码或者通过手动选择SSID后、再在弹出的认证页面进行后续操作两种方式，即可快速连接Wi-Fi免费上网'
+                            checkable={true}
+                            checked={enable}
+                            onChange={this.onEnableChange}
+                        />
                         <label style={{marginTop:20}}>上网时长</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={onlineLimitTip} style={{ width : 320}}>
@@ -466,7 +472,11 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>                  
                         </section>
-                        <PanelHeader title = "微信公众平台参数设置" checkable={false} />
+                        <PanelHeader
+                            title = "微信公众平台参数设置"
+                            tip='设置之前，请先登录微信公众平台官网注册相关门店，注册成功后，微信公众平台会提供一系列参数（SSID、ShopID、AppID、Secretkey），将其复制到此页面对应的输入框中'
+                            checkable={false}
+                        />
                         <label>SSID</label>
                         <FormItem type="small" showErrorTip={ssidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32}  placeholder={'请输入SSID'} disabled={false} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
