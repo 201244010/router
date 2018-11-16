@@ -71,8 +71,8 @@ export default class WIFI extends React.Component {
         hostSsid5PasswordTip:'',
         saveDisabled: false,
         visibile: 'hidden',
-        success: false,
-        failed: false,
+        resVisibile: false,
+        result: true,
         err: '',
     };
 
@@ -360,16 +360,10 @@ export default class WIFI extends React.Component {
         });
     }
 
-    failedCancle = () => {
+    resCancle = () => {
         this.setState({
-            failed: false
+            resVisibile: false,
         });
-    }
-
-    successCancle = () => {
-        this.setState({
-            success: false
-        })
     }
 
     submit = async ()=> {
@@ -458,7 +452,8 @@ export default class WIFI extends React.Component {
                             this.fetchWireLessInfo();
                             this.setState({
                                 visibile: 'hidden',
-                                success: true,
+                                resVisibile: true,
+                                result: true,
                             });                
                         }
                     );
@@ -466,7 +461,8 @@ export default class WIFI extends React.Component {
         }else{
             this.setState({
                 visibile: 'hidden',
-                failed: true,
+                resVisibile: true,
+                result: false,
                 err: errcode,
             });    
         }   
@@ -582,7 +578,7 @@ export default class WIFI extends React.Component {
     }
     render(){
         const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip,
-         hostSsid5Tip, hostSsid5PasswordTip, saveDisabled, visibile, failed, success } = this.state;
+         hostSsid5Tip, hostSsid5PasswordTip, saveDisabled, visibile, resVisibile,result } = this.state;
         return (
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -791,17 +787,28 @@ export default class WIFI extends React.Component {
                     </div>
                         
                 </Modal>
-                <Modal closable={false} visible={failed} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.failedCancle}>我知道了</Button>} width={560}>
-                    <div className="backup-icon">
-                        <CustomIcon color="#FF5500" type="defeated" size={64} />
-                        <div className="backup-result">配置失败！[{this.state.err}]</div>
-                    </div>
-                </Modal>
-                <Modal closable={false} visible={success} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.successCancle}>确定</Button>} width={560} >
-                    <div className="backup-icon">
-                        <CustomIcon color="#87D068" type="succeed" size={64} />
-                        <div className="backup-result">配置生效，请重新连接无线网络</div>
-                    </div>
+                <Modal 
+                    closable={false}
+                    visible={resVisibile}
+                    maskClosable={false}
+                    centered={true}
+                    footer={
+                        <Button className="backup-btm" type="primary" onClick={this.resCancle}>
+                        {result? '确定' : '我知道了'}
+                        </Button>
+                    }
+                    width={560}>
+                    {result?
+                        <div className="backup-icon">
+                            <CustomIcon color="#87D068" type="succeed" size={64} />
+                            <div className="backup-result">配置生效，请重新连接无线网络</div>
+                        </div>
+                        :
+                        <div className="backup-icon">
+                            <CustomIcon color="#FF5500" type="defeated" size={64} />
+                            <div className="backup-result">配置失败！[{this.state.err}]</div>
+                        </div>
+                    }
                 </Modal>
             </div>
         );
