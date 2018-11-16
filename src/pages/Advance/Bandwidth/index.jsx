@@ -313,6 +313,11 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     post = async ()=>{
+        let { source } = this.state;
+        if(source === 'default'){
+            message.error('请先设置带宽');
+            return;
+        }
         this.setState({ loading: true });
         let payload = this.composeparams("manual",this.state.upband,this.state.downband);
         await common.fetchApi({
