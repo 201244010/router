@@ -461,9 +461,15 @@ export default class WIFI extends React.Component {
             }, 7000);       
         }else{
             this.setState({
-                done: false,
+                done: true,
                 result: false,
                 err: errcode,
+            },() => {
+                setTimeout(()=>{
+                    this.setState({
+                        visibile: 'hidden',
+                    }); 
+                },7000);
             });    
         }   
     }
@@ -788,11 +794,16 @@ export default class WIFI extends React.Component {
                         </div>
                         :
                         <div className="success">
-                            <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
-                            { this.state.result ?
+                        { this.state.result ?
+                            <div>
+                                <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
                                 <div className="ui-t2">配置生效，请重新连接无线网络</div>
-                                :
+                            </div>
+                            :
+                            <div>
+                                <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#FF5500" type="defeated"></CustomIcon></div>
                                 <div className="ui-t2">配置失败！{this.state.err}</div>
+                            </div>
                             }
                             
                         </div>
