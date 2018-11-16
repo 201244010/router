@@ -86,7 +86,7 @@ export default class Bandwidth extends React.PureComponent {
             sunmi: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
@@ -94,7 +94,7 @@ export default class Bandwidth extends React.PureComponent {
             white: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
@@ -102,7 +102,7 @@ export default class Bandwidth extends React.PureComponent {
             normal: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
