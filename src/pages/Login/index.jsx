@@ -22,7 +22,8 @@ class Login extends React.Component {
     onChange = value => {
         this.setState({ 
             password: value,
-        })
+            tip: (value.length > 0) ? '' : '请输入密码',
+        });
     }
 
     onEnter = () => {
@@ -36,6 +37,14 @@ class Login extends React.Component {
 
     post = async () => {
         const password = this.state.password;
+
+        if ('' === password) {
+            this.setState({
+                tip: '请输入密码',
+            });
+            return;
+        }
+
         this.setState({ loading : true });
         const response = await common.fetchApi(
             [{ 
@@ -54,6 +63,9 @@ class Login extends React.Component {
             case '-1604':
                 this.props.history.push('/welcome');
                 return;
+            case '-1601':
+                tip = '请输入密码';
+                break;
             case '-1605':
                 tip = '密码错误';
                 break;
@@ -71,19 +83,18 @@ class Login extends React.Component {
     }
 
     render() {
-        const {tip} = this.state;
-        return [
-            <div key='login-content' className="ui-center ui-fullscreen">
+        const { tip, password } = this.state;
+        return <div className="ui-center ui-fullscreen">
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
                             <FormItem style={{ margin: '45px auto 30px' }}>
                                 <Input placeholder="请输入您的管理密码"
                                         type="password"
-                                        value={this.state.password}
+                                        value={password}
                                         onChange={this.onChange}
                                         maxLength='32'
-                                        onEnter={this.onEnter} 
+                                        onEnter={this.onEnter}
                                         />
                             <ErrorTip style={{
                                 color: '#FF5500',
@@ -105,10 +116,8 @@ class Login extends React.Component {
                         <img src={require('~/assets/images/qr.png')} />
                         <p>扫描二维码下载APP</p>
                     </div>
-                </div>
-        ];
+            </div>;
     }
 }
 
 export default Login;
-
