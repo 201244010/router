@@ -159,7 +159,7 @@ export default class ClientList extends React.Component {
                 <div><i className={'dot ' + ('较差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
-            title: '实时速率',
+            title: '当前速率',
             width: 110,
             render: (text, record) => (
                 <div>

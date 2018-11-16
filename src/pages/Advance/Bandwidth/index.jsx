@@ -86,7 +86,7 @@ export default class Bandwidth extends React.PureComponent {
             sunmi: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
@@ -94,7 +94,7 @@ export default class Bandwidth extends React.PureComponent {
             white: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
@@ -102,7 +102,7 @@ export default class Bandwidth extends React.PureComponent {
             normal: {
                 func: checkRange,
                 args: {
-                    min: 1,
+                    min: 0,
                     max: 100,
                     who: '带宽比例',
                 }
@@ -313,6 +313,11 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     post = async ()=>{
+        let { source } = this.state;
+        if(source === 'default'){
+            message.error('请先设置带宽');
+            return;
+        }
         this.setState({ loading: true });
         let payload = this.composeparams("manual",this.state.upband,this.state.downband);
         await common.fetchApi({

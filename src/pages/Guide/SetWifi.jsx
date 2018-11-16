@@ -205,12 +205,7 @@ export default class SetWifi extends React.Component {
     }
 
     async fetchWireLessInfo(){
-        let response = await common.fetchApi(
-            [{
-                opcode: 'WIRELESS_GET'
-            }],
-            {},
-            { handleError : true });
+        let response = await common.fetchApi({ opcode: 'WIRELESS_GET' });
         let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;

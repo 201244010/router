@@ -343,7 +343,13 @@ export default class SmsAuth extends React.Component{
             <div className="auth">
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div className='left'>
-                        <PanelHeader title = "功能设置" checkable={true} checked={enable} onChange={this.onEnableChange}/>
+                        <PanelHeader
+                            title = "功能设置"
+                            tip='启用后，顾客通过手动选择SSID后，再在弹出的认证页面输入手机号码和短信验证码进行身份认证，即可连接上Wi-Fi免费上网'
+                            checkable={true}
+                            checked={enable}
+                            onChange={this.onEnableChange}
+                        />
                         <label style={{marginTop:20}}>上网时长</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={onlineLimitTip} style={{ width : 320}}>
@@ -537,7 +543,19 @@ export default class SmsAuth extends React.Component{
                             }
                             </section>                  
                         </section>
-                        <PanelHeader title = "短信平台参数设置" checkable={false} />
+                        <PanelHeader
+                            title = "短信平台参数设置"
+                            tip={<div className='help-content'>
+                                    <p className=''>设置之前，请先在阿里云平台上开通短信服务，并设置模版和签名，设置成功后，将其复制到此页面对应的输入框中</p>
+                                    <ul className='item-list'>
+                                        <li>Access Key ID：<span>访问阿里云平台短信接口的用户名</span></li>
+                                        <li>Access Key Secret：<span>访问阿里云平台短信接口的密码</span></li>
+                                        <li>模板CODE：<span>阿里云平台提供的模板ID号（设置模板时，要求以'sms_code'为关键字，如：验证码{'${sms_code}'}用于Wi-Fi连接登录，如非本人操作，请忽略此短信）</span></li>
+                                        <li>签名名称：<span>阿里云平台发送的短信模板对应的签名名称</span></li>
+                                    </ul>
+                                </div>}
+                            checkable={false}
+                        />
                         <label>验证码有效期</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>

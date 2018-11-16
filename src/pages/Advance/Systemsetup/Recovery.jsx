@@ -50,7 +50,7 @@ export default class Recovery extends React.Component{
 
     guide = () => {
         clear();
-        location.href = '/welcome';
+        location.href = '/';
     }
 
     render(){
