@@ -8,6 +8,7 @@ import Loading from '~/components/Loading';
 
 const {FormItem, Input} = Form;
 const RadioGroup = Radio.Group;
+let checkToCloud = true;
 
 import './backup.scss'
 
@@ -119,7 +120,7 @@ export default class Backup extends React.Component{
     }
 
     backupSuccessCancle = () => {
-        if(this.state.backupSuccess){
+        if(this.state.backupSuccess && !checkToCloud){
             location.href = '/login';
         }
         this.setState({
@@ -195,6 +196,7 @@ export default class Backup extends React.Component{
                         let state = res.data[0].result.state;
                         if(res.errcode === 0){
                             if(state === 'success'){
+                                checkToCloud = true;
                                 this.setState({
                                     backupSuccess : true,
                                     backupCloud : false,
@@ -239,6 +241,7 @@ export default class Backup extends React.Component{
                             duration: duration,
                         });   
                         setTimeout(() => {
+                            checkToCloud = false;
                             this.setState({
                                 loadingActive: false,
                                 backupSuccess : true,
@@ -323,6 +326,7 @@ export default class Backup extends React.Component{
                                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
                                 if(res.errcode === 0){
                                     setTimeout(() => {
+                                        checkToCloud = false;
                                         this.setState({
                                             loadingActive: false,
                                             backupSuccess : true,
