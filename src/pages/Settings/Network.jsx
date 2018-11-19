@@ -205,11 +205,13 @@ export default class NETWORK extends React.Component {
 
     // 校验参数
     checkParams(){
-        let { type, pppoeAccount, pppoeAccountTip, pppoePassword, pppoePasswordTip, pppoeType, dhcpType, staticDns,
-            staticDnsbackup, ipv4, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
+        let { type, pppoeAccount, pppoeAccountTip, pppoePassword, pppoePasswordTip, pppoeType, dhcpType, staticDns, staticDnsbackup, ipv4, gateway, subnetmask, staticDnsTip, staticDnsbackupTip, ipv4Tip, gatewayTip, subnetmaskTip,
+         pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, pppoeDnsTip, pppoeDnsbackupTip, dhcpDnsTip, dhcpDnsbackupTip } =
+         this.state;
         switch(type){
             case 'pppoe' :
-                if( pppoeAccount.length === 0 || pppoePassword.length === 0 || pppoeAccountTip !== '' || pppoePasswordTip !== '' )
+                if( pppoeAccount.length === 0 || pppoePassword.length === 0 || pppoeAccountTip !== '' || pppoePasswordTip !== ''
+                || pppoeDnsTip !=='' || pppoeDnsbackupTip !== '')
                 {
                     return false;
                 }
@@ -235,8 +237,13 @@ export default class NETWORK extends React.Component {
                             return true;
                         }
                     });
-                })
-                if(empty){
+                });
+                let checkTip = [ staticDnsTip, staticDnsbackupTip, ipv4Tip, gatewayTip, subnetmaskTip ].some( field =>{
+                    if (field !== ''){
+                        return true;
+                    }
+                });
+                if (empty || checkTip){
                     return false;
                 }
                 if(this.checkSameDns(staticDns,staticDnsbackup) && staticDnsbackup.every(item => {return item.length !== 0})){
@@ -257,7 +264,8 @@ export default class NETWORK extends React.Component {
                         });
                         return false;
                     }
-                    if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup)){
+                    if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup) || dhcpDnsTip !== ''
+                    || dhcpDnsbackupTip !== ''){
                         return false;
                     }
                 }
