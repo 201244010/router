@@ -7,6 +7,9 @@ import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
+const err = {
+    '-1204': '设备已存在，请勿重复添加',
+};
 
 const pagination = {
     pageSize: 6,
@@ -231,8 +234,7 @@ export default class NonAuth extends React.Component{
             })
             return;
         }
-
-        message.error(`添加失败[${errcode}]`);
+        message.error(err[errcode]);
     }
 
     onSelectCancle = () => {
@@ -342,7 +344,7 @@ export default class NonAuth extends React.Component{
             width: 143,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title="确定恢复此设备的认证？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title="确定恢复认证？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#3D76F6" }}>恢复认证</a>
                     </Popconfirm>
                 </span>

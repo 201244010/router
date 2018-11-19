@@ -356,7 +356,7 @@ export default class StaticBind extends React.Component {
                 <span>
                     <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color:"#3D76F6"}}>编辑</a>
                     <Divider type="vertical" />
-                    <Popconfirm title="您确定要删除该设备吗？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title="确定删除？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#FB8632" }}>删除</a>
                     </Popconfirm>
                 </span>

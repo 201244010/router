@@ -3,7 +3,7 @@ import React from 'react';
 import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
+import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
 
 const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
@@ -117,16 +117,13 @@ export default class NETWORK extends React.Component {
     }
 
     handleAccountChange = value => {
-        this.setState({ pppoeAccount : value }, function(){
+        this.setState({ 
+            pppoeAccount: value,
+            pppoeAccountTip: checkStr( value, { who: 'PPPOE 账号', min: 1, max: 64 } )
+         }, () => {
             this.setState({
-                disabled : !this.checkParams()
+                disabled: !this.checkParams()
             });
-        });
-    }
-
-    handleAccountBlur = ()=>{
-        this.setState({
-            pppoeAccountTip : this.state.pppoeAccount.length === 0 ? "PPPOE 账号不能为空" : ''
         });
     }
 
@@ -144,19 +141,15 @@ export default class NETWORK extends React.Component {
 
     // 处理pppoe 密码框 change
     handlePasswordChange = value => {
-        this.setState({ pppoePassword : value }, function(){
+        this.setState({ 
+            pppoePassword: value,
+            pppoePasswordTip: checkStr( value, { who: 'PPPOE 密码', min: 1, max: 32, type: 'english'} )
+         }, () => {
             this.setState({
                 disabled : !this.checkParams()
             });
         });
     };
-
-    // pppoe 密码输入框失去焦点
-    handlePasswordBlur = ()=>{
-        this.setState({
-            pppoePasswordTip :this.state.pppoePassword.length === 0 ? "PPPOE 密码不能为空" : ''
-        });
-    }
     
     onTypeChange = value => {
         this.setState({
@@ -212,10 +205,14 @@ export default class NETWORK extends React.Component {
 
     // 校验参数
     checkParams(){
-        let { type, pppoeAccount, pppoePassword,pppoeType, dhcpType, staticDns, staticDnsbackup, ipv4, gateway, subnetmask,pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup } = this.state;
+        let { type, pppoeAccount, pppoeAccountTip, pppoePassword, pppoePasswordTip, pppoeType, dhcpType, staticDns, staticDnsbackup, ipv4, gateway, subnetmask, staticDnsTip, staticDnsbackupTip, ipv4Tip, gatewayTip, subnetmaskTip,
+         pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, pppoeDnsTip, pppoeDnsbackupTip, dhcpDnsTip, dhcpDnsbackupTip } =
+         this.state;
         switch(type){
             case 'pppoe' :
-                if(pppoeAccount.length === 0 || pppoePassword.length === 0){
+                if( pppoeAccount.length === 0 || pppoePassword.length === 0 || pppoeAccountTip !== '' || pppoePasswordTip !== ''
+                || pppoeDnsTip !=='' || pppoeDnsbackupTip !== '')
+                {
                     return false;
                 }
                 if(pppoeType === 'manual'){
@@ -240,8 +237,13 @@ export default class NETWORK extends React.Component {
                             return true;
                         }
                     });
-                })
-                if(empty){
+                });
+                let checkTip = [ staticDnsTip, staticDnsbackupTip, ipv4Tip, gatewayTip, subnetmaskTip ].some( field =>{
+                    if (field !== ''){
+                        return true;
+                    }
+                });
+                if (empty || checkTip){
                     return false;
                 }
                 if(this.checkSameDns(staticDns,staticDnsbackup) && staticDnsbackup.every(item => {return item.length !== 0})){
@@ -262,7 +264,8 @@ export default class NETWORK extends React.Component {
                         });
                         return false;
                     }
-                    if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup)){
+                    if(dhcpDns.length == 0 || this.checkDns(dhcpDns) || !this.checkbackupDns(dhcpDnsbackup) || dhcpDnsTip !== ''
+                    || dhcpDnsbackupTip !== ''){
                         return false;
                     }
                 }
@@ -513,8 +516,6 @@ export default class NETWORK extends React.Component {
                                     pppoeType={this.state.pppoeType}
                                     onPppoeRadioChange={this.onPppoeRadioChange}
                                     handleAccountChange={this.handleAccountChange}
-                                    handlePasswordBlur={this.handlePasswordBlur}
-                                    handleAccountBlur={this.handleAccountBlur}
                             />: ''
                         }
                         {
@@ -570,12 +571,13 @@ const PPPoE = props => {
     <div key="pppoe" className="wifi-settings">
         <label>账号</label>
         <FormItem showErrorTip={props.pppoeAccountTip} key="pppoessid" type="small" style={{ width : 320}}>
-            <Input type="text" value={props.pppoeAccount} onChange={props.handleAccountChange} onBlur={props.handleAccountBlur}/>
+            <Input type="text" value={props.pppoeAccount} maxLength={64} onChange={props.handleAccountChange} />
             <ErrorTip>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>
         <label>密码</label>
         <FormItem showErrorTip={props.pppoePasswordTip} key="pppoepassword" type="small" style={{ width : 320}}>
-            <Input type="password" disabled={props.hostSsidPasswordDisabled} onBlur={props.handlePasswordBlur} value={props.pppoePassword} onChange={props.handlePasswordChange} />
+            <Input type="password" disabled={props.hostSsidPasswordDisabled} maxLength={32} 
+            value={props.pppoePassword} onChange={props.handlePasswordChange} />
             <ErrorTip>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
         <label>DNS配置</label>

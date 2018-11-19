@@ -200,13 +200,13 @@ export default class Bootdevice extends React.Component {
             data: { white_list: white_list }
         }, {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             editLoading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             this.setState({
@@ -384,7 +384,7 @@ export default class Bootdevice extends React.Component {
             width: 143,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title="确定解除此设备的优先上网权？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title="确定解除优先？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#3D76F6" }}>解除优先</a>
                     </Popconfirm>
                 </span>

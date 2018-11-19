@@ -304,7 +304,7 @@ export default class Blacklist extends React.Component {
             width: 143,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title="确定将此设备恢复上网？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title="确定恢复上网？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#3D76F6" }}>恢复上网</a>
                     </Popconfirm>
                 </span>
