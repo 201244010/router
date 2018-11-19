@@ -7,6 +7,9 @@ import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
+const err = {
+    '-1204': '设备已存在，请勿重复添加',
+};
 
 const pagination = {
     pageSize: 6,
@@ -231,8 +234,7 @@ export default class NonAuth extends React.Component{
             })
             return;
         }
-
-        message.error(`添加失败[${errcode}]`);
+        message.error(err[errcode]);
     }
 
     onSelectCancle = () => {

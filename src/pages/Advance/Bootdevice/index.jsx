@@ -200,13 +200,13 @@ export default class Bootdevice extends React.Component {
             data: { white_list: white_list }
         }, {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             editLoading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             this.setState({
