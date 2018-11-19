@@ -591,8 +591,9 @@ export default class SmsAuth extends React.Component{
                             <ErrorTip>{signNameTip}</ErrorTip>
                         </FormItem>
                     </div>
-                    <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" loading={loading} type="primary" disabled={saveDisabled} onClick={this.submit}>保存</Button>
+                    <section className="save">
+                        <Button className="weixin-auth-button" style={{ width: 320 }} loading={loading} type="primary" 
+                        size="large" disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

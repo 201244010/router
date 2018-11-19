@@ -559,7 +559,7 @@ export default class NETWORK extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                    <Button type="primary" size='large' style={{ width: 320, margin: "20px 60px 30px" }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
+                    <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
                 </section>
             </div>
         );

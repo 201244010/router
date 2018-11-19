@@ -406,7 +406,8 @@ export default class Bandwidth extends React.PureComponent {
                         <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
-                <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>
+                <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary"
+                loading={loading} onClick={this.post}>保存</Button></section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}

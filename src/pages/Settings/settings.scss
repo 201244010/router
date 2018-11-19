@@ -5,7 +5,7 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
     flex : 1;
-    color : #333;
+    color : #333C4F;
     > nav {
         border-radius: 8px 0 0 8px;
         background-color : #F2F3F7;
@@ -62,15 +62,17 @@
     }
 
     .wifi-settings {
+        font-size: 14px;
         .wifi-setting-item {
-            margin-bottom : 20px;
             padding-bottom : 10px;
             padding-left: 60px;
         }
+        .ssidLabel{
+            margin-top: 24px;
+        }
         .ui-tiled.compact {
-            margin-bottom: 0;
             width : 320px;
-            margin-top : 10px;
+            height: 22px;
         }
         label {
             display: block;
@@ -110,16 +112,18 @@
     padding: 0;
     display:flex;
     flex-direction: row;
-    
     >section {
         display: flex;
         flex-direction: column;
         width: 50%;    
         flex: 1;
-        >div{
-            label{
-                margin-top:20px;
-            } 
+        .firstLabel{
+            margin-top: 8px;
+        }
+        .moreDiv{
+            padding: 0;
+            position: relative;
+            margin-bottom: 32px;
         }
     }
     >section:nth-child(1){
@@ -128,15 +132,15 @@
     .panel-hd{
         border-bottom:0;
         span{
-            color:black;
+            color:#333C4F;
         }
     }
 }
 
 .save{
     width: 100%;
-    border-top:1px solid #ccc;
-    padding-top:10px;
+    border-top:1px solid #ECECEC;
+    padding:30px 60px 30px;
     margin-top: 30px;
 }
 

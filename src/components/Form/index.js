@@ -15,7 +15,7 @@ const FormItem = props => {
         { 
             'ui-form-item-with-help' :  showErrorTip, 
             "has-error" : showErrorTip,
-            "ui-form-item-small" : props.type === 'small'
+            "ui-form-item-small" : props.type === 'small',
         }
     ]);
     return (
@@ -102,10 +102,12 @@ class Input extends React.Component {
     }
     
     render(){
+        console.log('disabled12345',this.props.disabled);
         let hidden = this.state.hidden;
         let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
+        let checkDisabled = this.props.disabled ? 'ui-input-disabled':'';
         return (
-            <div className="ui-input-outline" style={{ width : this.props.width }}>
+            <div className={`ui-input-outline ${checkDisabled}`} style={{ width : this.props.width }}>
                 {
                     this.props.type === 'password' ? [
                         <i key="eye-open" className="ui-icon ui-icon-eye-open" 
