@@ -78,7 +78,7 @@ export default class Recovery extends React.Component{
                     footer={[<Button type="primary" onClick={this.guide}>确定</Button>]}
                 >
                     <CustomIcon type="succeed" size={64} color='#87D068' style={{marginTop:20}} />
-                    <h3 style={{ marginTop: 15 }}>恢复出厂完成，请重新登录管理界面</h3>
+                    <h3 style={{ marginTop: 15 }}>恢复出厂设置完成，请重新连接无线网络</h3>
                 </Modal>
         </div>
         );

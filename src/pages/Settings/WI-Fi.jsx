@@ -78,14 +78,16 @@ export default class WIFI extends React.Component {
 
     checkDisabled =() =>{
         let checkDisabled24, checkDisabled5, checkDisabled245, checkDisabledGuest;
-        let { host24Enable, hostSsid24Tip, hostSsid24PasswordTip, hostSsid24, host5Enable, hostSsid5Tip, hostSsid5PasswordTip, hostSsid5, channelType, guestEnable, guestSsidTip, guestStaticPasswordTip, guestSsid, periodTip} = this.state;
+        let { host24Enable, hostSsid24Tip, hostSsid24Password, hostSsid24PasswordTip, hostSsid24, host5Enable, hostSsid5Tip, hostSsid5Password, hostSsid5PasswordTip, hostSsid5, channelType, guestEnable, guestSsidTip, guestStaticPassword, guestStaticPasswordTip, guestSsid, periodTip} = this.state;
         if(host24Enable === true){
-            checkDisabled24 = ( hostSsid24Tip !== '' || hostSsid24PasswordTip !== '' || hostSsid24 === '' );
+            checkDisabled24 = ( hostSsid24Tip !== '' || hostSsid24PasswordTip !== '' || hostSsid24 === '' || 
+            hostSsid24Password.trim() === '' );
         }else{
             checkDisabled24 = false;
         }
         if(host5Enable === true){
-            checkDisabled5 = ( hostSsid5Tip !== '' || hostSsid5PasswordTip !== '' || hostSsid5 === '' );
+            checkDisabled5 = ( hostSsid5Tip !== '' || hostSsid5PasswordTip !== '' || hostSsid5 === '' || 
+            hostSsid5Password.trim() ==='' );
         }else{
             checkDisabled5 = false;
         }
@@ -95,7 +97,8 @@ export default class WIFI extends React.Component {
             checkDisabled245 = checkDisabled24 || checkDisabled5;
         }
         if(guestEnable === true){
-            checkDisabledGuest = ( guestSsidTip !== '' || guestStaticPasswordTip !== '' || guestSsid === '' || periodTip !== '' );
+            checkDisabledGuest = ( guestSsidTip !== '' || guestStaticPasswordTip !== '' || guestSsid === '' || periodTip !== '' 
+            || guestStaticPassword.trim() === '');
         }else{
             checkDisabledGuest = false;
         }
