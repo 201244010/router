@@ -206,7 +206,7 @@ export default class AuthUserList extends React.Component{
             width: 94,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title="确定使此设备下线？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title="确定下线？" okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#3D76F6" }}>下线</a>
                     </Popconfirm>
                 </span>
