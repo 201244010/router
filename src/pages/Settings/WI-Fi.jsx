@@ -738,7 +738,7 @@ export default class WIFI extends React.Component {
                             <ErrorTip>{guestSsidTip}</ErrorTip>
                         </FormItem>
                         <label className='ui-tiled compact'>密码方式</label>
-                        <RadioGroup style={{ margin: '16px 0 32px'}} onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
+                        <RadioGroup className='radio-choice' onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
                             <Radio style={{display:'inline-block'}} value={'static'}>静态密码</Radio>
                             <Radio style={{display:'inline-block'}} value={'dynamic'}>动态密码</Radio>
                         </RadioGroup>
@@ -751,7 +751,7 @@ export default class WIFI extends React.Component {
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1}}>小时</span>
                             </div>
-                            <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap'}}>
+                            <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap', marginBottom: 0}}>
                                 <label>当前密码是：</label>
                                 <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
                             </div> 
@@ -763,8 +763,8 @@ export default class WIFI extends React.Component {
                                 <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>不设密码</Checkbox></li>
                             </ul>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320}}>
-                                <Input type="password" maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
+                            <FormItem type="small" style={{ width : 320, marginBottom: 0}}>
+                                <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                                 <ErrorTip style={{color:'#fb8632'}}>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
                             <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>

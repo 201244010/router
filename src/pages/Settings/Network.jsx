@@ -470,36 +470,36 @@ export default class NETWORK extends React.Component {
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item" style={{marginBottom : 0}}>
                         <PanelHeader title="当前上网信息" checkable={false} checked={true} />
-                        <div style={{height :　34}}>
+                        <div className='network-info'>
                             <ul className="ui-mute">联网状态:</ul>
                             <label className="oneline">{onlineStatus}</label>
                         </div>
-                        <div style={{height :　34}}>
+                        <div className='network-info'>
                             <ul className="ui-mute">上网方式:</ul>
                             <label className="oneline">{dialType}</label>
                         </div>
-                        <div style={{height :　34}}>
+                        <div className='network-info'>
                             <ul className="ui-mute">IP地址:</ul>
                             <label className="oneline">{infoIp}</label>
                         </div>
-                        <div style={{height :　34}}>
+                        <div className='network-info'>
                             <ul className="ui-mute">子网掩码:</ul>
                             <label className="oneline">{infoMask}</label>
                         </div>
-                        <div style={{height :　34}}>
+                        <div className='network-info'>
                             <ul className="ui-mute">默认网关:</ul>
                             <label className="oneline">{infoGateway}</label>
                         </div>
-                        <div style={{height :　34}}>    
+                        <div className='network-info' style={{marginBottom: 23}}>    
                             <ul className="ui-mute">DNS:</ul>
                             <label className="oneline">{infoDns}</label>
                         </div>
                     </section>
                     <section className="wifi-setting-item">
                         <PanelHeader title="上网设置" checkable={false} checked={true} />
-                        <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                        <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
                             <label>上网方式</label>
-                            <Select value={type} style={{ width: 320, marginBottom: 16}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                            <Select value={type} style={{ width: 320, marginBottom: 32}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
                                 <Option value='pppoe'>宽带拨号上网（PPPoE）</Option>
                                 <Option value='dhcp'>自动获取IP（DHCP）</Option>
                                 <Option value='static'>手动输入IP（静态IP）</Option>
@@ -581,9 +581,9 @@ const PPPoE = props => {
             <ErrorTip>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
         <label>DNS配置</label>
-        <RadioGroup key="pppoedns" className="radio" onChange={props.onPppoeRadioChange} value={props.pppoeType}>
-            <Radio className="label-in" value='auto'>自动设置</Radio>
-            <Radio className="label-in" value='manual'>手动设置</Radio>
+        <RadioGroup className='radio-choice' key="pppoedns" onChange={props.onPppoeRadioChange} value={props.pppoeType}>
+            <Radio style={{display:'inline-block'}} className="label-in" value='auto'>自动设置</Radio>
+            <Radio style={{display:'inline-block'}} className="label-in" value='manual'>手动设置</Radio>
         </RadioGroup>
     </div>
     ]; 
@@ -593,9 +593,9 @@ const Dhcp = props => {
     return [
         <div key="dhcp" className="wifi-settings">
             <label>DNS配置</label>
-            <RadioGroup key="dhcpdns" className="radio" onChange={props.onDhcpRadioChange} value={props.dhcpType}>
-                <Radio className="label-in" value='auto'>自动设置</Radio>
-                <Radio className="label-in" value='manual'>手动设置</Radio>
+            <RadioGroup key="dhcpdns" className='radio-choice' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
+                <Radio style={{display:'inline-block'}} className="label-in" value='auto'>自动设置</Radio>
+                <Radio style={{display:'inline-block'}} className="label-in" value='manual'>手动设置</Radio>
             </RadioGroup>
         </div>
     ];

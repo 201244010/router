@@ -586,7 +586,7 @@ export default class SmsAuth extends React.Component{
                             <ErrorTip>{templateCodeTip}</ErrorTip>
                         </FormItem>
                         <label>签名名称</label>
-                        <FormItem type="small" showErrorTip={signNameTip} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={signNameTip} style={{ width : 320, marginBottom: 0}}>
                             <Input type="text" maxLength={32} placeholder={'请输入签名名称'} disabled={false} value={signName} onChange={(value)=>this.onChange('signName',value)} />
                             <ErrorTip>{signNameTip}</ErrorTip>
                         </FormItem>

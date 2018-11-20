@@ -83,7 +83,7 @@ export default class SetPassword extends React.Component {
                 <h2>设置管理密码</h2>
                 <p className="ui-tips guide-tip">管理密码是进入路由器管理页面的凭证</p>
                 <Form style={{margin : '24px auto', width:335}}>
-                    <FormItem label="设置密码" style={{ marginBottom : 28 }} showErrorTip={pwdTip}>
+                    <FormItem label="设置密码" showErrorTip={pwdTip}>
                         <Input
                             placeholder="请设置密码"
                             value={pwd}
@@ -91,7 +91,7 @@ export default class SetPassword extends React.Component {
                             maxLength={32} />
                         <ErrorTip>{pwdTip}</ErrorTip>
                     </FormItem>
-                    <FormItem label="确认密码" style={{ marginBottom : 32 }} showErrorTip={surePwdTip}>
+                    <FormItem label="确认密码" showErrorTip={surePwdTip}>
                         <Input
                             placeholder="请确认密码"
                             value={surePwd}

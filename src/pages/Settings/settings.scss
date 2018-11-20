@@ -64,7 +64,6 @@
     .wifi-settings {
         font-size: 14px;
         .wifi-setting-item {
-            padding-bottom : 10px;
             padding-left: 60px;
         }
         .ssidLabel{
@@ -87,14 +86,6 @@
         .ui-input {
             display:inline;
             margin-right:10px;
-        }
-        .radio {
-            display:block;
-            margin-top:12px;
-            margin-bottom:12px;
-            .label-in {
-                display: inline-block;
-            }
         }
         .ant-radio-inner:after {
             background-color:orange;
@@ -137,10 +128,25 @@
     }
 }
 
+.radio-choice{
+    display:inline-block;
+    margin: 16px 0 32px;
+}
+
+.network-info{
+    width: 100%;
+    height: 20px;
+    margin: 24px 0 0;
+}
+
+.last{
+    margin-bottom: 0;
+}
+
 .save{
     width: 100%;
     border-top:1px solid #ECECEC;
     padding:30px 60px 30px;
-    margin-top: 30px;
+    margin-top: 49px;
 }
 

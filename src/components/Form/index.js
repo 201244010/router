@@ -102,10 +102,9 @@ class Input extends React.Component {
     }
     
     render(){
-        console.log('disabled12345',this.props.disabled);
         let hidden = this.state.hidden;
         let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
-        let checkDisabled = this.props.disabled ? 'ui-input-disabled':'';
+        let checkDisabled = this.props.disabled ? 'ui-input-disabled':''; //disabled 为true 时，字体颜色透明度为30%
         return (
             <div className={`ui-input-outline ${checkDisabled}`} style={{ width : this.props.width }}>
                 {
@@ -271,6 +270,9 @@ class InputGroup extends React.Component {
         let classes = ['ui-input-outline ui-input-group', { focus }, { disabled: this.props.disabled}];
         if(this.props.size){
             classes.push({[size] : true});
+        }
+        if (this.props.disabled){              //disabled 为true 时，字体颜色透明度为30%
+            classes.push('ui-input-disabled');
         }
         return (
             <div className={classnames(classes)}>
