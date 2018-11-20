@@ -53,6 +53,7 @@ export default class ClientList extends React.Component {
 
         let { errcode } = response;
         if (errcode == 0) {
+            message.success('配置生效！如需恢复，可在高级设置-防蹭网中恢复上网');
             this.updateClientsInfo();
             return;
         }
@@ -179,7 +180,14 @@ export default class ClientList extends React.Component {
                     <span>
                         {'sunmi' !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>}
                         {'sunmi' !== type && <Divider type="vertical" />}
-                            <a onClick={() => this.handleDelete(record)} href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
+                        <Popconfirm
+                            title="确定禁止此设备上网？"
+                            okText="确定"
+                            cancelText="取消"
+                            placement="topRight"
+                            onConfirm={() => this.handleDelete(record)}>
+                            <a href="javascript:;" style={{ color: "#BF4C41" }}>禁止上网</a>
+                        </Popconfirm>
                     </span>
                 );
             }
