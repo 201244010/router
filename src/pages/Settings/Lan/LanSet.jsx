@@ -225,7 +225,7 @@ export default class Lan extends React.Component {
         return (
         <div className="lan-settting">
                 <Form>
-                    <section className="content-item">
+                    <section className="content-item" style={{marginTop: 9}}>
                         <PanelHeader title="局域网IP地址" />
                         <label style={{ marginTop: 24 }}>IP地址</label>
                         <FormItem showErrorTip={ipv4Tip} style={{ width: 320 }}>
@@ -261,7 +261,7 @@ export default class Lan extends React.Component {
                             <ErrorTip>{endipTip}</ErrorTip>
                         </FormItem>
                         <label>地址租期</label>
-                        <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320 }}>
+                        <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320, marginBottom: 0 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
                             <Input
                                 type='text'
@@ -275,7 +275,7 @@ export default class Lan extends React.Component {
                     </section>
                 </Form>
                 <div className="save">
-                    <Button disabled={disabled} loading={loading} style={{ width: 320, margin: "20px 60px 30px" }} onClick={this.submit} size="large" type="primary">保存</Button>
+                    <Button disabled={disabled} loading={loading} style={{ width: 320 }} onClick={this.submit} size="large" type="primary">保存</Button>
                 </div>
         </div>
         );

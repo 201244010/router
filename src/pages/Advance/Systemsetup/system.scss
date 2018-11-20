@@ -97,11 +97,17 @@
     margin-top: 10px;
 }
 
-.weixin-auth-save{
+.save{
+    width: 100%;
+    border-top:1px solid #ECECEC;
+    padding:20px 60px 20px;
+    margin-top: 49px;
+}
+.system-save{
     height: 98px;
     border-top: 1px solid #d8d8d8;
     left:-60px;
-    .weixin-auth-button{
+    .system-button{
         width: 320px;
         height: 34px;
         left: 60px;

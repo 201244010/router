@@ -493,13 +493,14 @@ export default class WeChatAuth extends React.Component{
                             <ErrorTip >{appIdTip}</ErrorTip>
                         </FormItem>
                         <label>SecretKey</label>
-                        <FormItem type="small" showErrorTip={secretKeyTip} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={secretKeyTip} style={{ width : 320, marginBottom: 0}}>
                             <Input type="text" maxLength={32} placeholder={'请输入SecretKey'} disabled={false} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
                             <ErrorTip >{secretKeyTip}</ErrorTip>
                         </FormItem>
                     </div>
-                    <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" type="primary" loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
+                    <section className="save">
+                        <Button className="weixin-auth-button" type="primary" size="large" style={{ width: 320 }} 
+                        loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>
