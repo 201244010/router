@@ -25,7 +25,6 @@ export default class StaticBind extends React.Component {
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
-        disabled: true,
         disAddBtn: true,
         editLoading: false,
         editShow: false,
@@ -57,21 +56,35 @@ export default class StaticBind extends React.Component {
         };
 
         let tip = valid[key].func(val, valid[key].args);
-        if(key === 'editMac' && val.every(item => item.length !== 0)){
-            tip = this.onEditMac(val) || tip;
+
+        // valid, then check MAC conflict
+        if (key === 'editMac' && '' == tip) {
+            const { staticLists, editIndex } = this.state;
+            let conflict = staticLists.some(item => {
+                return (item.mac === val.join(':').toUpperCase() && item.index !== editIndex);
+            });
+            tip = conflict ? 'MAC地址和现有条目冲突' : '';
         }
-        if(key === 'editIp' && val.every(item => item.length !== 0)){
-            tip = (val.join('.') === this.lanIp ? '静态IP地址与局域网IP地址冲突' : '')
+
+        // valid, then check IP conflict
+        if (key === 'editIp' && '' == tip) {
+            const ip = val.join('.');
+            const { staticLists, editIndex } = this.state;
+            let conflict = staticLists.some(item => {
+                return (item.ip === ip && item.index !== editIndex);
+            });
+
+            if (conflict) {
+                tip = 'IP地址和现有条目冲突';
+            }
+            else if (ip === this.lanIp) {
+                tip = 'IP地址与局域网IP冲突';
+            }
         }
+
         this.setState({
             [key]: (typeof val == 'object' ? [...val] : val),
             [key + 'Tip']: tip,
-        }, () => {
-            const keys = ['editName', 'editIp', 'editMac'];
-            let disabled = keys.some(k => {
-                return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0 || (k !== 'editName' && this.state[k].every(item => item.length === 0))
-            });
-            this.setState({ disabled: disabled });
         });
     }
 
@@ -87,14 +100,13 @@ export default class StaticBind extends React.Component {
             editType: 'add',
             editShow: true,
             editLoading: false,
-            disabled: true,
             editIndex: -1,
             editName: '',
             editIp: ['', '', '', ''],
             editMac: ['', '', '', '', '', ''],
-            editNameTip: '',
-            editIpTip: '',
-            editMacTip: '',
+            editNameTip: false,
+            editIpTip: false,
+            editMacTip: false,
         });
     }
 
@@ -134,11 +146,6 @@ export default class StaticBind extends React.Component {
         });
     }
 
-    onEditMac = (value) => {
-        let staticLists = this.state.staticLists;
-        return  staticLists.some(item => item.mac === value.join(':').toUpperCase()) ? '设备Mac地址已存在' : '';
-    }
-
     handleEdit = (record) => {
         const ip = record.ip.split('.');
         const mac = record.mac.split(':');
@@ -154,7 +161,6 @@ export default class StaticBind extends React.Component {
             editNameTip: '',
             editIpTip: '',
             editMacTip: '',
-            disabled: false
         });
     }
 
@@ -326,7 +332,7 @@ export default class StaticBind extends React.Component {
     render() {
         const { staticLists, onlineList, visible, loading, 
             editLoading, editShow, editType, editName, editIp, editMac, 
-            editNameTip, editIpTip, editMacTip, disAddBtn, disabled } = this.state;
+            editNameTip, editIpTip, editMacTip, disAddBtn } = this.state;
 
         const columns = [{
             title: '设备名称',
@@ -429,7 +435,7 @@ export default class StaticBind extends React.Component {
                     visible={editShow}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
-                    okButtonProps={{ disabled: disabled }}
+                    okButtonProps={{ disabled: ('' !== editNameTip || '' !== editIpTip || '' !== editMacTip) }}
                     onCancel={this.onEditCancle} >
                     <label style={{ marginTop: 24 }}>备注名称</label>
                     <FormItem showErrorTip={editNameTip} type="small" style={{ width: 320 }}>
