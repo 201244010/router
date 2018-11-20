@@ -1,14 +1,13 @@
 import React, {PureComponent} from 'react';
 import './downloadPage.scss';
 
-export default class DownloadPage extends PureComponent{
-    render(){
-        return(
+export default function DownloadPage() {
+    return (
         <div className='app-download ui-container'>
             <div className='app-header'>
                 <div className='title'>
-                    <h1>商米管家APP</h1>
-                    <p>下载商米管家APP，支持本地和远程管理路由器，随时随地查看店铺设备状态</p>
+                    <h1>商米助手APP</h1>
+                    <p>下载商米助手APP，支持本地和远程管理路由器，随时随地查看店铺设备状态</p>
                 </div>
                 <div className='QRcode'>
                     <img className='QRcode-img' src={require('~/assets/images/qr.png')} />
@@ -35,6 +34,5 @@ export default class DownloadPage extends PureComponent{
                     })
                 }
             </ul>
-        </div>);
-    }    
+        </div>);  
 }
