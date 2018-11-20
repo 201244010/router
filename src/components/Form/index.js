@@ -15,7 +15,7 @@ const FormItem = props => {
         { 
             'ui-form-item-with-help' :  showErrorTip, 
             "has-error" : showErrorTip,
-            "ui-form-item-small" : props.type === 'small'
+            "ui-form-item-small" : props.type === 'small',
         }
     ]);
     return (
@@ -104,8 +104,9 @@ class Input extends React.Component {
     render(){
         let hidden = this.state.hidden;
         let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
+        let checkDisabled = this.props.disabled ? 'ui-input-disabled':''; //disabled 为true 时，字体颜色透明度为30%
         return (
-            <div className="ui-input-outline" style={{ width : this.props.width }}>
+            <div className={`ui-input-outline ${checkDisabled}`} style={{ width : this.props.width }}>
                 {
                     this.props.type === 'password' ? [
                         <i key="eye-open" className="ui-icon ui-icon-eye-open" 
@@ -269,6 +270,9 @@ class InputGroup extends React.Component {
         let classes = ['ui-input-outline ui-input-group', { focus }, { disabled: this.props.disabled}];
         if(this.props.size){
             classes.push({[size] : true});
+        }
+        if (this.props.disabled){              //disabled 为true 时，字体颜色透明度为30%
+            classes.push('ui-input-disabled');
         }
         return (
             <div className={classnames(classes)}>

@@ -81,7 +81,7 @@ export default class ChangePassword extends React.Component{
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
-                    <div style={{paddingLeft:60,marginTop:30,marginBottom:100}}>
+                    <div style={{paddingLeft:60,marginTop:30,marginBottom:124}}>
                         <label>原密码</label>
                         <FormItem type="small" showErrorTip={oldPWDTip} style={{ width : 320}}>
                             <Input type="password" placeholder={'请输入原密码'} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
@@ -98,8 +98,9 @@ export default class ChangePassword extends React.Component{
                             <ErrorTip>{surePWDTip}</ErrorTip>
                         </FormItem>
                     </div>
-                    <section className="weixin-auth-save">
-                        <Button loading={loading} disabled={disabled} className="weixin-auth-button" type="primary" onClick={this.submit}>保存</Button>
+                    <section className="save">
+                        <Button loading={loading} disabled={disabled} size='large' style={{ width: 320 }} type="primary" 
+                        onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

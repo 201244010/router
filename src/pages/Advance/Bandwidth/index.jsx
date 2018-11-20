@@ -397,7 +397,7 @@ export default class Bandwidth extends React.PureComponent {
                             <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
                         </div>
                     </section>
-                    <section style={{margin:"20px 20px 28px 0"}}>
+                    <section style={{margin:"16px 20px 32px 0"}}>
                             <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>自动测速</Button>
                             <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
                     </section>
@@ -406,7 +406,9 @@ export default class Bandwidth extends React.PureComponent {
                         <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
-                <section className="save"><Button disabled={saveDisable} size='large' style={{ width: 320, margin: "20px 60px 30px" }} type="primary" loading={loading} onClick={this.post}>保存</Button></section>
+                <section className="save">
+                    <Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>保存</Button>
+                </section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}

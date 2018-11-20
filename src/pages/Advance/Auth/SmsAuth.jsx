@@ -586,13 +586,14 @@ export default class SmsAuth extends React.Component{
                             <ErrorTip>{templateCodeTip}</ErrorTip>
                         </FormItem>
                         <label>签名名称</label>
-                        <FormItem type="small" showErrorTip={signNameTip} style={{ width : 320}}>
+                        <FormItem type="small" showErrorTip={signNameTip} style={{ width : 320, marginBottom: 0}}>
                             <Input type="text" maxLength={32} placeholder={'请输入签名名称'} disabled={false} value={signName} onChange={(value)=>this.onChange('signName',value)} />
                             <ErrorTip>{signNameTip}</ErrorTip>
                         </FormItem>
                     </div>
-                    <section className="weixin-auth-save">
-                        <Button className="weixin-auth-button" loading={loading} type="primary" disabled={saveDisabled} onClick={this.submit}>保存</Button>
+                    <section className="save">
+                        <Button className="weixin-auth-button" style={{ width: 320 }} loading={loading} type="primary" 
+                        size="large" disabled={saveDisabled} onClick={this.submit}>保存</Button>
                     </section>
                 </Form>
             </div>

@@ -7,7 +7,7 @@
         display: flex;
         position: relative;
         font-size : 14px;
-        margin-bottom : 24px;
+        margin-bottom : 32px;
         vertical-align : top;
         .ui-form-explain {
             position: absolute;
@@ -26,7 +26,6 @@
             }
             .ui-form-explain {
                 color : #FB8632;
-                padding-left: 10px;
                 white-space: nowrap;
             }
         }
@@ -135,7 +134,11 @@
         border: 1px solid rgba(0,0,0,0.15);
     }
 
-
+    .ui-input-disabled{
+        input {
+            color: rgba(50, 60, 79, 0.3);
+        }
+    }
     // input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     //     box-shadow: 0 0 0 40px white inset;
     // }

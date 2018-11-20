@@ -58,8 +58,8 @@ export default class Reboot extends React.Component{
             <div>
                 <div style={{marginTop : 6}}>
                     <span style={{marginLeft:60}}>说明：路由器系统将立即重新启动</span>
-                    <section style={{borderTop:0,marginTop:8}} className="weixin-auth-save">
-                        <Button style={{width:116}} className="weixin-auth-button" type="primary" onClick={this.showModal}>立即重启</Button>
+                    <section style={{borderTop:0,marginTop:8}} className="system-save">
+                        <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>立即重启</Button>
                     </section>
                 </div>
                 {loadingActive &&
