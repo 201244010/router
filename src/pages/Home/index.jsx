@@ -319,8 +319,8 @@ export default class Home extends React.Component {
 
             return {
                 icon: device,
-                //me: (client.mac === ME),
-                name: (client.mac === ME) ? '本机' : client.hostname,
+                me: (client.mac === ME),
+                name: client.hostname,
                 ip: client.ip,
                 mac: client.mac,
                 type: client.type,
