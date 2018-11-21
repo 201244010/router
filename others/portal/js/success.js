@@ -28,8 +28,7 @@ window.onload = function () {
 };
 
 function commonDataToPage(data) {
-    document.body.style.background = "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),url('" + (data.background || "../common/imgs/bg.png") + "') no-repeat center";
-    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url('" + (data.background || "../common/imgs/bg.png") + "')";
     if (data.logo) {
         logoIcon.style.display = 'none';
         logoElement.style.display = 'block';

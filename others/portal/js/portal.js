@@ -1,3 +1,48 @@
+/**
+ * Fix classList not avaliable in IE
+ */
+if (!("classList" in document.documentElement)) {
+    Object.defineProperty(HTMLElement.prototype, 'classList', {
+        get: function () {
+            var self = this;
+            function update(fn) {
+                return function (value) {
+                    var classes = self.className.split(/\s+/g),
+                        index = classes.indexOf(value);
+
+                    fn(classes, index, value);
+                    self.className = classes.join(" ");
+                }
+            }
+
+            return {
+                add: update(function (classes, index, value) {
+                    if (!~index) classes.push(value);
+                }),
+
+                remove: update(function (classes, index) {
+                    if (~index) classes.splice(index, 1);
+                }),
+
+                toggle: update(function (classes, index, value) {
+                    if (~index)
+                        classes.splice(index, 1);
+                    else
+                        classes.push(value);
+                }),
+
+                contains: function (value) {
+                    return !!~self.className.split(/\s+/g).indexOf(value);
+                },
+
+                item: function (i) {
+                    return self.className.split(/\s+/g)[i] || null;
+                }
+            };
+        }
+    });
+}
+
 var mobileInput = document.getElementById('mobileInput');
 var mobileError = document.getElementById('mobileError');
 var codeInput = document.getElementById('codeInput');
@@ -52,8 +97,7 @@ window.onload = function () {
                     };
                 } else {
                     inputsElement.style.display = 'none';
-                    document.body.style.background = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(../common/imgs/bg.png?r=" + Math.random() + ")";
-                    document.body.style.backgroundSize = "cover";
+                    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(../common/imgs/bg.png?r=" + Math.random() + ")";
                     logoElement.style.backgroundImage = 'url(../common/imgs/logo.png?r=' + Math.random()+')';
                     showToast('PC端暂不支持微信连Wi-Fi功能', 0);
                 }
@@ -133,7 +177,7 @@ codeGetter.addEventListener('click', function () {
     var phone = mobileInput.value;
     var waitTime = 59;
     if (checkMobileWithBlank(phone)) {
-        const params = {
+        var params = {
             params: [{
                 param: {
                     sms: {
@@ -211,7 +255,7 @@ connectBtn.addEventListener('click', function () {
     } else if (enable.type === 'sms') {
         var phone = mobileInput.value;
         var code = codeInput.value;
-        const params = {
+        var params = {
             params: [{
                 param: {
                     sms: {
@@ -291,9 +335,8 @@ function smsDataToPage(data) {
 }
 
 function commonDataToPage(data) {
-    document.body.style.background = "linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),"+"url(" + ((data.background ||
-         "../common/imgs/bg.png") + "?r=") + Math.random() + ") no-repeat center";
-    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(" + ((data.background ||
+         "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
     logoElement.style.backgroundImage = 'url('+ (data.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';

@@ -108,7 +108,9 @@ export default class ClientList extends React.Component {
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
                             <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
                         </Popover>
-                        <div className='under-desc'><i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i><p title={client.name}>{client.name}</p></div>
+                        <div className='under-desc'>
+                            <i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i>
+                            <p title={client.name}>{client.me ? '本机' : client.name}</p></div>
                     </li>
                 );
             }
@@ -130,7 +132,7 @@ export default class ClientList extends React.Component {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
-                    }} title={record.name}>{record.name}</div>
+                    }} title={record.name}>{record.me ? '本机' : record.name}</div>
                     <div style={{
                         width: 140,
                         overflow: 'hidden',
@@ -261,7 +263,7 @@ class Item extends React.Component {
             case 'sunmi':
                 return (
                     <div className='client-info'>
-                        <p>{client.name}</p>
+                        <p>{client.me ? '本机' : client.name}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>禁止上网</Button>
@@ -271,7 +273,7 @@ class Item extends React.Component {
             case 'whitelist':
                 return (
                     <div className='client-info'>
-                        <p>{client.name}</p>
+                        <p>{client.me ? '本机' : client.name}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>解除优先</Button>
@@ -282,7 +284,7 @@ class Item extends React.Component {
             default:
                 return (
                     <div className='client-info'>
-                        <p>{client.name}</p>
+                        <p>{client.me ? '本机' : client.name}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>优先上网</Button>

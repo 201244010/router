@@ -255,7 +255,7 @@ export default class SetWifi extends React.Component {
                     <div className="border"></div>
                     <Form>
                         <FormItem label="顾客Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
-                            <Switch checkedChildren="开" checked={guestWifi} onChange={this.openGuestSetting} unCheckedChildren="关" defaultChecked />
+                            <Switch checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
                         </FormItem>
                         <FormItem label="Wi-Fi名称">
                             <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />

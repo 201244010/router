@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Base64 } from 'js-base64';
 import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
@@ -283,8 +284,8 @@ export default class NETWORK extends React.Component {
             case 'pppoe' :
                 wan['dns_type'] = pppoeType;
                 wan['user_info'] = {
-                    username : btoa(pppoeAccount),
-                    password : btoa(pppoePassword)
+                    username : Base64.encode(pppoeAccount),
+                    password : Base64.encode(pppoePassword)
                 };
                 if(pppoeType === 'manual'){
                     wan['dns_info'] = {
@@ -394,8 +395,8 @@ export default class NETWORK extends React.Component {
                 staticDnsbackup: [...initIp(sm.dns2)],
 
                 //pppoe
-                pppoeAccount: atob(pppoe.user_info.username),
-                pppoePassword: atob(pppoe.user_info.password),
+                pppoeAccount: Base64.decode(pppoe.user_info.username),
+                pppoePassword: Base64.decode(pppoe.user_info.password),
                 pppoeType: pppoe.dns_type,
                 pppoeDns: [...initIp(pppoe.dns_info.dns1)],
                 pppoeDnsbackup: [...initIp(pppoe.dns_info.dns2)],
