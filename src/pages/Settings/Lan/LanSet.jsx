@@ -138,7 +138,7 @@ export default class Lan extends React.Component {
     submit = async () => {
         await Modal.warning({
             title: '提示',
-            content: '局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效',
+            content: <p>局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效<br/>注：如设置完成后无法上网，请断开无线连接后重新连接</p>,
             okText: '知道了',
             onOk: this.submitAll
         });
