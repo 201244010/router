@@ -5,7 +5,7 @@ import OUI from './oui.js';
 export default function Logo(props) {
   const { mac = '', size = 32 } = props;
 
-  let color = '#333c4f', brand = 'unknown';
+  let color = '#5C6372', brand = 'unknown';
 
   if (/^([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/gi.test(mac)) {
     const mac6 = mac.replace(/[:-]/g, "").substring(0, 6).toUpperCase();
