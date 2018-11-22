@@ -4,6 +4,7 @@ import { Button, Divider, Popover, Modal, Table, message, Popconfirm } from 'ant
 import Loading from '~/components/Loading';
 
 import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 
 import './clients.scss';
 
@@ -26,7 +27,7 @@ export default class ClientList extends React.Component {
     handleEdit = async (record) => {
         let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
 
-        Loading.show({ duration: 4 });
+        Loading.show({ duration: 3 });
         let response = await common.fetchApi(
             { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
         );
@@ -46,7 +47,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        Loading.show({ duration: 4 });
+        Loading.show({ duration: 3 });
         let response = await common.fetchApi(
             { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
         ).catch(ex => { });
@@ -106,7 +107,7 @@ export default class ClientList extends React.Component {
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className='icon'><CustomIcon type={client.icon} size={32} /></div>
+                            <div className='icon'><Logo mac={client.mac} size={36} /></div>
                         </Popover>
                         <div className='under-desc'>
                             <i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i>
@@ -117,10 +118,10 @@ export default class ClientList extends React.Component {
         });
 
         let onlineCols = [{
-            dataIndex: 'icon',
+            dataIndex: 'mac',
             width: 60,
-            render: (icon, record) => (
-                <CustomIcon type={icon} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',

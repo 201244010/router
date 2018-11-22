@@ -3,20 +3,33 @@ import Icon from '~/components/Icon';
 import OUI from './oui.js';
 
 export default function Logo(props) {
-  const { mac = '', color, size = 32 } = props;
+  const { mac = '', size = 32 } = props;
 
-  let vendor, result = 'unknown';
+  let color = '#5C6372', brand = 'unknown';
 
   if (/^([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/gi.test(mac)) {
     const mac6 = mac.replace(/[:-]/g, "").substring(0, 6).toUpperCase();
+    const total = OUI.length;
 
-    for (vendor in OUI) {
-      if (OUI[vendor].indexOf(mac6) >= 0) {
-        result = vendor;
+    for (let i = 0; i < total; i++) {
+      const vendor = OUI[i];
+      if (vendor.mac.indexOf(mac6) >= 0) {
+        brand = vendor.brand;
+        color = vendor.color;
         break;
       }
     }
   }
 
-  return <Icon type={vendor} size={size} color={color} />;
+  return <Icon type={brand} size={size} color={color} />;
 }
+
+/**
+
+let total = OUI.length;
+for (let i = 0; i < total; i++) {
+	OUI[i].mac = OUI[i].mac.join(',').replace(/:/g, '');
+}
+console.log(OUI);
+
+ */

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message} from 'antd';
 import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 import Form from "~/components/Form";
 import { checkIp, checkMac } from '~/assets/common/check';
 
@@ -290,14 +291,6 @@ export default class StaticBind extends React.Component {
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
 
-            const deviceMap = {
-                iphone: 'number',
-                android: 'android',
-                ipad: 'pad',
-                pc: 'computer',
-                unknown: 'unknown',
-            };
-
             // filter clients in dhcp static list
             let restClients = data[1].result.data.filter(item => {
                 let mac = item.mac.toUpperCase();
@@ -312,7 +305,6 @@ export default class StaticBind extends React.Component {
                 }),
                 onlineList: restClients.map(item => {
                     return {
-                        logo: deviceMap[item.device] || 'unknown',
                         name: item.hostname,
                         address: { ip: item.ip, mac: item.mac.toUpperCase() },
                         checked: false
@@ -371,11 +363,11 @@ export default class StaticBind extends React.Component {
 
         const onlineCols = [{
             title: '',
-            dataIndex: 'logo',
+            dataIndex: 'address',
             width: 60,
             className:'center',
-            render: (text, record) => (
-                <CustomIcon type={record.logo} size={42}  />
+            render: (address, record) => (
+                <Logo mac={address.mac} size={32}  />
             )
         }, {
             title: '设备名称',
@@ -385,10 +377,10 @@ export default class StaticBind extends React.Component {
             title: 'IP/MAC地址',
             dataIndex: 'address',
             width: 210,
-                render: (text, record) => (
+            render: (address, record) => (
                 <span>
-                    <span><label style={{marginRight: 3}}>IP:</label><label>{record.address.ip}</label></span><br />
-                    <span><label style={{marginRight: 3}}>MAC:</label><label>{record.address.mac}</label></span>
+                    <span><label style={{marginRight: 3}}>IP:</label><label>{address.ip}</label></span><br />
+                    <span><label style={{marginRight: 3}}>MAC:</label><label>{address.mac}</label></span>
                 </span>
             )
         }, {

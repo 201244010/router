@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Table, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
@@ -15,14 +16,6 @@ const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
-};
-
-const logoMap = {
-    iphone: 'number',
-    android: 'android',
-    ipad: 'pad',
-    pc: 'computer',
-    unknown: 'unknown',
 };
 
 export default class Blacklist extends React.Component {
@@ -253,7 +246,6 @@ export default class Blacklist extends React.Component {
             me: me,
             blockLists: black_list.map(item => {
                 return {
-                    logo: 'unknown',
                     name: item.name,
                     mac: item.mac,
                     time: new Date(parseInt(item.time) * 1000).toLocaleString(),
@@ -262,7 +254,6 @@ export default class Blacklist extends React.Component {
             }),
             onlineList: restClients.map(item => {
                 return {
-                    logo: logoMap[item.device] || 'unknown',
                     name: item.hostname,
                     mac: item.mac.toUpperCase(),
                     checked: false
@@ -281,11 +272,11 @@ export default class Blacklist extends React.Component {
 
         const columns = [{
             title: '',
-            dataIndex: 'logo',
+            dataIndex: 'mac',
             width: 80,
             className: 'center',
-            render: (text, record) => (
-                <CustomIcon type={record.logo} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',
@@ -313,11 +304,11 @@ export default class Blacklist extends React.Component {
 
         const onlineCols = [{
             title: '',
-            dataIndex: 'logo',
+            dataIndex: 'mac',
             width: 60,
             className: 'center',
-            render: (text, record) => (
-                <CustomIcon type={record.logo} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',
