@@ -1,20 +1,12 @@
 
 import React from 'react';
 import { Table, Popconfirm, message } from 'antd';
-import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
-};
-
-const iconMap = {
-    iphone: 'number',
-    android: 'android',
-    ipad: 'pad',
-    pc: 'computer',
-    unknown: 'unknown',
 };
 
 export default class AuthUserList extends React.Component{
@@ -73,13 +65,11 @@ export default class AuthUserList extends React.Component{
             authUserList: authClient.map(item => {
                 let mac = item.mac.toUpperCase();
                 let client = clients.find(item => item.mac.toUpperCase() === mac) || {
-                    device: 'unknown',
                     ontime: 0, 
                     name:'unknown',                  
                 };
                 return {
                     index: item.index,
-                    icon: iconMap[client.device] || 'unknown',
                     name: client.hostname,
                     online: (false !== item.online),
                     ontime: this.formatTime(client.ontime),
@@ -139,11 +129,11 @@ export default class AuthUserList extends React.Component{
 
         const columns = [{
             title: '',
-            dataIndex: 'icon',
+            dataIndex: 'mac',
             width: 60,
             className: 'center',
-            render: (text, record) => (
-                <CustomIcon type={record.icon} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',

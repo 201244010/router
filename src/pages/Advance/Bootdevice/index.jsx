@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Table, Popconfirm, Modal, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
@@ -15,14 +16,6 @@ const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     showTotal: total => `已添加${total}台设备`,
-};
-
-const iconMap = {
-    iphone: 'number',
-    android: 'android',
-    ipad: 'pad',
-    pc: 'computer',
-    unknown: 'unknown',
 };
 
 export default class Bootdevice extends React.Component {
@@ -295,7 +288,6 @@ export default class Bootdevice extends React.Component {
             whiteList: whites.map(item => {
                 let mac = item.mac.toUpperCase();
                 let client = clients.find(item => item.mac.toUpperCase() === mac) || {
-                    device: 'unknown',
                     online: false,
                     ontime: 0,
                     ip: '0.0.0.0',
@@ -303,7 +295,6 @@ export default class Bootdevice extends React.Component {
 
                 return {
                     index: item.index,
-                    icon: iconMap[client.device || 'unknown'],
                     name: item.name,
                     online: (false !== client.online),  // 设备列表中的设备都是在线的
                     ontime: this.formatTime(client.ontime),
@@ -314,7 +305,6 @@ export default class Bootdevice extends React.Component {
             }),
             onlineList: restClients.map(item => {
                 return {
-                    icon: iconMap[item.device] || 'unknown',
                     name: item.hostname,
                     mac: item.mac.toUpperCase(),
                     time: item.time,
@@ -334,11 +324,11 @@ export default class Bootdevice extends React.Component {
 
         const columns = [{
             title: '',
-            dataIndex: 'icon',
+            dataIndex: 'mac',
             width: 60,
             className: 'center',
-            render: (text, record) => (
-                <CustomIcon type={record.icon} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',
@@ -393,11 +383,11 @@ export default class Bootdevice extends React.Component {
 
         const onlineCols = [{
             title: '',
-            dataIndex: 'icon',
+            dataIndex: 'mac',
             width: 60,
             className: 'center',
-            render: (text, record) => (
-                <CustomIcon type={record.icon} size={42} />
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
             )
         }, {
             title: '设备名称',
