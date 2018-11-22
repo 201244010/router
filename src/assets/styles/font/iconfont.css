@@ -1,7 +1,7 @@
 
 @font-face {
   font-family: "W1";
-  src: url('iconfont.woff?t=1542856943134') format('woff');
+  src: url('iconfont.woff?t=1542874021461') format('woff');
 }
 
 .ui-icon {
@@ -127,79 +127,83 @@
 
 .ui-icon-m1:before { content: "\e66d"; }
 
-.ui-icon-apple:before { content: "\e66f"; }
+.ui-icon-number:before { content: "\e694"; }
 
-.ui-icon-coolpad:before { content: "\e670"; }
+.ui-icon-htc:before { content: "\e66e"; }
+
+.ui-icon-mi:before { content: "\e66f"; }
+
+.ui-icon-apple:before { content: "\e670"; }
 
 .ui-icon-icon-test:before { content: "\e671"; }
 
-.ui-icon-asus:before { content: "\e672"; }
+.ui-icon-amazon:before { content: "\e672"; }
 
 .ui-icon-acer:before { content: "\e673"; }
 
-.ui-icon-amazon:before { content: "\e674"; }
+.ui-icon-dell:before { content: "\e674"; }
 
-.ui-icon-dell:before { content: "\e675"; }
+.ui-icon-gionee:before { content: "\e675"; }
 
-.ui-icon-gionee:before { content: "\e676"; }
+.ui-icon-haier:before { content: "\e676"; }
 
-.ui-icon-dyson:before { content: "\e677"; }
+.ui-icon-asus:before { content: "\e677"; }
 
-.ui-icon-haier:before { content: "\e678"; }
+.ui-icon-dyson:before { content: "\e678"; }
 
-.ui-icon-hasee:before { content: "\e679"; }
+.ui-icon-coolpad:before { content: "\e679"; }
 
-.ui-icon-hp:before { content: "\e67a"; }
+.ui-icon-htc1:before { content: "\e67a"; }
 
-.ui-icon-htc:before { content: "\e67b"; }
+.ui-icon-hp:before { content: "\e67b"; }
 
-.ui-icon-hisense:before { content: "\e67c"; }
+.ui-icon-hasee:before { content: "\e67c"; }
 
-.ui-icon-huawei:before { content: "\e67d"; }
+.ui-icon-hisense:before { content: "\e67d"; }
 
-.ui-icon-meizu:before { content: "\e67e"; }
+.ui-icon-intel:before { content: "\e67e"; }
 
 .ui-icon-lenovo:before { content: "\e67f"; }
 
 .ui-icon-lg:before { content: "\e680"; }
 
-.ui-icon-mi:before { content: "\e681"; }
+.ui-icon-meizu:before { content: "\e681"; }
 
-.ui-icon-intel:before { content: "\e682"; }
+.ui-icon-mi1:before { content: "\e682"; }
 
-.ui-icon-midea:before { content: "\e683"; }
+.ui-icon-netgear:before { content: "\e683"; }
 
-.ui-icon-netgear:before { content: "\e684"; }
+.ui-icon-oneplus:before { content: "\e684"; }
 
-.ui-icon-nokia:before { content: "\e685"; }
+.ui-icon-microsoft:before { content: "\e685"; }
 
-.ui-icon-oneplus:before { content: "\e686"; }
+.ui-icon-midea:before { content: "\e686"; }
 
-.ui-icon-oppo:before { content: "\e688"; }
+.ui-icon-oppo:before { content: "\e687"; }
 
-.ui-icon-samsung:before { content: "\e689"; }
+.ui-icon-huawei:before { content: "\e688"; }
 
-.ui-icon-phicomm:before { content: "\e68a"; }
+.ui-icon-nokia:before { content: "\e689"; }
 
-.ui-icon-skyworth:before { content: "\e68b"; }
+.ui-icon-samsung:before { content: "\e68a"; }
+
+.ui-icon-phicomm:before { content: "\e68b"; }
 
 .ui-icon-smartisan:before { content: "\e68c"; }
 
-.ui-icon-tcl:before { content: "\e68d"; }
+.ui-icon-skyworth:before { content: "\e68d"; }
 
-.ui-icon-zte:before { content: "\e68e"; }
+.ui-icon-tcl:before { content: "\e68e"; }
 
-.ui-icon-sony:before { content: "\e68f"; }
+.ui-icon-tplink:before { content: "\e68f"; }
 
-.ui-icon-tenda:before { content: "\e690"; }
+.ui-icon-sony:before { content: "\e690"; }
 
-.ui-icon-tplink:before { content: "\e691"; }
+.ui-icon-vivo:before { content: "\e691"; }
 
-.ui-icon-vivo:before { content: "\e692"; }
+.ui-icon-zte:before { content: "\e692"; }
 
-.ui-icon-unknown:before { content: "\e693"; }
+.ui-icon-tenda:before { content: "\e693"; }
 
-.ui-icon-number:before { content: "\e6df"; }
-
-.ui-icon-microsoft:before { content: "\e66e"; }
+.ui-icon-unknown:before { content: "\e695"; }
 
