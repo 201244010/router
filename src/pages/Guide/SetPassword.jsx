@@ -24,12 +24,19 @@ export default class SetPassword extends React.Component {
 
     // 表单提交
     post = async () => {
-        const password = this.state.pwd;
+        const {pwd, surePwd} = this.state;
+
+        if (pwd !== surePwd) {
+            this.setState({
+                surePwdTip: '两次密码输入不一致'
+            });
+            return;
+        }
 
         this.setState({ loading: true });
         const response = await common.fetchApi({
             opcode: 'ACCOUNT_INITIAL_PASSWORD',
-            data: { account: { password: Base64.encode(password), user: 'admin' } }
+            data: { account: { password: Base64.encode(pwd), user: 'admin' } }
         });
         this.setState({ loading: false });
 
@@ -56,26 +63,13 @@ export default class SetPassword extends React.Component {
 
     // 监听输入实时改变
     onChange = (name, value) => {
-        const check = {
-            pwd:{
-                func: checkStr,
-                arg: { who: '密码', min: 6, max: 32, type: 'english' },
-            },
-            surePwd:{
-                func: (confirmPwd) => {
-                    const pwd = this.state.pwd;
-                    return (pwd !== confirmPwd) ? '两次密码输入不一致' : '';
-                }
-            }
-        };
-
-        const tip = check[name].func(value, check[name].arg);
+        let tip = checkStr(value, { who: '密码', min: 6, max: 32, type: 'english' });
         this.setState({
             [name]: value,
             [name + 'Tip']: tip,
         });
     }
-    
+
     render(){
         const { pwd, pwdTip, surePwd, surePwdTip, loading } = this.state;
         return (
