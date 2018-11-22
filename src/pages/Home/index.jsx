@@ -280,13 +280,6 @@ export default class Home extends React.Component {
         // merge clients && traffic info
         let totalList = clients.map(client => {
             client.mac = client.mac.toUpperCase();
-            const deviceMap = {
-                iphone: 'number',
-                android: 'android',
-                ipad: 'pad',
-                pc: 'computer',
-                unknown: 'unknown',
-            };
             const modeMap = {
                 '2.4g': '2.4G',
                 '5g': '5G',
@@ -301,7 +294,6 @@ export default class Home extends React.Component {
             };
             let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
             let mode = modeMap[client.wifi_mode];
-            let device = deviceMap[client.device] || 'unknown';
             let ontime = this.formatTime(client.ontime);
             let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('/s', '');
 
@@ -318,7 +310,6 @@ export default class Home extends React.Component {
             band[client.type] += tf.cur_rx_bytes;
 
             return {
-                icon: device,
                 me: (client.mac === ME),
                 name: client.hostname,
                 ip: client.ip,

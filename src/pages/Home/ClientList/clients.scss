@@ -60,9 +60,9 @@
                 width: 804px;
                 height: 150px;
                 .icon:hover, .icon:focus{
-                    border-color: #FF8F00;
+                    //border-color: #FF8F00;
                     .ui-icon{
-                        color: #FF8F00;
+                        color: #FF8F00 !important;
                     }
                 }
             }
@@ -70,9 +70,9 @@
                 width: 804px;
                 height: 240px;
                 .icon:hover, .icon:focus{
-                    border-color: #4687ff;
+                    //border-color: #4687ff;
                     .ui-icon{
-                        color: #4687ff;
+                        color: #4687ff !important;
                     }
                 }
             }
@@ -89,9 +89,9 @@
                 }
             }
             .icon:hover, .icon:focus{
-                border-color: #87d068;
+                //border-color: #87d068;
                 .ui-icon{
-                    color: #87d068;
+                    color: #87d068 !important;
                 }
             }
         }
@@ -106,12 +106,11 @@
                 cursor: pointer;
                 width: 44px;
                 height: 44px;
-                margin: 0 auto 5px;
-                border-radius: 50%;
-                border:1px solid #9B9B9B;
+                margin: 0 auto 4px;
+                // border-radius: 50%;
+                // border:1px solid #9B9B9B;
                 text-align: center;
                 .ui-icon{
-                    color: #333C4F;
                     line-height: 44px !important ;
                     vertical-align: middle;
                 }
