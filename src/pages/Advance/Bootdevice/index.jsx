@@ -269,8 +269,13 @@ export default class Bootdevice extends React.Component {
 
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
+            // not show sunmi clients
+            if ('sunmi' === item.type) {
+                return false;
+            }
+
             let mac = item.mac.toUpperCase();
-            return !!!(this.state.whiteList.find(client => {
+            return !!!(whites.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });

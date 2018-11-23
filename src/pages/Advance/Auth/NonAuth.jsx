@@ -263,7 +263,7 @@ export default class NonAuth extends React.Component{
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
             let mac = item.mac.toUpperCase();
-            return !!!(this.state.whiteList.find(client => {
+            return !!!(whites.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });

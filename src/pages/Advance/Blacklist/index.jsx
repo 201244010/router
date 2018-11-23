@@ -232,16 +232,16 @@ export default class Blacklist extends React.Component {
             return;
         }
 
+        let { black_list } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
         // filter clients in dhcp static list
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return (mac !== me) && !!!(this.state.blockLists.find(client => {
+            return (mac !== me) && !!!(black_list.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
 
-        let { black_list } = data[1].result;
         this.setState({
             me: me,
             blockLists: black_list.map(item => {
