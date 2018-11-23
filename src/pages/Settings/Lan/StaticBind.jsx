@@ -400,7 +400,7 @@ export default class StaticBind extends React.Component {
                 </div>
                 <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备"}} />
-                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
+                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false} centered={true}
                     width={960} style={{ position:'relative'}}
                     visible={visible}
                     footer={[
@@ -424,7 +424,7 @@ export default class StaticBind extends React.Component {
                 <Modal title={editType === 'edit' ? '编辑静态地址' : '添加静态地址'}
                     cancelText="取消" okText={editType === 'edit' ? '保存' : '添加'}
                     closable={false} maskClosable={false} width={360}
-                    visible={editShow}
+                    visible={editShow} centered={true}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: ('' !== editNameTip || '' !== editIpTip || '' !== editMacTip) }}

@@ -130,7 +130,7 @@ export default class Mesh extends React.Component{
 
         return (
         <Modal className='sunmi-mesh-modal' title={Title} maskClosable={false} width={560} visible={visible}
-            onCancel={this.stopSunmiMesh}
+            onCancel={this.stopSunmiMesh} centered={true}
             footer={showBtn && <Button type="primary" onClick={this.stopSunmiMesh}>{btnStr}</Button>}>
             {'running' === state &&
             <ul className='mesh-list'>{meshList}</ul>

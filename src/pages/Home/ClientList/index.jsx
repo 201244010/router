@@ -120,6 +120,7 @@ export default class ClientList extends React.Component {
         let onlineCols = [{
             dataIndex: 'mac',
             width: 60,
+            className: 'center',
             render: (mac, record) => (
                 <Logo mac={mac} size={32} />
             )
@@ -213,7 +214,7 @@ export default class ClientList extends React.Component {
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
                 }
-                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
+                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
                     width={980} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
