@@ -321,12 +321,8 @@ export default class NonAuth extends React.Component{
             )
         }, {
             title: 'MAC地址',
+            dataIndex: 'mac',
             width: 220,
-            render: (text, record) => (
-                <span>
-                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac}</label></div>
-                </span>
-            )
         }, {
             title: '操作',
             width: 143,
