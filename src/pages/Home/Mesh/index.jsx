@@ -102,7 +102,7 @@ export default class Mesh extends React.Component{
             return (
                 <li key={item.mac} className='mesh-device'>
                     <div><Logo model={item.model} size={34} /></div>
-                    <p>SUNMI {item.model}</p>
+                    <p>{item.model}</p>
                 </li>
             );
         });
