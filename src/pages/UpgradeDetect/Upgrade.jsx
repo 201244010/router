@@ -76,7 +76,7 @@ export default class Upgrade extends React.Component{
                 }
             }) 
         }else{
-            Modal.error({title : '启动升级失败'});
+            Modal.error({title : '启动升级失败', centered: true});
         }});
     }
 

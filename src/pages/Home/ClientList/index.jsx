@@ -8,6 +8,21 @@ import Logo from '~/components/Logo';
 
 import './clients.scss';
 
+const getHostName = (client) => {
+    const { name, model, me } = client;
+    let hostname = name;
+
+    if (model && model.length > 0) {
+        hostname = model;
+    }
+
+    if (me) {
+        hostname = '本机';
+    }
+
+    return hostname;
+};
+
 export default class ClientList extends React.Component {
     constructor(props) {
         super(props);
@@ -103,15 +118,16 @@ export default class ClientList extends React.Component {
 
         const listItems = clients.map((client, index) => {
             if (index < max) {
+                const hostname = getHostName(client);
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className='icon'><Logo mac={client.mac} size={36} /></div>
+                            <div className='icon'><Logo mac={client.mac} model={client.model} size={36} /></div>
                         </Popover>
                         <div className='under-desc'>
                             <i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i>
-                            <p title={client.name}>{client.me ? '本机' : client.name}</p></div>
+                            <p title={hostname}>{hostname}</p></div>
                     </li>
                 );
             }
@@ -120,28 +136,30 @@ export default class ClientList extends React.Component {
         let onlineCols = [{
             dataIndex: 'mac',
             width: 60,
+            className: 'center',
             render: (mac, record) => (
-                <Logo mac={mac} size={32} />
+                <Logo mac={mac} model={record.model} size={32} />
             )
         }, {
             title: '设备名称',
             width: 160,
-            render: (text, record) => (
-                <div>
+            render: (text, record) => {
+                let hostname = getHostName(record);
+                return (<div>
                     <div style={{
                         width: 140,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
-                    }} title={record.name}>{record.me ? '本机' : record.name}</div>
+                    }} title={hostname}>{hostname}</div>
                     <div style={{
                         width: 140,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
                     }} title={record.ontime}><label style={{ marginRight: 3 }}>在线时长:</label><label>{record.ontime}</label></div>
-                </div>
-            )
+                </div>)
+            }
         }, {
             title: 'IP/MAC地址',
             width: 180,
@@ -152,11 +170,11 @@ export default class ClientList extends React.Component {
                 </span>
             )
         }, {
-            title: '所属网络',
+            title: '接入方式',
             dataIndex: 'mode',
             width: 80
         }, {
-            title: '信号强度',
+            title: '信号',
             dataIndex: 'rssi',
             width: 80,
             render: (rssi, record) => (
@@ -213,7 +231,7 @@ export default class ClientList extends React.Component {
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
                 }
-                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false}
+                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
                     width={980} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
@@ -253,18 +271,20 @@ class Item extends React.Component {
         let mac = client.mac;
         let info = (
             <ul>
-                <li><label>信号强度：</label><span>{signal}</span></li><li><label>接入方式：</label><span>{access}</span></li>
+                <li><label>信号：</label><span>{signal}</span></li><li><label>接入方式：</label><span>{access}</span></li>
                 <li><label>接入时间：</label><span title={time}>{time}</span></li><li><label>流量消耗：</label><span>{flux}</span></li>
                 <li><label>上传速率：</label><span>{up}</span></li><li><label>下载速率：</label><span>{down}</span></li>
                 <li><label>IP：</label><span>{ip}</span></li><li><label>MAC：</label><span>{mac}</span></li>
             </ul>
         );
 
+        const hostname = getHostName(client);
+
         switch (type) {
             case 'sunmi':
                 return (
                     <div className='client-info'>
-                        <p>{client.me ? '本机' : client.name}</p>
+                        <p>{hostname}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>禁止上网</Button>
@@ -274,7 +294,7 @@ class Item extends React.Component {
             case 'whitelist':
                 return (
                     <div className='client-info'>
-                        <p>{client.me ? '本机' : client.name}</p>
+                        <p>{hostname}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>解除优先</Button>
@@ -285,7 +305,7 @@ class Item extends React.Component {
             default:
                 return (
                     <div className='client-info'>
-                        <p>{client.me ? '本机' : client.name}</p>
+                        <p>{hostname}</p>
                         {info}
                         <div>
                             <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>优先上网</Button>

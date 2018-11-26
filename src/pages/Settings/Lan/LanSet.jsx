@@ -140,6 +140,7 @@ export default class Lan extends React.Component {
             title: '提示',
             content: <p>局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效<br/>注：如设置完成后无法上网，请断开无线连接后重新连接</p>,
             okText: '知道了',
+            centered: true,
             onOk: this.submitAll
         });
     }

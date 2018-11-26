@@ -269,8 +269,13 @@ export default class Bootdevice extends React.Component {
 
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
+            // not show sunmi clients
+            if ('sunmi' === item.type) {
+                return false;
+            }
+
             let mac = item.mac.toUpperCase();
-            return !!!(this.state.whiteList.find(client => {
+            return !!!(whites.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
@@ -366,7 +371,7 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: '所属网络',
+            title: '接入方式',
             dataIndex: 'network',
             width: 210
         }, {
@@ -415,7 +420,7 @@ export default class Bootdevice extends React.Component {
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
-                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
+                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false} centered={true}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
@@ -436,7 +441,7 @@ export default class Bootdevice extends React.Component {
                         style={{ minHeight: 360 }}
                         bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
-                <Modal title='添加优先设备'
+                <Modal title='添加优先设备' centered={true}
                     cancelText="取消" okText='添加'
                     closable={false} maskClosable={false} width={360}
                     visible={editShow}

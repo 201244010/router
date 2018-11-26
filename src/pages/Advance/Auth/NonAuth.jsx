@@ -263,7 +263,7 @@ export default class NonAuth extends React.Component{
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
             let mac = item.mac.toUpperCase();
-            return !!!(this.state.whiteList.find(client => {
+            return !!!(whites.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
@@ -321,12 +321,8 @@ export default class NonAuth extends React.Component{
             )
         }, {
             title: 'MAC地址',
+            dataIndex: 'mac',
             width: 220,
-            render: (text, record) => (
-                <span>
-                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac}</label></div>
-                </span>
-            )
         }, {
             title: '操作',
             width: 143,
@@ -377,7 +373,7 @@ export default class NonAuth extends React.Component{
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
                 <Modal title="在线列表" closable={false} maskClosable={false} width={960} style={{ position: 'relative' }}
-                    visible={visible}
+                    visible={visible} centered={true}
                     footer={[
                         <Button key="back" onClick={this.onSelectCancle}>取消</Button>,
                         <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
@@ -396,7 +392,7 @@ export default class NonAuth extends React.Component{
                         style={{ minHeight: 360 }}
                         bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
-                <Modal title='添加免认证设备'
+                <Modal title='添加免认证设备' centered={true}
                     cancelText="取消" okText='添加'
                     closable={false} maskClosable={false} width={360}
                     visible={editShow}

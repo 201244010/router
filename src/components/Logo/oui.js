@@ -1,6 +1,11 @@
 export default
 [
 	{
+		"brand": "sunmi",
+		"color": "#5C6372",
+		"mac": "0C2576"
+	},
+	{
 		"brand": "tenda",
 		"color": "#5C6372",
 		"mac": "C83A35,E865D4,58D9D5,B40F3B,0495E6,500FF5,CC2D21,D83214,B0DFC1,0840F3,502B73,B83A08"
