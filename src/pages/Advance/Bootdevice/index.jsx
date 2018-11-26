@@ -371,7 +371,7 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: '所属网络',
+            title: '接入方式',
             dataIndex: 'network',
             width: 210
         }, {
