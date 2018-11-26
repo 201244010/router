@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, Spin, Icon } from 'antd';
 import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 
 import './mesh.scss';
 
@@ -16,15 +17,15 @@ export default class Mesh extends React.Component{
         state: 'running',  // running/done
         title: '',
         devices: [
-            /*{ model: 'V2x PRO', mac: '00:11:22:33:44:55' },
-            { model: 'T2x mini', mac: '00:11:22:33:44:56' },
-            { model: 'V1xs', mac: '00:11:22:33:44:58' },
-            { model: 'V2x PRO', mac: '00:11:22:33:44:00' },
-            { model: 'T2x mini', mac: '00:11:22:33:44:99' },
-            { model: 'V1xs', mac: '00:11:22:33:44:53' },
-            { model: 'V2x PRO', mac: '00:11:22:33:44:45' },
-            { model: 'T2x mini', mac: '00:11:22:33:44:22' },
-            { model: 'V1xs', mac: '00:11:22:33:44:76' },*/
+            /*{ model: 'v2pro', mac: '00:11:22:33:44:55' },
+            { model: 'T2 mini', mac: '00:11:22:33:44:56' },
+            { model: 'V1s', mac: '00:11:22:33:44:58' },
+            { model: 'V2 PRO', mac: '00:11:22:33:44:00' },
+            { model: 'T2 mini', mac: '00:11:22:33:44:99' },
+            { model: 'v1s', mac: '00:11:22:33:44:53' },
+            { model: 'V2 PRO', mac: '00:11:22:33:44:45' },
+            { model: 'T2 mini', mac: '00:11:22:33:44:22' },
+            { model: 'd1s', mac: '00:11:22:33:44:76' },*/
         ],
     }
 
@@ -97,32 +98,10 @@ export default class Mesh extends React.Component{
             <span dangerouslySetInnerHTML={{ __html: title }} className='title' />
         ];
 
-        const iconMap = {   // TODO
-            v2pro: 'vpro',
-            m2: 'm2',
-            v1s: 'vs',
-            l2: 'l',
-            v1: 'vs',
-            m1: 'm1',
-            m2: 'm',
-            p1: 'p',
-            p2lite: 'plite',
-            s2: 's',
-            t2: 't',
-            k1: 'k',
-            t2lite: 'tlite',
-            t2mini: 'tmini',
-            t1: 't',
-            d2: 'd1',
-            d1s: 'ds',
-            d1: 'd',
-        };
-
         const meshList = devices.map(item => {
-            let icon = iconMap[item.model.replace(/ /g, '').toLowerCase()] || 'sunmi-unknown';
             return (
                 <li key={item.mac} className='mesh-device'>
-                    <div><CustomIcon color="#333C4F" type={icon} size={34} /></div>
+                    <div><Logo model={item.model} size={34} /></div>
                     <p>SUNMI {item.model}</p>
                 </li>
             );
@@ -130,7 +109,7 @@ export default class Mesh extends React.Component{
 
         return (
         <Modal className='sunmi-mesh-modal' title={Title} maskClosable={false} width={560} visible={visible}
-            onCancel={this.stopSunmiMesh}
+            onCancel={this.stopSunmiMesh} centered={true}
             footer={showBtn && <Button type="primary" onClick={this.stopSunmiMesh}>{btnStr}</Button>}>
             {'running' === state &&
             <ul className='mesh-list'>{meshList}</ul>

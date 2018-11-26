@@ -232,16 +232,16 @@ export default class Blacklist extends React.Component {
             return;
         }
 
+        let { black_list } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
         // filter clients in dhcp static list
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return (mac !== me) && !!!(this.state.blockLists.find(client => {
+            return (mac !== me) && !!!(black_list.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
 
-        let { black_list } = data[1].result;
         this.setState({
             me: me,
             blockLists: black_list.map(item => {
@@ -336,7 +336,7 @@ export default class Blacklist extends React.Component {
                 </div>
                 <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备" }} />
-                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
+                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false} centered={true}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
@@ -357,7 +357,7 @@ export default class Blacklist extends React.Component {
                         style={{ minHeight: 360 }}
                         bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
                 </Modal>
-                <Modal title='添加黑名单设备'
+                <Modal title='添加黑名单设备' centered={true}
                     cancelText="取消" okText='添加'
                     closable={false} maskClosable={false} width={360}
                     visible={editShow}

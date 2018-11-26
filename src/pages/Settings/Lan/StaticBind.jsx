@@ -4,7 +4,7 @@ import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message} from 'ant
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 import Form from "~/components/Form";
-import { checkIp, checkMac } from '~/assets/common/check';
+import { checkIp, checkMac, transIp } from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 
@@ -29,6 +29,7 @@ export default class StaticBind extends React.Component {
         disAddBtn: true,
         editLoading: false,
         editShow: false,
+        lanIp: '',
         editType: 'add',         // add/edit
         editIndex: -1,
         editName: '',
@@ -78,7 +79,7 @@ export default class StaticBind extends React.Component {
             if (conflict) {
                 tip = 'IP地址和现有条目冲突';
             }
-            else if (ip === this.lanIp) {
+            else if (ip === this.state.lanIp) {
                 tip = 'IP地址与局域网IP冲突';
             }
         }
@@ -280,6 +281,13 @@ export default class StaticBind extends React.Component {
         })
     }
 
+    getNetworkId = (ip, mask) => {
+        let iip = transIp(ip.split('.'));
+        let imask = transIp(mask.split('.'));
+
+        return (iip &= imask);
+    }
+
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'DHCPS_RESERVEDIP_LIST_GET' },
@@ -290,16 +298,24 @@ export default class StaticBind extends React.Component {
         let { errcode, data } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
+            const { ipv4, mask } = data[2].result.lan.info;
+            const lan = this.getNetworkId(ipv4, mask);
 
             // filter clients in dhcp static list
             let restClients = data[1].result.data.filter(item => {
+                // 不在LAN网络，不显示
+                if (this.getNetworkId(item.ip, mask) !== lan) {
+                    return false;
+                }
+
                 let mac = item.mac.toUpperCase();
-                return !!!(this.state.staticLists.find(client => {
+                return !!!(reserved_ip_list.find(client => {
                     return (mac == client.mac.toUpperCase());
                 }));
             });
-            this.lanIp = data[2].result.lan.info.ipv4;
+
             this.setState({
+                lanIp: ipv4,
                 staticLists: reserved_ip_list.map(item => {
                     return Object.assign({}, item);
                 }),
@@ -400,7 +416,7 @@ export default class StaticBind extends React.Component {
                 </div>
                 <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
                     bordered size="middle" pagination={pagination} locale={{ emptyText: "暂无设备"}} />
-                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false}
+                <Modal title="在线列表" cancelText="取消" okText="添加" closable={false} maskClosable={false} centered={true}
                     width={960} style={{ position:'relative'}}
                     visible={visible}
                     footer={[
@@ -424,7 +440,7 @@ export default class StaticBind extends React.Component {
                 <Modal title={editType === 'edit' ? '编辑静态地址' : '添加静态地址'}
                     cancelText="取消" okText={editType === 'edit' ? '保存' : '添加'}
                     closable={false} maskClosable={false} width={360}
-                    visible={editShow}
+                    visible={editShow} centered={true}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: ('' !== editNameTip || '' !== editIpTip || '' !== editMacTip) }}

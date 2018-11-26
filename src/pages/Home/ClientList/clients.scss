@@ -43,7 +43,7 @@
             }
         }
         .left-list{
-            height: 410px;
+            height: 431px;
             display: flex;
             flex-direction: column;
             justify-content:space-between;
@@ -58,9 +58,9 @@
             }
             .sunmi-list{
                 width: 804px;
-                height: 150px;
+                height: 171px;
                 .icon:hover, .icon:focus{
-                    //border-color: #FF8F00;
+                    border-color: #FF8F00;
                     .ui-icon{
                         color: #FF8F00 !important;
                     }
@@ -79,7 +79,7 @@
         }
         .whitelist-list{
             width: 392px;
-            height: 410px;
+            height: 431px;
             background-color:#FFF;
             border: 1px solid rgba(0,0,0,0.04);
             border-radius: 8px;
@@ -98,7 +98,7 @@
         .client-item{
             color: #9B9B9B;
             width: 125px;
-            height: 81px;
+            height: 90px;
             padding-top: 9px;
             display: inline-block;
             text-align: center;
@@ -141,6 +141,15 @@
         & .sunmi-list{
             .divider{
                 background-color:#FF8F00;
+            }
+            .icon{
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border:1px solid #9B9B9B;
+                .ui-icon{
+                    line-height: 60px !important;
+                }
             }
         }
         & .normal-list{
@@ -195,7 +204,7 @@
         }
         button.single{
             width: 100%;
-            border-right: 0;
+            border-right: 0 !important;
         }
         button:first-child{
             color: #3D76F6;

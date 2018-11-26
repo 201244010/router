@@ -60,7 +60,7 @@ export const getTimeZone = () => {
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({ timeout: 10000, method: 'POST', loading : false }, options);
+    options = assign({ timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
 
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
@@ -165,11 +165,8 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                     return reject({});
                 }
 
-                if (error.toString().indexOf('Network Error') > -1) {
+                if (error.toString().indexOf('Network Error') > -1 && !options.ignoreErr) {
                     message.error('网络异常，请检查');
-                }
-                else if (loopOption.handleError) {
-                    message.error(`请求失败[${error.toString()}]`);
                 }
 
                 return reject(error);

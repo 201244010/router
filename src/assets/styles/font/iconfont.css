@@ -1,7 +1,7 @@
 
 @font-face {
   font-family: "W1";
-  src: url('iconfont.woff?t=1542874021461') format('woff');
+  src: url('iconfont.woff') format('woff');
 }
 
 .ui-icon {
@@ -206,4 +206,6 @@
 .ui-icon-tenda:before { content: "\e693"; }
 
 .ui-icon-unknown:before { content: "\e695"; }
+
+.ui-icon-sunmi:before { content: "\e696"; }
 
