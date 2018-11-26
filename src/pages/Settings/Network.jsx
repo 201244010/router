@@ -438,9 +438,7 @@ export default class NETWORK extends React.Component {
     }
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        let response = await  common.fetchApi({
-                opcode : 'NETWORK_WAN_IPV4_GET'
-            })
+        let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET'}, { ignoreErr: true });
             let {errcode, data} = response;
             if(errcode == 0){
                 this.updateNetStatus(data[0].result.wan);

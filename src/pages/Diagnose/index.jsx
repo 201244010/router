@@ -54,7 +54,7 @@ export default class Diagnose extends React.Component {
                 }, 2000);
             });
         } else {
-            Modal.error({ title: '网络诊断失败', content: message });
+            Modal.error({ title: '网络诊断失败', content: message, centered: true });
         }
     }
 
@@ -89,7 +89,7 @@ export default class Diagnose extends React.Component {
                 }, 2000);
             });
         } else {
-            Modal.error({ title: '网络诊断失败', content: message });
+            Modal.error({ title: '网络诊断失败', content: message, centered: true });
         }
     }
 
@@ -135,7 +135,7 @@ export default class Diagnose extends React.Component {
                 return;
             }
         } else {
-            Modal.error({ title: '网络诊断失败', content: message });
+            Modal.error({ title: '网络诊断失败', content: message, centered: true });
         }
     }
 

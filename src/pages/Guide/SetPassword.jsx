@@ -50,6 +50,7 @@ export default class SetPassword extends React.Component {
                     title: '提示',
                     content: '已设置过密码',
                     okText: '确定',
+                    centered: true,
                     onOk: () => {
                         location.href = '/';
                     }

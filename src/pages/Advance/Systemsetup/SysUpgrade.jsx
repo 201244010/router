@@ -42,7 +42,7 @@ export default class SysUpgrade extends React.Component{
             })
             return;
         }else{
-            Modal.error({title : '获取路由器当前版本信息和最新版本信息失败'});
+            Modal.error({ title: '获取路由器当前版本信息和最新版本信息失败', centered: true });
         }
     }
 

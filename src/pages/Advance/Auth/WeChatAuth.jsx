@@ -129,6 +129,7 @@ export default class WeChatAuth extends React.Component{
             if (errcode == 0) {
                 if ('1' === data[0].result.sms.enable) {
                     Modal.warning({
+                        centered: true,
                         title: '提示',
                         content: '微信认证和短信认证不能同时开启，请先关闭短信认证',
                         okText: '确定'
