@@ -57,7 +57,7 @@ export default class Mesh extends React.Component{
                     });
                 } else {
                     clearInterval(this.timer);
-                    Modal.error({ title: '获取商米设备列表指令异常', message });
+                    Modal.error({ title: '获取商米设备列表指令异常', content: message, centered: true });
                 }
             })
         }, 5000);

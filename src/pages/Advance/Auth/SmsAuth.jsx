@@ -172,6 +172,7 @@ export default class SmsAuth extends React.Component{
             if (errcode == 0) {
                 if ('1' === data[0].result.weixin.enable) {
                     Modal.warning({
+                        centered: true,
                         title: '提示',
                         content: '短信认证和微信认证不能同时开启，请先关闭微信认证',
                         okText: '确定'
@@ -324,7 +325,7 @@ export default class SmsAuth extends React.Component{
                 onCancel(){},
                 cancelText: '取消',
                 okText: '确定',
-                centered: true    
+                centered: true
             });
             this.setState({ loading: false });
         }else{
