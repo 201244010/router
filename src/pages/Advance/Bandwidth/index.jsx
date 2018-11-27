@@ -435,7 +435,7 @@ export default class Bandwidth extends React.PureComponent {
                             <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
-                <Modal closable={false} visible={speedFill} centered={true} footer={null}>
+                <Modal width={560} closable={false} visible={speedFill} centered={true} footer={null}>
                     <div className="progress-test">
                         <CustomIcon color="#87D068" type="succeed" size={64}/>
                         <div className="speedfill">带宽测速完成!</div>
@@ -452,7 +452,7 @@ export default class Bandwidth extends React.PureComponent {
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
                     </section>
                 </Modal>
-                <Modal closable={false} visible={speedFail} centered={true} footer={null}>
+                <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
                     <div className="progress-test">
                         <CustomIcon color="red" type="defeated" size={64}/>
                         <div className="speedfill">带宽测速失败，请重试</div>

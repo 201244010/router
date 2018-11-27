@@ -49,6 +49,7 @@
         border-top: 1px solid $white;
       }
       &.now {
+        font-weight: bolder;
         color: $pure-white;
         i {
           border-color: $pure-white;
@@ -87,6 +88,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     height: calc(100% - 85px);
     background-color: #FAFBFC;
+    color: #333C4F;
     padding: 20px 57px 35px;
     position: relative;
     z-index: 200;
@@ -135,7 +137,6 @@
       }
     }
     .help {
-      margin-top: 10px;
       display: flex;
       justify-content: flex-start;
       align-items: center;

@@ -174,7 +174,7 @@ export default class ClientList extends React.Component {
             }
         }, {
             title: 'IP/MAC地址',
-            width: 180,
+            width: 190,
             render: (text, record) => (
                 <span>
                     <span><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></span><br />
