@@ -5,7 +5,7 @@ import { Button, Modal } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
-import { formatTime, formatSpeed } from '~/assets/common/utils';
+import { formatSpeed } from '~/assets/common/utils';
 import CustomIcon from '~/components/Icon';
 import ClientList from "./ClientList";
 import QoS from './QoS';
