@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button, Divider, Popover, Modal, Table, message, Popconfirm } from 'antd';
 import Loading from '~/components/Loading';
-
+import { formatTime, formatSpeed } from '~/assets/common/utils';
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 
@@ -21,6 +21,15 @@ const getHostName = (client) => {
     }
 
     return hostname;
+};
+
+const RSSI_GOOD = '较好', RSSI_BAD = '较差';
+
+const modeMap = {
+    '0': '5G',
+    '1': '2.4G',
+    '2': '有线',
+    '3': '商米专用',
 };
 
 export default class ClientList extends React.Component {
@@ -126,7 +135,7 @@ export default class ClientList extends React.Component {
                             <div className='icon'><Logo mac={client.mac} model={client.model} size={36} /></div>
                         </Popover>
                         <div className='under-desc'>
-                            <i className={'dot ' + ('较差' == client.rssi ? 'warning' : '')}></i>
+                            <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
                             <p title={hostname}>{hostname}</p></div>
                     </li>
                 );
@@ -135,7 +144,7 @@ export default class ClientList extends React.Component {
 
         let onlineCols = [{
             dataIndex: 'mac',
-            width: 60,
+            width: 52,
             className: 'center',
             render: (mac, record) => (
                 <Logo mac={mac} model={record.model} size={32} />
@@ -143,7 +152,10 @@ export default class ClientList extends React.Component {
         }, {
             title: '设备名称',
             width: 160,
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.ontime - b.ontime,
             render: (text, record) => {
+                let ontime = formatTime(record.ontime);
                 let hostname = getHostName(record);
                 return (<div>
                     <div style={{
@@ -157,7 +169,7 @@ export default class ClientList extends React.Component {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
-                    }} title={record.ontime}><label style={{ marginRight: 3 }}>在线时长:</label><label>{record.ontime}</label></div>
+                    }} title={ontime}><label style={{ marginRight: 3 }}>在线时长:</label><label>{ontime}</label></div>
                 </div>)
             }
         }, {
@@ -172,13 +184,44 @@ export default class ClientList extends React.Component {
         }, {
             title: '接入方式',
             dataIndex: 'mode',
-            width: 80
+            filters: [{
+                text: modeMap['3'],
+                value: '3',
+            }, {
+                text: modeMap['2'],
+                value: '2',
+            }, {
+                text: modeMap['1'],
+                value: '1',
+            }, {
+                text: modeMap['0'],
+                value: '0',
+            }],
+            onFilter: (value, record) => record.mode.indexOf(value) === 0,
+            sorter: (a, b) => parseInt(a.mode) - parseInt(b.mode),
+            render: (mode, record) => modeMap[mode],
+            width: 116
         }, {
             title: '信号',
             dataIndex: 'rssi',
-            width: 80,
+            filters: [{
+                text: RSSI_GOOD,
+                value: RSSI_GOOD,
+            }, {
+                text: RSSI_BAD,
+                value: RSSI_BAD,
+            }],
+            onFilter: (value, record) => record.rssi.indexOf(value) === 0,
+            sorter: (a, b) => {
+                if (a.rssi !== a.rssi) {
+                    return (RSSI_GOOD === a.rssi) ? 1 : -1;
+                }
+
+                return 1;
+            },
+            width: 92,
             render: (rssi, record) => (
-                <div><i className={'dot ' + ('较差' == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
+                <div><i className={'dot ' + (RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
             title: '当前速率',
@@ -192,6 +235,8 @@ export default class ClientList extends React.Component {
         }, {
             title: '流量消耗',
             dataIndex: 'flux',
+            sorter: (a, b) => a.flux - b.flux,
+            render: (flux, record) => formatSpeed(flux).replace('/s', ''),
         }, {
             title: '操作',
             width: 150,
@@ -232,7 +277,7 @@ export default class ClientList extends React.Component {
                     </div>
                 }
                 <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
-                    width={980} style={{ position: 'relative' }}
+                    width={1030} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>取消</Button>
@@ -247,7 +292,8 @@ export default class ClientList extends React.Component {
                     <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
-                        bordered size="middle" pagination={false} locale={{ emptyText: "暂无设备" }} />
+                        bordered size="middle" pagination={false}
+                        locale={{ emptyText: "暂无设备", filterConfirm: "确定", filterReset: "重置" }} />
                 </Modal>
             </div>);
     }
@@ -262,9 +308,9 @@ class Item extends React.Component {
         let client = this.props.client;
         let type = client.type;
         let signal = client.rssi;
-        let access = client.mode;
-        let time = client.ontime;
-        let flux = client.flux;
+        let access = modeMap[client.mode];
+        let time = formatTime(client.ontime);
+        let flux = formatSpeed(client.flux).replace('/s', '');
         let up = client.tx;
         let down = client.rx;
         let ip = client.ip;

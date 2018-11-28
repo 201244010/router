@@ -390,7 +390,7 @@ export default class SmsAuth extends React.Component{
                                     uploadTitle={'上传Logo图'}
                                     beforeUpload={this.beforeUpload}
                                 >
-                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
+                                    <Button style={{width:130,marginTop:20,marginBottom:5}}>
                                         <Icon type="upload" />上传Logo图
                                     </Button>
                                 </Upload>
@@ -418,7 +418,8 @@ export default class SmsAuth extends React.Component{
                                         <Input type="text" maxLength={15} placeholder={'请输入Logo信息'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
                                         <ErrorTip>{logoTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~15个字符</span>
                                 </div>
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -426,7 +427,7 @@ export default class SmsAuth extends React.Component{
                                         <Input type="text" maxLength={30} placeholder={'请输入欢迎信息'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
                                         <ErrorTip>{welcomeTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -434,13 +435,14 @@ export default class SmsAuth extends React.Component{
                                         <Input type="text" maxLength={30} placeholder={'请输入版权声明'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
                                         <ErrorTip>{statementTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
                             </section>
-                            <section style={{display : 'flex',flexDirection : 'column'}}>
+                            <section style={{display : 'flex',flexDirection : 'column',paddingTop:20}}>
                             <RadioGroup onChange={this.onWatchValueChange} value={watchValue}>
-                                <Radio style={{display:'inline-block',width:120}} value={'1'}>手机效果预览</Radio>
-                                <Radio style={{display:'inline-block',width:120}} value={'2'}>网页效果预览</Radio>
+                                <Radio style={{display:'inline-block',width:120,color:'#ADB1B9'}} value={'1'}>手机效果预览</Radio>
+                                <Radio style={{display:'inline-block',width:120,color:'#ADB1B9'}} value={'2'}>网页效果预览</Radio>
                             </RadioGroup>
                             {(watchValue == '1')?
                                 (
@@ -449,7 +451,7 @@ export default class SmsAuth extends React.Component{
                                         width:325,
                                         height:488,
                                         borderRadius:8,
-                                        marginTop:25,padding:'34px 0 0 0',
+                                        marginTop:18,padding:'34px 0 0 0',
                                         color:'#FFFFFF',
                                         backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
                                         backgroundRepeat:'no-repeat',
@@ -557,7 +559,7 @@ export default class SmsAuth extends React.Component{
                                 </div>}
                             checkable={false}
                         />
-                        <label>验证码有效期</label>
+                        <label style={{marginTop:20}}>验证码有效期</label>
                         <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={codeExpiredTip} style={{ width : 320}}>
                                 <Input type="text" maxLength={2} placeholder={'请输入验证码有效期'} disabled={false} value={codeExpired} onChange={(value)=>this.onChange('codeExpired',value)} />

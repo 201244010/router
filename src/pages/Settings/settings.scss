@@ -75,7 +75,7 @@
         }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .oneline {
             display:inline-block;
@@ -122,16 +122,18 @@
         margin-right:100px;
     }
     .panel-hd{
-        border-bottom:0;
+        border-bottom:4px;
         span{
             color:#333C4F;
+            font-weight: bolder;
+            font-size: 16px;
         }
     }
 }
 
 .radio-choice{
     display:inline-block;
-    margin: 16px 0 32px;
+    margin: 8px 0 24px;
 }
 
 .network-info{

@@ -298,20 +298,17 @@ const SpeedManualConfig = props => {
                 <Input type="text" value={props.downBandWidth} maxLength={4}  placeholder="请输入下行总带宽" onChange={value => props.changeBandWidth(value, 'downBandWidth')} name="down" />
                 <ErrorTip style={{color:'#fb8632'}}>{props.downBandTip}</ErrorTip>
             </FormItem>
-            <FormItem label="#">
+            <FormItem label="#" style={{marginBottom: 8}}>
         		<Button type="primary" disabled={props.disabled} size="large" style={{ width : "100%"}} loading={props.loading} onClick={() => props.configure('upBandWidth','downBandWidth','manual')}>下一步</Button>
             </FormItem>
-            <FormItem label="#" style={{ marginTop : -40 }}>
-                <div className="help">
+                <div className="help" style={{ width:270,height:17,position:'absolute',right:0}}>
                     <a href="javascript:;" onClick={props.back} className="ui-tips">上一步</a>
                     {
                         props.speedTestdone ? 
                             '' :
                             <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
-                    }
-                    
+                    }        
                 </div>
-            </FormItem>
         </Form>
         </div>
     )

@@ -1,5 +1,5 @@
 .home-bg {
-    background-image : linear-gradient(180deg, #446CE6 239px, #f2f3f7 239px);
+    background-image : linear-gradient(180deg, #446CE6 243px, #f2f3f7 239px);
     .main{
         .home{
             height : auto;
@@ -101,6 +101,7 @@
                 }
                 .qos-disabled{
                     position: absolute;
+                    width: 200px;
                     font-size: 18px;
                     font-weight: bold;
                     color: #333C4F;
@@ -204,7 +205,7 @@
         .online-clinet{
             font-size: 16px;
             color: #333C4F;
-            margin: 32px 0 8px;
+            margin: 36px 0 8px;
         }
         .online-list{
             display: flex;
@@ -215,7 +216,7 @@
         }
         .home-footer{
             position: static;
-            opacity: 1;
+            opacity: 0.4;
             color: #ADB1B9;
             margin-top: 13px;
             a {
@@ -226,17 +227,16 @@
 }
 
 .speed-result-modal{
-    width: 560px;
     .status-icon{
         text-align: center;
-        margin: 20px;
+        margin: 6px 20px 12px;
     }
     h4{
         font-size: 16px;
         font-weight: bold;
         color: #333C4F;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
     }
     .speed-result{
         text-align:center;
@@ -253,7 +253,7 @@
         }
         span{
             font-size: 16px;
-            color: #150000;
+            color: #333C4F;
             margin-left: 3px;
             vertical-align: middle;
         }

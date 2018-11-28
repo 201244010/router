@@ -5,6 +5,7 @@ import { Button, Modal } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
+import { formatSpeed } from '~/assets/common/utils';
 import CustomIcon from '~/components/Icon';
 import ClientList from "./ClientList";
 import QoS from './QoS';
@@ -12,6 +13,7 @@ import Mesh from './Mesh';
 
 import './home.scss';
 
+const RSSI_GOOD = '较好', RSSI_BAD = '较差';
 
 export default class Home extends React.Component {
     state = {
@@ -271,59 +273,6 @@ export default class Home extends React.Component {
         }]
     }
 
-    formatTime = (total) => {
-        let seconds = parseInt(total, 10);
-        let day = parseInt(seconds / 86400);
-        let hour = parseInt((seconds % 86400) / 3600);
-        let minute = parseInt((seconds % 3600) / 60);
-        let second = parseInt(seconds % 60);
-
-        let timeStr = "";
-        if (day > 0) {
-            timeStr += day + "天";
-        }
-
-        if (hour > 0) {
-            timeStr += hour + "时";
-        }
-
-        if (minute > 0) {
-            timeStr += minute + "分";
-        }
-
-        if (second >= 0) {
-            timeStr += second + "秒";
-        }
-
-        return timeStr;
-    }
-
-    // 格式化网络速率，最多保留4位数字+单位
-    formatSpeed = (speed) => {
-        let kSpeed = 1024;
-        let mSpeed = kSpeed * 1024;
-        let gSpeed = mSpeed * 1024;
-        // 'xx.xx'
-
-        speed = parseInt(speed, 10);
-        if (speed >= gSpeed) {
-            let val = speed / gSpeed;
-            speed = (val).toFixed(val > 99 ? 0 : 2) + "GB/s";
-        }
-        else if (speed >= mSpeed) {
-            let val = speed / mSpeed;
-            speed = (val).toFixed(val > 99 ? 0 : 2) + "MB/s";
-        }
-        else if (speed >= kSpeed) {
-            speed = (speed / kSpeed).toFixed(0) + "KB/s";
-        }
-        else {
-            speed = speed.toFixed(0) + "B/s";
-        }
-
-        return speed + '';
-    }
-
     stopRefresh = () => {
         clearInterval(this.timer);
     }
@@ -365,7 +314,7 @@ export default class Home extends React.Component {
         const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
-            message.warning(`网络状态请求异常[${errcode}]`);
+            message.warning(`请求失败[${errcode}]`);
             return;
         }
 
@@ -381,10 +330,10 @@ export default class Home extends React.Component {
         let totalList = clients.map(client => {
             client.mac = client.mac.toUpperCase();
             const modeMap = {
-                '2.4g': '2.4G',
-                '5g': '5G',
-                'sunmi': '商米专用',
-                'not wifi': '有线'
+                '5g': '0',
+                '2.4g': '1',
+                'not wifi': '2',
+                'sunmi': '3',
             };
             let dft = {
                 total_tx_bytes: 0,
@@ -394,15 +343,14 @@ export default class Home extends React.Component {
             };
             let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
             let mode = modeMap[client.wifi_mode];
-            let ontime = this.formatTime(client.ontime);
-            let flux = this.formatSpeed(tf.total_tx_bytes + tf.total_rx_bytes).replace('/s', '');
+            let flux = tf.total_tx_bytes + tf.total_rx_bytes;
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
-                rssi = '--';
+                rssi = RSSI_GOOD;
             } else {
-                let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:100};
-                rssi = (wi.rssi <= 75) ? '较好' : '较差';
+                let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:0};
+                rssi = (wi.rssi >= 15) ? RSSI_GOOD : RSSI_BAD;
             }
 
             // 统计不同类型设备带宽
@@ -416,17 +364,17 @@ export default class Home extends React.Component {
                 mac: client.mac,
                 type: client.type,
                 mode: mode,
-                ontime: ontime,
+                ontime: client.ontime,
                 rssi: rssi,
-                tx: this.formatSpeed(tf.cur_tx_bytes),
-                rx: this.formatSpeed(tf.cur_rx_bytes),
+                tx: formatSpeed(tf.cur_tx_bytes),
+                rx: formatSpeed(tf.cur_rx_bytes),
                 flux: flux,
             }
         });
 
         let wan = data[1].result.traffic_stats.wan;
-        let tx = this.formatSpeed(wan.cur_tx_bytes);
-        let rx = this.formatSpeed(wan.cur_rx_bytes);
+        let tx = formatSpeed(wan.cur_tx_bytes);
+        let rx = formatSpeed(wan.cur_rx_bytes);
         let total = this.state.totalBand;
         let rest = total - (band.sunmi + band.whitelist + band.normal);
         let bandCount = [band.sunmi, band.whitelist, band.normal, (rest > 0 ? rest : 0)];
@@ -563,7 +511,7 @@ export default class Home extends React.Component {
                                 showPercent={true}
                             />
                         }
-                        <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
+                        <Modal className='speed-result-modal' width={560} closable={false} visible={successShow} centered={true}
                             footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
                             <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
                             <h4>带宽测速完成</h4>
@@ -578,7 +526,7 @@ export default class Home extends React.Component {
                                 </li>
                             </ul>
                         </Modal>
-                        <Modal className='speed-result-modal' closable={false} visible={failShow} centered={true}
+                        <Modal className='speed-result-modal' width={560} closable={false} visible={failShow} centered={true}
                             footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
                             <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
                             <h4>带宽测速失败，请重试</h4>

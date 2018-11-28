@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Switch ,Tooltip, Icon } from 'antd';
+import { Switch ,Tooltip } from 'antd';
+import Icon from '~/components/Icon';
 import classnames from 'classnames';
 import PropTypes from "prop-types";
 
@@ -29,12 +30,12 @@ export default class PanelHeader extends React.PureComponent {
                         trigger='click'
                         placement="right"
                         title={tip}
-                        overlayStyle={{maxWidth:360}}
+                        overlayStyle={{maxWidth:340}}
                         getPopupContainer={() => {
                             return document.getElementById(id);
                         }}
                     >
-                        <Icon style={{ fontSize: 16, marginLeft : 10 }} type="question-circle" />
+                        <span><Icon size={16} type="help" color='#ADB1B9' style={{ marginLeft: 8, cursor: 'pointer', verticalAlign:'baseline'}}/></span>
                     </Tooltip>
                     }
                 </li>

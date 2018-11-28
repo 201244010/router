@@ -403,7 +403,7 @@ export default class Bandwidth extends React.PureComponent {
                     </section>
                     <section>
                         <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
-                        <Table className="qos-table" style={{fontSize : 16}}  pagination={false} columns={columns} dataSource={data} />
+                        <Table className="qos-table" style={{fontSize : 16,marginTop:12}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
                 <section className="save">
@@ -422,20 +422,20 @@ export default class Bandwidth extends React.PureComponent {
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
-                    <label style={{ marginTop: 24 }}>上行总带宽</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>上行总带宽</label>
                         <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
                             <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
                             <ErrorTip>{upbandTmpTip}</ErrorTip>
                         </FormItem>
-                    <label style={{ marginTop: 24 }}>下行总带宽</label>
-                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320 }}>
+                    <label style={{ display:'block',marginBottom: 6 }}>下行总带宽</label>
+                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320,marginBottom: 8 }}>
                             <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
                             <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
                             <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
-                <Modal closable={false} visible={speedFill} centered={true} footer={null}>
+                <Modal width={560} closable={false} visible={speedFill} centered={true} footer={null}>
                     <div className="progress-test">
                         <CustomIcon color="#87D068" type="succeed" size={64}/>
                         <div className="speedfill">带宽测速完成!</div>
@@ -452,7 +452,7 @@ export default class Bandwidth extends React.PureComponent {
                             <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
                     </section>
                 </Modal>
-                <Modal closable={false} visible={speedFail} centered={true} footer={null}>
+                <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
                     <div className="progress-test">
                         <CustomIcon color="red" type="defeated" size={64}/>
                         <div className="speedfill">带宽测速失败，请重试</div>
