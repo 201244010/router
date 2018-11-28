@@ -381,17 +381,17 @@ export default class Backup extends React.Component{
                             <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>
                         </ul>
                         <div className='func-btn'>
-                            <Button type='primary' onClick={this.postBackupLocal}>备份到本地</Button>
-                            <Button type='primary' onClick={this.cloudBackup}>备份到云</Button>
+                            <Button onClick={this.postBackupLocal}>备份到本地</Button>
+                            <Button onClick={this.cloudBackup}>备份到云</Button>
                         </div>
                     </section>
                     <section className='restore'>
                         <PanelHeader title="恢复" checkable={false} onChange={{}} />
                         <div className='restore-func'>
                             <Upload onChange={this.postRecoverLocal} name='file' data={{ opcode: '0x2018' }} multiple={false} action={__BASEAPI__}>
-                                <Button type='primary'>从本地恢复</Button>
+                                <Button>从本地恢复</Button>
                             </Upload>
-                            <Button type='primary' className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>
+                            <Button className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>
                         </div>
                     </section>
                 </Form>

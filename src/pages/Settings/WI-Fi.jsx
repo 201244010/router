@@ -763,9 +763,9 @@ export default class WIFI extends React.Component {
                                 <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>不设密码</Checkbox></li>
                             </ul>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320, marginBottom: 0}}>
+                            <FormItem type="small" showErrorTip={guestStaticPasswordTip} style={{ width : 320, marginBottom: 0}}>
                                 <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
-                                <ErrorTip style={{color:'#fb8632'}}>{guestStaticPasswordTip}</ErrorTip>
+                                <ErrorTip>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
                             <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
                             </div>

@@ -75,7 +75,7 @@
         }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .oneline {
             display:inline-block;
@@ -122,9 +122,11 @@
         margin-right:100px;
     }
     .panel-hd{
-        border-bottom:5px;
+        border-bottom:4px;
         span{
             color:#333C4F;
+            font-weight: bolder;
+            font-size: 16px;
         }
     }
 }

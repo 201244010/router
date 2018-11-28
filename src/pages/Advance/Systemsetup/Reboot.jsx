@@ -56,7 +56,7 @@ export default class Reboot extends React.Component{
         const { duration, loadingActive, succeedActive } = this.state;
         return (
             <div>
-                <div style={{marginTop : 6}}>
+                <div style={{marginTop : 8}}>
                     <span style={{marginLeft:60}}>说明：路由器系统将立即重新启动</span>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
                         <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>立即重启</Button>
