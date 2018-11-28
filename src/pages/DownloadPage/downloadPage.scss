@@ -11,6 +11,7 @@
         .title{
             h1{
                 font-size : 28px;
+                font-weight: bold;
                 color : #333C4F;
                 margin-top : 28px 0 9px;
             }
@@ -22,18 +23,18 @@
         }
         .QRcode{
             position: absolute;
-            top : -20px;
+            top : -15px;
             right : 0;
             .QRcode-img{
                 height : 80px;
                 width : 80px;
-                border: 1px solid #ccc;
             }
             p{
                 font-size : 12px;
                 color : #333C4F;
                 text-align : center;
                 width: 80px;
+                margin-top: 3px;
             } 
         }
     }
@@ -51,12 +52,12 @@
             }
             .summary{
                 display: inline-block;
-                margin-left : 12px;
+                margin-left : 32px;
                 padding-top: 15px;
                 height: 80px;
                 vertical-align: middle;
                 h2{
-                    font-size : 20px;
+                    font-size : 20px !important;
                     color : #333C4F;
                     margin-bottom: 8px;
                 }

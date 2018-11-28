@@ -587,7 +587,7 @@ export default class WIFI extends React.Component {
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
                         <PanelHeader title="双频合一" checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/>
-                        <p style={{marginTop: 16}}>2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启</p>
+                        <p style={{marginTop: 16,marginBottom:25}}>2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启</p>
                     </section>
                     {this.state.channelType ? (
                     <section className="wifi-setting-item">
@@ -645,7 +645,7 @@ export default class WIFI extends React.Component {
                                     更多设置 <CustomIcon type={moreSettingType24} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost24}}>
-                                    <ul className="ui-tiled compact" style={{ margin: '8px 0 24px' }}>
+                                    <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
                                         <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>隐藏网络不被发现</Checkbox></li>
                                     </ul>
                                     {!(encryption24 =='none')?
@@ -695,7 +695,7 @@ export default class WIFI extends React.Component {
                                         更多设置 <CustomIcon type={moreSettingType5} size={14}/>
                                     </div>
                                     <div style={{display:moreDisplaydHost5}}>
-                                        <ul className="ui-tiled compact" style={{ margin: '8px 0 24px' }}>
+                                        <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
                                             <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
                                         </ul>
                                         {!(encryption5 =='none')?
@@ -749,7 +749,7 @@ export default class WIFI extends React.Component {
                                 <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>
                                 <ErrorTip>{periodTip}</ErrorTip>    
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1}}>小时</span>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1,opacity:0.5}}>小时</span>
                             </div>
                             <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap', marginBottom: 0}}>
                                 <label>当前密码是：</label>
@@ -763,9 +763,9 @@ export default class WIFI extends React.Component {
                                 <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>不设密码</Checkbox></li>
                             </ul>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" style={{ width : 320, marginBottom: 0}}>
+                            <FormItem type="small" showErrorTip={guestStaticPasswordTip} style={{ width : 320, marginBottom: 0}}>
                                 <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
-                                <ErrorTip style={{color:'#fb8632'}}>{guestStaticPasswordTip}</ErrorTip>
+                                <ErrorTip>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
                             <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
                             </div>

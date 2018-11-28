@@ -379,7 +379,7 @@ export default class WeChatAuth extends React.Component{
                                     multiple={false}
                                     beforeUpload={this.beforeUpload}
                                 >
-                                    <Button style={{width:130,marginTop:10,marginBottom:5}}>
+                                    <Button style={{width:130,marginTop:20,marginBottom:5}}>
                                         <Icon type="upload" />上传Logo图
                                     </Button>
                                 </Upload>
@@ -407,7 +407,8 @@ export default class WeChatAuth extends React.Component{
                                         <Input type="text" maxLength={15} placeholder={'请输入Logo信息'} disabled={false} value={logo} onChange={(value)=>this.onChange('logo',value)} />
                                         <ErrorTip >{logoTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~15个字符</span>
                                 </div>
                                 <label>欢迎信息</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -415,7 +416,8 @@ export default class WeChatAuth extends React.Component{
                                         <Input type="text" maxLength={30} placeholder={'请输入欢迎信息'} disabled={false} value={welcome} onChange={(value)=>this.onChange('welcome',value)} />
                                         <ErrorTip >{welcomeTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
                                 <label>登陆按钮提示文字</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -423,7 +425,8 @@ export default class WeChatAuth extends React.Component{
                                         <Input type="text" maxLength={15} placeholder={'请输入登陆按钮提示文字'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
                                         <ErrorTip >{loginHintTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~15个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~15个字符</span>
                                 </div>
                                 <label>版权声明</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
@@ -431,7 +434,8 @@ export default class WeChatAuth extends React.Component{
                                         <Input type="text" maxLength={30} placeholder={'请输入版权声明'} disabled={false} value={statement} onChange={(value)=>this.onChange('statement',value)} />
                                         <ErrorTip >{statementTip}</ErrorTip>
                                     </FormItem>
-                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,opacity:0.5}}>1~30个字符</span>
+                                    <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
+                                    color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
                             </section>
                             <section>
@@ -468,7 +472,7 @@ export default class WeChatAuth extends React.Component{
                                             <Checkbox checked={true} style={{fontSize:10,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
                                         </div>
                                     </div>
-                                    <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
+                                    <div style={{postion:'relative',textAlign:'center',color:'#ADB1B9',opacity: 0.8,fontSize:12}}>©{statement}</div>
                                     
                                 </div>
                             </section>                  
@@ -478,7 +482,7 @@ export default class WeChatAuth extends React.Component{
                             tip='设置之前，请先登录微信公众平台官网注册相关门店，注册成功后，微信公众平台会提供一系列参数（SSID、ShopID、AppID、Secretkey），将其复制到此页面对应的输入框中'
                             checkable={false}
                         />
-                        <label>SSID</label>
+                        <label style={{marginTop:20}}>SSID</label>
                         <FormItem type="small" showErrorTip={ssidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32}  placeholder={'请输入SSID'} disabled={false} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
                             <ErrorTip >{ssidTip}</ErrorTip>

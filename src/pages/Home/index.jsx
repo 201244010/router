@@ -511,7 +511,7 @@ export default class Home extends React.Component {
                                 showPercent={true}
                             />
                         }
-                        <Modal className='speed-result-modal' closable={false} visible={successShow} centered={true}
+                        <Modal className='speed-result-modal' width={560} closable={false} visible={successShow} centered={true}
                             footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
                             <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
                             <h4>带宽测速完成</h4>
@@ -526,7 +526,7 @@ export default class Home extends React.Component {
                                 </li>
                             </ul>
                         </Modal>
-                        <Modal className='speed-result-modal' closable={false} visible={failShow} centered={true}
+                        <Modal className='speed-result-modal' width={560} closable={false} visible={failShow} centered={true}
                             footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
                             <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
                             <h4>带宽测速失败，请重试</h4>

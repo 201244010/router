@@ -365,13 +365,13 @@ export default class Blacklist extends React.Component {
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: disabled }}
                     onCancel={this.onEditCancle} >
-                    <label style={{ marginTop: 24 }}>备注名称</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>备注名称</label>
                     <FormItem showErrorTip={nameTip} type="small" style={{ width: 320 }}>
                         <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" maxLength={32} />
                         <ErrorTip>{nameTip}</ErrorTip>
                     </FormItem>
-                    <label style={{ marginTop: 24 }}>MAC地址</label>
-                    <FormItem showErrorTip={macTip} style={{ width: 320 }}>
+                    <label style={{ display:'block',marginBottom: 6 }}>MAC地址</label>
+                    <FormItem showErrorTip={macTip} style={{ width: 320,marginBottom:8 }}>
                         <InputGroup size="small" type="mac"
                             inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
                             onChange={value => this.onChange(value, 'mac')} />

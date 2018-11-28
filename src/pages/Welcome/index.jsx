@@ -47,7 +47,7 @@ export default class Welcome extends React.Component {
                         size='large'
                         disabled={!checked}
                         onClick={this.post}
-                        style={{ margin: "40px 0 12px", width: 320 }}>
+                        style={{ margin: "40px 0 12px", width: 320, height:42 }}>
                         开始设置
                     </Button>
                     <div>
