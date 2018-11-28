@@ -9,7 +9,8 @@
     "dev": "node tasks/dev.js",
     "dev:a": "node tasks/dev.js --analysis",
     "server": "node ./server/bin/www",
-    "server:w": "./node_modules/.bin/nodemon server/bin/www"
+    "server:w": "./node_modules/.bin/nodemon server/bin/www",
+    "i18n": "node tasks/getDoc.js -s "
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -23,6 +24,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "chalk": "^2.2.0",
     "clean-webpack-plugin": "^0.1.14",
+    "commander": "^2.19.0",
     "connect-history-api-fallback": "^1.4.0",
     "copy-webpack-plugin": "^4.5.4",
     "core-js": "^2.4.1",
