@@ -24,6 +24,7 @@ const getHostName = (client) => {
 };
 
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
+const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist';
 
 const modeMap = {
     '0': '5G',
@@ -39,6 +40,7 @@ export default class ClientList extends React.Component {
 
     state = {
         visible: false,
+        refresh: false,
     }
 
     showMore = () => {
@@ -49,7 +51,7 @@ export default class ClientList extends React.Component {
     }
 
     handleEdit = async (record) => {
-        let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+        let directive = (TYPE_NORMAL === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
 
         Loading.show({ duration: 3 });
         let response = await common.fetchApi(
@@ -58,7 +60,10 @@ export default class ClientList extends React.Component {
 
         let { errcode } = response;
         if (errcode == 0) {
-            this.updateClientsInfo();
+            // 后台生效需要1秒左右，延迟2秒刷新数据，
+            setTimeout(() => {
+                this.props.startRefresh(true);
+            }, 2000);
             return;
         }
 
@@ -79,7 +84,11 @@ export default class ClientList extends React.Component {
         let { errcode } = response;
         if (errcode == 0) {
             message.success('配置生效！如需恢复，可在高级设置-防蹭网中恢复上网');
-            this.updateClientsInfo();
+
+            // 后台生效需要1秒左右，延迟2秒刷新数据，
+            setTimeout(() => {
+                this.props.startRefresh(true);
+            }, 2000);
             return;
         }
 
@@ -94,10 +103,17 @@ export default class ClientList extends React.Component {
     }
 
     updateClientsInfo = () => {
-        // 后台生效需要1秒左右，延迟2秒刷新数据，
-        setTimeout(() => {
-            this.props.startRefresh(true);
-        }, 2000);
+        // 转圈1秒
+        this.setState({
+            refresh: true,
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    refresh: false,
+                });
+            }, 1000);
+        });
+        this.props.startRefresh(true);
     }
 
     goWhiteList = () => {
@@ -105,20 +121,20 @@ export default class ClientList extends React.Component {
     }
 
     render() {
-        const { visible } = this.state;
+        const { visible, refresh } = this.state;
         const props = this.props;
         const clients = props.data;
         const total = clients.length;
         const placement = props.placement || 'top';
         const maxConf = {
-            'sunmi': 6,
-            'normal': 12,
-            'whitelist': 12
+            [TYPE_SUNMI]: 6,
+            [TYPE_NORMAL]: 12,
+            [TYPE_WHITE]: 12
         };
         const deviceTypeMap = {
-            'sunmi': '商米设备',
-            'normal': '普通设备',
-            'whitelist': '优先设备'
+            [TYPE_SUNMI]: '商米设备',
+            [TYPE_NORMAL]: '普通设备',
+            [TYPE_WHITE]: '优先设备'
         };
 
         const deviceType = deviceTypeMap[props.type];
@@ -244,8 +260,8 @@ export default class ClientList extends React.Component {
                 let type = record.type;
                 return (
                     <span>
-                        {'sunmi' !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{'whitelist' === record.type ? '解除优先' : '优先上网'}</a>}
-                        {'sunmi' !== type && <Divider type="vertical" />}
+                        {TYPE_SUNMI !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{TYPE_WHITE === record.type ? '解除优先' : '优先上网'}</a>}
+                        {TYPE_SUNMI !== type && <Divider type="vertical" />}
                         <Popconfirm
                             title="确定禁止此设备上网？"
                             okText="确定"
@@ -266,12 +282,12 @@ export default class ClientList extends React.Component {
                     <Button className='more' onClick={this.showMore}>查看全部</Button>
                 </div>
                 <ul>{listItems}</ul>
-                {('sunmi' === props.type && clients.length <= 0) &&
+                {(TYPE_SUNMI === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
                         <label>暂无商米设备，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
                     </div>
                 }
-                {('whitelist' === props.type && clients.length <= 0) &&
+                {(TYPE_WHITE === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
@@ -288,7 +304,7 @@ export default class ClientList extends React.Component {
                         left: 160,
                         border: 0,
                         padding: 0
-                    }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" /></Button>
+                    }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
                     <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
@@ -327,7 +343,7 @@ class Item extends React.Component {
         const hostname = getHostName(client);
 
         switch (type) {
-            case 'sunmi':
+            case TYPE_SUNMI:
                 return (
                     <div className='client-info'>
                         <p>{hostname}</p>
@@ -337,7 +353,7 @@ class Item extends React.Component {
                         </div>
                     </div>
                 );
-            case 'whitelist':
+            case TYPE_WHITE:
                 return (
                     <div className='client-info'>
                         <p>{hostname}</p>
@@ -347,7 +363,7 @@ class Item extends React.Component {
                             <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>禁止上网</Button>
                         </div>
                     </div>);
-            case 'normal':
+            case TYPE_NORMAL:
             default:
                 return (
                     <div className='client-info'>
