@@ -94,13 +94,14 @@ export default class AuthUserList extends React.Component{
                         }]
                     }    
                 }
-            }]
+            }],{
+                loading: true
+            }
         );
 
         let { errcode } = response;
         if (errcode == 0) {
-            const authUserList = [...this.state.authUserList];
-            this.setState({ authUserList: authUserList.filter(item => item.index !== record.index) });
+            this.GetAuthUserList();
             return;
         }
 
