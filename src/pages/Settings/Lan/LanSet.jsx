@@ -123,7 +123,7 @@ export default class Lan extends React.Component {
 
                 if (transIp(st.startip) >= transIp(st.endip)) {
                     this.setState({ 
-                        endipTip: '结束IP需大于开始IP',
+                        endipTip: '结束IP需大于起始IP',
                         disabled: true
                     });
                     return;
