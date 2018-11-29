@@ -402,7 +402,7 @@ export default class Bandwidth extends React.PureComponent {
                             <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
                     </section>
                     <section>
-                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，路由器会根据设备优先级调配带宽，当网络繁忙时，最低保证比例的设置可以保证最低优先级设备也可以上网。' onChange={this.OnBandEnable}/>
+                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，当网络带宽占满时，路由器将按照设置的最低保证比例为三类设备划分带宽，进而保证核心设备业务正常处理' onChange={this.OnBandEnable}/>
                         <Table className="qos-table" style={{fontSize : 16,marginTop:12}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>

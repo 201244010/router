@@ -47,7 +47,7 @@ export default class Mesh extends React.Component{
             status.then((resp) => {
                 let { errcode, data, message } = resp;
                 if (errcode == 0) {
-                    let { devices } = data[0].sunmimesh;
+                    let { devices } = data[0].result.sunmimesh;
                     let num = devices.length;
                     let title = (num > 0) ? `搜寻到 ${num} 台商米设备，已自动接入商米网络` : '正在搜寻商米设备...';
                     this.setState({
@@ -76,7 +76,7 @@ export default class Mesh extends React.Component{
 
         let start = common.fetchApi({ opcode: 'SUNMIMESH_START' });
 
-        start.then((resp) => this.refreshMeshInfo(resp.data[0].sunmimesh.duration));
+        start.then((resp) => this.refreshMeshInfo(resp.data[0].result.sunmimesh.duration));
     }
 
     stopSunmiMesh = () => {

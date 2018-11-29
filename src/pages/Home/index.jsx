@@ -14,6 +14,7 @@ import Mesh from './Mesh';
 import './home.scss';
 
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
+const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist';
 
 export default class Home extends React.Component {
     state = {
@@ -333,7 +334,7 @@ export default class Home extends React.Component {
                 '5g': '0',
                 '2.4g': '1',
                 'not wifi': '2',
-                'sunmi': '3',
+                [TYPE_SUNMI]: '3',
             };
             let dft = {
                 total_tx_bytes: 0,
@@ -342,8 +343,12 @@ export default class Home extends React.Component {
                 cur_rx_bytes: 0
             };
             let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
-            let mode = modeMap[client.wifi_mode];
             let flux = tf.total_tx_bytes + tf.total_rx_bytes;
+
+            let mode = modeMap[client.wifi_mode];
+            if (TYPE_SUNMI == client.type) {
+                mode = modeMap[TYPE_SUNMI];
+            }
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
@@ -354,12 +359,13 @@ export default class Home extends React.Component {
             }
 
             // 统计不同类型设备带宽
-            client.type = client.type || 'normal';
+            client.type = client.type || TYPE_NORMAL;
             band[client.type] += tf.cur_rx_bytes;
 
             return {
                 me: (client.mac === ME),
                 name: client.hostname,
+                model: client.model,
                 ip: client.ip,
                 mac: client.mac,
                 type: client.type,
@@ -387,9 +393,9 @@ export default class Home extends React.Component {
             upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
             downUnit: rx.match(/[a-z/]+/gi),
-            sunmiClients: totalList.filter(item => item.type === 'sunmi'),
-            normalClients: totalList.filter(item => item.type === 'normal'),
-            whitelistClients: totalList.filter(item => item.type === 'whitelist'),
+            sunmiClients: totalList.filter(item => item.type === TYPE_SUNMI),
+            normalClients: totalList.filter(item => item.type === TYPE_NORMAL),
+            whitelistClients: totalList.filter(item => item.type === TYPE_WHITE),
             qosData: this.state.qosData.map((item, index) => {
                 return {
                     name: item.name,
@@ -546,13 +552,13 @@ export default class Home extends React.Component {
                 <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                 <div className='online-list'>
                     <div className='left-list'>
-                        <ClientList type='sunmi' data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
+                        <ClientList type={TYPE_SUNMI} data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                        <ClientList type='normal' data={normalClients} mac={me}
+                        <ClientList type={TYPE_NORMAL} data={normalClients} mac={me}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                     <div className='whitelist-list'>
-                        <ClientList type='whitelist' data={whitelistClients} mac={me} history={this.props.history}
+                        <ClientList type={TYPE_WHITE} data={whitelistClients} mac={me} history={this.props.history}
                             startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                     </div>
                 </div>
