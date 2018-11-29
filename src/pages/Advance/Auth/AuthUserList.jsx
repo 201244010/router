@@ -70,8 +70,8 @@ export default class AuthUserList extends React.Component{
                 };
                 return {
                     index: item.index,
-                    name: client.hostname,
-                    online: (false !== item.online),
+                    name: item.hostname || client.hostname,
+                    online: client.ontime !== 0,
                     ontime: this.formatTime(client.ontime),
                     ip: item.ip, 
                     auth_type: item.auth_type,

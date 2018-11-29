@@ -10,9 +10,10 @@ const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-const error = {
-    '-1001' : '传参格式不合法' ,
-    '-1002' : '数据值不符合要求'
+const err = {
+    '-1001' : '参数非法' ,
+    '-1002' : '数据值不符合要求',
+    '-1601' : 'WAN口IP地址与局域网IP地址冲突'
 }
 
 export default class NETWORK extends React.Component {
@@ -353,7 +354,7 @@ export default class NETWORK extends React.Component {
                 return;
             }
             this.setState({ loading: false });
-            message.error(`配置失败![${errcode}]`);
+            message.error(`配置失败![${err[errcode] || errcode}]`);
         })
     }
 
@@ -409,7 +410,7 @@ export default class NETWORK extends React.Component {
 
             return;
         }
-        message.error(`信息获取失败[${errcode}]`);
+        message.error(`信息获取失败[${err[errcode] || errcode}]`);
     }
 
     updateNetStatus = (wan) => {

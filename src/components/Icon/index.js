@@ -2,9 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from "prop-types";
 
+import './icon.scss';
 
 export default function CustomIcon(props){
-  let klass = classnames(['ui-icon', 'ui-icon-' + props.type]), size;
+  let klass = classnames(['ui-icon', 'ui-icon-' + props.type, { 'ui-icon-spin': props.spin }]), size;
 
   switch(props.size){
     case 'large' :
