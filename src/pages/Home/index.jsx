@@ -355,7 +355,7 @@ export default class Home extends React.Component {
                 rssi = RSSI_GOOD;
             } else {
                 let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:0};
-                rssi = (wi.rssi >= 15) ? RSSI_GOOD : RSSI_BAD;
+                rssi = (wi.rssi >= 20) ? RSSI_GOOD : RSSI_BAD;
             }
 
             // 统计不同类型设备带宽
