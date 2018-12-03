@@ -5,28 +5,28 @@
         font-size: 34px;
         display: inline-block;
     }
-    .band-unit {
+    .band-left{
+        height: 48px;
+        display: inline-block
+    }
+    .band-right{
+        display:inline-block;
+        height: 48px;
+        padding: 7px 0;
         font-size: 12px;
-        display: inline-block;
-        vertical-align: text-top;
         margin-left: 12px;
-        color:#ADB1B9;
-    }
-    .band-bottom {
-        font-size: 12px;
-        vertical-align: text-bottom;
-        display: inline-block;
-        margin-left: -32px;
-        color : #ADB1B9;
-    }
-    .icon-band {
-        margin-left: 8px;
+        .band-unit{
+            display: block;
+            height: 17px;
+            color: #ADB1B9;
+            font-size: 12px;
+        }
     }
     .band-line {
         display: inline-block;
         line-height: 40px;
         height: 40px;
-        margin: 4px 30px;
+        margin: 4px 30px -4px;
         background:#333C4F;
         opacity: 0.1;
         width:1px;
