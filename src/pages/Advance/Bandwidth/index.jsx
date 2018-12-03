@@ -387,14 +387,24 @@ export default class Bandwidth extends React.PureComponent {
                         <PanelHeader title="总带宽" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
                     <section className="band-value">
-                        <div className="band-size">{upband}
-                            <span className="band-unit">{unit}</span>
-                            <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
+                        <div className="band-size">
+                            <div className="band-left">{upband}</div>
+                            <div className="band-right">
+                                <span className="band-unit">{unit}</span>
+                                <span className="band-unit">上行带宽
+                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#3D76F6" type="kbyte"/></span>
+                                </span>
+                            </div>
                         </div>
                         <div className="band-line"></div> 
-                        <div className="band-size">{downband}
-                            <span className="band-unit">{unit}</span>
-                            <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
+                        <div className="band-size">
+                            <div className="band-left">{downband}</div>
+                            <div className="band-right">
+                                <span className="band-unit">{unit}</span>
+                                <span className="band-unit">下行带宽
+                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#87D068" type="downloadtraffic"/></span>
+                                </span>
+                            </div>
                         </div>
                     </section>
                     <section style={{margin:"16px 20px 32px 0"}}>
@@ -435,22 +445,22 @@ export default class Bandwidth extends React.PureComponent {
                             <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFill} centered={true} footer={null}>
-                    <div className="progress-test">
-                        <CustomIcon color="#87D068" type="succeed" size={64}/>
-                        <div className="speedfill">带宽测速完成!</div>
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFillCancle}>确定</Button>}>
+                    <div className='status-icon'>
+                        <CustomIcon color="#87D068" type="succeed" size={64}/>   
                     </div>
-                    <div className="band-line">
-                        <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                        <label>上行带宽：{upband}{unit}</label>
-                    </div>
-                    <div className="band-line">
-                        <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                        <label>下行带宽：{downband}{unit}</label>
-                    </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
-                    </section>
+                    <h4>带宽测速完成</h4>
+                    <ul className='speed-result'>
+                        <li>
+                            <CustomIcon color="#779FF8" type="kbyte" size={16}/>
+                            <label>上行带宽：{upband}{unit}</label>
+                        </li>
+                        <li>
+                            <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
+                            <label>下行带宽：{downband}{unit}</label>
+                        </li>
+                    </ul>
                 </Modal>
                 <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
                     <div className="progress-test">

@@ -97,11 +97,11 @@ export default class ChangePassword extends React.Component{
                             <ErrorTip>{surePWDTip}</ErrorTip>
                         </FormItem>
                     </div>
-                    <section className="save">
-                        <Button loading={loading} disabled={disabled} size='large' style={{ width: 320 }} type="primary" 
-                        onClick={this.submit}>保存</Button>
-                    </section>
                 </Form>
+                <section className="save">
+                    <Button loading={loading} disabled={disabled} size='large' style={{ width: 320 }} type="primary" 
+                    onClick={this.submit}>保存</Button>
+                </section>
             </div>
         );
     }

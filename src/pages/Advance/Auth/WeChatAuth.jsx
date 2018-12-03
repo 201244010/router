@@ -419,7 +419,7 @@ export default class WeChatAuth extends React.Component{
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
                                     color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
-                                <label>登陆按钮提示文字</label>
+                                <label>登录按钮提示文字</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={loginHintTip} style={{ width : 320}}>
                                         <Input type="text" maxLength={15} placeholder={'请输入登陆按钮提示文字'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
@@ -502,12 +502,12 @@ export default class WeChatAuth extends React.Component{
                             <Input type="text" maxLength={32} placeholder={'请输入SecretKey'} disabled={false} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
                             <ErrorTip >{secretKeyTip}</ErrorTip>
                         </FormItem>
-                    </div>
-                    <section className="save">
-                        <Button className="weixin-auth-button" type="primary" size="large" style={{ width: 320 }} 
-                        loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
-                    </section>
+                    </div>   
                 </Form>
+                <section className="save">
+                    <Button className="weixin-auth-button" type="primary" size="large" style={{ width: 320 }} 
+                    loading={loading} disabled={saveDisabled} onClick={this.submit}>保存</Button>
+                </section>
             </div>
         );
     }

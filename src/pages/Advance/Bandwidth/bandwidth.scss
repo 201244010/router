@@ -5,28 +5,28 @@
         font-size: 34px;
         display: inline-block;
     }
-    .band-unit {
+    .band-left{
+        height: 48px;
+        display: inline-block
+    }
+    .band-right{
+        display:inline-block;
+        height: 48px;
+        padding: 7px 0;
         font-size: 12px;
-        display: inline-block;
-        vertical-align: text-top;
         margin-left: 12px;
-        color:#ADB1B9;
-    }
-    .band-bottom {
-        font-size: 12px;
-        vertical-align: text-bottom;
-        display: inline-block;
-        margin-left: -32px;
-        color : #ADB1B9;
-    }
-    .icon-band {
-        margin-left: 8px;
+        .band-unit{
+            display: block;
+            height: 17px;
+            color: #ADB1B9;
+            font-size: 12px;
+        }
     }
     .band-line {
         display: inline-block;
         line-height: 40px;
         height: 40px;
-        margin: 4px 30px;
+        margin: 4px 30px -4px;
         background:#333C4F;
         opacity: 0.1;
         width:1px;
@@ -59,33 +59,45 @@
     }
 }
 
-.progress-test {
-    margin-top: 6px;
-    display: block;
-    text-align: center;
-    .speedfill {
+.speed-result-modal{
+    .status-icon{
+        text-align: center;
+        margin: 6px 20px 12px;
+    }
+    h4{
         font-size: 16px;
-        margin-top: 12px;
         font-weight: bold;
+        color: #333C4F;
+        text-align: center;
+        margin-bottom: 32px;
     }
-}
-
-.band-line {
-    display: inline-block;
-    margin-left: 42px;
-    >label {
-        font-size: 16px;
+    .speed-result{
+        text-align:center;
+        li{
+            display: inline-block;
+            width: 40%;
+            text-align: center;
+        }
+        label{
+            font-size: 16px;
+            color: #333C4F;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        span{
+            font-size: 16px;
+            color: #333C4F;
+            margin-left: 3px;
+            vertical-align: middle;
+        }
     }
-}
-
-.speed-bottom {
-    height: 60px;
-    border-top: 1px solid #d8d8d8;
-    .speed-button{
-        width: 160px;
-        height: 42px;
-        left: 164px;
-        top: 20px;
+    .ant-modal-footer{
+        padding: 20px 16px;
+        text-align: center;
+        button{
+            width: 160px;
+            height: 42px;
+        }
     }
 }
 
