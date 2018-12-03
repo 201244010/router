@@ -4,6 +4,7 @@ import Form from '~/components/Form';
 import { Button, Modal } from 'antd';
 import { Base64 } from 'js-base64';
 import routes from '../../routes';
+import { init } from '~/assets/common/auth';
 import {checkStr} from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input }  = Form;
@@ -40,9 +41,10 @@ export default class SetPassword extends React.Component {
         });
         this.setState({ loading: false });
 
-        let { errcode } = response;
+        let { errcode, data } = response;
         switch (errcode) {
         case 0:
+            init(data[0].result.account.token);
             this.props.history.push(routes.guideSetWan);
             break;
         case '-1608':

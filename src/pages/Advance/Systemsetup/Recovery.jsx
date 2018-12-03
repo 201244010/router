@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
-import { clear } from '~/assets/common/cookie';
+import { clear } from '~/assets/common/auth';
 
 export default class Recovery extends React.Component{
 

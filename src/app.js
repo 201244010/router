@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {message} from 'antd';
-import { get } from '~/assets/common/cookie';
+import { get } from '~/assets/common/auth';
 import "./assets/styles/index.scss";
 import PrimaryHeader from './components/PrimaryHeader';
 import PrimaryFooter from './components/PrimaryFooter';
@@ -34,7 +34,7 @@ class PrimaryLayout extends React.Component {
 
     static getDerivedStateFromProps() {
         const pathname = location.pathname;
-        const logined = get('sysauth').length > 0;
+        const logined = !!get();
 
         let hasVisited = '0';
         try {
@@ -116,7 +116,7 @@ class Default extends React.Component{
     redirect() {
         const path = location.pathname;
         const welcome = '/welcome';
-        const logined = get('sysauth').length > 0;
+        const logined = !!get();
         const redirect = logined ? '/home' : '/login';
 
         // 向导页面（/welcome or /guide/xxx）不跳转
