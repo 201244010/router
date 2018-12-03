@@ -435,22 +435,22 @@ export default class Bandwidth extends React.PureComponent {
                             <ErrorTip>{downbandTmpTip}</ErrorTip>
                         </FormItem>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFill} centered={true} footer={null}>
-                    <div className="progress-test">
-                        <CustomIcon color="#87D068" type="succeed" size={64}/>
-                        <div className="speedfill">带宽测速完成!</div>
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFillCancle}>确定</Button>}>
+                    <div className='status-icon'>
+                        <CustomIcon color="#87D068" type="succeed" size={64}/>   
                     </div>
-                    <div className="band-line">
-                        <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                        <label>上行带宽：{upband}{unit}</label>
-                    </div>
-                    <div className="band-line">
-                        <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                        <label>下行带宽：{downband}{unit}</label>
-                    </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
-                    </section>
+                    <h4>带宽测速完成</h4>
+                    <ul className='speed-result'>
+                        <li>
+                            <CustomIcon color="#779FF8" type="kbyte" size={16}/>
+                            <label>上行带宽：{upband}{unit}</label>
+                        </li>
+                        <li>
+                            <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
+                            <label>下行带宽：{downband}{unit}</label>
+                        </li>
+                    </ul>
                 </Modal>
                 <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
                     <div className="progress-test">

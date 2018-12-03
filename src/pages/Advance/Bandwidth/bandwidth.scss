@@ -59,33 +59,45 @@
     }
 }
 
-.progress-test {
-    margin-top: 6px;
-    display: block;
-    text-align: center;
-    .speedfill {
+.speed-result-modal{
+    .status-icon{
+        text-align: center;
+        margin: 6px 20px 12px;
+    }
+    h4{
         font-size: 16px;
-        margin-top: 12px;
         font-weight: bold;
+        color: #333C4F;
+        text-align: center;
+        margin-bottom: 32px;
     }
-}
-
-.band-line {
-    display: inline-block;
-    margin-left: 42px;
-    >label {
-        font-size: 16px;
+    .speed-result{
+        text-align:center;
+        li{
+            display: inline-block;
+            width: 40%;
+            text-align: center;
+        }
+        label{
+            font-size: 16px;
+            color: #333C4F;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        span{
+            font-size: 16px;
+            color: #333C4F;
+            margin-left: 3px;
+            vertical-align: middle;
+        }
     }
-}
-
-.speed-bottom {
-    height: 60px;
-    border-top: 1px solid #d8d8d8;
-    .speed-button{
-        width: 160px;
-        height: 42px;
-        left: 164px;
-        top: 20px;
+    .ant-modal-footer{
+        padding: 20px 16px;
+        text-align: center;
+        button{
+            width: 160px;
+            height: 42px;
+        }
     }
 }
 
