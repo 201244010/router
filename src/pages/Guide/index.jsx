@@ -16,7 +16,6 @@ export default class Guide extends React.Component {
         super(props);
         this.state = {
             activeRouteName : '',
-            iconType : 'lock'
         };
     }
 
@@ -46,7 +45,6 @@ export default class Guide extends React.Component {
 
     render(){
         const { match } = this.props, activeRouteName = this.state.activeRouteName;
-        const iconType = { setpassword : 'lock', setwan : 'browser', speed : 'bandwidth', setwifi : 'wifi' }[activeRouteName];
         return (
             <SubLayout className="steps ui-relative">
                 <div className="header">
@@ -83,9 +81,6 @@ export default class Guide extends React.Component {
                         <span className="ui-ib">设置无线网络</span>
                     </li>
                 </ul>
-                <div className="icon-bg">
-                    <Icon type={iconType || "lock"} size={220} />
-                </div>
                 <div className="guide-body">
                     <Switch>
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />
