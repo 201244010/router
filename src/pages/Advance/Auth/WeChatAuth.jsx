@@ -419,7 +419,7 @@ export default class WeChatAuth extends React.Component{
                                     <span style={{height:40,lineHeight:'40px',marginLeft:5,marginBottom:0,zIndex:1,
                                     color:'#ADB1B9'}}>1~30个字符</span>
                                 </div>
-                                <label>登陆按钮提示文字</label>
+                                <label>登录按钮提示文字</label>
                                 <div style={{display:'flex',flexDirection:'row'}}>
                                     <FormItem type="small" showErrorTip={loginHintTip} style={{ width : 320}}>
                                         <Input type="text" maxLength={15} placeholder={'请输入登陆按钮提示文字'} disabled={false} value={loginHint} onChange={(value)=>this.onChange('loginHint',value)} />
