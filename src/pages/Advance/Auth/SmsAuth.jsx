@@ -553,7 +553,7 @@ export default class SmsAuth extends React.Component{
                                     <ul className='item-list'>
                                         <li>Access Key ID：<span>访问阿里云平台短信接口的用户名</span></li>
                                         <li>Access Key Secret：<span>访问阿里云平台短信接口的密码</span></li>
-                                        <li>模板CODE：<span>阿里云平台提供的模板ID号（设置模板时，要求以'sms_code'为关键字，如：验证码{'${sms_code}'}用于Wi-Fi连接登录，如非本人操作，请忽略此短信）</span></li>
+                                        <li>模版 Code：<span>阿里云平台提供的模板ID号（设置模板时，要求以'sms_code'为关键字，如：验证码{'${sms_code}'}用于Wi-Fi连接登录，如非本人操作，请忽略此短信）</span></li>
                                         <li>签名名称：<span>阿里云平台发送的短信模板对应的签名名称</span></li>
                                     </ul>
                                 </div>}
