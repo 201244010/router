@@ -94,7 +94,7 @@ export default class SysUpgrade extends React.Component{
                 <section className="upgrade-save" style={{marginTop : -10 ,borderTop : 'none'}}>
                     <Button disabled={disable} style={{left:0}} className="upgrade-btn" type="primary" loading={loading} onClick={this.post}>立即更新</Button>
                 </section>
-                <Modal title={Title} closable={false} visible={version} maskClosable={false} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>我知道了</Button>} okText="知道了"
+                <Modal title={Title} closable={false} visible={version} maskClosable={false} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>知道了</Button>} okText="知道了"
                     onCancel={this.handleCancle}
                 >
                     <pre className="head-content">
