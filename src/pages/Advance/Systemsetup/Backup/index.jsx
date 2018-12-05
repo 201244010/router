@@ -424,13 +424,15 @@ export default class Backup extends React.Component{
                     </div>
                 </Modal>
                 <Modal title='从云选择备份文件' visible={recoverCloud} maskClosable={false} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
-                    <ul className="recover-ul">
-                        <RadioGroup onChange={this.radioChange} value={radioChoose}>
-                            {
-                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份</div> : recoverList
-                            }
-                        </RadioGroup>
-                    </ul>
+                    <div className="modal-body">
+                        <ul className="recover-ul">
+                            <RadioGroup onChange={this.radioChange} value={radioChoose}>
+                                {
+                                    cloudList.length === 0 ? <div className="backup-not">您还未进行过备份</div> : recoverList
+                                }
+                            </RadioGroup>
+                        </ul>
+                    </div>
                 </Modal>
                 {loadingActive &&
                     <Progress

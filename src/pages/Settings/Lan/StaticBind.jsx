@@ -445,25 +445,27 @@ export default class StaticBind extends React.Component {
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: ('' !== editNameTip || '' !== editIpTip || '' !== editMacTip) }}
                     onCancel={this.onEditCancle} >
-                    <label style={{ display:'block',marginBottom: 6 }}>备注名称</label>
-                    <FormItem showErrorTip={editNameTip} type="small" style={{ width: 320 }}>
-                        <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" maxLength={32} />
-                        <ErrorTip>{editNameTip}</ErrorTip>
-                    </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>IP地址</label>
-                    <FormItem showErrorTip={editIpTip} style={{ width: 320 }}>
-                        <InputGroup size="small"
-                            inputs={[{ value: editIp[0], maxLength: 3 }, { value: editIp[1], maxLength: 3 }, { value: editIp[2], maxLength: 3 }, { value: editIp[3], maxLength: 3 }]}
-                            onChange={value => this.onChange(value, 'editIp')} />
-                        <ErrorTip>{editIpTip}</ErrorTip>
-                    </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>MAC地址</label>
-                    <FormItem showErrorTip={editMacTip} style={{ width: 320,marginBottom:8 }}>
-                        <InputGroup size="small" type="mac"
-                            inputs={[{ value: editMac[0], maxLength: 2 }, { value: editMac[1], maxLength: 2 }, { value: editMac[2], maxLength: 2 }, { value: editMac[3], maxLength: 2 }, { value: editMac[4], maxLength: 2 }, { value: editMac[5], maxLength: 2 }]}
-                            onChange={value => this.onChange(value, 'editMac')} />
-                        <ErrorTip>{editMacTip}</ErrorTip>
-                    </FormItem>
+                    <div className="modal-body">
+                        <label style={{ display:'block',marginBottom: 6 }}>备注名称</label>
+                        <FormItem showErrorTip={editNameTip} type="small" style={{ width: 320 }}>
+                            <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder="请输入备注名称" maxLength={32} />
+                            <ErrorTip>{editNameTip}</ErrorTip>
+                        </FormItem>
+                        <label style={{ display:'block',marginBottom: 6 }}>IP地址</label>
+                        <FormItem showErrorTip={editIpTip} style={{ width: 320 }}>
+                            <InputGroup size="small"
+                                inputs={[{ value: editIp[0], maxLength: 3 }, { value: editIp[1], maxLength: 3 }, { value: editIp[2], maxLength: 3 }, { value: editIp[3], maxLength: 3 }]}
+                                onChange={value => this.onChange(value, 'editIp')} />
+                            <ErrorTip>{editIpTip}</ErrorTip>
+                        </FormItem>
+                        <label style={{ display:'block',marginBottom: 6 }}>MAC地址</label>
+                        <FormItem showErrorTip={editMacTip} style={{ width: 320,marginBottom:8 }}>
+                            <InputGroup size="small" type="mac"
+                                inputs={[{ value: editMac[0], maxLength: 2 }, { value: editMac[1], maxLength: 2 }, { value: editMac[2], maxLength: 2 }, { value: editMac[3], maxLength: 2 }, { value: editMac[4], maxLength: 2 }, { value: editMac[5], maxLength: 2 }]}
+                                onChange={value => this.onChange(value, 'editMac')} />
+                            <ErrorTip>{editMacTip}</ErrorTip>
+                        </FormItem>
+                    </div>
                 </Modal>
             </div>
         );
