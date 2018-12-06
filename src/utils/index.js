@@ -14,7 +14,7 @@ export const getNowTimeStr = () => {
     return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
 };
 
-export const browser = (function () {
+export const UA = (function () {
     let windows = false;
     let windowsPhone = false;
     let unixPC = false;
