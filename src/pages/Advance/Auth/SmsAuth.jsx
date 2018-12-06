@@ -317,6 +317,22 @@ export default class SmsAuth extends React.Component{
 
     submit = async() =>{
         this.setState({ loading: true });
+        if (true === this.state.enable) {
+            let resp = await common.fetchApi({ opcode: 'AUTH_WEIXIN_CONFIG_GET' });
+            let { errcode, data } = resp;
+            if (errcode == 0) {
+                if ('1' === data[0].result.weixin.enable) {
+                    Modal.warning({
+                        centered: true,
+                        title: '提示',
+                        content: '短信认证和微信认证不能同时开启，请先关闭微信认证',
+                        okText: '确定'
+                    });
+                    this.setState({ loading: false });
+                    return;
+                }
+            }
+        }
         if(this.state.enable === true){
             Modal.confirm({
                 title: '提示',
