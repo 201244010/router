@@ -462,15 +462,15 @@ export default class Bandwidth extends React.PureComponent {
                         </li>
                     </ul>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
-                    <div className="progress-test">
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFail} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>}>
+                    <div className="status-icon">
                         <CustomIcon color="red" type="defeated" size={64}/>
-                        <div className="speedfill">带宽测速失败，请重试</div>
-                        <div style={{marginBottom : 32, marginTop : 6,fontSize : 12}}>{failTip}</div>
                     </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>
-                    </section>
+                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>带宽测速失败，请重试</div>
+                    <div style={{ textAlign:'center',margin: '4px auto 6px'}}>   
+                        <div style={{fontSize : 12,color: '#ADB1B9'}}>{failTip}</div>
+                    </div>   
                 </Modal>
             </div>
         );
