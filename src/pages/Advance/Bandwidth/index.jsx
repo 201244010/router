@@ -433,17 +433,17 @@ export default class Bandwidth extends React.PureComponent {
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
                     <label style={{ display:'block',marginBottom: 6 }}>上行总带宽</label>
-                        <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
-                            <ErrorTip>{upbandTmpTip}</ErrorTip>
-                        </FormItem>
+                    <FormItem showErrorTip={upbandTmpTip} type="small" >
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                        <ErrorTip>{upbandTmpTip}</ErrorTip>
+                    </FormItem>
                     <label style={{ display:'block',marginBottom: 6 }}>下行总带宽</label>
-                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320,marginBottom: 8 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
-                            <ErrorTip>{downbandTmpTip}</ErrorTip>
-                        </FormItem>
+                    <FormItem showErrorTip={downbandTmpTip} type="small" style={{ marginBottom: 8 }}>
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                        <ErrorTip>{downbandTmpTip}</ErrorTip>
+                    </FormItem>
                 </Modal>
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
                 footer={<Button type="primary" onClick={this.onSpeedFillCancle}>确定</Button>}>
@@ -462,15 +462,15 @@ export default class Bandwidth extends React.PureComponent {
                         </li>
                     </ul>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
-                    <div className="progress-test">
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFail} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>}>
+                    <div className="status-icon">
                         <CustomIcon color="red" type="defeated" size={64}/>
-                        <div className="speedfill">带宽测速失败，请重试</div>
-                        <div style={{marginBottom : 32, marginTop : 6,fontSize : 12}}>{failTip}</div>
                     </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>
-                    </section>
+                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>带宽测速失败，请重试</div>
+                    <div style={{ textAlign:'center',margin: '4px auto 6px'}}>   
+                        <div style={{fontSize : 12,color: '#ADB1B9'}}>{failTip}</div>
+                    </div>   
                 </Modal>
             </div>
         );

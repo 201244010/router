@@ -317,6 +317,22 @@ export default class SmsAuth extends React.Component{
 
     submit = async() =>{
         this.setState({ loading: true });
+        if (true === this.state.enable) {
+            let resp = await common.fetchApi({ opcode: 'AUTH_WEIXIN_CONFIG_GET' });
+            let { errcode, data } = resp;
+            if (errcode == 0) {
+                if ('1' === data[0].result.weixin.enable) {
+                    Modal.warning({
+                        centered: true,
+                        title: '提示',
+                        content: '短信认证和微信认证不能同时开启，请先关闭微信认证',
+                        okText: '确定'
+                    });
+                    this.setState({ loading: false });
+                    return;
+                }
+            }
+        }
         if(this.state.enable === true){
             Modal.confirm({
                 title: '提示',
@@ -553,7 +569,7 @@ export default class SmsAuth extends React.Component{
                                     <ul className='item-list'>
                                         <li>Access Key ID：<span>访问阿里云平台短信接口的用户名</span></li>
                                         <li>Access Key Secret：<span>访问阿里云平台短信接口的密码</span></li>
-                                        <li>模板CODE：<span>阿里云平台提供的模板ID号（设置模板时，要求以'sms_code'为关键字，如：验证码{'${sms_code}'}用于Wi-Fi连接登录，如非本人操作，请忽略此短信）</span></li>
+                                        <li>模版 Code：<span>阿里云平台提供的模板ID号（设置模板时，要求以'sms_code'为关键字，如：验证码{'${sms_code}'}用于Wi-Fi连接登录，如非本人操作，请忽略此短信）</span></li>
                                         <li>签名名称：<span>阿里云平台发送的短信模板对应的签名名称</span></li>
                                     </ul>
                                 </div>}

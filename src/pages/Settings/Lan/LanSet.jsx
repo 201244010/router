@@ -263,7 +263,7 @@ export default class Lan extends React.Component {
                         </FormItem>
                         <label>地址租期</label>
                         <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320, marginBottom: 0 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>分钟</label>
+                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 , opacity: 0.65 }}>分钟</label>
                             <Input
                                 type='text'
                                 disabled={!enable}
