@@ -117,13 +117,9 @@ ul,li{
     background-color :#d4d4d4;
 }
 
-.ant-modal-content{
+.modal-center{
     .ant-modal-body{
-        padding: 24px 0px;
-        .modal-body{
-            width: 320px;
-            margin: auto;
-        }
+        text-align: center;
         h3{
             font-size: 16px;
             color: #333C4F;

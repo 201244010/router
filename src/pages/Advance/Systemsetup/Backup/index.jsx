@@ -399,7 +399,7 @@ export default class Backup extends React.Component{
                     <div className="backup-modal">
                         <div className="backup-filename">文件名</div>
                         <div>
-                            <FormItem type="small" style={{ width: 320 }}>
+                            <FormItem type="small" >
                                 <Input type="text" value={filename} maxLength={32} onChange={value => this.onChange(value, 'filename')} placeholder="请输入文件名" />
                             </FormItem>
                         </div>
@@ -424,15 +424,13 @@ export default class Backup extends React.Component{
                     </div>
                 </Modal>
                 <Modal title='从云选择备份文件' visible={recoverCloud} maskClosable={false} width={360} centered={true} closable={false} cancelText='取消' okText='开始恢复' okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
-                    <div className="modal-body">
-                        <ul className="recover-ul">
-                            <RadioGroup onChange={this.radioChange} value={radioChoose}>
-                                {
-                                    cloudList.length === 0 ? <div className="backup-not">您还未进行过备份</div> : recoverList
-                                }
-                            </RadioGroup>
-                        </ul>
-                    </div>
+                    <ul className="recover-ul">
+                        <RadioGroup onChange={this.radioChange} value={radioChoose}>
+                            {
+                                cloudList.length === 0 ? <div className="backup-not">您还未进行过备份</div> : recoverList
+                            }
+                        </RadioGroup>
+                    </ul>
                 </Modal>
                 {loadingActive &&
                     <Progress

@@ -432,20 +432,18 @@ export default class Bandwidth extends React.PureComponent {
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
-                    <div className="modal-body">
-                        <label style={{ display:'block',marginBottom: 6 }}>上行总带宽</label>
-                        <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
-                            <ErrorTip>{upbandTmpTip}</ErrorTip>
-                        </FormItem>
-                        <label style={{ display:'block',marginBottom: 6 }}>下行总带宽</label>
-                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320,marginBottom: 8 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
-                            <ErrorTip>{downbandTmpTip}</ErrorTip>
-                        </FormItem>
-                    </div>
+                    <label style={{ display:'block',marginBottom: 6 }}>上行总带宽</label>
+                    <FormItem showErrorTip={upbandTmpTip} type="small" >
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                        <ErrorTip>{upbandTmpTip}</ErrorTip>
+                    </FormItem>
+                    <label style={{ display:'block',marginBottom: 6 }}>下行总带宽</label>
+                    <FormItem showErrorTip={downbandTmpTip} type="small" style={{ marginBottom: 8 }}>
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                        <ErrorTip>{downbandTmpTip}</ErrorTip>
+                    </FormItem>
                 </Modal>
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
                 footer={<Button type="primary" onClick={this.onSpeedFillCancle}>确定</Button>}>
