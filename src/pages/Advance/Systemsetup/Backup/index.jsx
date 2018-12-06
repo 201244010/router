@@ -23,7 +23,7 @@ export default class Backup extends React.Component{
     state = {
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
-        backupFailTip : '备份失败请重试',//备份失败以及网络未连接提示
+        backupFailTip : '备份失败！请重试～',//备份失败以及网络未连接提示
         backupSuccess : false,//备份成功 , 恢复成功
         backupSuccessTip : '备份成功！',
         filename : '',

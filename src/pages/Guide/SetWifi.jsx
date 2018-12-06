@@ -9,6 +9,12 @@ import {checkStr} from '~/assets/common/check';
 
 const { FormItem, Input, ErrorTip } = Form;
 const confirm = Modal.confirm;
+const errorMessage = {
+    '-1001': '参数格式错误',
+    '-1002': '参数取值不合法',
+    '-1100': '设置WIFI:参数SSID不合法',
+    '-1101': '设置WIFI:参数PASSWORD不合法'
+};
 
 export default class SetWifi extends React.Component {
     constructor(props){
@@ -153,7 +159,7 @@ export default class SetWifi extends React.Component {
             }, 7000);
             return ;
         }
-        message.error(`Wi-Fi设置失败[${errcode}]`);
+        message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
     }
 
     submit = async ()=> {
