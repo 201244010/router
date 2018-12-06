@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
-import { clear } from '~/assets/common/cookie';
+import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import "./QRcode.scss";
 
@@ -52,12 +52,13 @@ class Login extends React.Component {
                 data: { account : { password : Base64.encode(password), user : 'admin' }}
             }]
         );
-        const { errcode } = response;
+        const { errcode, data } = response;
         this.setState({ loading : false });
 
         let tip = '';
         switch (errcode) {
             case 0:
+                init(data[0].result.account.token);
                 this.props.history.push('/');
                 return;
             case '-1604':
