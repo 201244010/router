@@ -190,7 +190,7 @@ export default class ClientList extends React.Component {
             }
         }, {
             title: 'IP/MAC地址',
-            width: 180,
+            width: 190,
             render: (text, record) => (
                 <span>
                     <span><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></span><br />
@@ -250,6 +250,7 @@ export default class ClientList extends React.Component {
             )
         }, {
             title: '流量消耗',
+            width: 120,
             dataIndex: 'flux',
             sorter: (a, b) => a.flux - b.flux,
             render: (flux, record) => formatSpeed(flux).replace('/s', ''),
@@ -293,7 +294,7 @@ export default class ClientList extends React.Component {
                     </div>
                 }
                 <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
-                    width={1030} style={{ position: 'relative' }}
+                    width={1060} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>取消</Button>

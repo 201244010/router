@@ -82,9 +82,9 @@ export function fetchApi(data, options = {}, loopOption = {}) {
 
     const stok = get();
     if (stok) {
-        const cookie = `sysauth=${stok}; stok=${stok}`;
+        //const cookie = `sysauth=${stok}; stok=${stok}`;
         options.headers = {
-            //Cookie: cookie,   // 直接设置Cookie axios不生效，也不合理，改用自动以Header XSRF-TOKEN
+            //Cookie: cookie,   // 直接设置Cookie axios不生效，也不合理，改用自定义Header XSRF-TOKEN
             ['XSRF-TOKEN']: stok,
         };
     }
