@@ -12,6 +12,12 @@ const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
 const RadioGroup=Radio.Group;
 
+const errorMessage = {
+    '-1001': '参数格式错误',
+    '-1002': '参数取值不合法',
+    '-1100': '设置WIFI:参数SSID不合法',
+    '-1101': '设置WIFI:参数PASSWORD不合法'
+};
 
 
 export default class WIFI extends React.Component {
@@ -436,7 +442,7 @@ export default class WIFI extends React.Component {
                 visibile: 'hidden',
                 resVisibile: true,
                 result: false,
-                err: errcode,
+                err: errorMessage[errcode] || errcode,
             });    
         }   
     }
@@ -817,7 +823,10 @@ export default class WIFI extends React.Component {
                         :
                         <div className="backup-icon">
                             <CustomIcon color="#FF5500" type="defeated" size={64} />
-                            <div className="backup-result">配置失败！[{this.state.err}]</div>
+                            <div className="backup-result">
+                                <div style={{fontSize: 16}}>配置失败!</div>
+                                <div style={{ fontSize: 12, color: '#ADB1B9' }}>{this.state.err}</div>
+                            </div>
                         </div>
                     }
                 </Modal>
