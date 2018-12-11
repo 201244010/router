@@ -112,7 +112,7 @@ button.ant-btn-primary.ant-btn-loading {
     text-align: center;
 }
 .ant-table-fixed-header .ant-table-content .ant-table-scroll .ant-table-header{
-    padding-bottom: 3px;    // for firefox
+    // padding-bottom: 3px;    // for firefox
     &::-webkit-scrollbar-track{ // for chrome
         background: #fff;
     }
