@@ -1,0 +1,24 @@
+.bg{
+    .main .ui-form {
+        width:100%;
+        padding: 0 60px;
+        margin-top: 0;
+    }
+}
+.lan-settting {
+    .content-item{
+        >label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.save {
+    width: 100%;
+    border-top:1px solid #ECECEC;
+    padding:20px 60px 20px;
+    margin-top: 49px;
+}
+

@@ -1,0 +1,114 @@
+
+.backup-restore {
+    .backup-list{
+        margin: 30px 0;
+        li{
+            margin: 10px 0;
+        }
+    }
+    .func-btn{
+        button{
+            margin-right: 20px;
+        }
+    }
+    .restore{
+        margin-top: 40px;
+        .restore-func{
+            margin-top: 36px;
+            .cloud-restore{
+                position: relative;
+                top: -32px;
+                left: 120px;
+            }
+            .ant-upload-list-item{
+                display: none;
+            }
+        }
+    }
+}
+
+.backup-modal {
+    .backup-filename {
+        margin-bottom: 6px;
+    }
+    .ui-form-item-small .ui-input {
+        height: 36px;
+    }
+    .backup-latest {
+        margin-top : 30px;
+        margin-bottom: 8px;
+    }
+    .ant-btn {
+        height : 34px;
+    }
+}
+
+.backup-icon {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    .backup-result {
+        font-size: 16px;
+        color: #333C4F;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+}
+
+.backup-btm{
+    display: block;
+    width: 160px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.recover-ul {
+    max-height: 380px;
+    overflow-y: auto;
+    .ant-radio-wrapper {
+        float: right;
+    }
+    .recover-filename {
+        font-size: 14px;
+        color: #333C4F;
+    }
+    .recover-time {
+        font-size: 14px;
+        color: #ADB1B9;
+    }
+    .ant-radio-checked .ant-radio-inner{
+        border-color: #FB8632;
+    }
+    .ant-radio-inner:after {
+        background-color:orange;
+    }
+    .recover-li {
+        margin-bottom: 20px;
+    }
+    .ant-modal-body & {
+        padding-bottom: 0;
+    }
+    .ant-radio-group {
+        display: block;
+    }
+}
+
+.backup-message-time {
+    margin-top: 10px;
+    .backup-message {
+        font-size: 14px;
+        color: #ADB1B9;
+    }
+    .backup-time {
+        font-size: 14px;
+        color: #ADB1B9;
+        float: right;
+    }
+}
+
+.backup-not {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ADB1B9;
+}

@@ -1,11 +1,14 @@
 import React from 'react';
-import { Modal, Icon } from 'antd';
+import { Icon,message } from 'antd';
+import { Base64 } from 'js-base64';
 import classnames from 'classnames';
 import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
+import { checkStr, checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 
-const { FormItem, Input : FormInput, InputGroup  } = Form;
+
+const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
 const Option = Select.Option;
 
 
@@ -16,23 +19,29 @@ export default class SetWan extends React.PureComponent {
 
     state = {
         detect : true,
-        type : 'pppoe', // pppoe | dhcp | static
+        type : 'dhcp', // pppoe | dhcp | static
         showNetWorkStatus : false,
+        wanLinkState: true,
 
         // pppoe
         pppoeAccount : '',
         pppoeAccountTip : '',
         pppoePassword : '',
         pppoePasswordTip : '',
-        disabled : true,
+        disabled : false,
         loading : false,
 
         // 静态 ip
-        ip : [],
-        subnetmask : [],
-        gateway : [],
-        dns : [],
-        dnsbackup : []
+        ip : ["","","",""],
+        subnetmask : ["","","",""],
+        gateway : ["","","",""],
+        dns : ["","","",""],
+        dnsbackup : ["","","",""],
+        ipTip: '', 
+        subnetmaskTip: '', 
+        gatewayTip: '', 
+        dnsTip: '', 
+        dnsbackupTip: '',
     };
 
     handleChange = value => {
@@ -49,19 +58,22 @@ export default class SetWan extends React.PureComponent {
     };
 
     handleAccountChange = value => {
+        const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
         this.setState({ pppoeAccount : value }, function(){
             this.setState({
-                disabled : !this.checkParams()
+                pppoeAccountTip: tip,
+                disabled : !this.checkParams() ||  tip !== '',
             });
         });
     }
 
-    handleAccountBlur = ()=>{
-        if(this.state.pppoeAccount.length === 0 ){
+    handleAccountBlur = value =>{
+            const tip = checkStr(value,{who:'账号',min: 1,max: 64,type: 'all'});
             this.setState({
-                pppoeAccountTip : "PPPOE 账号不能为空"
+                pppoeAccountTip : tip,
+                disabled : !this.checkParams() ||  tip !== '',
             });
-        }
+        
     }
 
     componentWillUnmount(){
@@ -70,18 +82,22 @@ export default class SetWan extends React.PureComponent {
 
     // 处理pppoe 密码框 change
     handlePasswordChange = value => {
+        const tip = checkStr(value,{who:'密码',min: 1,max: 32,type: 'english'});
         this.setState({ pppoePassword : value }, function(){
             this.setState({
-                disabled : !this.checkParams()
+                pppoePasswordTip : tip,
+                disabled : !this.checkParams() ||  tip !== '',
             });
         });
     };
 
     // pppoe 密码输入框失去焦点
-    handlePasswordBlur = ()=>{
+    handlePasswordBlur = value =>{
+        const tip = checkStr(value,{who:'密码',min: 1,max: 32,type: 'english'});
         if(this.state.pppoePassword.length === 0 ){
             this.setState({
-                pppoePasswordTip : "PPPOE 密码不能为空"
+                pppoePasswordTip : tip,
+                disabled : !this.checkParams() ||  tip !== '',
             });
         }
     }
@@ -94,8 +110,8 @@ export default class SetWan extends React.PureComponent {
                 let { pppoe } = this.netInfo;
                 wan['dns_type'] = pppoe.dns_type === "dynamic" ? 'auto' : pppoe.dns_type;
                 wan['user_info'] = {
-                    username : btoa(pppoeAccount),
-                    password : btoa(pppoePassword)
+                    username : Base64.encode(pppoeAccount),
+                    password : Base64.encode(pppoePassword)
                 };
                 break;
             case 'static' :
@@ -104,7 +120,7 @@ export default class SetWan extends React.PureComponent {
                     mask : subnetmask.join('.'),
                     gateway : gateway.join('.'),
                     dns1 : dns.join('.'),
-                    dns2 : dnsbackup.join('.')
+                    dns2 : dnsbackup.every(item => item.length === 0)? '' : dnsbackup.join('.')
                 };
                 break;
             case 'dhcp' :
@@ -117,41 +133,69 @@ export default class SetWan extends React.PureComponent {
 
     // 提交表单
     submit = async () => {
+        let payload = this.composeParams(), info = payload.wan.info; 
+        if(this.state.type === 'static' && info.ipv4 === info.gateway){
+            message.error(`IP地址与默认网关不能相同`);
+            return ;
+        }
+        if(!checkSameNet(this.state.ip,this.state.gateway,this.state.subnetmask)){
+            this.setState({
+                disabled: false,
+                loading: false,
+            });
+            message.error( 'IP地址与默认网关需在同一网段上' );
+            return ;
+        }
         this.setState({ loading : true });
-        let payload = this.composeParams();
-        let response = await common.fetchWithCode('NETWORK_WAN_IPV4_SET', { method : 'POST', data  : payload })
-            .catch(ex => {})
-        this.setState({ loading : false });
-        let {errcode, message } = response;
+        let response = await common.fetchApi(
+            [
+                {opcode: 'NETWORK_WAN_IPV4_SET', data: payload}
+            ]
+        );
+        let { errcode } = response;
         if(errcode == 0){
             // 触发检测联网状态
-            common.fetchWithCode('WANWIDGET_ONLINETEST_START', {method : 'POST'});
-            // 获取联网状态
-            let connectStatus = await common.fetchWithCode(
-                'WANWIDGET_ONLINETEST_GET', 
-                {method : 'POST'},
-                {loop : true, interval : 3000, stop : ()=> this.stop, pending : resp => resp.data[0].result.onlinetest.status !== 'ok'}
-            );
-            let { errcode:code, data } = connectStatus;
-            if(code == 0){
-                let online = data[0].result.onlinetest.online;
-                this.setState({
-                    showNetWorkStatus : true,
-                    online
-                });
-                if(online){
-                    setTimeout(() => { this.props.history.push("/guide/speed") }, 2000);
+            common.fetchApi(
+                [
+                    {opcode: 'WANWIDGET_ONLINETEST_START'}
+                ]
+            ).then( async() =>{
+                // 获取联网状态
+                let connectStatus = await common.fetchApi(
+                    [
+                        {opcode: 'WANWIDGET_ONLINETEST_GET'}
+                    ],
+                    {},
+                    {
+                        loop : true,
+                        interval : 3000, 
+                        stop : ()=> this.stop, 
+                        pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                    }
+                );
+                let { errcode, data } = connectStatus;
+                this.setState({ loading : false });
+                if(errcode == 0){
+                    let online = data[0].result.onlinetest.online;
+                    this.setState({
+                        showNetWorkStatus : true,
+                        online :online
+                    });
+                    if(online){
+                        setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
+                    }
+                    return;
                 }
-                return;
-            }
-            return;
-        }
-        Modal.error({ title : 'WAN口设置失败', content :  message });
+            });  
+        }else{
+            message.error(`参数不合法[${errcode}]`);
+            this.setState({loading : false});
+        }   
     }
 
     // 校验参数
     checkParams(){
-        let { type, pppoeAccount, pppoePassword, dns, ip, dnsbackup, gateway, subnetmask } = this.state;
+        let { type, pppoeAccount, pppoePassword, dns, ip, dnsbackup, dnsbackupTip, gateway, subnetmask } = this.state;
         switch(type){
             case 'pppoe' :
                 if(pppoeAccount.length === 0 || pppoePassword.length === 0){
@@ -159,64 +203,99 @@ export default class SetWan extends React.PureComponent {
                 }
                 break;
             case 'static' :
-                let empty = [dns, ip, dnsbackup, subnetmask, gateway].some(field => {
-                    if(field.length === 0){
+                let ckDnsbackup = (dnsbackup.every(item => item.length === 0)?  false : dnsbackupTip !== '');
+                let empty = [dns, ip, subnetmask, gateway].some(field => {
+                    if(field.length === 0 || ckDnsbackup){
                         return true;
                     }
                     return field.some(f => {
-                        if(f == null || typeof f === 'undefined' || f === ''){
+                        if(f == null || typeof f === 'undefined' || f === '' || dnsbackup == null || typeof dnsbackup === 'undefined' ){
                             return true;
                         }
                     });
                 })
                 if(empty){
                     return false;
-                }            
+                }
+                            
                 break;
         }
         return true;
     }
-
-    dialDetect = async () => {  
-        common.fetchWithCode('WANWIDGET_DIALDETECT_START', {method : 'POST'});
-        let response = await common.fetchWithCode(
-            'WANWIDGET_DIALDETECT_GET', 
-            { method : 'POST' },
-            { 
-                loop : true, 
-                interval : 2000,
-                pending : res => res.data[0].result.dialdetect.status === 'detecting', 
-                stop : () => this.stop
-            }
-        )
-        this.setState({detect : false});
-        const { errcode, data, message } = response;
-        if(errcode == 0){
-            let { dialdetect } = data[0].result;
-            let { dial_type } = dialdetect;
-            dial_type  = dial_type === 'none' ? 'pppoe' : dial_type;
-            this.setState({ 
-                type :  dial_type, 
-                disabled : dial_type == 'dhcp' ? false : true 
-            });
-            return;
-        }
-        Modal.error({ title: '上网方式检查', content: message });
+    
+    dialDetect = async () => {
+        this.setState({ detect: true });
+        common.fetchApi(
+            [
+                {opcode: 'WANWIDGET_WAN_LINKSTATE_GET'}
+            ],
+        ).then((resp) => {
+            const { errcode,data } = resp;
+            if(errcode == 0){
+                this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
+                if(data[0].result.wan_linkstate.linkstate){
+                    common.fetchApi(
+                        [
+                            {opcode: 'WANWIDGET_DIALDETECT_START'}
+                        ],
+                    ).then(()=>{
+                        common.fetchApi(
+                            [
+                                {opcode: 'WANWIDGET_DIALDETECT_GET'}
+                            ],
+                            {},
+                            { 
+                                loop : true, 
+                                interval : 2000,
+                                pending : res => res.data[0].result.dialdetect.status === 'detecting', 
+                                stop : () => this.stop
+                            }
+                        ).then((response)=>{
+                            const { errcode, data } = response;
+                            if(errcode == 0){
+                                let { dialdetect } = data[0].result;
+                                let { dial_type } = dialdetect;
+                                    dial_type  = dial_type === 'none' ? 'dhcp' : dial_type;
+                                    this.setState({ 
+                                    type :  dial_type, 
+                                    disabled : dial_type == 'dhcp' ? false : true 
+                                    });
+                                    this.setState({ detect: false });
+                                    return;
+                            }else{
+                                this.setState({ detect: false });
+                                message.error(`上网方式检查检测失败[${errcode}]`);
+                            }
+                        }); 
+                    }); 
+                }else{
+                    this.setState({ detect: false });
+                }   
+            }else{
+                message.error(`获取网线插拔状态失败[${errcode}]`);
+            }          
+        });
+        
     }
 
     getNetInfo = async ()=>{
-        let response = await common.fetchWithCode(
-            'NETWORK_WAN_IPV4_GET',
-            { method : 'POST' },
-            { loop : true, pending : res => res.data[0].result.dialdetect === 'detecting', stop : ()=> this.stop }
+        let response = await common.fetchApi(
+            [
+                {opcode: 'NETWORK_WAN_IPV4_GET'}
+            ],
+            {},
+            { 
+                loop : true, 
+                pending : res => res.data[0].result.dialdetect === 'detecting', 
+                stop : ()=> this.stop 
+            }
         ).catch(ex=>{});
-        let { data, errcode, message } = response;
+        let { data, errcode } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
-            console.log('[GOT] IPV4: ', this.netInfo);
             return;
         }
-        Modal.error({ title: '获取 ipv4 信息失败', content: message });
+        message.error(`IP信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){
@@ -226,46 +305,88 @@ export default class SetWan extends React.PureComponent {
         this.getNetInfo(); 
     }
 
-    onIPConifgChange = (value, field) => {
-        this.setState({ [field] : value }, function() {
-            this.setState({
-                disabled : !this.checkParams()
-            });
+    onIPConifgChange = (val, key) => {
+        let valid = {
+            ip:{
+                func: checkIp,
+                who:'IP地址',
+            },
+            subnetmask:{
+                func: checkMask,
+                who:'子网掩码',
+            },
+            gateway:{
+                func: checkIp,
+                who:'默认网关',
+            },
+            dns:{
+                func: checkIp,
+                who:'首选DNS',
+            },
+            dnsbackup:{
+                func: checkIp,
+                who:'备选DNS',
+            },
+        }
+        let tip = valid[key].func(val, {who : valid[key].who});
+        if(key === 'dnsbackup' && val.every(item => item.length === 0)){
+            tip = '';
+        }
+        this.setState({
+            [key] : (typeof val == 'object' ? [...val] : val),
+            [key + 'Tip'] : tip
+        },()=>{
+            this.setState({disabled : !this.checkParams()});
         });
     }
 
-    back = () => {
-        this.props.history.go(-1);
+    nextStep = () => {
+        this.setState({ detect : false});
+        this.props.history.push("/guide/setwifi");
     }
 
-    nextStep = () => this.setState({ detect : false})
-
+    reSet = ()=>{
+        this.setState({
+            showNetWorkStatus : false
+        });
+    }
+    OnwanLinkState = () =>{
+        this.setState({
+            wanLinkState:true
+        })
+    }
+    
     render(){
-        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask} = this.state;
+        const { detect, online, type, disabled, loading, showNetWorkStatus, ip, gateway, dns, dnsbackup, subnetmask,wanLinkState, ipTip, subnetmaskTip, gatewayTip, dnsTip, dnsbackupTip} = this.state;
         return (
             <div className="set-wan">
                 <h2>设置上网参数</h2> 
                 <p className="ui-tips guide-tip">上网参数设置完成后，即可连接网络 </p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />,
-                    <h3 key="active-h3">正在检查上网方式，请稍后...</h3>
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
+                    <h3 key="active-h3">正在检查上网方式，请稍候...</h3>
                 </div>
                 {/* 显示网络连接状态 */}
                 {
-                    showNetWorkStatus ? 
+                    !wanLinkState?
+                        (<div className={classnames(["ui-center speed-test",{'none' : detect}])}> <LinkState dialDetect={this.dialDetect} OnwanLinkState={this.OnwanLinkState} /></div>)
+                        :
+                        showNetWorkStatus ? 
                         (<div className={classnames(["ui-center speed-test"])}>
-                            <NetStatus online={online} reSet={this.back} nextStep={this.nextStep} />
+                            <NetStatus online={online} reSet={this.reSet} nextStep={this.nextStep} />
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
-                            <Form style={{ margin : '0 auto' }}>
+                            <Form style={{ margin : '0 auto',width:375 }}>
                                 <FormItem label="上网方式">
-                                    <Select value={type} style={{ width: "100%" }} onChange={this.handleChange}>
-                                        <Option value="pppoe">宽带账号上网（PPPoE）</Option>
-                                        <Option value="dhcp">自动获取IP（DHCP）</Option>
-                                        <Option value="static">手动输入IP（静态IP）</Option>
-                                    </Select>
+                                    <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                                        <Select value={type} style={{ width: "100%" }} onChange={this.handleChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                            <Option value="pppoe">宽带拨号上网（PPPoE）</Option>
+                                            <Option value="dhcp">自动获取IP（DHCP）</Option>
+                                            <Option value="static">手动输入IP（静态IP）</Option>
+                                        </Select>
+                                    </div>
                                 </FormItem>
                                 {/* pppoe 输入组件 */}
                                 {
@@ -287,28 +408,36 @@ export default class SetWan extends React.PureComponent {
                                                                     subnetmask={subnetmask}
                                                                     dnsbackup={dnsbackup} 
                                                                     onChange={this.onIPConifgChange}
-
+                                                                    ipTip={ipTip}
+                                                                    subnetmaskTip={subnetmaskTip}
+                                                                    gatewayTip={gatewayTip}
+                                                                    dnsTip={dnsTip}
+                                                                    dnsbackupTip={dnsbackupTip}
                                                             /> : ''
                                 }
                                 <FormItem label="#">
-                                    <Button type="primary" onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
+                                    <Button type="primary" size='large' onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>下一步</Button>
                                 </FormItem>
-                                {
-                                    (type === 'pppoe' || type === 'dhcp') ? <FormItem label="#" style={{ marginTop : -20 }}>
-                                        <div className="help">
-                                            <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
-                                            {type === 'pppoe' ? <a href="javascript:;" className="ui-tips">忘记宽带账号密码</a> : ""}
-                                        </div>
-                                    </FormItem> : ""
-                                }
                             </Form>
                         </div>
                     )
-                }
                 
+                }
             </div>
         )
     }
+};
+const LinkState = props =>{
+    return(
+        <div style={{width:260,textAlign:'center',marginTop:-15}}>
+            <CustomIcon type="hint" size="large" color="#FF5500"/>
+            <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
+            <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
+            <div className="help">
+                    <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过</a>
+            </div>
+        </div>
+    );
 };
 
 const NetStatus = props => {
@@ -318,13 +447,13 @@ const NetStatus = props => {
             <h3>已连接网络，正在跳转到带宽设置…</h3>
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
-            <CustomIcon type="mistake" size="large" color="#d33519" />
-            <h3>无法连接互联网</h3>
-            <h4>请检查您的宽带帐号密码是否正确</h4>
-            <Button type="primary"  style={{ width : "100%" }} onClick={props.reSet} size="large">重新设置</Button>
+            <CustomIcon type="hint" size="large" color="#FF5500" />
+            <h3 style={{ marginBottom : 15 }}>无法连接互联网</h3>
+            {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
+            <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>重新设置</Button>
             <div className="help">
                 <a href="javascript:;" onClick={props.reSet} className="ui-tips">上一步</a>
-                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过，直接设置无线网络</a>
+                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>跳过</a>
             </div>
         </div>)
 }
@@ -337,7 +466,9 @@ const PPPOE = props => {
                 name="pppoe-account"
                 value={props.pppoeAccount}
                 onBlur={props.handleAccountBlur}
-                onChange={props.handleAccountChange} />
+                onChange={props.handleAccountChange} 
+                maxLength='64'/>
+            <ErrorTip style={{color: '#fb8632'}}>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>,
         <FormItem key='password' label="密码">
             <FormInput 
@@ -345,7 +476,9 @@ const PPPOE = props => {
                 placeholder="密码" 
                 name="pppoe-password"
                 onBlur={props.handlePasswordBlur}
-                onChange={props.handlePasswordChange} />
+                onChange={props.handlePasswordChange} 
+                maxLength='32'/>
+            <ErrorTip style={{color: '#fb8632'}}>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
     ];
 };
@@ -353,31 +486,35 @@ const PPPOE = props => {
 // 静态 IP 配置
 const StaticIp = props => {
     return [
-        <FormItem key='ip' label="IP地址">
+        <FormItem key='ip' label="IP地址" showErrorTip={props.ipTip}>
             <InputGroup
                 inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
+                <ErrorTip>{props.ipTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='subnetmask' label="子网掩码">
+        <FormItem key='subnetmask' label="子网掩码" showErrorTip={props.subnetmaskTip}>
             <InputGroup                                                                         
                 inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
+            <ErrorTip>{props.subnetmaskTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='gateway' label="网关">
+        <FormItem key='gateway' label="默认网关" showErrorTip={props.gatewayTip}>
             <InputGroup 
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
+            <ErrorTip>{props.gatewayTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dns' label="首选DNS">
+        <FormItem key='dns' label="首选DNS" showErrorTip={props.dnsTip}>
             <InputGroup 
                 inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dns')} />
+            <ErrorTip>{props.dnsTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dnsbackup' label="备选DNS">
+        <FormItem key='dnsbackup' label="备选DNS(选填)" showErrorTip={props.dnsbackupTip}>
             <InputGroup 
                 inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
-                onChange={value => props.onChange(value, 'dnsbackup')}
-            />
+                onChange={value => props.onChange(value, 'dnsbackup')} />
+            <ErrorTip>{props.dnsbackupTip}</ErrorTip>
         </FormItem>
     ];
 };

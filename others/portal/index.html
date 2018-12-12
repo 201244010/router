@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <title>商米Wi-Fi连接</title>
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./fonts/iconfont.css">
+    </head>
+    <body>
+        <div class="content" id="contentWrap">
+            <div class="content-open-wifi">
+                <div id="logo">
+                    <!-- <img id="logo"> -->
+                </div>
+                <h2 class="name" id="name"></h2>
+                <p class="desc" id="desc"></p>
+                <div id="connecting">
+                    <div class="inputs show" id="inputs" style="display: none;">
+                        <div class="input-wrap">
+                            <i class="pre-icon iconfont icon-number"></i>
+                            <input id="mobileInput" type="text" placeholder="请输入手机号" maxlength="11">
+                            <span id="mobileError" class="not-show">手机号输入错误<i id="cleanIcon" class="iconfont icon-clean"></i></span>
+                        </div>
+                        <div class="input-wrap">
+                            <i class="pre-icon iconfont icon-verification"></i>
+                            <input id="codeInput" type="text" placeholder="请输入验证码" maxlength="4">
+                            <span id="codeGetter" class="show">获取验证码</span>
+                            <span id="countDown" class="not-show">60s</span>
+                            <!--
+                            <span id="codeError" class="not-show">验证码输入错误<i id="cleanCodeIcon" class="iconfont icon-clean"></i></span>
+                            -->
+                        </div>
+                    </div>
+                    <div class="btn btn-submit btn-disabled" id="connectBtn">
+                        <a class="btn-text" href="javascript: void(0)" id="connectText">连接Wi-Fi</a>
+                    </div>
+                    <div id="tip">
+                        <span>如无法正常跳转至微信，请更换浏览器重试</span>
+                    </div>
+                    <div class="protocol">
+                        <input type="checkbox" id="protocolInput" checked/>
+                        <label for="protocolInput" id="protocol"></label>
+                        <span>我已阅读并同意《<a href="javascript: void (0)" class="agreement" id="agreement">上网协议</a>》</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="text"><span>©</span><span id="service">由商米为您提供Wi-Fi服务</span></span>
+        </div>
+        <div class="law-mask not-show" id="lawMask"></div>
+        <div class="law-content" id="lawContent" style="display: none;">
+            <div class="law-header">
+                无线网络服务条款
+            </div>
+            <div class="law-main">
+                <div class="law-sub-title">用户须知</div>
+                <div class="law-sub-content">
+                    根据《计算机信息网络国际联网安全保护管理办法》（公安部令第33号）和《互联网安全保护技术措施规定》（公安部令第82号）的相关要求，制订“公众场所无线网络服务条款” 欢迎使用公众场所提供的无线网络。公众场所提供的无线网络是为顾客提供的一项免费服务项目。在您使用无线网络前请仔细阅读服务条款，一旦您选择“我已阅读并同意《无线网络服务条款》”，则表示您同意接受本许可协议的各项条款，即可进行无线网络连接，本许可协议即可生效并具有法律效力。如果用户不同意此许可协议中的条款，请不要选择“我已阅读并同意《无线网络服务条款》”，并且关闭无线网络连接。
+                </div>
+                <div class="law-sub-title">无线上网服务局限</div>
+                <div class="law-sub-content">
+                    您理解并同意：对于无线网络服务中所显示的信息或资料的准确信、内容、完整性、合法性、可靠性、可操作性或可用性，本公众场所不承担任何责任；本公众场所对无线网络服务中的任何信息或材料的删除、存储失败、错误提供或未及时提供不承担任何责任；本公众场所对因通过公众场所提供的无线网络服务下载或访问网上的任何信息或材料而导致的任何损害不承担任何责任；在提供无线上网服务的过程中，本公众场所不保证无线网络不会中断或不会发生错误，不保证与提供无线上网服务有关的网站或服务器无病毒或其他有害组件。
+                </div>
+                <div class="law-sub-title">无线上网服务告知与通信内容</div>
+                <div class="law-sub-content">
+                    使用无线上网服务登录互联网本质上是不安全的。当您登录互联网时，您应完全自行负责采取或实施您认为合适的安全手段保护您的隐私或个人信息及财产。对于您的隐私或个人信息及财产因您使用无线上网服务而发生的损失、破坏或遭非法侵入或使用，本公众场所不承担任何责任。<br/>
+                    用户在使用无线上网服务过程中提交的信息或其他数据应当被视作用户的个人行为。本公众场所不会对用户由公众场所提供的无线网络发表作品进行任何方式的修改、编辑、归类。若您的通信或发表的作品或您的下载行为有任何损害他人著作权、人格权以及其他合法权利或违反国家法律法规的要求，本公众场所不承担任何责任。公众场所或无线上网服务的提供商可能为执法目的或根据司法或其他政府部门的指令或要求被披露该等用户信息提供协助。
+                </div>
+                <div class="law-sub-title">用户提交内容与信息须知</div>
+                <div class="law-sub-content">
+                    用户使用无线上网服务过程中提交的信息或其它使用数据应视作非专有的和非保密的。本公众场所不承担上述信息与数据任何责任。您承担您提交的信息或数据包括改信息或数据的合法性、可信性或适当性等全部责任。<br/>
+                    用户在通过公众场所提供的无线网络登录互联网时，您应当自行负责或实施您认为合适的安全手段保护您的隐私或个人信息及财产。对于您的隐私或个人信息及财产因您使用无线上网服务而遭到泄露、发生损失，破坏或遭非法侵入或使用时，公众场所不承担任何责任。其他一切因使用公众场所提供的无线网络服务而引致至任何意外、疏忽、合约毁坏、诽谤、版权或其他知识产权侵犯及其所造成的损失，本公众场所不承担任何法律责任。本公众场所不对任何由于黑客攻击，计算机病毒、手机病毒侵入或发作，因政府管制而造成的暂时性关闭等影响网络正常经营之不可抗力而造成的个人信息泄露、丢失、误用，变更或毁坏承担任何法律责任。<br/>
+                    用户通过微信或者手机号码认证登录公众场所提供的无线网络，表示同意公众场所今后可将您认证登录的微信、手机号码、MAC地址和使用数据用于公众场所服务相关用途。为方便您及时了解公众场所的产品、优惠、促销等信息，公众场所将不定期以公众号推文或短信方式发送上述信息至您的手机，接受以上信息免费。本公众场所可能会将您的手机号码、MAC地址及使用产生的数据提供给关联公司及提供业务支持的供应商（包括但不限于网站运营、技术支持、客服等），在该等情况下，本公众场所将对您的手机号码严格保密，不会泄露、篡改、出售或非法提供给他人，并要求关联公司及上述第三方遵守此义务。未经您的同意，本公众场所不会将您的手机号码用于本条载明的其他用途。<br/>
+                    对于您的手机号码、MAC地址及使用数据，本公众场所将严格保密，不会泄露、篡改、出售或非法提供给他人。但以下情况的披露无需您的同意，且本公众场所不承担任何责任。<br/>
+                    a) 有您或监护人的明确授权。<br/>
+                    b) 满足适用法律、法规、法律程序的要求或强制性的政府要求所做的披露。<br/>
+                    c) 执行适合的服务条款（包括调查可能存在的违规情况）所做的披露。<br/>
+                    d) 查找、预防或处理欺诈、安全或技术方面的问题所做的披露。<br/>
+                    e) 在法律要求或允许的范围内，保护其他用户或公众的权利、财产或安全免遭损害所做的披露。<br/>
+                    f) 为满足您的使用，提供给关联公司或者提供业务支持的供应商（包括但不限于网站运营、技术支持、客服、产品应用等）。<br/>
+                    我们要求家长在其未成年（指18周岁以下）的孩子使用无线上网服务时予以监督。本公众场所无意向18周岁以下的未成年人提供无线网络服务或收集个人信息，家长或监护人应承担未成年人在网络环境下的隐私权的首要责任。请家长或监护人对其子女或被监护人使用公众场所的服务进行监管和责任。由于公众场所的服务无法辨认用户是否为未成年人，因此如有未成年人使用公众场所的服务，则表示其已获得家长或监护人认可，任何相关后果由其家长或监护人承担。<br/>
+                </div>
+                <div class="law-sub-title">其他</div>
+                <div class="law-sub-content">
+                    使用无线上网服务的用户应当为公众场所及其关联企业免于下列事项遭受任何损害或责任：<br/>
+                    a)用户使用无线上网服务的行为。<br/>
+                    b)用户通过无线上网服务提交、发布、传送或以其他方式展示任何内容。<br/>
+                    c)用户任何违反本条款的行为。<br/>
+                    d)用户侵权第三方的任何权利的行为。<br/>
+                </div>
+                <div class="law-sub-title">免责声明和责任限制</div>
+                <div class="law-sub-content">
+                    无线上网服务系基于其现状而提供的，不附带任何明示或暗示的保证。在任何情况下，对于因使用无线上网服务导致的任何直接或间接损害，或者与使用无线上网服务有关的任何索赔（包括但不限于，通过无线上网服务登录或互联网而导致的任何种类的损失或损害，即使公众场所知晓有发生该等损失或损害的可能），公众场所或其关联企业，或其各自的董事，管理人员，雇员，代理人，承包商，供应商，运营商或许可方（合称“公众场所关联人士”）均不承担任何责任。若本条所述的责任限制被任何使用的法律视作无效，则公众场所及各公众场所关联人士的责任应在法律允许的限度内具有最大程度的责任限制。
+                </div>
+            </div>
+            <div class="law-footer">
+                <span id="iKnow">我知道了</span>
+            </div>
+        </div>
+        <div class="toast not-show" id="toast"></div>
+        <script type="application/javascript" src="./js/flexible.js"></script>
+        <script type="application/javascript" src="./js/md5.js"></script>
+        <script type="application/javascript" src="./js/util.js"></script>
+        <script type="application/javascript" src="./js/dynamic.js"></script>
+        <script type="application/javascript" src="./js/portal.js"></script>
+    </body>
+</html>

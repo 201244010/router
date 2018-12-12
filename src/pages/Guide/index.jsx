@@ -2,11 +2,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
+import SubLayout from '~/components/SubLayout';
 import SetPassword from './SetPassword';
 import SetWan from './SetWan';
 import Speed from './Speed';
 import SetWifi from './SetWifi';
-import SubLayout from '~/components/SubLayout';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
@@ -16,7 +16,6 @@ export default class Guide extends React.Component {
         super(props);
         this.state = {
             activeRouteName : '',
-            iconType : 'lock'
         };
     }
 
@@ -46,14 +45,22 @@ export default class Guide extends React.Component {
 
     render(){
         const { match } = this.props, activeRouteName = this.state.activeRouteName;
-        const iconType = { setpassword : 'lock', setwan : 'browser', speed : 'bandwidth', setwifi : 'wifi' }[activeRouteName];
         return (
             <SubLayout className="steps ui-relative">
+                <div className="header">
+                    <ul>
+                        <li>
+                            <div className="ui-ib logo">
+                                <Icon type="logo" size={40} color="#fff" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <ul className="guide-header">
                     <li className={this.initStepMenu('setpassword')}>
                         <i className="ui-ib order-num">1</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置密码</span>
+                        <span className="ui-ib">设置管理密码</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwan')}>
@@ -65,7 +72,7 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('speed')}>
                         <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置上下行宽带</span>
+                        <span className="ui-ib">设置上下行带宽</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwifi')}>
@@ -74,9 +81,6 @@ export default class Guide extends React.Component {
                         <span className="ui-ib">设置无线网络</span>
                     </li>
                 </ul>
-                <div className="icon-bg">
-                    <Icon type={iconType || "lock"} size={240} />
-                </div>
                 <div className="guide-body">
                     <Switch>
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />

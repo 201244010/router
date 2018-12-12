@@ -106,12 +106,41 @@ exports.styleLoaders = styleLoaders = function (options = {}, forVue = false) {
     const index = options.extract === true ? 3 : 2;
     for (let extension in loaders) {
         let loader = loaders[extension];
+        //console.log(extension);
         output.push({
             test: new RegExp("\\." + extension + "$"),
+            exclude: new RegExp("\\.useable\." + extension + "$"),
             //在index:1位置插入'postcss-loader'
             use: (loader.splice(index, 0, "postcss-loader"), loader)
         });
+        //console.log(loader);
+
+        /**
+         * 实现样式手动加载/卸载功能
+         * 背景：
+         *      我们有PC Web页面和H5页面，react直接import样式会造成组件间样式互相影响、冲突
+         * 解决方案：
+         *      使用style-loader/useable在组件中手动加载、卸载样式。
+         *      原理详见 https://www.npmjs.com/package/style-loader Useable章节
+         * 使用方法：
+         *      1.import样式：import style from "xxx/style.useable.scss";
+         *      2.在组件Mount时加载样式：style.use();
+         *      3.在组件卸载时卸载样式： style.unuse();
+         * 详见示例：
+         *      src/web.js
+         */
+        let uaeableLoader = [...loader];
+        const styleLoaderIdx = options.extract === true ? 1 : 0;
+         output.push({
+            test: new RegExp("\\.useable\." + extension + "$"),
+            exclude: /node_modules/,
+            //替换 style-loader 为 style-loader/useable
+            use: (uaeableLoader.splice(styleLoaderIdx, 1, { loader: "style-loader/useable" }), uaeableLoader)
+        });
+         //console.log(uaeableLoader);
     }
+
+    //console.log(output);
     return output;
 }
 

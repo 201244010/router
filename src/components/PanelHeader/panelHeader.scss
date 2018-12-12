@@ -1,9 +1,20 @@
 .panel-hd {
-    border-bottom : 1px solid #ccc;
+    position: relative;
+    border-bottom : 1px solid #ECECEC;
+    height: 55px;
+    margin-bottom : 5px;
     span {
         color : #FB8632;
         font-size : 18px;
     }
-    height: 55px;
-    margin-bottom : 10px;
+    .help-content{
+        .item-list{
+            li{
+                span{
+                    color: #fff;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
 }

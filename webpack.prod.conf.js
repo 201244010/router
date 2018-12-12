@@ -8,7 +8,7 @@ const chalk = require("chalk");
 const theme = require('./theme');
 
 let styleLoaders = utils.styleLoaders({
-    extract : true, 
+    extract : false,
     minimize : true,
     modifyVars : theme,
     javascriptEnabled: true
@@ -25,10 +25,10 @@ let plugins = [
       __BASEAPI__ : JSON.stringify('/api')
     }),
     // 提取样式表
-    new ExtractTextPlugin({
-        filename: '[name].min.css',
-        allChunks: true
-    }),
+    // new ExtractTextPlugin({
+    //     filename: '[name].min.css',
+    //     allChunks: true
+    // }),
     // 压缩代码
     new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -41,7 +41,7 @@ let plugins = [
 const conf = merge(require('./webpack.base.conf'), {
     module : { rules : styleLoaders },
     devtool : false,
-    watch : true,
+    watch: false,
     plugins
 });
 

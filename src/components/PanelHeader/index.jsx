@@ -1,6 +1,10 @@
 
 import React from 'react';
-import { Switch } from 'antd';
+import { Switch ,Tooltip } from 'antd';
+import Icon from '~/components/Icon';
+import classnames from 'classnames';
+import PropTypes from "prop-types";
+
 import './panelHeader.scss';
 
 export default class PanelHeader extends React.PureComponent {
@@ -15,15 +19,37 @@ export default class PanelHeader extends React.PureComponent {
     }
 
     render(){
-        const { title, checkable, checked } = this.props;
+        const id = `__panel-${new Date().getTime()}`;
+        const { title, checkable, checked, className, tip} = this.props;
         return (
-            <ul className="panel-hd ui-tiled">
-                <li><span>{title}</span></li>
+            <ul className={classnames(['panel-hd ui-tiled', className])} id={id}>
+                <li>
+                    <span>{title}</span>
+                    {tip &&
+                    <Tooltip
+                        trigger='click'
+                        placement="right"
+                        title={tip}
+                        overlayStyle={{maxWidth:340}}
+                        getPopupContainer={() => {
+                            return document.getElementById(id);
+                        }}
+                    >
+                        <span><Icon size={16} type="help" color='#ADB1B9' style={{ marginLeft: 8, cursor: 'pointer', verticalAlign:'baseline'}}/></span>
+                    </Tooltip>
+                    }
+                </li>
                 {
-                    checkable ? <li><Switch defaultChecked={checked} onChange={this.onChange} /></li> : ''
+                    checkable ? <li><Switch checked={checked} onChange={this.onChange} /></li> : ''
                 }
             </ul>
         );
     }
 };
 
+PanelHeader.propTypes = {
+    tip: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element
+    ])
+};

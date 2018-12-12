@@ -1,0 +1,35 @@
+{
+  "errcode": 0,
+  "data": [
+    {
+      "opcode": "0x2025",
+      "result": {
+        "portal": {
+          "weixin": {
+            "enable": 1,
+            "logo_info": "欢迎你",
+            "welcome": "欢迎使用微信连Wi-Fi",
+            "login_hint": "一键打开微信连Wi-Fi",
+            "statement": "由商米为您提供Wi-Fi服务",
+            "ssid": "W1-wxTest",
+            "shopid": "17231844",
+            "appid": "wxd7faaa125d198e2d",
+            "secretkey": "c9f39b067a850901b63c1e2056f2d0",
+            "logo": "",
+            "background": "",
+            "online_limit": "60"
+          },
+          "sms": {
+            "enable": 1,
+            "welcome": "欢迎使用短信连Wi-Fi",
+            "statement": "由商米为您提供Wi-Fi服务",
+            "logo": "common/imgs/logo.png",
+            "background": "common/imgs/bg.png",
+            "online_limit": "60"
+          }
+        }
+      },
+      "errcode": 0
+    }
+  ]
+}

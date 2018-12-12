@@ -1,0 +1,115 @@
+
+.head-content {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.head-title {
+    display: inline-block;
+    margin-left : 6px;
+    color : black;
+}
+
+.speed-btn{
+    display: block;
+    width: 68px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.upgrade-warning{
+    color: red;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+
+.upgrade-download{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.progress-result {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+    .progressfill {
+        font-weight: 600;
+        font-size: 16px;
+        margin-top: 12px;
+        font-weight: bold;
+        color: #333C4F;
+    }
+    .progressfail {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #ADB1B9;
+    }
+}
+
+.progress-download {
+    display: block;
+    text-align: center;
+    .speedfill {
+        font-size: 16px;
+        margin-top: 12px;
+        font-weight: bold;
+    }
+}
+
+.upgrade-save{
+    height: 98px;
+    border-top: 1px solid #d8d8d8;
+    .upgrade-btn{
+        width: 116px;
+        height: 34px;
+        left: 60px;
+        top: 24px;
+    }
+}
+
+
+.div-header{
+    text-align:left;
+    padding-left:20px;
+    padding-top:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid #d4d4d4;
+}
+
+.div-body{
+    text-align:left;
+    height:80px;
+    padding-top:30px;
+    padding-bottom:30px;
+    padding-left:20px
+}
+
+.div-footer{
+    text-align:right;padding-top:20px;
+    padding-bottom:20px;
+    padding-right:20px;
+    border-top:1px solid #d4d4d4
+}
+
+.online-update {
+    margin-top: 10px;
+}
+
+.save{
+    width: 100%;
+    border-top:1px solid #ECECEC;
+    padding:20px 60px 20px;
+    margin-top: 49px;
+}
+.system-save{
+    height: 98px;
+    border-top: 1px solid #d8d8d8;
+    left:-60px;
+    .system-button{
+        width: 320px;
+        height: 34px;
+        left: 60px;
+        top: 24px;
+    }
+}

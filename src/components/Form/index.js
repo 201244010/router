@@ -15,7 +15,7 @@ const FormItem = props => {
         { 
             'ui-form-item-with-help' :  showErrorTip, 
             "has-error" : showErrorTip,
-            "ui-form-item-small" : props.type === 'small'
+            "ui-form-item-small" : props.type === 'small',
         }
     ]);
     return (
@@ -61,6 +61,7 @@ class Input extends React.Component {
 
     static propTypes = {
         size : PropTypes.string,
+        maxLength : PropTypes.number,
         type : PropTypes.string,
         onChange : PropTypes.func.isRequired,
         name : PropTypes.string,
@@ -103,8 +104,9 @@ class Input extends React.Component {
     render(){
         let hidden = this.state.hidden;
         let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
+        let checkDisabled = this.props.disabled ? 'ui-input-disabled':''; //disabled 为true 时，字体颜色透明度为30%
         return (
-            <div className="ui-input-outline" style={{ width : this.props.width }}>
+            <div className={`ui-input-outline ${checkDisabled}`} style={{ width : this.props.width }}>
                 {
                     this.props.type === 'password' ? [
                         <i key="eye-open" className="ui-icon ui-icon-eye-open" 
@@ -119,12 +121,14 @@ class Input extends React.Component {
                 }
                 <input  className={classnames(classes)}
                         onBlur={this.handleBlur}
+                        maxLength={this.props.maxLength}
                         onKeyPress={this.handleKeyPress}
                         onChange={this.handleChange} 
                         value={this.props.value}
                         disabled={this.props.disabled}
                         name={this.props.name}
                         placeholder={this.props.placeholder}
+                        autocomplete="new-password" // 修复chrome上密码自动填充问题
                         type={this.state.type}/>
             </div>
         );
@@ -140,21 +144,54 @@ class InputGroup extends React.Component {
             focus : false
         };
     }
+
+    static getDerivedStateFromProps(props){
+        return {
+            inputs : props.inputs
+        }
+    }
+
     static propTypes = {
         size : PropTypes.string,
+        type : PropTypes.string,
         inputs : PropTypes.array.isRequired,
         onChange : PropTypes.func.isRequired,
         disabled : PropTypes.bool
     };
 
+    static defaultProps = {
+        type : 'ip'
+    }
+
     onInputChange = (e, i, it) => {
+        const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-        item.value = e.target.value;
+
+        let val = target.value, goNext = false;
+        if ('ip' === this.props.type) {
+            let len = val.length;
+            goNext = (len >= 2 && '.' === val[len - 1]);
+            val = val.replace(/\D*/g, '');
+        } else {
+            val = val.replace(/[^0-9a-f]*/gi, '').toUpperCase();
+        }
+
+        item.value = val;
         this.setState({ inputs });
         if(this.props.onChange){
             const values = inputs.map(input => input.value);
             this.props.onChange(values, this.state.inputs);
+        }
+
+        // 自动focus到下一个Input
+        const maxLen = target.getAttribute('maxLength');
+        if (goNext || (maxLen && val.length >= maxLen)) {
+            let next = target.parentNode.nextElementSibling;
+            if (next) {
+                next = next.nextElementSibling;
+                next.querySelector('.ui-input-group-item').focus();
+            }
         }
     }
 
@@ -190,12 +227,25 @@ class InputGroup extends React.Component {
 
     // 限制只能输入数字 退格，删除，tab
     handleKeyPress  = e => {
-        const which = e.which;
-        const allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
-        if(allow){
+        let which = e.which;
+        let allow = (which >= 48 && which <= 57 ) || (which <= 96 && which >= 105) || which == 8 || which == 9 || which == 46;
+        let isWord = (which >= 65 && which <= 70) || which == 20; // 字母 Cape Lock
+        let move = which == 37 || which == 39;
+        if(allow || (isWord && this.props.type == 'mac') || move ){
             return true;
         }
         e.preventDefault();
+    }
+
+    handleKeyDown = e => {
+        // BackSpace
+        if ('' === e.target.value && 8 === e.which) {
+            let previous = e.target.parentNode.previousElementSibling;
+            if (previous) {
+                previous = previous.previousElementSibling;
+                previous.querySelector('.ui-input-group-item').focus();
+            }
+        }
     }
 
 
@@ -216,26 +266,33 @@ class InputGroup extends React.Component {
     render(){
         let { inputs, focus } = this.state;
         let size = this.props.size;
-        let classes = ['ui-input-outline ui-input-group', {focus}];
+        let type = this.props.type;
+        let classes = ['ui-input-outline ui-input-group', { focus }, { disabled: this.props.disabled}];
         if(this.props.size){
             classes.push({[size] : true});
+        }
+        if (this.props.disabled){              //disabled 为true 时，字体颜色透明度为30%
+            classes.push('ui-input-disabled');
         }
         return (
             <div className={classnames(classes)}>
                 {
                     inputs.map( (item, i) => {
-                        const It = <input key={'input-' + i} 
+                        const It = <div><input key={'input-' + i} 
                                         maxLength={item.maxLength}
-                                        defaultValue={item.value} 
+                                        // defaultValue={item.value} 
+                                        value={item.value}
                                         className="ui-input-group-item"
                                         onBlur={ e => this.onInputBlur(e, i, item) }
                                         onFocus={ e => this.onInputFocus(e, i, item)}
                                         onChange={ e => this.onInputChange(e, i, item)} 
-                                        onKeyPress={ this.handleKeyPress }
+                                        //onKeyPress={ this.handleKeyPress }
+                                        onKeyDown={ this.handleKeyDown }
                                         type='text'
-                                    />;
+                                        disabled={this.props.disabled}
+                                    /></div>;
                         if(i !== inputs.length - 1){
-                            return [It, <span className="dot" key={'span-' + i}></span>];
+                            return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
                         }
                         return It;
                     })

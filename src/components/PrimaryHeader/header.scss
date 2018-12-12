@@ -1,6 +1,5 @@
 
 .header {
-    background: #2956C6;
     color : #fff;
     a:hover, a:active, a:visited {
         text-decoration: none;
@@ -19,6 +18,7 @@
         justify-content: flex-start;
         align-items: center;
         margin : 0;
+        padding: 0;
         height: 55px;
         font-size : 14px;
 
@@ -30,24 +30,34 @@
             flex : 1;
         }
 
+        nav {
+            flex : 1;
+        }
+
         .logo {
             margin-right: 15px;
         }
         .slogan {
-            vertical-align: -2px;
+            vertical-align: -4px;
+            font-size: 16px;
         }
 
         .menu {
             font-size : 16px;
             text-align: center;
+            .ui-icon{
+                margin-right: 3px;
+            }
             a { 
                 margin-right : 50px; 
                 height : 36px;
                 line-height: 36px;
-                border-bottom : 2px solid #2956C6;
-                &:hover, &.now {
+                padding-bottom: 3px;
+                vertical-align: middle;
+                &:hover, &.active {
+                    text-decoration : none;
                     font-weight: bold;
-                    border-bottom-color: #fff;
+                    border-bottom : 2px solid #fff;
                 }
             }
         }
@@ -60,7 +70,6 @@
         .sidebar {
             font-size: 14px;
             flex : none;
-            width : 200px;
             span { margin : 0 15px; }
         }
     }

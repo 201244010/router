@@ -1,8 +1,11 @@
 
 import React from 'react';
 import Form from '~/components/Form';
-import {Button, Modal} from 'antd';
+import { Button, Modal } from 'antd';
+import { Base64 } from 'js-base64';
 import routes from '../../routes';
+import { init } from '~/assets/common/auth';
+import {checkStr} from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input }  = Form;
 
@@ -13,84 +16,97 @@ export default class SetPassword extends React.Component {
     }
 
     state = {
-        tip : '',
-        password : '',
-        disabled : true,
-        loading : false
+        pwd: '',
+        pwdTip: false,
+        surePwd: '',
+        surePwdTip: false,
+        loading: false
     };
-
-    onPassportBlur = value => {
-        if(value.length < 6){
-            this.setState({
-                tip : '请输入6位以上密码',
-                disabled : true
-            });
-        }
-    };
-
-    componentWillUnmount(){
-        this.stop = true;
-    }
 
     // 表单提交
     post = async () => {
-        let password = this.state.password;
+        const {pwd, surePwd} = this.state;
 
-        this.setState({ loading : true });
-        const response = await common.fetchWithCode(
-            'ACCOUNT_MODIFY', 
-            { 
-                method : 'POST', data : { account : { password : btoa(password), user : 'admin', oldpassword : btoa("test") } } }, 
-            { loop : 10, stop : () => this.stop, interval : 2000, handleError : true }
-        ).catch(ex => {})
-
-        this.setState({ loading : false });
-        let { errcode, message } = response;
-        if(errcode == 0){
-            this.props.history.push(routes.guideSetWan);
+        if (pwd !== surePwd) {
+            this.setState({
+                surePwdTip: '两次密码输入不一致'
+            });
             return;
         }
-        this.setState({ tip : message });
+
+        this.setState({ loading: true });
+        const response = await common.fetchApi({
+            opcode: 'ACCOUNT_INITIAL_PASSWORD',
+            data: { account: { password: Base64.encode(pwd), user: 'admin' } }
+        });
+        this.setState({ loading: false });
+
+        let { errcode, data } = response;
+        switch (errcode) {
+        case 0:
+            init(data[0].result.account.token);
+            this.props.history.push(routes.guideSetWan);
+            break;
+        case '-1608':
+            Modal.info({
+                    title: '提示',
+                    content: '已设置过密码',
+                    okText: '确定',
+                    centered: true,
+                    onOk: () => {
+                        location.href = '/';
+                    }
+                });
+            break;
+        default:
+            this.setState({ pwdTip: `未知错误[${errcode}]`});
+            break;
+        }
     }
 
     // 监听输入实时改变
-    onPassportChange = value => {
+    onChange = (name, value) => {
+        let tip = checkStr(value, { who: '密码', min: 6, max: 32, type: 'english' });
         this.setState({
-            password : value,
-            tip : '',
-            disabled : value.length < 6
+            [name]: value,
+            [name + 'Tip']: tip,
         });
     }
 
-    // 回车提交数据
-    onEnter = ()=>{
-        if(this.state.disabled){
-            return false;
-        }
-        this.post();
-    }
-    
     render(){
-        const { match } = this.props;
-        const { tip, disabled, loading } = this.state;
+        const { pwd, pwdTip, surePwd, surePwdTip, loading } = this.state;
         return (
-            <div> 
-                <h2>设置管理员密码</h2> 
-                <p className="ui-tips guide-tip">管理员密码是进入路由器管理页面的凭证 </p>
-                <Form style={{margin : '24px auto'}}>
-                    <FormItem label="设置密码" style={{ marginBottom : 32 }} showErrorTip={tip}>
-                        <Input placeholder="请设置密码" onChange = {this.onPassportChange} onBlur={ this.onPassportBlur } onEnter={this.onEnter} />
-                        <ErrorTip>{tip}</ErrorTip> 
+            <div className="setpassword"> 
+                <h2>设置管理密码</h2>
+                <p className="ui-tips guide-tip">管理密码是进入路由器管理页面的凭证</p>
+                <Form style={{margin : '24px auto', width:335}}>
+                    <FormItem label="设置密码" showErrorTip={pwdTip}>
+                        <Input
+                            placeholder="请设置密码"
+                            value={pwd}
+                            onChange = {value => this.onChange('pwd', value)}
+                            maxLength={32} />
+                        <ErrorTip>{pwdTip}</ErrorTip>
+                    </FormItem>
+                    <FormItem label="确认密码" showErrorTip={surePwdTip}>
+                        <Input
+                            placeholder="请确认密码"
+                            value={surePwd}
+                            onChange = {value => this.onChange('surePwd', value)}
+                            maxLength={32} />
+                        <ErrorTip>{surePwdTip}</ErrorTip>
                     </FormItem>
                     <FormItem label="#">
-                        <Button disabled={disabled} loading={loading} style={{ width : "100%" }} onClick={this.post} size="large" type="primary">下一步</Button>
+                        <Button
+                            disabled={'' !== pwdTip || '' !== surePwdTip}
+                            loading={loading}
+                            style={{ width : '100%',height: 42 }}
+                            onClick={this.post}
+                            size="large"
+                            type="primary">下一步</Button>
                     </FormItem>
                 </Form>
             </div>
         )
     }
 };
-
-
-
-

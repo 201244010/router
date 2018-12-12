@@ -1,10 +1,26 @@
+.ant-btn:hover{
+    background-color: #FFF;
+    color: #F0E1DF;
+    border-color: #F0E1DF;
+}
 
+.ant-btn:active,.ant-btn:focus{
+    background-color: #FFF;
+    color: #FF9D66;
+    border-color: #FF9D66;
+}
+
+.ant-btn, .ant-btn:visited{
+    background-color: #FFF;
+    color: #61739D;
+    border: 1px solid #ECECEC;
+}
 
 button.ant-btn-primary,
 button.ant-btn-primary:hover, button.ant-btn-primary:focus {
+    color: #FFFFFF;
     background-color : $button-bg-color;
     border : 1px solid $button-bg-color;
-    height: 42px;
 }
 
 button.ant-btn-primary.ant-btn-loading {
@@ -80,6 +96,64 @@ button.ant-btn-primary.ant-btn-loading {
 
 .ant-select-selection:hover {
     border-color : #FB8632!important;
+}
+
+.ant-table-pagination.ant-pagination {
+    float: none !important;
+    text-align: right;
+    .ant-pagination-total-text{
+        float: left;
+        color:#ADB1B9;
+    }
+}
+
+.ant-table-tbody>tr>td.center{
+    padding: 0 !important;
+    text-align: center;
+}
+.ant-table-fixed-header .ant-table-content .ant-table-scroll .ant-table-header{
+    padding-bottom: 3px;    // for firefox
+    &::-webkit-scrollbar-track{ // for chrome
+        background: #fff;
+    }
+}
+
+.ant-tabs-nav-wrap{
+    .ant-tabs-nav{
+        margin-left:60px;
+    }
+    .ant-tabs-tab{
+        color: #ADB1B9 !important;
+        margin-right:32px !important;
+        padding:12px 0 !important;
+    }
+    .ant-tabs-tab-active{
+        font-weight: bold !important;
+        color: #FB8632 !important;
+    }
+    .ant-tabs-ink-bar{
+        height:3px !important;
+        background-color: #FB8632 !important;
+    }
+}
+
+.ant-checkbox-checked, .ant-checkbox-indeterminate{
+    .ant-checkbox-inner{
+        background-color: #FB8632!important;
+        border-color: #FB8632!important;
+    }
+}
+
+.ant-radio-checked{
+    .ant-radio-inner{
+        border-color: #FB8632!important;
+        &:hover{
+            background-color: #FB8632!important;
+        }
+        &:after{
+            background-color: #FB8632!important;
+        }
+    }
 }
 
 // .ant-select-focused .ant-select-selection,

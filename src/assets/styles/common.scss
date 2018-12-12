@@ -4,10 +4,11 @@ html,body,p,div,h1,h2,h3,h4,h5,h6,a,span,ul,li,section,article,ol,dt,dd,dl,form,
 html,body, .layout {
     width : 100%;
     height: 100%;
+    min-width: 1216px;
 }
 
 body {
-    font: 13px/22px PingFangSC-Regular, '微软雅黑'!important;
+    font: 13px/22px PingFangSC-Regular, '微软雅黑', sans-serif!important;
     color: rgba(0,0,0,0.45);
     background-color: #F0F2F5!important;
 }
@@ -30,45 +31,80 @@ input::-moz-placeholder, textarea::-moz-placeholder {
     opacity: .3;
 } 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-    color: #333C4F;
-    opacity: .3;
+    color: #ccc !important;
 }
 
-    
-
-.main {
-    height: 100%;
-    background-image : linear-gradient(180deg, $primary-bg-color 175px, #f2f3f7 175px);
-
-    &.blue-bg {
+.bg-items{
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    .noise{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+}
+.index-bg{
+    background-image : linear-gradient(135deg, #529CF4 , #545DED, #4441E2);
+    .bg-items{
+        visibility: visible;
+    }
+}
+.bg{
+    background-image : linear-gradient(180deg, #446CE6 230px, #446CE6 0);
+    .main{
         color : #fff;
         height : auto;
-        background-image : linear-gradient(180deg, $primary-bg-color);
         position : absolute;
         left : 0;
         top : 55px;
         padding-top : 10px;
         right : 0;
-        bottom : 20px;
-        padding-bottom : 55px;
+        bottom : 0;
+        padding-bottom : 65px;
         .ui-form {
             margin : 40px auto 0;
         }
     }
+}
+.main-content{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+}
+.main {
+    // height: 100%;
+    height : calc(100% - 55px);
+    min-width: 1216px;
 
     footer {
+        opacity: 0.4;
         font-size : 12px;
         position: fixed;
         text-align: center;
         bottom : 0;
         left : 0; 
         right : 0;
+        color : #fff;
         height : 55px;
-        opacity: 0.45;
         p {
             margin-bottom : 0;
         }
-        // background-image : linear-gradient(180deg, $primary-bg-color);
+        span {
+            margin : 0 16px;
+        }
+        a {
+            margin : 0 16px;
+            text-decoration: underline;
+        }
     }
 }
 
@@ -77,6 +113,25 @@ ul,li{
 }
 
 
+::selection {
+    background-color :#d4d4d4;
+}
 
-
-
+.modal-center{
+    .ant-modal-body{
+        text-align: center;
+        h3{
+            font-size: 16px;
+            color: #333C4F;
+            margin: 5px auto;
+        }
+    }
+    .ant-modal-footer{
+        padding: 20px 16px;
+        text-align: center;
+        button{
+            width: 160px;
+            height: 42px;
+        }
+    }
+}

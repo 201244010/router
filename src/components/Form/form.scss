@@ -1,5 +1,5 @@
 /* UI FROM */
-.ui-form {
+.ui-form, .ant-modal {
     position: relative;
     margin-bottom : 10px;
     width : 360px;
@@ -7,7 +7,7 @@
         display: flex;
         position: relative;
         font-size : 14px;
-        margin-bottom : 24px;
+        margin-bottom : 30px;
         vertical-align : top;
         .ui-form-explain {
             position: absolute;
@@ -21,12 +21,16 @@
         }
         &.has-error {
             .ui-input {
-                border : 1px solid #FB8632;
+                border : 1px solid #D33419;
                 box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
             }
             .ui-form-explain {
-                color : #FB8632;
-                padding-left: 10px;
+                color : #D33419;
+                white-space: nowrap;
+            }
+            .ui-input-group{
+                border : 1px solid #D33419;
+                box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
             }
         }
     }
@@ -35,6 +39,7 @@
         height : 42px;
         margin-right : 15px;
         line-height: 42px;
+        color : #333C4F;
         text-align: right;
         flex : none;
         min-width : 100px;
@@ -56,9 +61,16 @@
 
     .ui-input-outline {
         position: relative;
+        .ui-icon {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            cursor: pointer;
+        }
     }
 
     .ui-input-group {
+        background-color: #FFF;
         border-radius: 4px;
         border : 1px solid rgba(0,0,0,0.15);
         padding : 0 10px;
@@ -71,9 +83,13 @@
 
         }
         &.small {
+            line-height: 32px;
             .ui-input-group-item {
                 height: 32px;
-            }    
+            }
+            .dot{
+                line-height:32px;
+            }
         }
         .ui-input-group-item {
             flex : 1;
@@ -86,21 +102,22 @@
         span.dot {
             flex : none;
             width : 2px;
-            height : 2px;
-            border-radius: 100%;
-            background-color : #000;
-            margin : 0 14px;
+            height : 100%;
+            // border-radius: 100%;
+            // background-color : #000;
+            margin : 0 10px;
+            line-height: 40px;
         }
     }
 
 
     .ui-input {
-        height : 40px;
+        height : 42px;
         border-radius: 4px;
         border : 1px solid rgba(0,0,0,0.15);
         padding-left: 10px;
         width : 100%;
-        color : #333;
+        color : #333C4F;
         box-sizing: border-box;
         &:focus {
             outline :none;
@@ -121,14 +138,11 @@
         border: 1px solid rgba(0,0,0,0.15);
     }
 
-    .ui-icon {
-        position: absolute;
-        right: 10px;
-        top: 0;
-        cursor: pointer;
+    .ui-input-disabled{
+        input {
+            color: rgba(50, 60, 79, 0.3);
+        }
     }
-
-
     // input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     //     box-shadow: 0 0 0 40px white inset;
     // }
