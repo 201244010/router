@@ -47,8 +47,8 @@ export default class Home extends React.PureComponent{
                 }} />
                 <h2>欢迎使用商米路由器</h2>
                 <p>下载商米助手APP，随时随地管理您的网络</p>
-                <Button onClick={this.downloadApp} className='download' type='primary'>下载APP</Button>
-                <Button onClick={this.openApp}>已安装，直接打开</Button>
+                <div><Button onClick={this.downloadApp} className='download' type='primary'>下载APP</Button></div>
+                <div><Button onClick={this.openApp}>已安装，直接打开</Button></div>
                 <div className='web-config'>
                     <a onClick={this.goWeb} href="javascript:void(0);">进入网页版配置</a>
                 </div>
