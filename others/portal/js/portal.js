@@ -100,7 +100,6 @@ window.onload = function () {
                     document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
                     + ((weixin.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
                     logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
-                    console.log(logoElement.style.backgroundImage);
                     showToast('PC端暂不支持微信连Wi-Fi功能', 0);
                 }
             } else {
