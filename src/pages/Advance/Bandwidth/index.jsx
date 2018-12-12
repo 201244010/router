@@ -387,14 +387,24 @@ export default class Bandwidth extends React.PureComponent {
                         <PanelHeader title="总带宽" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
                     <section className="band-value">
-                        <div className="band-size">{upband}
-                            <span className="band-unit">{unit}</span>
-                            <span className="band-bottom">上行带宽<span className="icon-band"><CustomIcon size={12} color="#3D76F6" type="kbyte"/></span></span>
+                        <div className="band-size">
+                            <div className="band-left">{upband}</div>
+                            <div className="band-right">
+                                <span className="band-unit">{unit}</span>
+                                <span className="band-unit">上行带宽
+                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#3D76F6" type="kbyte"/></span>
+                                </span>
+                            </div>
                         </div>
                         <div className="band-line"></div> 
-                        <div className="band-size">{downband}
-                            <span className="band-unit">{unit}</span>
-                            <span className="band-bottom">下行带宽<span className="icon-band"><CustomIcon size={12} color="#87D068" type="downloadtraffic"/></span></span>
+                        <div className="band-size">
+                            <div className="band-left">{downband}</div>
+                            <div className="band-right">
+                                <span className="band-unit">{unit}</span>
+                                <span className="band-unit">下行带宽
+                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#87D068" type="downloadtraffic"/></span>
+                                </span>
+                            </div>
                         </div>
                     </section>
                     <section style={{margin:"16px 20px 32px 0"}}>
@@ -423,44 +433,44 @@ export default class Bandwidth extends React.PureComponent {
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
                     <label style={{ display:'block',marginBottom: 6 }}>上行总带宽</label>
-                        <FormItem showErrorTip={upbandTmpTip} type="small" style={{ width: 320 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
-                            <ErrorTip>{upbandTmpTip}</ErrorTip>
-                        </FormItem>
+                    <FormItem showErrorTip={upbandTmpTip} type="small" >
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder="请输入上行总带宽" />
+                        <ErrorTip>{upbandTmpTip}</ErrorTip>
+                    </FormItem>
                     <label style={{ display:'block',marginBottom: 6 }}>下行总带宽</label>
-                        <FormItem showErrorTip={downbandTmpTip} type="small" style={{ width: 320,marginBottom: 8 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                            <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
-                            <ErrorTip>{downbandTmpTip}</ErrorTip>
-                        </FormItem>
+                    <FormItem showErrorTip={downbandTmpTip} type="small" style={{ marginBottom: 8 }}>
+                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder="请输入下行总带宽" />
+                        <ErrorTip>{downbandTmpTip}</ErrorTip>
+                    </FormItem>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFill} centered={true} footer={null}>
-                    <div className="progress-test">
-                        <CustomIcon color="#87D068" type="succeed" size={64}/>
-                        <div className="speedfill">带宽测速完成!</div>
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFillCancle}>确定</Button>}>
+                    <div className='status-icon'>
+                        <CustomIcon color="#87D068" type="succeed" size={64}/>   
                     </div>
-                    <div className="band-line">
-                        <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                        <label>上行带宽：{upband}{unit}</label>
-                    </div>
-                    <div className="band-line">
-                        <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                        <label>下行带宽：{downband}{unit}</label>
-                    </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFillCancle}>确定</Button>
-                    </section>
+                    <h4>带宽测速完成</h4>
+                    <ul className='speed-result'>
+                        <li>
+                            <CustomIcon color="#779FF8" type="kbyte" size={16}/>
+                            <label>上行带宽：{upband}{unit}</label>
+                        </li>
+                        <li>
+                            <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
+                            <label>下行带宽：{downband}{unit}</label>
+                        </li>
+                    </ul>
                 </Modal>
-                <Modal width={560} closable={false} visible={speedFail} centered={true} footer={null}>
-                    <div className="progress-test">
+                <Modal className='speed-result-modal' width={560} closable={false} visible={speedFail} centered={true} 
+                footer={<Button type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>}>
+                    <div className="status-icon">
                         <CustomIcon color="red" type="defeated" size={64}/>
-                        <div className="speedfill">带宽测速失败，请重试</div>
-                        <div style={{marginBottom : 32, marginTop : 6,fontSize : 12}}>{failTip}</div>
                     </div>
-                    <section className="speed-bottom">
-                            <Button className="speed-button" type="primary" onClick={this.onSpeedFailCancle}>我知道了</Button>
-                    </section>
+                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>带宽测速失败，请重试</div>
+                    <div style={{ textAlign:'center',margin: '4px auto 6px'}}>   
+                        <div style={{fontSize : 12,color: '#ADB1B9'}}>{failTip}</div>
+                    </div>   
                 </Modal>
             </div>
         );

@@ -23,7 +23,7 @@ export default class Backup extends React.Component{
     state = {
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
-        backupFailTip : '备份失败请重试',//备份失败以及网络未连接提示
+        backupFailTip : '备份失败！请重试～',//备份失败以及网络未连接提示
         backupSuccess : false,//备份成功 , 恢复成功
         backupSuccessTip : '备份成功！',
         filename : '',
@@ -399,7 +399,7 @@ export default class Backup extends React.Component{
                     <div className="backup-modal">
                         <div className="backup-filename">文件名</div>
                         <div>
-                            <FormItem type="small" style={{ width: 320 }}>
+                            <FormItem type="small" >
                                 <Input type="text" value={filename} maxLength={32} onChange={value => this.onChange(value, 'filename')} placeholder="请输入文件名" />
                             </FormItem>
                         </div>

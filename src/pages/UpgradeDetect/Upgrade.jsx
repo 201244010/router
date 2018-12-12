@@ -1,5 +1,6 @@
 import {Modal, Icon,Button} from 'antd';
 import CustomIcon from '~/components/Icon';
+import Progress from '~/components/Progress';
 import React from "react";
 
 export default class Upgrade extends React.Component{
@@ -12,8 +13,9 @@ export default class Upgrade extends React.Component{
         downloadFail : false,//文件下载失败弹窗
         downloadSuccess : false, //升级完成弹窗
 
-        duration : 5,//文件下载时间
-        downloadTip : '正在下载新版本，请稍候...',
+        visible: false,
+        duration : 150,//文件下载时间
+        downloadTip : '正在下载软件，请耐心等待...',
         warningTip : '下载过程中请勿断电！！！',
         downloadFailtip : '升级文件下载失败，请重试',
         failReason : ''
@@ -29,7 +31,7 @@ export default class Upgrade extends React.Component{
         }).then((resp)=>{
             if(resp.errcode == 0){
                 this.setState({
-                    duration : resp.data[0].result.upgrade.duration,
+                    duration : resp.data[0].result.upgrade.restart_duration,
                 });
             common.fetchApi(
                 {opcode : 'UPGRADE_STATE'},
@@ -61,21 +63,22 @@ export default class Upgrade extends React.Component{
                         return;
                     case 'check success!':
                         this.setState({
-                            downloadTip : '正在安装新版本，请等待两分钟...',
-                            warningTip : '安装过程中请勿断电！！！'
+                            download : false,
+                            downloadFail : false,
+                            visible: true,
                         });
                         setTimeout(() => {
                                 this.setState({
                                 downloadSuccess : true,
-                                download : false,
+                                visible: false,
                             });
-                        },140000)
+                        },this.state.duration*1000);
                         return;
                     default:
                         break;
                 }
             }) 
-        }else{
+        }else{   
             Modal.error({title : '启动升级失败', centered: true});
         }});
     }
@@ -95,7 +98,7 @@ export default class Upgrade extends React.Component{
     }
 
     render(){
-        let {downloadSuccess, downloadFailtip,failReason, download, downloadFail,downloadTip,warningTip} = this.state;
+        let {downloadSuccess, downloadFailtip,failReason, download, downloadFail,downloadTip,warningTip,visible,duration} = this.state;
 
         return (
             <div>
@@ -116,9 +119,17 @@ export default class Upgrade extends React.Component{
                 <Modal closable={false} maskClosable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>确定</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="lightgreen" type="succeed" size={64}/>
-                        <div className="progressfill" style={{color : '#333C4F', marginBottom : 30}}>升级完成，请重新登录管理界面</div>
+                        <div className="progressfill" style={{color : '#333C4F'}}>升级完成，请重新登录管理界面</div>
                     </div>
                 </Modal>
+                {visible && 
+                    <Progress
+                    duration={duration}
+                    title='正在升级系统，请耐心等待...'
+                    tips='升级过程中请勿断电!'
+                    showPercent={false}
+                    />
+                }
             </div>
         )
     }

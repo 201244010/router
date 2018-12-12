@@ -1,0 +1,14 @@
+.sm-btn{
+    width: 8.6667rem;
+    height: 1.2267rem;
+    font-size: 0.48rem;
+    text-align: center;
+    color: #FFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 0.6133rem;
+    background-color: transparent;
+    &.btn-primary{
+        border-width: 0;
+        background-color: #FB8632;
+    }
+}

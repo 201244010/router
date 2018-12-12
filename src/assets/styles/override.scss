@@ -1,7 +1,24 @@
+.ant-btn:hover{
+    background-color: #FFF;
+    color: #F0E1DF;
+    border-color: #F0E1DF;
+}
 
+.ant-btn:active,.ant-btn:focus{
+    background-color: #FFF;
+    color: #FF9D66;
+    border-color: #FF9D66;
+}
+
+.ant-btn, .ant-btn:visited{
+    background-color: #FFF;
+    color: #61739D;
+    border: 1px solid #ECECEC;
+}
 
 button.ant-btn-primary,
 button.ant-btn-primary:hover, button.ant-btn-primary:focus {
+    color: #FFFFFF;
     background-color : $button-bg-color;
     border : 1px solid $button-bg-color;
 }

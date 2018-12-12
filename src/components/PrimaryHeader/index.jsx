@@ -3,7 +3,7 @@ import Icon from '~/components/Icon';
 import './header.scss';
 import SubLayout from "../SubLayout";
 import { withRouter, NavLink } from "react-router-dom";
-import { get, clear } from '~/assets/common/cookie';
+import { get, clear } from '~/assets/common/auth';
 
 class PrimaryHeader extends React.Component {
 	constructor(props) {
@@ -30,7 +30,7 @@ class PrimaryHeader extends React.Component {
             opcode: 'ACCOUNT_LOGOUT',
             data:{
                 account: {
-                    token: get('sysauth')
+                    token: get()
                 }
             }
         });

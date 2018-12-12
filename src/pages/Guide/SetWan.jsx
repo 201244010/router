@@ -302,7 +302,7 @@ export default class SetWan extends React.PureComponent {
         // 检测上网方式
         this.dialDetect();
         // 获取网络情况
-        this.getNetInfo(); 
+        setTimeout(this.getNetInfo, 500);
     }
 
     onIPConifgChange = (val, key) => {

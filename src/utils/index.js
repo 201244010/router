@@ -14,7 +14,7 @@ export const getNowTimeStr = () => {
     return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
 };
 
-export const browser = (function () {
+export const UA = (function () {
     let windows = false;
     let windowsPhone = false;
     let unixPC = false;
@@ -112,3 +112,8 @@ export const browser = (function () {
         mobile
     }
 })();
+
+// 控制访问H5页面还是PC Web页面
+export const PAGE_STYLE_KEY = '__PAGE_STYLE__';
+export const PAGE_STYLE_H5 = 'H5';
+export const PAGE_STYLE_WEB = 'WEB';

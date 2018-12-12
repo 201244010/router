@@ -7,7 +7,7 @@ import loading from '~/components/Loading';
 // import timersManager from './timersManager';
 // import TIMEZONE from './timezone';
 import {stringify} from 'qs';
-import {clear} from '~/assets/common/cookie';
+import { get, clear } from '~/assets/common/auth';
 
 const {assign} = Object;
 const noop = () => {
@@ -60,7 +60,7 @@ export const getTimeZone = () => {
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({ timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
+    options = assign({ withCredentials: true, timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
 
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
@@ -79,6 +79,16 @@ export function fetchApi(data, options = {}, loopOption = {}) {
     else if (method === 'post') {
         options.data = {"params": payload, count: "1"};
     }
+
+    const stok = get();
+    if (stok) {
+        //const cookie = `sysauth=${stok}; stok=${stok}`;
+        options.headers = {
+            //Cookie: cookie,   // 直接设置Cookie axios不生效，也不合理，改用自定义Header XSRF-TOKEN
+            ['XSRF-TOKEN']: stok,
+        };
+    }
+
     if (loopOption.loop && typeof loopOption.stop !== 'function') {
         throw new Error('loopOption.stop must be function, because loopOption.loop is active');
     }
