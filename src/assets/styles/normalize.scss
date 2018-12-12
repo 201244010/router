@@ -340,6 +340,16 @@
     display: none;
   }
 
+input::-webkit-input-safebox-button{
+  display:none;
+}
+::-ms-clear{
+  display: none;
+}
+::-ms-reveal{
+  display: none;
+}
+
 /* chrome滚动条样式*/
 ::-webkit-scrollbar{
   width: 8px;
