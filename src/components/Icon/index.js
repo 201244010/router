@@ -28,6 +28,7 @@ CustomIcon.propTypes = {
   color : PropTypes.string,
   type : PropTypes.string.isRequired,
   size : PropTypes.oneOfType([
+    PropTypes.string,
     PropTypes.number,
     PropTypes.oneOf(['large', 'small'])
   ])

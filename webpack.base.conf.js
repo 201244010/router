@@ -69,10 +69,10 @@ const options = {
                     from: __dirname + '/others/portal',
                     to: __dirname + '/dist/portal'
                 },
-                {
-                    from: __dirname + '/others/mobile',
-                    to: __dirname + '/dist/mobile'
-                },
+                // {
+                //     from: __dirname + '/others/mobile',
+                //     to: __dirname + '/dist/mobile'
+                // },
                 {
                     from: __dirname + '/others/agreement',
                     to: __dirname + '/dist/agreement'

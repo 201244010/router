@@ -3,12 +3,23 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import 'lib-flexible/flexible.js';
 
-import Home from './Home';
-import Welcome from "./Welcome";
+import normalize from './assets/styles/normalize.useable.scss';
+import "styles/font/iconfont.css";
+
+import Home from './pages/Home';
+import Welcome from "./pages/Welcome";
 
 class PrimaryLayout extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount() {
+        normalize.use();
+    }
+
+    componentWillUnmount() {
+        normalize.unuse();
     }
 
     render() {

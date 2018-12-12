@@ -112,3 +112,8 @@ export const UA = (function () {
         mobile
     }
 })();
+
+// 控制访问H5页面还是PC Web页面
+export const PAGE_STYLE_KEY = '__PAGE_STYLE__';
+export const PAGE_STYLE_H5 = 'H5';
+export const PAGE_STYLE_WEB = 'WEB';
