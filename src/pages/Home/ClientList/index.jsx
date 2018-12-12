@@ -229,7 +229,7 @@ export default class ClientList extends React.Component {
             }],
             onFilter: (value, record) => record.rssi.indexOf(value) === 0,
             sorter: (a, b) => {
-                if (a.rssi !== a.rssi) {
+                if (a.rssi !== b.rssi) {
                     return (RSSI_GOOD === a.rssi) ? 1 : -1;
                 }
 
