@@ -1,0 +1,42 @@
+.h5-input{
+    margin: auto;
+    width : 8.08rem;
+}
+
+.h5-input-outline{
+    width : 100%;
+    height: 1.1733rem;
+    font-size: 0.3733rem;
+    color: #333C4F;
+    border-radius: 0.2133rem;
+    background: #FFFFFF;
+    .h5-input-content{  
+        width: 100%;
+        height: 100%;
+        border: 0.0133rem rgba(0,0,0,0.15) solid;
+        border-radius: 0.2133rem;
+        padding-left: 0.2667rem;
+    }
+    .h5-input-content:focus{  
+        width: 100%;
+        height: 100%;
+        padding-left: 0.2667rem;
+        border: 0.0133rem #FB8632 solid;
+        border-radius: 0.2133rem;
+    }
+    .has-error{   
+        width: 100%;
+        height: 100%;
+        padding-left: 0.2667rem;
+        border-radius: 0.2133rem;
+        border: 0.0267rem #D33419 solid;
+    }   
+}
+
+.h5-form-tip{
+    margin-top: 0.0267rem;
+    font-size: 0.32rem;
+    color: #D33419;
+    padding-left: 0.2667rem;
+    text-align: left;
+}
