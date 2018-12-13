@@ -36,7 +36,7 @@ export default class Home extends React.PureComponent{
 
     render() {
         return (
-            <div className="welcome">
+            <div className="home">
                 <Icon type='earth' size={'6.9333rem'} style={{
                     color: '#FFF',
                     opacity: 0.1,

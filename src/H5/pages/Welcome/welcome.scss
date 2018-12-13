@@ -1,0 +1,39 @@
+.welcome{
+    color: #FFF;
+    text-align: center;
+    h2{
+        color: #FFF;
+        margin: 2.6667rem auto 0.16rem;
+        font-size: 0.8533rem;
+    }
+    p{
+        font-size: 0.3733rem;
+        opacity: 0.6;
+    }
+    .start-setup{
+        margin: 2.4rem auto 0.3467rem;
+    }
+    .policy{
+        font-size: 0.32rem;
+        margin-top: 0.32rem;
+        .agreement{
+            margin-left: 0.1067rem;
+            opacity: 0.6;
+            font-size: 0.32rem;
+            a{
+                color: #FFFFFF;
+                text-decoration: underline;
+            }
+        }
+    }
+    .copyright{
+        white-space: pre-wrap;
+        position: absolute;
+        bottom: 0.4267rem;
+        margin: auto;
+        left: 0;
+        right: 0;
+        font-size: 0.32rem;
+        color: rgba(247,247,247,0.40);
+    }
+}
