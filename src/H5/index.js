@@ -8,6 +8,7 @@ import "styles/font/iconfont.css";
 
 import Home from './pages/Home';
 import Welcome from "./pages/Welcome";
+import Guide from "./pages/Guide";
 
 class PrimaryLayout extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class PrimaryLayout extends React.Component {
                 <Switch>
                     <Route path="/home" component={Home} />
                     <Route path="/welcome" component={Welcome} />
+                    <Route path="/guide" component={Guide} />
                     <Route path="/" component={Default} />
                 </Switch>
             </div>
