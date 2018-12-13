@@ -5,8 +5,11 @@
     text-align: center;
     color: #FFF;
     border: 1px solid #FFFFFF;
-    border-radius: 0.6133rem;
+    border-radius: 0.2133rem;
     background-color: transparent;
+    &.disabled, &:disabled{
+        background-color: #EBEBEB !important;
+    }
     &.btn-primary{
         border-width: 0;
         background-color: #FB8632;
