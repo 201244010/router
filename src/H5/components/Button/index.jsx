@@ -1,10 +1,11 @@
 import React from 'react';
+import Icon from 'h5/components/Icon';
 import classnames from 'classnames';
 
 import './button.scss';
 
 export default function Button(props) {
-    const { className, style, type, children, disabled } = props;
+    const { className, style, type, children, loading, disabled } = props;
     let clss = classnames(['sm-btn', className, { ['btn-' + type]: type }], {disabled: disabled});
 
     return (
@@ -13,7 +14,8 @@ export default function Button(props) {
             disabled={disabled}
             className={clss}
             style={style}
-            onClick={(e) => props.onClick(e)}>
+            onClick={props.onClick}>
+            {loading && <Icon type='loading' size={'0.48rem'} color="#FFF" spin />}
             {children}
         </button>
     );

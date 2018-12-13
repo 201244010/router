@@ -1,0 +1,30 @@
+body{
+    background: #446CE6;
+}
+.guide-container{
+    height: 100%;
+    position: relative;
+    .header{
+        padding: 0.4rem 0.5333rem;
+        height: 2.1333rem;
+        .step-icon{
+            position: fixed;
+            right: -0.5333rem;
+            top: -0.8rem;
+        }
+    }
+    .guide-body{
+        padding: 0.5333rem;
+        position: absolute;
+        top: 2.1333rem;
+        bottom: 0.4267rem;
+        left: 0.4267rem;
+        right: 0.4267rem;
+        background: #FAFBFC;
+        border: 0.0133rem solid rgba(0,0,0,0.04);
+        border-radius: 0.2133rem;
+        .sm-btn{
+            font-size: 0.3733rem;
+        }
+    }
+}
