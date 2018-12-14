@@ -21,17 +21,9 @@ export default class CustomModal extends React.PureComponent {
         const { children, closable = false, ...others } = this.props;
         return (
             <Modal
+                centered
                 closable={closable}
                 maskClosable={false}
-                style={{
-                    margin: '-50% 0.72rem 0',
-                    top: '50%',
-                    paddingBottom:0,
-                }}
-                maskStyle={{
-                    opacity: 0.3,
-                    background: '#060A16',
-                }}
                 {...others}
             >
                 {children}
