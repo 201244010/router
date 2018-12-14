@@ -4,7 +4,7 @@ import Icon from 'h5/components/Icon';
 
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_WEB } from '~/utils';
 
-import './home.scss';
+import style from './home.useable.scss';
 
 export default class Home extends React.PureComponent{
     constructor(props){
@@ -34,9 +34,17 @@ export default class Home extends React.PureComponent{
         window.location.href = '/';
     }
 
+    componentDidMount() {
+        style.use();
+    }
+
+    componentWillUnmount() {
+        style.unuse();
+    }
+
     render() {
         return (
-            <div className="welcome">
+            <div className="home">
                 <Icon type='earth' size={'6.9333rem'} style={{
                     color: '#FFF',
                     opacity: 0.1,

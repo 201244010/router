@@ -137,12 +137,18 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
-.ant-checkbox-checked, .ant-checkbox-indeterminate{
+.ant-checkbox{
     .ant-checkbox-inner{
-        background-color: #FB8632!important;
-        border-color: #FB8632!important;
+        border-color: #ECECEC!important;
+    }
+    &.ant-checkbox-checked, .ant-checkbox-indeterminate{
+        .ant-checkbox-inner{
+            background-color: #FB8632!important;
+            border-color: #FB8632!important;
+        }
     }
 }
+
 
 .ant-radio-checked{
     .ant-radio-inner{

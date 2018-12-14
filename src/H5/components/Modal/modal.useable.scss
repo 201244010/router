@@ -1,0 +1,39 @@
+$border-radius:0.2133rem;
+.ant-modal-mask{
+    opacity: 0.3;
+    background: #060A16;
+}
+.ant-modal-centered{
+    .ant-modal{
+        margin: 0 0.72rem;
+        padding-bottom: 0;
+    }
+}
+.ant-modal-content{
+    border-radius: $border-radius;
+    .ant-modal-header{
+        padding: 0.4267rem 0.48rem;
+        border-width: 0;
+        border-radius: $border-radius;
+        .ant-modal-title{
+            font-weight: 500;
+            text-align: center;
+            font-size: 0.48rem;
+            color: #333C4F;
+        }
+    }
+    .ant-modal-body{
+        max-height:6.84rem;
+        overflow: auto;
+        padding: 0 0.48rem;
+    }
+    .ant-modal-footer{
+        text-align: center;
+        opacity: 0.9;
+        font-size: 0.4267rem;
+        color: #333C4F;
+        background: #E8EAED;
+        border: 1px solid rgba(0,0,0,0.10);
+        border-radius: 0 0 $border-radius $border-radius;
+    }
+}

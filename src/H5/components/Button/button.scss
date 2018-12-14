@@ -1,14 +1,22 @@
 .sm-btn{
     width: 8.6667rem;
+    max-width: 100%;
     height: 1.2267rem;
     font-size: 0.48rem;
     text-align: center;
     color: #FFF;
     border: 1px solid #FFFFFF;
-    border-radius: 0.6133rem;
+    border-radius: 0.2133rem;
     background-color: transparent;
+    &.disabled, &:disabled{
+        background-color: #EBEBEB !important;
+    }
     &.btn-primary{
         border-width: 0;
         background-color: #FB8632;
+    }
+    .ui-icon-spin{
+        vertical-align: bottom;
+        margin-right: 0.1067rem;
     }
 }
