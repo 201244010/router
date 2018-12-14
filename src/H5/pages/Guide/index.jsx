@@ -36,7 +36,7 @@ export default class Guide extends React.Component {
             <div className='guide-container'>
                 <div className="header">
                     <Icon type='logo' size={'1.3333rem'} color="#fff" />
-                    <div className='step-icon'><Icon type={icon} size={'4rem'} color="#3B76E7" /></div>
+                    <div className='step-icon'><Icon type={icon} size={'4rem'} color="#4F75E7" /></div>
                 </div>
                 <div className="guide-body">
                     <Switch>
