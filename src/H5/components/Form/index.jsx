@@ -5,16 +5,16 @@ import './form.scss';
 
 const ErrorTip = props => <div style={props.style} className="sm-form-tip">{props.value}</div>;
 
-class Input extends React.Component{
+class Input extends React.Component {
     
     onChange = e => {
         this.props.onChange(e.target.value);
     };
 
-    render(){
+    render() {
         const { className, type, value, maxLength, disabled, name, placeholder } = this.props;
 
-        return(
+        return (
             <div className='sm-input-outline'>
                 <input
                     className={ `sm-input-content ${className}`}
@@ -32,8 +32,8 @@ class Input extends React.Component{
     }   
 }
 
-class Form extends React.Component{
-    constructor(props){
+class Form extends React.Component {
+    constructor(props) {
         super(props);
     }
 
@@ -51,7 +51,7 @@ class Form extends React.Component{
         this.props.onChange(e.target.value);
     };
 
-    render(){
+    render() {
         const { style, type, value, maxLength, disabled, name, placeholder, tip } = this.props;
         const classes = this.props.tip !== ''? "has-error" : '';
         return (
