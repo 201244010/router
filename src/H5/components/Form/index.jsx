@@ -6,9 +6,12 @@ import './form.scss';
 const ErrorTip = props => <div style={props.style} className="sm-form-tip">{props.value}</div>;
 
 class Input extends React.Component {
-    
+    constructor(props) {
+        super(props);
+    }
+
     onChange = e => {
-        this.props.onChange(e.target.value);
+        this.props.onChange(e);
     };
 
     render() {
