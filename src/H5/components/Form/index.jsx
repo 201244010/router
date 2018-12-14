@@ -66,7 +66,7 @@ class Form extends React.Component{
                     name={name}
                     placeholder={placeholder}
                 />
-                <ErrorTip value = {tip} />
+                <ErrorTip value={tip} />
             </div> 
         );
     }
