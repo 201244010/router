@@ -7,12 +7,13 @@
         color: #333C4F;
         border-radius: 0.2133rem;
         background: #FFF;
-        .sm-input-content{  
+        .sm-input-content{
             width: 100%;
             height: 100%;
             border: 1px rgba(0, 0, 0, .15) solid;
             border-radius: 0.2133rem;
             padding-left: 0.2667rem;
+            outline:none;
         }
         .sm-input-content:focus{
             border: 1px #FB8632 solid;
