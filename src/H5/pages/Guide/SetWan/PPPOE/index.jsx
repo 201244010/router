@@ -1,8 +1,9 @@
 import React from 'react';
+import { Base64 } from 'js-base64';
 import GuideHeader from 'h5/components/GuideHeader';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
-import {checkStr} from '~/assets/common/check';
+import { checkStr } from '~/assets/common/check';
 
 export default class PPPOE extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ export default class PPPOE extends React.Component {
             account: {
                 func: checkStr(value, { who:'账号', min: 1, max: 64, type: 'all' })
             },
-            pwd:{
+            pwd: {
                 func: checkStr(value, { who: '密码', min: 1, max: 32, type: 'english' })
             }
         }
@@ -42,6 +43,7 @@ export default class PPPOE extends React.Component {
 
     submit = async () => {
         this.setState({ loading : true });
+        const { account, pwd } = this.state;
         let response = await common.fetchApi(
                 {
                     opcode: 'NETWORK_WAN_IPV4_SET',
@@ -109,13 +111,14 @@ export default class PPPOE extends React.Component {
         return (
             <div>
                 <GuideHeader title='宽带拨号上网（PPPOE）' tips='这是说明文字这是说明文字这是说明文字' />
-                <Form 
+                <Form
                     value={account}
                     onChange={value => this.onChange('account', value)}
                     tip={accountTip}
                     placeholder='请输入账号'
                     maxLength={64} />
-                <Form 
+                <Form
+                    type='password'
                     value={pwd}
                     onChange={value => this.onChange('pwd', value)}
                     tip={pwdTip}
