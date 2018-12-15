@@ -2,6 +2,7 @@ import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Form from 'h5/components/Form';
+import Loading from 'h5/components/Loading';
 import {checkStr} from '~/assets/common/check';
 
 export default class SetPwd extends React.Component {
@@ -100,6 +101,7 @@ export default class SetPwd extends React.Component {
                         />
                 </form>
                 <div><Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>下一步</Button></div>
+                {/* <Loading visible={visible} content='正在检测上网方式，请稍后...' /> */}
             </div>
         )
     }
