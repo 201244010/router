@@ -47,14 +47,10 @@ export default class SetWan extends React.Component {
         confirm({
             title: '无法连接网络',
             content: '请检查您的网线是否插好',
-            cancelText: '继续设置',
-            okText: '重新检测',
-            okButtonProps: {
-                onClick: this.onOk,
-            },
-            cancelButtonProps: {
-                onClick: this.onCancel,
-            }
+            cancelText: '重新检测',
+            okText: '继续设置',
+            onOk: this.onOk,
+            onCancel: this.onCancel,
         });
 
         //this.props.history.push('/guide/setwifi');

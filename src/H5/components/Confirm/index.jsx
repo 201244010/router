@@ -21,14 +21,14 @@ class Confirm extends React.PureComponent {
 
     onOk = () => {
         this.close();
-        const onClick = this.props.okButtonProps.onClick;
-        onClick && onClick();
+        const onOk = this.props.onOk;
+        onOk && onOk();
     }
 
     onCancel = () => {
         this.close();
-        const onClick = this.props.cancelButtonProps.onClick;
-        onClick && onClick();
+        const onCancel = this.props.onCancel;
+        onCancel && onCancel();
     }
 
     render() {
@@ -43,8 +43,8 @@ class Confirm extends React.PureComponent {
                         <h3 className='title'>{title}</h3>
                         <p className='content'>{content}</p>
                         <div className='footer'>
-                            <button onClick={this.onOk} className='btn cancel-btn'>{cancelText}</button>
-                            <button onClick={this.onCancel} className='btn ok-btn'>{okText}</button>
+                            <button onClick={this.onCancel} className='btn cancel-btn'>{cancelText}</button>
+                            <button onClick={this.onOk} className='btn ok-btn'>{okText}</button>
                         </div>
                     </div>
                 </div>
