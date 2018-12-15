@@ -1,35 +1,33 @@
 import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
+import Select from 'h5/components/Select';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
-
 import Icon from 'h5/components/Icon';
+
+const options = [
+    { value: 'dhcp', label: '自动获取IP（DHCP）' },
+    { value: 'pppoe', label: '宽带拨号上网（PPPoE）' },
+    { value: 'static', label: '手动输入IP（静态IP）' },
+];
+
 export default class SetWan extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    render() {
-
-        return (
-            <div>
-                {/* <GuideHeader title='确认上网方式' tips='这是说明文字这是说明文字这是说明文字' /> */}
-                <Confirm />
-                {/* <div><Button type='primary' loading={loading} onClick={this.nextStep}>下一步</Button></div> */}
-            </div>
-        )
-    }
-}
-
-class Confirm extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     state = {
-        visible: true,
+        wanType: 'pppoe',
         loading: true,
+        visible: true,
+    }
+
+    onTypeChange = (value) => {
+        console.log('changed: ', value);
+        this.setState({
+            wanType: value
+        });
     }
 
     onOk = () => {
@@ -76,25 +74,17 @@ class Confirm extends React.Component {
     }
 
     render() {
-        const { loading, visible } = this.state;
+        const { wanType, loading, visible } = this.state;
 
-        return (     
-            <form>
+        return (
+            <div>
                 <GuideHeader title='确认上网方式' tips='这是说明文字这是说明文字这是说明文字' />
-                <div style={{width: '8.08rem'}}>
-                    <span>自动获取IP（DHCP）</span><Icon type='select' size= '0.4533rem' style={{color: 'black',marginLeft:'3.4667rem'}} />
-                </div>
-                <div style={{width: '8.08rem', height: '1px', background: '#ECECEC', margin: '36px auto'}}></div>
-                <div style={{width: '8.08rem'}}>
-                    <span>宽带拨号上网（PPPOE）</span><Icon type='select' size= '0.4533rem' style={{color: 'black',marginLeft:'3.4667rem'}} />
-                </div>
-                <div style={{width: '8.08rem', height: '1px', background: '#ECECEC', margin: '36px auto'}}></div>
-                <div style={{width: '8.08rem'}}>
-                    <span>手动输入IP（静态IP）</span><Icon type='select' size= '0.4533rem' style={{color: 'black',marginLeft:'3.4667rem'}} />
-                </div>
-                <div style={{width: '8.08rem', height: '1px', background: '#ECECEC', margin: '36px auto'}}></div>
-                <div><Button type='primary' loading={loading} onClick={this.nextStep}>下一步</Button></div>
-            </form>
+                <Loading visible={visible} content='正在检测上网方式，请稍后...' />
+                <form style={{marginTop:'0.6267rem'}}>
+                    <Select options={options} value={wanType} onChange={this.onTypeChange} />
+                    <Button type='primary' loading={loading} onClick={this.nextStep}>下一步</Button>
+                </form>
+            </div>
         );
-    }   
+    }
 }

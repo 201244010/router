@@ -23,7 +23,14 @@ body{
         background: #FAFBFC;
         border: 0.0133rem solid rgba(0,0,0,0.04);
         border-radius: 0.2133rem;
+        form{
+            margin-top: 1.0667rem;
+        }
+        .sm-form{
+            margin-top: 0.6933rem;
+        }
         .sm-btn{
+            margin-top: 0.8533rem;
             font-size: 0.3733rem;
             width: 100%;
         }

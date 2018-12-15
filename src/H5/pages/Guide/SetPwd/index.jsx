@@ -83,24 +83,22 @@ export default class SetPwd extends React.Component {
             <div>
                 <GuideHeader title='设置管理密码' tips='管理员密码是进入路由器管理页面的凭证' />
                 <form>
-                    <Form 
-                        style={{margin: '0rem auto 0.6933rem'}}
+                    <Form
                         value={pwd}
                         type='password'
                         placeholder='密码长度6～32位'
                         tip={pwdTip}
                         onChange={value => this.onChange('pwd', value)}
-                        />
-                    <Form 
-                        style={{marginBottom: '0.8533rem'}}
+                    />
+                    <Form
                         value={surePwd}
                         type='password'
                         placeholder='请再次输入密码'
                         tip={surePwdTip}
                         onChange={value => this.onChange('surePwd', value)}
-                        />
+                    />
+                    <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>下一步</Button>
                 </form>
-                <div><Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>下一步</Button></div>
                 {/* <Loading visible={visible} content='正在检测上网方式，请稍后...' /> */}
             </div>
         )
