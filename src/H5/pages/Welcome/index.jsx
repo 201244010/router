@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'h5/components/Button';
 import Icon from 'h5/components/Icon';
+import Link from 'h5/components/Link';
 import Checkbox from 'h5/components/Checkbox';
 import Modal from 'h5/components/Modal';
 
@@ -70,8 +71,8 @@ export default class Home extends React.Component {
                         checked={checked}
                         onChange={this.onCheckBoxChange}>
                         <span className='agreement'>
-                            同意《<A onClick={this.showAgreement}>商米用户协议</A>》和
-                            《<A onClick={this.showPolicy}>隐私政策</A>》
+                            同意《<Link onClick={this.showAgreement}>商米用户协议</Link>》和
+                            《<Link onClick={this.showPolicy}>隐私政策</Link>》
                         </span>
                     </Checkbox>
                 </div>
@@ -111,16 +112,4 @@ export default class Home extends React.Component {
             </div>
         );
     }
-}
-
-const A = function(props) {
-    const { children, onClick } = props;
-    return (
-        <a
-            onClick={props.onClick}
-            href="javascript:void(0);"
-        >
-            {children}
-        </a>
-    )
 }

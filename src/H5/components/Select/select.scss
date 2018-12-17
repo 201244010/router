@@ -1,0 +1,21 @@
+.sm-select-list{
+    margin: auto;
+    .option{
+        cursor: pointer;
+        font-size: 0.4267rem;
+        color: #ADB1B9;
+        padding: 0.48rem 0;
+        border-bottom: 1px solid #ECECEC;
+        .ui-icon{
+            visibility: hidden;
+            float: right;
+        }
+        &.option-checked{
+            color: #FB8632;
+            .ui-icon{
+                visibility: visible;
+            }
+        }
+    }
+
+}

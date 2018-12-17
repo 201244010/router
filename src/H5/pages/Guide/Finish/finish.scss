@@ -1,0 +1,61 @@
+.finish-wrap{
+    .tip-reconnect{
+        font-size: 0.32rem;
+        color: #ADB1B9;
+        text-align: center;
+        margin-top: 1.0133rem;
+    }
+    .sm-btn{
+        margin-top: 0.2667rem !important;
+    }
+}
+
+.sm-wifi-info-wrap{
+    background: #FFF;
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 0.16rem;
+    padding: 0.32rem 0.32rem 0.4267rem;
+    margin-bottom: 0.2133rem;
+    .info-header{
+        margin-bottom: 0.3733rem;
+        .circle{
+            display: inline-block;
+            border-radius: 50%;
+            vertical-align: middle;
+            &.outer{
+                width: 0.4267rem;
+                height: 0.4267rem;
+                text-align: center;
+                .inner{
+                    width: 0.2133rem;
+                    height: 0.2133rem;
+                }
+            }
+        }
+        .title{
+            font-size: 0.3733rem;
+            margin-left: 0.16rem;
+            color: rgba(51,60,79,0.60);
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .info-list{
+        li{
+            display: flex;
+            align-items: flex-start;
+            font-weight: bold;
+            font-size: 0.4267rem;
+            color: #333C4F;
+            margin-bottom: 0.2133rem;
+            span{
+                flex: 1;
+                word-break: break-all;
+                margin-left: 0.08rem;
+            }
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+}

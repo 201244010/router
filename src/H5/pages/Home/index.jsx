@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'h5/components/Button';
 import Icon from 'h5/components/Icon';
+import Link from 'h5/components/Link';
 
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_WEB } from '~/utils';
 
@@ -58,7 +59,7 @@ export default class Home extends React.PureComponent{
                 <div><Button onClick={this.downloadApp} className='download' type='primary'>下载APP</Button></div>
                 <div><Button onClick={this.openApp}>已安装，直接打开</Button></div>
                 <div className='web-config'>
-                    <a onClick={this.goWeb} href="javascript:void(0);">进入网页版配置</a>
+                    <Link onClick={this.goWeb}>进入网页版配置</Link>
                 </div>
                 <Icon type='earth' size={'10.6667rem'} style={{
                     color: '#FFF',
