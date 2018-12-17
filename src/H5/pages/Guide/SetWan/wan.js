@@ -1,4 +1,4 @@
-let detect = async() => {
+let detect = async(props) => {
     // 触发检测联网状态
     await common.fetchApi(
         {
@@ -22,7 +22,7 @@ let detect = async() => {
     if(0 === errcode) {
         let online = data[0].result.onlinetest.online;
         if(online) {   
-            this.props.history.push("/guide/setwifi");
+            props.history.push("/guide/setwifi");
         }
         return false;
     }
