@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd';
 import Form from 'h5/Components/Form';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
@@ -85,7 +86,7 @@ export default class Static extends React.Component {
         );
         let { errcode } = response;
         if(0 === errcode) {
-            let online = detect ();
+            let online = detect(this.props);
             if(false === online) {
                 this.setState({loading: false});
                 // 实力代码：confirm
@@ -111,7 +112,7 @@ export default class Static extends React.Component {
     }
 
     changeType = () => {
-
+        this.props.historty.push('/guide/setwan');
     }
 
     render() {

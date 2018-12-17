@@ -1,5 +1,6 @@
 import React from 'react';
 import { Base64 } from 'js-base64';
+import { message } from 'antd';
 import GuideHeader from 'h5/components/GuideHeader';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
@@ -57,7 +58,7 @@ export default class PPPoE extends React.Component {
         );
         let { errcode } = response;
         if(0 === errcode) {
-            let online = detect ();
+            let online = detect(this.props);
             if(false === online) {
                 this.setState({loading: false});
                 // 实力代码：confirm
@@ -83,7 +84,7 @@ export default class PPPoE extends React.Component {
     }
 
     changeType = () => {
-
+        this.props.historty.push('/guide/setwan');
     }
 
     render() {
