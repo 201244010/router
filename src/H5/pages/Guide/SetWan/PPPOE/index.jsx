@@ -5,7 +5,7 @@ import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
 import { checkStr } from '~/assets/common/check';
-import { detect } from './detect';
+import { detect } from './wan';
 
 export default class PPPoE extends React.Component {
     constructor(props) {
@@ -37,25 +37,42 @@ export default class PPPoE extends React.Component {
         });
     }
 
-    submit = async () => {
+    submit = async () => {    
+        const { account, pwd } = this.state;
         this.setState({ loading : true });
-        let online = detect('pppoe', this.state);
-        if(online) {
-            setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
-        }else {
-            this.setState({loading: false});
-            // 实力代码：confirm
-            confirm({
-                title: '无法连接网络',
-                content: '请检查您的网线是否插好',
-                cancelText: '重新检测',
-                okText: '继续设置',
-                onOk: this.onOk,
-                onCancel: this.onCancel,
-            });
+        let response = await common.fetchApi(
+            {
+                opcode: 'NETWORK_WAN_IPV4_SET',
+                data:{
+                    wan:{
+                        dial_type: 'pppoe',
+                        dns_type: 'auto',
+                        user_info: {
+                            username: Base64.encode(account),
+                            password: Base64.encode(pwd)
+                        }
+                    }
+                }
+            }   
+        );
+        let { errcode } = response;
+        if(0 === errcode) {
+            let online = detect ();
+            if(false === online) {
+                this.setState({loading: false});
+                // 实力代码：confirm
+                confirm({
+                    title: '无法连接网络',
+                    content: '请检查您的网线是否插好',
+                    cancelText: '重新检测',
+                    okText: '继续设置',
+                    onOk: this.onOk,
+                    onCancel: this.onCancel,
+                });
+            }
         }
-        // message.error(`参数不合法[${errcode}]`);
-        // this.setState({loading : false});
+        message.error(`参数不合法[${errcode}]`);
+        this.setState({loading : false});
     }
 
     checkDisabled(state){

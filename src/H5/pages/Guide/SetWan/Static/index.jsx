@@ -4,7 +4,7 @@ import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
 import { checkIp, checkMask } from '~/assets/common/check';
-import { detect } from './detect';
+import { detect } from './wan';
 
 export default class Static extends React.Component {
     constructor(props) {
@@ -44,16 +44,18 @@ export default class Static extends React.Component {
                 who:'首选DNS',
             },
             dnsbackup:{
-                func: checkIp,
+                func: (value) => {
+                    if('' === value){
+                        return '';
+                    }else {
+                        return checkIp(value, { who: '备选DNS' });
+                    }
+                },
                 who:'备选DNS',
             },
         }
 
         let tip = valid[name].func(value, { who: valid[name].who });
-
-        if('dnsbackup' === name && '' === value){
-            tip = '';
-        }
 
         this.setState({
             [name]: value,
@@ -63,23 +65,42 @@ export default class Static extends React.Component {
 
     submit = async () => {
         this.setState({ loading : true });
-        let online = detect('static', this.state);
-        if(online) {
-            setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
-        }else {
-            this.setState({loading: false});
-            // 实力代码：confirm
-            confirm({
-                title: '无法连接网络',
-                content: '请检查您的网线是否插好',
-                cancelText: '重新检测',
-                okText: '继续设置',
-                onOk: this.onOk,
-                onCancel: this.onCancel,
-            });
+        const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
+        response = await common.fetchApi(
+            {
+                opcode: 'NETWORK_WAN_IPV4_SET',
+                data:{
+                    wan:{
+                        dial_type: 'static',
+                        info: {
+                            ipv4 : ip,
+                            mask : subnetmask,
+                            gateway : gateway,
+                            dns1 : dns,
+                            dns2 : dnsbackup
+                        }
+                    }
+                }
+            }
+        );
+        let { errcode } = response;
+        if(0 === errcode) {
+            let online = detect ();
+            if(false === online) {
+                this.setState({loading: false});
+                // 实力代码：confirm
+                confirm({
+                    title: '无法连接网络',
+                    content: '请检查您的网线是否插好',
+                    cancelText: '重新检测',
+                    okText: '继续设置',
+                    onOk: this.onOk,
+                    onCancel: this.onCancel,
+                });
+            }
         }
-        // message.error(`参数不合法[${errcode}]`);
-        // this.setState({loading : false});
+        message.error(`参数不合法[${errcode}]`);
+        this.setState({loading : false});
     }
 
     checkDisabled(state){
