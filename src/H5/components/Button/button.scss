@@ -8,6 +8,7 @@
     border: 1px solid #FFFFFF;
     border-radius: 0.2133rem;
     background-color: transparent;
+    outline: none;
     &.disabled, &:disabled{
         background-color: #EBEBEB !important;
     }

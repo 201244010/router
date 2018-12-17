@@ -6,6 +6,7 @@ import SetPwd from './SetPwd';
 import SetWan from './SetWan';
 import SetWifi from './SetWifi';
 import Guest from './Guest';
+import Finish from './Finish';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
@@ -55,6 +56,16 @@ export default class Guide extends React.Component {
                          * 如果配置丢失（一般情况是用户将url中的参数删除），重定向到商户WiFi设置界面
                          */}
                         <Redirect from={`${match.path}/guest`} to={`${match.path}/setwifi`}></Redirect>
+
+                        {/**
+                         * 通过 '/:wifi' 将商户WiFi、顾客WiFi配置数据传递到完成界面
+                         */}
+                        <Route path={`${match.path}/finish/:wifi`} component={Finish} />
+
+                        {/**
+                         * 如果配置丢失（一般情况是用户将url中的参数删除），重定向到商户WiFi设置界面
+                         */}
+                        <Redirect from={`${match.path}/finish`} to={`${match.path}/setwifi`}></Redirect>
 
                         {/**
                          * 默认重定向到设置管理员密码页面

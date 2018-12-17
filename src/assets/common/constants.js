@@ -144,4 +144,5 @@ export const ERROR_MESSAGE = {
 export const NO_ERROR = 0;
 
 export const TIME_SPEED_TEST = 30;
+export const TIME_WIFI_RELOAD = 10;     // wifi生效耗时
 

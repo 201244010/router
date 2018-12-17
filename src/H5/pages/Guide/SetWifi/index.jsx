@@ -12,6 +12,8 @@ export default class SetWifi extends React.Component {
         super(props);
     }
 
+    main = {};      // 商户WiFi配置
+
     state = {
         ssid: '',
         ssidTip: '',
@@ -47,10 +49,34 @@ export default class SetWifi extends React.Component {
 
     nextStep = () => {
         const { ssid, password } = this.state;
+        let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
+        let pwdBase64 = Base64.encode(password);
 
         let next = () => {
-            const param = JSON.stringify({ssid, password});
-            this.props.history.push('/guide/guest/' + param);
+            let band2 = Object.assign(
+                this.main.host.band_2g,
+                {
+                    enable: '1',
+                    ssid,
+                    encryption,
+                    password: pwdBase64,
+                }
+            );
+            this.main.host.band_2g = band2;
+
+            let band5 = Object.assign(
+                this.main.host.band_5g,
+                {
+                    ssid: ssid + "_5G",
+                    encryption,
+                    password: pwdBase64,
+                }
+            );
+            this.main.host.band_5g = band5;
+
+            console.log('wifi main config: ', this.main);
+            const param = JSON.stringify(this.main);
+            this.props.history.push('/guide/guest/' + encodeURIComponent(param));
         };
 
         if ('' === password) {
@@ -73,6 +99,8 @@ export default class SetWifi extends React.Component {
                 ssid,
                 password,
             });
+
+            this.main = data[0].result.main;
         }
     }
 
