@@ -3,16 +3,20 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
+import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
 import { message } from 'antd';
 
 import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
+import { TIME_WIFI_RELOAD } from '~/assets/common/constants';
 
 export default class Guest extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    guest = {};     // 顾客WiFi配置
 
     state = {
         ssid: '',
@@ -53,55 +57,39 @@ export default class Guest extends React.Component {
         let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
         let pwdBase64 = Base64.encode(password);
 
-        let data = {
-            guest: {
-                enable: '1',
-                ssid: ssid,
-                encryption: encryption,
-                static_password: pwdBase64,
-            }
-        };
+        let guest = Object.assign(this.guest, {
+            enable: '1',
+            ssid: ssid,
+            encryption: encryption,
+            static_password: pwdBase64,
+        });
+
+        // fetch data
+        let data = { guest };
 
         // 商户WiFi配置
-        const params = this.props.match.params || {};
+        const params = this.props.match.params;
         if (params && params.wifi) {
-            let wifi = JSON.parse(this.props.match.params.wifi) || {};
-            let {ssid, password} = wifi;
-            if (ssid && password) {
-                let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
-                let pwdBase64 = Base64.encode(password);
-
-                data.main = {
-                    host: {
-                        band_2g: {
-                            enable: '1',
-                            ssid,
-                            encryption,
-                            password: pwdBase64,
-                        },
-                        band_5g: {
-                            ssid: ssid + '_5G',
-                            encryption,
-                            password: pwdBase64,
-                        },
-                    }
-                }
-            }
+            const wifi = JSON.parse(decodeURIComponent(params.wifi));
+            data.main = wifi;
         }
 
         // submit data
         this.setState({ loading : true});
         const res = await common.fetchApi({ opcode: 'WIRELESS_SET', data: data });
-        this.setState({ loading : false});
 
         const errcode = res.errcode;
-        if(errcode === 0){
-            console.log('wifi saved');
-            //TODO
-        } else {
-            // TODO
+        if (0 !== errcode) {
+            this.setState({ loading : false});
             message.error(`未知错误[${errcode}]`);
+            return;
         }
+
+        setTimeout(() => {
+            console.log('wifi main config: ', data);
+            const param = JSON.stringify(data);
+            this.props.history.push('/guide/finish/' + encodeURIComponent(param));
+        }, TIME_WIFI_RELOAD * 1000);
     }
 
     nextStep = () => {
@@ -125,6 +113,7 @@ export default class Guest extends React.Component {
                 ssid,
                 password: static_password,
             });
+            this.guest = data[0].result.guest;
         }
     }
 
@@ -142,6 +131,7 @@ export default class Guest extends React.Component {
         return (
             <div>
                 <GuideHeader title='设置顾客Wi-Fi' tips='这是说明文字这是说明文字这是说明文字' />
+                <Loading visible={loading} content='正在保存Wi-Fi设置，请稍候...' />
                 <form>
                     <Form
                         value={ssid}
