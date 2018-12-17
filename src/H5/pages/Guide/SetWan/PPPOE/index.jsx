@@ -3,9 +3,11 @@ import { Base64 } from 'js-base64';
 import GuideHeader from 'h5/components/GuideHeader';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
+import Link from 'h5/components/Link';
 import { checkStr } from '~/assets/common/check';
+import { detect } from './detect';
 
-export default class PPPOE extends React.Component {
+export default class PPPoE extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -16,7 +18,6 @@ export default class PPPOE extends React.Component {
         pwd: '',
         pwdTip: '',
         loading: false,
-        disabled: true
     }
 
     onChange = (name, value) => {
@@ -33,72 +34,35 @@ export default class PPPOE extends React.Component {
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
-        }, () => {
-            const disabled = [ 'account', 'pwd' ].some(item => {
-                return (this.state[item] === '' || this.state[item + 'Tip'] !== '');
-            })
-            this.setState({ disabled: disabled });
         });
     }
 
     submit = async () => {
         this.setState({ loading : true });
-        const { account, pwd } = this.state;
-        let response = await common.fetchApi(
-                {
-                    opcode: 'NETWORK_WAN_IPV4_SET',
-                    data:{
-                        wan:{
-                            dial_type: 'pppoe',
-                            dns_type: 'auto',
-                            user_info: {
-                                username: Base64.encode(account),
-                                password: Base64.encode(pwd)
-                            }
-                        }
-                    }
-                }
-            
-        );
-        let { errcode } = response;
-        if(errcode == 0){
-            // 触发检测联网状态
-            common.fetchApi(
-                [
-                    {opcode: 'WANWIDGET_ONLINETEST_START'}
-                ]
-            ).then( async() =>{
-                // 获取联网状态
-                let connectStatus = await common.fetchApi(
-                    [
-                        {opcode: 'WANWIDGET_ONLINETEST_GET'}
-                    ],
-                    {},
-                    {
-                        loop : true,
-                        interval : 3000, 
-                        stop : ()=> this.stop, 
-                        pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
-                    }
-                );
-                let { errcode, data } = connectStatus;
-                this.setState({ loading : false });
-                if(errcode == 0){
-                    let online = data[0].result.onlinetest.online;
-                    this.setState({
-                        showNetWorkStatus : true,
-                        online :online
-                    });
-                    if(online){
-                        setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
-                    }
-                    return;
-                }
-            });  
-        }else{
-            message.error(`参数不合法[${errcode}]`);
-            this.setState({loading : false});
-        }   
+        let online = detect('pppoe', this.state);
+        if(online) {
+            setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
+        }else {
+            this.setState({loading: false});
+            // 实力代码：confirm
+            confirm({
+                title: '无法连接网络',
+                content: '请检查您的网线是否插好',
+                cancelText: '重新检测',
+                okText: '继续设置',
+                onOk: this.onOk,
+                onCancel: this.onCancel,
+            });
+        }
+        // message.error(`参数不合法[${errcode}]`);
+        // this.setState({loading : false});
+    }
+
+    checkDisabled(state){
+        const disabled = [ 'account', 'pwd' ].some(item => {
+            return (state[item] === '' || state[item + 'Tip'] !== '');
+        })
+        return disabled;
     }
 
     changeType = () => {
@@ -106,28 +70,32 @@ export default class PPPOE extends React.Component {
     }
 
     render() {
-        const { account, accountTip, pwd, pwdTip, loading, disabled } = this.state;
-
+        const { account, accountTip, pwd, pwdTip, loading } = this.state;
+        const disabled = this.checkDisabled(this.state);
         return (
             <div>
                 <GuideHeader title='宽带拨号上网（PPPOE）' tips='这是说明文字这是说明文字这是说明文字' />
-                <Form
-                    value={account}
-                    onChange={value => this.onChange('account', value)}
-                    tip={accountTip}
-                    placeholder='请输入账号'
-                    maxLength={64} />
-                <Form
-                    type='password'
-                    value={pwd}
-                    onChange={value => this.onChange('pwd', value)}
-                    tip={pwdTip}
-                    placeholder='请输入密码'
-                    maxLength={32} />
-                <div style={{ textAlign: "center"}}>
+                <form>
+                    <Form
+                        value={account}
+                        onChange={value => this.onChange('account', value)}
+                        tip={accountTip}
+                        placeholder='请输入账号'
+                        maxLength={64}
+                    />
+                    <Form
+                        type='password'
+                        value={pwd}
+                        onChange={value => this.onChange('pwd', value)}
+                        tip={pwdTip}
+                        placeholder='请输入密码'
+                        maxLength={32}
+                    />
                     <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>下一步</Button>
-                    <a href='javascript:;' onClick={this.changeType}>切换上网方式</a>
-                </div>
+                    <div className='bottom-link'>
+                        <Link onClick={this.changeType}>切换上网方式</Link>
+                    </div>
+                </form>
             </div>
         );
     }

@@ -4,6 +4,7 @@ import Button from 'h5/components/Button';
 import Select from 'h5/components/Select';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
+import { detect } from './detect';
 import Icon from 'h5/components/Icon';
 
 const options = [
@@ -19,7 +20,7 @@ export default class SetWan extends React.Component {
 
     state = {
         wanType: 'pppoe',
-        loading: true,
+        loading: false,
         visible: true,
     }
 
@@ -43,16 +44,26 @@ export default class SetWan extends React.Component {
     }
 
     nextStep = () => {
-        // 实力代码：confirm
-        confirm({
-            title: '无法连接网络',
-            content: '请检查您的网线是否插好',
-            cancelText: '重新检测',
-            okText: '继续设置',
-            onOk: this.onOk,
-            onCancel: this.onCancel,
-        });
-
+        this.setState({loading: true});
+        const wanType = this.state.wanType;
+        if ('dhcp' === wanType) {
+            let online = detect ('dhcp', this.state);
+            if(online) {
+                setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
+            }else {
+                this.setState({loading: false});
+                // 实力代码：confirm
+                confirm({
+                    title: '无法连接网络',
+                    content: '请检查您的网线是否插好',
+                    cancelText: '重新检测',
+                    okText: '继续设置',
+                    onOk: this.onOk,
+                    onCancel: this.onCancel,
+                });
+            }
+        }
+        window.location.href = '/guide/setwan/' + wanType;
         //this.props.history.push('/guide/setwifi');
     };
 
