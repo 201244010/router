@@ -18,7 +18,7 @@ export default class Finish extends React.PureComponent {
 
     render() {
         let host = { ssid: '', password: ''};
-        let guest = { ssid: '', static_password: ''};
+        let guest = { enable: '0', ssid: '', static_password: ''};
 
 
         const params = this.props.match.params;
@@ -32,6 +32,7 @@ export default class Finish extends React.PureComponent {
             };
 
             guest = {
+                enable: wifi.guest.enable,
                 ssid: wifi.guest.ssid,
                 password: Base64.decode(wifi.guest.static_password),
             };
@@ -47,12 +48,14 @@ export default class Finish extends React.PureComponent {
                         password={host.password}
                         color='rgba(255,96,0,0.60)'
                     />
+                    { ('1' === guest.enable) &&
                     <WifiInfo
                         title='顾客Wi-Fi'
                         ssid={guest.ssid}
                         password={guest.password}
                         color='rgba(45,187,26,0.60)'
                     />
+                    }
                     <p className='tip-reconnect'>Wi-Fi可能会断开，如有需要请重新连接</p>
                     <Button type='primary' onClick={this.nextStep}>完成</Button>
                 </form>
