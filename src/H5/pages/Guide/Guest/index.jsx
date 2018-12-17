@@ -52,20 +52,29 @@ export default class Guest extends React.Component {
         });
     }
 
-    submitData = async () => {
-        const { ssid, password } = this.state;
-        let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
-        let pwdBase64 = Base64.encode(password);
+    /**
+     * laterSet: 不设置顾客WiFi
+     */
+    submitData = async (laterSet = false) => {
+        let data = {};
 
-        let guest = Object.assign(this.guest, {
-            enable: '1',
-            ssid: ssid,
-            encryption: encryption,
-            static_password: pwdBase64,
-        });
+        // 顾客WiFi配置
+        let guest;
+        if (laterSet) {
+            guest = this.guest;
+        } else {
+            const { ssid, password } = this.state;
+            let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
+            let pwdBase64 = Base64.encode(password);
+            guest = Object.assign(this.guest, {
+                enable: '1',
+                ssid: ssid,
+                encryption: encryption,
+                static_password: pwdBase64,
+            });
+        }
 
-        // fetch data
-        let data = { guest };
+        data.guest = guest;
 
         // 商户WiFi配置
         const params = this.props.match.params;
@@ -103,6 +112,10 @@ export default class Guest extends React.Component {
             this.submitData();
         }
     };
+
+    laterSet = () => {
+        this.submitData(true);
+    }
 
     fetchData = async () => {
         let response = await common.fetchApi({ opcode: 'WIRELESS_GET' });
@@ -148,7 +161,7 @@ export default class Guest extends React.Component {
                     />
                     <Button type='primary' loading={loading} onClick={this.nextStep} disabled={disabled}>下一步</Button>
                     <div className='bottom-link'>
-                        <Link onClick={this.nextStep}>稍后设置</Link>
+                        <Link onClick={this.laterSet}>稍后设置</Link>
                     </div>
                 </form>
             </div>

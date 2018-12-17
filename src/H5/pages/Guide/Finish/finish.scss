@@ -16,9 +16,6 @@
     border-radius: 0.16rem;
     padding: 0.32rem 0.32rem 0.4267rem;
     margin-bottom: 0.2133rem;
-    &:last-child{
-        margin-bottom: 0;
-    }
     .info-header{
         margin-bottom: 0.3733rem;
         .circle{
@@ -46,15 +43,14 @@
     .info-list{
         li{
             display: flex;
+            align-items: flex-start;
             font-weight: bold;
             font-size: 0.4267rem;
             color: #333C4F;
             margin-bottom: 0.2133rem;
-            width: 100%;
             span{
                 flex: 1;
-                display: inline-block;
-                vertical-align: top;
+                word-break: break-all;
                 margin-left: 0.08rem;
             }
             &:last-child{
