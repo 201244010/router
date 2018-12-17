@@ -4,6 +4,7 @@ import Button from 'h5/components/Button';
 import Select from 'h5/components/Select';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
+import { detect } from './wan';
 import Icon from 'h5/components/Icon';
 
 const options = [
@@ -19,7 +20,7 @@ export default class SetWan extends React.Component {
 
     state = {
         wanType: 'pppoe',
-        loading: true,
+        loading: false,
         visible: true,
     }
 
@@ -42,18 +43,41 @@ export default class SetWan extends React.Component {
         }, this.timingClose);
     }
 
-    nextStep = () => {
-        // 实力代码：confirm
-        confirm({
-            title: '无法连接网络',
-            content: '请检查您的网线是否插好',
-            cancelText: '重新检测',
-            okText: '继续设置',
-            onOk: this.onOk,
-            onCancel: this.onCancel,
-        });
-
-        //this.props.history.push('/guide/setwifi');
+    nextStep = async () => {   
+        const wanType = this.state.wanType;
+        this.setState({loading: true});
+        if ('dhcp' === wanType) {
+            let response = await common.fetchApi(
+                {
+                    opcode: 'NETWORK_WAN_IPV4_SET',
+                    data:{
+                        wan:{
+                            dial_type: 'dhcp',
+                            dns_type: 'auto',
+                        }
+                    }
+                }   
+            );
+            let { errcode } = response;
+            if(0 === errcode) {
+                let online = detect ();
+                if(false === online) {
+                    this.setState({loading: false});
+                    // 实力代码：confirm
+                    confirm({
+                        title: '无法连接网络',
+                        content: '请检查您的网线是否插好',
+                        cancelText: '重新检测',
+                        okText: '继续设置',
+                        onOk: this.onOk,
+                        onCancel: this.onCancel,
+                    });
+                }
+            }
+            message.error(`参数不合法[${errcode}]`);
+            this.setState({loading : false});
+        }
+        this.props.history.push('/guide/setwan/' + wanType);
     };
 
     timingClose = () => {
