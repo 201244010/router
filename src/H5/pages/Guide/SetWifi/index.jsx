@@ -117,7 +117,7 @@ export default class SetWifi extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='设置商户Wi-Fi' tips='这是说明文字这是说明文字这是说明文字' />
+                <GuideHeader title='设置商户Wi-Fi' tips='请设置您为自己或店员开放的个人Wi-Fi名称与密码' />
                 <form>
                     <Form
                         value={ssid}
