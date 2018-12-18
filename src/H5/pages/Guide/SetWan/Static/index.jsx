@@ -67,12 +67,8 @@ export default class Static extends React.Component {
         });
     }
 
-    onOk = () => {
-        this.props.history.push('/guide/setwifi');
-    }
-
     onCancel = () => {
-        this.props.history.push('/guide/setwan/static');
+        this.props.history.push('/guide/setwifi');
     }
 
     submit = async () => {
@@ -103,7 +99,7 @@ export default class Static extends React.Component {
                 loading: false,
                 visible: true
             });
-            let online = detect(this.props);
+            let online = await detect(this.props);
             if(false === online) {
                 this.setState({
                     visible: false
@@ -148,6 +144,7 @@ export default class Static extends React.Component {
                 <Loading visible={visible} content='正在联网，请稍后...' />
                 <form>
                     <Form
+                        type='number'
                         value={ip}
                         onChange={value => this.onChange('ip', value)}
                         tip={ipTip}
@@ -155,6 +152,7 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
+                        type='number'
                         value={subnetmask}
                         onChange={value => this.onChange('subnetmask', value)}
                         tip={subnetmaskTip}
@@ -162,6 +160,7 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
+                        type='number'
                         value={gateway}
                         onChange={value => this.onChange('gateway', value)}
                         tip={gatewayTip}
@@ -169,6 +168,7 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
+                        type='number'
                         value={dns}
                         onChange={value => this.onChange('dns', value)}
                         tip={dnsTip}
@@ -176,6 +176,7 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
+                        type='number'
                         value={dnsbackup}
                         onChange={value => this.onChange('dnsbackup', value)}
                         tip={dnsbackupTip}

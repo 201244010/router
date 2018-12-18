@@ -41,12 +41,8 @@ export default class PPPoE extends React.Component {
         });
     }
 
-    onOk = () => {
-        this.props.history.push('/guide/setwifi');
-    }
-
     onCancel = () => {
-        this.props.history.push('/guide/setwan/pppoe');
+        this.props.history.push('/guide/setwifi');
     }
 
     submit = async () => {    
@@ -75,7 +71,7 @@ export default class PPPoE extends React.Component {
                 loading: false,
                 visible: true
             })
-            let online = detect(this.props);
+            let online = await detect(this.props);
             if(false === online) {
                 this.setState({
                     visible: false
@@ -86,7 +82,6 @@ export default class PPPoE extends React.Component {
                     content: '检查您的上网方式是否正确',
                     cancelText: '继续设置',
                     okText: '重新设置',
-                    onOk: this.onOk,
                     onCancel: this.onCancel,
                 });
             }
