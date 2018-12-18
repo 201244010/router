@@ -384,7 +384,11 @@ export default class Bandwidth extends React.PureComponent {
             <div>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 60}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title="总带宽" checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
+                        <PanelHeader
+                            title="总带宽"
+                            tip='自动测速结果受环境因素影响会有不同程度波动，如测试结果与实际不符，建议您采用手动方式设置'
+                            checkable={false}
+                            onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
                     <section className="band-value">
                         <div className="band-size">

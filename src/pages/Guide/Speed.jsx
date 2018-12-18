@@ -178,7 +178,8 @@ export default class Speed extends React.Component {
     return (
       <div className="speed">
         <h2>设置上下行带宽</h2> 
-        <p className="ui-tips guide-tip">设置之后，路由器就可以根据设备优先级智能调配网速。 </p>
+        <p className="ui-tips guide-tip">设置之后，路由器就可以根据设备优先级智能调配网速<br />
+        *自动测速结果受环境因素影响会有不同程度波动，如测试结果与实际不符，建议您采用手动方式设置</p>
         <div className="ui-relative">
             <div className="button-group">
                 <a href="javascript:;" className={classnames(["ui-ib", {'now' : mode === 'auto'}])} onClick={this.switchMode('Auto')}>自动测速</a>
