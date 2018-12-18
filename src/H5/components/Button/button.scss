@@ -9,7 +9,7 @@
     border-radius: 0.2133rem;
     background-color: transparent;
     outline: none;
-    &.disabled, &:disabled{
+    &.disabled{
         background-color: #EBEBEB !important;
     }
     &.btn-primary{

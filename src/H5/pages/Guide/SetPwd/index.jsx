@@ -2,6 +2,7 @@ import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Form from 'h5/components/Form';
+import confirm from 'h5/components/Confirm';
 import Loading from 'h5/components/Loading';
 import {checkStr} from '~/assets/common/check';
 
@@ -18,6 +19,10 @@ export default class SetPwd extends React.Component {
         loading: false,
         disabled: true
     };
+
+    onOk = () =>{
+        this.props.history.push('/');
+    }
 
     // 表单提交
     post = async () => {
@@ -41,19 +46,17 @@ export default class SetPwd extends React.Component {
         switch (errcode) {
         case 0:
             init(data[0].result.account.token);
-            this.props.history.push('/guide/setwan');
+            this.props.history.push('/guide/setwan/detect');
             break;
         case '-1608':
-            // Modal.info({
-            //         title: '提示',
-            //         content: '已设置过密码',
-            //         okText: '确定',
-            //         centered: true,
-            //         onOk: () => {
-            //             location.href = '/';
-            //         }
-            //     });
-            // break;
+            confirm({
+                    title: '提示',
+                    content: '已设置过密码',
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk: this.onOk
+                });
+            break;
         default:
             this.setState({ pwdTip: `未知错误[${errcode}]`});
             break;
@@ -99,7 +102,6 @@ export default class SetPwd extends React.Component {
                     />
                     <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>下一步</Button>
                 </form>
-                {/* <Loading visible={visible} content='正在检测上网方式，请稍后...' /> */}
             </div>
         )
     }

@@ -4,8 +4,10 @@ import Form from 'h5/Components/Form';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
+import Loading from 'h5/components/Loading';
+import confirm from 'h5/components/Confirm';
 import { checkIp, checkMask } from '~/assets/common/check';
-import { detect } from './wan';
+import { detect } from '../wan';
 
 export default class Static extends React.Component {
     constructor(props) {
@@ -13,6 +15,7 @@ export default class Static extends React.Component {
     }
 
     state = {
+        visible: false,
         ip: '',
         ipTip: '',
         subnetmask: '',
@@ -23,7 +26,7 @@ export default class Static extends React.Component {
         dnsTip: '',
         dnsbackup: '',
         dnsbackupTip: '',
-        loading: true,
+        loading: false,
     }
 
     onChange = (name, value) => {
@@ -56,7 +59,8 @@ export default class Static extends React.Component {
             },
         }
 
-        let tip = valid[name].func(value, { who: valid[name].who });
+        let val = value.split('.');
+        let tip = valid[name].func(val, { who: valid[name].who });
 
         this.setState({
             [name]: value,
@@ -64,10 +68,17 @@ export default class Static extends React.Component {
         });
     }
 
+    onCancel = () => {
+        this.props.history.push('/guide/setwifi');
+    }
+
     submit = async () => {
-        this.setState({ loading : true });
         const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
-        response = await common.fetchApi(
+        this.setState({
+            loading: true
+        });
+
+        let response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
                 data:{
@@ -86,22 +97,31 @@ export default class Static extends React.Component {
         );
         let { errcode } = response;
         if(0 === errcode) {
-            let online = detect(this.props);
+            this.setState({
+                loading: false,
+                visible: true
+            });
+            let online = await detect(this.props);
             if(false === online) {
-                this.setState({loading: false});
-                // 实力代码：confirm
+                this.setState({
+                    visible: false
+                });
+
                 confirm({
                     title: '无法连接网络',
-                    content: '请检查您的网线是否插好',
-                    cancelText: '重新检测',
-                    okText: '继续设置',
+                    content: '检查您的上网方式是否正确',
+                    cancelText: '继续设置',
+                    okText: '重新设置',
                     onOk: this.onOk,
                     onCancel: this.onCancel,
                 });
             }
+            return;
         }
-        message.error(`参数不合法[${errcode}]`);
-        this.setState({loading : false});
+        this.setState({
+            loading: false
+        });
+        message.error(`参数非法[${errcode}]`);
     }
 
     checkDisabled(state){
@@ -112,17 +132,18 @@ export default class Static extends React.Component {
     }
 
     changeType = () => {
-        this.props.historty.push('/guide/setwan');
+        this.props.history.push('/guide/setwan/static');
     }
 
     render() {
-        const { ip, ipTip, subnetmask, subnetmaskTip, gateway, gatewayTip, dns, dnsTip, dnsbackup,
+        const { visible, ip, ipTip, subnetmask, subnetmaskTip, gateway, gatewayTip, dns, dnsTip, dnsbackup,
             dnsbackupTip, loading } = this.state;
         const disabled = this.checkDisabled(this.state);
 
         return (
             <div>
-                <GuideHeader title='手动输入IP（静态IP）' tips='这是说明文字这是说明文字这是说明文字' />
+                <GuideHeader title='手动输入IP（静态IP）' tips='请输入运营商提供的 IP地址、子网掩码、网关、DNS服务器地址' />
+                <Loading visible={visible} content='正在联网，请稍候...' />
                 <form>
                     <Form
                         value={ip}
