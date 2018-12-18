@@ -59,7 +59,8 @@ export default class Static extends React.Component {
             },
         }
 
-        let tip = valid[name].func(value, { who: valid[name].who });
+        let val = value.split('.');
+        let tip = valid[name].func(val, { who: valid[name].who });
 
         this.setState({
             [name]: value,
@@ -76,7 +77,8 @@ export default class Static extends React.Component {
         this.setState({
             loading: true
         });
-        response = await common.fetchApi(
+
+        let response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
                 data:{
@@ -144,7 +146,6 @@ export default class Static extends React.Component {
                 <Loading visible={visible} content='正在联网，请稍候...' />
                 <form>
                     <Form
-                        type='number'
                         value={ip}
                         onChange={value => this.onChange('ip', value)}
                         tip={ipTip}
@@ -152,7 +153,6 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
-                        type='number'
                         value={subnetmask}
                         onChange={value => this.onChange('subnetmask', value)}
                         tip={subnetmaskTip}
@@ -160,7 +160,6 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
-                        type='number'
                         value={gateway}
                         onChange={value => this.onChange('gateway', value)}
                         tip={gatewayTip}
@@ -168,7 +167,6 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
-                        type='number'
                         value={dns}
                         onChange={value => this.onChange('dns', value)}
                         tip={dnsTip}
@@ -176,7 +174,6 @@ export default class Static extends React.Component {
                         maxLength={15}
                     />
                     <Form
-                        type='number'
                         value={dnsbackup}
                         onChange={value => this.onChange('dnsbackup', value)}
                         tip={dnsbackupTip}

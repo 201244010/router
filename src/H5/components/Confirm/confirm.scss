@@ -34,6 +34,9 @@ $border-radius: 0.3733rem;
                 font-size: 0.4267rem;
                 color: #3D76F6;
                 padding: 0.28rem 0;
+                &.cancel-btn{
+                    color: #333C4F;
+                }
                 &:first-child{
                     border-right: 0.0133rem solid #CCC;
                 }

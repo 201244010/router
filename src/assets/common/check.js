@@ -47,6 +47,8 @@ let checkIpFormat = (ip, opt = {}) => {
         return true;
     });
 
+    valid = valid && (4 === ip.length);
+
     return valid ? '' : `${opt.who}非法（形如X.X.X.X，其中X为0-255之间的数字）`;
 }
 
