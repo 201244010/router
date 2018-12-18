@@ -22,26 +22,43 @@ export default class SetWan extends React.Component {
     state = {
         wanType: 'dhcp',
         loading: false,
-        visible: true,
-        content: '正在检测上网方式，请稍后...' // | '正在联网，请稍后...'
+        visible: false,
+        content: '正在联网，请稍候...',
     }
 
-    onTypeChange = (value) => {
-        this.setState({
-            wanType: value
-        });
+    static getDerivedStateFromProps(props, prevState) {
+        const DETECT = 'detect';
+        const type = props.match.params.type;
+
+        return {
+            wanType: type,
+            visible: (DETECT === type),
+            content: (DETECT === type) ? '正在检测上网方式，请稍候...' : prevState.content,
+        };
     }
 
-    onCancel = () => {
+    onTypeChange = (type) => {
+        this.props.history.push('/guide/setwan/' + type);
+    }
+
+    wifiSet = () => {
         this.props.history.push('/guide/setwifi');
     }
 
     nextStep = async () => {   
         const wanType = this.state.wanType;
-        this.setState({
-            loading: true
-        });
+
+        // PPPoE/静态IP，跳转到对应页面
+        if ('pppoe' === wanType || 'static' === wanType) {
+            this.props.history.push('/guide/' + wanType);
+            return;
+        }
+
+        // DHCP方式，直接保存数据
         if ('dhcp' === wanType) {
+            this.setState({
+                loading: true,
+            });
             let response = await common.fetchApi(
                 {
                     opcode: 'NETWORK_WAN_IPV4_SET',
@@ -53,33 +70,39 @@ export default class SetWan extends React.Component {
                     }
                 }   
             );
+            this.setState({
+                loading: false,
+            });
+
             let { errcode } = response;
-            if(0 === errcode) {
-                this.setState({
-                    loading: false,
-                    visible: true,
-                    content: '正在联网，请稍后...'
-                });
-                let online = await detect(this.props);
-                if(false === online) {
-                    this.setState({
-                        visible: false
-                    });
-                    // 实力代码：confirm
-                    confirm({
-                        title: '无法连接网络',
-                        content: '检查您的上网方式是否正确',
-                        cancelText: '继续设置',
-                        okText: '重新设置',
-                        onCancel: this.onCancel
-                    });
-                }
+            if (0 !== errcode) {
+                message.error(`参数非法[${errcode}]`);
                 return;
             }
-            this.setState({loading: false});
-            message.error(`参数不合法[${errcode}]`);
+
+            // 检测是否能联网
+            this.setState({
+                loading: false,
+                visible: true,
+                content: '正在联网，请稍候...'
+            });
+            let online = await detect(this.props);
+            if(!online) {   // 不能上网，提示用户
+                this.setState({
+                    visible: false,
+                });
+
+                confirm({
+                    title: '无法连接网络',
+                    content: '检查您的上网方式是否正确',
+                    cancelText: '继续设置',
+                    okText: '重新设置',
+                    onCancel: this.wifiSet
+                });
+            } else {    // 可以上网，跳到下一步
+                this.wifiSet();
+            }
         }
-        this.props.history.push('/guide/setwan/' + wanType);
     };
 
     dialDetect = async () => {
@@ -158,7 +181,7 @@ export default class SetWan extends React.Component {
 
     componentDidMount() {
         // 检测上网方式
-        this.dialDetect();
+        //this.dialDetect();
     }
 
     render() {

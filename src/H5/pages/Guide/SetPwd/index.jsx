@@ -46,7 +46,7 @@ export default class SetPwd extends React.Component {
         switch (errcode) {
         case 0:
             init(data[0].result.account.token);
-            this.props.history.push('/guide/setwan');
+            this.props.history.push('/guide/setwan/detect');
             break;
         case '-1608':
             confirm({

@@ -7,7 +7,7 @@ import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/Confirm';
 import { checkIp, checkMask } from '~/assets/common/check';
-import { detect } from './wan';
+import { detect } from '../wan';
 
 export default class Static extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ export default class Static extends React.Component {
         dnsTip: '',
         dnsbackup: '',
         dnsbackupTip: '',
-        loading: true,
+        loading: false,
     }
 
     onChange = (name, value) => {
@@ -104,7 +104,7 @@ export default class Static extends React.Component {
                 this.setState({
                     visible: false
                 });
-                // 实力代码：confirm
+
                 confirm({
                     title: '无法连接网络',
                     content: '检查您的上网方式是否正确',
@@ -119,7 +119,7 @@ export default class Static extends React.Component {
         this.setState({
             loading: false
         });
-        message.error(`参数不合法[${errcode}]`);
+        message.error(`参数非法[${errcode}]`);
     }
 
     checkDisabled(state){
@@ -130,7 +130,7 @@ export default class Static extends React.Component {
     }
 
     changeType = () => {
-        this.props.historty.push('/guide/setwan');
+        this.props.history.push('/guide/setwan/static');
     }
 
     render() {
@@ -141,7 +141,7 @@ export default class Static extends React.Component {
         return (
             <div>
                 <GuideHeader title='手动输入IP（静态IP）' tips='请输入运营商提供的 IP地址、子网掩码、网关、DNS服务器地址' />
-                <Loading visible={visible} content='正在联网，请稍后...' />
+                <Loading visible={visible} content='正在联网，请稍候...' />
                 <form>
                     <Form
                         type='number'
