@@ -77,7 +77,10 @@ export default class Static extends React.Component {
         this.setState({
             loading: true
         });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 优化pppoe、static
         let response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
@@ -95,18 +98,22 @@ export default class Static extends React.Component {
                 }
             }
         );
+        this.setState({
+            loading: false
+        });
+
+        //检测联网状态
         let { errcode } = response;
         if(0 === errcode) {
             this.setState({
-                loading: false,
                 visible: true
             });
             let online = await detect(this.props);
-            if(false === online) {
-                this.setState({
-                    visible: false
-                });
+            this.setState({
+                visible: false
+            });
 
+            if(false === online) {   //联网失败
                 confirm({
                     title: '无法连接网络',
                     content: '检查您的上网方式是否正确',
@@ -118,9 +125,6 @@ export default class Static extends React.Component {
             }
             return;
         }
-        this.setState({
-            loading: false
-        });
         message.error(`参数非法[${errcode}]`);
     }
 
