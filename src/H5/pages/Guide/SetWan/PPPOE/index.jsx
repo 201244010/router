@@ -8,7 +8,7 @@ import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/Confirm';
 import { checkStr } from '~/assets/common/check';
-import { detect } from './wan';
+import { detect } from '../wan';
 
 export default class PPPoE extends React.Component {
     constructor(props) {
@@ -76,7 +76,7 @@ export default class PPPoE extends React.Component {
                 this.setState({
                     visible: false
                 });
-                // 实力代码：confirm
+
                 confirm({
                     title: '无法连接网络',
                     content: '检查您的上网方式是否正确',
@@ -90,11 +90,11 @@ export default class PPPoE extends React.Component {
         this.setState({
             loading: false
         });
-        message.error(`参数不合法[${errcode}]`);
+        message.error(`参数非法[${errcode}]`);
     }
 
     changeType = () => {
-        this.props.historty.push('/guide/setwan');
+        this.props.history.push('/guide/setwan/pppoe');
     }
 
     checkDisabled(state){
@@ -109,8 +109,8 @@ export default class PPPoE extends React.Component {
         const disabled = this.checkDisabled(this.state);
         return (
             <div>
-                <GuideHeader title='宽带拨号上网（PPPOE）' tips='请输入运营商提供的宽带账号和密码' />
-                <Loading visible={visible} content='正在联网，请稍后...' />
+                <GuideHeader title='宽带拨号上网（PPPoE）' tips='请输入运营商提供的宽带账号和密码' />
+                <Loading visible={visible} content='正在联网，请稍候...' />
                 <form>
                     <Form
                         value={account}

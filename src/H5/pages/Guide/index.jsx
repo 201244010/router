@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
 import SetPwd from './SetPwd';
 import SetWan from './SetWan';
+import PPPoE from './SetWan/PPPoE';
+import Static from './SetWan/Static';
 import SetWifi from './SetWifi';
 import Guest from './Guest';
 import Finish from './Finish';
@@ -43,7 +45,9 @@ export default class Guide extends React.Component {
                 <div className="guide-body">
                     <Switch>
                         <Route path={`${match.path}/setpwd`} component={SetPwd} />
-                        <Route path={`${match.path}/setwan`} component={SetWan} />
+                        <Route path={`${match.path}/setwan/:type`} component={SetWan} />
+                        <Route path={`${match.path}/pppoe`} component={PPPoE} />
+                        <Route path={`${match.path}/static`} component={Static} />
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
 
                         {/**
