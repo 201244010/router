@@ -143,7 +143,7 @@ export default class Guest extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='设置顾客Wi-Fi' tips='这是说明文字这是说明文字这是说明文字' />
+                <GuideHeader title='设置顾客Wi-Fi' tips='请设置您为顾客或客人开放的公共Wi-Fi名称与密码' />
                 <Loading visible={loading} content='正在保存Wi-Fi设置，请稍候...' />
                 <form>
                     <Form
