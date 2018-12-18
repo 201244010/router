@@ -32,8 +32,6 @@ export default class SetWan extends React.Component {
 
         return {
             wanType: type,
-            visible: (DETECT === type),
-            content: (DETECT === type) ? '正在检测上网方式，请稍候...' : prevState.content,
         };
     }
 
@@ -41,7 +39,7 @@ export default class SetWan extends React.Component {
         this.props.history.push('/guide/setwan/' + type);
     }
 
-    wifiSet = () => {
+    setWifi = () => {
         this.props.history.push('/guide/setwifi');
     }
 
@@ -86,102 +84,92 @@ export default class SetWan extends React.Component {
                 visible: true,
                 content: '正在联网，请稍候...'
             });
-            let online = await detect(this.props);
-            if(!online) {   // 不能上网，提示用户
-                this.setState({
-                    visible: false,
-                });
 
+            let online = await detect(this.props);
+            this.setState({
+                visible: false,
+            });
+
+            if(!online) {   // 不能上网，提示用户
                 confirm({
                     title: '无法连接网络',
                     content: '检查您的上网方式是否正确',
                     cancelText: '继续设置',
                     okText: '重新设置',
-                    onCancel: this.wifiSet
+                    onCancel: this.setWifi
                 });
             } else {    // 可以上网，跳到下一步
-                this.wifiSet();
+                this.setWifi();
             }
         }
     };
 
     dialDetect = async () => {
         this.setState({
-            visible: true
+            visible: true,
+            content: '正在检测上网方式，请稍候...',
         });
-        let resp = await common.fetchApi(
-            {
-                opcode: 'WANWIDGET_WAN_LINKSTATE_GET'
-            },
-        );
-        const { errcode,data } = resp;
-        if(errcode == 0){
-            if(data[0].result.wan_linkstate.linkstate){
-                await common.fetchApi(
-                    {
-                        opcode: 'WANWIDGET_DIALDETECT_START'
-                    },
-                );
-                let response = await common.fetchApi(
-                    {
-                        opcode: 'WANWIDGET_DIALDETECT_GET'
-                    },
-                    {},
-                    {
-                        loop : true,
-                        interval : 2000,
-                        pending : res => res.data[0].result.dialdetect.status === 'detecting',
-                        stop : () => this.stop
-                    }
-                );
-                const { errcode, data } = response;
-                if(0 === errcode){
-                    let { dial_type } = data[0].result.dialdetect;
-                    dial_type = dial_type === 'none' ? 'dhcp' : dial_type;
-                    this.setState({
-                        wanType:  dial_type,
-                        visible: false
-                    });
-                    return;
-                }else{
-                    this.setState({
-                        visible: false
-                    });
-                    confirm({
-                        title: '无法连接网络',
-                        content: '请检查您的网线是否插好',
-                        cancelText: '继续设置',
-                        okText: '重新检测',
-                        onOk: this.reDetect
-                    });
-                }
-            }else{
-                this.setState({
-                    visible: false
-                });
-                confirm({
-                    title: '无法连接网络',
-                    content: '请检查您的网线是否插好',
-                    cancelText: '继续设置',
-                    okText: '重新检测',
-                    onOk: this.reDetect,
-                });
-            }
-        }else{
-            this.setState({
-                visible: false
-            });
-            message.error('网线插拔方式获取失败');
-        }
-    }
 
-    reDetect = () =>{
-        this.dialDetect();
+        let resp = await common.fetchApi({ opcode: 'WANWIDGET_WAN_LINKSTATE_GET' });
+        if (0 !== resp.errcode) {    // 未知错误，直接跳转到DHCP
+            this.setState({
+                visible: false,
+            });
+            this.props.history.push('/guide/setwan/dhcp');
+            return;
+        }
+
+        const linkstate = resp.data[0].result.wan_linkstate.linkstate;
+        if (!linkstate) {   // 没插网线，提示用户
+            this.setState({
+                visible: false,
+            });
+
+            confirm({
+                title: '无法连接网络',
+                content: '请检查您的网线是否插好',
+                cancelText: '继续设置',
+                okText: '重新检测',
+                onCancel: this.nextStep,
+                onOk: this.dialDetect,
+            });
+            return;
+        }
+
+        // 网线已连接，检测上网方式
+        await common.fetchApi({ opcode: 'WANWIDGET_DIALDETECT_START' });
+        let response = await common.fetchApi(
+            {
+                opcode: 'WANWIDGET_DIALDETECT_GET'
+            },
+            {},
+            {
+                loop : true,
+                interval : 2000,
+                pending : res => res.data[0].result.dialdetect.status === 'detecting',
+                stop : () => this.stop
+            }
+        );
+        this.setState({
+            visible: false,
+        });
+
+        const { errcode, data } = response;
+        if (0 !== errcode) {    // 未知错误，直接跳转到DHCP
+            this.props.history.push('/guide/setwan/dhcp');
+            return;
+        }
+
+        // 根据检测结果显示对应方式
+        let { dial_type } = data[0].result.dialdetect;
+        dial_type = dial_type === 'none' ? 'dhcp' : dial_type;
+        this.props.history.push('/guide/setwan/' + dial_type);
     }
 
     componentDidMount() {
-        // 检测上网方式
-        //this.dialDetect();
+        if ('detect' === this.state.wanType) {  // 检测上网方式
+            this.dialDetect();
+        }
     }
 
     render() {
