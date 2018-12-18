@@ -20,7 +20,7 @@ export default class SetWan extends React.Component {
     }
 
     state = {
-        wanType: 'pppoe',
+        wanType: 'dhcp',
         loading: false,
         visible: true,
         content: '正在检测上网方式，请稍后...' // | '正在联网，请稍后...'
@@ -32,16 +32,8 @@ export default class SetWan extends React.Component {
         });
     }
 
-    onOk = () => {
-        this.props.history.push('/guide/setwifi');
-    }
-
     onCancel = () => {
-        this.setState({
-            visible: true,
-            content: '正在联网，请稍后...'
-        });
-
+        this.props.history.push('/guide/setwifi');
     }
 
     nextStep = async () => {   
@@ -68,7 +60,7 @@ export default class SetWan extends React.Component {
                     visible: true,
                     content: '正在联网，请稍后...'
                 });
-                let online = detect(this.props);
+                let online = await detect(this.props);
                 if(false === online) {
                     this.setState({
                         visible: false
@@ -79,8 +71,7 @@ export default class SetWan extends React.Component {
                         content: '检查您的上网方式是否正确',
                         cancelText: '继续设置',
                         okText: '重新设置',
-                        onOk: this.onOk,
-                        onCancel: this.onCancel,
+                        onCancel: this.onCancel
                     });
                 }
                 return;
@@ -133,16 +124,36 @@ export default class SetWan extends React.Component {
                     this.setState({
                         visible: false
                     });
-                    message.error(`上网方式检查检测失败[${errcode}]`);
+                    confirm({
+                        title: '无法连接网络',
+                        content: '请检查您的网线是否插好',
+                        cancelText: '继续设置',
+                        okText: '重新检测',
+                        onOk: this.reDetect
+                    });
                 }
             }else{
                 this.setState({
                     visible: false
                 });
+                confirm({
+                    title: '无法连接网络',
+                    content: '请检查您的网线是否插好',
+                    cancelText: '继续设置',
+                    okText: '重新检测',
+                    onOk: this.reDetect,
+                });
             }
         }else{
-            message.error(`获取网线插拔状态失败[${errcode}]`);
+            this.setState({
+                visible: false
+            });
+            message.error('网线插拔方式获取失败');
         }
+    }
+
+    reDetect = () =>{
+        this.dialDetect();
     }
 
     componentDidMount() {

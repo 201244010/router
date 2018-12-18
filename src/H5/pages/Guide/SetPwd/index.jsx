@@ -21,11 +21,7 @@ export default class SetPwd extends React.Component {
     };
 
     onOk = () =>{
-        this.props.history.push('/home');
-    }
-
-    onCancel = () => {
-        this.props.history.push('/guide/setpwd');
+        this.props.history.push('/');
     }
 
     // 表单提交
@@ -58,8 +54,7 @@ export default class SetPwd extends React.Component {
                     content: '已设置过密码',
                     cancelText: '取消',
                     okText: '确定',
-                    onOk: this.onOk,
-                    onCancel: this.onCancel
+                    onOk: this.onOk
                 });
             break;
         default:
@@ -107,7 +102,6 @@ export default class SetPwd extends React.Component {
                     />
                     <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>下一步</Button>
                 </form>
-                {/* <Loading visible={visible} content='正在检测上网方式，请稍后...' /> */}
             </div>
         )
     }
