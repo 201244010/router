@@ -47,6 +47,10 @@ export default class PPPoE extends React.Component {
 
     submit = async () => {    
         const { account, pwd } = this.state;
+
+        this.userInfo.password = Base64.encode(account);
+        this.userInfo.password = Base64.encode(pwd);
+
         this.setState({
             loading: true
         });
@@ -57,10 +61,7 @@ export default class PPPoE extends React.Component {
                     wan:{
                         dial_type: 'pppoe',
                         dns_type: 'auto',
-                        user_info: {
-                            username: Base64.encode(account),
-                            password: Base64.encode(pwd)
-                        }
+                        user_info: this.userInfo
                     }
                 }
             }   
@@ -103,6 +104,36 @@ export default class PPPoE extends React.Component {
             return (state[item] === '' || state[item + 'Tip'] !== '');
         })
         return disabled;
+    }
+
+    getNetInfo = async ()=>{
+        let response = await common.fetchApi(
+            {
+                opcode: 'NETWORK_WAN_IPV4_GET'
+            },
+            {},
+            {
+                loop : true,
+                pending : res => res.data[0].result.dialdetect === 'detecting',
+                stop : ()=> this.stop
+            }
+        );
+        let { data, errcode } = response;
+        if(errcode == 0){
+            this.userInfo = data[0].result.wan.pppoe.user_info;
+            const { username, password } = this.userInfo;
+            this.setState({
+                account: username,
+                pwd: password,
+            })
+            return;
+        }
+        message.error(`IP信息获取失败[${errcode}]`);
+    }
+
+    componentDidMount(){
+        // 获取网络情况
+        this.getNetInfo();
     }
 
     render() {

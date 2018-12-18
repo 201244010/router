@@ -74,6 +74,13 @@ export default class Static extends React.Component {
 
     submit = async () => {
         const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
+
+        this.static.ipv4 = ip;
+        this.static.mask = subnetmask;
+        this.static.gateway = gateway;
+        this.static.dns1 = dns;
+        this.static.dns2 = dnsbackup;
+
         this.setState({
             loading: true
         });
@@ -83,13 +90,7 @@ export default class Static extends React.Component {
                 data:{
                     wan:{
                         dial_type: 'static',
-                        info: {
-                            ipv4 : ip,
-                            mask : subnetmask,
-                            gateway : gateway,
-                            dns1 : dns,
-                            dns2 : dnsbackup
-                        }
+                        info: this.static
                     }
                 }
             }
@@ -133,6 +134,39 @@ export default class Static extends React.Component {
 
     changeType = () => {
         this.props.history.push('/guide/setwan/static');
+    }
+
+    getNetInfo = async ()=>{
+        let response = await common.fetchApi(
+            {
+                opcode: 'NETWORK_WAN_IPV4_GET'
+            },
+            {},
+            {
+                loop : true,
+                pending : res => res.data[0].result.dialdetect === 'detecting',
+                stop : ()=> this.stop
+            }
+        );
+        let { data, errcode } = response;
+        if(errcode == 0){
+            this.static = data[0].result.wan.static;
+            const { ipv4, mask, gateway, dns1, dns2 } = this.static;
+            this.setState({
+                ip: ipv4,
+                subnetmask: mask,
+                gateway: gateway,
+                dns: dns1,
+                dnsbackup: dns2,
+            });
+            return;
+        }
+        message.error(`IP信息获取失败[${errcode}]`);
+    }
+
+    componentDidMount(){
+        // 获取网络情况
+        this.getNetInfo();
     }
 
     render() {

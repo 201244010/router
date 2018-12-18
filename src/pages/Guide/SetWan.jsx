@@ -289,7 +289,7 @@ export default class SetWan extends React.PureComponent {
                 pending : res => res.data[0].result.dialdetect === 'detecting', 
                 stop : ()=> this.stop 
             }
-        ).catch(ex=>{});
+        );
         let { data, errcode } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;
