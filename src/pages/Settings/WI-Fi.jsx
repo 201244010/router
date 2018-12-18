@@ -340,6 +340,7 @@ export default class WIFI extends React.Component {
     }
 
     resCancle = () => {
+        this.fetchWireLessInfo();
         this.setState({
             resVisibile: false,
         });
@@ -411,32 +412,12 @@ export default class WIFI extends React.Component {
         let { errcode } = response;
         if(errcode === 0){
             setTimeout(async() => {
-                await common.fetchApi(
-                    [{
-                        opcode: 'WIRELESS_GET',
-                    }]
-                ).then(
-                        async()=>{
-                            await common.fetchApi(
-                                [{
-                                    opcode: 'WIRELESS_GET',
-                                }], 
-                                {},
-                                {
-                                    loop: true,
-                                    interval: 2000,
-                                    stop: resp => {resp!== 0},
-                                }
-                            );
-                            this.fetchWireLessInfo();
-                            this.setState({
-                                visibile: 'hidden',
-                                resVisibile: true,
-                                result: true,
-                            });                
-                        }
-                    );
-            }, 7000);       
+                this.setState({
+                    visibile: 'hidden',
+                    resVisibile: true,
+                    result: true,
+                });
+            }, 15000);
         }else{
             this.setState({
                 visibile: 'hidden',
