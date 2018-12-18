@@ -128,8 +128,9 @@ export default class Static extends React.Component {
     checkDisabled(state){
         const disabled = [ 'ip', 'subnetmask', 'gateway', 'dns' ].some(item => {
             return ('' === state[item] || '' !== state[item + 'Tip']);
-        }) && '' !== state.dnsbackupTip;
-        return disabled;
+        });
+        const dnsbackup = state.dnsbackup !== '' && state.dnsbackupTip !== '';
+        return disabled || dnsbackup;
     }
 
     changeType = () => {
