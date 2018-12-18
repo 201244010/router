@@ -77,10 +77,6 @@ export default class Static extends React.Component {
         this.setState({
             loading: true
         });
-<<<<<<< HEAD
-
-=======
->>>>>>> 优化pppoe、static
         let response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
