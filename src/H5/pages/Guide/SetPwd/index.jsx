@@ -2,6 +2,7 @@ import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Form from 'h5/components/Form';
+import confirm from 'h5/components/Confirm';
 import Loading from 'h5/components/Loading';
 import {checkStr} from '~/assets/common/check';
 
@@ -18,6 +19,14 @@ export default class SetPwd extends React.Component {
         loading: false,
         disabled: true
     };
+
+    onOk = () =>{
+        this.props.history.push('/home');
+    }
+
+    onCancel = () => {
+        this.props.history.push('/guide/setpwd');
+    }
 
     // 表单提交
     post = async () => {
@@ -44,16 +53,15 @@ export default class SetPwd extends React.Component {
             this.props.history.push('/guide/setwan');
             break;
         case '-1608':
-            // Modal.info({
-            //         title: '提示',
-            //         content: '已设置过密码',
-            //         okText: '确定',
-            //         centered: true,
-            //         onOk: () => {
-            //             location.href = '/';
-            //         }
-            //     });
-            // break;
+            confirm({
+                    title: '提示',
+                    content: '已设置过密码',
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk: this.onOk,
+                    onCancel: this.onCancel
+                });
+            break;
         default:
             this.setState({ pwdTip: `未知错误[${errcode}]`});
             break;

@@ -4,6 +4,8 @@ import Form from 'h5/Components/Form';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
+import Loading from 'h5/components/Loading';
+import confirm from 'h5/components/Confirm';
 import { checkIp, checkMask } from '~/assets/common/check';
 import { detect } from './wan';
 
@@ -13,6 +15,7 @@ export default class Static extends React.Component {
     }
 
     state = {
+        visible: false,
         ip: '',
         ipTip: '',
         subnetmask: '',
@@ -64,9 +67,19 @@ export default class Static extends React.Component {
         });
     }
 
+    onOk = () => {
+        this.props.history.push('/guide/setwifi');
+    }
+
+    onCancel = () => {
+        this.props.history.push('/guide/setwan/static');
+    }
+
     submit = async () => {
-        this.setState({ loading : true });
         const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
+        this.setState({
+            loading: true
+        });
         response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
@@ -86,22 +99,31 @@ export default class Static extends React.Component {
         );
         let { errcode } = response;
         if(0 === errcode) {
+            this.setState({
+                loading: false,
+                visible: true
+            });
             let online = detect(this.props);
             if(false === online) {
-                this.setState({loading: false});
+                this.setState({
+                    visible: false
+                });
                 // 实力代码：confirm
                 confirm({
                     title: '无法连接网络',
-                    content: '请检查您的网线是否插好',
-                    cancelText: '重新检测',
-                    okText: '继续设置',
+                    content: '检查您的上网方式是否正确',
+                    cancelText: '继续设置',
+                    okText: '重新设置',
                     onOk: this.onOk,
                     onCancel: this.onCancel,
                 });
             }
+            return;
         }
+        this.setState({
+            loading: false
+        });
         message.error(`参数不合法[${errcode}]`);
-        this.setState({loading : false});
     }
 
     checkDisabled(state){
@@ -116,13 +138,14 @@ export default class Static extends React.Component {
     }
 
     render() {
-        const { ip, ipTip, subnetmask, subnetmaskTip, gateway, gatewayTip, dns, dnsTip, dnsbackup,
+        const { visible, ip, ipTip, subnetmask, subnetmaskTip, gateway, gatewayTip, dns, dnsTip, dnsbackup,
             dnsbackupTip, loading } = this.state;
         const disabled = this.checkDisabled(this.state);
 
         return (
             <div>
-                <GuideHeader title='手动输入IP（静态IP）' tips='这是说明文字这是说明文字这是说明文字' />
+                <GuideHeader title='手动输入IP（静态IP）' tips='请输入运营商提供的 IP地址、子网掩码、网关、DNS服务器地址' />
+                <Loading visible={visible} content='正在联网，请稍后...' />
                 <form>
                     <Form
                         value={ip}
