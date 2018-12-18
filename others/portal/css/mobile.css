@@ -68,6 +68,11 @@ body {
     opacity: 0.8;
     font-size: 0.32rem;
     color: #fff;
+    text-align: center;
+}
+#tip a{
+    color: #FFF;
+    text-decoration: underline;
 }
 .protocol {
     position: relative;
