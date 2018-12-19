@@ -107,7 +107,7 @@ export default class SetWifi extends React.Component {
     dataSet = async() =>{
         this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
         this.mainWireLess.host.band_2g.password = Base64.encode(this.state.hostWifiPsw);
-        this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName + '_5G';
+        this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName.substring(0,29) + '_5G';
         this.mainWireLess.host.band_5g.password = Base64.encode(this.state.hostWifiPsw);
         this.guestWireLess.ssid = this.state.guestWifiName;
         this.guestWireLess.static_password = Base64.encode(this.state.guestWifiPsw);
