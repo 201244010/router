@@ -1,6 +1,6 @@
 import React from 'react';
 import { message } from 'antd';
-import Form from 'h5/Components/Form';
+import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
