@@ -350,7 +350,11 @@ export default class WeChatAuth extends React.Component{
                     <div className='left'>
                         <PanelHeader
                             title="功能设置"
-                            tip='微信认证是微信推出的快速连接Wi-Fi热点的功能。启用后，顾客仅需通过微信“扫一扫”二维码或者通过手动选择SSID后、再在弹出的认证页面进行后续操作两种方式，即可快速连接Wi-Fi免费上网'
+                            tip={
+                                <div className='help-content'>
+                                    <p>微信认证是微信推出的快速连接Wi-Fi热点的功能。启用后，顾客仅需通过微信“扫一扫”二维码或者通过手动选择SSID后、再在弹出的认证页面进行后续操作，即可快速连接Wi-Fi免费上网</p>
+                                    <p>提示：受限于手机系统差异，部分用户连接Wi-Fi后，如果无法第一时间弹出认证弹窗，可尝试打开手机浏览器，手动输入“portal.sunmi.linkportal/index.html”进行认证</p>
+                                </div>}
                             checkable={true}
                             checked={enable}
                             onChange={this.onEnableChange}
