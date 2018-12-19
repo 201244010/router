@@ -143,7 +143,7 @@ export default class SetWan extends React.PureComponent {
                 disabled: false,
                 loading: false,
             });
-            message.error( 'IP地址与默认网关需在同一网段上' );
+            message.error( 'IP地址与默认网关需在同一网段' );
             return ;
         }
         this.setState({ loading : true });
@@ -289,7 +289,7 @@ export default class SetWan extends React.PureComponent {
                 pending : res => res.data[0].result.dialdetect === 'detecting', 
                 stop : ()=> this.stop 
             }
-        ).catch(ex=>{});
+        );
         let { data, errcode } = response;
         if(errcode == 0){
             this.netInfo = data[0].result.wan;

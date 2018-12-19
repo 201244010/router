@@ -1,7 +1,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
@@ -15,6 +15,12 @@ import './home.scss';
 
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist';
+const err = {
+    '-1001': '参数格式错误',
+    '-1002': '参数不合法',
+    '-1005': '内存不足，无法进行测速',
+    '-1007': '网络异常，无法进行测速'
+}
 
 export default class Home extends React.Component {
     state = {
@@ -406,41 +412,47 @@ export default class Home extends React.Component {
         });
     }
 
-    runningSpeedTest = () => {
-        let start = common.fetchApi({ opcode: 'WANWIDGET_SPEEDTEST_START' });
+    runningSpeedTest = async () => {
+        let start = await common.fetchApi({ opcode: 'WANWIDGET_SPEEDTEST_START' });
 
-        start.then(() => {
-            let status = common.fetchApi(
-                { opcode: 'WANWIDGET_SPEEDTEST_INFO_GET' },
-                { method: 'POST' },
-                {
-                    loop: TIME_SPEED_TEST / 10,
-                    interval: 10000,
-                    stop: () => this.stop,
-                    pending: res => res.data[0].result.speedtest.status === "testing"
-                }
-            );
+        if(0 !== start.errcode) {
+            message.error(err[start.errcode]);
+            return;
+        }
 
-            status.then((resp) => {
-                let { errcode: code, data } = resp;
-                if (code == 0) {
-                    let info = data[0].result.speedtest;
-                    if (info.status === "ok") {
-                        this.setState({
-                            successShow: true,
-                            visible: false,
-                            upBand: (info.up_bandwidth / 1024).toFixed(0),
-                            downBand: (info.down_bandwidth / 1024).toFixed(0),
-                        });
-                    } else if (info.status === "fail") {
-                        this.setState({
-                            failShow: true,
-                            visible: false,
-                        });
-                    }
-                }
-            })
-        });
+        this.setState({ visible: true });
+        let status = await common.fetchApi(
+            { opcode: 'WANWIDGET_SPEEDTEST_INFO_GET' },
+            { method: 'POST' },
+            {
+                loop: TIME_SPEED_TEST / 10,
+                interval: 10000,
+                stop: () => this.stop,
+                pending: res => res.data[0].result.speedtest.status === "testing"
+            }
+        );
+        this.setState({ visible: false });
+
+        let { errcode: code, data } = status;
+        let info = data[0].result.speedtest;
+
+        if (0 !== code) {
+            return;
+        }
+
+        if ("ok" === info.status) {
+            this.setState({
+                successShow: true,
+                upBand: (info.up_bandwidth / 1024).toFixed(0),
+                downBand: (info.down_bandwidth / 1024).toFixed(0),
+            });
+        }
+
+        if ("fail" === info.status) {
+            this.setState({
+                failShow: true
+            });
+        }
     }
 
     startDiagnose = () => {
@@ -449,10 +461,6 @@ export default class Home extends React.Component {
 
     startSpeedTest = () => {
         this.runningSpeedTest();
-
-        this.setState({
-            visible: true,
-        });
     }
 
     closeSpeedTest = () => {

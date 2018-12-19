@@ -6,7 +6,7 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
-import { checkIp, checkMask } from '~/assets/common/check';
+import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 import { detect } from '../wan';
 
 export default class Static extends React.Component {
@@ -49,7 +49,7 @@ export default class Static extends React.Component {
             },
             dnsbackup:{
                 func: (value) => {
-                    if('' === value){
+                    if('' === value[0]){
                         return '';
                     }else {
                         return checkIp(value, { who: '备选DNS' });
@@ -61,6 +61,7 @@ export default class Static extends React.Component {
 
         let val = value.split('.');
         let tip = valid[name].func(val, { who: valid[name].who });
+        console.log(tip);
 
         this.setState({
             [name]: value,
@@ -73,10 +74,23 @@ export default class Static extends React.Component {
     }
 
     submit = async () => {
-        const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
+        let { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
+
         this.setState({
             loading: true
         });
+
+        if(ip === gateway){
+            message.error(`IP地址与默认网关不能相同`);
+            this.setState({ loading: false });
+            return ;
+        }
+
+        if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
+            message.error( 'IP地址与默认网关需在同一网段' );
+            this.setState({ loading: false });
+            return ;
+        }
 
         let response = await common.fetchApi(
             {
@@ -95,18 +109,22 @@ export default class Static extends React.Component {
                 }
             }
         );
+        this.setState({
+            loading: false
+        });
+
+        //检测联网状态
         let { errcode } = response;
         if(0 === errcode) {
             this.setState({
-                loading: false,
                 visible: true
             });
             let online = await detect(this.props);
-            if(false === online) {
-                this.setState({
-                    visible: false
-                });
+            this.setState({
+                visible: false
+            });
 
+            if(false === online) {   //联网失败
                 confirm({
                     title: '无法连接网络',
                     content: '检查您的上网方式是否正确',
@@ -118,21 +136,39 @@ export default class Static extends React.Component {
             }
             return;
         }
-        this.setState({
-            loading: false
-        });
         message.error(`参数非法[${errcode}]`);
     }
 
     checkDisabled(state){
         const disabled = [ 'ip', 'subnetmask', 'gateway', 'dns' ].some(item => {
             return ('' === state[item] || '' !== state[item + 'Tip']);
-        }) && '' !== state.dnsbackupTip;
-        return disabled;
+        });
+        return disabled || state.dnsbackupTip !== '';
     }
 
     changeType = () => {
         this.props.history.push('/guide/setwan/static');
+    }
+
+    getNetInfo = async ()=>{
+        let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
+        let { data, errcode } = response;
+        if(errcode == 0){
+            this.static = data[0].result.wan.static;
+            const { ipv4, mask, gateway, dns1, dns2 } = this.static;
+            this.setState({
+                ip: ipv4,
+                subnetmask: mask,
+                gateway: gateway,
+                dns: dns1,
+                dnsbackup: dns2,
+            });
+        }
+    }
+
+    componentDidMount(){
+        // 获取网络情况
+        this.getNetInfo();
     }
 
     render() {
