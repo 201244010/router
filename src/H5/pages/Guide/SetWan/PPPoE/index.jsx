@@ -99,7 +99,7 @@ export default class PPPoE extends React.Component {
         this.props.history.push('/guide/setwan/pppoe');
     }
 
-    getNetInfo = async ()=>{
+    getNetInfo = async () => {
         let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
         if(errcode == 0){
@@ -121,7 +121,8 @@ export default class PPPoE extends React.Component {
         const { visible, account, accountTip, pwd, pwdTip, loading } = this.state;
 
         //下一步按钮的致灰判定
-        const disabled = [ account, pwd ].some(item => {return item === '' }) ||[ accountTip, pwdTip ].some(item =>{item!== ''});
+        const disabled = [ account, pwd ].some(item => {return item === '' }) ||
+                         [ accountTip, pwdTip ].some(item => { return item !== ''});
 
         return (
             <div>

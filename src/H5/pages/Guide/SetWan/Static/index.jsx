@@ -87,7 +87,7 @@ export default class Static extends React.Component {
         }
 
         if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
-            message.error( 'IP地址与默认网关需在同一网段上' );
+            message.error( 'IP地址与默认网关需在同一网段' );
             this.setState({ loading: false });
             return ;
         }
