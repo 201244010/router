@@ -9,6 +9,12 @@ import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
 
 const {FormItem, Input, ErrorTip} = Form;
+const err = {
+    '-1001': '参数格式错误',
+    '-1002': '参数不合法',
+    '-1005': '内存不足，无法进行测速',
+    '-1007': '网络异常，无法进行测速'
+}
 
 import './bandwidth.scss';
 
@@ -158,50 +164,52 @@ export default class Bandwidth extends React.PureComponent {
         }
     }
 
-    speedTestStatus = async ()=> {
-        common.fetchApi({
-            opcode :'WANWIDGET_SPEEDTEST_START'
-        }).then((resp => {
-            const {errcode} = resp;
-            if(errcode === 0){
-                common.fetchApi(
-                    {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
-                    {},
-                    {
-                        interval : 3000,
-                        stop : ()=>this.stop,
-                        pending : res => res.data[0].result.speedtest.status === "testing"
-                    }
-                ).then((resp) => {
-                    let {errcode:code, data} = resp;
-                    if (code == 0){
-                        let info = data[0].result.speedtest;
-                        if(info.status === "ok"){
-                            this.setState({
-                                speedFill : true,
-                                visible : false,
-                                upband : (info.up_bandwidth / 1024).toFixed(0),
-                                downband : (info.down_bandwidth / 1024).toFixed(0),
-                                source : 'speedtest'
-                            });
-                            let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
-                            common.fetchApi({
-                                opcode : 'QOS_SET',
-                                data : payload
-                            })
-                        }else if(info.status === "fail"){
-                            this.setState({
-                                speedFail : true,
-                                visible : false,
-                            });
-                            return;
-                        }
-                    }
-                });
-            }else{
-                message.error(`获取测速失败![${errcode}]`);
+    speedTestStatus = async () => {
+        let resp = await common.fetchApi({ opcode :'WANWIDGET_SPEEDTEST_START' });
+
+        if(0 !== resp.errcode) {
+            message.error(err[resp.errcode]);
+            return;
+        }
+
+        this.setState({ visible: true });
+        let response = await common.fetchApi(
+            {opcode : 'WANWIDGET_SPEEDTEST_INFO_GET'},
+            {},
+            {
+                interval : 3000,
+                stop : ()=>this.stop,
+                pending : res => res.data[0].result.speedtest.status === "testing"
             }
-        }))
+        );
+        this.setState({ visible: false });
+
+        let { errcode: code, data } = response;
+        let info = data[0].result.speedtest;
+
+        if (0 !== code) {
+           return;
+        }
+
+        if ("ok" === info.status) {
+            this.setState({
+                speedFill : true,
+                upband : (info.up_bandwidth / 1024).toFixed(0),
+                downband : (info.down_bandwidth / 1024).toFixed(0),
+                source : 'speedtest'
+            });
+            let payload = this.composeparams("speedtest",this.state.upband,this.state.downband);
+            common.fetchApi({
+                opcode : 'QOS_SET',
+                data : payload
+            })
+        }
+
+        if ("fail" === info.status) {
+            this.setState({
+                speedFail : true
+            });
+        }
     }
 
     showManual = () => {
@@ -259,9 +267,6 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onPercentChange = () =>{
-        this.setState({
-            visible:true,
-        });
         this.speedTestStatus();
     }
 

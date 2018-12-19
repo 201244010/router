@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Icon, Modal, message } from 'antd';
+import { Button, message } from 'antd';
 import classnames from 'classnames';
 import CustomIcon from '~/components/Icon';
-import Tips from '~/components/Tips';
 import Form from '~/components/Form';
 import Progress from '~/components/Progress';
 import {checkRange} from '~/assets/common/check';
@@ -10,6 +9,12 @@ import { TIME_SPEED_TEST } from '~/assets/common/constants';
 
 const { FormItem, Input, ErrorTip } = Form;
 const reg = /\D+/;
+const err = {
+    '-1001': '参数格式错误',
+    '-1002': '参数不合法',
+    '-1005': '内存不足，无法进行测速',
+    '-1007': '网络异常，无法进行测速'
+}
 
 export default class Speed extends React.Component {
   constructor(props){
@@ -50,39 +55,45 @@ export default class Speed extends React.Component {
   }
 
   // 测速请求函数
-  async fetchSpeed(){ 
-    common.fetchApi(
-        [{
-            opcode: 'WANWIDGET_SPEEDTEST_START',
-            data: { speedtest : { acton : 'start' } }
-        }]
-        ).then(async()=>{
-            let response = await common.fetchApi(
-                [{
-                    opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
-                    data: { speedtest : { 'force_update' : true }}
-                }],
-                {},
-                {
-                    pending : resp => {
-                        return resp.data[0].result.speedtest.status === 'testing';
-                    }, 
-                    stop : () => this.stop, 
-                    interval : 3000
-                }
-            );
-            this.setState({ speedTestdone : true, showModal : false });
-            let { errcode } = response;
-            if(errcode == 0){
-                let info = response.data[0].result.speedtest;
-                this.setState({
-                    autoUpband: (info.up_bandwidth / 1024).toFixed(0),
-                    autoDownband : (info.down_bandwidth / 1024).toFixed(0)
-                });
-                return;
+    fetchSpeed = async () => {
+        let resp = await common.fetchApi(
+            {
+                opcode: 'WANWIDGET_SPEEDTEST_START',
+                data: { speedtest : { acton : 'start' } }
+            });
+
+        if(0 !== resp.errcode) {
+            message.error(err[resp.errcode]);
+            return;
+        }
+
+        this.setState({ showModal : true, mode : 'auto' });
+        let response = await common.fetchApi(
+            {
+                opcode: 'WANWIDGET_SPEEDTEST_INFO_GET',
+                data: { speedtest : { 'force_update' : true }}
+            },
+            {},
+            {
+                pending : resp => {
+                    return resp.data[0].result.speedtest.status === 'testing';
+                },
+                stop : () => this.stop,
+                interval : 3000
             }
-            message.error(`测速信息获取失败[${errcode}]`);
-        });
+        );
+        this.setState({ speedTestdone : true, showModal : false });
+
+        let { errcode } = response;
+        if(0 === errcode){
+            let info = response.data[0].result.speedtest;
+            this.setState({
+                autoUpband: (info.up_bandwidth / 1024).toFixed(0),
+                autoDownband : (info.down_bandwidth / 1024).toFixed(0)
+            });
+            return;
+        }
+        message.error(`测速信息获取失败[${errcode}]`);
     }
 
   //  手动配速  
@@ -125,7 +136,6 @@ export default class Speed extends React.Component {
     }
 
   autoSpeedTest = () => {
-    this.setState({ showModal : true, mode : 'auto' });
     this.fetchSpeed();
   }
 
