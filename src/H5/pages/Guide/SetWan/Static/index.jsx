@@ -69,7 +69,7 @@ export default class Static extends React.Component {
         });
     }
 
-    onCancel = () => {
+    nextStep = () => {
         this.props.history.push('/guide/setwifi');
     }
 
@@ -131,8 +131,10 @@ export default class Static extends React.Component {
                     cancelText: '继续设置',
                     okText: '重新设置',
                     onOk: this.onOk,
-                    onCancel: this.onCancel,
+                    onCancel: this.nextStep,
                 });
+            } else {
+                this.nextStep();
             }
             return;
         }

@@ -89,6 +89,8 @@ export default class PPPoE extends React.Component {
                     okText: '重新设置',
                     onCancel: this.nextStep,
                 });
+            } else {
+                this.nextStep();
             }
             return;
         }
