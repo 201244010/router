@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'h5/components/Button';
 import Icon from 'h5/components/Icon';
 import Link from 'h5/components/Link';
-import Checkbox from 'h5/components/Checkbox';
+import CheckBox from 'h5/components/CheckBox';
 import Modal from 'h5/components/Modal';
 
 import Agreement from './Agreement';
@@ -69,7 +69,7 @@ export default class Home extends React.Component {
                 <p>简单几步设置，路由器就可以上网啦</p>
                 <div><Button disabled={!checked} onClick={this.nextStep} className='start-setup' type='primary'>开始配置</Button></div>
                 <div className='policy'>
-                    <Checkbox
+                    <CheckBox
                         style={{ color: '#FFF' }}
                         checked={checked}
                         onChange={this.onCheckBoxChange}>
@@ -77,7 +77,7 @@ export default class Home extends React.Component {
                             同意《<Link onClick={this.showAgreement}>商米用户协议</Link>》和
                             《<Link onClick={this.showPolicy}>隐私政策</Link>》
                         </span>
-                    </Checkbox>
+                    </CheckBox>
                 </div>
                 <Modal
                     title='商米用户协议'
