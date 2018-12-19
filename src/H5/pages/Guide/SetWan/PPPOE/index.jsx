@@ -6,7 +6,7 @@ import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
-import confirm from 'h5/components/Confirm';
+import confirm from 'h5/components/confirm';
 import { checkStr } from '~/assets/common/check';
 import { detect } from '../wan';
 

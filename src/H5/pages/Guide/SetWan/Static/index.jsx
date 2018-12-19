@@ -5,7 +5,7 @@ import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
-import confirm from 'h5/components/Confirm';
+import confirm from 'h5/components/confirm';
 import { checkIp, checkMask } from '~/assets/common/check';
 import { detect } from '../wan';
 
