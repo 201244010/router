@@ -3,8 +3,16 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Form from 'h5/components/Form';
 import confirm from 'h5/components/confirm';
-import Loading from 'h5/components/Loading';
 import {checkStr} from '~/assets/common/check';
+import { init } from '~/assets/common/auth';
+
+const err = {
+    '-1600': '用户名缺失',
+    '-1601': '请输入密码',
+    '-1602': 'ip解析错误',
+    '-1603': '请输入密码',
+    '-1607': '用户未识别'
+}
 
 export default class SetPwd extends React.Component {
     constructor(props) {
@@ -16,8 +24,7 @@ export default class SetPwd extends React.Component {
         pwdTip: '',
         surePwd: '',
         surePwdTip: '',
-        loading: false,
-        disabled: true
+        loading: false
     };
 
     onOk = () =>{
@@ -28,9 +35,16 @@ export default class SetPwd extends React.Component {
     post = async () => {
         const {pwd, surePwd} = this.state;
 
-        if (pwd !== surePwd) {
+        if (pwd !== surePwd && surePwd !== '') {
             this.setState({
                 surePwdTip: '两次密码输入不一致'
+            });
+            return;
+        }
+
+        if (pwd !== surePwd && surePwd === '') {
+            this.setState({
+                surePwdTip: '请再次输入密码'
             });
             return;
         }
@@ -58,29 +72,38 @@ export default class SetPwd extends React.Component {
                 });
             break;
         default:
-            this.setState({ pwdTip: `未知错误[${errcode}]`});
+            this.setState({ pwdTip: err[errcode]});
             break;
         }
     }
 
     // 监听输入实时改变
     onChange = (name, value) => {
-        let tip = checkStr(value, { who: '密码', min: 6, max: 32, type: 'english' });
+        const type = {
+            pwd: {
+                func: checkStr,
+                agr: { who: '密码', min: 6, max: 32, type: 'english' }
+            },
+            surePwd: {
+                func: () => {
+                    return '';
+                }
+            }
+        }
+
+        this.setState({surePwdTip : ''});  //surePwdTip清空
+        let tip = type[name].func(value,type[name].agr);
         this.setState({
             [name]: value,
             [name + 'Tip']: tip,
-        }, () => {
-            const { pwd, pwdTip, surePwd, surePwdTip } = this.state;
-            this.setState({
-                disabled: '' !== pwdTip || '' !== surePwdTip || '' === pwd || '' === surePwd
-            });
         });
     }
 
 
 
     render() {
-        const { pwd, pwdTip, surePwd, surePwdTip, loading, disabled }  = this.state;
+        const { pwd, pwdTip, surePwd, surePwdTip, loading }  = this.state;
+        const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
 
         return (
             <div>
@@ -90,6 +113,7 @@ export default class SetPwd extends React.Component {
                         value={pwd}
                         type='password'
                         placeholder='密码长度6～32位'
+                        maxLength={32}
                         tip={pwdTip}
                         onChange={value => this.onChange('pwd', value)}
                     />
