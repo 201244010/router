@@ -404,7 +404,7 @@ export default class NonAuth extends React.Component{
                     <FormItem showErrorTip={nameTip} type="small" >
                         <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder="请输入备注名称" maxLength={32} />
                         <ErrorTip>{nameTip}</ErrorTip>
-                        </FormItem>
+                    </FormItem>
                     <label style={{ display:'block',marginBottom: 6 }}>MAC地址</label>
                     <FormItem showErrorTip={macTip} style={{ marginBottom: 6 }}>
                         <InputGroup size="small" type="mac"

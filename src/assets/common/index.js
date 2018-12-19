@@ -60,7 +60,7 @@ export const getTimeZone = () => {
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({ withCredentials: true, timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
+    options = assign({ timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
 
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
