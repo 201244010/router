@@ -6,7 +6,7 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
-import { checkIp, checkMask } from '~/assets/common/check';
+import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 import { detect } from '../wan';
 
 export default class Static extends React.Component {
@@ -49,7 +49,7 @@ export default class Static extends React.Component {
             },
             dnsbackup:{
                 func: (value) => {
-                    if('' === value){
+                    if('' === value[0]){
                         return '';
                     }else {
                         return checkIp(value, { who: '备选DNS' });
@@ -61,6 +61,7 @@ export default class Static extends React.Component {
 
         let val = value.split('.');
         let tip = valid[name].func(val, { who: valid[name].who });
+        console.log(tip);
 
         this.setState({
             [name]: value,
@@ -73,24 +74,37 @@ export default class Static extends React.Component {
     }
 
     submit = async () => {
-        const { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
-
-        this.static.ipv4 = ip;
-        this.static.mask = subnetmask;
-        this.static.gateway = gateway;
-        this.static.dns1 = dns;
-        this.static.dns2 = dnsbackup;
+        let { ip, subnetmask, gateway, dns, dnsbackup } = this.state;
 
         this.setState({
             loading: true
         });
+
+        if(ip === gateway){
+            message.error(`IP地址与默认网关不能相同`);
+            this.setState({ loading: false });
+            return ;
+        }
+
+        if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
+            message.error( 'IP地址与默认网关需在同一网段上' );
+            this.setState({ loading: false });
+            return ;
+        }
+
         let response = await common.fetchApi(
             {
                 opcode: 'NETWORK_WAN_IPV4_SET',
                 data:{
                     wan:{
                         dial_type: 'static',
-                        info: this.static
+                        info: {
+                            ipv4 : ip,
+                            mask : subnetmask,
+                            gateway : gateway,
+                            dns1 : dns,
+                            dns2 : dnsbackup
+                        }
                     }
                 }
             }
@@ -129,8 +143,7 @@ export default class Static extends React.Component {
         const disabled = [ 'ip', 'subnetmask', 'gateway', 'dns' ].some(item => {
             return ('' === state[item] || '' !== state[item + 'Tip']);
         });
-        const dnsbackup = state.dnsbackup !== '' && state.dnsbackupTip !== '';
-        return disabled || dnsbackup;
+        return disabled || state.dnsbackupTip !== '';
     }
 
     changeType = () => {
@@ -138,17 +151,7 @@ export default class Static extends React.Component {
     }
 
     getNetInfo = async ()=>{
-        let response = await common.fetchApi(
-            {
-                opcode: 'NETWORK_WAN_IPV4_GET'
-            },
-            {},
-            {
-                loop : true,
-                pending : res => res.data[0].result.dialdetect === 'detecting',
-                stop : ()=> this.stop
-            }
-        );
+        let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
         if(errcode == 0){
             this.static = data[0].result.wan.static;
@@ -160,9 +163,7 @@ export default class Static extends React.Component {
                 dns: dns1,
                 dnsbackup: dns2,
             });
-            return;
         }
-        message.error(`IP信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){

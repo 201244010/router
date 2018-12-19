@@ -41,15 +41,12 @@ export default class PPPoE extends React.Component {
         });
     }
 
-    onCancel = () => {
+    nextStep = () => {
         this.props.history.push('/guide/setwifi');
     }
 
     submit = async () => {    
         const { account, pwd } = this.state;
-
-        this.userInfo.password = Base64.encode(account);
-        this.userInfo.password = Base64.encode(pwd);
 
         this.setState({
             loading: true
@@ -61,7 +58,10 @@ export default class PPPoE extends React.Component {
                     wan:{
                         dial_type: 'pppoe',
                         dns_type: 'auto',
-                        user_info: this.userInfo
+                        user_info: {
+                            username: Base64.encode(account),
+                            password: Base64.encode(pwd)
+                        }
                     }
                 }
             }   
@@ -87,7 +87,7 @@ export default class PPPoE extends React.Component {
                     content: '检查您的上网方式是否正确',
                     cancelText: '继续设置',
                     okText: '重新设置',
-                    onCancel: this.onCancel,
+                    onCancel: this.nextStep,
                 });
             }
             return;
@@ -99,36 +99,17 @@ export default class PPPoE extends React.Component {
         this.props.history.push('/guide/setwan/pppoe');
     }
 
-    checkDisabled(state){
-        const disabled = [ 'account', 'pwd' ].some(item => {
-            return (state[item] === '' || state[item + 'Tip'] !== '');
-        })
-        return disabled;
-    }
-
     getNetInfo = async ()=>{
-        let response = await common.fetchApi(
-            {
-                opcode: 'NETWORK_WAN_IPV4_GET'
-            },
-            {},
-            {
-                loop : true,
-                pending : res => res.data[0].result.dialdetect === 'detecting',
-                stop : ()=> this.stop
-            }
-        );
+        let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
         if(errcode == 0){
             this.userInfo = data[0].result.wan.pppoe.user_info;
             const { username, password } = this.userInfo;
             this.setState({
-                account: username,
-                pwd: password,
-            })
-            return;
+                account: Base64.decode(username),
+                pwd: Base64.decode(password)
+            });
         }
-        message.error(`IP信息获取失败[${errcode}]`);
     }
 
     componentDidMount(){
@@ -138,7 +119,10 @@ export default class PPPoE extends React.Component {
 
     render() {
         const { visible, account, accountTip, pwd, pwdTip, loading } = this.state;
-        const disabled = this.checkDisabled(this.state);
+
+        //下一步按钮的致灰判定
+        const disabled = [ account, pwd ].some(item => {return item === '' }) ||[ accountTip, pwdTip ].some(item =>{item!== ''});
+
         return (
             <div>
                 <GuideHeader title='宽带拨号上网（PPPoE）' tips='请输入运营商提供的宽带账号和密码' />
