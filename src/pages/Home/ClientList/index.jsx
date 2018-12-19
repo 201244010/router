@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Divider, Popover, Modal, Table, message, Popconfirm } from 'antd';
+import { Button, Divider, Popover, Modal, Table, message, Popconfirm, Input, Form } from 'antd';
 import Loading from '~/components/Loading';
 import { formatTime, formatSpeed } from '~/assets/common/utils';
 import CustomIcon from '~/components/Icon';
@@ -33,132 +33,117 @@ const modeMap = {
     '3': '商米专用',
 };
 
-export default class ClientList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+const FormItem = Form.Item;
+const EditableContext = React.createContext();
 
+const EditableRow = ({ form, index, ...props }) => (
+    <EditableContext.Provider value={form}>
+        <tr {...props} />
+    </EditableContext.Provider>
+);
+
+const EditableFormRow = Form.create()(EditableRow);
+
+class EditableCell extends React.Component {
     state = {
-        visible: false,
-        refresh: false,
+        editing: false,
     }
 
-    showMore = () => {
-        this.props.stopRefresh();
-        this.setState({
-            visible: true
+    componentDidMount() {
+        if (this.props.editable) {
+            document.addEventListener('click', this.handleClickOutside, true);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.editable) {
+            document.removeEventListener('click', this.handleClickOutside, true);
+        }
+    }
+
+    toggleEdit = () => {
+        const editing = !this.state.editing;
+        this.setState({ editing }, () => {
+            if (editing) {
+                this.input.focus();
+            }
         });
     }
 
-    handleEdit = async (record) => {
-        let directive = (TYPE_NORMAL === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
-
-        Loading.show({ duration: 3 });
-        let response = await common.fetchApi(
-            { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
-        );
-
-        let { errcode } = response;
-        if (errcode == 0) {
-            // 后台生效需要1秒左右，延迟2秒刷新数据，
-            setTimeout(() => {
-                this.props.startRefresh(true);
-            }, 2000);
-            return;
+    handleClickOutside = (e) => {
+        const { editing } = this.state;
+        if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
+            this.save();
         }
-
-        message.error(`操作失败[${errcode}]`);
     }
 
-    handleDelete = async (record) => {
-        if (this.props.mac === record.mac) {
-            message.warning('不能禁止本机上网');
-            return;
-        }
-
-        Loading.show({ duration: 3 });
-        let response = await common.fetchApi(
-            { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
-        ).catch(ex => { });
-
-        let { errcode } = response;
-        if (errcode == 0) {
-            message.success('配置生效！如需恢复，可在高级设置-防蹭网中恢复上网');
-
-            // 后台生效需要1秒左右，延迟2秒刷新数据，
-            setTimeout(() => {
-                this.props.startRefresh(true);
-            }, 2000);
-            return;
-        }
-
-        message.error(`操作失败[${errcode}]`);
-    }
-
-    handleCancel = () => {
-        this.props.startRefresh();
-        this.setState({
-            visible: false
+    save = () => {
+        const { record, handleSave } = this.props;
+        this.form.validateFields((error, values) => {
+            if (error) {
+                return;
+            }
+            //this.toggleEdit();
+            handleSave({ ...record, ...values }, this.toggleEdit);
         });
-    }
-
-    updateClientsInfo = () => {
-        // 转圈1秒
-        this.setState({
-            refresh: true,
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    refresh: false,
-                });
-            }, 1000);
-        });
-        this.props.startRefresh(true);
-    }
-
-    goWhiteList = () => {
-        this.props.history.push('/advance/whitelist');
     }
 
     render() {
-        const { visible, refresh } = this.state;
-        const props = this.props;
-        const clients = props.data;
-        const total = clients.length;
-        const placement = props.placement || 'top';
-        const maxConf = {
-            [TYPE_SUNMI]: 6,
-            [TYPE_NORMAL]: 12,
-            [TYPE_WHITE]: 12
-        };
-        const deviceTypeMap = {
-            [TYPE_SUNMI]: '商米设备',
-            [TYPE_NORMAL]: '普通设备',
-            [TYPE_WHITE]: '优先设备'
-        };
+        const { editing } = this.state;
+        const {
+            editable,
+            dataIndex,
+            title,
+            record,
+            index,
+            handleSave,
+            ...restProps
+        } = this.props;
 
-        const deviceType = deviceTypeMap[props.type];
-        const max = parseInt(maxConf[props.type], 10);
-        const current = (total < max) ? total : max;
+        return (
+            <td ref={node => (this.cell = node)} {...restProps}>
+                {editable ? (
+                    <EditableContext.Consumer>
+                        {(form) => {
+                            this.form = form;
+                            return (
+                                editing ? (
+                                    <FormItem style={{ margin: 0 }}>
+                                        {form.getFieldDecorator(dataIndex, {
+                                            rules: [{
+                                                required: true,
+                                                message: `请输入${title}`,
+                                            }],
+                                            initialValue: record[dataIndex],
+                                        })(
+                                            <Input
+                                                ref={node => (this.input = node)}
+                                                onPressEnter={this.save}
+                                            />
+                                            )}
+                                    </FormItem>
+                                ) : (
+                                        <div
+                                            key={record.mac}
+                                            className="editable-cell-value-wrap"
+                                            onClick={this.toggleEdit}
+                                        >
+                                            {restProps.children}
+                                        </div>
+                                    )
+                            );
+                        }}
+                    </EditableContext.Consumer>
+                ) : restProps.children}
+            </td>
+        );
+    }
+}
 
-        const listItems = clients.map((client, index) => {
-            if (index < max) {
-                const hostname = getHostName(client);
-                return (
-                    <li key={client.mac} className='client-item'>
-                        <Popover placement={placement} trigger='click'
-                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className='icon'><Logo mac={client.mac} model={client.model} size={36} /></div>
-                        </Popover>
-                        <div className='under-desc'>
-                            <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
-                            <p title={hostname}>{hostname}</p></div>
-                    </li>
-                );
-            }
-        });
-
-        let onlineCols = [{
+export default class ClientList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.columns = [{
             dataIndex: 'mac',
             width: 52,
             className: 'center',
@@ -168,25 +153,19 @@ export default class ClientList extends React.Component {
         }, {
             title: '设备名称',
             width: 160,
+            dataIndex: 'name',
+            editable: true,
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.ontime - b.ontime,
             render: (text, record) => {
                 let ontime = formatTime(record.ontime);
                 let hostname = getHostName(record);
-                return (<div>
-                    <div style={{
-                        width: 140,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                    }} title={hostname}>{hostname}</div>
-                    <div style={{
-                        width: 140,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                    }} title={ontime}><label style={{ marginRight: 3 }}>在线时长:</label><label>{ontime}</label></div>
-                </div>)
+                return ([
+                    <div className='device hostname' title={hostname}>{hostname}</div>,
+                    <div className='device' title={ontime}>
+                        <label style={{ marginRight: 3 }}>在线时长:</label><label>{ontime}</label>
+                    </div>
+                ])
             }
         }, {
             title: 'IP/MAC地址',
@@ -275,6 +254,165 @@ export default class ClientList extends React.Component {
                 );
             }
         }];
+    }
+
+    state = {
+        visible: false,
+        refresh: false,
+    }
+
+    showMore = () => {
+        this.props.stopRefresh();
+        this.setState({
+            visible: true
+        });
+    }
+
+    handleEdit = async (record) => {
+        let directive = (TYPE_NORMAL === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+
+        Loading.show({ duration: 3 });
+        let response = await common.fetchApi(
+            { opcode: directive, data: { white_list: [{ name: record.name, mac: record.mac }] } }
+        );
+
+        let { errcode } = response;
+        if (errcode == 0) {
+            // 后台生效需要1秒左右，延迟2秒刷新数据，
+            setTimeout(() => {
+                this.props.startRefresh(true);
+            }, 2000);
+            return;
+        }
+
+        message.error(`操作失败[${errcode}]`);
+    }
+
+    handleDelete = async (record) => {
+        if (this.props.mac === record.mac) {
+            message.warning('不能禁止本机上网');
+            return;
+        }
+
+        Loading.show({ duration: 3 });
+        let response = await common.fetchApi(
+            { opcode: 'QOS_AC_BLACKLIST_ADD', data: { black_list: [{ name: record.name, mac: record.mac }] } }
+        ).catch(ex => { });
+
+        let { errcode } = response;
+        if (errcode == 0) {
+            message.success('配置生效！如需恢复，可在高级设置-防蹭网中恢复上网');
+
+            // 后台生效需要1秒左右，延迟2秒刷新数据，
+            setTimeout(() => {
+                this.props.startRefresh(true);
+            }, 2000);
+            return;
+        }
+
+        message.error(`操作失败[${errcode}]`);
+    }
+
+    handleSave = async (record, toggleEdit) => {
+        const { mac, name } = record;
+        Loading.show({ duration: 2 });
+        await common.fetchApi({
+            opcode: 'CLIENT_ITEM_SET',
+            data: { mac, alias: name },
+        });
+
+        // 后台生效需要1秒左右，延迟2秒刷新数据，
+        setTimeout(() => {
+            this.props.startRefresh(true);
+            setTimeout(toggleEdit, 500);
+        }, 1500);
+    }
+
+    handleCancel = () => {
+        this.props.startRefresh();
+        this.setState({
+            visible: false
+        });
+    }
+
+    updateClientsInfo = () => {
+        // 转圈1秒
+        this.setState({
+            refresh: true,
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    refresh: false,
+                });
+            }, 1000);
+        });
+        this.props.startRefresh(true);
+    }
+
+    goWhiteList = () => {
+        this.props.history.push('/advance/whitelist');
+    }
+
+    render() {
+        const { visible, refresh } = this.state;
+        const props = this.props;
+        const clients = props.data;
+        const total = clients.length;
+        const placement = props.placement || 'top';
+        const maxConf = {
+            [TYPE_SUNMI]: 6,
+            [TYPE_NORMAL]: 12,
+            [TYPE_WHITE]: 12
+        };
+        const deviceTypeMap = {
+            [TYPE_SUNMI]: '商米设备',
+            [TYPE_NORMAL]: '普通设备',
+            [TYPE_WHITE]: '优先设备'
+        };
+
+        const deviceType = deviceTypeMap[props.type];
+        const max = parseInt(maxConf[props.type], 10);
+        const current = (total < max) ? total : max;
+
+        const listItems = clients.map((client, index) => {
+            if (index < max) {
+                const hostname = getHostName(client);
+                return (
+                    <li key={client.mac} className='client-item'>
+                        <Popover placement={placement} trigger='click'
+                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
+                            <div className='icon'><Logo mac={client.mac} model={client.model} size={36} /></div>
+                        </Popover>
+                        <div className='under-desc'>
+                            <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
+                            <p title={hostname}>{hostname}</p></div>
+                    </li>
+                );
+            }
+        });
+
+        const components = {
+            body: {
+                row: EditableFormRow,
+                cell: EditableCell,
+            },
+        };
+
+        const columns = this.columns.map((col) => {
+            if (!col.editable) {
+                return col;
+            }
+            return {
+                ...col,
+                onCell: record => ({
+                    record,
+                    editable: col.editable,
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    handleSave: this.handleSave,
+                }),
+            };
+        });
 
         return (
             <div className={classnames(['list-content', props.type + '-list'])}>
@@ -306,11 +444,19 @@ export default class ClientList extends React.Component {
                         border: 0,
                         padding: 0
                     }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
-                    <Table columns={onlineCols} dataSource={clients} rowKey={record => record.mac}
+                    <Table
+                        columns={columns}
+                        dataSource={clients}
+                        components={components}
+                        rowClassName={() => 'editable-row'}
+                        bordered
+                        rowKey={record => record.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
-                        bordered size="middle" pagination={false}
-                        locale={{ emptyText: "暂无设备", filterConfirm: "确定", filterReset: "重置" }} />
+                        size="middle"
+                        pagination={false}
+                        locale={{ emptyText: "暂无设备", filterConfirm: "确定", filterReset: "重置" }}
+                    />
                 </Modal>
             </div>);
     }
