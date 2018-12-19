@@ -2,7 +2,7 @@ import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Form from 'h5/components/Form';
-import confirm from 'h5/components/Confirm';
+import confirm from 'h5/components/confirm';
 import Loading from 'h5/components/Loading';
 import {checkStr} from '~/assets/common/check';
 

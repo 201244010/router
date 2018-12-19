@@ -4,7 +4,7 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Select from 'h5/components/Select';
 import Loading from 'h5/components/Loading';
-import confirm from 'h5/components/Confirm';
+import confirm from 'h5/components/confirm';
 import { detect } from './wan';
 import Icon from 'h5/components/Icon';
 
