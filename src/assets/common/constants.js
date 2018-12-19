@@ -66,6 +66,7 @@ export const DIRECTIVE = {
     CLIENT_LIST_GET: '0x2025',
     CLIENT_ITEM_GET: '0x2026',
     WHOAMI_GET: '0x2027',
+    CLIENT_ITEM_SET: '0x2029',
 
     // 流量统计
     TRAFFIC_STATS_GET: '0x2040',

@@ -107,6 +107,13 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
+.ant-table-thead>tr.ant-table-row-hover>td,
+.ant-table-tbody>tr.ant-table-row-hover>td,
+.ant-table-thead>tr:hover>td,
+.ant-table-tbody>tr:hover>td{
+    
+}
+
 .ant-table-tbody>tr>td.center{
     padding: 0 !important;
     text-align: center;

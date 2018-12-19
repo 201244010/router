@@ -228,3 +228,31 @@ i.dot{
         background-color:#FF5500;
     }
 }
+
+.editable-cell {
+    position: relative;
+}
+
+.editable-cell-value-wrap {
+    cursor: pointer;
+    .device{
+        width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-left: 10px;
+    }
+    .hostname {
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        border-radius: 4px;
+        padding: 4px 10px;
+    }
+}
+
+.editable-row:hover .editable-cell-value-wrap {
+    .hostname{
+        border-color: #F6F9FE;
+    }
+}
