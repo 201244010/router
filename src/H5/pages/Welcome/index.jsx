@@ -73,11 +73,11 @@ export default class Home extends React.Component {
                         style={{ color: '#FFF' }}
                         checked={checked}
                         onChange={this.onCheckBoxChange}>
-                        <span className='agreement'>
-                            同意《<Link onClick={this.showAgreement}>商米用户协议</Link>》和
-                            《<Link onClick={this.showPolicy}>隐私政策</Link>》
-                        </span>
                     </CheckBox>
+                    <span className='agreement'>
+                        同意《<Link onClick={this.showAgreement}>商米用户协议</Link>》和
+                            《<Link onClick={this.showPolicy}>隐私政策</Link>》
+                    </span>
                 </div>
                 <Modal
                     title='商米用户协议'
