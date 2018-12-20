@@ -7,7 +7,6 @@ import {checkStr} from '~/assets/common/check';
 
 const {FormItem,Input,ErrorTip} = Form;
 const err = {
-    '-1601': '原密码不能为空',
     '-1605': '原密码错误',
     '-1606': '原密码错误次数过多，请5分钟后再试'
 };
@@ -37,6 +36,8 @@ export default class ChangePassword extends React.Component{
                 func: '',
             }
         };
+
+        this.setState({surePWDTip : ''});  //surePWDTip清空
         let tip = field[name].func;
         this.setState({
             [name]: value,
@@ -47,7 +48,6 @@ export default class ChangePassword extends React.Component{
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
             this.setState({
-                surePWD: '',
                 surePWDTip: '两次密码不一致'
             });
             return ;
@@ -76,6 +76,7 @@ export default class ChangePassword extends React.Component{
     render(){
         const { oldPWD, newPWD, surePWD, loading, surePWDTip, oldPWDTip, newPWDTip } = this.state;
         const disabled = surePWD === '' || oldPWD === '' || oldPWDTip !==''|| newPWDTip !== '' || surePWDTip !== '';
+
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
