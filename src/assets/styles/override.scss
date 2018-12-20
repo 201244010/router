@@ -31,6 +31,7 @@ button.ant-btn-lg span {
     font-size : 14px;
 }
 
+input.ant-input:focus,
 input.ant-input:hover {
     border-color: $button-bg-color;
 }
@@ -111,7 +112,7 @@ button.ant-btn-primary.ant-btn-loading {
 .ant-table-tbody>tr.ant-table-row-hover>td,
 .ant-table-thead>tr:hover>td,
 .ant-table-tbody>tr:hover>td{
-    
+    background: #F6F9FE!important;
 }
 
 .ant-table-tbody>tr>td.center{
