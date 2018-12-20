@@ -315,17 +315,26 @@ export default class ClientList extends React.Component {
 
     handleSave = async (record, toggleEdit) => {
         const { mac, name } = record;
-        Loading.show({ duration: 2 });
-        await common.fetchApi({
-            opcode: 'CLIENT_ITEM_SET',
-            data: { mac, alias: name },
+        const clients = this.props.data;
+        const client = clients.find((client, index) => {
+            return (client.mac === record.mac);
         });
 
-        // 后台生效需要1秒左右，延迟2秒刷新数据，
-        setTimeout(() => {
-            this.props.startRefresh(true);
-            setTimeout(toggleEdit, 500);
-        }, 1500);
+        if (client.name !== name) {
+            Loading.show({ duration: 2 });
+            await common.fetchApi({
+                opcode: 'CLIENT_ITEM_SET',
+                data: { mac, alias: name },
+            });
+
+            // 后台生效需要1秒左右，延迟1.5秒刷新数据，
+            setTimeout(() => {
+                this.props.startRefresh(true);
+                setTimeout(toggleEdit, 500);
+            }, 1500);
+        }else { // 数据没更改，不用发送请求保存数据
+            toggleEdit();
+        }
     }
 
     handleCancel = () => {
