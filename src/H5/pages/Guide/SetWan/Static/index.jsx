@@ -59,11 +59,11 @@ export default class Static extends React.Component {
             },
         }
 
-        let val = value.split('.');
+        let val = value.split('.').map(item => { return item.replace(/\D*/g, ''); });
         let tip = valid[name].func(val, { who: valid[name].who });
 
         this.setState({
-            [name]: value,
+            [name]: val.join('.'),
             [name + 'Tip']: tip
         });
     }
