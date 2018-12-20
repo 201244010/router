@@ -81,7 +81,7 @@ export const UA = (function () {
         if ((pl.indexOf("X11") >= 0) || ((pl.indexOf("Linux") >= 0) && (pl.indexOf("arm") < 0))) {
             unixPC = true;
             portable = false;
-            mobile = false;
+            //mobile = false;
         }
     } else if (ua.indexOf("Android") >= 0) {
         android = true;

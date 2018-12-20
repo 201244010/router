@@ -43,6 +43,10 @@ export default class SetWan extends React.Component {
         this.props.history.push('/guide/setwifi');
     }
 
+    defaultSet = () => {
+        this.props.history.push('/guide/setwan/dhcp');
+    }
+
     nextStep = async () => {   
         const wanType = this.state.wanType;
 
@@ -130,7 +134,7 @@ export default class SetWan extends React.Component {
                 content: '请检查您的网线是否插好',
                 cancelText: '继续设置',
                 okText: '重新检测',
-                onCancel: this.nextStep,
+                onCancel: this.defaultSet,
                 onOk: this.dialDetect,
             });
             return;

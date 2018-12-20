@@ -67,7 +67,7 @@ export default class SetWifi extends React.Component {
             let band5 = Object.assign(
                 this.main.host.band_5g,
                 {
-                    ssid: ssid + "_5G",
+                    ssid: ssid.substring(0,29) + "_5G",
                     encryption,
                     password: pwdBase64,
                 }
@@ -122,6 +122,7 @@ export default class SetWifi extends React.Component {
                     <Form
                         value={ssid}
                         placeholder='请设置Wi-Fi名称'
+                        maxLength={32}
                         tip={ssidTip}
                         onChange={value => this.onChange('ssid', value)}
                     />
@@ -129,6 +130,7 @@ export default class SetWifi extends React.Component {
                         value={password}
                         type='password'
                         placeholder='请设置Wi-Fi密码'
+                        maxLength={32}
                         tip={passwordTip}
                         onChange={value => this.onChange('password', value)}
                     />

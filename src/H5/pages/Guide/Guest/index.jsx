@@ -149,6 +149,7 @@ export default class Guest extends React.Component {
                     <Form
                         value={ssid}
                         placeholder='请设置Wi-Fi名称'
+                        maxLength={32}
                         tip={ssidTip}
                         onChange={value => this.onChange('ssid', value)}
                     />
@@ -156,6 +157,7 @@ export default class Guest extends React.Component {
                         value={password}
                         type='password'
                         placeholder='请设置Wi-Fi密码'
+                        maxLength={32}
                         tip={passwordTip}
                         onChange={value => this.onChange('password', value)}
                     />

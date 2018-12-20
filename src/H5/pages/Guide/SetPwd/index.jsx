@@ -9,7 +9,7 @@ import { init } from '~/assets/common/auth';
 const err = {
     '-1600': '用户名缺失',
     '-1601': '请输入密码',
-    '-1602': 'ip解析错误',
+    '-1602': 'IP解析错误',
     '-1603': '请输入密码',
     '-1607': '用户未识别'
 }
@@ -72,7 +72,7 @@ export default class SetPwd extends React.Component {
                 });
             break;
         default:
-            this.setState({ pwdTip: err[errcode]});
+            this.setState({ pwdTip: err[errcode] });
             break;
         }
     }
