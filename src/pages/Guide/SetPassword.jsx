@@ -8,7 +8,13 @@ import { init } from '~/assets/common/auth';
 import {checkStr} from '~/assets/common/check';
 
 const { FormItem, ErrorTip, Input }  = Form;
-
+const err = {
+    '-1600': '用户名缺失',
+    '-1601': '请输入密码',
+    '-1602': 'IP解析错误',
+    '-1603': '请输入密码',
+    '-1607': '用户未识别'
+}
 
 export default class SetPassword extends React.Component {
     constructor(props){
@@ -27,9 +33,16 @@ export default class SetPassword extends React.Component {
     post = async () => {
         const {pwd, surePwd} = this.state;
 
-        if (pwd !== surePwd) {
+        if (pwd !== surePwd && surePwd !== '') {
             this.setState({
                 surePwdTip: '两次密码输入不一致'
+            });
+            return;
+        }
+
+        if (pwd !== surePwd && surePwd === '') {
+            this.setState({
+                surePwdTip: '请再次输入密码'
             });
             return;
         }
@@ -59,14 +72,27 @@ export default class SetPassword extends React.Component {
                 });
             break;
         default:
-            this.setState({ pwdTip: `未知错误[${errcode}]`});
+            this.setState({ pwdTip: err[errcode] });
             break;
         }
     }
 
     // 监听输入实时改变
     onChange = (name, value) => {
-        let tip = checkStr(value, { who: '密码', min: 6, max: 32, type: 'english' });
+        const type = {
+            pwd: {
+                func: checkStr,
+                agr: { who: '密码', min: 6, max: 32, type: 'english' }
+            },
+            surePwd: {
+                func: () => {
+                    return '';
+                }
+            }
+        }
+
+        this.setState({surePwdTip : ''});  //surePwdTip清空
+        let tip = type[name].func(value,type[name].agr);
         this.setState({
             [name]: value,
             [name + 'Tip']: tip,
@@ -75,6 +101,8 @@ export default class SetPassword extends React.Component {
 
     render(){
         const { pwd, pwdTip, surePwd, surePwdTip, loading } = this.state;
+        const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
+
         return (
             <div className="setpassword"> 
                 <h2>设置管理密码</h2>
@@ -92,13 +120,12 @@ export default class SetPassword extends React.Component {
                         <Input
                             placeholder="请确认密码"
                             value={surePwd}
-                            onChange = {value => this.onChange('surePwd', value)}
-                            maxLength={32} />
+                            onChange = {value => this.onChange('surePwd', value)} />
                         <ErrorTip>{surePwdTip}</ErrorTip>
                     </FormItem>
                     <FormItem label="#">
                         <Button
-                            disabled={'' !== pwdTip || '' !== surePwdTip}
+                            disabled={disabled}
                             loading={loading}
                             style={{ width : '100%',height: 42 }}
                             onClick={this.post}

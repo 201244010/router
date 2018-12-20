@@ -72,7 +72,7 @@ export default class SetPwd extends React.Component {
                 });
             break;
         default:
-            this.setState({ pwdTip: err[errcode]});
+            this.setState({ pwdTip: err[errcode] });
             break;
         }
     }
