@@ -119,6 +119,7 @@ class EditableCell extends React.Component {
                                             <Input
                                                 ref={node => (this.input = node)}
                                                 onPressEnter={this.save}
+                                                maxLength={32}
                                             />
                                             )}
                                     </FormItem>
@@ -322,10 +323,16 @@ export default class ClientList extends React.Component {
 
         if (client.name !== name) {
             Loading.show({ duration: 2 });
-            await common.fetchApi({
+            let resp = await common.fetchApi({
                 opcode: 'CLIENT_ITEM_SET',
                 data: { mac, alias: name },
             });
+
+            let { errcode } = resp;
+            if (0 !== errcode) {
+                message.error(`保存失败，设备名称过长`);
+                return;
+            }
 
             // 后台生效需要1秒左右，延迟1.5秒刷新数据，
             setTimeout(() => {
