@@ -1,13 +1,13 @@
 .ant-btn:hover{
-    background-color: #FFF;
-    color: #F0E1DF;
-    border-color: #F0E1DF;
+    background-color: #FFF !important;
+    color: #FFC5A4;
+    border-color: #FFC5A4 !important;
 }
 
 .ant-btn:active,.ant-btn:focus{
-    background-color: #FFF;
+    background-color: #FFF !important;
     color: #FF9D66;
-    border-color: #FF9D66;
+    border-color: #FF9D66 !important;
 }
 
 .ant-btn, .ant-btn:visited{
