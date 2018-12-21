@@ -104,7 +104,6 @@ export default class Guest extends React.Component {
     nextStep = () => {
         if ('' === this.state.password) {
             confirm({
-                title: '提示：',
                 content: '顾客Wi-Fi密码未设置，确定继续?',
                 onOk: this.submitData,
             });
