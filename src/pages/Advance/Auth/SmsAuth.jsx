@@ -365,7 +365,7 @@ export default class SmsAuth extends React.Component{
                             tip={
                                 <div className='help-content'>
                                     <p>启用后，顾客通过手动选择SSID后，再在弹出的认证页面输入手机号码和短信验证码进行身份认证，即可连接上Wi-Fi免费上网</p>
-                                    <p>提示：受限于手机系统差异，部分用户连接Wi-Fi后，如果无法第一时间弹出认证弹窗，可尝试打开手机浏览器，手动输入“portal.sunmi.linkportal/index.html”进行认证</p>
+                                    <p>提示：受限于手机系统差异，部分用户连接Wi-Fi后，如果无法第一时间弹出认证弹窗，可尝试打开手机浏览器，手动输入“http://sunmi.com”进行认证</p>
                                 </div>}
                             checkable={true}
                             checked={enable}
