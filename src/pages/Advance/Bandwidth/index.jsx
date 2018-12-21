@@ -11,7 +11,7 @@ import CustomIcon from '~/components/Icon';
 const {FormItem, Input, ErrorTip} = Form;
 const err = {
     '-1001': '参数格式错误',
-    '-1002': '参数不合法',
+    '-1002': '参数非法',
     '-1005': '内存不足，无法进行测速',
     '-1007': '网络异常，无法进行测速'
 }
