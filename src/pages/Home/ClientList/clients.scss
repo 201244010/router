@@ -230,6 +230,7 @@ i.dot{
 }
 
 .editable-cell {
+    vertical-align: top;
     position: relative;
 }
 
@@ -251,8 +252,15 @@ i.dot{
     }
 }
 
-.editable-row:hover .editable-cell-value-wrap {
-    .hostname{
-        border-color: #d9d9d9;
+.editable-row{
+    input.ant-input:focus {
+        border-color: #749DF7;
+        box-shadow: none;
+    }
+
+    &:hover .editable-cell-value-wrap {
+        .hostname {
+            border-color: #d9d9d9;
+        }
     }
 }
