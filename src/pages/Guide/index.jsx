@@ -5,7 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SubLayout from '~/components/SubLayout';
 import SetPassword from './SetPassword';
 import SetWan from './SetWan';
-import Speed from './Speed';
+// import Speed from './Speed';
 import SetWifi from './SetWifi';
 import Icon from '~/components/Icon';
 
@@ -22,7 +22,7 @@ export default class Guide extends React.Component {
     dones = {
         setpassword : [],
         setwan : ['setpassword'],
-        speed : ['setpassword', 'setwan'],
+        // speed : ['setpassword', 'setwan'],
         setwifi : ['setpassword', 'setwan', 'speed']
     };
 
@@ -68,15 +68,15 @@ export default class Guide extends React.Component {
                         <Icon type="correct" color="#fff" size={26} />
                         <span className="ui-ib">设置上网参数</span>
                     </li>
-                    <li className="line"></li>
+                    {/* <li className="line"></li>
                     <li className={this.initStepMenu('speed')}>
                         <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
                         <span className="ui-ib">设置上下行带宽</span>
-                    </li>
+                    </li> */}
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwifi')}>
-                        <i className="ui-ib order-num">4</i>
+                        <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
                         <span className="ui-ib">设置无线网络</span>
                     </li>
@@ -85,7 +85,7 @@ export default class Guide extends React.Component {
                     <Switch>
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />
                         <Route path={`${match.path}/setwan`} component={SetWan} />
-                        <Route path={`${match.path}/speed`} component={Speed} />
+                        {/* <Route path={`${match.path}/speed`} component={Speed} /> */}
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
                         <Redirect from={match.path} to={`${match.path}/setpassword`}></Redirect>
                     </Switch>
