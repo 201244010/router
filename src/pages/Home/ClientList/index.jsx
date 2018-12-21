@@ -155,6 +155,7 @@ export default class ClientList extends React.Component {
             title: '设备名称',
             width: 160,
             dataIndex: 'name',
+            className: 'editable-cell',
             editable: true,
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.ontime - b.ontime,
@@ -172,10 +173,10 @@ export default class ClientList extends React.Component {
             title: 'IP/MAC地址',
             width: 190,
             render: (text, record) => (
-                <span>
-                    <span><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></span><br />
-                    <span><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac}</label></span>
-                </span>
+                <div>
+                    <div style={{ lineHeight: '31px', verticalAlign: 'middle' }}><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>
+                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac}</label></div>
+                </div>
             )
         }, {
             title: '接入方式',

@@ -81,7 +81,7 @@ export default class SetWifi extends React.Component {
 
         if ('' === password) {
             confirm({
-                title: '提示：',
+                //title: '提示',
                 content: '商户Wi-Fi密码未设置，确定继续?',
                 onOk: next,
             });

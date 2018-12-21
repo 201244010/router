@@ -14,13 +14,13 @@
             border-radius: 0.2133rem;
             padding-left: 0.2667rem;
             outline:none;
+            &:focus{
+                border-color: #FB8632;
+            }
+            &.has-error {
+                border-color: #D33419;
+            }
         }
-        .sm-input-content:focus{
-            border: 1px #FB8632 solid;
-        }
-        .has-error{
-            border: 0.0267rem #D33419 solid;
-        }    
     }
     .sm-form-tip{
         position: absolute;

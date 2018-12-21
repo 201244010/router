@@ -40,7 +40,7 @@ class Confirm extends React.PureComponent {
                 <div key='mask' className='sm-modal-mask'></div>,
                 <div key='wrap' className='sm-confirm-wrap'>
                     <div className='sm-modal'>
-                        <h3 className='title'>{title}</h3>
+                        {title && <h3 className='title'>{title}</h3>}
                         <p className='content'>{content}</p>
                         <div className='footer'>
                             <button onClick={this.onCancel} className='btn cancel-btn'>{cancelText}</button>

@@ -56,7 +56,6 @@ export default class SetPwd extends React.Component {
             break;
         case '-1608':
             confirm({
-                    title: '提示',
                     content: '已设置过密码',
                     cancelText: '取消',
                     okText: '确定',
