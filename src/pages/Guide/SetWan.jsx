@@ -182,7 +182,7 @@ export default class SetWan extends React.PureComponent {
                         online :online
                     });
                     if(online){
-                        setTimeout(() => { this.props.history.push("/guide/speed") }, 3000);
+                        setTimeout(() => { this.props.history.push("/guide/setwifi") }, 3000);
                     }
                     return;
                 }
@@ -444,7 +444,7 @@ const NetStatus = props => {
     return props.online ?
         (<div className="progress-tip">
             <CustomIcon type="correct" size="large" color="#87d067" />
-            <h3>已连接网络，正在跳转到带宽设置…</h3>
+            <h3>已连接网络，正在跳转到无线网络设置...</h3>
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
             <CustomIcon type="hint" size="large" color="#FF5500" />
