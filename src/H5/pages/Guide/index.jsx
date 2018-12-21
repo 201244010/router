@@ -23,12 +23,18 @@ export default class Guide extends React.Component {
 
     static getDerivedStateFromProps(nextProps){
         let { match } = nextProps, path = match.path, pathname = location.pathname;
-        let route = pathname.replace(path + '/', '');
+        let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
+        console.log(route);
         const iconMap = {
             setpwd: 'lock',
             setwan: 'browser',
+            detect: 'browser',
+            pppoe: 'browser',
+            static: 'browser',
             setwifi: 'wifi',
-        }
+            guest: 'wifi',
+            finish: 'succeed',
+        };
         return {
             icon: iconMap[route]
         };

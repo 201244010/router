@@ -7,7 +7,6 @@ import {checkStr} from '~/assets/common/check';
 
 const {FormItem,Input,ErrorTip} = Form;
 const err = {
-    '-1601': '原密码不能为空',
     '-1605': '原密码错误',
     '-1606': '原密码错误次数过多，请5分钟后再试'
 };
@@ -20,7 +19,6 @@ export default class ChangePassword extends React.Component{
         newPWD: '',
         surePWD: '',
         loading: false,
-        disabled: true,
         surePWDTip: '',
         oldPWDTip: '',
         newPWDTip: '',
@@ -38,20 +36,20 @@ export default class ChangePassword extends React.Component{
                 func: '',
             }
         };
+
+        this.setState({surePWDTip : ''});  //surePWDTip清空
         let tip = field[name].func;
         this.setState({
             [name]: value,
             [name + 'Tip']: tip,
-        },() =>{
-            const { oldPWD, oldPWDTip, newPWD, newPWDTip, surePWD, surePWDTip } = this.state;
-            this.setState({
-            disabled : (surePWD.length<6 || newPWD.length<6 || oldPWD.length === 0 || oldPWDTip !=='' || newPWDTip !== '' || surePWDTip !== '')
-        })});
+        });
     }
 
     submit = async() =>{
         if(this.state.newPWD != this.state.surePWD){
-            this.setState({surePWD : '',disabled : true,surePWDTip : '两次密码不一致'});
+            this.setState({
+                surePWDTip: '两次密码不一致'
+            });
             return ;
         }else{
             this.setState({loading : true});
@@ -76,7 +74,9 @@ export default class ChangePassword extends React.Component{
     }
 
     render(){
-        const { oldPWD, newPWD, surePWD, loading, disabled, surePWDTip, oldPWDTip, newPWDTip } = this.state;
+        const { oldPWD, newPWD, surePWD, loading, surePWDTip, oldPWDTip, newPWDTip } = this.state;
+        const disabled = surePWD === '' || oldPWD === '' || oldPWDTip !==''|| newPWDTip !== '' || surePWDTip !== '';
+
         return (
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
