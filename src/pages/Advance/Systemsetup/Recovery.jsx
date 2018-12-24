@@ -3,6 +3,7 @@ import {Modal, Button, Icon, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/auth';
+import { PAGE_STYLE_KEY } from '~/utils';
 
 export default class Recovery extends React.Component{
 
@@ -49,7 +50,11 @@ export default class Recovery extends React.Component{
     }
 
     guide = () => {
-        clear();
+        try {   // Fix SIG-909
+            web = window.sessionStorage.removeItem(PAGE_STYLE_KEY);
+        } catch(e) {}
+
+        clear();        // 删除认证信息
         location.href = '/';
     }
 
