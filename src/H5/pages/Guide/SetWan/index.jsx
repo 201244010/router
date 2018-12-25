@@ -1,5 +1,5 @@
 import React from 'react';
-import { message } from 'antd';
+import toast from 'h5/components/toast';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
 import Select from 'h5/components/Select';
@@ -78,7 +78,7 @@ export default class SetWan extends React.Component {
 
             let { errcode } = response;
             if (0 !== errcode) {
-                message.error(`参数非法[${errcode}]`);
+                toast({tip: `参数非法[${errcode}]`});
                 return;
             }
 
