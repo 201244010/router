@@ -26,11 +26,11 @@ class Toast extends React.PureComponent {
     }
 
     render() {
-        const { icon = 'defeated', tip, index = 1100 } = this.props;
+        const { icon = 'm-defeated', tip, index = 1100 } = this.props;
 
         return (
             [
-                <div className='sm-toast-mask'></div>,
+                <div className='sm-toast-mask' style={{zIndex: {index}}}></div>,
                 <div className='sm-toast-wrap' style={{zIndex: {index}}}>
                     <div className='sm-toast'>
                         <Icon type={icon} size={'0.96rem'} style={{color: '#FFF'}}></Icon>,
