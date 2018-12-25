@@ -1,6 +1,6 @@
 import React from 'react';
 import { Base64 } from 'js-base64';
-import { message } from 'antd';
+import toast from 'h5/components/toast';
 import GuideHeader from 'h5/components/GuideHeader';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
@@ -94,7 +94,7 @@ export default class PPPoE extends React.Component {
             }
             return;
         }
-        message.error(`参数非法[${errcode}]`);
+        toast({tip: `参数非法[${errcode}]`});
     }
 
     changeType = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { message } from 'antd';
+import toast from 'h5/components/toast';
 import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
@@ -80,13 +80,13 @@ export default class Static extends React.Component {
         });
 
         if(ip === gateway){
-            message.error(`IP地址与默认网关不能相同`);
+            toast({tip: 'IP地址与默认网关不能相同'});
             this.setState({ loading: false });
             return ;
         }
 
         if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
-            message.error( 'IP地址与默认网关需在同一网段' );
+            toast({tip: 'IP地址与默认网关需在同一网段'});
             this.setState({ loading: false });
             return ;
         }
@@ -137,7 +137,7 @@ export default class Static extends React.Component {
             }
             return;
         }
-        message.error(`参数非法[${errcode}]`);
+        toast({tip: `参数非法[${errcode}]`});
     }
 
     checkDisabled(state){

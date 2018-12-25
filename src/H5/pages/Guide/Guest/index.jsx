@@ -5,7 +5,7 @@ import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
-import { message } from 'antd';
+import toast from 'h5/components/toast';
 
 import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
@@ -90,7 +90,7 @@ export default class Guest extends React.Component {
         const errcode = res.errcode;
         if (0 !== errcode) {
             this.setState({ loading : false});
-            message.error(`未知错误[${errcode}]`);
+            toast({tip: `未知错误[${errcode}]`});
             return;
         }
 
