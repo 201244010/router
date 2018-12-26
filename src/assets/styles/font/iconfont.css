@@ -209,3 +209,9 @@
 
 .ui-icon-unknown:before { content: "\e695"; }
 
+.ui-icon-m-hint:before { content: "\e697"; }
+
+.ui-icon-m-success:before { content: "\e698"; }
+
+.ui-icon-m-defeated:before { content: "\e699"; }
+

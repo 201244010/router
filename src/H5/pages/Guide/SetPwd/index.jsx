@@ -90,8 +90,6 @@ export default class SetPwd extends React.Component {
         });
     }
 
-
-
     render() {
         const { pwd, pwdTip, surePwd, surePwdTip, loading }  = this.state;
         const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
