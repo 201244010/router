@@ -1,0 +1,103 @@
+$edge: 60px;
+.wechat-guide{
+    .setup-list {
+        margin: 0 $edge 20px;
+        padding-bottom: 26px;
+        border-bottom: 1px solid #ECECEC;
+        .setup-step {
+            color: #ADB1B9;
+            display: inline-block;
+            .step-num{
+                display: inline-block;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 26px;
+                vertical-align: middle;
+                width: 28px;
+                height: 28px;
+                text-align: center;
+                border-radius: 50%;
+                border: 1px solid #ADB1B9;
+            }
+            .title{
+                font-size: 16px;
+                margin-left: 12px;
+                vertical-align: middle;
+            }
+            .step-line{
+                margin: 0 28px 0 20px;
+                .line-dot {
+                    display: inline-block;
+                    width: 2px;
+                    height: 2px;
+                    line-height: 26px;
+                    vertical-align: middle;
+                    margin-right: 4px;
+                    background: #ADB1B9;
+                    border-radius: 50%;
+                }
+            }
+            &.active {
+                color: #FF8E2D;
+                .step-num{
+                    display: inline-block;
+                    border-color: #FF8E2D;
+                }
+                .title{
+                    font-weight: bold;
+                }
+            }
+
+            &.done{
+                color: #333C4F;
+                .step-num {
+                    display: none;
+                    border-color: #333C4F;
+                }
+            }
+        }
+    }
+    .setup-body {
+        .setup-content{
+            margin: 0 $edge;
+            .help {
+                color: #333C4F;
+                font-size: 14px;
+                background: #F2F3F7;
+                border-radius: 4px;
+                padding: 8px 16px;
+                margin-bottom: 36px;
+            }
+            .file-upload {
+                >p {
+                    font-size: 12px;
+                    color: #ADB1B9;
+                    margin: 4px 0 11px;
+                }
+            }
+            .form-item{
+                display: flex;
+                flex-direction: row;
+                margin-top: 4px;
+                .ui-input-outline{
+                    width: 320px;
+                }
+                .input-help{
+                    color: #ADB1B9;
+                    line-height: 36px;
+                    margin-left: 8px;
+                    vertical-align: middle;
+                }
+            }
+        }
+        .save-area{
+            border-top: 1px solid #ECECEC;
+            padding: 20px 60px 20px;
+            margin-top: 49px;
+            button{
+                width: 150px;
+                margin-right: 20px;
+            }
+        }
+    }
+}
