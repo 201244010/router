@@ -4,6 +4,7 @@ import { Modal , Select, Button, Upload, Icon, message, Checkbox } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import { checkStr, checkRange } from '~/assets/common/check';
+import WeChatPreview from "./WeChatPreview";
 
 
 const { FormItem, Input, ErrorTip } = Form;
@@ -459,7 +460,16 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div style={{
+                                <WeChatPreview
+                                    style={{marginTop:20}}
+                                    bg_img={bg_img}
+                                    logo_img={logo_img}
+                                    logo={logo}
+                                    welcome={welcome}
+                                    loginHint={loginHint}
+                                    statement={statement}
+                                />
+                                {/* <div style={{
                                     display:'block',
                                     width:325,
                                     height:488,
@@ -494,7 +504,7 @@ export default class WeChatAuth extends React.Component{
                                     </div>
                                     <div style={{postion:'relative',textAlign:'center',color:'#ADB1B9',opacity: 0.8,fontSize:12}}>©{statement}</div>
                                     
-                                </div>
+                                </div> */}
                             </section>                  
                         </section>
                         <PanelHeader

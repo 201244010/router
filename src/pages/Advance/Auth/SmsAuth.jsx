@@ -515,7 +515,7 @@ export default class SmsAuth extends React.Component{
                                                 <Checkbox checked={true} style={{fontSize:10,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
                                             </div>
                                         </div>
-                                        <div style={{postion:'relative',textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
+                                        <div style={{textAlign:'center',color:'#FFFFFF',opacity: 0.8}}>©{statement}</div>
                                     </div>
                                 ):(
                                     <div style={{
