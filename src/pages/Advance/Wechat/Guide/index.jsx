@@ -32,7 +32,7 @@ export default class Guide extends React.Component {
 
     static getDerivedStateFromProps(nextProps) {
         let { match } = nextProps, path = match.path, pathname = location.pathname;
-        let route = pathname.replace(path + '/', '');
+        let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
         return {
             activeRouteName: route
         };
@@ -73,8 +73,8 @@ export default class Guide extends React.Component {
                 <div className="setup-body">
                     <Switch>
                         <Route path={`${match.path}/welcome`} component={Welcome} />
-                        <Route path={`${match.path}/account`} component={Account} />
-                        <Route path={`${match.path}/wifi`} component={Wifi} />
+                        <Route path={`${match.path}/account/:param`} component={Account} />
+                        <Route path={`${match.path}/wifi/:param`} component={Wifi} />
                         <Redirect from={match.path} to={`${match.path}/welcome`}></Redirect>
                     </Switch>
                 </div>
