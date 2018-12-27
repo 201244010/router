@@ -62,7 +62,6 @@ $lineWidth: 320px;
     }
     .setup-body {
         .setup-content{
-            margin: 0 $edge;
             .help {
                 color: #333C4F;
                 font-size: 14px;
@@ -92,15 +91,6 @@ $lineWidth: 320px;
                     margin-left: 8px;
                     vertical-align: middle;
                 }
-            }
-        }
-        .save-area{
-            border-top: 1px solid #ECECEC;
-            padding: 20px 60px 20px;
-            margin-top: 49px;
-            button{
-                width: 150px;
-                margin-right: 20px;
             }
         }
     }

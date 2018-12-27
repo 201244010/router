@@ -1,0 +1,68 @@
+.wechat-status {
+    .connect-status{
+        $lineHeight: 20px;
+        font-size: 16px;
+        color: #333C4F;
+        margin-top: 20px;
+        >span{
+            font-size: $lineHeight;
+            font-weight: bold;
+            color: #FF8E2D;
+            margin: 0 6px;
+            vertical-align: text-bottom;
+        }
+        >a{
+            font-size: 16px;
+            color: #3D76F6;
+        }
+    }
+    $padding: 24px;
+    .connect-guide{
+        margin-top: 20px;
+        padding: $padding 0;
+        background: rgba(51, 60, 79, 0.02);
+        border-radius: 12px;
+        >p{
+            font-size: 14px;
+            color: #333C4F;
+            margin-left: $padding;
+        }
+        >ul{
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            >li{
+                flex: 1;
+                margin-left: $padding;
+                .guide-detail{
+                    font-size: 14px;
+                    width: 320px;
+                    >h4{
+                        font-weight: bold;
+                        font-size: 16px;
+                        margin-bottom: 12px;
+                    }
+                    .step-tip{
+                        font-size: 12px;
+                        color: #ADB1B9;
+                        margin: 8px 0 12px;
+                    }
+                    .qr-img{
+                        display: block;
+                        height: 120px;
+                        opacity: 0.2;
+                        background: #333C4F;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                    }
+                    .ssid{
+                        font-weight: bold;
+                    }
+                    >p{
+                        margin-top: 12px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -123,9 +123,9 @@ export default class Welcome extends React.Component {
         let data = { logo, welcome, btnStr, statement };
         let param = JSON.stringify(data);
         let path = this.props.match.path;
-        let next = path.substr(0, path.lastIndexOf('/'));
+        let parent = path.substr(0, path.lastIndexOf('/'));
 
-        this.props.history.push(`${next}/account/` + encodeURIComponent(param));
+        this.props.history.push(`${parent}/account/` + encodeURIComponent(param));
     }
 
     componentDidMount() {

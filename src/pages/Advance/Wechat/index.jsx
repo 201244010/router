@@ -38,7 +38,7 @@ export default class Wechat extends React.Component {
             <Switch>
                 <Route path={`${match.path}/setup`} component={Guide} />
                 <Route path={`${match.path}/status`} component={Status} />
-                <Redirect from={match.path} to={`${match.path}/setup`}></Redirect>
+                <Redirect from={match.path} to={`${match.path}/status`}></Redirect>
             </Switch>
         );
     }
