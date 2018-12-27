@@ -221,7 +221,7 @@ export default class Welcome extends React.Component {
 
                         <label>版权声明</label>
                         <div className='form-item'>
-                            <FormItem type="small" showErrorTip={statementTip}>
+                            <FormItem type="small" showErrorTip={statementTip} style={{marginBottom: 0}}>
                                 <Input
                                     type="text"
                                     maxLength={30}

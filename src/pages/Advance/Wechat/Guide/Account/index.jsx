@@ -1,14 +1,194 @@
 
 import React from 'react';
+import { Button, Modal, Timeline, Icon } from 'antd';
+import Form from '~/components/Form';
+import { checkStr } from '~/assets/common/check';
+
+import './account.scss';
+
+const { FormItem, Input, ErrorTip } = Form;
 
 export default class Account extends React.Component {
     constructor(props) {
         super(props);
     }
+ 
+    state = {
+        ssid: '',
+        ssidTip: '',
+        shopId: '',
+        shopIdTip: '',
+        appId: '',
+        appIdTip: '',
+        secretKey: '',
+        secretKeyTip: '',
+        loading: false,
+        visible: false,
+    }
+
+    onChange = (name,value) =>{
+        const key = { 
+            ssid:{
+                func: checkStr,
+                args: { who: 'SSID', min: 1, max: 32, type: 'english'},
+            },
+
+            shopId:{
+                func: checkStr,
+                args: { who: 'ShopID', min: 1, max: 32, type: 'english'},
+            },
+
+            appId:{
+                func: checkStr,
+                args: { who: 'AppID', min: 1, max: 32, type: 'english'},
+            },
+
+            secretKey:{
+                func: checkStr,
+                args: { who: 'SecretKey', min: 1, max: 32, type: 'english'},
+            },
+
+        };
+        const tip = key[name].func(value, key[name].args);
+        this.setState({
+            [name]: value,
+            [name + 'Tip']: tip
+        });
+    }
+
+    settingGuide = () => {
+        this.setState({
+            visible: true
+        });
+    }
+
+    modalClose = () => {
+        this.setState({
+            visible: false
+        });
+    }
+
+    preStep = () => {
+        this.props.history.push('/advance/wechat/setup/welcome');
+    }
+
+    nextStep = () =>{
+        this.props.history.push('/advance/wechat/setup/wifi');
+    }
+
+    componentDidMount() {
+
+    }
 
     render() {
+        const { ssid, ssidTip, shopId, shopIdTip, appId, appIdTip, secretKey, secretKeyTip, loading, visible } = this.state;
+        const nextStepCheck = ['ssid', 'shopId', 'appId', 'secretKey' ].some(item => {
+            return this.state[item] === '' || this.state[item + 'Tip'] !== '';
+        });
+        const disabled = nextStepCheck;
+
         return (
-            <h1>TODO:Account</h1>
+            <React.Fragment>
+                <div className='setup-content'>
+                    <p className='help'>
+                        为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>），获得下方所需的信息，将其复制到此页面对应的输入框中。
+                    </p>
+                    <GuideModal visible={visible} close={this.modalClose}/>
+                    <Form style={{ margin: 0, padding: 0 }}>
+                        <label>SSID</label>
+                        <div className='form-item'>
+                            <FormItem type="small" showErrorTip={ssidTip}>
+                                <Input type="text" maxLength={32}  placeholder={'请复制粘贴SSID'} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
+                                <ErrorTip >{ssidTip}</ErrorTip>
+                            </FormItem>
+                        </div>
+
+                        <label>ShopID</label>
+                        <div className='form-item'>
+                            <FormItem type="small" showErrorTip={shopIdTip}>
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴ShopID'} value={shopId} onChange={(value)=>this.onChange('shopId',value)} />
+                                <ErrorTip >{shopIdTip}</ErrorTip>
+                            </FormItem>
+                        </div>
+
+                        <label>AppID</label>
+                        <div className='form-item'>
+                            <FormItem type="small" showErrorTip={appIdTip}>
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴AppID'} value={appId} onChange={(value)=>this.onChange('appId',value)} />
+                                <ErrorTip >{appIdTip}</ErrorTip>
+                            </FormItem>
+                        </div>
+
+                        <label>SecretKey</label>
+                        <div className='form-item'>
+                            <FormItem type="small" showErrorTip={secretKeyTip} style={{marginBottom: 0}}>
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴SecretKey'} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
+                                <ErrorTip >{secretKeyTip}</ErrorTip>
+                            </FormItem>
+                        </div>
+                    </Form>
+                </div>
+                <section className="save-area">
+                    <Button
+                        type="primary"
+                        size="large"
+                        onClick={this.preStep}
+                    >上一步</Button>
+                    <Button
+                        type="primary"
+                        size="large"
+                        loading={loading}
+                        disabled={disabled}
+                        onClick={this.nextStep}
+                    >下一步</Button>
+                </section>
+            </React.Fragment>
         );
     }
+}
+
+const GuideModal = (props) => {
+    const itemColor = '#FF8E2D';
+    return (
+        <Modal
+            visible={props.visible}
+            width={600}
+            closable={false}
+            footer={
+                <div style={{textAlign: 'center'}}>
+                    <Button type= 'primary' style={{ margin: '10px auto'}} onClick={props.close}>我知道了</Button>
+                </div>
+            }
+        >
+        <div className='modal-body'>
+            <h4>微信公众平台设置指引</h4>
+            <div className='content'>
+                <Timeline>
+                    <Timeline.Item color={itemColor}>
+                        <label>添加功能插件</label>
+                        <p>用已有公众号（必须是服务号）或新注册账号<a href='javascript:;'>登录公众平台</a>，添加“<b>门店小程序</b>”和“<b>微信连Wi-Fi</b>”功能插件。</p>
+                        <img src=''></img>
+                    </Timeline.Item>
+                    <Timeline.Item color={itemColor}>
+                        <label>添加门店</label>
+                        <p>进入“<b>门店小程序</b>”插件，点击添加门店，按照指引添加完成。</p>
+                    </Timeline.Item>
+                    <Timeline.Item color={itemColor}>
+                        <label>添加Wi-Fi设备</label>
+                        <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：SUNMI_XX_Guest）。</p>
+                        <img src=''></img>
+                    </Timeline.Item>
+                    <Timeline.Item color={itemColor}>
+                        <label>复制所需信息</label>
+                        <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页，点击设备详情，即可找到所需的信息，将其复制粘贴到对应的输入框。</p>
+                        <img src=''></img>
+                    </Timeline.Item>
+                    <Timeline.Item color={itemColor}>
+                        <label>完成</label>
+                    </Timeline.Item>
+                </Timeline>
+            </div>
+        </div>
+        </Modal>
+    );
 }
