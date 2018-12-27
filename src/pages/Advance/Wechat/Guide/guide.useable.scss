@@ -38,12 +38,13 @@ $edge: 60px;
                 }
             }
             &.active {
-                color: #FF8E2D;
                 .step-num{
+                    color: #FF8E2D;
                     display: inline-block;
                     border-color: #FF8E2D;
                 }
                 .title{
+                    color: #333C4F;
                     font-weight: bold;
                 }
             }
