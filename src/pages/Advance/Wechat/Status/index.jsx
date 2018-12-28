@@ -139,10 +139,10 @@ export default class Status extends React.Component {
                         onChange={this.switchChange}
                     />
                     <p className='connect-status'>
-                        当前有<span>{clients.length}</span>位用户连接Wi-Fi
+                        当前有<span>{clients.length}</span>位用户连接Wi-Fi（
                         <a
                             onClick={this.showClients}
-                            href='javascript:;'>（连接用户列表）</a>
+                            href='javascript:;'>接入设备列表</a>）
                     </p>
                     <div className='connect-guide'>
                         <p>您可以通过以下两种方式引导顾客上网</p>
@@ -150,14 +150,15 @@ export default class Status extends React.Component {
                             <li>
                                 <div className='guide-detail'>
                                     <h4>方式一：扫描二维码连网</h4>
+                                    <p>引导顾客使用微信扫描二维码即可上网</p>
+                                    <h5>如何获取二维码？</h5>
                                     <ol>
                                         <li>
-                                            <h4>1、下载二维码</h4>
-                                            <p className='step-tip'>下载方式：前往微信公众号平台，进入“微信连Wi-Fi -> 用户连网方式”，选择立即配置“扫二维码连网”，按引导下载二维码</p>
+                                            <p className='step-tip'>1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码</p>
                                             <i className='qr-img'></i>
                                         </li>
                                         <li>
-                                            <h4>2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网</h4>
+                                            <p className='step-tip'>2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网</p>
                                         </li>
                                     </ol>
                                 </div>
@@ -165,10 +166,10 @@ export default class Status extends React.Component {
                             <li>
                                 <div className='guide-detail'>
                                     <h4>方式二：连接客用Wi-Fi</h4>
-                                    <p>引导顾客进入手机Wi-Fi连接界面，选择客用Wi-Fi点击连接，待自动弹出欢迎页后，点击确认按钮即可上网</p>
-                                    <p>
+                                    <p>引导顾客手动连接客用Wi-Fi，待自动弹出欢迎页后，点击确认按钮即可上网</p>
+                                    <div className='wifi-info'>
                                         <label>当前客用Wi-Fi名称：</label><span className='ssid'>{ssid}</span>
-                                    </p>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
