@@ -78,6 +78,14 @@ $lineWidth: 320px;
                     margin: 4px 0 11px;
                 }
             }
+            .separate-line{
+                position: absolute;
+                height: 400px;
+                width: 1px;
+                background: #ECECEC;
+                top: 44px;
+                left: 486px;
+            }
             .form-item{
                 display: flex;
                 flex-direction: row;

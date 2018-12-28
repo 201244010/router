@@ -233,6 +233,7 @@ export default class Welcome extends React.Component {
                             </FormItem>
                             <Help>1~30个字符</Help>
                         </div>
+                        <div className='separate-line'></div>
                         <Preview
                             bgImg={bg_img}
                             logoImg={logo_img}
