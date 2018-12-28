@@ -41,22 +41,41 @@ export default class Wifi extends React.Component {
     }
 
     preStep = () => {
-        this.props.history.push('/advance/wechat/setup/account/');
+        const params = this.props.match.params;
+        const { onlineLimit, idleLimit } = this.state;
+        let data = { onlineLimit, idleLimit };
+
+        window.sessionStorage.setItem('wechat.wifi', JSON.stringify(data));
+
+        this.props.history.push(`/advance/wechat/setup/account/` + encodeURIComponent(params.param));
     }
 
     submit = async() => {
         const params = this.props.match.params;
         const { onlineLimit, idleLimit } = this.state;
         let data = { onlineLimit, idleLimit };
-        const weixin = Object.assign({}, decodeURIComponent(params), JSON.stringify(data));
-        this.setState({
-            visible: true,
-        });
+
+        const weixin = Object.assign({}, JSON.parse(decodeURIComponent(params.param)), data);
+        const { onlineLimit: onlineLimitFromWeixin, idleLimit: idleLimitFromWeixin, logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = weixin;
+
+        let options = new Object();
+        options.online_limit = onlineLimitFromWeixin;
+        options.idle_limit = idleLimitFromWeixin;
+        options.logo_info = logo;
+        options.welcome = welcome;
+        options.login_hint = btnStr;
+        options.statement = statement;
+        options.ssid = ssid;
+        options.shopid = shopId;
+        options.appid = appId;
+        options.secretkey = secretKey;
+        console.log(options);
+
         this.setState({loading: true});
         let response = await common.fetchApi(
             {
                 opcode: 'AUTH_WEIXIN_CONFIG_SET',
-                data: { weixin: weixin }
+                data: { weixin: options }
             }
         );
         this.setState({loading: false});
@@ -65,8 +84,7 @@ export default class Wifi extends React.Component {
         if (0 === errcode) {
             this.setState({
                 visible: true,
-            });
-            this.props.history.push('/advance/wechat/status');    //跳转到status页面
+            });   
             return ;
         }
 
@@ -80,6 +98,7 @@ export default class Wifi extends React.Component {
         this.setState({
             visible: false,
         });
+        this.props.history.push('/advance/wechat/status');    //跳转到status页面
     }
 
     async fetchConf() {
@@ -96,6 +115,17 @@ export default class Wifi extends React.Component {
     }
 
     componentDidMount() {
+        const val = window.sessionStorage.getItem('wechat.wifi');
+
+        if (val) {  //sessionStorage.getItem('wechat.wifi') 存在时
+            const { onlineLimit,  idleLimit} = JSON.parse(val);
+            this.setState({
+                onlineLimit: onlineLimit,
+                idleLimit: idleLimit,
+            });
+            return;
+        }
+
         this.fetchConf();
     }
 

@@ -65,19 +65,28 @@ export default class Account extends React.Component {
     }
 
     preStep = () => {
+        const { ssid, shopId, appId, secretKey } = this.state;
+        let data = { ssid, shopId, appId, secretKey };
+
+        window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
+
         this.props.history.push('/advance/wechat/setup/welcome');
     }
 
     nextStep = () => {
         const params = this.props.match.params;
-        const { ssid, shopid, appid, secretkey } = this.state;
+        const { ssid, shopId, appId, secretKey } = this.state;
 
-        let data = { ssid, shopid, appid, secretkey };
-        let param = Object.assign({}, JSON.stringify(data), decodeURIComponent(params));
+        let data = { ssid, shopId, appId, secretKey };
+        let param = Object.assign({}, data, JSON.parse(decodeURIComponent(params.param)));
+
         let path = this.props.match.path;
-        let parent = path.substr(0, path.lastIndexOf('/'));
+        // let parent = path.substr(0, path.lastIndexOf('/'));
 
-        this.props.history.push(`${parent}/wifi/` + encodeURIComponent(param));
+        window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
+
+        // this.props.history.push(`${parent}/wifi/` + encodeURIComponent(JSON.stringify(param)));
+        this.props.history.push(`/advance/wechat/setup/wifi/` + encodeURIComponent(JSON.stringify(param)));
     }
 
     async fetchConf() {
@@ -96,6 +105,19 @@ export default class Account extends React.Component {
     }
 
     componentDidMount() {
+        const val = window.sessionStorage.getItem('wechat.account');
+
+        if (val) {  //sessionStorage.getItem('wechat.account') 存在时
+            const { ssid, shopId, appId, secretKey } = JSON.parse(val);
+            this.setState({
+                ssid: ssid,
+                shopId: shopId,
+                appId: appId,
+                secretKey: secretKey,
+            });
+            return;
+        }
+
         this.fetchConf();
     }
 
