@@ -47,8 +47,11 @@ export default class Wifi extends React.Component {
     submit = async() => {
         const params = this.props.match.params;
         const { onlineLimit, idleLimit } = this.state;
-        const weixin = Object.assign({}, JSON.parse(decodeURIComponent(params)), { onlineLimit, idleLimit });
-
+        let data = { onlineLimit, idleLimit };
+        const weixin = Object.assign({}, decodeURIComponent(params), JSON.stringify(data));
+        this.setState({
+            visible: true,
+        });
         this.setState({loading: true});
         let response = await common.fetchApi(
             {
@@ -56,11 +59,11 @@ export default class Wifi extends React.Component {
                 data: { weixin: weixin }
             }
         );
+        this.setState({loading: false});
 
         let { errcode } = response;
         if (0 === errcode) {
             this.setState({
-                loading: false,
                 visible: true,
             });
             this.props.history.push('/advance/wechat/status');    //跳转到status页面
@@ -68,7 +71,6 @@ export default class Wifi extends React.Component {
         }
 
         this.setState({
-            loading: false,
             visible: true,
             //失败信息
         });
