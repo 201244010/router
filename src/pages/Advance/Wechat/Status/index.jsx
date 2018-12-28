@@ -1,12 +1,20 @@
 
 import React from 'react';
-import { Button, Icon, message } from 'antd';
+import { Button, Popconfirm, Modal, Table, Icon, message } from 'antd';
 
 import PanelHeader from '~/components/PanelHeader';
 import Loading from '~/components/Loading';
+import CustomIcon from '~/components/Icon';
+import Logo from '~/components/Logo';
 import { formatTime } from '~/assets/common/utils';
 
 import style from './status.useable.scss';
+
+const pagination = {
+    pageSize: 6,
+    hideOnSinglePage: false,
+    showTotal: total => `已添加${total}台设备`,
+};
 
 export default class Status extends React.Component {
     constructor(props) {
@@ -15,7 +23,8 @@ export default class Status extends React.Component {
 
     state = {
         enable: true,
-        visible: true,
+        visible: false,
+        refresh: false,
         clients: [],
         ssid: '',
     };
@@ -66,7 +75,17 @@ export default class Status extends React.Component {
         }
     }
 
-    refreshClients = async () => {
+    fetchClients = async (loading) => {
+        if (loading) {
+            this.setState({
+                refresh: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({ refresh: false });
+                }, 1000);
+            });
+        }
+
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
             { opcode: 'AUTH_CLIENT_LIST' },
@@ -74,37 +93,79 @@ export default class Status extends React.Component {
 
         let { errcode, data } = response;
         if (0 == errcode) {
-            let clients = data[0].result.data;
+            let clients = {}, onlineList = data[0].result.data;
             let authClient = data[1].result.auth.clientlist;
 
-            this.setState({
-                clients: authClient.map(item => {
-                    let mac = item.mac.toUpperCase();
-                    let client = clients.find(item => item.mac.toUpperCase() === mac) || {
-                        ontime: 0,
-                        hostname: 'unknown',
-                    };
+            onlineList.forEach((client) => {
+                let {mac, hostname, ontime} = client;
 
-                    return {
-                        index: item.index,
-                        name: item.hostname || client.hostname,
-                        online: client.ontime !== 0,
-                        ontime: formatTime(client.ontime),
-                        ip: item.ip,
-                        mac: mac,
-                        auth_type: item.auth_type,
-                        phone: item.phone,
-                        access_time: item.access_time,
-                    };
+                mac = client.mac.toUpperCase();
+                clients[mac] = {online:true, mac, hostname, ontime};
+            });
+
+            this.setState({
+                clients: authClient.filter(client => {
+                    client.mac = client.mac.toUpperCase();  // modify client.mac
+
+                    return (undefined !== clients[client.mac]);
+                }).map(item => {
+                    return Object.assign(clients[item.mac], item);
                 }),
             });
         }
+    }
+
+    fetchClientsOnce = () => {
+        this.fetchClients(true);
+    }
+
+    refreshClients = () => {
+        this.fetchClients();
+
+        clearInterval(this.timer);
+        this.timer = setInterval(this.fetchClients, 3000);
     }
 
     showClients = () => {
         this.setState({
             visible: true,
         });
+
+        // stop refresh clients
+        clearInterval(this.timer);
+    }
+
+    handleCancel = () => {
+        this.setState({
+            visible: false,
+        });
+
+        // continue refresh clients
+        this.refreshClients();
+    }
+
+    handleDelete = async (record) => {
+        let response = await common.fetchApi(
+            {
+                opcode: 'AUTH_USER_OFFLINE',
+                data: {
+                    auth: {
+                        offline_list: [{
+                            mac: record.mac,
+                        }]
+                    }
+                }
+            }, {
+                loading: true
+            }
+        );
+
+        let { errcode } = response;
+        if (0 != errcode) {
+            message.error(`操作失败[${errcode}]`);
+        }
+
+        this.fetchClients();
     }
 
     reSetup = () => {
@@ -123,11 +184,74 @@ export default class Status extends React.Component {
         style.use();
         this.fetchConf();
         this.refreshClients();
-        this.timer = setInterval(this.refreshClients, 3000);
     }
 
     render() {
-        const { enable, clients, ssid } = this.state;
+        const { enable, visible, refresh, clients, ssid } = this.state;
+
+        const columns = [{
+            title: '',
+            dataIndex: 'mac',
+            width: 60,
+            className: 'center',
+            render: (mac, record) => (
+                <Logo mac={mac} size={32} />
+            )
+        }, {
+            title: '设备名称',
+            width: 320,
+            render: (text, record) => (
+                <div>
+                    <div style={{
+                        width: '300px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'pre',
+                    }} title={record.hostname}>{record.hostname}</div>
+                    <i style={{
+                        display: 'inline-block',
+                        width: '10px',
+                        height: '10px',
+                        backgroundColor: (record.online ? '#87D068' : '#ADB1B9'),
+                        marginRight: '5px',
+                        borderRadius: '50%',
+                    }}></i>
+                    {record.online ? (
+                        <span><label>在线时长：</label><label>{formatTime(record.ontime)}</label></span>
+                    ) : (
+                        <span style={{ color: '#ADB1B9' }}>离线</span>
+                    )}
+                </div>
+            )
+        }, {
+            title: 'IP/MAC地址',
+            width: 230,
+            render: (text, record) => (
+                <span>
+                    {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
+                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac.toUpperCase()}</label></div>
+                </span>
+            )
+        }, {
+            title: '接入时间',
+            dataIndex: 'access_time',
+            width: 215,
+        }, {
+            title: '操作',
+            width: 94,
+            render: (text, record) => (
+                <span>
+                    <Popconfirm
+                        title="确定下线？"
+                        okText="确定"
+                        cancelText="取消"
+                        onConfirm={() => this.handleDelete(record)}
+                    >
+                        <a href="javascript:;" style={{ color: "#3D76F6" }}>下线</a>
+                    </Popconfirm>
+                </span>
+            )
+        }];
 
         return (
             <div className="setup-body wechat-status">
@@ -155,7 +279,7 @@ export default class Status extends React.Component {
                                     <ol>
                                         <li>
                                             <p className='step-tip'>1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码</p>
-                                            <i className='qr-img'></i>
+                                            <img className='qr-img' src={require('~/assets/images/dl-qr.png')} />
                                         </li>
                                         <li>
                                             <p className='step-tip'>2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网</p>
@@ -175,6 +299,34 @@ export default class Status extends React.Component {
                         </ul>
                     </div>
                 </div>
+                <Modal
+                    title={`接入设备列表（${clients.length}台）`}
+                    closable={false}
+                    maskClosable={false}
+                    centered={true}
+                    width={960}
+                    style={{ position: 'relative' }}
+                    visible={visible}
+                    footer={[
+                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
+                    ]}>
+                    <Button style={{
+                        position: "absolute",
+                        top: 10,
+                        left: 186,
+                        border: 0,
+                        padding: 0
+                    }} onClick={this.fetchClientsOnce}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    <Table
+                        columns={columns}
+                        dataSource={clients}
+                        bordered
+                        rowKey={record => record.mac}
+                        size="middle"
+                        pagination={pagination}
+                        locale={{ emptyText: "暂无设备" }}
+                    />
+                </Modal>
                 <section className="save-area">
                     <Button
                         size="large"

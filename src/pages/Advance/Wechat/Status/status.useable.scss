@@ -34,9 +34,10 @@
             >li{
                 flex: 1;
                 margin-left: $padding;
+                $liWidth: 380px;
                 .guide-detail{
                     font-size: 14px;
-                    width: 380px;
+                    width: $liWidth;
                     >h4{
                         font-weight: bold;
                         font-size: 16px;
@@ -57,9 +58,7 @@
                     }
                     .qr-img{
                         display: block;
-                        height: 120px;
-                        opacity: 0.2;
-                        background: #333C4F;
+                        width: $liWidth;
                         border-radius: 8px;
                         margin-bottom: 20px;
                     }

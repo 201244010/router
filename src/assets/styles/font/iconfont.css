@@ -55,8 +55,6 @@
 
 .ui-icon-networkspeeddistribution:before { content: "\e640"; }
 
-.ui-icon-auth:before { content: "\e643"; }
-
 .ui-icon-defeated:before { content: "\e646"; }
 
 .ui-icon-delete:before { content: "\e647"; }
@@ -214,4 +212,6 @@
 .ui-icon-m-defeated:before { content: "\e699"; }
 
 .ui-icon-correct:before { content: "\e69a"; }
+
+.ui-icon-auth:before { content: "\e69b"; }
 
