@@ -26,30 +26,26 @@ export default class Account extends React.Component {
         visible: false,
     }
 
-    onChange = (name,value) =>{
-        const key = { 
+    onChange = (name, value) => {
+        const check = {
             ssid:{
                 func: checkStr,
                 args: { who: 'SSID', min: 1, max: 32, type: 'english'},
             },
-
             shopId:{
                 func: checkStr,
                 args: { who: 'ShopID', min: 1, max: 32, type: 'english'},
             },
-
             appId:{
                 func: checkStr,
                 args: { who: 'AppID', min: 1, max: 32, type: 'english'},
             },
-
             secretKey:{
                 func: checkStr,
                 args: { who: 'SecretKey', min: 1, max: 32, type: 'english'},
             },
-
         };
-        const tip = key[name].func(value, key[name].args);
+        const tip = check[name].func(value, check[name].args);
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
@@ -72,12 +68,35 @@ export default class Account extends React.Component {
         this.props.history.push('/advance/wechat/setup/welcome');
     }
 
-    nextStep = () =>{
-        this.props.history.push('/advance/wechat/setup/wifi');
+    nextStep = () => {
+        const params = this.props.match.params;
+        const { ssid, shopid, appid, secretkey } = this.state;
+
+        let data = { ssid, shopid, appid, secretkey };
+        let param = Object.assign({}, JSON.stringify(data), decodeURIComponent(params));
+        let path = this.props.match.path;
+        let parent = path.substr(0, path.lastIndexOf('/'));
+
+        this.props.history.push(`${parent}/wifi/` + encodeURIComponent(param));
+    }
+
+    async fetchConf() {
+        let response = await common.fetchApi({ opcode: 'AUTH_WEIXIN_CONFIG_GET' });
+        let { errcode, data } = response;
+
+        if (0 === errcode) {
+            const { ssid, shopid, appid, secretkey } = data[0].result.weixin;
+            this.setState({
+                ssid: ssid,
+                shopId: shopid,
+                appId: appid,
+                secretKey: secretkey,
+            });
+        }
     }
 
     componentDidMount() {
-
+        this.fetchConf();
     }
 
     render() {
@@ -91,14 +110,14 @@ export default class Account extends React.Component {
             <React.Fragment>
                 <div className='setup-content'>
                     <p className='help'>
-                        为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>），获得下方所需的信息，将其复制到此页面对应的输入框中。
+                        为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>），获得下方所需的信息，将其复制到此页面对应的输入框中
                     </p>
                     <GuideModal visible={visible} close={this.modalClose}/>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>SSID</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={ssidTip}>
-                                <Input type="text" maxLength={32}  placeholder={'请复制粘贴SSID'} value={ssid} onChange={(value)=>this.onChange('ssid',value)} />
+                                <Input type="text" maxLength={32}  placeholder={'请复制粘贴SSID'} value={ssid} onChange={(value)=>this.onChange('ssid', value)} />
                                 <ErrorTip >{ssidTip}</ErrorTip>
                             </FormItem>
                         </div>
@@ -106,7 +125,7 @@ export default class Account extends React.Component {
                         <label>ShopID</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={shopIdTip}>
-                                <Input type="text" maxLength={32} placeholder={'请复制粘贴ShopID'} value={shopId} onChange={(value)=>this.onChange('shopId',value)} />
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴ShopID'} value={shopId} onChange={(value)=>this.onChange('shopId', value)} />
                                 <ErrorTip >{shopIdTip}</ErrorTip>
                             </FormItem>
                         </div>
@@ -114,7 +133,7 @@ export default class Account extends React.Component {
                         <label>AppID</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={appIdTip}>
-                                <Input type="text" maxLength={32} placeholder={'请复制粘贴AppID'} value={appId} onChange={(value)=>this.onChange('appId',value)} />
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴AppID'} value={appId} onChange={(value)=>this.onChange('appId', value)} />
                                 <ErrorTip >{appIdTip}</ErrorTip>
                             </FormItem>
                         </div>
@@ -122,7 +141,7 @@ export default class Account extends React.Component {
                         <label>SecretKey</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={secretKeyTip} style={{marginBottom: 0}}>
-                                <Input type="text" maxLength={32} placeholder={'请复制粘贴SecretKey'} value={secretKey} onChange={(value)=>this.onChange('secretKey',value)} />
+                                <Input type="text" maxLength={32} placeholder={'请复制粘贴SecretKey'} value={secretKey} onChange={(value)=>this.onChange('secretKey', value)} />
                                 <ErrorTip >{secretKeyTip}</ErrorTip>
                             </FormItem>
                         </div>
@@ -155,8 +174,8 @@ const GuideModal = (props) => {
             width={600}
             closable={false}
             footer={
-                <div style={{textAlign: 'center'}}>
-                    <Button type= 'primary' style={{ margin: '10px auto'}} onClick={props.close}>我知道了</Button>
+                <div style={{textAlign: 'center', padding: 10}}>
+                    <Button type= 'primary' onClick={props.close}>我知道了</Button>
                 </div>
             }
         >
@@ -166,8 +185,8 @@ const GuideModal = (props) => {
                 <Timeline>
                     <Timeline.Item color={itemColor}>
                         <label>添加功能插件</label>
-                        <p>用已有公众号（必须是服务号）或新注册账号<a href='javascript:;'>登录公众平台</a>，添加“<b>门店小程序</b>”和“<b>微信连Wi-Fi</b>”功能插件。</p>
-                        <img src=''></img>
+                        <p>用已有公众号（必须是服务号）或新注册账号<a href='https://mp.weixin.qq.com' target='_blank'>登录公众平台</a>，添加“<b>门店小程序</b>”和“<b>微信连Wi-Fi</b>”功能插件。</p>
+                        <img src={require('~/assets/images/picture1-min.png')} />
                     </Timeline.Item>
                     <Timeline.Item color={itemColor}>
                         <label>添加门店</label>
@@ -176,12 +195,12 @@ const GuideModal = (props) => {
                     <Timeline.Item color={itemColor}>
                         <label>添加Wi-Fi设备</label>
                         <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：SUNMI_XX_Guest）。</p>
-                        <img src=''></img>
+                        <img src={require('~/assets/images/picture2-min.png')} />
                     </Timeline.Item>
                     <Timeline.Item color={itemColor}>
                         <label>复制所需信息</label>
                         <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页，点击设备详情，即可找到所需的信息，将其复制粘贴到对应的输入框。</p>
-                        <img src=''></img>
+                        <img src={require('~/assets/images/picture3-min.png')} />
                     </Timeline.Item>
                     <Timeline.Item color={itemColor}>
                         <label>完成</label>

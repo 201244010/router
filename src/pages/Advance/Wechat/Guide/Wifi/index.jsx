@@ -22,7 +22,7 @@ export default class Wifi extends React.Component {
     }
 
     onChange = (name, value) => {
-        const key = {
+        const check = {
             onlineLimit:{
                 func: checkRange,
                 args: { min: 1,max: 1440,who: '上网时长' },
@@ -33,7 +33,7 @@ export default class Wifi extends React.Component {
             },
         }
 
-        const tip = key[name].func(value, key[name].args);
+        const tip = check[name].func(value, check[name].args);
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
@@ -41,12 +41,36 @@ export default class Wifi extends React.Component {
     }
 
     preStep = () => {
-        this.props.history.push('/advance/wechat/setup/account');
+        this.props.history.push('/advance/wechat/setup/account/');
     }
 
-    submit = () => {
+    submit = async() => {
+        const params = this.props.match.params;
+        const { onlineLimit, idleLimit } = this.state;
+        const weixin = Object.assign({}, JSON.parse(decodeURIComponent(params)), { onlineLimit, idleLimit });
+
+        this.setState({loading: true});
+        let response = await common.fetchApi(
+            {
+                opcode: 'AUTH_WEIXIN_CONFIG_SET',
+                data: { weixin: weixin }
+            }
+        );
+
+        let { errcode } = response;
+        if (0 === errcode) {
+            this.setState({
+                loading: false,
+                visible: true,
+            });
+            this.props.history.push('/advance/wechat/status');    //跳转到status页面
+            return ;
+        }
+
         this.setState({
+            loading: false,
             visible: true,
+            //失败信息
         });
     }
 
@@ -54,6 +78,23 @@ export default class Wifi extends React.Component {
         this.setState({
             visible: false,
         });
+    }
+
+    async fetchConf() {
+        let response = await common.fetchApi({ opcode: 'AUTH_WEIXIN_CONFIG_GET' });
+        let { errcode, data } = response;
+
+        if (0 === errcode) {
+            const { online_limit, idle_limit } = data[0].result.weixin;
+            this.setState({
+                onlineLimit: online_limit,
+                idleLimit: idle_limit,
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.fetchConf();
     }
 
     render() {
@@ -66,12 +107,12 @@ export default class Wifi extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>欢迎页是顾客手动选择Wi-Fi之后，自动弹出的页面，此页可展示您的品牌</p>
+                    <p className='help'>设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>顾客上网时长限制</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={onlineLimitTip} >
-                                <Input type="text" maxLength={4} placeholder={'请输入顾客上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit',value)} />
+                                <Input type="text" maxLength={4} placeholder={'请输入顾客上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit', value)} />
                                 <ErrorTip >{onlineLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
@@ -80,7 +121,7 @@ export default class Wifi extends React.Component {
                         <label>空闲断网时长</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={idleLimitTip} >
-                                <Input type="text" maxLength={4} placeholder={'请输入空闲断网时长'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit',value)} />
+                                <Input type="text" maxLength={4} placeholder={'请输入空闲断网时长'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit', value)} />
                                 <ErrorTip >{idleLimitTip}</ErrorTip>
                             </FormItem>
                             <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
@@ -101,23 +142,29 @@ export default class Wifi extends React.Component {
                         onClick={this.submit}
                     >完成</Button>
                 </section>
-                <Modal
-                    width={560}
-                    closable={false}
-                    visible={visible}
-                    maskClosable={false}
-                    centered={true}
-                    footer={
-                        <div style={{textAlign: 'center'}}>
-                            <Button type= 'primary' size="large" onClick={this.close}>确定</Button>
-                        </div>
-                    }>
-                        <div className="backup-icon">
-                            <CustomIcon color="#87D068" type="succeed" size={64} />
-                            <div className="backup-result">微信连Wi-Fi设置完成!</div>
-                        </div>
-                </Modal>
+                <FinishModal visible={visible} close={this.close}/>
             </React.Fragment>
         );
     }
+}
+
+const FinishModal = (props) => {
+    return (
+        <Modal
+            width={560}
+            closable={false}
+            visible={props.visible}
+            maskClosable={false}
+            centered={true}
+            footer={
+                <div style={{textAlign: 'center',padding: 10}}>
+                    <Button type='primary' size="large" style={{width: 150}} onClick={props.close}>确定</Button>
+                </div>
+            }>
+                <div className="backup-icon">
+                    <CustomIcon color="#87D068" type="succeed" size={64} />
+                    <div className="backup-result">微信连Wi-Fi设置完成!</div>
+                </div>
+        </Modal>
+    );
 }
