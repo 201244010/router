@@ -1,28 +1,31 @@
-.ant-modal-content{
-    height: 100%;
-    .ant-modal-body{
-        height: calc(100% - 82px);
-        overflow: auto;
-    }
-    .modal-body{
-        padding: 8px 24px 10px;
-        h4{
-            font-size: 16px;
-            font-weight: normal;
-            text-align: center;
+.account-ant-modal{
+    height: 80%;
+    .ant-modal-content{
+        height: 100%;
+        .ant-modal-body{
+            height: calc(100% - 82px);
+            overflow: auto;
         }
-        .content{
-            margin-top: 40px;
-            label{
-                font-size: 14px;
-                color: #FF8E2D;
-                font-weight: bold;
+        .modal-body{
+            padding: 8px 24px 10px;
+            h4{
+                font-size: 16px;
+                font-weight: normal;
+                text-align: center;
             }
-            P{
-                font-size: 12px;
-                margin: 8px 0 12px;
-                a{
-                    color: #3D76F6;
+            .content{
+                margin-top: 40px;
+                label{
+                    font-size: 14px;
+                    color: #FF8E2D;
+                    font-weight: bold;
+                }
+                P{
+                    font-size: 12px;
+                    margin: 8px 0 12px;
+                    a{
+                        color: #3D76F6;
+                    }
                 }
             }
         }

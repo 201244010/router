@@ -200,7 +200,7 @@ const GuideModal = (props) => {
     return (
         <Modal
             visible={props.visible}
-            height={'80%'}
+            className='account-ant-modal'
             width={600}
             closable={false}
             footer={
