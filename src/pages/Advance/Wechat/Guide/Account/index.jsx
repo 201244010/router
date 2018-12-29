@@ -236,7 +236,7 @@ const GuideModal = (props) => {
                 </div>
             </div>
             <div className='footer'>
-                <Button type= 'primary' onClick={props.close}>我知道了</Button>
+                <Button type='primary' onClick={props.close}>我知道了</Button>
             </div>
         </Modal>
     );
