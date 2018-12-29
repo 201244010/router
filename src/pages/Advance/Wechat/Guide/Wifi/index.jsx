@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from "~/components/Icon";
 import { checkRange } from '~/assets/common/check';
@@ -25,11 +25,11 @@ export default class Wifi extends React.Component {
         const check = {
             onlineLimit:{
                 func: checkRange,
-                args: { min: 1,max: 1440,who: '上网时长' },
+                args: { min: 1, max: 1440, who: '上网时长' },
             },
             idleLimit:{
                 func: checkRange,
-                args: { min: 1,max: 1440,who: '空闲断线' },
+                args: { min: 1, max: 1440, who: '空闲断线' },
             },
         }
 
@@ -50,26 +50,26 @@ export default class Wifi extends React.Component {
         this.props.history.push(`/advance/wechat/setup/account/` + encodeURIComponent(params.param));
     }
 
-    submit = async() => {
+    submit = async () => {
         const params = this.props.match.params;
         const { onlineLimit, idleLimit } = this.state;
-        let data = { onlineLimit, idleLimit };
 
-        const weixin = Object.assign({}, JSON.parse(decodeURIComponent(params.param)), data);
-        const { onlineLimit: onlineLimitFromWeixin, idleLimit: idleLimitFromWeixin, logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = weixin;
+        const param = JSON.parse(decodeURIComponent(params.param));
+        const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
 
-        let options = new Object();
-        options.online_limit = onlineLimitFromWeixin;
-        options.idle_limit = idleLimitFromWeixin;
-        options.logo_info = logo;
-        options.welcome = welcome;
-        options.login_hint = btnStr;
-        options.statement = statement;
-        options.ssid = ssid;
-        options.shopid = shopId;
-        options.appid = appId;
-        options.secretkey = secretKey;
-        options.enable = '1';
+        let options = {
+            enable: '1',
+            online_limit: onlineLimit,
+            idle_limit: idleLimit,
+            logo_info: logo,
+            welcome: welcome,
+            login_hint: btnStr,
+            statement: statement,
+            ssid: ssid,
+            shopid: shopId,
+            appid: appId,
+            secretkey: secretKey,
+        };
 
         this.setState({loading: true});
         let response = await common.fetchApi(
@@ -84,14 +84,11 @@ export default class Wifi extends React.Component {
         if (0 === errcode) {
             this.setState({
                 visible: true,
-            });   
+            });
             return ;
         }
 
-        this.setState({
-            visible: true,
-            //失败信息
-        });
+        message.error(`未知错误${errcode}`);
     }
 
     close = () => {

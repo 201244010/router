@@ -46,7 +46,9 @@ class Redirect extends React.Component {
     }
 
     componentWillUnmount() {
-        sessionStorage.clear();
+        [ 'wechat.welcome', 'wechat.account', 'wechat.wifi' ].forEach(item => {
+            sessionStorage.removeItem(item);
+        });
     }
     render() {
         return (
