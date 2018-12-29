@@ -14,7 +14,7 @@ import Mesh from './Mesh';
 import './home.scss';
 
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
-const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist';
+const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 const err = {
     '-1001': '参数格式错误',
     '-1002': '参数非法',
@@ -37,7 +37,61 @@ export default class Home extends React.Component {
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
         me: '',
-        sunmiClients:[/*
+        normalClients: [/*
+            {
+                "icon": "computer",
+                "name": "PC-20180711HEOR",
+                "ip": "192.168.100.181",
+                "mac": "0C:25:76:EC:24:69",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "88.54MB/s",
+                "flux": "10.90MB"
+            },
+            {
+                "icon": "computer",
+                "name": "WIN-NTSFVIF9B7A",
+                "ip": "192.168.100.140",
+                "mac": "68:F7:28:F1:10:D4",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "43分26秒",
+                "rssi": "--",
+                "tx": "830B/s",
+                "rx": "5KB/s",
+                "flux": "771MB"
+            },
+            {
+                "icon": "android",
+                "name": "Honor_9-11984856d914199b",
+                "ip": "192.168.100.196",
+                "mac": "C8:14:51:B3:09:80",
+                "type": "normal",
+                "mode": "5G",
+                "ontime": "21分44秒",
+                "rssi": "较好",
+                "tx": "0B/s",
+                "rx": "1B/s",
+                "flux": "186KB"
+            },
+            {
+                "icon": "computer",
+                "name": "PC-20180711HEOR",
+                "ip": "192.168.100.181",
+                "mac": "F0:76:6F:EC:24:69",
+                "type": "normal",
+                "mode": "有线",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "232B/s",
+                "flux": "10.90MB"
+            }*/
+        ],
+        priorityClients: [/*
             {
                 "icon": "computer",
                 "name": "PC-20180711HEOR",
@@ -148,63 +202,7 @@ export default class Home extends React.Component {
                 "tx": "830B/s",
                 "rx": "5KB/s",
                 "flux": "771MB"
-            }*/
-        ],
-        normalClients: [/*
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "0C:25:76:EC:24:69",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
             },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "mac": "68:F7:28:F1:10:D4",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "C8:14:51:B3:09:80",
-                "type": "normal",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "F0:76:6F:EC:24:69",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            }*/
-        ],
-        whitelistClients: [/*
             {
                 "icon": "computer",
                 "name": "PC-20180711HEOR",
@@ -259,11 +257,6 @@ export default class Home extends React.Component {
             }*/
         ],
         qosData: [{
-            name: '商米设备',
-            value: 0,
-            color: '#FF8F00'
-        },
-        {
             name: '优先设备',
             value: 0,
             color: '#87D068'
@@ -389,7 +382,7 @@ export default class Home extends React.Component {
         let rx = formatSpeed(wan.cur_rx_bytes);
         let total = this.state.totalBand;
         let rest = total - (band.sunmi + band.whitelist + band.normal);
-        let bandCount = [band.sunmi, band.whitelist, band.normal, (rest > 0 ? rest : 0)];
+        let bandCount = [(band.sunmi + band.whitelist), band.normal, (rest > 0 ? rest : 0)];
 
         let { online } = data[3].result.wan.info;
 
@@ -399,9 +392,8 @@ export default class Home extends React.Component {
             upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
             downUnit: rx.match(/[a-z/]+/gi),
-            sunmiClients: totalList.filter(item => item.type === TYPE_SUNMI),
+            priorityClients: totalList.filter(item => (item.type === TYPE_SUNMI || item.type === TYPE_WHITE)),
             normalClients: totalList.filter(item => item.type === TYPE_NORMAL),
-            whitelistClients: totalList.filter(item => item.type === TYPE_WHITE),
             qosData: this.state.qosData.map((item, index) => {
                 return {
                     name: item.name,
@@ -489,8 +481,7 @@ export default class Home extends React.Component {
     render(){
         const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit,
                 visible, successShow, upBand, downBand, failShow, me,
-                sunmiClients, normalClients, whitelistClients, qosData }  = this.state;
-        const total = sunmiClients.length + normalClients.length + whitelistClients.length;
+                normalClients, priorityClients, qosData }  = this.state;
         return (
             <SubLayout className='home'>
                 <ul className='func-list'>
@@ -557,18 +548,11 @@ export default class Home extends React.Component {
                         <Mesh ref="sunmiMesh" />
                     </li>
                 </ul>
-                <p className='online-clinet'>在线设备（<span>{total}</span>）</p>
                 <div className='online-list'>
-                    <div className='left-list'>
-                        <ClientList type={TYPE_SUNMI} data={sunmiClients} mac={me} startSunmiMesh={this.startSunmiMesh}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                        <ClientList type={TYPE_NORMAL} data={normalClients} mac={me}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                    </div>
-                    <div className='whitelist-list'>
-                        <ClientList type={TYPE_WHITE} data={whitelistClients} mac={me} history={this.props.history}
-                            startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                    </div>
+                    <ClientList type={TYPE_PRIORITY} data={priorityClients} mac={me} history={this.props.history}
+                        startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                    <ClientList type={TYPE_NORMAL} data={normalClients} mac={me}
+                        startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
                 </div>
             </SubLayout>
         );
