@@ -45,7 +45,14 @@ export default class Account extends React.Component {
                 args: { who: 'SecretKey', min: 1, max: 32, type: 'english'},
             },
         };
-        const tip = check[name].func(value, check[name].args);
+
+        let tip;
+        if ('' === value) {
+            tip = `请复制粘贴${check[name].args['who']}`;
+        } else {
+            tip = check[name].func(value, check[name].args);
+        }
+
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
