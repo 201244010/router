@@ -142,18 +142,18 @@ export default class Wifi extends React.Component {
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={onlineLimitTip} >
                                 <Input type="text" maxLength={4} placeholder={'请输入顾客上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit', value)} />
+                                <span style={{height: 40, lineHeight: '40px', position: 'absolute', top: 0,right: 12, opacity: 0.5}}>分钟</span>
                                 <ErrorTip >{onlineLimitTip}</ErrorTip>
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
 
                         <label>空闲断网时长</label>
                         <div className='form-item'>
-                            <FormItem type="small" showErrorTip={idleLimitTip} >
+                            <FormItem type="small" showErrorTip={idleLimitTip} style={{marginBottom: 112}}>
                                 <Input type="text" maxLength={4} placeholder={'请输入空闲断网时长'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit', value)} />
+                                <span style={{height: 40, lineHeight: '40px', position: 'absolute', top: 0,right: 12, opacity: 0.5}}>分钟</span>
                                 <ErrorTip >{idleLimitTip}</ErrorTip>
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-40,marginBottom:0,zIndex:1,opacity:0.5}}>分钟</span>
                         </div>
                     </Form>
                 </div>
