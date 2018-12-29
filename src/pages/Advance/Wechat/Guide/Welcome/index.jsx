@@ -158,7 +158,8 @@ export default class Welcome extends React.Component {
 
         const { logoTip, welcomeTip, btnStrTip, statementTip } = this.state;
 
-        let disabled = [logoTip, welcomeTip, btnStrTip, statementTip].some(tip => tip.length > 0);
+        let disabled = [logoTip, welcomeTip, btnStrTip, statementTip].some(tip => tip.length > 0)
+                        || [logo, welcome, btnStr, statement].some(item => '' === item);
 
         return (
             <React.Fragment>

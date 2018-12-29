@@ -24,7 +24,7 @@ const getHostName = (client) => {
 };
 
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
-const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist';
+const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 
 const modeMap = {
     '0': '5G',
@@ -242,7 +242,15 @@ export default class ClientList extends React.Component {
                 let type = record.type;
                 return (
                     <span>
-                        {TYPE_SUNMI !== type && <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color: "#3D76F6" }}>{TYPE_WHITE === record.type ? '解除优先' : '优先上网'}</a>}
+                        {TYPE_SUNMI !== type &&
+                            <a
+                                onClick={() => this.handleEdit(record)}
+                                href="javascript:;"
+                                style={{ color: "#3D76F6" }}
+                            >
+                                {TYPE_WHITE === record.type ? '解除优先' : '优先上网'}
+                            </a>
+                        }
                         {TYPE_SUNMI !== type && <Divider type="vertical" />}
                         <Popconfirm
                             title="确定禁止此设备上网？"
@@ -377,14 +385,12 @@ export default class ClientList extends React.Component {
         const total = clients.length;
         const placement = props.placement || 'top';
         const maxConf = {
-            [TYPE_SUNMI]: 6,
-            [TYPE_NORMAL]: 12,
-            [TYPE_WHITE]: 12
+            [TYPE_NORMAL]: 18,
+            [TYPE_PRIORITY]: 18,
         };
         const deviceTypeMap = {
-            [TYPE_SUNMI]: '商米设备',
             [TYPE_NORMAL]: '普通设备',
-            [TYPE_WHITE]: '优先设备'
+            [TYPE_PRIORITY]: '优先设备'
         };
 
         const deviceType = deviceTypeMap[props.type];
@@ -393,12 +399,17 @@ export default class ClientList extends React.Component {
 
         const listItems = clients.map((client, index) => {
             if (index < max) {
+                const type = client.type;
                 const hostname = getHostName(client);
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className='icon'><Logo mac={client.mac} model={client.model} size={36} /></div>
+                            <div className={`icon ${type}`}>
+                                <Logo mac={client.mac} model={client.model} size={36} />
+                                {(TYPE_SUNMI === type) && <img src={require('~/assets/images/sunmi.svg')}></img>}
+                                {client.me && <img src={require('~/assets/images/me.svg')}></img>}
+                            </div>
                         </Popover>
                         <div className='under-desc'>
                             <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
@@ -438,12 +449,7 @@ export default class ClientList extends React.Component {
                     <Button className='more' onClick={this.showMore}>查看全部</Button>
                 </div>
                 <ul>{listItems}</ul>
-                {(TYPE_SUNMI === props.type && clients.length <= 0) &&
-                    <div className='null-tip'>
-                        <label>暂无商米设备，</label> <a onClick={() => this.props.startSunmiMesh()} href="javascript:;">一键搜寻商米设备</a>
-                    </div>
-                }
-                {(TYPE_WHITE === props.type && clients.length <= 0) &&
+                {(TYPE_PRIORITY === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
