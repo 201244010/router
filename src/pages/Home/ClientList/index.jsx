@@ -251,7 +251,7 @@ export default class ClientList extends React.Component {
                                 {TYPE_WHITE === record.type ? '解除优先' : '优先上网'}
                             </a>
                         }
-                        {TYPE_NORMAL === type && <Divider type="vertical" />}
+                        {TYPE_SUNMI !== type && <Divider type="vertical" />}
                         <Popconfirm
                             title="确定禁止此设备上网？"
                             okText="确定"
@@ -399,12 +399,17 @@ export default class ClientList extends React.Component {
 
         const listItems = clients.map((client, index) => {
             if (index < max) {
+                const type = client.type;
                 const hostname = getHostName(client);
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
                             content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className={`icon ${client.type}`}><Logo mac={client.mac} model={client.model} size={36} /></div>
+                            <div className={`icon ${type}`}>
+                                <Logo mac={client.mac} model={client.model} size={36} />
+                                {(TYPE_SUNMI === type) && <img src={require('~/assets/images/sunmi.svg')}></img>}
+                                {client.me && <img src={require('~/assets/images/me.svg')}></img>}
+                            </div>
                         </Popover>
                         <div className='under-desc'>
                             <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>

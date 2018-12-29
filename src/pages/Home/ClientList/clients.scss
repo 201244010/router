@@ -53,6 +53,7 @@
                 text-align: center;
                 margin-bottom: 20px;
                 .icon {
+                    position: relative;
                     $iconSize: 60px;
                     cursor: pointer;
                     width: $iconSize;
@@ -64,6 +65,11 @@
                     .ui-icon {
                         line-height: $iconSize !important;
                         vertical-align: middle;
+                    }
+                    img{
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
                     }
                     // 不同类型（商米、优先、普通）设备悬停背景色不一致
                     &.sunmi{
