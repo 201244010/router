@@ -1,0 +1,78 @@
+.wechat-status {
+    .connect-status{
+        $lineHeight: 20px;
+        font-size: 16px;
+        color: #333C4F;
+        margin-top: 20px;
+        >span{
+            font-size: $lineHeight;
+            font-weight: bold;
+            color: #FF8E2D;
+            margin: 0 6px;
+            vertical-align: text-bottom;
+        }
+        >a{
+            font-size: 16px;
+            color: #3D76F6;
+        }
+    }
+    $padding: 24px;
+    .connect-guide{
+        margin-top: 32px;
+        padding: $padding 0;
+        background: rgba(51, 60, 79, 0.02);
+        border-radius: 12px;
+        >p{
+            font-size: 14px;
+            color: #333C4F;
+            margin-left: $padding;
+        }
+        >ul{
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            >li{
+                flex: 1;
+                margin-left: $padding;
+                $liWidth: 380px;
+                .guide-detail{
+                    font-size: 14px;
+                    width: $liWidth;
+                    >h4{
+                        font-weight: bold;
+                        font-size: 16px;
+                        margin-bottom: 12px;
+                    }
+                    >h5{
+                        font-size: 14px;
+                        margin: 20px 0 12px;
+                    }
+                    >p {
+                        opacity: 0.6;
+                        margin-top: 12px;
+                    }
+                    .step-tip{
+                        font-size: 14px;
+                        color: #ADB1B9;
+                        margin: 8px 0 12px;
+                    }
+                    .qr-img{
+                        display: block;
+                        width: $liWidth;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                    }
+                    .wifi-info{
+                        margin-top: 12px;
+                        label{
+                            opacity: 0.6;
+                        }
+                        .ssid {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

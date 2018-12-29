@@ -6,7 +6,7 @@ import CustomIcon from '../../components/Icon';
 
 import '../Settings/settings.scss'
 
-import Auth from './Auth';
+import Wechat from './Wechat';
 import Blacklist from './Blacklist';
 import Bootdevice from './Bootdevice';
 import Bandwidth from './Bandwidth';
@@ -40,10 +40,10 @@ export default class Advance extends React.PureComponent {
                             <span>防蹭网</span>
                         </div>
                     </NavLink>
-                    <NavLink to={match.path + "/auth"} activeClassName="active">
+                    <NavLink to={match.path + "/wechat"} activeClassName="active">
                         <div className="nav-item">
-                            <CustomIcon type="auth" size={28}/>
-                            <span>认证管理</span>
+                            <CustomIcon type="auth" size={28} />
+                            <span>微信连Wi-Fi</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/systemsetup"} activeClassName="active">
@@ -58,7 +58,7 @@ export default class Advance extends React.PureComponent {
                         <Route path={`${match.path}/bandwidth`} component={Bandwidth} />
                         <Route path={`${match.path}/whitelist`} component={Bootdevice} />
                         <Route path={`${match.path}/blacklist`} component={Blacklist} />
-                        <Route path={`${match.path}/auth`} component={Auth} />
+                        <Route path={`${match.path}/wechat`} component={Wechat} />
                         <Route path={`${match.path}/systemsetup`} component={Systemsetup} />
                         <Redirect from={match.path} to={`${match.path}/bandwidth`}></Redirect>
                     </Switch>

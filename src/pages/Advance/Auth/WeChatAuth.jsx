@@ -4,6 +4,7 @@ import { Modal , Select, Button, Upload, Icon, message, Checkbox } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import { checkStr, checkRange } from '~/assets/common/check';
+import WeChatPreview from "./WeChatPreview";
 
 
 const { FormItem, Input, ErrorTip } = Form;
@@ -459,42 +460,15 @@ export default class WeChatAuth extends React.Component{
                                 </div>
                             </section>
                             <section>
-                                <div style={{
-                                    display:'block',
-                                    width:325,
-                                    height:488,
-                                    borderRadius:8,
-                                    marginTop:25,
-                                    padding:'73px 0 0 0',
-                                    color:'#FFFFFF',   
-                                    backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+`url(${bg_img})`,
-                                    backgroundRepeat:'no-repeat',
-                                    backgroundSize: 'cover',
-                                    backgroundPosition:'center',
-                                    }}>
-                                    
-                                    <div style={{paddingLeft:20,height:383}}>
-                                        <div style={{
-                                            width:52,
-                                            height:52,
-                                            border:'2px solid #FFFFFF',
-                                            borderRadius:26,
-                                            backgroundImage: `url(${logo_img})`,
-                                            backgroundRepeat:'no-repeat',
-                                            backgroundSize: '100% 100%', 
-                                            }}></div>
-                                        <div style={{minHeight:25,marginTop:17,fontSize:18}}>{logo}</div>
-                                        <div style={{minHeight:33,marginTop:18,fontSize:24}}>{welcome}</div>
-                                        <div style={{marginTop:18}}>
-                                            <Button type="primary" style={{width:286,height:40,fontSize:14,borderRadius:8}}>{loginHint}</Button>
-                                        </div>
-                                        <div>
-                                            <Checkbox checked={true} style={{fontSize:10,color:'#FFFFFF'}}><span style={{opacity: 0.8}}>我已阅读并同意《上网协议》</span></Checkbox>
-                                        </div>
-                                    </div>
-                                    <div style={{postion:'relative',textAlign:'center',color:'#ADB1B9',opacity: 0.8,fontSize:12}}>©{statement}</div>
-                                    
-                                </div>
+                                <WeChatPreview
+                                    style={{marginTop:20}}
+                                    BgImage={bg_img}
+                                    logoImage={logo_img}
+                                    logo={logo}
+                                    welcome={welcome}
+                                    buttonInfo={loginHint}
+                                    statement={statement}
+                                />
                             </section>                  
                         </section>
                         <PanelHeader
