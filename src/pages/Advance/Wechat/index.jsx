@@ -45,6 +45,10 @@ class Redirect extends React.Component {
         this.fetchConf();
     }
 
+    componentWillUnmount() {
+        sessionStorage.clear();
+        console.log(sessionStorage.getItem('weixin.welcome'));
+    }
     render() {
         return (
             <React.Fragment></React.Fragment>

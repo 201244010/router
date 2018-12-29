@@ -69,7 +69,7 @@ export default class Wifi extends React.Component {
         options.shopid = shopId;
         options.appid = appId;
         options.secretkey = secretKey;
-        console.log(options);
+        options.enable = '1';
 
         this.setState({loading: true});
         let response = await common.fetchApi(
