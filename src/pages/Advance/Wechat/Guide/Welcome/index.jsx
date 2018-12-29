@@ -119,16 +119,33 @@ export default class Welcome extends React.Component {
     }
 
     nextStep = () => {
-        const { logo, welcome, btnStr, statement } = this.state;
-        let data = { logo, welcome, btnStr, statement };
+        const { logo, welcome, btnStr, statement, logo_img, bg_img } = this.state;
+        let data = { logo, welcome, btnStr, statement, logo_img, bg_img };
         let param = JSON.stringify(data);
         let path = this.props.match.path;
         let parent = path.substr(0, path.lastIndexOf('/'));
+
+        window.sessionStorage.setItem('wechat.welcome', param);
 
         this.props.history.push(`${parent}/account/` + encodeURIComponent(param));
     }
 
     componentDidMount() {
+        const val = window.sessionStorage.getItem('wechat.welcome');
+
+        if (val) {  //sessionStorage.getItem('wechat.welcome') 存在时
+            const { logo, welcome, btnStr, statement, logo_img, bg_img } = JSON.parse(val);
+            this.setState({
+                logo: logo,
+                welcome: welcome,
+                btnStr: btnStr,
+                statement: statement,
+                logo_img: logo_img,
+                bg_img: bg_img
+            });
+            return;
+        }
+ 
         this.fetchConf();
     }
 
@@ -221,7 +238,7 @@ export default class Welcome extends React.Component {
 
                         <label>版权声明</label>
                         <div className='form-item'>
-                            <FormItem type="small" showErrorTip={statementTip}>
+                            <FormItem type="small" showErrorTip={statementTip} style={{marginBottom: 0}}>
                                 <Input
                                     type="text"
                                     maxLength={30}
