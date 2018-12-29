@@ -88,7 +88,7 @@ export default class Wifi extends React.Component {
             return ;
         }
 
-        message.error(`未知错误${errcode}`);
+        message.error(`未知错误[${errcode}]`);
     }
 
     close = () => {
