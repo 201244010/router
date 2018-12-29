@@ -102,6 +102,12 @@ $lineWidth: 320px;
                     margin-left: 8px;
                     vertical-align: middle;
                 }
+                .unit{
+                    position: absolute;
+                    top: 0;
+                    right: 12px;
+                    opacity: 0.5
+                }
             }
         }
     }

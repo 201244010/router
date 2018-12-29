@@ -45,7 +45,14 @@ export default class Account extends React.Component {
                 args: { who: 'SecretKey', min: 1, max: 32, type: 'english'},
             },
         };
-        const tip = check[name].func(value, check[name].args);
+
+        let tip;
+        if ('' === value) {
+            tip = `请复制粘贴${check[name].args['who']}`;
+        } else {
+            tip = check[name].func(value, check[name].args);
+        }
+
         this.setState({
             [name]: value,
             [name + 'Tip']: tip
@@ -193,43 +200,44 @@ const GuideModal = (props) => {
     return (
         <Modal
             visible={props.visible}
+            className='account-step-guide'
             width={600}
+            centered
             closable={false}
-            footer={
-                <div style={{textAlign: 'center', padding: 10}}>
-                    <Button type= 'primary' onClick={props.close}>我知道了</Button>
-                </div>
-            }
+            footer={null}
         >
-        <div className='modal-body'>
-            <h4>微信公众平台设置指引</h4>
-            <div className='content'>
-                <Timeline>
-                    <Timeline.Item color={itemColor}>
-                        <label>添加功能插件</label>
-                        <p>用已有公众号（必须是服务号）或新注册账号<a href='https://mp.weixin.qq.com' target='_blank'>登录公众平台</a>，添加“<b>门店小程序</b>”和“<b>微信连Wi-Fi</b>”功能插件。</p>
-                        <img src={require('~/assets/images/add-feature.png')} />
-                    </Timeline.Item>
-                    <Timeline.Item color={itemColor}>
-                        <label>添加门店</label>
-                        <p>进入“<b>门店小程序</b>”插件，点击添加门店，按照指引添加完成。</p>
-                    </Timeline.Item>
-                    <Timeline.Item color={itemColor}>
-                        <label>添加Wi-Fi设备</label>
-                        <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：SUNMI_XX_Guest）。</p>
-                        <img src={require('~/assets/images/add-wifi.png')} />
-                    </Timeline.Item>
-                    <Timeline.Item color={itemColor}>
-                        <label>复制所需信息</label>
-                        <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页，点击设备详情，即可找到所需的信息，将其复制粘贴到对应的输入框。</p>
-                        <img src={require('~/assets/images/copy-info.png')} />
-                    </Timeline.Item>
-                    <Timeline.Item color={itemColor}>
-                        <label>完成</label>
-                    </Timeline.Item>
-                </Timeline>
+            <div className='body'>
+                <h4>微信公众平台设置指引</h4>
+                <div className='content'>
+                    <Timeline>
+                        <Timeline.Item color={itemColor}>
+                            <label>添加功能插件</label>
+                            <p>用已有公众号（必须是服务号）或新注册账号<a href='https://mp.weixin.qq.com' target='_blank'>登录公众平台</a>，添加“<b>门店小程序</b>”和“<b>微信连Wi-Fi</b>”功能插件。</p>
+                            <img style={{width: 480, height: 108}} src={require('~/assets/images/add-feature.png')} />
+                        </Timeline.Item>
+                        <Timeline.Item color={itemColor}>
+                            <label>添加门店</label>
+                            <p>进入“<b>门店小程序</b>”插件，点击添加门店，按照指引添加完成。</p>
+                        </Timeline.Item>
+                        <Timeline.Item color={itemColor}>
+                            <label>添加Wi-Fi设备</label>
+                            <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：SUNMI_XX_Guest）。</p>
+                            <img style={{width: 480, height: 160}} src={require('~/assets/images/add-wifi.png')} />
+                        </Timeline.Item>
+                        <Timeline.Item color={itemColor}>
+                            <label>复制所需信息</label>
+                            <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页，点击设备详情，即可找到所需的信息，将其复制粘贴到对应的输入框。</p>
+                            <img style={{width: 480, height: 160}} src={require('~/assets/images/copy-info.png')} />
+                        </Timeline.Item>
+                        <Timeline.Item color={itemColor}>
+                            <label>完成</label>
+                        </Timeline.Item>
+                    </Timeline>
+                </div>
             </div>
-        </div>
+            <div className='footer'>
+                <Button type='primary' onClick={props.close}>我知道了</Button>
+            </div>
         </Modal>
     );
 }
