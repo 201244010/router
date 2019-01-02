@@ -1,33 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
-    <title>Oval 8 Copy </title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="30" cy="30" r="30"></circle>
-        <circle id="path-3" cx="30" cy="30" r="30"></circle>
-    </defs>
-    <g id="Oval-8-Copy-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Rectangle">
-            <mask id="mask-2" fill="white">
-                <use xlink:href="#path-1"></use>
-            </mask>
-            <g id="Mask" opacity="0.400000006"></g>
-            <g id="Oval-8-Copy-13" mask="url(#mask-2)">
-                <g id="Rectangle">
-                    <mask id="mask-4" fill="white">
-                        <use xlink:href="#path-3"></use>
-                    </mask>
-                    <g id="Mask" opacity="0.400000006"></g>
-                    <circle id="Mask" stroke="#7D8FB7" opacity="0.200000003" mask="url(#mask-4)" cx="30" cy="30" r="29.5"></circle>
-                </g>
-            </g>
-            <rect id="Rectangle-12" fill="#E5E9F1" mask="url(#mask-2)" x="0" y="49" width="60" height="10"></rect>
-        </g>
-        <g id="local" transform="translate(25.000000, 49.000000)">
-            <path d="M0,7 L10,7 L10,7 C10,7.55228475 9.55228475,8 9,8 L1,8 C0.44771525,8 6.76353751e-17,7.55228475 0,7 Z" id="Rectangle-3" fill="#AEB1B9" fill-rule="evenodd"></path>
-            <rect id="Rectangle-14" stroke="#AEB1B9" stroke-width="1" x="1.5" y="2.5" width="7" height="5" rx="1"></rect>
-            <rect id="Rectangle-19" fill="#AEB1B9" fill-rule="evenodd" x="2" y="6" width="6" height="1"></rect>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 48 10" style="enable-background:new 0 0 48 10;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.4;}
+	.st1{filter:url(#Adobe_OpacityMaskFilter);}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st3{mask:url(#mask-2_1_);}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E9F1;}
+	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:#AEB1B9;}
+	.st6{fill:#AEB1B9;}
+</style>
+<title>Oval 8 Copy 12</title>
+<desc>Created with Sketch.</desc>
+<g id="Oval-8-Copy-12">
+	<g id="Rectangle" transform="translate(-6.000000, -49.000000)">
+		<g id="Mask" class="st0">
+		</g>
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="49" width="60" height="10">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		<mask maskUnits="userSpaceOnUse" x="0" y="49" width="60" height="10" id="mask-2_1_">
+			<g class="st1">
+				<circle id="path-1_1_" class="st2" cx="30" cy="30" r="30"/>
+			</g>
+		</mask>
+		<g id="分组" class="st3">
+			<g transform="translate(0.000000, 49.000000)">
+				<rect id="Rectangle-12" y="0" class="st4" width="60" height="10"/>
+				<g id="local" transform="translate(25.000000, 0.000000)">
+					<path id="Rectangle-3" class="st5" d="M0,7h10l0,0c0,0.6-0.4,1-1,1H1C0.4,8,0,7.6,0,7z"/>
+					<path id="Rectangle-14" class="st6" d="M2,3v4h6V3H2z M2,2h6c0.6,0,1,0.4,1,1v4c0,0.6-0.4,1-1,1H2C1.4,8,1,7.6,1,7V3
+						C1,2.4,1.4,2,2,2z"/>
+					<rect id="Rectangle-19" x="2" y="6" class="st5" width="6" height="1"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
 </svg>
