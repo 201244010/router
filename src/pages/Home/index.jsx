@@ -333,7 +333,6 @@ export default class Home extends React.Component {
                 '5g': '0',
                 '2.4g': '1',
                 'not wifi': '2',
-                [TYPE_SUNMI]: '3',
             };
             let dft = {
                 total_tx_bytes: 0,
@@ -345,9 +344,6 @@ export default class Home extends React.Component {
             let flux = tf.total_tx_bytes + tf.total_rx_bytes;
 
             let mode = modeMap[client.wifi_mode];
-            if (TYPE_SUNMI == client.type) {
-                mode = modeMap[TYPE_SUNMI];
-            }
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
@@ -377,6 +373,22 @@ export default class Home extends React.Component {
             }
         });
 
+        let priorityClients = totalList.filter(item => {
+            return (item.type === TYPE_SUNMI || item.type === TYPE_WHITE);
+        }).sort((a, b) => {
+            if (a.type === b.type) {
+                return (a.ontime - b.ontime);
+            } else {
+                return (TYPE_SUNMI === a.type) ? -1 : 1;
+            }
+        });
+
+        let normalClients = totalList.filter(item => {
+            return (item.type === TYPE_NORMAL);
+        }).sort((a, b) => {
+            return (a.ontime - b.ontime);
+        });
+
         let wan = data[1].result.traffic_stats.wan;
         let tx = formatSpeed(wan.cur_tx_bytes);
         let rx = formatSpeed(wan.cur_rx_bytes);
@@ -392,8 +404,8 @@ export default class Home extends React.Component {
             upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
             downUnit: rx.match(/[a-z/]+/gi),
-            priorityClients: totalList.filter(item => (item.type === TYPE_SUNMI || item.type === TYPE_WHITE)),
-            normalClients: totalList.filter(item => item.type === TYPE_NORMAL),
+            priorityClients: priorityClients,
+            normalClients: normalClients,
             qosData: this.state.qosData.map((item, index) => {
                 return {
                     name: item.name,

@@ -16,10 +16,6 @@ const getHostName = (client) => {
         hostname = model;
     }
 
-    if (me) {
-        hostname = '本机';
-    }
-
     return hostname;
 };
 
@@ -30,7 +26,6 @@ const modeMap = {
     '0': '5G',
     '1': '2.4G',
     '2': '有线',
-    '3': '商米专用',
 };
 
 const FormItem = Form.Item;
@@ -148,9 +143,15 @@ export default class ClientList extends React.Component {
             dataIndex: 'mac',
             width: 52,
             className: 'center',
-            render: (mac, record) => (
-                <Logo mac={mac} model={record.model} size={32} />
-            )
+            render: (mac, record) => {
+                return (
+                    <div className='logo-cell'>
+                        <Logo mac={mac} model={record.model} size={32} />
+                        {(TYPE_SUNMI === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')}></img>}
+                        {record.me && <img src={require('~/assets/images/me-badge.svg')}></img>}
+                    </div>
+                )
+            }
         }, {
             title: '设备名称',
             width: 160,
@@ -158,7 +159,13 @@ export default class ClientList extends React.Component {
             className: 'editable-cell',
             editable: true,
             defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.ontime - b.ontime,
+            sorter: (a, b) => {
+                if (a.type === b.type) {
+                    return (a.ontime - b.ontime);
+                } else {
+                    return (TYPE_SUNMI === a.type) ? -1 : 1;
+                }
+            },
             render: (text, record) => {
                 let ontime = formatTime(record.ontime);
                 let hostname = getHostName(record);
@@ -182,9 +189,6 @@ export default class ClientList extends React.Component {
             title: '接入方式',
             dataIndex: 'mode',
             filters: [{
-                text: modeMap['3'],
-                value: '3',
-            }, {
                 text: modeMap['2'],
                 value: '2',
             }, {
@@ -413,7 +417,8 @@ export default class ClientList extends React.Component {
                         </Popover>
                         <div className='under-desc'>
                             <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
-                            <p title={hostname}>{hostname}</p></div>
+                            <p title={hostname}>{hostname}</p>
+                        </div>
                     </li>
                 );
             }
