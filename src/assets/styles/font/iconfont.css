@@ -215,3 +215,7 @@
 
 .ui-icon-auth:before { content: "\e69b"; }
 
+.ui-icon-business:before { content: "\e69c"; }
+
+.ui-icon-customer:before { content: "\e69d"; }
+

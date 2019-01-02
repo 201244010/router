@@ -52,7 +52,7 @@ export default class Wifi extends React.Component {
 
     submit = async () => {
         const params = this.props.match.params;
-        const { onlineLimit, idleLimit } = this.state;
+        const { onlineLimit, idleLimit, ssidlist } = this.state;
 
         const param = JSON.parse(decodeURIComponent(params.param));
         const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
@@ -69,6 +69,7 @@ export default class Wifi extends React.Component {
             shopid: shopId,
             appid: appId,
             secretkey: secretKey,
+            ssidlist: ssidlist,
         };
 
         this.setState({loading: true});
@@ -103,10 +104,11 @@ export default class Wifi extends React.Component {
         let { errcode, data } = response;
 
         if (0 === errcode) {
-            const { online_limit, idle_limit } = data[0].result.weixin;
+            const { online_limit, idle_limit, ssidlist } = data[0].result.weixin;
             this.setState({
                 onlineLimit: online_limit,
                 idleLimit: idle_limit,
+                ssidlist: ssidlist,
             });
         }
     }
@@ -115,10 +117,11 @@ export default class Wifi extends React.Component {
         const val = window.sessionStorage.getItem('wechat.wifi');
 
         if (val) {  //sessionStorage.getItem('wechat.wifi') 存在时
-            const { onlineLimit,  idleLimit} = JSON.parse(val);
+            const { onlineLimit,  idleLimit, ssidlist } = JSON.parse(val);
             this.setState({
                 onlineLimit: onlineLimit,
                 idleLimit: idleLimit,
+                ssidlist: ssidlist,
             });
             return;
         }

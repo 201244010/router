@@ -4,6 +4,7 @@ import { Button, Upload, Icon, message } from 'antd';
 import Preview from './Preview';
 import Form from '~/components/Form';
 import { checkStr, checkRange } from '~/assets/common/check';
+import { get } from '~/assets/common/auth';
 
 const { FormItem, Input, ErrorTip } = Form;
 
@@ -63,6 +64,11 @@ export default class Welcome extends React.Component {
                 }
                 break;
             case 'error':
+                if (403 == file.error.status) {
+                    this.props.history.push('/login');
+                    return;
+                }
+
                 message.error('上传失败，请检查图片格式、大小是否符合要求');
                 break;
         }
@@ -171,12 +177,16 @@ export default class Welcome extends React.Component {
                                 onChange={(file) => {
                                     this.handleUploadChange(file, 'logoImgList', 'logo_img');
                                 }}
+                                accept='.jpg,.png'
                                 name='file'
                                 fileList={this.state.logoImgList}
                                 data={{ opcode: '0x2086' }}
                                 action={__BASEAPI__}
                                 uploadTitle={'上传Logo图'}
                                 multiple={false}
+                                headers={{
+                                    'XSRF-TOKEN': get(),
+                                }}
                                 beforeUpload={this.beforeUpload}
                             >
                                 <Button><Icon type="upload" />上传Logo图</Button>
@@ -191,6 +201,9 @@ export default class Welcome extends React.Component {
                                 data={{ opcode: '0x2087' }}
                                 action={__BASEAPI__}
                                 multiple={false}
+                                headers={{
+                                    'XSRF-TOKEN': get(),
+                                }}
                                 uploadTitle={'上传背景图'}
                                 beforeUpload={this.beforeUpload}
                             >

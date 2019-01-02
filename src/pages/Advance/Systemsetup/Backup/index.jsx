@@ -5,6 +5,7 @@ import Form from "~/components/Form";
 import {Checkbox, Button, Modal, Radio, Upload, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
+import { get } from '~/assets/common/auth';
 
 const {FormItem, Input} = Form;
 const RadioGroup = Radio.Group;
@@ -270,6 +271,11 @@ export default class Backup extends React.Component{
             }
         }
         if(info.file.status === 'error'){
+            if (403 == info.file.error.status) {
+                location.href = '/login';
+                return;
+            }
+
             message.error('上传失败');
         }
     }
@@ -388,7 +394,16 @@ export default class Backup extends React.Component{
                     <section className='restore'>
                         <PanelHeader title="恢复" checkable={false} onChange={{}} />
                         <div className='restore-func'>
-                            <Upload onChange={this.postRecoverLocal} name='file' data={{ opcode: '0x2018' }} multiple={false} action={__BASEAPI__}>
+                            <Upload
+                                onChange={this.postRecoverLocal}
+                                name='file'
+                                data={{ opcode: '0x2018' }}
+                                multiple={false}
+                                headers={{
+                                    'XSRF-TOKEN': get(),
+                                }}
+                                action={__BASEAPI__}
+                            >
                                 <Button>从本地恢复</Button>
                             </Upload>
                             <Button className='cloud-restore' onClick={this.cloudRecover}>从云恢复</Button>

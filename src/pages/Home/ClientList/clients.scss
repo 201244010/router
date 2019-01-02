@@ -67,9 +67,11 @@
                         vertical-align: middle;
                     }
                     img{
+                        width: 48px;
+                        height: 10px;
                         position: absolute;
                         bottom: 0;
-                        left: 0;
+                        left: 5px;
                     }
                     // 不同类型（商米、优先、普通）设备悬停背景色不一致
                     &.sunmi{
@@ -198,27 +200,38 @@ i.dot{
 .editable-cell {
     vertical-align: top;
     position: relative;
-}
-
-.editable-cell-value-wrap {
-    cursor: pointer;
-    .device{
-        width: 140px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding-left: 10px;
+    .editable-cell-value-wrap {
+        cursor: pointer;
+        .device {
+            width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 10px;
+        }
+        .hostname {
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+            border-radius: 4px;
+            padding: 4px 10px;
+        }
     }
-    .hostname {
-        border-width: 1px;
-        border-style: solid;
-        border-color: transparent;
-        border-radius: 4px;
-        padding: 4px 10px;
+    .ant-table-column-sorter{
+        visibility: hidden;
     }
 }
 
 .editable-row{
+    .logo-cell{
+        position: relative;
+        img{
+            position: absolute;
+            right: 0;
+            top: -22px;
+            width: 32px;
+        }
+    }
     input.ant-input:focus {
         border-color: #749DF7;
         box-shadow: none;
