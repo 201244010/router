@@ -249,7 +249,7 @@ export default class SetWifi extends React.Component {
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
                         <div style={{marginBottom: 20}}>
-                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} type="business"></CustomIcon>
+                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#FB8632' type="business"></CustomIcon>
                                 <p style={{fontSize: 16}}>商户Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（建议店内设备和店员使用）</span></p>
                         </div>
                         <FormItem label="Wi-Fi名称">
@@ -264,7 +264,7 @@ export default class SetWifi extends React.Component {
                     <div className="border"></div>
                     <Form>
                         <div style={{marginBottom: 20}}>
-                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} type="customer"></CustomIcon>
+                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
                                 <span style={{fontSize: 16}}>顾客Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（推荐开放给顾客使用）</span>
                                 </span>
                                 <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
