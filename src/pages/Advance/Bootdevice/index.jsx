@@ -22,7 +22,6 @@ export default class Bootdevice extends React.Component {
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
-        disabled: true,
         disAddBtn: true,
         editLoading: false,
         editShow: false,
@@ -68,12 +67,6 @@ export default class Bootdevice extends React.Component {
         this.setState({
             [key]: (typeof val == 'object' ? [...val] : val),
             [key + 'Tip']: tip,
-        }, () => {
-            const keys = ['name', 'mac'];
-            let disabled = keys.some(k => {
-                return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0 || (k !== 'name' && this.state[k].every(item => item.length === 0))
-            });
-            this.setState({ disabled: disabled });
         });
     }
 
@@ -325,7 +318,15 @@ export default class Bootdevice extends React.Component {
 
     render() {
         const { whiteList, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn, disabled } = this.state;
+            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn } = this.state;
+        
+        //校验手动添加-添加按钮的diasbled属性
+        const keys = ['name', 'mac'];
+        let check = keys.some(k => {
+            return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0;
+        });
+        
+        const disabled = check;
 
         const columns = [{
             title: '',
