@@ -252,31 +252,9 @@
       margin-top: 32px;
       form {
         flex: none;
-        width: 341px;
-        .content{
-          tr{
-            display: inline-block;
-            width: 341px;
-            th{
-              font-size: 16px;
-              font-weight: normal;
-              span{
-                font-size: 14px;
-                color: #ADB1B9;
-              }
-            }
-            td:nth-child(1){
-              width: 65px;
-              font-size: 14px;
-            }
-            td:nth-child(2){
-              padding-left: 16px;
-              width: 276px;
-            }
-          }
-        }
-        .wifi-icon::before{
-
+        width: auto;
+        .ui-form-item-label{
+          min-width: auto;
         }
       }
       .border {
