@@ -11,7 +11,7 @@ const FormItem = props => {
     const suffix = props.suffix;
     const labelStyle = props.labelStyle || {};
     const klass = classnames([
-        'ui-form-item', 
+        'ui-form-item',
         { 
             'ui-form-item-with-help' :  showErrorTip, 
             "has-error" : showErrorTip,

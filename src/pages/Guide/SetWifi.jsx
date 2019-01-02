@@ -248,29 +248,60 @@ export default class SetWifi extends React.Component {
                 <p className="ui-tips guide-tip">顾客Wi-Fi可开放给客人使用，保障隐私安全 </p>
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
-                        <FormItem label="商户Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}></FormItem>
-                        <FormItem label="Wi-Fi名称">
-                            <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
-                            <ErrorTip style={{color:'#fb8632'}}>{hostWifiNameTip}</ErrorTip>
-                        </FormItem>
-                        <FormItem label="Wi-Fi密码">
-                            <Input value={hostWifiPsw} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
-                            <ErrorTip style={{color:'#fb8632'}}>{hostWifiPswTip}</ErrorTip>
-                        </FormItem>
+                        <div className='content'>
+                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} type="business"></CustomIcon>
+                            <tr style={{marginBottom: 20}}>
+                                <th colSpan={2}><label>商户Wi-Fi<span>（建议店内设备和店员使用）</span></label></th>
+                            </tr>
+                            <tr>
+                                <td><label>Wi-Fi名称</label></td>
+                                <td>
+                                    <FormItem>
+                                        <Input value={hostWifiName} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                                        <ErrorTip style={{color:'#fb8632'}}>{hostWifiNameTip}</ErrorTip>
+                                    </FormItem>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Wi-Fi密码</label></td>
+                                <td>
+                                    <FormItem>
+                                        <Input value={hostWifiPsw} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
+                                        <ErrorTip style={{color:'#fb8632'}}>{hostWifiPswTip}</ErrorTip>
+                                    </FormItem>
+                                </td>
+                            </tr>
+                        </div>
                     </Form>
                     <div className="border"></div>
                     <Form>
-                        <FormItem label="顾客Wi-Fi" labelStyle={{ fontSize : 16 }} style={{ marginBottom : 20 }}> 
-                            <Switch checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
-                        </FormItem>
-                        <FormItem label="Wi-Fi名称">
-                            <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
-                            <ErrorTip style={{color:'#fb8632'}}>{guestWifiNameTip}</ErrorTip>
-                        </FormItem>
-                        <FormItem label="Wi-Fi密码">
-                            <Input value={guestWifiPsw} maxLength={32} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
-                            <ErrorTip style={{color:'#fb8632'}}>{guestWifiPswTip}</ErrorTip>
-                        </FormItem>
+                        <div className='content'>
+                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} type="customer"></CustomIcon>
+                            <tr style={{marginBottom: 20}}>
+                                <th colSpan={2}>顾客Wi-Fi
+                                    <span>（推荐开放给顾客使用）</span>
+                                    <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><label>Wi-Fi名称</label></td>
+                                <td>
+                                    <FormItem>
+                                        <Input value={guestWifiName} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                                        <ErrorTip style={{color:'#fb8632'}}>{guestWifiNameTip}</ErrorTip>
+                                    </FormItem>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Wi-Fi密码</label></td>
+                                <td>
+                                    <FormItem>
+                                        <Input value={guestWifiPsw} maxLength={32} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                                        <ErrorTip style={{color:'#fb8632'}}>{guestWifiPswTip}</ErrorTip>
+                                    </FormItem>
+                                </td>
+                            </tr>
+                        </div>
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
