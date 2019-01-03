@@ -68,7 +68,7 @@ class EditableCell extends React.Component {
                 return;
             }
             //this.toggleEdit();
-            handleSave({ ...record, ...values }, () => toggleEdit(false));
+            handleSave({ ...record, ...values }, () => this.toggleEdit(false));
         });
     }
 
