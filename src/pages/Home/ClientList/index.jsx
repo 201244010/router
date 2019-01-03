@@ -459,12 +459,19 @@ export default class ClientList extends React.Component {
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
                 }
-                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
-                    width={1060} style={{ position: 'relative' }}
+                <Modal
+                    title={`${deviceType}（${total}台）`}
+                    closable={false}
+                    maskClosable={false}
+                    centered
+                    destroyOnClose
+                    width={1060}
+                    style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>取消</Button>
-                    ]}>
+                    ]}
+                >
                     <Button style={{
                         position: "absolute",
                         top: 10,
