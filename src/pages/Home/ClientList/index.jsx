@@ -8,17 +8,6 @@ import Logo from '~/components/Logo';
 
 import './clients.scss';
 
-const getHostName = (client) => {
-    const { name, model, me } = client;
-    let hostname = name;
-
-    if (model && model.length > 0) {
-        hostname = model;
-    }
-
-    return hostname;
-};
-
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 
@@ -56,8 +45,8 @@ class EditableCell extends React.Component {
         }
     }
 
-    toggleEdit = () => {
-        const editing = !this.state.editing;
+    toggleEdit = (bediting) => {
+        const editing = (undefined !== bediting) ? bediting : (!this.state.editing);
         this.setState({ editing }, () => {
             if (editing) {
                 this.input.focus();
@@ -79,7 +68,7 @@ class EditableCell extends React.Component {
                 return;
             }
             //this.toggleEdit();
-            handleSave({ ...record, ...values }, this.toggleEdit);
+            handleSave({ ...record, ...values }, () => toggleEdit(false));
         });
     }
 
@@ -168,7 +157,7 @@ export default class ClientList extends React.Component {
             },
             render: (text, record) => {
                 let ontime = formatTime(record.ontime);
-                let hostname = getHostName(record);
+                let hostname = record.name;
                 return ([
                     <div className='device hostname' title={hostname}>{hostname}</div>,
                     <div className='device' title={ontime}>
@@ -404,7 +393,7 @@ export default class ClientList extends React.Component {
         const listItems = clients.map((client, index) => {
             if (index < max) {
                 const type = client.type;
-                const hostname = getHostName(client);
+                const hostname = client.name;
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
@@ -522,7 +511,7 @@ class Item extends React.Component {
             </ul>
         );
 
-        const hostname = getHostName(client);
+        const hostname = client.name;
 
         switch (type) {
             case TYPE_SUNMI:

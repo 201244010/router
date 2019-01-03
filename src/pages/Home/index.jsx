@@ -309,6 +309,7 @@ export default class Home extends React.Component {
             { opcode: 'TRAFFIC_STATS_GET' },
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
+            { opcode: 'CLIENT_ALIAS_GET' },
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -319,6 +320,7 @@ export default class Home extends React.Component {
         }
 
         let clients = data[0].result.data,
+            alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
             wifiInfo = data[2].result.rssilist || {};
         let band = {
@@ -328,6 +330,7 @@ export default class Home extends React.Component {
         };
         // merge clients && traffic info
         let totalList = clients.map(client => {
+            let mac = client.mac.toLowerCase();
             client.mac = client.mac.toUpperCase();
             const modeMap = {
                 '5g': '0',
@@ -349,9 +352,15 @@ export default class Home extends React.Component {
             if ('not wifi' == client.wifi_mode) {
                 rssi = RSSI_GOOD;
             } else {
-                let wi = wifiInfo[client.mac.toLowerCase()] || {rssi:0};
+                let wi = wifiInfo[mac] || {rssi:0};
                 rssi = (wi.rssi >= 20) ? RSSI_GOOD : RSSI_BAD;
             }
+
+            let aliasName = alias[mac] && alias[mac].alias;
+
+            // 优先显示用户编辑名称，其次显示机型，最次显示hostname
+            let hostname = aliasName || client.model || client.hostname;
+
 
             // 统计不同类型设备带宽
             client.type = client.type || TYPE_NORMAL;
@@ -359,7 +368,7 @@ export default class Home extends React.Component {
 
             return {
                 me: (client.mac === ME),
-                name: client.hostname,
+                name: hostname,
                 model: client.model,
                 ip: client.ip,
                 mac: client.mac,

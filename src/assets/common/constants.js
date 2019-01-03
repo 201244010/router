@@ -65,8 +65,10 @@ export const DIRECTIVE = {
     // 客户端设备信息获取
     CLIENT_LIST_GET: '0x2025',
     CLIENT_ITEM_GET: '0x2026',
+    CLIENT_ITEM_GET: '0x2029',
     WHOAMI_GET: '0x2027',
     CLIENT_ITEM_SET: '0x2029',
+    CLIENT_ALIAS_GET: '0x2035',
 
     // 流量统计
     TRAFFIC_STATS_GET: '0x2040',
