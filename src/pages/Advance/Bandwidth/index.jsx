@@ -1,12 +1,15 @@
 
 import React from 'react';
+import classnames from 'classnames';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import { Button, Table, Modal, message } from 'antd';
+import { Button, Modal, Slider, message } from 'antd';
 import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
+
+import './bandwidth.scss';
 
 const {FormItem, Input, ErrorTip} = Form;
 const err = {
@@ -15,8 +18,6 @@ const err = {
     '-1005': '内存不足，无法进行测速',
     '-1007': '网络异常，无法进行测速'
 }
-
-import './bandwidth.scss';
 
 export default class Bandwidth extends React.PureComponent {
     state = {
@@ -36,18 +37,12 @@ export default class Bandwidth extends React.PureComponent {
         speedTest : false, //1测速成功，0测速失败
 
         //设备权重
-        sunmi : '50',
-        white : '30',
-        normal : '20',
-        sunmiTip : '',
-        whiteTip : '',
-        normalTip : '',
+        priority: 0,
 
         //手动设置
         upbandTmp : '',
         downbandTmp : '',
         disable : true, //手动设置保存按钮灰显
-        saveDisable : false,//保存按钮灰显
         upbandTmpTip : '',
         downbandTmpTip : '',
         btloading: false,
@@ -86,73 +81,12 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     onChange = (val, key) => {
-        val = val.replace(/\D/g, '');
-
-        let valid = {
-            sunmi: {
-                func: checkRange,
-                args: {
-                    min: 0,
-                    max: 100,
-                    who: '带宽比例',
-                }
-            },
-            white: {
-                func: checkRange,
-                args: {
-                    min: 0,
-                    max: 100,
-                    who: '带宽比例',
-                }
-            },
-            normal: {
-                func: checkRange,
-                args: {
-                    min: 0,
-                    max: 100,
-                    who: '带宽比例',
-                }
-            }
-        };
-
-        let tip = valid[key].func(val, valid[key].args);
         this.setState({
             [key]: val,
-            [key + 'Tip']: tip,
-        }, () => {
-            let tips = ['sunmi', 'white', 'normal'];
-            let ok = tips.every((tip) => { 
-                let stateTip = this.state[tip + 'Tip'];
-                return '带宽比例总和不能大于100%' === stateTip || '' === stateTip
-             });
-
-            if (ok) {
-                const { sunmi, white, normal } = this.state;
-                let total = parseInt(sunmi) + parseInt(white) + parseInt(normal);
-                if (total > 100) {
-                    this.setState({
-                        [key + 'Tip']: '带宽比例总和不能大于100%',
-                        saveDisable: true,
-                    });
-                    return;
-                }else{
-                    this.setState({
-                        sunmiTip : '',
-                        whiteTip : '',
-                        normalTip : '',
-                        saveDisable: false
-                    });
-                    return;
-                }
-            }
-
-            this.setState({
-                saveDisable: true,
-            })
-        })
+        });
     }
 
-    OnBandEnable = async (value) => {
+    OnBandEnable = (value) => {
         let { source } = this.state;
         if(source === 'default'){
             message.error('请先设置带宽');
@@ -272,40 +206,43 @@ export default class Bandwidth extends React.PureComponent {
 
     //获取QoS数据
     getBandInfo = async ()=>{
-        let response = await common.fetchApi(
-            {opcode : 'QOS_GET'},
-        )
+        let response = await common.fetchApi({opcode : 'QOS_GET'});
 
         let { data, errcode } = response;
         if (errcode == 0){
             let qos = data[0].result.qos;
-            this.qosdata = qos;
+            let normal = parseInt(qos.normal_weight);
             this.setState({
                 source : qos.source,
                 upband : qos.source === 'default' ? '--' :(qos.up_bandwidth / 1024).toFixed(0),
                 downband : qos.source === 'default' ? '--' : (qos.down_bandwidth / 1024).toFixed(0),
-                sunmi : qos.sunmi_weight,
-                white : qos.white_weight,
-                normal : qos.normal_weight,
+                priority: (100 - normal),
                 bandenable : qos.enable,
             })
             return;
         }
-        message.error(`信息获取失败![${errcode}]`);
+
+        message.error(`未知错误[${errcode}]`);
     }
 
     //定义数据格式
-    composeparams(val,upband,downband){
-        let qos = {}, {bandenable, sunmi, white, normal} = this.state;
-        qos['enable'] = bandenable;
-        qos['source'] = val;
-        qos['up_bandwidth'] = parseInt(upband * 1024) + '';
-        qos['down_bandwidth'] = parseInt(downband * 1024) + '';
-        qos['sunmi_weight'] = sunmi;
-        qos['white_weight'] = white;
-        qos['normal_weight'] = normal;
+    composeparams(source, upband, downband){
+        const {bandenable, priority} = this.state;
+        let normal = 100 - priority;
+        let sunmi = Math.ceil(priority / 2);
+        let white = 100 - normal - sunmi;
 
-        return {qos};
+        return {
+            qos: {
+                enable: bandenable,
+                source: source,
+                up_bandwidth: parseInt(upband) * 1024 + '',
+                down_bandwidth: parseInt(downband) * 1024 + '',
+                sunmi_weight: sunmi + '',
+                white_weight: white + '',
+                normal_weight: normal + '',
+            }
+        }
     }
 
     componentDidMount(){
@@ -314,7 +251,7 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     componentWillUnmount(){
-        this.stop = true
+        this.stop = true;
     }
 
     post = async ()=>{
@@ -342,48 +279,9 @@ export default class Bandwidth extends React.PureComponent {
     }
 
     render(){
-        const { saveDisable, unit, bandenable, visible, manualShow, speedFail, 
-            speedFill, failTip, upband, downband, disable, sunmi,  
-            white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
-        const columns = [{
-            title : '设备类型',
-            dataIndex : 'type'
-        },{
-            title : '带宽分配优先级',
-            dataIndex : 'priority'
-        },{
-            title : '最低保证比例',
-            dataIndex : 'percent',
-            render: (text,record) =><div>
-                <FormItem type="small" style={{marginBottom : 0}}>
-                    <div className="qos-input">
-                        <Input  style={{height : 28}} disabled={!bandenable} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
-                    </div>
-                    <label>%</label>
-                    <label className="qos-tip">{record.errorTip}</label>
-                </FormItem> 
-            </div>   
-        }]
-    
-        const data = [{
-            key : 'sunmi',
-            type : '商米设备',
-            priority : '高',
-            percent : sunmi,
-            errorTip : sunmiTip
-        },{
-            key : 'white',
-            type : '优先设备',
-            priority : '中',
-            percent : white,
-            errorTip : whiteTip
-        },{
-            key : 'normal',
-            type : '普通设备',
-            priority : '低',
-            percent : normal,
-            errorTip : normalTip
-        }]  
+        const { unit, bandenable, visible, manualShow, speedFail, 
+            speedFill, failTip, upband, downband, disable,
+            priority, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
 
         return (
             <div>
@@ -421,17 +319,33 @@ export default class Bandwidth extends React.PureComponent {
                             <Button style={{width : 116}} onClick={this.showManual}>手动设置</Button>
                     </section>
                     <section>
-                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} tip='启用后，当网络带宽占满时，路由器将按照设置的最低保证比例为三类设备划分带宽，进而保证核心设备业务正常处理' onChange={this.OnBandEnable}/>
-                        <Table className="qos-table" style={{fontSize : 16,marginTop:12}}  pagination={false} columns={columns} dataSource={data} />
+                        <PanelHeader title="网速智能分配" checkable={true} checked={bandenable} onChange={this.OnBandEnable}/>
+                        <p className='percent-tip'>您可以为优先设备设置合适的带宽比例，当网络拥堵时，路由器将按照设置的比例划分带宽，保障优先设备的网速</p>
+                        <div className={classnames(['percent-slider', { 'disabled': !bandenable}])}>
+                            <span className='percent-item left'>
+                                <label className='percent'>{priority}%</label>
+                                <p>优先设备</p>
+                            </span>
+                            <Slider
+                                onChange={(value) => this.onChange(value, 'priority')}
+                                value={priority}
+                                disabled={!bandenable}
+                                tipFormatter={null}
+                            />
+                            <span className='percent-item right'>
+                                <label className='percent'>{100 - priority}%</label>
+                                <p>普通设备</p>
+                            </span>
+                        </div>
                     </section>
                 </Form>
                 <section className="save">
-                    <Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>保存</Button>
+                    <Button size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>保存</Button>
                 </section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}
-                        title='正在进行网络测速，请耐心等待…'
+                        title='正在进行网络测速，请耐心等待...'
                         showPercent={true}
                     />
                 }
