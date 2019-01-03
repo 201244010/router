@@ -1,0 +1,47 @@
+.create-wifi{
+    flex:none;
+    color: #333C4F;
+    .head{
+        height: 172px;
+        padding: 60px 0 80px;
+        text-align: center;
+        p{  
+            display: inline-block;
+            margin-left: 12px;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+    }
+    .body{
+        width: 1012px;
+        margin: auto;
+        li{
+            display: inline-block;
+            width: 486px;
+            min-height: 202px;
+            padding: 40px 0 32px 60px;
+            background: #FFF;
+            border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 12px;
+            .title{
+                display: inline-block;
+                margin-bottom: 20px;
+                label{
+                    margin-left: 8px;
+                    font-size: 20px;
+                    color: rgba(51,60,79,0.6);
+                    vertical-align: middle;
+                }
+            }
+            p{
+                font-size: 20px;
+                line-height: 28px;
+                font-weight: 550;
+                margin-bottom: 8px;
+            }
+        }
+        li:nth-child(1){
+            margin-right: 40px;
+        }
+    }
+}

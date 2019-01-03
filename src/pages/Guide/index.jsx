@@ -7,6 +7,7 @@ import SetPassword from './SetPassword';
 import SetWan from './SetWan';
 // import Speed from './Speed';
 import SetWifi from './SetWifi';
+import Finish from './Finish';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
@@ -20,10 +21,11 @@ export default class Guide extends React.Component {
     }
 
     dones = {
-        setpassword : [],
-        setwan : ['setpassword'],
-        // speed : ['setpassword', 'setwan'],
-        setwifi : ['setpassword', 'setwan', 'speed']
+        setpassword: [],
+        setwan: ['setpassword'],
+        // speed: ['setpassword', 'setwan'],
+        setwifi: ['setpassword', 'setwan', 'speed'],
+        finish: ['setpassword', 'setwan', 'speed', 'setwifi'],
     };
 
     static getDerivedStateFromProps(nextProps){
@@ -80,6 +82,12 @@ export default class Guide extends React.Component {
                         <Icon type="correct" color="#fff" size={26} />
                         <span className="ui-ib">设置无线网络</span>
                     </li>
+                    <li className="line"></li>
+                    <li className={this.initStepMenu('finish')}>
+                        <i className="ui-ib order-num">4</i>
+                        <Icon type="correct" color="#fff" size={26} />
+                        <span className="ui-ib">设置完成</span>
+                    </li>
                 </ul>
                 <div className="guide-body">
                     <Switch>
@@ -87,6 +95,7 @@ export default class Guide extends React.Component {
                         <Route path={`${match.path}/setwan`} component={SetWan} />
                         {/* <Route path={`${match.path}/speed`} component={Speed} /> */}
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
+                        <Route path={`${match.path}/finish`} component={Finish} />
                         <Redirect from={match.path} to={`${match.path}/setpassword`}></Redirect>
                     </Switch>
                 </div>
