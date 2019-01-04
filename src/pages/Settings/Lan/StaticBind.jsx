@@ -118,7 +118,7 @@ export default class StaticBind extends React.Component {
             data: { reserved_ip: [Object.assign({}, record)] }
         }, {
             loading: true
-        }).catch(ex => { });
+        });
 
         let { errcode } = response;
         if (errcode == 0) {
@@ -157,7 +157,7 @@ export default class StaticBind extends React.Component {
             editShow: true,
             editLoading: false,
             editIndex: record.index,
-            editName: record.note,
+            editName: record.hostname,
             editIp: [...ip],
             editMac: [...mac],
             editNameTip: '',
@@ -171,8 +171,15 @@ export default class StaticBind extends React.Component {
             loading: true
         });
 
-        let directive = 'DHCPS_RESERVEDIP_ADD', 
-            reservedIp = this.state.onlineList.filter(item => item.checked).map(item => {
+        let directive = 'DHCPS_RESERVEDIP_ADD',
+            checked = this.state.onlineList.filter(item => item.checked),
+            aliaslist = checked.map(item => {
+                return {
+                    alias: item.name,
+                    mac: item.address.mac.toUpperCase()
+                };
+            }),
+            reservedIp = checked.map(item => {
                 return {
                     enable: true,
                     note: item.name,
@@ -181,12 +188,17 @@ export default class StaticBind extends React.Component {
                 };
             });
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { reserved_ip: reservedIp }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { reserved_ip: reservedIp }
+            }, {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist }
+            }
+        ], {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             loading: false
@@ -208,21 +220,22 @@ export default class StaticBind extends React.Component {
     }
 
     onEditOk = async () => {
+        const { editType, editIp, editMac, editName } = this.state;
+
         this.setState({
             editLoading: true
         });
 
-        let directive, reservedIp;
-        switch(this.state.editType) {
+        let directive, reservedIp, aliaslist;
+        switch(editType) {
             case 'add':
                 directive = 'DHCPS_RESERVEDIP_ADD';
                 reservedIp = [{
                     enable: true,
-                    ip: this.state.editIp.join('.'),
-                    mac: this.state.editMac.join(':').toUpperCase(),
-                    note: this.state.editName
+                    ip: editIp.join('.'),
+                    mac: editMac.join(':').toUpperCase(),
+                    note: editName
                 }];
-
                 break;
             case 'edit':
                 directive = 'DHCPS_RESERVEDIP_MODIFY';
@@ -236,20 +249,29 @@ export default class StaticBind extends React.Component {
                     },
                     new: {
                         enable: true,
-                        ip: this.state.editIp.join('.'),
-                        mac: this.state.editMac.join(':').toUpperCase(),
-                        note: this.state.editName
+                        ip: editIp.join('.'),
+                        mac: editMac.join(':').toUpperCase(),
+                        note: editName
                     }
                 };
                 break;
         }
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { reserved_ip: reservedIp }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { reserved_ip: reservedIp }
+            },
+            {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist: [{
+                    alias: editName,
+                    mac: editMac.join(':').toUpperCase(),
+                }] }
+            },
+        ], {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             editLoading: false
@@ -292,12 +314,14 @@ export default class StaticBind extends React.Component {
         let response = await common.fetchApi([
             { opcode: 'DHCPS_RESERVEDIP_LIST_GET' },
             { opcode: 'CLIENT_LIST_GET' },
-            { opcode: 'NETWORK_LAN_IPV4_GET'}
+            { opcode: 'NETWORK_LAN_IPV4_GET'},
+            { opcode: 'CLIENT_ALIAS_GET' },
         ]);
 
         let { errcode, data } = response;
         if (errcode == 0) {
             let { reserved_ip_list } = data[0].result;
+            let alias = data[3].result.aliaslist;
             const { ipv4, mask } = data[2].result.lan.info;
             const lan = this.getNetworkId(ipv4, mask);
 
@@ -309,7 +333,7 @@ export default class StaticBind extends React.Component {
                 }
 
                 let mac = item.mac.toUpperCase();
-                return !!!(reserved_ip_list.find(client => {
+                return !(reserved_ip_list.find(client => {
                     return (mac == client.mac.toUpperCase());
                 }));
             });
@@ -317,12 +341,16 @@ export default class StaticBind extends React.Component {
             this.setState({
                 lanIp: ipv4,
                 staticLists: reserved_ip_list.map(item => {
-                    return Object.assign({}, item);
+                    let mac = item.mac.toUpperCase();
+                    let hostname = alias[mac] && alias[mac].alias || 'unknown';
+                    return Object.assign({ hostname }, item);
                 }),
                 onlineList: restClients.map(item => {
+                    let mac = item.mac.toUpperCase();
+                    let hostname = alias[mac] && alias[mac].alias || item.hostname;
                     return {
-                        name: item.hostname,
-                        address: { ip: item.ip, mac: item.mac.toUpperCase() },
+                        name: hostname,
+                        address: { ip: item.ip, mac },
                         checked: false
                     }
                 })
@@ -330,7 +358,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error( `${error[errcode]}`|| `获取列表指令异常[${errcode}]`);
+        message.error( `未知错误[${errcode}]`);
     }
 
     componentDidMount() {
@@ -344,7 +372,7 @@ export default class StaticBind extends React.Component {
 
         const columns = [{
             title: '设备名称',
-            dataIndex: 'note',
+            dataIndex: 'hostname',
             width:300
         }, {
             title: 'MAC地址',

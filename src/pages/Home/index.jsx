@@ -330,8 +330,8 @@ export default class Home extends React.Component {
         };
         // merge clients && traffic info
         let totalList = clients.map(client => {
-            let mac = client.mac.toLowerCase();
-            client.mac = client.mac.toUpperCase();
+            let mac = client.mac.toUpperCase();
+            client.mac = mac;
             const modeMap = {
                 '5g': '0',
                 '2.4g': '1',

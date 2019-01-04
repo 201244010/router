@@ -327,7 +327,7 @@ export default class ClientList extends React.Component {
             Loading.show({ duration: 2 });
             let resp = await common.fetchApi({
                 opcode: 'CLIENT_ITEM_SET',
-                data: { mac, alias: name },
+                data: { aliaslist: [{ mac, alias: name }] },
             });
 
             let { errcode } = resp;
