@@ -31,7 +31,6 @@ export default class Guide extends React.Component {
     static getDerivedStateFromProps(nextProps){
         let { match } = nextProps, path = match.path, pathname = location.pathname;
         let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
-        console.log('route',route);
         return {
             activeRouteName : route
         };
