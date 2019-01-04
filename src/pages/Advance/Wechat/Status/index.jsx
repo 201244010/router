@@ -89,18 +89,20 @@ export default class Status extends React.Component {
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
             { opcode: 'AUTH_CLIENT_LIST' },
+            { opcode: 'CLIENT_ALIAS_GET' },
         ]);
 
         let { errcode, data } = response;
         if (0 == errcode) {
             let clients = {}, onlineList = data[0].result.data;
             let authClient = data[1].result.auth.clientlist;
+            let aliaslist = data[2].result.aliaslist;
 
             onlineList.forEach((client) => {
                 let {mac, hostname, ontime} = client;
 
                 mac = client.mac.toUpperCase();
-                clients[mac] = {online:true, mac, hostname, ontime};
+                clients[mac] = {mac, hostname, ontime};
             });
 
             this.setState({
@@ -109,7 +111,15 @@ export default class Status extends React.Component {
 
                     return (undefined !== clients[client.mac]);
                 }).map(item => {
-                    return Object.assign(clients[item.mac], item);
+                    let mac = item.mac;
+                    const { hostname, ontime } = clients[mac];
+                    let alias = aliaslist[mac] && aliaslist[mac].alias;
+
+                    return Object.assign({
+                        ontime,
+                        online: true,
+                        hostname: alias || hostname,
+                    }, item);
                 }),
             });
         }
@@ -268,8 +278,8 @@ export default class Status extends React.Component {
                             onClick={this.showClients}
                             href='javascript:;'>接入设备列表</a>）
                     </p>
+                    <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
                     <div className='connect-guide'>
-                        <p>您可以通过以下两种方式引导顾客上网</p>
                         <ul>
                             <li>
                                 <div className='guide-detail'>
