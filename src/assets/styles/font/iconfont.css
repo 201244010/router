@@ -15,207 +15,431 @@
   color : #adb1b9;
 }
 
-.ui-icon-bandwidth:before { content: "\e623"; }
-
-.ui-icon-up:before { content: "\e624"; }
-
-.ui-icon-clean:before { content: "\e625"; }
-
-.ui-icon-eye-open:before { content: "\e626"; }
-
-.ui-icon-browser:before { content: "\e627"; }
-
-.ui-icon-down:before { content: "\e629"; }
-
-.ui-icon-lock:before { content: "\e62a"; }
-
-.ui-icon-mistake:before { content: "\e62b"; }
-
-.ui-icon-pulldown:before { content: "\e62d"; }
-
-.ui-icon-logo:before { content: "\e62e"; }
-
-.ui-icon-pullup:before { content: "\e62f"; }
-
-.ui-icon-refresh:before { content: "\e630"; }
-
-.ui-icon-wifi:before { content: "\e631"; }
-
-.ui-icon-dashboard:before { content: "\e634"; }
-
-.ui-icon-help:before { content: "\e637"; }
-
-.ui-icon-lanset:before { content: "\e639"; }
-
-.ui-icon-wifiset:before { content: "\e63b"; }
-
-.ui-icon-hint:before { content: "\e63d"; }
-
-.ui-icon-loading:before { content: "\e63e"; }
-
-.ui-icon-networkspeeddistribution:before { content: "\e640"; }
-
-.ui-icon-defeated:before { content: "\e646"; }
-
-.ui-icon-delete:before { content: "\e647"; }
-
-.ui-icon-downloadtraffic:before { content: "\e648"; }
-
-.ui-icon-kbyte:before { content: "\e64a"; }
-
-.ui-icon-select:before { content: "\e64c"; }
-
-.ui-icon-shape:before { content: "\e64d"; }
-
-.ui-icon-securitycenter:before { content: "\e64e"; }
-
-.ui-icon-systemsetup:before { content: "\e650"; }
-
-.ui-icon-succeed:before { content: "\e651"; }
-
-.ui-icon-set:before { content: "\e652"; }
-
-.ui-icon-netstat:before { content: "\e654"; }
-
-.ui-icon-eye-close:before { content: "\e649"; }
-
-.ui-icon-verification:before { content: "\e655"; }
-
-.ui-icon-bootdevice:before { content: "\e64b"; }
-
-.ui-icon-blacklis:before { content: "\e64f"; }
-
-.ui-icon-advancedsetup:before { content: "\e65c"; }
-
-.ui-icon-detection:before { content: "\e653"; }
-
-.ui-icon-earth:before { content: "\e65d"; }
-
-.ui-icon-m:before { content: "\e65e"; }
-
-.ui-icon-ds:before { content: "\e65f"; }
-
-.ui-icon-k:before { content: "\e660"; }
-
-.ui-icon-l:before { content: "\e661"; }
-
-.ui-icon-d:before { content: "\e662"; }
-
-.ui-icon-d1:before { content: "\e663"; }
-
-.ui-icon-p:before { content: "\e664"; }
-
-.ui-icon-plite:before { content: "\e665"; }
-
-.ui-icon-tmini:before { content: "\e666"; }
-
-.ui-icon-s:before { content: "\e667"; }
-
-.ui-icon-tlite:before { content: "\e668"; }
-
-.ui-icon-vs:before { content: "\e669"; }
-
-.ui-icon-t:before { content: "\e66a"; }
-
-.ui-icon-vpro:before { content: "\e66b"; }
-
-.ui-icon-sunmi-unknown:before { content: "\e66c"; }
-
-.ui-icon-m1:before { content: "\e66d"; }
-
-.ui-icon-number:before { content: "\e694"; }
-
-.ui-icon-htc:before { content: "\e66e"; }
-
-.ui-icon-mi:before { content: "\e66f"; }
-
-.ui-icon-apple:before { content: "\e670"; }
-
-.ui-icon-icon-test:before { content: "\e671"; }
-
-.ui-icon-amazon:before { content: "\e672"; }
-
-.ui-icon-acer:before { content: "\e673"; }
-
-.ui-icon-dell:before { content: "\e674"; }
-
-.ui-icon-gionee:before { content: "\e675"; }
-
-.ui-icon-haier:before { content: "\e676"; }
-
-.ui-icon-asus:before { content: "\e677"; }
-
-.ui-icon-dyson:before { content: "\e678"; }
-
-.ui-icon-coolpad:before { content: "\e679"; }
-
-.ui-icon-htc1:before { content: "\e67a"; }
-
-.ui-icon-hp:before { content: "\e67b"; }
-
-.ui-icon-hasee:before { content: "\e67c"; }
-
-.ui-icon-hisense:before { content: "\e67d"; }
-
-.ui-icon-intel:before { content: "\e67e"; }
-
-.ui-icon-lenovo:before { content: "\e67f"; }
-
-.ui-icon-lg:before { content: "\e680"; }
-
-.ui-icon-meizu:before { content: "\e681"; }
-
-.ui-icon-mi1:before { content: "\e682"; }
-
-.ui-icon-netgear:before { content: "\e683"; }
-
-.ui-icon-oneplus:before { content: "\e684"; }
-
-.ui-icon-microsoft:before { content: "\e685"; }
-
-.ui-icon-midea:before { content: "\e686"; }
-
-.ui-icon-oppo:before { content: "\e687"; }
-
-.ui-icon-huawei:before { content: "\e688"; }
-
-.ui-icon-nokia:before { content: "\e689"; }
-
-.ui-icon-samsung:before { content: "\e68a"; }
-
-.ui-icon-phicomm:before { content: "\e68b"; }
-
-.ui-icon-smartisan:before { content: "\e68c"; }
-
-.ui-icon-skyworth:before { content: "\e68d"; }
-
-.ui-icon-tcl:before { content: "\e68e"; }
-
-.ui-icon-tplink:before { content: "\e68f"; }
-
-.ui-icon-sony:before { content: "\e690"; }
-
-.ui-icon-vivo:before { content: "\e691"; }
-
-.ui-icon-zte:before { content: "\e692"; }
-
-.ui-icon-tenda:before { content: "\e693"; }
-
-.ui-icon-sunmi:before { content: "\e696"; }
-
-.ui-icon-unknown:before { content: "\e695"; }
-
-.ui-icon-m-hint:before { content: "\e697"; }
-
-.ui-icon-m-success:before { content: "\e698"; }
-
-.ui-icon-m-defeated:before { content: "\e699"; }
-
-.ui-icon-correct:before { content: "\e69a"; }
-
-.ui-icon-auth:before { content: "\e69b"; }
-
-.ui-icon-business:before { content: "\e69c"; }
-
-.ui-icon-customer:before { content: "\e69d"; }
+.ui-icon-bandwidth:before {
+  content: "\e623";
+}
+
+.ui-icon-up:before {
+  content: "\e624";
+}
+
+.ui-icon-clean:before {
+  content: "\e625";
+}
+
+.ui-icon-eye-open:before {
+  content: "\e626";
+}
+
+.ui-icon-browser:before {
+  content: "\e627";
+}
+
+.ui-icon-down:before {
+  content: "\e629";
+}
+
+.ui-icon-lock:before {
+  content: "\e62a";
+}
+
+.ui-icon-mistake:before {
+  content: "\e62b";
+}
+
+.ui-icon-pulldown:before {
+  content: "\e62d";
+}
+
+.ui-icon-logo:before {
+  content: "\e62e";
+}
+
+.ui-icon-pullup:before {
+  content: "\e62f";
+}
+
+.ui-icon-refresh:before {
+  content: "\e630";
+}
+
+.ui-icon-wifi:before {
+  content: "\e631";
+}
+
+.ui-icon-dashboard:before {
+  content: "\e634";
+}
+
+.ui-icon-help:before {
+  content: "\e637";
+}
+
+.ui-icon-lanset:before {
+  content: "\e639";
+}
+
+.ui-icon-wifiset:before {
+  content: "\e63b";
+}
+
+.ui-icon-hint:before {
+  content: "\e63d";
+}
+
+.ui-icon-loading:before {
+  content: "\e63e";
+}
+
+.ui-icon-networkspeeddistribution:before {
+  content: "\e640";
+}
+
+.ui-icon-defeated:before {
+  content: "\e646";
+}
+
+.ui-icon-delete:before {
+  content: "\e647";
+}
+
+.ui-icon-downloadtraffic:before {
+  content: "\e648";
+}
+
+.ui-icon-kbyte:before {
+  content: "\e64a";
+}
+
+.ui-icon-select:before {
+  content: "\e64c";
+}
+
+.ui-icon-shape:before {
+  content: "\e64d";
+}
+
+.ui-icon-securitycenter:before {
+  content: "\e64e";
+}
+
+.ui-icon-systemsetup:before {
+  content: "\e650";
+}
+
+.ui-icon-succeed:before {
+  content: "\e651";
+}
+
+.ui-icon-set:before {
+  content: "\e652";
+}
+
+.ui-icon-netstat:before {
+  content: "\e654";
+}
+
+.ui-icon-eye-close:before {
+  content: "\e649";
+}
+
+.ui-icon-verification:before {
+  content: "\e655";
+}
+
+.ui-icon-bootdevice:before {
+  content: "\e64b";
+}
+
+.ui-icon-blacklis:before {
+  content: "\e64f";
+}
+
+.ui-icon-advancedsetup:before {
+  content: "\e65c";
+}
+
+.ui-icon-detection:before {
+  content: "\e653";
+}
+
+.ui-icon-earth:before {
+  content: "\e65d";
+}
+
+.ui-icon-m:before {
+  content: "\e65e";
+}
+
+.ui-icon-ds:before {
+  content: "\e65f";
+}
+
+.ui-icon-k:before {
+  content: "\e660";
+}
+
+.ui-icon-l:before {
+  content: "\e661";
+}
+
+.ui-icon-d:before {
+  content: "\e662";
+}
+
+.ui-icon-d1:before {
+  content: "\e663";
+}
+
+.ui-icon-p:before {
+  content: "\e664";
+}
+
+.ui-icon-plite:before {
+  content: "\e665";
+}
+
+.ui-icon-tmini:before {
+  content: "\e666";
+}
+
+.ui-icon-s:before {
+  content: "\e667";
+}
+
+.ui-icon-tlite:before {
+  content: "\e668";
+}
+
+.ui-icon-vs:before {
+  content: "\e669";
+}
+
+.ui-icon-t:before {
+  content: "\e66a";
+}
+
+.ui-icon-vpro:before {
+  content: "\e66b";
+}
+
+.ui-icon-sunmi-unknown:before {
+  content: "\e66c";
+}
+
+.ui-icon-m1:before {
+  content: "\e66d";
+}
+
+.ui-icon-number:before {
+  content: "\e694";
+}
+
+.ui-icon-htc:before {
+  content: "\e66e";
+}
+
+.ui-icon-mi:before {
+  content: "\e66f";
+}
+
+.ui-icon-apple:before {
+  content: "\e670";
+}
+
+.ui-icon-icon-test:before {
+  content: "\e671";
+}
+
+.ui-icon-amazon:before {
+  content: "\e672";
+}
+
+.ui-icon-acer:before {
+  content: "\e673";
+}
+
+.ui-icon-dell:before {
+  content: "\e674";
+}
+
+.ui-icon-gionee:before {
+  content: "\e675";
+}
+
+.ui-icon-haier:before {
+  content: "\e676";
+}
+
+.ui-icon-asus:before {
+  content: "\e677";
+}
+
+.ui-icon-dyson:before {
+  content: "\e678";
+}
+
+.ui-icon-coolpad:before {
+  content: "\e679";
+}
+
+.ui-icon-htc1:before {
+  content: "\e67a";
+}
+
+.ui-icon-hp:before {
+  content: "\e67b";
+}
+
+.ui-icon-hasee:before {
+  content: "\e67c";
+}
+
+.ui-icon-hisense:before {
+  content: "\e67d";
+}
+
+.ui-icon-intel:before {
+  content: "\e67e";
+}
+
+.ui-icon-lenovo:before {
+  content: "\e67f";
+}
+
+.ui-icon-lg:before {
+  content: "\e680";
+}
+
+.ui-icon-meizu:before {
+  content: "\e681";
+}
+
+.ui-icon-mi1:before {
+  content: "\e682";
+}
+
+.ui-icon-netgear:before {
+  content: "\e683";
+}
+
+.ui-icon-oneplus:before {
+  content: "\e684";
+}
+
+.ui-icon-microsoft:before {
+  content: "\e685";
+}
+
+.ui-icon-midea:before {
+  content: "\e686";
+}
+
+.ui-icon-oppo:before {
+  content: "\e687";
+}
+
+.ui-icon-huawei:before {
+  content: "\e688";
+}
+
+.ui-icon-nokia:before {
+  content: "\e689";
+}
+
+.ui-icon-samsung:before {
+  content: "\e68a";
+}
+
+.ui-icon-phicomm:before {
+  content: "\e68b";
+}
+
+.ui-icon-smartisan:before {
+  content: "\e68c";
+}
+
+.ui-icon-skyworth:before {
+  content: "\e68d";
+}
+
+.ui-icon-tcl:before {
+  content: "\e68e";
+}
+
+.ui-icon-tplink:before {
+  content: "\e68f";
+}
+
+.ui-icon-sony:before {
+  content: "\e690";
+}
+
+.ui-icon-vivo:before {
+  content: "\e691";
+}
+
+.ui-icon-zte:before {
+  content: "\e692";
+}
+
+.ui-icon-tenda:before {
+  content: "\e693";
+}
+
+.ui-icon-sunmi:before {
+  content: "\e696";
+}
+
+.ui-icon-unknown:before {
+  content: "\e695";
+}
+
+.ui-icon-m-hint:before {
+  content: "\e697";
+}
+
+.ui-icon-m-success:before {
+  content: "\e698";
+}
+
+.ui-icon-m-defeated:before {
+  content: "\e699";
+}
+
+.ui-icon-correct:before {
+  content: "\e69a";
+}
+
+.ui-icon-auth:before {
+  content: "\e69b";
+}
+
+.ui-icon-business:before {
+  content: "\e69c";
+}
+
+.ui-icon-customer:before {
+  content: "\e69d";
+}
+
+.ui-icon-bg_equipment:before {
+  content: "\e6a0";
+}
+
+.ui-icon-bg_wechat:before {
+  content: "\e6a1";
+}
+
+.ui-icon-bg_search:before {
+  content: "\e69f";
+}
+
+.ui-icon-search:before {
+  content: "\e69e";
+}
+
+.ui-icon-bg_speed:before {
+  content: "\e6a4";
+}
 
