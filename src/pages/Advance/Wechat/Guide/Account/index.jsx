@@ -140,7 +140,7 @@ export default class Account extends React.Component {
                 <div className='setup-content'>
                     <p className='help'>
                         这里需要填写您的微信公众号信息，顾客在连上客用Wi-Fi之后即可一键关注您的公众号。
-                        如不清楚如何获取下方信息，请按（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>）操作
+                        如不清楚如何获取下方信息，请按（<a href='javascript:;' onClick={this.settingGuide}>微信公众平台设置指引</a>）操作
                     </p>
                     <GuideModal visible={visible} close={this.modalClose}/>
                     <Form style={{ margin: 0, padding: 0 }}>
