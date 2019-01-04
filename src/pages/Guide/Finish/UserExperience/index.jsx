@@ -46,6 +46,9 @@ export default class UserExperience extends React.Component {
                                 <h4>网速智能分配</h4>
                                 <p>优先保障商家设备网速</p>
                             </div>
+                            <div className='background'>
+                                <CustomIcon size={103} color='#92ABF6' type="bg_speed"></CustomIcon>
+                            </div>
                         </li>
                         <li onClick={this.wechat}>
                             <div className='img'>
@@ -54,6 +57,9 @@ export default class UserExperience extends React.Component {
                             <div className='discription'>
                                 <h4>微信连Wi-Fi</h4>
                                 <p>为您轻松吸粉精准营销</p>
+                            </div>
+                            <div className='background'>
+                                <CustomIcon size={103} color='#99DD8B' type="bg_wechat"></CustomIcon>
                             </div>
                         </li>
                     </ul>
@@ -66,6 +72,9 @@ export default class UserExperience extends React.Component {
                                 <h4>搜寻附近商米设备</h4>
                                 <p>商米设备一键入网</p>
                             </div>
+                            <div className='background'>
+                                <CustomIcon size={103} color='#F79D5C' type="bg_search"></CustomIcon>
+                            </div>
                         </li>
                         <li onClick={this.management}>
                             <div className='img'>
@@ -74,6 +83,9 @@ export default class UserExperience extends React.Component {
                             <div className='discription'>
                                 <h4>联网设备管理</h4>
                                 <p>轻松设置上网权限</p>
+                            </div>
+                            <div className='background'>
+                                <CustomIcon size={103} color='#F9AFDD' type="bg_equipment"></CustomIcon>
                             </div>
                         </li>
                     </ul>

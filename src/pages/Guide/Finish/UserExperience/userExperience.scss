@@ -50,6 +50,13 @@
                         font-size: 16px;
                     }
                 }
+                .background{
+                    // display: inline-block;
+                    position: relative;
+                    float: right;
+                    bottom: -16px;
+                    opacity: 0.1;
+                }
             }
             li:nth-child(1){   
                 margin-right: 80px;
