@@ -423,23 +423,23 @@
   content: "\e69d";
 }
 
-.ui-icon-bg_equipment:before {
-  content: "\e6a0";
-}
-
-.ui-icon-bg_wechat:before {
-  content: "\e6a1";
-}
-
-.ui-icon-bg_search:before {
-  content: "\e69f";
-}
-
 .ui-icon-search:before {
   content: "\e69e";
 }
 
+.ui-icon-bg_search:before {
+  content: "\e6a2";
+}
+
+.ui-icon-bg_equipment:before {
+  content: "\e6a3";
+}
+
 .ui-icon-bg_speed:before {
-  content: "\e6a4";
+  content: "\e6a5";
+}
+
+.ui-icon-bg_wechat:before {
+  content: "\e6a6";
 }
 
