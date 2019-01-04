@@ -25,6 +25,7 @@
                 height: 160px;
                 padding: 40px 0 8px 20px;
                 margin-bottom: 32px;
+                position: relative;
                 display: inline-block;
                 background-color: #FFF;
                 border: 0.5px solid rgba(0,0,0,0.1);
@@ -51,10 +52,9 @@
                     }
                 }
                 .background{
-                    // display: inline-block;
-                    position: relative;
-                    float: right;
-                    bottom: -16px;
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
                     opacity: 0.1;
                 }
                 &:nth-child(1){   

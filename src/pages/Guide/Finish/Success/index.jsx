@@ -33,7 +33,7 @@ export default class Success extends React.Component {
                                     <p>优先保障商家设备网速</p>
                                 </div>
                                 <div className='background'>
-                                    <CustomIcon size={103} color='#92ABF6' type="bg_speed" />
+                                    <CustomIcon size={128} color='#92ABF6' type="bg_speed" />
                                 </div>
                             </NavLink>
                         </li>
@@ -47,7 +47,7 @@ export default class Success extends React.Component {
                                     <p>为您轻松吸粉精准营销</p>
                                 </div>
                                 <div className='background'>
-                                    <CustomIcon size={103} color='#99DD8B' type="bg_wechat" />
+                                    <CustomIcon size={128} color='#99DD8B' type="bg_wechat" />
                                 </div>
                             </NavLink>
                         </li>    
@@ -63,7 +63,7 @@ export default class Success extends React.Component {
                                     <p>商米设备一键入网</p>
                                 </div>
                                 <div className='background'>
-                                    <CustomIcon size={103} color='#F79D5C' type="bg_search" />
+                                    <CustomIcon size={128} color='#F79D5C' type="bg_search" />
                                 </div>
                             </NavLink>
                         </li>
@@ -77,7 +77,7 @@ export default class Success extends React.Component {
                                     <p>轻松设置上网权限</p>
                                 </div>
                                 <div className='background'>
-                                    <CustomIcon size={103} color='#F9AFDD' type="bg_equipment" />
+                                    <CustomIcon size={128} color='#F9AFDD' type="bg_equipment" />
                                 </div>
                             </NavLink>
                         </li>  
