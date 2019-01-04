@@ -23,8 +23,8 @@ export default class Success extends React.Component {
                 </div>
                 <div className='body'>
                     <ul>
-                        <NavLink to={'/advance/bandwidth'}>
-                            <li>
+                        <li>
+                            <NavLink to={'/advance/bandwidth'}>
                                 <div className='img'>
                                     <CustomIcon style={{margin: 13}} size={54} color='#92ABF6' type="networkspeeddistribution" />
                                 </div>
@@ -35,10 +35,10 @@ export default class Success extends React.Component {
                                 <div className='background'>
                                     <CustomIcon size={103} color='#92ABF6' type="bg_speed" />
                                 </div>
-                            </li>
-                        </NavLink>
-                        <NavLink to={'/advance/wechat'}>
-                            <li onClick={this.wechat}>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={'/advance/wechat'}>
                                 <div className='img'>
                                     <CustomIcon style={{margin: 13}} size={54} color='#99DD8B' type="auth" />
                                 </div>
@@ -49,12 +49,12 @@ export default class Success extends React.Component {
                                 <div className='background'>
                                     <CustomIcon size={103} color='#99DD8B' type="bg_wechat" />
                                 </div>
-                            </li>
-                        </NavLink>
+                            </NavLink>
+                        </li>    
                     </ul>
                     <ul>
-                        <NavLink to={'/home'}>
-                            <li onClick={this.search}>
+                        <li>
+                            <NavLink to={'/home'}>
                                 <div className='img'>
                                     <CustomIcon style={{margin: 7}} size={66} color='#F79D5C' type="search" />
                                 </div>
@@ -65,10 +65,10 @@ export default class Success extends React.Component {
                                 <div className='background'>
                                     <CustomIcon size={103} color='#F79D5C' type="bg_search" />
                                 </div>
-                            </li>
-                        </NavLink>
-                        <NavLink to={'/home'}>
-                            <li onClick={this.management}>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={'/home'}>
                                 <div className='img'>
                                     <CustomIcon style={{margin: 13}} size={54} color='#F9AFDD' type="blacklis" />
                                 </div>
@@ -79,8 +79,8 @@ export default class Success extends React.Component {
                                 <div className='background'>
                                     <CustomIcon size={103} color='#F9AFDD' type="bg_equipment" />
                                 </div>
-                            </li>
-                        </NavLink>
+                            </NavLink>
+                        </li>  
                     </ul>
                 </div>
             </div>
