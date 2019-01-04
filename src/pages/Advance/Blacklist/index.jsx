@@ -86,7 +86,7 @@ export default class Blacklist extends React.Component {
             }
         }, {
             loading: true
-        }).catch(ex => { });
+        });
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -123,19 +123,31 @@ export default class Blacklist extends React.Component {
         });
 
         let directive = 'QOS_AC_BLACKLIST_ADD',
-            black_list = this.state.onlineList.filter(item => item.checked).map(item => {
+            checked = this.state.onlineList.filter(item => item.checked),
+            aliaslist = checked.map(item => {
+                return {
+                    alias: item.name,
+                    mac: item.mac.toUpperCase()
+                };
+            }),
+            black_list = checked.map(item => {
                 return {
                     name: item.name,
                     mac: item.mac.toUpperCase()
                 };
             });
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { black_list: black_list }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { black_list: black_list }
+            }, {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist }
+            }
+        ], {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             loading: false
@@ -174,19 +186,29 @@ export default class Blacklist extends React.Component {
             mac: mac,
             name: name
         }];
+        let aliaslist = [{
+            alias: name,
+            mac: mac,
+        }];
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { black_list: black_list }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { black_list: black_list }
+            },
+            {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist: aliaslist }
+            },
+        ], {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             editLoading: false
         });
 
-        let { errcode, message } = response;
+        let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
             this.setState({
@@ -217,16 +239,19 @@ export default class Blacklist extends React.Component {
             { opcode: 'CLIENT_LIST_GET' },
             { opcode: 'QOS_AC_BLACKLIST_GET' },
             { opcode: 'WHOAMI_GET' },
+            { opcode: 'CLIENT_ALIAS_GET' },
         ]);
 
-        let { errcode, data, message } = response;
+        let { errcode, data } = response;
         if (0 !== errcode) {
-            message.error(`获取列表指令异常[${errcode}]`);
+            message.error(`未知错误[${errcode}]`);
             return;
         }
 
         let { black_list } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
+        let alias = data[3].result.aliaslist;
+
         // filter clients in dhcp static list
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
@@ -238,17 +263,23 @@ export default class Blacklist extends React.Component {
         this.setState({
             me: me,
             blockLists: black_list.map(item => {
+                let mac = item.mac.toUpperCase();
+                let name = alias[mac] && alias[mac].alias || 'unknown';
+
                 return {
-                    name: item.name,
-                    mac: item.mac,
+                    name: name,
+                    mac: mac,
                     time: new Date(parseInt(item.time) * 1000).toLocaleString(),
                     index: item.index
                 }
             }),
             onlineList: restClients.map(item => {
+                let mac = item.mac.toUpperCase();
+                let hostname = alias[mac] && alias[mac].alias || item.hostname;
+
                 return {
-                    name: item.hostname,
-                    mac: item.mac.toUpperCase(),
+                    name: hostname,
+                    mac: mac,
                     checked: false
                 }
             }),

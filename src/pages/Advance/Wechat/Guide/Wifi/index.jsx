@@ -72,6 +72,13 @@ export default class Wifi extends React.Component {
             ssidlist: ssidlist,
         };
 
+        common.fetchApi(
+            {
+                opcode: 'AUTH_ENABLE_MSG',
+                data: { ssid: ssid }
+            }
+        );
+
         this.setState({loading: true});
         let response = await common.fetchApi(
             {
@@ -139,7 +146,7 @@ export default class Wifi extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接</p>
+                    <p className='help'>设置顾客单次上网的最大时长，以及离店顾客网络闲置一定时间后自动断开</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>顾客上网时长限制</label>
                         <div className='form-item'>
@@ -195,7 +202,7 @@ const FinishModal = (props) => {
             }>
                 <div className="backup-icon">
                     <CustomIcon color="#87D068" type="succeed" size={64} />
-                    <div className="backup-result">微信连Wi-Fi设置完成!</div>
+                    <div className="backup-result">设置完成!</div>
                 </div>
         </Modal>
     );

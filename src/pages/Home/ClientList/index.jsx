@@ -8,17 +8,6 @@ import Logo from '~/components/Logo';
 
 import './clients.scss';
 
-const getHostName = (client) => {
-    const { name, model, me } = client;
-    let hostname = name;
-
-    if (model && model.length > 0) {
-        hostname = model;
-    }
-
-    return hostname;
-};
-
 const RSSI_GOOD = '较好', RSSI_BAD = '较差';
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 
@@ -56,8 +45,8 @@ class EditableCell extends React.Component {
         }
     }
 
-    toggleEdit = () => {
-        const editing = !this.state.editing;
+    toggleEdit = (bediting) => {
+        const editing = (undefined !== bediting) ? bediting : (!this.state.editing);
         this.setState({ editing }, () => {
             if (editing) {
                 this.input.focus();
@@ -79,7 +68,7 @@ class EditableCell extends React.Component {
                 return;
             }
             //this.toggleEdit();
-            handleSave({ ...record, ...values }, this.toggleEdit);
+            handleSave({ ...record, ...values }, () => this.toggleEdit(false));
         });
     }
 
@@ -168,7 +157,7 @@ export default class ClientList extends React.Component {
             },
             render: (text, record) => {
                 let ontime = formatTime(record.ontime);
-                let hostname = getHostName(record);
+                let hostname = record.name;
                 return ([
                     <div className='device hostname' title={hostname}>{hostname}</div>,
                     <div className='device' title={ontime}>
@@ -338,7 +327,7 @@ export default class ClientList extends React.Component {
             Loading.show({ duration: 2 });
             let resp = await common.fetchApi({
                 opcode: 'CLIENT_ITEM_SET',
-                data: { mac, alias: name },
+                data: { aliaslist: [{ mac, alias: name }] },
             });
 
             let { errcode } = resp;
@@ -404,7 +393,7 @@ export default class ClientList extends React.Component {
         const listItems = clients.map((client, index) => {
             if (index < max) {
                 const type = client.type;
-                const hostname = getHostName(client);
+                const hostname = client.name;
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
@@ -459,12 +448,19 @@ export default class ClientList extends React.Component {
                         <label>暂无优先设备，</label><a onClick={this.goWhiteList} href="javascript:;">添加优先设备</a>
                     </div>
                 }
-                <Modal title={`${deviceType}（${total}台）`} closable={false} maskClosable={false} centered={true}
-                    width={1060} style={{ position: 'relative' }}
+                <Modal
+                    title={`${deviceType}（${total}台）`}
+                    closable={false}
+                    maskClosable={false}
+                    centered
+                    destroyOnClose
+                    width={1060}
+                    style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>取消</Button>
-                    ]}>
+                    ]}
+                >
                     <Button style={{
                         position: "absolute",
                         top: 10,
@@ -515,7 +511,7 @@ class Item extends React.Component {
             </ul>
         );
 
-        const hostname = getHostName(client);
+        const hostname = client.name;
 
         switch (type) {
             case TYPE_SUNMI:

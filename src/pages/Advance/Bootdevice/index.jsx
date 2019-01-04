@@ -100,7 +100,7 @@ export default class Bootdevice extends React.Component {
             }
         }, {
             loading: true
-        }).catch(ex => { });
+        });
 
         let { errcode, message } = response;
         if (errcode == 0) {
@@ -137,19 +137,31 @@ export default class Bootdevice extends React.Component {
         });
 
         let directive = 'QOS_AC_WHITELIST_ADD',
-            white_list = this.state.onlineList.filter(item => item.checked).map(item => {
+            checked = this.state.onlineList.filter(item => item.checked),
+            aliaslist = checked.map(item => {
+                return {
+                    alias: item.name,
+                    mac: item.mac.toUpperCase()
+                };
+            }),
+            white_list = checked.map(item => {
                 return {
                     name: item.name,
                     mac: item.mac.toUpperCase()
                 };
             });
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { white_list: white_list }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { white_list: white_list }
+            }, {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist }
+            }
+        ], {
             loading: true
-        }).catch(ex => { });
+        });
 
         this.setState({
             loading: false
@@ -171,20 +183,32 @@ export default class Bootdevice extends React.Component {
     }
 
     onEditOk = async () => {
+        let {name, mac} = this.state;
+
         this.setState({
             editLoading: true
         });
 
         let directive = 'QOS_AC_WHITELIST_ADD';
         let white_list = [{
-            mac: this.state.mac.join(':').toUpperCase(),
-            name: this.state.name
+            mac: mac.join(':').toUpperCase(),
+            name: name,
+        }];
+        let aliaslist = [{
+            alias: name,
+            mac: mac.join(':').toUpperCase(),
         }];
 
-        let response = await common.fetchApi({
-            opcode: directive,
-            data: { white_list: white_list }
-        }, {
+        let response = await common.fetchApi([
+            {
+                opcode: directive,
+                data: { white_list: white_list }
+            },
+            {
+                opcode: 'CLIENT_ITEM_SET',
+                data: { aliaslist: aliaslist }
+            },
+        ], {
             loading: true
         });
 
@@ -248,7 +272,8 @@ export default class Bootdevice extends React.Component {
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
-            { opcode: 'QOS_AC_WHITELIST_GET' }
+            { opcode: 'QOS_AC_WHITELIST_GET' },
+            { opcode: 'CLIENT_ALIAS_GET' },
         ]);
 
         let { errcode, data, message } = response;
@@ -258,7 +283,8 @@ export default class Bootdevice extends React.Component {
         }
 
         let clients = data[0].result.data,
-            whites = data[1].result.white_list;
+            whites = data[1].result.white_list,
+            alias = data[2].result.aliaslist;
 
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
@@ -285,6 +311,7 @@ export default class Bootdevice extends React.Component {
             disAddBtn: true,
             whiteList: whites.map(item => {
                 let mac = item.mac.toUpperCase();
+                let name = alias[mac] && alias[mac].alias || 'unknown';
                 let client = clients.find(item => item.mac.toUpperCase() === mac) || {
                     online: false,
                     ontime: 0,
@@ -293,7 +320,7 @@ export default class Bootdevice extends React.Component {
 
                 return {
                     index: item.index,
-                    name: item.name,
+                    name: name,
                     online: (false !== client.online),  // 设备列表中的设备都是在线的
                     ontime: this.formatTime(client.ontime),
                     ip: client.ip,
@@ -302,9 +329,11 @@ export default class Bootdevice extends React.Component {
                 }
             }),
             onlineList: restClients.map(item => {
+                let mac = item.mac.toUpperCase();
+                let hostname = alias[mac] && alias[mac].alias || item.hostname;
                 return {
-                    name: item.hostname,
-                    mac: item.mac.toUpperCase(),
+                    name: hostname,
+                    mac: mac,
                     time: item.time,
                     checked: false
                 }

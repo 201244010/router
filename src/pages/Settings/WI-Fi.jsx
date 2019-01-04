@@ -356,12 +356,12 @@ export default class WIFI extends React.Component {
         }
 
         if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-            message.error(channelType ? '商户、顾客Wi-Fi名称不能相同':'2.4G、顾客Wi-Fi名称不能相同');
+            message.error(channelType ? '商户、客用Wi-Fi名称不能相同':'2.4G、客用Wi-Fi名称不能相同');
             return;
         }
 
         if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-            message.error('5G、顾客Wi-Fi名称不能相同');
+            message.error('5G、客用Wi-Fi名称不能相同');
             return;
         }
         //是否双频合一
@@ -726,7 +726,7 @@ export default class WIFI extends React.Component {
                     </section>
                     )}
                     <section className="wifi-setting-item">
-                        <PanelHeader title="顾客Wi-Fi" checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
+                        <PanelHeader title="客用Wi-Fi" checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
                         <label className='ssidLabel'>Wi-Fi名称</label>
                         <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
@@ -750,7 +750,7 @@ export default class WIFI extends React.Component {
                                 <label>当前密码是：</label>
                                 <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
                             </div> 
-                            <span style={{display: 'none', opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>   
+                            <span style={{display: 'none', opacity:'0.5'}}>如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上</span>   
                         </section>
                         <section style={{display:displayType=='none'?'block':'none'}}>
                             <ul className="ui-tiled compact">
@@ -762,7 +762,7 @@ export default class WIFI extends React.Component {
                                 <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                                 <ErrorTip>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
-                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，顾客Wi-Fi名称和密码将打印在小票上</span>
+                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上</span>
                             </div>
                         </section>  
                     </section>

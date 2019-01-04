@@ -325,7 +325,7 @@ export default class WeChatAuth extends React.Component{
         if(this.state.enable === true){
             Modal.confirm({
                 title: '提示',
-                content: '微信认证开启后，会自动开启顾客Wi-Fi，并清空密码，确定继续？',
+                content: '微信认证开启后，会自动开启客用Wi-Fi，并清空密码，确定继续？',
                 onOk:this.dataSet,
                 onCancel(){},
                 cancelText: '取消',
