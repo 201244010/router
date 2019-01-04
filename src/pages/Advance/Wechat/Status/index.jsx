@@ -332,6 +332,8 @@ export default class Status extends React.Component {
                         dataSource={clients}
                         bordered
                         rowKey={record => record.mac}
+                        scroll={{ y: 336 }}
+                        style={{ minHeight: 360 }}
                         size="middle"
                         pagination={pagination}
                         locale={{ emptyText: "暂无设备" }}
