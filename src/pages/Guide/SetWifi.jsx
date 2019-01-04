@@ -75,8 +75,6 @@ export default class SetWifi extends React.Component {
         let data = { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw };
         let param = JSON.stringify(data);
 
-        window.sessionStorage.setItem('guide.setwifi', param);
-
         this.mainWireLess.host.band_2g.ssid = hostWifiName;
         this.mainWireLess.host.band_2g.password = Base64.encode(hostWifiPsw);
         this.mainWireLess.host.band_5g.ssid = hostWifiName.substring(0,29) + '_5G';
@@ -99,7 +97,7 @@ export default class SetWifi extends React.Component {
         
         let {errcode} = response;
         if(errcode === 0){
-            this.props.history.push(`/guide/finish/applying` + encodeURIComponent(param));
+            this.props.history.push(`/guide/finish/applying/` + encodeURIComponent(param));
         } else {
             message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
         }
