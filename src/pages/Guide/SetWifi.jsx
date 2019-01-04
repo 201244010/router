@@ -23,10 +23,7 @@ export default class SetWifi extends React.Component {
     }
 
     state = {
-        guestWifi : false,
         loading : false,
-        done : true,
-        visibile: 'hidden',
         hostWifiName : '',
         hostWifiPsw : '',
         guestWifiName : '',
@@ -35,42 +32,11 @@ export default class SetWifi extends React.Component {
         hostWifiPswTip: '',
         guestWifiNameTip: '',
         guestWifiPswTip: '',
-        canSubmit : false
     };
 
     back = ()=>{
         this.props.history.push("/guide/speed");
     };
-
-    openGuestSetting = value => {
-        if ( false === value){
-            this.setState({
-                guestWifi : value,
-                guestWifiNameTip: '',
-                guestWifiPswTip: '',
-            }, () => {
-                this.setState({ canSubmit : this.valid() });
-            });
-        }else{
-            if(this.state.guestWifiPsw.length === 0){
-                this.setState({
-                    guestWifi : value,
-                    guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
-                    guestWifiPswTip: '',
-                }, () => {
-                    this.setState({ canSubmit : this.valid() });
-                });
-            }else{
-                this.setState({
-                    guestWifi : value,
-                    guestWifiNameTip: checkStr(this.state.guestWifiName, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' }),
-                    guestWifiPswTip: checkStr(this.state.guestWifiPsw, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' }),
-                }, () => {
-                    this.setState({ canSubmit : this.valid() });
-                });
-            }    
-        }
-    }
 
     handleChange = (value, field) => {
         const type = {
@@ -91,30 +57,36 @@ export default class SetWifi extends React.Component {
             this.setState({
                 [field]: value,
                 [field + 'Tip']: ''
-            },()=>{
-                this.setState({ canSubmit : this.valid() });
             });
         }else{
+            let tip = type[field].tip;
+            if('' === value.trim() && 7 < value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
+                tip = '密码不能全为空格'
+            }
             this.setState({ 
                 [field] : value, 
-                [field+'Tip']: type[field].tip 
-            }, ()=>{
-                this.setState({ canSubmit : this.valid() });
+                [field+'Tip']: tip,
             });
         }   
     }
 
     dataSet = async() =>{
-        this.mainWireLess.host.band_2g.ssid = this.state.hostWifiName;
-        this.mainWireLess.host.band_2g.password = Base64.encode(this.state.hostWifiPsw);
-        this.mainWireLess.host.band_5g.ssid = this.state.hostWifiName.substring(0,29) + '_5G';
-        this.mainWireLess.host.band_5g.password = Base64.encode(this.state.hostWifiPsw);
-        this.guestWireLess.ssid = this.state.guestWifiName;
-        this.guestWireLess.static_password = Base64.encode(this.state.guestWifiPsw);
-        this.guestWireLess.enable = this.state.guestWifi === false ? '0' : '1';
-        this.mainWireLess.host.band_2g.encryption= this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
-        this.mainWireLess.host.band_5g.encryption=this.state.hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
-        this.guestWireLess.encryption=this.state.guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
+        const { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw } = this.state;
+        let data = { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw };
+        let param = JSON.stringify(data);
+
+        window.sessionStorage.setItem('guide.setwifi', param);
+
+        this.mainWireLess.host.band_2g.ssid = hostWifiName;
+        this.mainWireLess.host.band_2g.password = Base64.encode(hostWifiPsw);
+        this.mainWireLess.host.band_5g.ssid = hostWifiName.substring(0,29) + '_5G';
+        this.mainWireLess.host.band_5g.password = Base64.encode(hostWifiPsw);
+        this.guestWireLess.ssid = guestWifiName;
+        this.guestWireLess.static_password = Base64.encode(guestWifiPsw);
+        this.guestWireLess.enable = '1';
+        this.mainWireLess.host.band_2g.encryption = hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.mainWireLess.host.band_5g.encryption = hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.guestWireLess.encryption = guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_2g.enable = "1";
 
         let response = await common.fetchApi(
@@ -122,54 +94,26 @@ export default class SetWifi extends React.Component {
                 opcode: 'WIRELESS_SET',
                 data: { main : this.mainWireLess, guest : this.guestWireLess}
             }]
-        ).catch(ex => {});
-
+        );
         this.setState({ loading : false});
         
         let {errcode} = response;
         if(errcode === 0){
-            this.setState({
-                visibile: 'visible',
-                done: false,
-            });
-            setTimeout(async() => {
-                await common.fetchApi(
-                    [{
-                        opcode: 'WIRELESS_GET',
-                    }]
-                ).catch(ex => {
-                    if(ex !== ''){
-                        this.setState({done: true});  
-                    }}).then(
-                            async()=>{
-                            await common.fetchApi(
-                                [{
-                                    opcode: 'WIRELESS_GET',
-                                }], 
-                                {},
-                                {
-                                    loop: true,
-                                    interval: 500,
-                                    stop: resp => {resp!== 0},
-                                }
-                            );
-                            this.props.history.push("/home");
-                        }
-                    );
-            }, 7000);
-            return ;
+            this.props.history.push(`/guide/finish/applying` + encodeURIComponent(param));
+        } else {
+            message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
         }
-        message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
+        
     }
 
     submit = async ()=> {
         this.setState({ loading : true });
-        if(this.state.hostWifiPsw.length === 0 || (this.state.guestWifi ? this.state.guestWifiPsw.length === 0 : false)){
+        if(this.state.hostWifiPsw.length === 0 || this.state.guestWifiPsw.length === 0){
             confirm({
                 title: '提示：',
                 content: (this.state.hostWifiPsw.length === 0 ?'商户Wi-Fi' : '') + 
-                (this.state.hostWifiPsw.length === 0 && this.state.guestWifi && this.state.guestWifiPsw.length === 0 ? '、' : '')+
-                (this.state.guestWifi ? (this.state.guestWifiPsw.length === 0 ? '客用Wi-Fi':'') : '') +'密码未设置，确定继续?' ,
+                (this.state.hostWifiPsw.length === 0 && this.state.guestWifiPsw.length === 0 ? '、' : '')+
+                (this.state.guestWifiPsw.length === 0 ? '顾客Wi-Fi':'') +'密码未设置，确定继续?' ,
                 onOk: this.dataSet,
                 onCancel(){   
 
@@ -188,28 +132,6 @@ export default class SetWifi extends React.Component {
         return this.tick + 'S';
     }
 
-    valid(){
-        let ret = true;
-        let { guestWifi, hostWifiName, hostWifiPsw, hostWifiPswTip, guestWifiName, guestWifiPsw, guestWifiPswTip } = this.state;
-
-        if( hostWifiName.length === 0 || guestWifiPswTip !== '' || (hostWifiPsw.trim() === ''&& hostWifiPsw.length !== 0)){
-            ret = false;
-        }
-        
-        if(guestWifi){    
-            if( guestWifiName.length === 0 || hostWifiPswTip !== '' || (guestWifiPsw.trim() === '' && guestWifiPsw.length !== 0)){
-                ret = false;
-            }
-            if(guestWifiName === hostWifiName){
-                ret = false;
-                this.setState({
-                    guestWifiNameTip: '商户、客用Wi-Fi 不能相同',
-                });
-            }
-        }
-        return ret;
-    }
-
     async fetchWireLessInfo(){
         let response = await common.fetchApi({ opcode: 'WIRELESS_GET' });
         let { errcode, data } = response;
@@ -222,10 +144,7 @@ export default class SetWifi extends React.Component {
                 hostWifiName : this.hostWireLess.ssid,
                 hostWifiPsw : Base64.decode(this.hostWireLess.password),
                 guestWifiName : this.guestWireLess.ssid,
-                guestWifi : this.guestWireLess.enable !== '0',
                 guestWifiPsw : Base64.decode(guest.static_password)   
-            }, () => {
-                this.setState({canSubmit : this.valid()})
             });
             return;
         }
@@ -241,7 +160,18 @@ export default class SetWifi extends React.Component {
     }
 
     render(){
-        const { guestWifi, hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, canSubmit,hostWifiNameTip,hostWifiPswTip,guestWifiNameTip,guestWifiPswTip } = this.state;
+        const { hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, hostWifiNameTip, hostWifiPswTip, guestWifiNameTip, guestWifiPswTip } = this.state;
+
+        const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
+           return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
+        });
+        console.log('checkName',checkName);
+        const checkPwd = ['hostWifiPswTip', 'guestWifiPswTip'].some(item => {       //判定Wi-Fi密码的合法性
+            return '' !== this.state[item];
+        });
+        console.log('checkPwd',checkPwd);
+        const disabled = checkName || checkPwd;
+
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
@@ -267,25 +197,25 @@ export default class SetWifi extends React.Component {
                             <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
                                 <span style={{fontSize: 16}}>客用Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（推荐开放给顾客使用）</span>
                                 </span>
-                                <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
+                                {/* <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked /> */}
                         </div>
                         <FormItem label="Wi-Fi名称" showErrorTip={guestWifiNameTip}>
-                            <Input value={guestWifiName} width={260} maxLength={32}  disabled={!guestWifi} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                            <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
                             <ErrorTip>{guestWifiNameTip}</ErrorTip>
                         </FormItem>
                         <FormItem label="Wi-Fi密码" showErrorTip={guestWifiPswTip}>
-                            <Input value={guestWifiPsw} width={260} maxLength={32} disabled={!guestWifi} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                            <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
                             <ErrorTip>{guestWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
-                    <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={!canSubmit} style={{width : "100%"}} >完成</Button>
+                    <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={disabled} style={{width : "100%"}} >完成</Button>
                     <div className="help">
                         <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
                     </div>
                 </div>
-                <Modal
+                {/* <Modal
                     visible={true}
                     maskStyle={{ visibility: this.state.visibile }}
                     closable={false}
@@ -305,7 +235,7 @@ export default class SetWifi extends React.Component {
                             <div className="ui-t2">设置完成，请重新连接您的无线网络</div>
                             <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
                             {
-                                this.state.guestWifi ? <div className="ui-t3">客用Wi-Fi：{this.state.guestWifiName}</div> : ''
+                                <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div>
                             }
                             <img className='ui-center' src={require('~/assets/images/qr.png')} style={{
                                 height: 100,
@@ -316,7 +246,7 @@ export default class SetWifi extends React.Component {
                             <div className="ui-tips">扫描二维码下载APP</div>
                         </div>
                     }
-                </Modal>
+                </Modal> */}
             </div> 
         );
     }
