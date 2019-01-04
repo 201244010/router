@@ -257,7 +257,7 @@ export default class Status extends React.Component {
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
-                        title="微信连Wi-Fi功能"
+                        title="微信连Wi-Fi"
                         checkable={true}
                         checked={enable}
                         onChange={this.switchChange}

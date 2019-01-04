@@ -562,7 +562,7 @@ export default class Home extends React.Component {
                     <li className='func-item search' style={{ padding: '10px 0px' }}>
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
-                            <h3>搜寻商米设备</h3>
+                            <h3>SUNMI Link</h3>
                             <p>一键连接附近商米设备</p>
                             <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
                         </div>

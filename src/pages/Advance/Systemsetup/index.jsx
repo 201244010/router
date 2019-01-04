@@ -16,7 +16,7 @@ export default class Systemsetup extends React.PureComponent {
     render(){
         return (
             <Tabs>
-                <TabPane tab="攻击防护" key="1"><Dosd /></TabPane>
+                <TabPane tab="安全设置" key="1"><Dosd /></TabPane>
                 <TabPane tab="修改管理密码" key="2"><ChangePassword /></TabPane>
                 <TabPane tab="系统升级" key="3"><SysUpgrade /></TabPane>
                 <TabPane tab="备份与恢复" key="4"><Backup /></TabPane>

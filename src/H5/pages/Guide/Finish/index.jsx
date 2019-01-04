@@ -50,7 +50,7 @@ export default class Finish extends React.PureComponent {
                     />
                     { ('1' === guest.enable) &&
                     <WifiInfo
-                        title='顾客Wi-Fi'
+                        title='客用Wi-Fi'
                         ssid={guest.ssid}
                         password={guest.password}
                         color='rgba(45,187,26,0.60)'

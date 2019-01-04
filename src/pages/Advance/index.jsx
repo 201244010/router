@@ -28,6 +28,12 @@ export default class Advance extends React.PureComponent {
                             <span>网速智能分配</span>
                         </div>
                     </NavLink>
+                    <NavLink to={match.path + "/wechat"} activeClassName="active">
+                        <div className="nav-item">
+                            <CustomIcon type="auth" size={28} />
+                            <span>微信连Wi-Fi</span>
+                        </div>
+                    </NavLink>
                     <NavLink to={match.path + "/whitelist"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="bootdevice" size={28}/>
@@ -38,12 +44,6 @@ export default class Advance extends React.PureComponent {
                         <div className="nav-item">
                             <CustomIcon type="blacklis" size={28}/>
                             <span>防蹭网</span>
-                        </div>
-                    </NavLink>
-                    <NavLink to={match.path + "/wechat"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="auth" size={28} />
-                            <span>微信连Wi-Fi</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/systemsetup"} activeClassName="active">

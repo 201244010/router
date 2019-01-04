@@ -57,8 +57,8 @@ export default class Guide extends React.Component {
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
 
                         {/**
-                         * 商户WiFi设置界面不保存配置（保存的话会导致手机WiFi断开），传递到顾客WiFi界面在保存
-                         * 通过 '/:wifi' 将商户WiFi设置界面数据传递到顾客WiFi界面
+                         * 商户WiFi设置界面不保存配置（保存的话会导致手机WiFi断开），传递到客用WiFi界面在保存
+                         * 通过 '/:wifi' 将商户WiFi设置界面数据传递到客用WiFi界面
                          */}
                         <Route path={`${match.path}/guest/:wifi`} component={Guest} />
 
@@ -68,7 +68,7 @@ export default class Guide extends React.Component {
                         <Redirect from={`${match.path}/guest`} to={`${match.path}/setwifi`}></Redirect>
 
                         {/**
-                         * 通过 '/:wifi' 将商户WiFi、顾客WiFi配置数据传递到完成界面
+                         * 通过 '/:wifi' 将商户WiFi、客用WiFi配置数据传递到完成界面
                          */}
                         <Route path={`${match.path}/finish/:wifi`} component={Finish} />
 

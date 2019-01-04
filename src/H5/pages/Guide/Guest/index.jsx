@@ -16,7 +16,7 @@ export default class Guest extends React.Component {
         super(props);
     }
 
-    guest = {};     // 顾客WiFi配置
+    guest = {};     // 客用WiFi配置
 
     state = {
         ssid: '',
@@ -53,12 +53,12 @@ export default class Guest extends React.Component {
     }
 
     /**
-     * laterSet: 不设置顾客WiFi
+     * laterSet: 不设置客用WiFi
      */
     submitData = async (laterSet = false) => {
         let data = {};
 
-        // 顾客WiFi配置
+        // 客用WiFi配置
         let guest;
         if (laterSet) {
             guest = this.guest;
@@ -104,7 +104,7 @@ export default class Guest extends React.Component {
     nextStep = () => {
         if ('' === this.state.password) {
             confirm({
-                content: '顾客Wi-Fi密码未设置，确定继续?',
+                content: '客用Wi-Fi密码未设置，确定继续?',
                 onOk: this.submitData,
             });
         } else {
@@ -142,7 +142,7 @@ export default class Guest extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='设置顾客Wi-Fi' tips='请设置您为顾客或客人开放的公共Wi-Fi名称与密码' />
+                <GuideHeader title='设置客用Wi-Fi' tips='请设置为顾客或客人开放的公共Wi-Fi名称与密码' />
                 <Loading visible={loading} content='正在保存Wi-Fi设置，请稍候...' />
                 <form>
                     <Form

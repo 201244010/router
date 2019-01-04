@@ -195,7 +195,7 @@ const FinishModal = (props) => {
             }>
                 <div className="backup-icon">
                     <CustomIcon color="#87D068" type="succeed" size={64} />
-                    <div className="backup-result">微信连Wi-Fi设置完成!</div>
+                    <div className="backup-result">设置完成!</div>
                 </div>
         </Modal>
     );

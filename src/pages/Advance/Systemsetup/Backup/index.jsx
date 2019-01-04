@@ -383,8 +383,8 @@ export default class Backup extends React.Component{
                     </section>
                     <section>
                         <ul className='backup-list'>
-                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、黑名单</Checkbox></li>
-                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>认证配置（微信认证、短信认证）</Checkbox></li>
+                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、防蹭网</Checkbox></li>
+                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>微信连Wi-Fi配置</Checkbox></li>
                         </ul>
                         <div className='func-btn'>
                             <Button onClick={this.postBackupLocal}>备份到本地</Button>

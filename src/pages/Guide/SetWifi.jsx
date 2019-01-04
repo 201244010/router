@@ -169,7 +169,7 @@ export default class SetWifi extends React.Component {
                 title: '提示：',
                 content: (this.state.hostWifiPsw.length === 0 ?'商户Wi-Fi' : '') + 
                 (this.state.hostWifiPsw.length === 0 && this.state.guestWifi && this.state.guestWifiPsw.length === 0 ? '、' : '')+
-                (this.state.guestWifi ? (this.state.guestWifiPsw.length === 0 ? '顾客Wi-Fi':'') : '') +'密码未设置，确定继续?' ,
+                (this.state.guestWifi ? (this.state.guestWifiPsw.length === 0 ? '客用Wi-Fi':'') : '') +'密码未设置，确定继续?' ,
                 onOk: this.dataSet,
                 onCancel(){   
 
@@ -203,7 +203,7 @@ export default class SetWifi extends React.Component {
             if(guestWifiName === hostWifiName){
                 ret = false;
                 this.setState({
-                    guestWifiNameTip: '商户、顾客Wi-Fi 不能相同',
+                    guestWifiNameTip: '商户、客用Wi-Fi 不能相同',
                 });
             }
         }
@@ -245,7 +245,7 @@ export default class SetWifi extends React.Component {
         return (
             <div className="setwifi">
                 <h2>设置无线网络</h2> 
-                <p className="ui-tips guide-tip">顾客Wi-Fi可开放给客人使用，保障隐私安全 </p>
+                <p className="ui-tips guide-tip">客用Wi-Fi可开放给客人使用，保障隐私安全 </p>
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
                         <div style={{marginBottom: 20}}>
@@ -265,7 +265,7 @@ export default class SetWifi extends React.Component {
                     <Form>
                         <div style={{marginBottom: 20}}>
                             <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
-                                <span style={{fontSize: 16}}>顾客Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（推荐开放给顾客使用）</span>
+                                <span style={{fontSize: 16}}>客用Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（推荐开放给顾客使用）</span>
                                 </span>
                                 <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked />
                         </div>
@@ -305,7 +305,7 @@ export default class SetWifi extends React.Component {
                             <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
                             <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
                             {
-                                this.state.guestWifi ? <div className="ui-t3">顾客Wi-Fi：{this.state.guestWifiName}</div> : ''
+                                this.state.guestWifi ? <div className="ui-t3">客用Wi-Fi：{this.state.guestWifiName}</div> : ''
                             }
                             <img className='ui-center' src={require('~/assets/images/qr.png')} style={{
                                 height: 100,
