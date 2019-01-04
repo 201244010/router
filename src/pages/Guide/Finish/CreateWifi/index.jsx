@@ -32,7 +32,7 @@ export default class CreateWifi extends React.Component {
         this.props.history.push("/guide/finish/userexperience");
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const val = window.sessionStorage.getItem('guide.setwifi');
         const { hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = JSON.parse(val);
 
@@ -41,24 +41,9 @@ export default class CreateWifi extends React.Component {
             hostWifiPsw: hostWifiPsw,
             guestWifiName: guestWifiName,
             guestWifiPsw: guestWifiPsw,
-        })
+        });
+
         let timeout = 10;
-        // let timeout = time;
-
-        // function refreshCount(){
-            
-        //     console.log(timeout);
-        //     if (timeout < 0) {   //倒计时小于时，去掉定时器
-        //         window.clearInterval(count);
-        //         this.getWireless();
-        //         return;
-        //     }
-        //     timeout = timeout - 1;
-        //     this.setState({
-        //         time: timeout,
-        //     });
-        // }
-
         let count = window.setInterval(() => {
             this.setState({ time: timeout});
             timeout = timeout - 1;
@@ -68,12 +53,10 @@ export default class CreateWifi extends React.Component {
                 this.getWireless();
             } 
         }, 1000);
-        
-        // if (0 > timeout) {
-        //     window.clearInterval(count);
-            
-        //     
-        // }    
+    }
+
+    componentWillUnmount() {
+        window.sessionStorage.removeItem('guide.setwifi');   //组件卸载时删除sessionStorage
     }
     render() {
         const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
@@ -88,9 +71,6 @@ export default class CreateWifi extends React.Component {
                     [<CustomIcon type='correct' color='#FB8632' size={32}></CustomIcon>,<p>由于Wi-Fi配置变更，请重新连接“{hostWifiName}”，体验更多功能</p>]
                     }  
                 </div>
-                {/* <div className='head'>
-                    <CustomIcon type='correct' color='#FB8632' size={32}></CustomIcon><p>正在为您创建Wi-Fi，请稍候(10s)...</p>
-                </div> */}
                 <ul className='body'>
                     <li>
                         <div className='title'> 

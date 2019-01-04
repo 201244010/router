@@ -100,34 +100,10 @@ export default class SetWifi extends React.Component {
         let {errcode} = response;
         if(errcode === 0){
             this.props.history.push(`/guide/finish/createwifi` + encodeURIComponent(param));
-            // setTimeout(async() => {
-            //     await common.fetchApi(
-            //         [{
-            //             opcode: 'WIRELESS_GET',
-            //         }]
-            //     ).catch(ex => {
-            //         if(ex !== ''){
-            //             this.setState({done: true});  
-            //         }}).then(
-            //                 async()=>{
-            //                 await common.fetchApi(
-            //                     [{
-            //                         opcode: 'WIRELESS_GET',
-            //                     }], 
-            //                     {},
-            //                     {
-            //                         loop: true,
-            //                         interval: 500,
-            //                         stop: resp => {resp!== 0},
-            //                     }
-            //                 );
-            //                 this.props.history.push("/home");
-            //             }
-            //         );
-            // }, 7000);
-            // return ;
+        } else {
+            message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
         }
-        message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
+        
     }
 
     submit = async ()=> {

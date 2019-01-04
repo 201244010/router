@@ -39,14 +39,18 @@ export default class UserExperience extends React.Component {
                 <div className='body'>
                     <ul>
                         <li onClick={this.setSpeed}>
-                            <CustomIcon size={80} color='#92ABF6' type="business"></CustomIcon>
+                            <div className='img'>
+                                <CustomIcon style={{margin: 13}} size={54} color='#92ABF6' type="networkspeeddistribution"></CustomIcon>
+                            </div>
                             <div className='discription'>
                                 <h4>网速智能分配</h4>
                                 <p>优先保障商家设备网速</p>
                             </div>
                         </li>
                         <li onClick={this.wechat}>
-                            <CustomIcon size={80} color='#99DD8B' type="auth"></CustomIcon>
+                            <div className='img'>
+                                <CustomIcon style={{margin: 13}} size={54} color='#99DD8B' type="auth"></CustomIcon>
+                            </div>
                             <div className='discription'>
                                 <h4>微信连Wi-Fi</h4>
                                 <p>为您轻松吸粉精准营销</p>
@@ -55,14 +59,18 @@ export default class UserExperience extends React.Component {
                     </ul>
                     <ul>
                         <li onClick={this.search}>
-                            <CustomIcon size={80} color='#F79D5C' type="networkspeeddistribution"></CustomIcon>
+                            <div className='img'>
+                                <CustomIcon style={{margin: 7}} size={66} color='#F79D5C' type="search"></CustomIcon>
+                            </div>
                             <div className='discription'>
                                 <h4>搜寻附近商米设备</h4>
                                 <p>商米设备一键入网</p>
                             </div>
                         </li>
                         <li onClick={this.management}>
-                            <CustomIcon size={80} color='#F9AFDD' type="blacklis"></CustomIcon>
+                            <div className='img'>
+                                <CustomIcon style={{margin: 13}} size={54} color='#F9AFDD' type="blacklis"></CustomIcon>
+                            </div>
                             <div className='discription'>
                                 <h4>联网设备管理</h4>
                                 <p>轻松设置上网权限</p>
