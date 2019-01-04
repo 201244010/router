@@ -75,12 +75,12 @@ export default class Welcome extends React.Component {
     }
 
     beforeUpload = (file) => {
-        let type = file.type;
-        if (type === "image/png" || type === "image/jpeg") {
+        let name = file.name;
+        if (/\.png$|\.jpe?g$/i.test(name)) {
             return true;
         }
 
-        message.error('只支持.jpg、.png后缀的图片');
+        message.error('只支持.jpg .jpeg .png格式的图片');
         return false;
     }
 
@@ -177,7 +177,7 @@ export default class Welcome extends React.Component {
                                 onChange={(file) => {
                                     this.handleUploadChange(file, 'logoImgList', 'logo_img');
                                 }}
-                                accept='.jpg,.png'
+                                accept='.jpg,.jpeg,.png'
                                 name='file'
                                 fileList={this.state.logoImgList}
                                 data={{ opcode: '0x2086' }}
@@ -191,11 +191,12 @@ export default class Welcome extends React.Component {
                             >
                                 <Button><Icon type="upload" />上传Logo图</Button>
                             </Upload>
-                            <p>支持扩展名：.jpg .png；最大上传大小：128KB</p>
+                            <p>图片格式：.jpg .jpeg .png；最大上传大小：128KB</p>
                             <Upload
                                 onChange={(file) => {
                                     this.handleUploadChange(file, 'bgImgList', 'bg_img');
                                 }}
+                                accept='.jpg,.jpeg,.png'
                                 name='file'
                                 fileList={this.state.bgImgList}
                                 data={{ opcode: '0x2087' }}
@@ -209,7 +210,7 @@ export default class Welcome extends React.Component {
                             >
                                 <Button><Icon type="upload" />上传背景图</Button>
                             </Upload>
-                            <p>支持扩展名：.jpg .png；最大上传大小：512KB</p>
+                            <p>图片格式：.jpg .jpeg .png；最大上传大小：512KB</p>
                         </div>
 
                         <label>Logo信息</label>
