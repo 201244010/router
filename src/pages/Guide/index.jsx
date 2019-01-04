@@ -26,13 +26,11 @@ export default class Guide extends React.Component {
         // speed: ['setpassword', 'setwan'],
         setwifi: ['setpassword', 'setwan', 'speed'],
         finish: ['setpassword', 'setwan', 'speed', 'setwifi'],
-        'finish/createwifi': ['setpassword', 'setwan', 'speed', 'setwifi'],
-        'finish/userexperience': ['setpassword', 'setwan', 'speed', 'setwifi'],
     };
 
     static getDerivedStateFromProps(nextProps){
         let { match } = nextProps, path = match.path, pathname = location.pathname;
-        let route = pathname.replace(path + '/', '');
+        let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
         console.log('route',route);
         return {
             activeRouteName : route
@@ -86,7 +84,7 @@ export default class Guide extends React.Component {
                         <span className="ui-ib">设置无线网络</span>
                     </li>
                     <li className="line"></li>
-                    <li className={this.initStepMenu('finish'|| 'finish/createwifi' || 'finish/userexperience')}>
+                    <li className={this.initStepMenu('finish')}>
                         <i className="ui-ib order-num">4</i>
                         <Icon type="correct" color="#fff" size={26} />
                         <span className="ui-ib">设置完成</span>

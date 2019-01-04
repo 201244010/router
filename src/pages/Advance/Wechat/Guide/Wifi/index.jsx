@@ -75,7 +75,7 @@ export default class Wifi extends React.Component {
         common.fetchApi(
             {
                 opcode: 'AUTH_ENABLE_MSG',
-                ssid: ssid
+                data: { ssid: ssid }
             }
         );
 

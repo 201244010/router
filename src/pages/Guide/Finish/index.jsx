@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import CreateWifi from './CreateWifi';
-import UserExperience from './UserExperience';
+import Applying from './Applying';
+import Success from './Success';
 
 export default class Finish extends React.Component {
     constructor(props) {
@@ -13,9 +13,9 @@ export default class Finish extends React.Component {
         
         return (
             <Switch>
-                <Route path={`${match.path}/createwifi`} component={CreateWifi} />
-                <Route path={`${match.path}/userexperience`} component={UserExperience} />
-                <Redirect from={match.path} to={`${match.path}/createwifi`}></Redirect>
+                <Route path={`${match.path}/applying`} component={Applying} />
+                <Route path={`${match.path}/success`} component={Success} />
+                <Redirect from={match.path} to={`${match.path}/applying`}></Redirect>
             </Switch>
         );
     }

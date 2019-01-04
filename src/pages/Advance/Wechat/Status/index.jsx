@@ -48,7 +48,7 @@ export default class Status extends React.Component {
             message.success(`配置生效`);
 
             if (enable) {
-                common.fetchApi({ opcode: 'AUTH_ENABLE_MSG', ssid: this.weixin.ssid });
+                common.fetchApi({ opcode: 'AUTH_ENABLE_MSG', data: { ssid: this.weixin.ssid }});
             }
         } else {
             this.setState({ enable: !enable });

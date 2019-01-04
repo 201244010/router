@@ -1,10 +1,9 @@
 import React from 'react';
-import { Icon } from 'antd';
 import CustomIcon from '~/components/Icon';
 
-import './createWifi.scss';
+import './applying.scss';
 
-export default class CreateWifi extends React.Component {
+export default class Applying extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -29,7 +28,7 @@ export default class CreateWifi extends React.Component {
                 stop: resp => {resp !== 0},
             }
         );
-        this.props.history.push("/guide/finish/userexperience");
+        this.props.history.push("/guide/finish/success");
     }
 
     componentDidMount() {
@@ -64,17 +63,16 @@ export default class CreateWifi extends React.Component {
         return (
             <div className='create-wifi'>
                 <div className='head'>
-                    { (time - 1) > -1?
-                    [<Icon type='loading' style={{fontSize: 32, color: '#FB8632'}} spin></Icon>,<p>正在为您创建Wi-Fi，请稍候({time}s)...</p>]
-                    // [<CustomIcon type='correct' color='#FB8632' size={32}></CustomIcon>,<p>正在为您创建Wi-Fi，请稍候({time}s)...</p>]
+                    { time >= 0 ?
+                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>正在为您创建Wi-Fi，请稍候({time}s)...</p>]
                     :
-                    [<CustomIcon type='correct' color='#FB8632' size={32}></CustomIcon>,<p>由于Wi-Fi配置变更，请重新连接“{hostWifiName}”，体验更多功能</p>]
+                    [<CustomIcon type='correct' color='#FB8632' size={32} />,<p>由于Wi-Fi配置变更，请重新连接“{hostWifiName}”，体验更多功能</p>]
                     }  
                 </div>
                 <ul className='body'>
                     <li>
                         <div className='title'> 
-                            <CustomIcon size={24} color='#FB8632' type="business"></CustomIcon>
+                            <CustomIcon size={24} color='#FB8632' type="business" />
                             <label>商户Wi-Fi</label>
                         </div>
                         <p>名称：{hostWifiName}</p>
@@ -82,7 +80,7 @@ export default class CreateWifi extends React.Component {
                     </li>
                     <li>
                         <div className='title'>
-                            <CustomIcon size={24} color='#4EC53F' type="customer"></CustomIcon>
+                            <CustomIcon size={24} color='#4EC53F' type="customer" />
                             <label>客用Wi-Fi</label>
                         </div>
                         <p>名称：{guestWifiName}</p>
