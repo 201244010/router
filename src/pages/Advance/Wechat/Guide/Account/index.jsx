@@ -139,7 +139,8 @@ export default class Account extends React.Component {
             <React.Fragment>
                 <div className='setup-content'>
                     <p className='help'>
-                        为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>），获得下方所需的信息，将其复制到此页面对应的输入框中
+                        这里需要填写您的微信公众号信息，顾客在连上客用Wi-Fi之后即可一键关注您的公众号。
+                        如不清楚如何获取下方信息，请按（<a href='javascrip:;' onClick={this.settingGuide}>微信公众平台设置指引</a>）操作
                     </p>
                     <GuideModal visible={visible} close={this.modalClose}/>
                     <Form style={{ margin: 0, padding: 0 }}>

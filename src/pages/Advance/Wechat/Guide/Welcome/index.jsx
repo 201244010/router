@@ -170,7 +170,7 @@ export default class Welcome extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>欢迎页是顾客手动选择Wi-Fi之后，自动弹出的页面，此页可展示您的品牌</p>
+                    <p className='help'>顾客在连接客用Wi-Fi时可以看到此欢迎页，您可以在此页展示自己的品牌</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <div className='file-upload'>
                             <Upload

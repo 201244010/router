@@ -139,7 +139,7 @@ export default class Wifi extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接</p>
+                    <p className='help'>设置顾客单次上网的最大时长，以及离店顾客网络闲置一定时间后自动断开</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>顾客上网时长限制</label>
                         <div className='form-item'>

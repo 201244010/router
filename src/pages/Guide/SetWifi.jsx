@@ -302,7 +302,7 @@ export default class SetWifi extends React.Component {
                         :
                         <div className="success">
                             <div style={{ marginBottom: 20 }}><CustomIcon size={80} color="#87d068" type="correct"></CustomIcon></div>
-                            <div className="ui-t2">设置完成，请重新连接你的无线网络</div>
+                            <div className="ui-t2">设置完成，请重新连接您的无线网络</div>
                             <div className="ui-t3">商户Wi-Fi：{this.state.hostWifiName}</div>
                             {
                                 this.state.guestWifi ? <div className="ui-t3">客用Wi-Fi：{this.state.guestWifiName}</div> : ''

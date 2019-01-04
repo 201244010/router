@@ -431,7 +431,7 @@ const LinkState = props =>{
     return(
         <div style={{width:260,textAlign:'center',marginTop:-15}}>
             <CustomIcon type="hint" size="large" color="#FF5500"/>
-            <h3 style={{marginBottom:25,marginTop:17}}>请检查你的网线是否插好</h3>
+            <h3 style={{marginBottom:25,marginTop:17}}>请检查您的网线是否插好</h3>
             <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>已经插好网线，再试一次</Button>
             <div className="help">
                     <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>跳过</a>
