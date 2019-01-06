@@ -131,14 +131,23 @@ export default class Guest extends React.Component {
 
     componentDidMount() {
         this.fetchData();
+        const params = this.props.match.params;
+        if (params && params.wifi) {
+            this.hostSSID = JSON.parse(decodeURIComponent(params.wifi)).host.band_2g.ssid;
+        }
     }
 
     render() {
-        const { ssid, ssidTip, password, passwordTip, loading } = this.state;
+        let { ssid, ssidTip, password, passwordTip, loading } = this.state;
 
         let disabled = [ssidTip, passwordTip].some(tip => {
             return (tip.length > 0);
         });
+
+        if( ssid === this.hostSSID){    //客用Wi-Fi与商户Wi-Fi名称相同的情况
+            disabled = true;
+            ssidTip = '客用Wi-Fi与商户Wi-Fi不能相同';
+        }
 
         return (
             <div>
