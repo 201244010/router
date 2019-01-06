@@ -35,7 +35,7 @@ export default class SetWifi extends React.Component {
     };
 
     back = ()=>{
-        this.props.history.push("/guide/speed");
+        this.props.history.push("/guide/setwan");
     };
 
     handleChange = (value, field) => {
@@ -163,11 +163,11 @@ export default class SetWifi extends React.Component {
         const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
            return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
         });
-        console.log('checkName',checkName);
+
         const checkPwd = ['hostWifiPswTip', 'guestWifiPswTip'].some(item => {       //判定Wi-Fi密码的合法性
             return '' !== this.state[item];
         });
-        console.log('checkPwd',checkPwd);
+
         const disabled = checkName || checkPwd;
 
         return (
