@@ -16,7 +16,7 @@ export default class QoS extends React.Component {
         let bwPie = (this.pieDom == null) ? echarts.init(this.ID) : this.pieDom;
         this.option = {
             legend: {
-                show: this.props.enable,
+                show: true, //this.props.enable,
                 orient: 'vertical',//竖直放置
                 icon: 'circle',//图标为圆形，默认是方形
                 align: 'auto',
@@ -81,7 +81,7 @@ export default class QoS extends React.Component {
             bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{val.toFixed(0) + '%'}</span></li>);
         });
 
-        cost = enable ? cost.toFixed(0) : '--';
+        cost = cost.toFixed(0);
 
         return (
             <li className='func-item bandwidth'>
@@ -93,7 +93,7 @@ export default class QoS extends React.Component {
                 {enable && online && (cost >= 80 ?
                     <h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4> :
                     <h4 className='nice'>当前网络畅通，可放心使用</h4>)}
-                {enable && <ul className='band-desc'>{bandList}</ul>}
+                {<ul className='band-desc'>{bandList}</ul>}
                 {!enable && <div className='qos-disabled'>网速智能分配功能未开启</div>}
                 <Button onClick={this.goQoS} className='set-band'>{enable ? '设置带宽' : '前往设置'}</Button>
             </li>
