@@ -23,7 +23,7 @@ export default class QoS extends React.Component {
                 itemGap: 10,//两个属性的距离
                 itemWidth: 10,//图标的宽度，对应有itemHeight为高度,圆形只有半径
                 x: '42%',//距离左侧位置
-                y: '20%',//距离上面位置
+                y: '25%',//距离上面位置
                 data: this.props.data.slice(0, -1),//属性名称
                 align: 'left',//图标与属性名的相对位置
                 selectedMode: false,//可选择
