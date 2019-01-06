@@ -146,7 +146,7 @@ export default class Guest extends React.Component {
 
         if( ssid === this.hostSSID){    //客用Wi-Fi与商户Wi-Fi名称相同的情况
             disabled = true;
-            ssidTip = '客用Wi-Fi与商户Wi-Fi不能相同';
+            ssidTip = '客用Wi-Fi名称与商户Wi-Fi名称不能相同';
         }
 
         return (
