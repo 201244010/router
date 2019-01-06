@@ -343,7 +343,7 @@ export default class Home extends React.Component {
                 cur_tx_bytes: 0,
                 cur_rx_bytes: 0
             };
-            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
+            let tf = traffics.find(item => item.ip === client.ip) || dft;
             let flux = tf.total_tx_bytes + tf.total_rx_bytes;
 
             let mode = modeMap[client.wifi_mode];
