@@ -35,7 +35,7 @@ export default class SetWifi extends React.Component {
     };
 
     back = ()=>{
-        this.props.history.push("/guide/speed");
+        this.props.history.push("/guide/setwan");
     };
 
     handleChange = (value, field) => {
@@ -53,29 +53,27 @@ export default class SetWifi extends React.Component {
                 tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
             }
         }
+
+        let tip = type[field].tip;
+
         if(value.length === 0 && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-            this.setState({
-                [field]: value,
-                [field + 'Tip']: ''
-            });
-        }else{
-            let tip = type[field].tip;
-            if('' === value.trim() && 7 < value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-                tip = '密码不能全为空格'
-            }
-            this.setState({ 
-                [field] : value, 
-                [field+'Tip']: tip,
-            });
-        }   
+            tip = '';
+        }
+
+        if('' === value.trim() && 8 <= value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
+            tip = '密码不能全为空格';
+        }
+
+        this.setState({
+            [field] : value,
+            [field+'Tip']: tip,
+        });
     }
 
     dataSet = async() =>{
         const { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw } = this.state;
         let data = { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw };
         let param = JSON.stringify(data);
-
-        window.sessionStorage.setItem('guide.setwifi', param);
 
         this.mainWireLess.host.band_2g.ssid = hostWifiName;
         this.mainWireLess.host.band_2g.password = Base64.encode(hostWifiPsw);
@@ -99,7 +97,7 @@ export default class SetWifi extends React.Component {
         
         let {errcode} = response;
         if(errcode === 0){
-            this.props.history.push(`/guide/finish/applying` + encodeURIComponent(param));
+            this.props.history.push(`/guide/finish/applying/` + encodeURIComponent(param));
         } else {
             message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
         }
@@ -160,17 +158,22 @@ export default class SetWifi extends React.Component {
     }
 
     render(){
-        const { hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, hostWifiNameTip, hostWifiPswTip, guestWifiNameTip, guestWifiPswTip } = this.state;
+        let { hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, hostWifiNameTip, hostWifiPswTip, guestWifiNameTip, guestWifiPswTip } = this.state;
 
         const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
            return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
         });
-        console.log('checkName',checkName);
+
         const checkPwd = ['hostWifiPswTip', 'guestWifiPswTip'].some(item => {       //判定Wi-Fi密码的合法性
             return '' !== this.state[item];
         });
-        console.log('checkPwd',checkPwd);
-        const disabled = checkName || checkPwd;
+
+        let disabled = checkName || checkPwd;
+
+        if( hostWifiName === guestWifiName){
+            hostWifiNameTip = guestWifiNameTip = '商户Wi-Fi名称与客用Wi-Fi名称不能相同';
+            disabled = true;
+        }
 
         return (
             <div className="setwifi">

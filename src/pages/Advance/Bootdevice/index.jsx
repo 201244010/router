@@ -330,7 +330,7 @@ export default class Bootdevice extends React.Component {
             }),
             onlineList: restClients.map(item => {
                 let mac = item.mac.toUpperCase();
-                let hostname = alias[mac] && alias[mac].alias || item.hostname;
+                let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
                 return {
                     name: hostname,
                     mac: mac,

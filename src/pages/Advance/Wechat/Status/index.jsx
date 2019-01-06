@@ -235,7 +235,7 @@ export default class Status extends React.Component {
             )
         }, {
             title: 'IP/MAC地址',
-            width: 230,
+            width: 220,
             render: (text, record) => (
                 <span>
                     {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
@@ -245,7 +245,7 @@ export default class Status extends React.Component {
         }, {
             title: '接入时间',
             dataIndex: 'access_time',
-            width: 215,
+            width: 200,
         }, {
             title: '操作',
             width: 94,

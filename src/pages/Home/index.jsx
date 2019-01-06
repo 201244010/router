@@ -343,7 +343,7 @@ export default class Home extends React.Component {
                 cur_tx_bytes: 0,
                 cur_rx_bytes: 0
             };
-            let tf = traffics.find(item => item.mac.toUpperCase() === client.mac) || dft;
+            let tf = traffics.find(item => item.ip === client.ip) || dft;
             let flux = tf.total_tx_bytes + tf.total_rx_bytes;
 
             let mode = modeMap[client.wifi_mode];
@@ -352,7 +352,7 @@ export default class Home extends React.Component {
             if ('not wifi' == client.wifi_mode) {
                 rssi = RSSI_GOOD;
             } else {
-                let wi = wifiInfo[mac] || {rssi:0};
+                let wi = wifiInfo[mac.toLowerCase()] || {rssi:0};
                 rssi = (wi.rssi >= 20) ? RSSI_GOOD : RSSI_BAD;
             }
 

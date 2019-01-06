@@ -253,6 +253,9 @@
       form {
         flex: none;
         width: auto;
+        .ui-icon-business:before{
+          vertical-align: middle;
+        }
         .ui-form-item-label{
           min-width: auto;
         }

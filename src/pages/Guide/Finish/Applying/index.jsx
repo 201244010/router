@@ -32,8 +32,9 @@ export default class Applying extends React.Component {
     }
 
     componentDidMount() {
-        const val = window.sessionStorage.getItem('guide.setwifi');
-        const { hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = JSON.parse(val);
+        const params = this.props.match.params;
+        const data = JSON.parse(decodeURIComponent(params.param));
+        const { hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = data;
 
         this.setState({
             hostWifiName: hostWifiName,
@@ -46,17 +47,14 @@ export default class Applying extends React.Component {
         let count = window.setInterval(() => {
             this.setState({ time: timeout});
             timeout = timeout - 1;
-            console.log(timeout);
-            if(timeout < 0){   
+
+            if(timeout < -1){
                 window.clearInterval(count);
                 this.getWireless();
             } 
         }, 1000);
     }
 
-    componentWillUnmount() {
-        window.sessionStorage.removeItem('guide.setwifi');   //组件卸载时删除sessionStorage
-    }
     render() {
         const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
 

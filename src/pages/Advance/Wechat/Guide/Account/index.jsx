@@ -179,7 +179,6 @@ export default class Account extends React.Component {
                 </div>
                 <section className="save-area">
                     <Button
-                        type="primary"
                         size="large"
                         onClick={this.preStep}
                     >上一步</Button>
@@ -222,8 +221,8 @@ const GuideModal = (props) => {
                         </Timeline.Item>
                         <Timeline.Item color={itemColor}>
                             <label>添加Wi-Fi设备</label>
-                            <p style={{marginBottom: 0}}>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：<b>SUNMI_XX_Guest）</b>。</p>
-                            <p style={{marginTop: 0, color: '#ADB1B9'}}>注：网络名（SSID）需与客用Wi-Fi名称保持一致，以保证微信连Wi-Fi功能正常，如填写不一致，在设置完成后将自动覆盖客用Wi-Fi名称。</p>
+                            <p>进入“<b>微信连Wi-Fi</b>”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：<b>SUNMI_XX_Guest）</b>。</p>
+                            <p style={{marginTop: -8, color: '#ADB1B9'}}>注：网络名（SSID）需与客用Wi-Fi名称保持一致，以保证微信连Wi-Fi功能正常，如填写不一致，在设置完成后将自动覆盖客用Wi-Fi名称。</p>
                             <img style={{width: 680, height: 220}} src={require('~/assets/images/add-wifi.png')} />
                         </Timeline.Item>
                         <Timeline.Item color={itemColor}>

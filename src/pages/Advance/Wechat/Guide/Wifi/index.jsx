@@ -149,19 +149,27 @@ export default class Wifi extends React.Component {
                     <p className='help'>设置顾客单次上网的最大时长，以及离店顾客网络闲置一定时间后自动断开</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>顾客上网时长限制</label>
-                        <div className='form-item'>
+                        <div className='form-item with-time-unit'>
                             <FormItem type="small" showErrorTip={onlineLimitTip} >
-                                <Input type="text" maxLength={4} placeholder={'请输入顾客上网时长'} value={onlineLimit} onChange={(value)=>this.onChange('onlineLimit', value)} />
-                                <span className='unit'>分钟</span>
+                                <Input type="text"
+                                    maxLength={4}
+                                    placeholder='请输入顾客上网时长'
+                                    value={onlineLimit}
+                                    onChange={(value)=>this.onChange('onlineLimit', value)}
+                                />
                                 <ErrorTip >{onlineLimitTip}</ErrorTip>
                             </FormItem>
                         </div>
-
                         <label>空闲断网时长</label>
-                        <div className='form-item'>
-                            <FormItem type="small" showErrorTip={idleLimitTip} style={{marginBottom: 112}}>
-                                <Input type="text" maxLength={4} placeholder={'请输入空闲断网时长'} value={idleLimit} onChange={(value)=>this.onChange('idleLimit', value)} />
-                                <span className='unit'>分钟</span>
+                        <div className='form-item with-time-unit'>
+                            <FormItem type="small" showErrorTip={idleLimitTip}>
+                                <Input
+                                    type="text"
+                                    maxLength={4}
+                                    placeholder='请输入空闲断网时长'
+                                    value={idleLimit}
+                                    onChange={(value)=>this.onChange('idleLimit', value)}
+                                />
                                 <ErrorTip >{idleLimitTip}</ErrorTip>
                             </FormItem>
                         </div>
@@ -169,7 +177,6 @@ export default class Wifi extends React.Component {
                 </div>
                 <section className="save-area">
                     <Button
-                        type="primary"
                         size="large"
                         onClick={this.preStep}
                     >上一步</Button>

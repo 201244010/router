@@ -53,8 +53,8 @@
                 position: relative;
                 .title{
                     position: absolute;
-                    top: 55px;
-                    left: 30px;
+                    top: 60px;
+                    left: 32px;
                     color: #333C4F;
                     text-align: center;
                     .percent{
@@ -64,6 +64,8 @@
                     .desc{
                         opacity: 0.7;
                         font-size: 12px;
+                        transform: scale(0.9);
+                        margin-top: -2px;
                     }
                 }
 
@@ -76,24 +78,26 @@
                 }
                 >h4{
                     position: absolute;
-                    font-size: 12px;
-                    color: #87D068;
                     width: 200px;
                     top: 10px;
                     left: 150px;
-                    line-height: 18px;
+                    line-height: 14px;
                 }
                 .warning{
+                    font-size: 12px;
                     color: #BF4C41;
                 }
                 .nice{
-                    top: 10px;
+                    top: 20px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #333C4F;
                 }
                 .band-desc{
                     position: absolute;
                     font-size: 12px;
                     left: 235px;
-                    top: 44px;
+                    top: 50px;
                     color: #9B9B9B;
                     label{
                         margin-right: 8px;
@@ -111,7 +115,7 @@
                 .set-band{
                     position: absolute;
                     left: 150px;
-                    top: 112px;
+                    top: 108px;
                 }
             }
             .internet{
