@@ -67,3 +67,19 @@
         }
     }
 }
+.QR_img{
+    position: absolute;
+    right: 28px;
+    bottom: 20px;
+    img{
+        height: 80px;
+        width: 80px;
+        border: 1px solid #ccc;
+        margin: 10px auto 5px;
+    }
+    p{
+        font-size: 14px;
+        color: #ADB1B9;
+        text-align: center;
+    }
+}

@@ -15,7 +15,7 @@ export default class Success extends React.Component {
     }
 
     render() {
-        return (
+        return ([
             <div className='user-experience'>
                 <div className='head'>
                     <h4>我们为您准备以下功能，开始体验吧</h4>
@@ -83,7 +83,11 @@ export default class Success extends React.Component {
                         </li>  
                     </ul>
                 </div>
+            </div>,
+            <div className='QR_img'>
+                <img src={require('~/assets/images/qr.png')} />
+                <p>扫码下载APP</p>
             </div>
-        );
+        ]);
     }
 }
