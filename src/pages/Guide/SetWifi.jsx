@@ -53,21 +53,21 @@ export default class SetWifi extends React.Component {
                 tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
             }
         }
+
+        let tip = type[field].tip;
+
         if(value.length === 0 && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-            this.setState({
-                [field]: value,
-                [field + 'Tip']: ''
-            });
-        }else{
-            let tip = type[field].tip;
-            if('' === value.trim() && 7 < value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-                tip = '密码不能全为空格'
-            }
-            this.setState({ 
-                [field] : value, 
-                [field+'Tip']: tip,
-            });
-        }   
+            tip = '';
+        }
+
+        if('' === value.trim() && 7 < value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
+            tip = '密码不能全为空格';
+        }
+
+        this.setState({
+            [field] : value,
+            [field+'Tip']: tip,
+        });
     }
 
     dataSet = async() =>{
@@ -158,7 +158,7 @@ export default class SetWifi extends React.Component {
     }
 
     render(){
-        const { hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, hostWifiNameTip, hostWifiPswTip, guestWifiNameTip, guestWifiPswTip } = this.state;
+        let { hostWifiName, hostWifiPsw, guestWifiName, guestWifiPsw, hostWifiNameTip, hostWifiPswTip, guestWifiNameTip, guestWifiPswTip } = this.state;
 
         const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
            return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
@@ -168,7 +168,12 @@ export default class SetWifi extends React.Component {
             return '' !== this.state[item];
         });
 
-        const disabled = checkName || checkPwd;
+        let disabled = checkName || checkPwd;
+
+        if( hostWifiName === guestWifiName){
+            hostWifiNameTip = guestWifiNameTip = '商户Wi-Fi与客用Wi-Fi不能相同';
+            disabled = true;
+        }
 
         return (
             <div className="setwifi">
