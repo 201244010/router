@@ -38,6 +38,9 @@
                 line-height: 28px;
                 font-weight: 550;
                 margin-bottom: 8px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
         }
         li:nth-child(1){
