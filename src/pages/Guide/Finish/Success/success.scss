@@ -23,39 +23,44 @@
             li{
                 width: 400px;
                 height: 160px;
-                padding: 40px 0 8px 20px;
                 margin-bottom: 32px;
                 position: relative;
                 display: inline-block;
                 background-color: #FFF;
                 border: 0.5px solid rgba(0,0,0,0.1);
                 border-radius: 12px;
-                .img{
-                    width: 80px;
-                    height: 80px;
-                    display: inline-block;
-                    text-align: center;
-                    vertical-align: middle;
-                }
-                .description{
-                    display: inline-block;
-                    margin-left: 12px;
-                    vertical-align: middle;
-                    color: #333C4F;
-                    h4{
-                        margin-bottom: 8px;
-                        font-size: 20px;
-                        font-weight: bold;
+                .func-item{
+                    cursor: pointer;
+                    padding: 40px 0 8px 20px;
+                    .img {
+                        width: 80px;
+                        height: 80px;
+                        display: inline-block;
+                        text-align: center;
+                        vertical-align: middle;
                     }
-                    p{
-                        font-size: 16px;
+
+                    .description {
+                        display: inline-block;
+                        margin-left: 12px;
+                        vertical-align: middle;
+                        color: #333C4F;
+                        h4 {
+                            margin-bottom: 8px;
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                        p {
+                            font-size: 16px;
+                        }
                     }
-                }
-                .background{
-                    position: absolute;
-                    right: 0;
-                    bottom: 0;
-                    opacity: 0.1;
+
+                    .background {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        opacity: 0.1;
+                    }
                 }
                 &:nth-child(1){   
                     margin-right: 80px;
