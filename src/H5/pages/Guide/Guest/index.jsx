@@ -131,6 +131,10 @@ export default class Guest extends React.Component {
 
     componentDidMount() {
         this.fetchData();
+        const params = this.props.match.params;
+        if (params && params.wifi) {
+            this.hostSSID = JSON.parse(decodeURIComponent(params.wifi)).host.band_2g.ssid;
+        }
     }
 
     render() {
@@ -140,13 +144,9 @@ export default class Guest extends React.Component {
             return (tip.length > 0);
         });
 
-        const params = this.props.match.params;     //客用Wi-Fi与商户Wi-Fi名称相同的情况
-        if (params && params.wifi) {
-            const wifi = JSON.parse(decodeURIComponent(params.wifi));
-            if( ssid === wifi.host.band_2g.ssid){
-                disabled = true;
-                ssidTip = '客用Wi-Fi与商户Wi-Fi不能相同';
-            }
+        if( ssid === this.hostSSID){    //客用Wi-Fi与商户Wi-Fi名称相同的情况
+            disabled = true;
+            ssidTip = '客用Wi-Fi与商户Wi-Fi不能相同';
         }
 
         return (

@@ -60,7 +60,7 @@ export default class SetWifi extends React.Component {
             tip = '';
         }
 
-        if('' === value.trim() && 7 < value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
+        if('' === value.trim() && 8 <= value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
             tip = '密码不能全为空格';
         }
 
