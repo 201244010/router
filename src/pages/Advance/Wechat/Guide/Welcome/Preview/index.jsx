@@ -17,7 +17,7 @@ export default class Preview extends React.Component {
                 <div className='preview-translate'>
                     <div
                         className='preview-content'
-                        style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),' + `url(${bgImg})` }}
+                        style={{ backgroundImage: `url(${bgImg})` }}
                     >
                         <div className='body'>
                             <div className='logo-img' style={{ backgroundImage: `url(${logoImg})` }}></div>
