@@ -170,7 +170,7 @@ export default class SetWifi extends React.Component {
 
         let disabled = checkName || checkPwd;
 
-        if( hostWifiName === guestWifiName){
+        if(hostWifiName.length > 0 && guestWifiName.length > 0 && hostWifiName === guestWifiName){
             hostWifiNameTip = guestWifiNameTip = '商户Wi-Fi名称与客用Wi-Fi名称不能相同';
             disabled = true;
         }
