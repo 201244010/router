@@ -6,6 +6,7 @@ import Form from "~/components/Form";
 import {Button, Modal} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '../../UpgradeDetect/Upgrade';
+import { get } from '~/assets/common/auth';
 
 export default class SysUpgrade extends React.Component{
     state = {
@@ -70,11 +71,38 @@ export default class SysUpgrade extends React.Component{
         })
     }
 
+    //后门弹窗的函数逻辑
+    // request(data, callback) {
+    //     $.ajax({
+    //         url: '/api',
+    //         type: 'POST',
+    //         dataType: 'json',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(data),
+    //         beforeSend: function(request) {
+    //             var token = window[TOKEN];
+    //             if (token) {
+    //                 request.setRequestHeader('XSRF-TOKEN', token);
+    //             }
+    //         },
+    //         success: callback
+    //     });
+    // }
+
+    // close = () => {
+    //     this.setState({backDoor: true});
+    // }
+
+    // startTelnet = () => {
+    //         var param = { "msg_id": "5678", "params": [{ "opcode": "5", "param": {} }] };
+    //         this.request(param);
+    // }
+
     render(){
         let Title = [
             <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />版本说明</span>
         ];
-        const {releaseLog, loading, disable, version, currentVersion, latestVersion} = this.state;
+        const {releaseLog, loading, disable, version, currentVersion, latestVersion, backDoor} = this.state;
 
         return (
             <div style={{paddingLeft : 60}}>
@@ -101,6 +129,28 @@ export default class SysUpgrade extends React.Component{
                         {releaseLog}
                     </pre>
                 </Modal>
+                {/* <Modal
+                    title={'升级小后门'}
+                    closable={false}
+                    visible={backDoor}
+                    maskClosable={false}
+                    centered={true}
+                    footer={<Button className="speed-btn" type="primary" onClick={this.close}>知道了</Button>} 
+                >
+                    <Button onClick={this.startTelnet}>开启Telnet</Button>
+                    <Upload
+                        onChange={this.postRecoverLocal}
+                        name='file'
+                        data={{ opcode: '4' }}
+                        multiple={false}
+                        headers={{
+                            'XSRF-TOKEN': get(),
+                        }}
+                        action={__BASEAPI__}
+                    >
+                        <Button>升级</Button>
+                    </Upload>
+                </Modal> */}
                 <Upgrade ref='Upgrade'/>
             </div>
         );
