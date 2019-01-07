@@ -104,7 +104,6 @@
     }
     .progress-tip {
       text-align: center;
-      width: 290px;
       h3 {
         margin: 20px auto 5px;
       }
@@ -142,6 +141,7 @@
       align-items: center;
       flex: 1;
       width: 100%;
+      margin-top: 3px;
       a {
         color: #ccc;
         width: 100%;
@@ -253,7 +253,7 @@
       form {
         flex: none;
         width: auto;
-        .ui-icon-business:before{
+        .ui-icon-business:before,.ui-icon-customer:before{
           vertical-align: middle;
         }
         .ui-form-item-label{
