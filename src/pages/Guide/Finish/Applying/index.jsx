@@ -48,9 +48,12 @@ export default class Applying extends React.Component {
             this.setState({ time: timeout});
             timeout = timeout - 1;
 
-            if(timeout < -1){
-                window.clearInterval(count);
+            if (timeout <= 0) {
                 this.getWireless();
+            }
+
+            if (timeout < -1) {
+                window.clearInterval(count);
             } 
         }, 1000);
     }
