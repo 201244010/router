@@ -6,7 +6,6 @@ import Form from "~/components/Form";
 import {Button, Modal} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '../../UpgradeDetect/Upgrade';
-import { get } from '~/assets/common/auth';
 
 export default class SysUpgrade extends React.Component{
     state = {
