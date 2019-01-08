@@ -76,9 +76,6 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        input{
-            overflow: hidden;
-        }
         &.focus {
             border-color : #FB8632;
             box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
