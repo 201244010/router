@@ -29,8 +29,6 @@ var program = require("commander");
 var fs = require("fs");
 var path = require('path');
 
-var re = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/; // 判断是否有汉字、中文标点符号的正则表达式
-
 
 Array.prototype.inarray = function (elem) {
     "use strict";
@@ -45,21 +43,28 @@ Array.prototype.inarray = function (elem) {
 
 function readFileContent(filePath) {
     var data = fs.readFileSync(filePath, { encoding: 'utf-8'});
+
+    // 去除多行注释
+    data = data.replace(/\/\*[\s\S]+?\*\//g, '');
+
+    // 去除单行注释
+    data = data.replace(/\/\/.*/g, '');
+
     var colomn = data.split("\n");
     var resultArray = [];
 
-    for (var item = 0; item < colomn.length; item++) {
-        var strs = colomn[item].match(/[\u4E00-\u9FA5\uFE30-\uFFA0]+/g);
-        //if (strs) {
-        if (re.test(colomn[item])) {
-            var result = {
-                colomn: item + 1,
-                //string: strs,
-                line: colomn[item].trim(),
-                translate: colomn[item].trim(),
-            }
 
-            resultArray.push(result);
+    // 匹配中午和中午标点符号 。 ？ ！ ， 、 ； ： “ ” ‘ ' （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ﹏ ￥
+    var reg = /([\u4E00-\u9FA5\u3002\uff1f\uff01\uff0c\u3001\uff1b\uff1a\u201c\u201d\u2018\u2019\uff08\uff09\u300a\u300b\u3008\u3009\u3010\u3011\u300e\u300f\u300c\u300d\ufe43\ufe44\u3014\u3015\u2026\u2014\uff5e\ufe4f\uffe5])+/g; // 判断是否有汉字、中文标点符号的正则表达式
+
+    for (var item = 0; item < colomn.length; item++) {
+        var match = colomn[item].match(reg);
+        if (match) {
+            match = match.join('x');
+            resultArray.push({
+                zh: match,
+                translate: '',
+            });
         }
     }
 

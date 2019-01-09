@@ -30,19 +30,19 @@ export default class Account extends React.Component {
         const check = {
             ssid:{
                 func: checkStr,
-                args: { who: 'SSID', min: 1, max: 32, type: 'english'},
+                args: { who: 'SSID', min: 1, max: 32 },
             },
             shopId:{
                 func: checkStr,
-                args: { who: 'ShopID', min: 1, max: 32, type: 'english'},
+                args: { who: 'ShopID', min: 1, max: 32 },
             },
             appId:{
                 func: checkStr,
-                args: { who: 'AppID', min: 1, max: 32, type: 'english'},
+                args: { who: 'AppID', min: 1, max: 32 },
             },
             secretKey:{
                 func: checkStr,
-                args: { who: 'SecretKey', min: 1, max: 32, type: 'english'},
+                args: { who: 'SecretKey', min: 1, max: 32 },
             },
         };
 
