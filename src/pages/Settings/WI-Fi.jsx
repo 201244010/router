@@ -14,9 +14,9 @@ const RadioGroup=Radio.Group;
 
 const errorMessage = {
     '-1001': '参数格式错误',
-    '-1002': '参数取值不合法',
-    '-1100': '设置WIFI:参数SSID不合法',
-    '-1101': '设置WIFI:参数PASSWORD不合法'
+    '-1002': '参数取值非法',
+    '-1100': 'Wi-Fi名称非法',
+    '-1101': 'Wi-Fi密码非法'
 };
 
 
