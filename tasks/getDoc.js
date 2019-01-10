@@ -28,6 +28,7 @@ const file_type = ['html', 'htm', 'js', 'jsx', 'json'];
 var program = require("commander");
 var fs = require("fs");
 var path = require('path');
+var writeExcel = require('./language')
 
 
 Array.prototype.inarray = function (elem) {
@@ -117,6 +118,7 @@ function commander() {
                 const output = pathName.replace(/[^0-9a-z]/gi, '');
                 fs.writeFileSync(`i18n-zh-${output}.json`, resultStr);
                 //console.log(resultStr);
+                writeExcel(`i18n-zh-${output}.json`);
             }
         })
     }
