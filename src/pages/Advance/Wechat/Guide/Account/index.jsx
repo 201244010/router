@@ -30,7 +30,7 @@ export default class Account extends React.Component {
         const check = {
             ssid:{
                 func: checkStr,
-                args: { who: 'SSID', min: 1, max: 32 },
+                args: { who: 'SSID', min: 1, max: 32, byte: true },
             },
             shopId:{
                 func: checkStr,

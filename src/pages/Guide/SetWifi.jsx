@@ -41,16 +41,16 @@ export default class SetWifi extends React.Component {
     handleChange = (value, field) => {
         const type = {
             hostWifiName: {
-                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' })
+                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true })
             }, 
             hostWifiPsw: {
-                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
+                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true })
             }, 
             guestWifiName: {
-                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' })
+                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true })
             }, 
             guestWifiPsw: {
-                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' })
+                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true })
             }
         }
 

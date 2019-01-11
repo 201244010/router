@@ -85,31 +85,31 @@ export default class WIFI extends React.Component {
         switch (name){
             case 'hostSsid24' : this.setState({
                 [name]:value,
-                hostSsid24Tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32 }),    
+                hostSsid24Tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, byte: true }),
             });
             break;
             case 'hostSsid24Password': this.setState({
-                hostSsid24PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+                hostSsid24PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }),
                 [name]:value
             });
             break;
             case 'hostSsid5' : this.setState({
-                hostSsid5Tip: checkStr(value, { who: 'Wi-Fi名称', min:1 , max: 32 }),
+                hostSsid5Tip: checkStr(value, { who: 'Wi-Fi名称', min:1 , max: 32, byte: true }),
                 [name]:value
             });
             break;
             case 'hostSsid5Password': this.setState({
-                hostSsid5PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }),
+                hostSsid5PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }),
                 [name]:value
             });
             break;
             case 'guestSsid' : this.setState({
-                guestSsidTip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                guestSsidTip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, byte: true }),
                 [name]:value
             });
             break;
             case 'guestStaticPassword': this.setState({
-                guestStaticPasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' }
+                guestStaticPasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }
                 ),
                 [name]:value
             });
