@@ -200,7 +200,7 @@ let checkStr = function(val, opt = {}){
         byte: false,  //判断是否按字节计算长度
     }, opt);
 
-    const { who, min, max, type } = opt;
+    const { who, min, max, type, byte } = opt;
 
     const checkMap = {
         hex: {
@@ -224,8 +224,8 @@ let checkStr = function(val, opt = {}){
     let lens = 0;
     if (byte) {
         let str = val.split('');
-        let arr = str.map(item => {return item.charCodeAt(0);});
-        for(i=0; i < arr.length; i++){
+        let arr = str.map(item => {return item.charCodeAt(0);});  //使用utf-8编码，获得字符串的编码值
+        for( var i = 0; i < arr.length; i++){
             let len = 0;
             if (arr[i] <= 0x7F) {       //判定字符串中每个字符的字节长度
                 len = 1;
@@ -237,7 +237,7 @@ let checkStr = function(val, opt = {}){
                 len = 4;
             }
 
-            lens = lens + len;          //每个字符字节长度累加，得到字符串的长度
+            lens += len;          //每个字符字节长度累加，得到字符串的长度
         }
     } else {
         lens = val.length;
