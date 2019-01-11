@@ -37,7 +37,7 @@ function writeExcel (filename) {
         zhCol.values = data;
         begin = end + 1;
     }
-    workbook.xlsx.writeFile(`language-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}.xlsx`).then(function() {
+    workbook.xlsx.writeFile(`language-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function() {
         console.log("xls file is written.");
     });
 }
