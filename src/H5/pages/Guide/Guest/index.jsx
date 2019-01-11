@@ -30,7 +30,7 @@ export default class Guest extends React.Component {
         const checkMap = {
             ssid: {
                 func: checkStr,
-                args: { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all' },
+                args: { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true },
             },
             password: {
                 func: (value) => {
@@ -40,7 +40,7 @@ export default class Guest extends React.Component {
                     } else if ('' == value.trim()) {
                         return 'Wi-Fi密码不能全为空格';
                     } else {
-                        return checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english' });
+                        return checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true });
                     }
                 },
             }

@@ -197,6 +197,7 @@ let checkStr = function(val, opt = {}){
         min: 0, 
         max: Number.POSITIVE_INFINITY,
         type: 'all',
+        byte: false,  //判断是否按字节计算长度
     }, opt);
 
     const { who, min, max, type } = opt;
@@ -216,16 +217,43 @@ let checkStr = function(val, opt = {}){
     };
     
     
-    if(!checkMap[type].reg.test(val)){
+    if (!checkMap[type].reg.test(val)) {
         return checkMap[type].tip;
     }
 
-    const len = val.length;
-    if(len === 0){
+    let lens = 0;
+    if (byte) {
+        let str = val.split('');
+        let arr = str.map(item => {return item.charCodeAt(0);});
+        for(i=0; i < arr.length; i++){
+            let len = 0;
+            if (arr[i] <= 0x7F) {       //判定字符串中每个字符的字节长度
+                len = 1;
+            } else if ( arr[i] <= 0x7FF) {
+                len = 2;
+            } else if (arr[i] <= 0xFFFF) {
+                len = 3;
+            } else {
+                len = 4;
+            }
+
+            lens = lens + len;          //每个字符字节长度累加，得到字符串的长度
+        }
+    } else {
+        lens = val.length;
+    }
+
+    if(lens === 0){
         return `请输入${who}`;
-    }else if(len < min){
+    }else if(lens < min){
+        if (byte) {
+            return `${who}长度不足`;
+        }
         return `${who}长度不能小于${min}位`;
-    }else if(len > max){
+    }else if(lens > max){
+        if (byte) {
+            return `${who}长度过长`;
+        }
         return `${who}长度不能超过${max}位`;
     }
 
