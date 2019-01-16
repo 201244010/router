@@ -1,37 +1,26 @@
-.time-zone-wrapper {
+.time-zone {
+  font-family: 'PingFangSC-Regular';
+  margin-top: 19px;
   padding-left: 60px;
-  p {
-    margin: 0;
-  }
-  .ant-radio-checked .ant-radio-inner {
-    border-color: #FB8632;
-  }
-
-  .ant-radio-wrapper:hover .ant-radio-inner {
-    border-color: #FB8632 !important;
+  .current-system-time {
+    font-size: 16px;
+    margin-bottom: 48px;
+    span{
+      font-weight: bolder;
+    }
   }
 
-  .ant-radio-inner:after {
-    background-color: #FB8632;
+  .system-time-choose {
+    .title {
+      margin-bottom: 16px;
+    }
   }
 
-  .item-wrapper {
-    margin-bottom: 16px;
-  }
-
-  .btn-wrapper {
-    .ant-btn {
-      padding: 0 44px;
-      background: #fb8632;
-      border-radius: 4px;
-      border-color: #fb8632;
-      color: #fff;
-      font-size: 14px;
-      height: 34px;
-      line-height: 34px;
-      &:hover {
-        border-color: #fb8632;
-      }
+  .item {
+    margin-bottom: 40px;
+    margin-top: 16px;
+    p{
+      color: #ADB1B9;
     }
   }
 }

@@ -108,14 +108,14 @@ const timezones = [
   ['CST-14', '(UTC+14)基里巴斯']
 ];
 
-// 生成关系表
-let MAP = {};
-timezones.map( item => MAP[item[0]] = 0);
+// // 生成关系表
+// let MAP = {};
+// timezones.map( item => MAP[item[0]] = 0);
 
-// 使时区值唯一，解决Antd中select要求value值唯一的问题
-timezones.map( item => {
-  MAP[item[0]]++;
-  item[0] = item[0] + ('$' + MAP[item[0]]);
-})
+// // 使时区值唯一，解决Antd中select要求value值唯一的问题
+// timezones.map( item => {
+//   MAP[item[0]]++;
+//   item[0] = item[0] + ('$' + MAP[item[0]]);
+// })
 
 export default timezones;
