@@ -38,6 +38,10 @@ export default class TimeZone extends React.Component {
                     hostTime: getNowTimeStr(),
                 });
             }, 1000);
+        } else {
+            this.setState({
+                hostTime: '',
+            });
         }
     };
 
