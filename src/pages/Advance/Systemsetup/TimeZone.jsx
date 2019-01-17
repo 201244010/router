@@ -2,12 +2,12 @@ import React from 'react';
 import { Radio, Select, Button } from 'antd';
 import {getNowTimeStr} from '../../../utils';
 import timeZones from '../../../assets/common/timezone';
-import './TimeZone.scss';
+import './timezone.scss';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const children = timeZones.map(item => {
-    return <Option value={item[1]} key={item[1]}>{item[0]+item[1]}</Option>
+    return <Option value={item[0]}>{item[1]}</Option>
 });
 
 export default class TimeZone extends React.Component {
@@ -31,29 +31,21 @@ export default class TimeZone extends React.Component {
             enable: e.target.value
         });
 
+        clearInterval(this.hostTimeCounter);
         if ('0' === e.target.value) {             //切换为手动设置时，启动定时器
-            clearInterval(this.hostTimeCounter);
             this.hostTimeCounter = setInterval(() => {
                 this.setState({
                     hostTime: getNowTimeStr(),
                 });
             }, 1000);
-        } else {
-            clearInterval(this.hostTimeCounter);  //切换为网络获取时，删除定时器
         }
     };
 
-    DataSet = () => {
-        let { systemTime, timezone, enable } = this.state;
+    dataSet = () => {
+        let { timezone, enable } = this.state;
         let data = {};
 
         if ('1' === enable) {                               //网络自动获取
-            let i = 0;                                      //while 循环获取timezone对应的值
-            while(timezone !== timeZones[i][1]){
-            i++;
-            }
-            timezone = timeZones[i][0];
-
             data = {
                 time: {
                     enable: enable,
@@ -62,12 +54,41 @@ export default class TimeZone extends React.Component {
             };
         }
 
-        if ('0' === enable){                                    //同步主机时间
+        if ('0' === enable) {                                               //同步主机时间
             let time = new Date();
-            // let localTime = time.getTime();                  //带时区偏移的时间戳，单位毫秒
-            let localOffset = time.getTimezoneOffset();         //时区偏移量，单位分钟
-            // let utc = localTime + localOffset*60000;         //时间戳
-            timezone = 'CST' + (localOffset/60).toString();     //主机的时区
+            let localOffset = time.getTimezoneOffset();                     //时区偏移量，单位分钟
+            let hour = Math.abs(parseInt(localOffset/60)).toString();       //时区偏移量，小时的部分
+            let minute = Math.abs(parseInt(localOffset%60)).toString();     //时区偏移量，分钟的部分
+
+            if (0 !== localOffset ) {             //构建主机时区的格式，如 'GMT-03:30'、'GMT'、'GMT+04:30'
+                if (localOffset > 0) {
+                    if (1 === hour.length) {
+                        hour = '+0' + hour;
+                    }
+
+                    if (2 === hour.length) {
+                        hour = '+' + hour;
+                    }
+                }
+
+                if (localOffset < 0) {
+                    if (1 === hour.length) {
+                        hour = '-0' + hour;
+                    }
+
+                    if (2 === hour.length) {
+                        hour = '-' + hour;
+                    }
+                }
+
+                if (1 === minute.length) {
+                    minute = '0' + minute;
+                }
+
+                timezone = 'GMT' + hour + ':' + minute;
+            } else {
+                timezone = 'GMT';
+            }
 
             data = {
                 time: {
@@ -82,10 +103,10 @@ export default class TimeZone extends React.Component {
     }
 
     onSave = async() => {
-        const data = this.DataSet();
+        let data = this.dataSet();
 
         this.setState({loading: true});
-        const response = await common.fetchApi(
+        let response = await common.fetchApi(
             {
                 opcode: 'TIME_SET',
                 data: data,
@@ -95,39 +116,34 @@ export default class TimeZone extends React.Component {
 
         let {errcode} = response;
         if (0 === errcode) {
-            this._fetchTimeConfig();
+            this.getTime();
         }
     };
 
-    _fetchTimeConfig = async() => {
-        clearInterval(this.systemTimeCounter);
+    getTime = async() => {
         clearInterval(this.hostTimeCounter);
-        const response = await common.fetchApi({ opcode: 'TIME_GET'});
-        const {errcode, data} = response;
+        clearInterval(this.addSelfTime);
+        let response = await common.fetchApi({ opcode: 'TIME_GET'});
+        let {errcode, data} = response;
 
         if (0 === errcode) {
-            let { timezone, enable } = data[0].result.time;
-
-            timezone = timezone || 'CST+8';
-
-            let i = 0;                              //通过while循环转换，获取timezone对应的值
-            while(timezone !== timeZones[i][0]){
-                i++;
-            }
-            timezone = timeZones[i][1];
+            let { timezone, enable, time } = data[0].result.time;
+            timezone = timezone || 'GMT';
+            time = new Date(time);
+            let systemTime = time.getTime();
 
             this.setState({
                 enable: enable,
                 timezone: timezone,
+                systemTime: systemTime,
             });
 
-            this.systemTimeCounter = setInterval(async() => {       //定时器显示系统时间
-                const resp = await common.fetchApi({ opcode: 'TIME_GET'});
-                const {data} = resp;
+            this.addSelfTime = setInterval(() => {            //定时器显示系统时间，1秒自加一次
+                systemTime = systemTime + 1000;
                 this.setState({
-                    systemTime: data[0].result.time.time,
+                    systemTime: systemTime,
                 });
-            }, 1000);
+            },1000);
 
             if ('0' === enable) {                            //获取本机时间的情况
                 this.hostTimeCounter = setInterval(() => {
@@ -140,16 +156,54 @@ export default class TimeZone extends React.Component {
     };
 
     componentDidMount() {
-        this._fetchTimeConfig();
+        this.getTime();
+        this.systemTimeCounter = setInterval(async() => {                   //定时器5秒获取一次系统时间
+            let resp = await common.fetchApi({ opcode: 'TIME_GET'});
+
+            let {errcode, data} = resp;
+            if (0 === errcode) {
+                clearInterval(this.addSelfTime);
+                let time = new Date(data[0].result.time.time);
+                let systemTime = time.getTime();
+                this.setState({
+                    systemTime: systemTime,
+                });
+
+                this.addSelfTime = setInterval(() => {                      //定时器显示系统时间，1秒自加一次
+                    systemTime = systemTime + 1000;
+                    this.setState({
+                        systemTime: systemTime,
+                    });
+                },1000);
+            }
+        }, 5000);
     }
 
-    componentWillUnmount() {
+    exchangeTime = time =>{           //显示系统时间，将时间戳转换为格式为 2019-01-17 14:24:05 的时间
+        function paddingLeftZero(num) {
+            return num < 10 ? `0${num}` : `${num}`;
+        }
+
+        let exchange = new Date(time);
+        const year = exchange.getFullYear();
+        const month = paddingLeftZero(exchange.getMonth() + 1);
+        const date = paddingLeftZero(exchange.getDate());
+        const hour = paddingLeftZero(exchange.getHours());
+        const minute = paddingLeftZero(exchange.getMinutes());
+        const second = paddingLeftZero(exchange.getSeconds());
+
+        return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+    }
+
+    componentWillUnmount() {                    //组件卸载，清除所有定时器
         clearInterval(this.hostTimeCounter);
         clearInterval(this.systemTimeCounter);
+        clearInterval(this.addSelfTime);
     }
 
     render() {
-        const { systemTime, enable, timezone, loading, hostTime } = this.state;
+        let { systemTime, enable, timezone, loading, hostTime } = this.state;
+        systemTime = this.exchangeTime(systemTime);
 
         return (
             <div className="time-zone">
