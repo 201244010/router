@@ -1,6 +1,5 @@
 
 import React from 'react';
-
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import {Button, Modal} from 'antd';
