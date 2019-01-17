@@ -61,7 +61,7 @@ export default class TimeZone extends React.Component {
             let minute = Math.abs(parseInt(localOffset%60)).toString();     //时区偏移量，分钟的部分
 
             if (0 !== localOffset ) {             //构建主机时区的格式，如 'GMT-03:30'、'GMT'、'GMT+04:30'
-                if (localOffset > 0) {
+                if (localOffset < 0) {            //偏移量小于0，则处于东时区
                     if (1 === hour.length) {
                         hour = '+0' + hour;
                     }
@@ -71,7 +71,7 @@ export default class TimeZone extends React.Component {
                     }
                 }
 
-                if (localOffset < 0) {
+                if (localOffset > 0) {          //偏移量大于0，则处于西时区
                     if (1 === hour.length) {
                         hour = '-0' + hour;
                     }
@@ -213,8 +213,8 @@ export default class TimeZone extends React.Component {
                 <div className="system-time-choose">
                     <p className="title">系统时间获取方式</p>
                     <RadioGroup onChange={this.onTypeChange} value={enable}>
-                        <Radio value={'1'}>通过网络获取（推荐）</Radio>
-                        <Radio value={'0'}>获取本机时间</Radio>
+                        <Radio value='1'>通过网络获取（推荐）</Radio>
+                        <Radio value='0'>获取本机时间</Radio>
                     </RadioGroup>
                 </div>
                 {
