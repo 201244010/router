@@ -5,11 +5,14 @@ import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
 import Loading from '~/components/Loading';
+import intl from '~/i18n/intl';
+
+const MODULE = 'lanset';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 const error = {
-    '-1061' : '局域网IP地址与WAN口IP地址冲突' ,
-    '-1001' : '下发参数错误',
+    '-1061' : intl.get(MODULE, 0) ,
+    '-1001' : intl.get(MODULE, 1),
 };
 
 export default class Lan extends React.Component {
@@ -42,26 +45,26 @@ export default class Lan extends React.Component {
             },
             ipv4 : {
                 func : checkIp,
-                args : {who:'IP地址'},
+                args : {who: intl.get(MODULE, 2)},
             },
             mask : {
                 func : checkMask,
-                args : {who : '子网掩码'},
+                args : {who : intl.get(MODULE, 3)},
             },
             startip : {
                 func : checkIp,
-                args : {who : '起始IP地址'},
+                args : {who : intl.get(MODULE, 4)},
             },
             endip : {
                 func : checkIp,
-                args : {who : '结束IP地址'},
+                args : {who : intl.get(MODULE, 5)},
             },
             leasetime : {
                 func : checkRange,
                 args : {
                     min : 2,
                     max : 1440,
-                    who : '地址租期',
+                    who : intl.get(MODULE, 6),
                 }
             }
         };
@@ -69,13 +72,13 @@ export default class Lan extends React.Component {
         tip = valid[key].func(val, valid[key].args);
 
         if ('startip' !== key){
-            startipTip = checkIp(this.state.startip, {who : '起始IP地址'});
+            startipTip = checkIp(this.state.startip, {who : intl.get(MODULE, 4)});
         } else {
             startipTip = tip;
         }
 
         if ('endip' !== key) {
-            endipTip = checkIp(this.state.endip, {who : '结束IP地址'})
+            endipTip = checkIp(this.state.endip, {who : intl.get(MODULE, 5)})
         } else {
             endipTip = tip;
         }
@@ -107,7 +110,7 @@ export default class Lan extends React.Component {
                 let range = `(${minStr} - ${maxStr})`;
                 if (!checkSameNet(st.ipv4, st.startip, st.mask)) {
                     this.setState({ 
-                        startipTip: '地址池与局域网IP应处于同一网段' + range,
+                        startipTip: intl.get(MODULE, 7) + range,
                         disabled: true 
                     });
                     return;
@@ -115,7 +118,7 @@ export default class Lan extends React.Component {
 
                 if (!checkSameNet(st.ipv4, st.endip, st.mask)) {
                     this.setState({ 
-                        endipTip: '地址池与局域网IP应处于同一网段' + range,
+                        endipTip: intl.get(MODULE, 7) + range,
                         disabled: true
                     });
                     return;
@@ -123,7 +126,7 @@ export default class Lan extends React.Component {
 
                 if (transIp(st.startip) >= transIp(st.endip)) {
                     this.setState({ 
-                        endipTip: '结束IP需大于起始IP',
+                        endipTip: intl.get(MODULE, 8),
                         disabled: true
                     });
                     return;
@@ -137,9 +140,9 @@ export default class Lan extends React.Component {
 
     submit = async () => {
         await Modal.warning({
-            title: '提示',
-            content: <p>局域网IP地址、子网掩码或地址池发生变更，静态地址可能失效<br/>注：如设置完成后无法上网，请断开无线连接后重新连接</p>,
-            okText: '知道了',
+            title: intl.get(MODULE, 9),
+            content: <p>{intl.get(MODULE, 10)}<br/>{intl.get(MODULE, 11)}</p>,
+            okText: intl.get(MODULE, 12),
             centered: true,
             onOk: this.submitAll
         });
@@ -166,7 +169,8 @@ export default class Lan extends React.Component {
             return;
         }
 
-        message.error(`获取局域网配置指令异常[${error[errcode] || errcode}]`);
+        //message.error(`获取局域网配置指令异常[${error[errcode] || errcode}]`);
+        message.error(intl.get(MODULE, 13, {error, errcode}));
     }
 
     submitAll = async () => {
@@ -209,11 +213,12 @@ export default class Lan extends React.Component {
                 }, 15000);
             }
             Loading.show({duration : 20});
-            message.success('配置生效,15秒后跳转',4);
+            // message.success('配置生效,15秒后跳转',4);
+            message.success(intl.get(MODULE, 14),4);
             return;
         }else{
             Loading.close();
-            message.error(`配置失败![${ error[errcode] || errcode }]` );
+            message.error(intl.get(MODULE, 15, {error, errcode}));
         }
     }
 
@@ -227,15 +232,15 @@ export default class Lan extends React.Component {
         <div className="lan-settting">
                 <Form>
                     <section className="content-item" style={{marginTop: 9}}>
-                        <PanelHeader title="局域网IP地址" />
-                        <label style={{ marginTop: 24 }}>IP地址</label>
+                        <PanelHeader title={intl.get(MODULE, 16)} />
+                        <label style={{ marginTop: 24 }}>{intl.get(MODULE, 17)}</label>
                         <FormItem showErrorTip={ipv4Tip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 inputs={[{ value: ipv4[0], maxLength: 3 }, { value: ipv4[1], maxLength: 3 }, { value: ipv4[2], maxLength: 3 }, { value: ipv4[3], maxLength: 3 }]}
                                 onChange={value => this.onChange(value, 'ipv4')} />
                             <ErrorTip>{ipv4Tip}</ErrorTip>
                         </FormItem>
-                        <label>子网掩码</label>
+                        <label>{intl.get(MODULE, 18)}</label>
                         <FormItem showErrorTip={maskTip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 inputs={[{ value: mask[0], maxLength: 3 }, { value: mask[1], maxLength: 3 }, { value: mask[2], maxLength: 3 }, { value: mask[3], maxLength: 3 }]}
@@ -244,8 +249,8 @@ export default class Lan extends React.Component {
                         </FormItem>
                     </section>
                     <section className="content-item">
-                        <PanelHeader title="DHCP服务" checkable={true} checked={enable} onChange={value => this.onChange(value, 'enable')} />
-                        <label style={{ marginTop: 24 }}>起始IP地址</label>
+                        <PanelHeader title={intl.get(MODULE, 19)} checkable={true} checked={enable} onChange={value => this.onChange(value, 'enable')} />
+                        <label style={{ marginTop: 24 }}>{intl.get(MODULE, 4)}</label>
                         <FormItem showErrorTip={startipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 disabled={!enable}
@@ -253,7 +258,7 @@ export default class Lan extends React.Component {
                                 onChange={value => this.onChange(value, 'startip')} />
                             <ErrorTip>{startipTip}</ErrorTip>
                         </FormItem>
-                        <label>结束IP地址</label>
+                        <label>{intl.get(MODULE, 5)}</label>
                         <FormItem showErrorTip={endipTip} style={{ width: 320 }}>
                             <InputGroup size="small"
                                 disabled={!enable}
@@ -261,22 +266,22 @@ export default class Lan extends React.Component {
                                 onChange={value => this.onChange(value, 'endip')} />
                             <ErrorTip>{endipTip}</ErrorTip>
                         </FormItem>
-                        <label>地址租期</label>
+                        <label>{intl.get(MODULE, 20)}</label>
                         <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320, marginBottom: 0 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 , opacity: 0.65 }}>分钟</label>
+                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 , opacity: 0.65 }}>{intl.get(MODULE, 21)}</label>
                             <Input
                                 type='text'
                                 disabled={!enable}
                                 value={leasetime}
                                 onChange={value => this.onChange(value, 'leasetime')}
-                                placeholder="请输入租期时间（2～1440）"
+                                placeholder={intl.get(MODULE, 22)}
                                 maxLength={4} />
                             <ErrorTip>{leasetimeTip}</ErrorTip>
                         </FormItem>
                     </section>
                 </Form>
                 <div className="save">
-                    <Button disabled={disabled} loading={loading} style={{ width: 320 }} onClick={this.submit} size="large" type="primary">保存</Button>
+                    <Button disabled={disabled} loading={loading} style={{ width: 320 }} onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)}</Button>
                 </div>
         </div>
         );

@@ -4,7 +4,9 @@ import { Button } from 'antd';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
 import 'echarts/lib/component/legend';
+import intl from '~/i18n/intl';
 
+const MODULE = 'qos';
 export default class QoS extends React.Component {
     constructor(props) {
         super(props);
@@ -78,7 +80,7 @@ export default class QoS extends React.Component {
         total.forEach(item => {
             let val = parseFloat(item.value);
             cost += val;
-            bandList.push(<li key={item.name}><label>带宽使用占比</label><span>{val.toFixed(0) + '%'}</span></li>);
+            bandList.push(<li key={item.name}><label>{intl.get(MODULE, 0)}</label><span>{val.toFixed(0) + '%'}</span></li>);
         });
 
         cost = cost.toFixed(0);
@@ -87,15 +89,15 @@ export default class QoS extends React.Component {
             <li className='func-item bandwidth'>
                 <div className='title'>
                     <div className='percent'>{cost + '%'}</div>
-                    <div className='desc'>下行带宽使用率</div>
+                    <div className='desc'>{intl.get(MODULE, 1)}</div>
                 </div>
                 <div className='pie' ref={ID => this.ID = ID} style={{ height: 120, width: 320 }}></div>
                 {enable && online && (cost >= 80 ?
-                    <h4 className='warning'>当前网络较为拥挤，建议将重要设备添加到优先队列</h4> :
-                    <h4 className='nice'>当前网络畅通，可放心使用</h4>)}
+                    <h4 className='warning'>{intl.get(MODULE, 2)}</h4> :
+                    <h4 className='nice'>{intl.get(MODULE, 3)}</h4>)}
                 {<ul className='band-desc'>{bandList}</ul>}
-                {!enable && <div className='qos-disabled'>网速智能分配功能未开启</div>}
-                <Button onClick={this.goQoS} className='set-band'>{enable ? '设置带宽' : '前往设置'}</Button>
+                {!enable && <div className='qos-disabled'>{intl.get(MODULE, 4)}</div>}
+                <Button onClick={this.goQoS} className='set-band'>{enable ? intl.get(MODULE, 5) : intl.get(MODULE, 6)}</Button>
             </li>
         )
     }

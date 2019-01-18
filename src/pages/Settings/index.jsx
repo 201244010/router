@@ -10,7 +10,9 @@ import Network from './Network';
 
 import './settings.scss';
 
+import intl from '~/i18n/intl';
 
+const MODULE = 'settings';
 export default class Setting extends React.Component {
     constructor(props){
         super(props);
@@ -24,19 +26,19 @@ export default class Setting extends React.Component {
                     <NavLink to={match.path + "/wifi"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="wifiset" size={28} />
-                            <span>Wi-Fi设置</span>
+                            <span>{intl.get(MODULE, 0)}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/network"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="browser" size={28} />
-                            <span>上网设置</span>
+                            <span>{intl.get(MODULE, 1)}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/lan"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="lanset" size={28} />
-                            <span>局域网设置</span>
+                            <span>{intl.get(MODULE, 2)}</span>
                         </div>
                     </NavLink>
                 </nav>

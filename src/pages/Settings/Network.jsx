@@ -5,15 +5,18 @@ import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import intl from '~/i18n/intl';
+
+const MODULE = 'network';
 
 const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
 const err = {
-    '-1001' : '参数非法' ,
-    '-1002' : '数据值不符合要求',
-    '-1061' : 'WAN口IP地址与局域网IP地址冲突'
+    '-1001' : intl.get(MODULE, 0) ,
+    '-1002' : intl.get(MODULE, 1),
+    '-1061' : intl.get(MODULE, 2)
 }
 
 export default class NETWORK extends React.Component {
@@ -69,39 +72,39 @@ export default class NETWORK extends React.Component {
         let valid = {
             ipv4:{
                 func: checkIp,
-                who:'IP地址',
+                who: intl.get(MODULE, 3),
             },
             subnetmask:{
                 func: checkMask,
-                who:'子网掩码',
+                who: intl.get(MODULE, 4),
             },
             gateway:{
                 func: checkIp,
-                who:'默认网关',
+                who: intl.get(MODULE, 5),
             },
             staticDns:{
                 func: checkIp,
-                who:'首选DNS',
+                who: intl.get(MODULE, 6),
             },
             dhcpDns:{
                 func: checkIp,
-                who:'首选DNS',
+                who: intl.get(MODULE, 6),
             },
             pppoeDns:{
                 func: checkIp,
-                who:'首选DNS',
+                who: intl.get(MODULE, 6),
             },
             staticDnsbackup:{
                 func: checkIp,
-                who:'备选DNS',
+                who: intl.get(MODULE, 7),
             },
             dhcpDnsbackup:{
                 func: checkIp,
-                who:'备选DNS',
+                who: intl.get(MODULE, 7),
             },
             pppoeDnsbackup:{
                 func: checkIp,
-                who:'备选DNS',
+                who: intl.get(MODULE, 7),
             },
         }
         let tip = valid[key].func(val, {who : valid[key].who});
@@ -121,7 +124,7 @@ export default class NETWORK extends React.Component {
     handleAccountChange = value => {
         this.setState({ 
             pppoeAccount: value,
-            pppoeAccountTip: checkStr( value, { who: 'PPPOE 账号', min: 1, max: 64 } )
+            pppoeAccountTip: checkStr( value, { who: intl.get(MODULE, 8), min: 1, max: 64 } )
          }, () => {
             this.setState({
                 disabled: !this.checkParams()
@@ -145,7 +148,7 @@ export default class NETWORK extends React.Component {
     handlePasswordChange = value => {
         this.setState({ 
             pppoePassword: value,
-            pppoePasswordTip: checkStr( value, { who: 'PPPOE 密码', min: 1, max: 32, type: 'english'} )
+            pppoePasswordTip: checkStr( value, { who: intl.get(MODULE, 9), min: 1, max: 32, type: 'english'} )
          }, () => {
             this.setState({
                 disabled : !this.checkParams()
@@ -220,7 +223,7 @@ export default class NETWORK extends React.Component {
                 if(pppoeType === 'manual'){
                     if(this.checkSameDns(pppoeDns,pppoeDnsbackup) && pppoeDnsbackup.every(item => {return item.length !== 0})){
                         this.setState({
-                            pppoeDnsbackupTip : '备选DNS不能与首选DNS相同'
+                            pppoeDnsbackupTip : intl.get(MODULE, 10)
                         });
                         return false;
                     }
@@ -250,7 +253,7 @@ export default class NETWORK extends React.Component {
                 }
                 if(this.checkSameDns(staticDns,staticDnsbackup) && staticDnsbackup.every(item => {return item.length !== 0})){
                     this.setState({
-                        staticDnsbackupTip : '备选DNS不能与首选DNS相同'
+                        staticDnsbackupTip : intl.get(MODULE, 10)
                     });
                     return false;
                 }
@@ -262,7 +265,7 @@ export default class NETWORK extends React.Component {
                 if (dhcpType === 'manual'){
                     if(this.checkSameDns(dhcpDns,dhcpDnsbackup) && dhcpDnsbackup.every(item => {return item.length !== 0})){
                         this.setState({
-                            dhcpDnsbackupTip : '备选DNS不能与首选DNS相同'
+                            dhcpDnsbackupTip : intl.get(MODULE, 10)
                         });
                         return false;
                     }
@@ -329,7 +332,7 @@ export default class NETWORK extends React.Component {
                 disabled: false,
                 loading: false,
             });
-            message.error( 'IP地址与默认网关不能相同' );
+            message.error( intl.get(MODULE, 11) );
             return ;
         }
         if(!checkSameNet(this.state.ipv4,this.state.gateway,this.state.subnetmask)){
@@ -337,7 +340,7 @@ export default class NETWORK extends React.Component {
                 disabled: false,
                 loading: false,
             });
-            message.error( 'IP地址与默认网关需在同一网段上' );
+            message.error( intl.get(MODULE, 12) );
             return ;
         }
         await common.fetchApi(
@@ -349,12 +352,12 @@ export default class NETWORK extends React.Component {
             let { errcode } = refs;
             if (errcode === 0){
                 this.setState({ loading: false });
-                message.success(`配置生效`);
+                message.success(intl.get(MODULE, 13));
                 this.getNetInfo();
                 return;
             }
             this.setState({ loading: false });
-            message.error(`配置失败![${err[errcode] || errcode}]`);
+            message.error(intl.get(MODULE, 14, {errcode, error}));
         })
     }
 
@@ -410,14 +413,14 @@ export default class NETWORK extends React.Component {
 
             return;
         }
-        message.error(`信息获取失败[${err[errcode] || errcode}]`);
+        message.error(intl.get(MODULE, 15, {errcode, error}));
     }
 
     updateNetStatus = (wan) => {
         const diagType = {
-            dhcp: '自动获取IP（DHCP）',
-            pppoe: '宽带拨号上网（PPPoE）',
-            static: '手动输入IP（静态IP）',
+            dhcp: intl.get(MODULE, 16),
+            pppoe: intl.get(MODULE, 17),
+            static: intl.get(MODULE, 18),
         };
 
         let info = wan.info,
@@ -429,7 +432,7 @@ export default class NETWORK extends React.Component {
         }).join(', ');
 
         this.setState({
-            onlineStatus: online ? '已联网' : '未联网',
+            onlineStatus: online ? intl.get(MODULE, 19) : intl.get(MODULE, 20),
             dialType: diagType[type],
             infoIp: ipv4 === "" ? '0.0.0.0' : ipv4,
             infoGateway: gateway === "" ? '0.0.0.0' : gateway,
@@ -469,25 +472,25 @@ export default class NETWORK extends React.Component {
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item" style={{marginBottom : 0}}>
-                        <PanelHeader title="当前上网信息" checkable={false} checked={true} />
+                        <PanelHeader title={intl.get(MODULE, 21)} checkable={false} checked={true} />
                         <div className='network-info'>
-                            <ul className="ui-mute">联网状态:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 22)}</ul>
                             <label className="oneline">{onlineStatus}</label>
                         </div>
                         <div className='network-info'>
-                            <ul className="ui-mute">上网方式:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 23)}</ul>
                             <label className="oneline">{dialType}</label>
                         </div>
                         <div className='network-info'>
-                            <ul className="ui-mute">IP地址:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 24)}</ul>
                             <label className="oneline">{infoIp}</label>
                         </div>
                         <div className='network-info'>
-                            <ul className="ui-mute">子网掩码:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 25)}</ul>
                             <label className="oneline">{infoMask}</label>
                         </div>
                         <div className='network-info'>
-                            <ul className="ui-mute">默认网关:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 26)}</ul>
                             <label className="oneline">{infoGateway}</label>
                         </div>
                         <div className='network-info' style={{marginBottom: 23}}>    
@@ -496,13 +499,13 @@ export default class NETWORK extends React.Component {
                         </div>
                     </section>
                     <section className="wifi-setting-item">
-                        <PanelHeader title="上网设置" checkable={false} checked={true} />
+                        <PanelHeader title={intl.get(MODULE, 27)} checkable={false} checked={true} />
                         <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
-                            <label>上网方式</label>
+                            <label>{intl.get(MODULE, 28)}</label>
                             <Select value={type} style={{ width: 320, marginBottom: 32}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
-                                <Option value='pppoe'>宽带拨号上网（PPPoE）</Option>
-                                <Option value='dhcp'>自动获取IP（DHCP）</Option>
-                                <Option value='static'>手动输入IP（静态IP）</Option>
+                                <Option value='pppoe'>{intl.get(MODULE, 29)}</Option>
+                                <Option value='dhcp'>{intl.get(MODULE, 30)}</Option>
+                                <Option value='static'>{intl.get(MODULE, 31)}</Option>
                             </Select>
                         </div>
                         {
@@ -524,7 +527,7 @@ export default class NETWORK extends React.Component {
                             dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
                         }
                         {
-                            type === 'pppoe' ?  <div><label>服务名(可选)</label>
+                            type === 'pppoe' ?  <div><label>{intl.get(MODULE, 32)}</label>
                             <FormItem key="pppoeservice" type="small" style={{ width : 320}}>
                                 <Input maxLength={64} type="text" value={service} onChange={this.handleServiceChange}/>
                             </FormItem></div> : ''
@@ -559,7 +562,7 @@ export default class NETWORK extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                    <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>保存</Button>
+                    <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)}</Button>
                 </section>
             </div>
         );
@@ -569,21 +572,21 @@ export default class NETWORK extends React.Component {
 const PPPoE = props => {
     return [
     <div key="pppoe" className="wifi-settings">
-        <label>账号</label>
+        <label>{intl.get(MODULE, 35)}</label>
         <FormItem showErrorTip={props.pppoeAccountTip} key="pppoessid" type="small" style={{ width : 320}}>
             <Input type="text" value={props.pppoeAccount} maxLength={64} onChange={props.handleAccountChange} />
             <ErrorTip>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>
-        <label>密码</label>
+        <label>{intl.get(MODULE, 36)}</label>
         <FormItem showErrorTip={props.pppoePasswordTip} key="pppoepassword" type="small" style={{ width : 320}}>
             <Input type="password" disabled={props.hostSsidPasswordDisabled} maxLength={32} 
             value={props.pppoePassword} onChange={props.handlePasswordChange} />
             <ErrorTip>{props.pppoePasswordTip}</ErrorTip>
         </FormItem>
-        <label>DNS配置</label>
+        <label>{intl.get(MODULE, 37)}</label>
         <RadioGroup className='radio-choice' key="pppoedns" onChange={props.onPppoeRadioChange} value={props.pppoeType}>
-            <Radio style={{display:'inline-block'}} className="label-in" value='auto'>自动设置</Radio>
-            <Radio style={{display:'inline-block'}} className="label-in" value='manual'>手动设置</Radio>
+            <Radio style={{display:'inline-block'}} className="label-in" value='auto'>{intl.get(MODULE, 38)}</Radio>
+            <Radio style={{display:'inline-block'}} className="label-in" value='manual'>{intl.get(MODULE, 39)}</Radio>
         </RadioGroup>
     </div>
     ]; 
@@ -592,10 +595,10 @@ const PPPoE = props => {
 const Dhcp = props => {
     return [
         <div key="dhcp" className="wifi-settings">
-            <label>DNS配置</label>
+            <label>{intl.get(MODULE, 40)}</label>
             <RadioGroup key="dhcpdns" className='radio-choice' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
-                <Radio style={{display:'inline-block'}} className="label-in" value='auto'>自动设置</Radio>
-                <Radio style={{display:'inline-block'}} className="label-in" value='manual'>手动设置</Radio>
+                <Radio style={{display:'inline-block'}} className="label-in" value='auto'>{intl.get(MODULE, 41)}</Radio>
+                <Radio style={{display:'inline-block'}} className="label-in" value='manual'>{intl.get(MODULE, 42)}</Radio>
             </RadioGroup>
         </div>
     ];
@@ -604,21 +607,21 @@ const Dhcp = props => {
 const Static = props => {
     return [
         <div key="static" className="wifi-settings">
-            <label>IP地址</label>
+            <label>{intl.get(MODULE, 43)}</label>
             <FormItem key='ipv4' showErrorTip={props.ipv4Tip} style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : props.ipv4[0], maxLength : 3}, {value : props.ipv4[1], maxLength : 3}, {value : props.ipv4[2], maxLength : 3}, {value : props.ipv4[3], maxLength : 3}]} 
                     onChange={value => props.onChange(value, 'ipv4')} />
                 <ErrorTip>{props.ipv4Tip}</ErrorTip>
                 </FormItem>
-            <label>子网掩码</label>
+            <label>{intl.get(MODULE, 44)}</label>
             <FormItem key='subnetmask' showErrorTip={props.subnetmaskTip} style={{ width : 320}}>
                 <InputGroup                                                                     
                     inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                     onChange={value => props.onChange(value, 'subnetmask')} />
                 <ErrorTip>{props.subnetmaskTip}</ErrorTip>
             </FormItem>
-            <label>默认网关</label>
+            <label>{intl.get(MODULE, 45)}</label>
             <FormItem key='gateway' showErrorTip={props.gatewayTip} style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
@@ -639,14 +642,14 @@ class Dns extends React.Component  {
         const props = this.props;
         return (
             <div className="wifi-settings">
-                <label>首选DNS</label>
+                <label>{intl.get(MODULE, 46)}</label>
                 <FormItem key={props.dnsname} showErrorTip={props.dnsTip} style={{ width : 320}}>
                     <InputGroup
                         inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
                         onChange={value => props.onChange(value, props.dnsname)} />
                     <ErrorTip>{props.dnsTip}</ErrorTip>
                 </FormItem>
-                <label>备选DNS(选填)</label>
+                <label>{intl.get(MODULE, 47)}</label>
                 <FormItem key={props.dnsbackupname} showErrorTip={props.dnsbackupTip} style={{ width : 320}}>
                     <InputGroup
                         inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
