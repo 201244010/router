@@ -187,10 +187,9 @@ class InputGroup extends React.Component {
         // 自动focus到下一个Input
         const maxLen = target.getAttribute('maxLength');
         if (goNext || (maxLen && val.length >= maxLen)) {
-            let next = target.parentNode.nextElementSibling;
+            let next = target.nextElementSibling;
             if (next) {
-                next = next.nextElementSibling;
-                next.querySelector('.ui-input-group-item').focus();
+                next = next.nextElementSibling.focus();
             }
         }
     }
@@ -240,10 +239,9 @@ class InputGroup extends React.Component {
     handleKeyDown = e => {
         // BackSpace
         if ('' === e.target.value && 8 === e.which) {
-            let previous = e.target.parentNode.previousElementSibling;
+            let previous = e.target.previousElementSibling;
             if (previous) {
-                previous = previous.previousElementSibling;
-                previous.querySelector('.ui-input-group-item').focus();
+                previous = previous.previousElementSibling.focus();
             }
         }
     }
