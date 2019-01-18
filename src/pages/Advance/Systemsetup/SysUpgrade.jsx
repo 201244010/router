@@ -7,6 +7,7 @@ import CustomIcon from '~/components/Icon';
 import Upgrade from '../../UpgradeDetect/Upgrade';
 
 const MODULE = 'sysupgrade';
+let num = 0;
 
 export default class SysUpgrade extends React.Component{
     state = {
@@ -72,11 +73,32 @@ export default class SysUpgrade extends React.Component{
         })
     }
 
+    manualUpgrade = () =>{
+        clearInterval(this.onClickTimer);
+        num++;
+        this.onClickTimer = setInterval(() => {
+            num--;
+            if (0 === num) {
+                clearInterval(this.onClickTimer);
+            }
+        }, 2000);
+
+        if (num >= 5) {
+            this.setState({manual: true});
+        }
+    }
+
+    manualCancle = () => {
+        this.setState({manual: false});
+    }
+
+    openTelnet
+
     render(){
         let Title = [
             <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)/*_i18n:版本说明*/}</span>
         ];
-        const {releaseLog, loading, disable, version, currentVersion, latestVersion} = this.state;
+        const {releaseLog, loading, disable, version, currentVersion, latestVersion, manual} = this.state;
 
         return (
             <div style={{paddingLeft : 60}}>
@@ -87,7 +109,7 @@ export default class SysUpgrade extends React.Component{
                 </Form>
                 <div style={{height :　44, marginTop : 20}}>
                     <ul className="ui-mute">{intl.get(MODULE, 3)/*_i18n:当前版本*/}:</ul>
-                    <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{currentVersion}</label>
+                    <label className="oneline" style={{marginLeft : 10, color : 'black'}} onClick={this.manualUpgrade}>{currentVersion}</label>
                 </div>
                 {
                     (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>{intl.get(MODULE, 4)/*_i18n:当前已是最新版本，无需升级*/}</div>
@@ -102,6 +124,17 @@ export default class SysUpgrade extends React.Component{
                     <pre className="head-content">
                         {releaseLog}
                     </pre>
+                </Modal>
+                <Modal
+                    title='开启Telnet及手动升级'
+                    visible={manual}
+                    closable={false}
+                    maskClosable={false}
+                    centered={true}
+                    footer={<Button className="speed-btn" type="primary" onClick={this.manualCancle}>知道了</Button>}
+                >
+                    <Button type="primary" onClick={this.openTelnet}>开启Telnet</Button>
+                    
                 </Modal>
                 <Upgrade ref='Upgrade'/>
             </div>
