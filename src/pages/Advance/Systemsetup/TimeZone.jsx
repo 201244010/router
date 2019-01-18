@@ -1,8 +1,10 @@
 import React from 'react';
 import { Radio, Select, Button } from 'antd';
 import {getNowTimeStr} from '../../../utils';
-import timeZones from '../../../assets/common/timezone';
+import timeZones from '~/assets/common/timezone';
 import './timezone.scss';
+
+const MODULE = 'timezone';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
@@ -212,13 +214,13 @@ export default class TimeZone extends React.Component {
         return (
             <div className="time-zone">
                 <p className="current-system-time">
-                    当前系统时间：<span>{systemTime}</span>
+                    {intl.get(MODULE, 0)}<span>{systemTime}</span>
                 </p>
                 <div className="system-time-choose">
-                    <p className="title">系统时间获取方式</p>
+                    <p className="title">{intl.get(MODULE, 1)}</p>
                     <RadioGroup onChange={this.onTypeChange} value={enable}>
-                        <Radio value='1'>通过网络获取（推荐）</Radio>
-                        <Radio value='0'>获取本机时间</Radio>
+                        <Radio value='1'>{intl.get(MODULE, 2)}</Radio>
+                        <Radio value='0'>{intl.get(MODULE, 3)}</Radio>
                     </RadioGroup>
                 </div>
                 {
@@ -229,11 +231,11 @@ export default class TimeZone extends React.Component {
                             </Select>
                         </div> :
                         <div className="item">
-                            <p className=''>当前本机时间：{hostTime}</p>
+                            <p className=''>{intl.get(MODULE, 4)}{hostTime}</p>
                         </div>
                 }
                 <div className="btn">
-                    <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>保存</Button>
+                    <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)}</Button>
                 </div>
             </div>
         );

@@ -4,10 +4,10 @@ import axios from 'axios';
 import {message} from 'antd';
 import React from 'react';
 import loading from '~/components/Loading';
-// import timersManager from './timersManager';
-// import TIMEZONE from './timezone';
 import {stringify} from 'qs';
 import { get, clear } from '~/assets/common/auth';
+
+const MODULE = 'common';
 
 const {assign} = Object;
 const noop = () => {
@@ -176,7 +176,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 }
 
                 if (error.toString().indexOf('Network Error') > -1 && !options.ignoreErr) {
-                    message.error('网络异常，请检查');
+                    message.error(intl.get(MODULE, 0));
                 }
 
                 return reject(error);

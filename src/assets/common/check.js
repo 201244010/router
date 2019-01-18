@@ -1,5 +1,3 @@
-import intl from '~/i18n/intl';
-
 const MODULE = 'check';
 const { assign } = Object;
 
@@ -52,7 +50,7 @@ let checkIpFormat = (ip, opt = {}) => {
 
     valid = valid && (4 === ip.length);
 
-    return valid ? '' : intl.get(MODULE, 4, {who});
+    return valid ? '' : intl.get(MODULE, 4, {who: opt.who});
 }
 
 let checkIp = (ip, opt = {}) => {

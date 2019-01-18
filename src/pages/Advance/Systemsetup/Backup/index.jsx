@@ -6,7 +6,7 @@ import {Checkbox, Button, Modal, Radio, Upload, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 import { get } from '~/assets/common/auth';
-import intl from '~/i18n/intl';
+
 
 const MODULE = 'backup';
 const {FormItem, Input} = Form;

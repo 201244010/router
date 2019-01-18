@@ -6,7 +6,7 @@ import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
-import intl from '~/i18n/intl';
+
 
 const MODULE = 'bandwidth';
 

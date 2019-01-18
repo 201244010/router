@@ -1,5 +1,5 @@
 import React from 'react';
-import intl from '~/i18n/intl';
+
 import './agreement.scss';
 
 const MODULE = 'privacy';

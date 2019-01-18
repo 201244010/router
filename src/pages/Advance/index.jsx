@@ -11,7 +11,7 @@ import Blacklist from './Blacklist';
 import Bootdevice from './Bootdevice';
 import Bandwidth from './Bandwidth';
 import Systemsetup from './Systemsetup';
-import intl from '~/i18n/intl';
+
 
 const MODULE = 'advance';
 

@@ -5,7 +5,7 @@ import Logo from '~/components/Logo';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
-import intl from '~/i18n/intl';
+
 
 const MODULE = 'bootdevice';
 
