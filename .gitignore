@@ -4,4 +4,4 @@ node_modules
 .debug.json
 dist
 .idea/*
-
+.DS_Store
