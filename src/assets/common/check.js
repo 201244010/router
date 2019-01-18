@@ -1,15 +1,18 @@
+import intl from '~/i18n/intl';
+
+const MODULE = 'check';
 const { assign } = Object;
 
 let checkNum = (num) => {
     if (false == /^-?\d+$/.test(num) || /^0\d/.test(num)){
-        return '请输入正确的数字';
+        return intl.get(MODULE, 0);
     };
 
     return '';
 }
 
 let checkRange = (num, opt = {}) => {
-    opt = assign({ min: -Math.pow(2, 32), max: Math.pow(2, 32), who: '数字' }, opt);
+    opt = assign({ min: -Math.pow(2, 32), max: Math.pow(2, 32), who: intl.get(MODULE, 1) }, opt);
     let {min, max, who} = opt;
 
     let errStr = checkNum(num, opt);
@@ -19,7 +22,7 @@ let checkRange = (num, opt = {}) => {
 
     num = (typeof num === 'string') ? parseInt(num, 10) : num;
     if (!(num >= min && num <= max)) {
-        return `${who}范围必须在${min}-${max}之间`;
+        return intl.get(MODULE, 2, {who, min, max});
     }
 
     return '';

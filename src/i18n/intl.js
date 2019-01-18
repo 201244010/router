@@ -5,9 +5,9 @@ export const init = (lang, locales) => intl.init({
   locales
 });
 
-export const get = (key, variables) => intl.get(key, variables);
+export const get = (module='', key='', variables) => intl.get(`${module}${key}`, variables);
 
-export const getHTML = (key, variables) => intl.getHTML(key, variables);
+export const getHTML = (module='', key='', variables) => intl.get(`${module}${key}`, variables);
 
 export const determineLocale = (options) => intl.determineLocale(options);
 
