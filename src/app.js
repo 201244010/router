@@ -3,10 +3,17 @@ import "babel-polyfill";       // 解决兼容性问题
 import React from "react";
 import ReactDOM from 'react-dom';
 
+import { getLang } from '~/i18n';
+import intl from '~/i18n/intl';
+import locales from '~/i18n/locales';
+
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_H5, PAGE_STYLE_WEB } from './utils';
 
 import Web from './pages/index.js';     // PC Web页面
 import H5 from './H5';       // H5页面
+
+// 设置语言
+intl.init(getLang(), locales);
 
 let web = PAGE_STYLE_WEB;
 try {
