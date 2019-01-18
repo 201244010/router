@@ -92,7 +92,9 @@ export default class SysUpgrade extends React.Component{
         this.setState({manual: false});
     }
 
-    openTelnet
+    openTelnet = () => {
+        //var param = { "msg_id": "5678", "params": [{ "opcode": "5", "param": {} }] };
+    }
 
     render(){
         let Title = [
