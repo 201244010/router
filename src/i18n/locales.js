@@ -593,6 +593,7 @@ export default {
 		"systemsetup3": "备份与恢复",
 		"systemsetup4": "重启路由器",
 		"systemsetup5": "恢复出厂设置",
+		"systemsetup6": "时区/时间",
 		"reboot.file": "src/pages/Advance/Systemsetup/Reboot.jsx",
 		"reboot0": "路由器重启失败",
 		"reboot1": "提示",
