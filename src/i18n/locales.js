@@ -625,7 +625,7 @@ export default {
 		"sysupgrade4": "当前已是最新版本，无需升级",
 		"sysupgrade5": "立即更新",
 		"sysupgrade6": "知道了",
-		"sysupgrade7": "最新版本",
+		"sysupgrade7": "最新版本:",
 		"sysupgrade8": "（版本说明）",
 		"unauthorizedlayout.file": "src/pages/Authorize/UnauthorizedLayout.jsx",
 		"unauthorizedlayout0": "这是登录页",
