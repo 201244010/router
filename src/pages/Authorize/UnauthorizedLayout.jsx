@@ -1,8 +1,10 @@
 
 import React from 'react';
+import intl from '~/i18n/intl';
 
+const MODULE = 'unauthorizedlayout';
 
 export default function (props){
-    return <div>Unauthorize 这是登录页</div>
+    return <div>{intl.get(MODULE, 0)}</div>
 };
 
