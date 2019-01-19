@@ -661,7 +661,7 @@ export default {
 		"diagnose29": "未发现问题",
 		"diagnose30": "立即返回",
 		"downloadpage.file": "src/pages/DownloadPage/index.jsx",
-		"downloadpage0": "商米助手",
+		"downloadpage0": "商米助手APP",
 		"downloadpage1": "下载商米助手APP，支持本地和远程管理路由器，随时随地查看店铺设备状态",
 		"downloadpage2": "扫码下载",
 		"downloadpage3": "远程管理",
