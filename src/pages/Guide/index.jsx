@@ -9,8 +9,11 @@ import SetWan from './SetWan';
 import SetWifi from './SetWifi';
 import Finish from './Finish';
 import Icon from '~/components/Icon';
+import intl from '~/i18n/intl';
 
 import './guide.scss';
+
+const MODULE = 'guide';
 
 export default class Guide extends React.Component {
     constructor(props){
@@ -62,13 +65,13 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('setpassword')}>
                         <i className="ui-ib order-num">1</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置管理密码</span>
+                        <span className="ui-ib">{intl.get(MODULE, 0)}</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwan')}>
                         <i className="ui-ib order-num">2</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置上网参数</span>
+                        <span className="ui-ib">{intl.get(MODULE, 1)}</span>
                     </li>
                     {/* <li className="line"></li>
                     <li className={this.initStepMenu('speed')}>
@@ -80,13 +83,13 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('setwifi')}>
                         <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置无线网络</span>
+                        <span className="ui-ib">{intl.get(MODULE, 2)}</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('finish')}>
                         <i className="ui-ib order-num">4</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置完成</span>
+                        <span className="ui-ib">{intl.get(MODULE, 3)}</span>
                     </li>
                 </ul>
                 <div className="guide-body">
