@@ -1,7 +1,10 @@
 import React from 'react';
 import CustomIcon from '~/components/Icon';
+import intl from '~/i18n/intl';
 
 import './applying.scss';
+
+const MODULE = 'applying';
 
 export default class Applying extends React.Component {
     constructor(props) {
@@ -65,27 +68,27 @@ export default class Applying extends React.Component {
             <div className='create-wifi'>
                 <div className='head'>
                     { time >= 0 ?
-                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>正在为您创建Wi-Fi，请稍候({time}s)...</p>]
+                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>{intl.get(MODULE, 0)}</p>]
                     :
-                    [<CustomIcon type='correct' color='#FB8632' size={32} />,<p>由于Wi-Fi配置变更，请重新连接“{hostWifiName}”，体验更多功能</p>]
+                    [<CustomIcon type='correct' color='#FB8632' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})}</p>]
                     }  
                 </div>
                 <ul className='body'>
                     <li>
                         <div className='title'> 
                             <CustomIcon size={24} color='#FB8632' type="business" />
-                            <label>商户Wi-Fi</label>
+                            <label>{intl.get(MODULE, 3)}</label>
                         </div>
-                        <p>名称：{hostWifiName}</p>
-                        <p>{'' === hostWifiPsw ? '无密码' : `密码：${hostWifiPsw}`}</p>
+                        <p>{intl.get(MODULE, 4, {hostWifiName})}</p>
+                        <p>{'' === hostWifiPsw ? intl.get(MODULE, 5) : intl.get(MODULE, 6, {hostWifiPsw})}</p>
                     </li>
                     <li>
                         <div className='title'>
                             <CustomIcon size={24} color='#4EC53F' type="customer" />
-                            <label>客用Wi-Fi</label>
+                            <label>{intl.get(MODULE, 7)}</label>
                         </div>
-                        <p>名称：{guestWifiName}</p>
-                        <p>{'' === guestWifiPsw ? '无密码' : `密码：${guestWifiPsw}`}</p>
+                        <p>{intl.get(MODULE, 8, {guestWifiName})}</p>
+                        <p>{'' === guestWifiPsw ? intl.get(MODULE, 9) : intl.get(MODULE, 10, {guestWifiPsw})}</p>
                     </li>
                 </ul>
             </div>
