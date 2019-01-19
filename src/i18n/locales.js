@@ -706,7 +706,7 @@ export default {
 		"setpassword2": "提示",
 		"setpassword3": "已设置过密码",
 		"setpassword4": "确定",
-		"setpassword5": "未知错误",
+		"setpassword5": "未知错误{errcode}",
 		"setpassword6": "密码",
 		"setpassword7": "设置管理密码",
 		"setpassword8": "管理密码是进入路由器管理页面的凭证",
