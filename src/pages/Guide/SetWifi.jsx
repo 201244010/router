@@ -6,14 +6,20 @@ import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
 import {checkStr} from '~/assets/common/check';
+import intl from '~/i18n/intl';
 
+const MODULE = 'setwifi';
 const { FormItem, Input, ErrorTip } = Form;
 const confirm = Modal.confirm;
 const errorMessage = {
-    '-1001': '参数格式错误',
-    '-1002': '参数非法',
-    '-1100': 'Wi-Fi名称非法',
-    '-1101': 'Wi-Fi密码非法'
+    // '-1001': '参数格式错误',
+    // '-1002': '参数非法',
+    // '-1100': 'Wi-Fi名称非法',
+    // '-1101': 'Wi-Fi密码非法',
+    '-1001': intl.get(MODULE, 0),
+    '-1002': intl.get(MODULE, 1),
+    '-1100': intl.get(MODULE, 2),
+    '-1101': intl.get(MODULE, 3),
 };
 
 export default class SetWifi extends React.Component {
@@ -41,16 +47,16 @@ export default class SetWifi extends React.Component {
     handleChange = (value, field) => {
         const type = {
             hostWifiName: {
-                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true })
+                tip: checkStr(value, { who: intl.get(MODULE, 4), min: 1, max: 32, type: 'all', byte: true })
             }, 
             hostWifiPsw: {
-                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true })
+                tip: checkStr(value, { who: intl.get(MODULE, 5), min: 8, max: 32, type: 'english', byte: true })
             }, 
             guestWifiName: {
-                tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true })
+                tip: checkStr(value, { who: intl.get(MODULE, 6), min: 1, max: 32, type: 'all', byte: true })
             }, 
             guestWifiPsw: {
-                tip: checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true })
+                tip: checkStr(value, { who: intl.get(MODULE, 7), min: 8, max: 32, type: 'english', byte: true })
             }
         }
 
@@ -61,7 +67,8 @@ export default class SetWifi extends React.Component {
         }
 
         if('' === value.trim() && 8 <= value.length && (field === 'hostWifiPsw' || field === 'guestWifiPsw')){
-            tip = '密码不能全为空格';
+            // tip = '密码不能全为空格';
+            tip = intl.get(MODULE, 8);
         }
 
         this.setState({
@@ -99,7 +106,8 @@ export default class SetWifi extends React.Component {
         if(errcode === 0){
             this.props.history.push(`/guide/finish/applying/` + encodeURIComponent(param));
         } else {
-            message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
+            // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
+            message.error(`${intl.get(MODULE, 9)}[${errorMessage[errcode] || errcode}]`);
         }
         
     }
@@ -108,16 +116,16 @@ export default class SetWifi extends React.Component {
         this.setState({ loading : true });
         if(this.state.hostWifiPsw.length === 0 || this.state.guestWifiPsw.length === 0){
             confirm({
-                title: '提示：',
-                content: (this.state.hostWifiPsw.length === 0 ?'商户Wi-Fi' : '') + 
-                (this.state.hostWifiPsw.length === 0 && this.state.guestWifiPsw.length === 0 ? '、' : '')+
-                (this.state.guestWifiPsw.length === 0 ? '顾客Wi-Fi':'') +'密码未设置，确定继续?' ,
+                title: intl.get(MODULE, 10),
+                content: (this.state.hostWifiPsw.length === 0 ?intl.get(MODULE, 11) : '') + 
+                (this.state.hostWifiPsw.length === 0 && this.state.guestWifiPsw.length === 0 ? intl.get(MODULE, 12) : '')+
+                (this.state.guestWifiPsw.length === 0 ? intl.get(MODULE, 13) : '') +intl.get(MODULE, 14),
                 onOk: this.dataSet,
                 onCancel(){   
 
                 },
-                cancelText: '取消',
-                okText: '确定',
+                cancelText: intl.get(MODULE, 15),
+                okText: intl.get(MODULE, 16),
                 centered: true
             });
             this.setState({ loading : false }); 
@@ -146,7 +154,8 @@ export default class SetWifi extends React.Component {
             });
             return;
         }
-        message.error(`Wi-Fi信息获取失败[${errcode}]`);
+        // message.error(`Wi-Fi信息获取失败[${errcode}]`);
+        message.error(intl.get(MODULE, 17, {errcode}));
     }
 
     componentDidMount(){
@@ -171,26 +180,26 @@ export default class SetWifi extends React.Component {
         let disabled = checkName || checkPwd;
 
         if(hostWifiName.length > 0 && guestWifiName.length > 0 && hostWifiName === guestWifiName){
-            hostWifiNameTip = guestWifiNameTip = '商户Wi-Fi名称与客用Wi-Fi名称不能相同';
+            hostWifiNameTip = guestWifiNameTip = intl.get(MODULE, 18);
             disabled = true;
         }
 
         return (
             <div className="setwifi">
-                <h2>设置无线网络</h2> 
-                <p className="ui-tips guide-tip">客用Wi-Fi可开放给客人使用，保障隐私安全 </p>
+                <h2>{intl.get(MODULE, 19)}</h2> 
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 20)}</p>
                 <div className="wifi-box ui-relative ui-center">
                     <Form>
                         <div style={{marginBottom: 20}}>
                             <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#FB8632' type="business"></CustomIcon>
-                                <p style={{fontSize: 16}}>商户Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（建议店内设备和店员使用）</span></p>
+                                <p style={{fontSize: 16}}>{intl.get(MODULE, 21)}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 22)}</span></p>
                         </div>
-                        <FormItem label="Wi-Fi名称" showErrorTip={hostWifiNameTip}>
-                            <Input value={hostWifiName} width={260} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'hostWifiName')} />
+                        <FormItem label={intl.get(MODULE, 23)} showErrorTip={hostWifiNameTip}>
+                            <Input value={hostWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)} onChange={value => this.handleChange(value, 'hostWifiName')} />
                             <ErrorTip>{hostWifiNameTip}</ErrorTip>
                         </FormItem>
-                        <FormItem label="Wi-Fi密码" showErrorTip={hostWifiPswTip}>
-                            <Input value={hostWifiPsw} width={260} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'hostWifiPsw')} />
+                        <FormItem label={intl.get(MODULE, 25)} showErrorTip={hostWifiPswTip}>
+                            <Input value={hostWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)} onChange={value => this.handleChange(value, 'hostWifiPsw')} />
                             <ErrorTip>{hostWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
@@ -198,24 +207,24 @@ export default class SetWifi extends React.Component {
                     <Form>
                         <div style={{marginBottom: 20}}>
                             <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
-                                <span style={{fontSize: 16}}>客用Wi-Fi<span style={{fontSize: 14, color: '#ADB1B9'}}>（推荐开放给顾客使用）</span>
+                                <span style={{fontSize: 16}}>{intl.get(MODULE, 27)}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 28)}</span>
                                 </span>
                                 {/* <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked /> */}
                         </div>
-                        <FormItem label="Wi-Fi名称" showErrorTip={guestWifiNameTip}>
-                            <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder="请输入Wi-Fi名称" onChange={value => this.handleChange(value, 'guestWifiName')} />
+                        <FormItem label={intl.get(MODULE, 23)} showErrorTip={guestWifiNameTip}>
+                            <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)} onChange={value => this.handleChange(value, 'guestWifiName')} />
                             <ErrorTip>{guestWifiNameTip}</ErrorTip>
                         </FormItem>
-                        <FormItem label="Wi-Fi密码" showErrorTip={guestWifiPswTip}>
-                            <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder="请输入Wi-Fi密码" onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                        <FormItem label={intl.get(MODULE, 25)} showErrorTip={guestWifiPswTip}>
+                            <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)} onChange={value => this.handleChange(value, 'guestWifiPsw')} />
                             <ErrorTip>{guestWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
-                    <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={disabled} style={{width : "100%"}} >完成</Button>
+                    <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={disabled} style={{width : "100%"}} >{intl.get(MODULE, 30)}</Button>
                     <div className="help">
-                        <a href="javascript:;" onClick={this.back} className="ui-tips">上一步</a>
+                        <a href="javascript:;" onClick={this.back} className="ui-tips">{intl.get(MODULE, 31)}</a>
                     </div>
                 </div>
                 {/* <Modal
