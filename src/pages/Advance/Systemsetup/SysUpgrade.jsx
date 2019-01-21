@@ -5,7 +5,6 @@ import Form from "~/components/Form";
 import {Button, Modal} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '../../UpgradeDetect/Upgrade';
-import intl from '~/i18n/intl';
 
 const MODULE = 'sysupgrade';
 

@@ -7,7 +7,6 @@ import Backup from './Backup';
 import TimeZone from './TimeZone';
 import Reboot from './Reboot';
 import Recovery from './Recovery';
-import intl from '~/i18n/intl';
 
 import './system.scss'
 

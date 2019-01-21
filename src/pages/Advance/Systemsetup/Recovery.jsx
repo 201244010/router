@@ -4,7 +4,6 @@ import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/auth';
 import { PAGE_STYLE_KEY } from '~/utils';
-import intl from '~/i18n/intl';
 
 const MODULE = 'recovery';
 

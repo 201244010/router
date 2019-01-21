@@ -3,7 +3,6 @@ import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { Button, Table, Checkbox, Popconfirm, message } from 'antd';
-import intl from '~/i18n/intl';
 
 const MODULE = 'dosd';
 const { FormItem } = Form;

@@ -6,7 +6,6 @@ import Form from '~/components/Form';
 import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
 import { checkStr, checkIp, checkMask, checkSameNet } from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'setwan';
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;

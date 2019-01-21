@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import intl from '~/i18n/intl';
 
 import './downloadPage.scss';
 

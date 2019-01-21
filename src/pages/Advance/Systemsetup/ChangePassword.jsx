@@ -4,7 +4,6 @@ import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
 import { message, Button } from 'antd';
 import {checkStr} from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'changepassword';
 const {FormItem,Input,ErrorTip} = Form;

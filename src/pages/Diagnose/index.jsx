@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button, Timeline, Icon  } from 'antd';
 import CustomIcon from '~/components/Icon';
-import intl from '~/i18n/intl';
 
 import './diagnose.scss';
 

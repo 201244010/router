@@ -2,7 +2,6 @@ import React from 'react';
 import {Button} from 'antd';
 import {NavLink} from "react-router-dom";
 import CustomIcon from '~/components/Icon';
-import intl from '~/i18n/intl';
 
 import './success.scss';
 

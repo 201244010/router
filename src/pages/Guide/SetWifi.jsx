@@ -6,7 +6,6 @@ import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import Tips from '~/components/Tips';
 import {checkStr} from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'setwifi';
 const { FormItem, Input, ErrorTip } = Form;

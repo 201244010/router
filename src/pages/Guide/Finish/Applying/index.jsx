@@ -1,6 +1,5 @@
 import React from 'react';
 import CustomIcon from '~/components/Icon';
-import intl from '~/i18n/intl';
 
 import './applying.scss';
 

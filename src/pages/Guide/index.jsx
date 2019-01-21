@@ -9,7 +9,6 @@ import SetWan from './SetWan';
 import SetWifi from './SetWifi';
 import Finish from './Finish';
 import Icon from '~/components/Icon';
-import intl from '~/i18n/intl';
 
 import './guide.scss';
 

@@ -1,6 +1,5 @@
 
 import React from 'react';
-import intl from '~/i18n/intl';
 
 const MODULE = 'unauthorizedlayout';
 

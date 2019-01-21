@@ -3,7 +3,6 @@ import { Button, Icon, Modal, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/auth';
-import intl from '~/i18n/intl';
 
 const MODULE = 'reboot';
 

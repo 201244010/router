@@ -6,7 +6,6 @@ import { Base64 } from 'js-base64';
 import routes from '../../routes';
 import { init } from '~/assets/common/auth';
 import {checkStr} from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'setpassword';
 const { FormItem, ErrorTip, Input }  = Form;
