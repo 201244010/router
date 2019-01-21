@@ -6,7 +6,6 @@ import Form from '~/components/Form';
 import Progress from '~/components/Progress';
 import {checkRange} from '~/assets/common/check';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
-import intl from '~/i18n/intl';
 
 const MODULE = 'speed';
 const { FormItem, Input, ErrorTip } = Form;

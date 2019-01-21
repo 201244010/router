@@ -5,7 +5,6 @@ import CustomIcon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import "./QRcode.scss";
-import intl from '~/i18n/intl';
 
 const MODULE = 'login';
 const { FormItem, ErrorTip, Input }  = Form;

@@ -5,7 +5,6 @@ import LanSet from './LanSet';
 import StaticBind from './StaticBind';
 
 import './lan.scss';
-import intl from '~/i18n/intl';
 
 const MODULE = 'lan';
 

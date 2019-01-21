@@ -7,7 +7,6 @@ import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 
 import './clients.scss';
-import intl from '~/i18n/intl';
 
 const MODULE = 'clientlist';
 const RSSI_GOOD = intl.get(MODULE, 0), RSSI_BAD = intl.get(MODULE, 1);

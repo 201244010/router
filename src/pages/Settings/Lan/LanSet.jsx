@@ -5,7 +5,6 @@ import Form from "~/components/Form";
 import { checkIp, checkRange, checkMask, checkSameNet, transIp} from '~/assets/common/check';
 import { Button, Modal, message} from 'antd';
 import Loading from '~/components/Loading';
-import intl from '~/i18n/intl';
 
 const MODULE = 'lanset';
 

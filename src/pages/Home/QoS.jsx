@@ -4,7 +4,6 @@ import { Button } from 'antd';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
 import 'echarts/lib/component/legend';
-import intl from '~/i18n/intl';
 
 const MODULE = 'qos';
 export default class QoS extends React.Component {

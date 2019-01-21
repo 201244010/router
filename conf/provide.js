@@ -1,6 +1,4 @@
-
-
-
 module.exports = {
-    common : "common"
+    intl: "intl",
+    common : "common",
 };

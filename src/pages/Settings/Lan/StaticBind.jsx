@@ -5,7 +5,6 @@ import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 import Form from "~/components/Form";
 import { checkIp, checkMac, transIp } from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'staticbind';
 

@@ -4,7 +4,6 @@ import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 
 import './mesh.scss';
-import intl from '~/i18n/intl';
 
 const MODULE = 'mesh';
 export default class Mesh extends React.Component{

@@ -10,8 +10,6 @@ import Network from './Network';
 
 import './settings.scss';
 
-import intl from '~/i18n/intl';
-
 const MODULE = 'settings';
 export default class Setting extends React.Component {
     constructor(props){

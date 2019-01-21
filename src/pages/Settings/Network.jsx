@@ -5,7 +5,6 @@ import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
-import intl from '~/i18n/intl';
 
 const MODULE = 'network';
 
