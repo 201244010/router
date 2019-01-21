@@ -6,6 +6,7 @@ import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import "./QRcode.scss";
 
+const MODULE = 'login';
 const { FormItem, ErrorTip, Input }  = Form;
 
 class Login extends React.Component {
@@ -22,7 +23,7 @@ class Login extends React.Component {
     onChange = value => {
         this.setState({ 
             password: value,
-            tip: (value.length > 0) ? '' : '请输入密码',
+            tip: (value.length > 0) ? '' : intl.get(MODULE, 0),
         });
     }
 
@@ -40,7 +41,7 @@ class Login extends React.Component {
 
         if ('' === password) {
             this.setState({
-                tip: '请输入密码',
+                tip: intl.get(MODULE, 1),
             });
             return;
         }
@@ -65,16 +66,16 @@ class Login extends React.Component {
                 this.props.history.push('/welcome');
                 return;
             case '-1601':
-                tip = '请输入密码';
+                tip = intl.get(MODULE, 2);
                 break;
             case '-1605':
-                tip = '密码错误';
+                tip = intl.get(MODULE, 3);
                 break;
             case '-1606':
-                tip = '密码错误次数过多，请5分钟后再试';
+                tip = intl.get(MODULE, 4);
                 break;
             default:
-                tip = `未知错误[${errcode}]`;
+                tip = intl.get(MODULE, 5, {error: errcode});
                 break;
         }
 
@@ -90,7 +91,7 @@ class Login extends React.Component {
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
                             <FormItem style={{ margin: '45px auto 30px' }}>
-                                <Input placeholder="请输入您的管理密码"
+                                <Input placeholder={intl.get(MODULE, 6)}
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
@@ -110,12 +111,12 @@ class Login extends React.Component {
                                 size='large'
                                 onClick={this.post}
                                 style={{ margin: "0 0 10px", width: 320 }}
-                                loading={this.state.loading}>登录</Button>
-                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>忘记密码请按RESET键5秒复位，重新设置路由器</p>
+                                loading={this.state.loading}>{intl.get(MODULE, 7)}</Button>
+                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>{intl.get(MODULE, 8)}</p>
                     </div>
                     <div className="qr">
                         <img src={require('~/assets/images/qr.png')} />
-                        <p>扫描二维码下载APP</p>
+                        <p>{intl.get(MODULE, 9)}</p>
                     </div>
             </div>;
     }

@@ -8,15 +8,16 @@ import CustomIcon from "~/components/Icon";
 import Tips from '~/components/Tips';
 import { checkStr ,checkRange } from '~/assets/common/check';
 
+const MODULE = 'wi-fi';
 const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
 const RadioGroup=Radio.Group;
 
 const errorMessage = {
-    '-1001': '参数格式错误',
-    '-1002': '参数取值非法',
-    '-1100': 'Wi-Fi名称非法',
-    '-1101': 'Wi-Fi密码非法'
+    '-1001': intl.get(MODULE, 0),
+    '-1002': intl.get(MODULE, 1),
+    '-1100': intl.get(MODULE, 2),
+    '-1101': intl.get(MODULE, 3)
 };
 
 
@@ -85,37 +86,37 @@ export default class WIFI extends React.Component {
         switch (name){
             case 'hostSsid24' : this.setState({
                 [name]:value,
-                hostSsid24Tip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, byte: true }),
+                hostSsid24Tip: checkStr(value, { who: intl.get(MODULE, 4), min: 1, max: 32, byte: true }),
             });
             break;
             case 'hostSsid24Password': this.setState({
-                hostSsid24PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }),
+                hostSsid24PasswordTip: checkStr(value, { who: intl.get(MODULE, 5), min:8 , max: 32, type: 'english', byte: true }),
                 [name]:value
             });
             break;
             case 'hostSsid5' : this.setState({
-                hostSsid5Tip: checkStr(value, { who: 'Wi-Fi名称', min:1 , max: 32, byte: true }),
+                hostSsid5Tip: checkStr(value, { who: intl.get(MODULE, 6), min:1 , max: 32, byte: true }),
                 [name]:value
             });
             break;
             case 'hostSsid5Password': this.setState({
-                hostSsid5PasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }),
+                hostSsid5PasswordTip: checkStr(value, { who: intl.get(MODULE, 7), min:8 , max: 32, type: 'english', byte: true }),
                 [name]:value
             });
             break;
             case 'guestSsid' : this.setState({
-                guestSsidTip: checkStr(value, { who: 'Wi-Fi名称', min: 1, max: 32, byte: true }),
+                guestSsidTip: checkStr(value, { who: intl.get(MODULE, 8), min: 1, max: 32, byte: true }),
                 [name]:value
             });
             break;
             case 'guestStaticPassword': this.setState({
-                guestStaticPasswordTip: checkStr(value, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english', byte: true }
+                guestStaticPasswordTip: checkStr(value, { who: intl.get(MODULE, 9), min:8 , max: 32, type: 'english', byte: true }
                 ),
                 [name]:value
             });
             break;
             case 'period': this.setState({
-                periodTip: checkRange(value, { min: 1,max: 72,who: '动态变更周期' }),
+                periodTip: checkRange(value, { min: 1,max: 72,who: intl.get(MODULE, 10) }),
                 [name]:value
             });
             break;
@@ -156,7 +157,7 @@ export default class WIFI extends React.Component {
             if(this.state.guestPwdForbid == true){
                 check = '';
             }else{
-                check = checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                check = checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 11), min:8 , max: 32, type: 'english' });
             }
             this.setState({
                 guestStaticPasswordTip: check,
@@ -167,7 +168,7 @@ export default class WIFI extends React.Component {
         }else{
             this.setState({
                 guestStaticPasswordTip: '',
-                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
+                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: intl.get(MODULE, 12) }),
                 PWDType:e.target.value,
                 displayType:e.target.value == 'static'? 'none' : 'block'
             });
@@ -188,12 +189,12 @@ export default class WIFI extends React.Component {
             if(this.state.guestPwdForbid){ 
                 tip = '';
             }else{
-                tip = checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                tip = checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 13), min:8 , max: 32, type: 'english' });
             }
             this.setState({
-                guestSsidTip: checkStr(this.state.guestSsid, { who: 'Wi-Fi名称', min: 1, max: 32}),
+                guestSsidTip: checkStr(this.state.guestSsid, { who: intl.get(MODULE, 14), min: 1, max: 32}),
                 guestStaticPasswordTip: tip,
-                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: '动态变更周期' }),
+                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: intl.get(MODULE, 15) }),
             });
         }
     }
@@ -212,7 +213,7 @@ export default class WIFI extends React.Component {
         }else{
             this.setState({
                 guestEncryption : 'psk-mixed/ccmp+tkip',
-                guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })
+                guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 16), min:8 , max: 32, type: 'english' })
             });
         }
     }
@@ -232,10 +233,10 @@ export default class WIFI extends React.Component {
                 if(this.state.hostSsid24PasswordDisabled){
                     tip = '';
                 }else{
-                    tip = checkStr(hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                    tip = checkStr(hostSsid24Password, { who: intl.get(MODULE, 17), min:8 , max: 32, type: 'english' });
                 }
                 this.setState({
-                    hostSsid24Tip: checkStr(hostSsid24, { who: 'Wi-Fi名称', min: 1, max: 32 }),
+                    hostSsid24Tip: checkStr(hostSsid24, { who: intl.get(MODULE, 18), min: 1, max: 32 }),
                     hostSsid24PasswordTip: tip,
                 });
             }
@@ -256,7 +257,7 @@ export default class WIFI extends React.Component {
         }else{
             this.setState({
                 encryption24 : 'psk-mixed/ccmp+tkip',
-                hostSsid24PasswordTip: checkStr(this.state.hostSsid24Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
+                hostSsid24PasswordTip: checkStr(this.state.hostSsid24Password, { who: intl.get(MODULE, 19), min:8 , max: 32, type: 'english' })   
             });
         }
     }
@@ -281,10 +282,10 @@ export default class WIFI extends React.Component {
                 if(this.state.hostSsid5PasswordDisabled){
                     tip = '';
                 }else{
-                    tip = checkStr(hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' });
+                    tip = checkStr(hostSsid5Password, { who: intl.get(MODULE, 20), min:8 , max: 32, type: 'english' });
                 }
                 this.setState({
-                    hostSsid5Tip: checkStr(hostSsid5, { who: 'Wi-Fi名称', min:1 , max: 32 }),
+                    hostSsid5Tip: checkStr(hostSsid5, { who: intl.get(MODULE, 21), min:1 , max: 32 }),
                     hostSsid5PasswordTip: tip,
                 });
             }
@@ -305,7 +306,7 @@ export default class WIFI extends React.Component {
         }else{
             this.setState({
                 encryption5 : 'psk-mixed/ccmp+tkip',
-                hostSsid5PasswordTip: checkStr(this.state.hostSsid5Password, { who: 'Wi-Fi密码', min:8 , max: 32, type: 'english' })   
+                hostSsid5PasswordTip: checkStr(this.state.hostSsid5Password, { who: intl.get(MODULE, 22), min:8 , max: 32, type: 'english' })   
             });
         }
     } 
@@ -351,17 +352,17 @@ export default class WIFI extends React.Component {
 
         //商户Wi-Fi 2.4G和5G ssid不能相同
         if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
-            message.error('2.4G、5G Wi-Fi名称不能相同');
+            message.error(intl.get(MODULE, 23));
             return;
         }
 
         if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-            message.error(channelType ? '商户、客用Wi-Fi名称不能相同':'2.4G、客用Wi-Fi名称不能相同');
+            message.error(channelType ? intl.get(MODULE, 24):intl.get(MODULE, 25));
             return;
         }
 
         if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-            message.error('5G、客用Wi-Fi名称不能相同');
+            message.error(intl.get(MODULE, 26));
             return;
         }
         //是否双频合一
@@ -526,7 +527,7 @@ export default class WIFI extends React.Component {
             });
             return;
         }
-        message.error(`Wi-Fi信息获取失败[${errcode}]`); 
+        message.error(intl.get(MODULE, 27, {error: errcode})); 
     }
 
     componentDidMount(){
@@ -581,20 +582,20 @@ export default class WIFI extends React.Component {
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title="双频合一" checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/>
-                        <p style={{marginTop: 16,marginBottom:25}}>2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启</p>
+                        <PanelHeader title={intl.get(MODULE, 28)} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/>
+                        <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)}</p>
                     </section>
                     {this.state.channelType ? (
                     <section className="wifi-setting-item">
-                        <PanelHeader title="商户Wi-Fi" checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange} />
-                        <label className='ssidLabel'>Wi-Fi名称</label>
+                        <PanelHeader title={intl.get(MODULE, 30)} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange} />
+                        <label className='ssidLabel'>{intl.get(MODULE, 31)}</label>
                         <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24}/>
                             <ErrorTip>{hostSsid24Tip}</ErrorTip>
                         </FormItem>
                         <ul className="ui-tiled compact">
-                            <li><label>Wi-Fi密码</label></li>
-                            <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>不设密码</Checkbox></li>
+                            <li><label>{intl.get(MODULE, 32)}</label></li>
+                            <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>{intl.get(MODULE, 33)}</Checkbox></li>
                         </ul>
                         <FormItem type="small" showErrorTip={hostSsid24PasswordTip} style={{ width : 320, marginBottom:24}}>
                             <Input type="password" maxLength={32} disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
@@ -603,14 +604,14 @@ export default class WIFI extends React.Component {
                         {!(encryption24 =='none')?
                             <div>
                                 <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting}>
-                                    更多设置 <CustomIcon type={moreSettingType} size={14} />
+                                {intl.get(MODULE, 34)} <CustomIcon type={moreSettingType} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost}}>
                                     <div style={{ padding: 0, position: 'relative' }} id="encryption24Area">
-                                        <label>加密方式</label>
+                                        <label>{intl.get(MODULE, 35)}</label>
                                         <Select value={encryption24} style={{ width: 320 }} disabled={disabledType24} onChange={(value)=>this.onChange('encryption24',value)} getPopupContainer={() => document.getElementById('encryption24Area')}>
-                                            <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
-                                            <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
+                                            <Option value={'psk2+ccmp'}>{intl.get(MODULE, 36)})</Option>
+                                            <Option value={'psk-mixed/ccmp+tkip'}>{intl.get(MODULE, 37)}</Option>
                                         </Select>
                                     </div> 
                                 </div>
@@ -619,104 +620,104 @@ export default class WIFI extends React.Component {
                     </section>
                     ):(
                     <section className="wifi-setting-item">
-                        <PanelHeader title="商户Wi-Fi" checkable={false} checked={false} /> 
+                        <PanelHeader title={intl.get(MODULE, 38)} checkable={false} checked={false} /> 
                         <section className="wifi-setting-twocolumn">
                             <section>
-                                <PanelHeader title="2.4G信号" checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
-                                <label className = 'firstLabel'>Wi-Fi名称</label>
+                                <PanelHeader title={intl.get(MODULE, 39)} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
+                                <label className = 'firstLabel'>{intl.get(MODULE, 40)}</label>
                                 <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>
                                     <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24} />
                                     <ErrorTip>{hostSsid24Tip}</ErrorTip>
                                 </FormItem>
                                 <ul className="ui-tiled compact">
-                                    <li><label>Wi-Fi密码</label></li>
-                                    <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>不设密码</Checkbox></li>
+                                    <li><label>{intl.get(MODULE, 41)}</label></li>
+                                    <li><Checkbox checked={pwdForbid24} onChange={this.onPwdForbid24Change} disabled={disabledType24}>{intl.get(MODULE, 42)}</Checkbox></li>
                                 </ul>
                                 <FormItem type="small" showErrorTip={hostSsid24PasswordTip} style={{ width : 320, marginBottom: 24}}>
                                     <Input type="password" maxLength={32} disabled={hostSsid24PasswordDisabled} value={hostSsid24Password} onChange={(value)=>this.onChange('hostSsid24Password',value)} />
                                     <ErrorTip>{hostSsid24PasswordTip}</ErrorTip>
                                 </FormItem>  
                                 <div className="ui-t3 ui-mute more" style={{width:90,cursor:'pointer'}} onClick={this.moreSetting24}>
-                                    更多设置 <CustomIcon type={moreSettingType24} size={14} />
+                                {intl.get(MODULE, 43)} <CustomIcon type={moreSettingType24} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost24}}>
                                     <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
-                                        <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>隐藏网络不被发现</Checkbox></li>
+                                        <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>{intl.get(MODULE, 44)}</Checkbox></li>
                                     </ul>
                                     {!(encryption24 =='none')?
                                         (
                                             <div className='moreDiv' id="encryption24Area">
-                                                <label>加密方式</label>
+                                                <label>{intl.get(MODULE, 45)}</label>
                                                 <Select value={encryption24} onChange={(value)=>this.onChange('encryption24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('encryption24Area')}>
-                                                    <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
-                                                    <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
+                                                    <Option value={'psk2+ccmp'}>{intl.get(MODULE, 46)}</Option>
+                                                    <Option value={'psk-mixed/ccmp+tkip'}>{intl.get(MODULE, 47)}</Option>
                                                 </Select>
                                             </div>
                                         ) : ''
                                     }
                                     <div className='moreDiv' id="htmode24Area">
-                                        <label>频道带宽</label>
+                                        <label>{intl.get(MODULE, 48)}</label>
                                         <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('htmode24Area')}>
-                                            <Option value={'auto'}>自动</Option>
+                                            <Option value={'auto'}>{intl.get(MODULE, 49)}</Option>
                                             <Option value={'HT20'}>20M</Option>
                                             <Option value={'HT40'}>40M</Option>
                                         </Select>
                                     </div>
                                     <div className='moreDiv' id="channel24Area">
-                                        <label>无线信道</label> 
+                                        <label>{intl.get(MODULE, 50)}</label> 
                                         <Select value={channel24} style={{width:320}} onChange={(value)=>this.onChange('channel24',value)} disabled={disabledType24} getPopupContainer={() => document.getElementById('channel24Area')}>
-                                            <Option value={'auto'}>自动(当前信道{current_channel24})</Option>
+                                            <Option value={'auto'}>{intl.get(MODULE, 51, {current_channel24})}</Option>
                                             {channelList24}
                                         </Select>
                                     </div>
                                 </div>
                             </section>
                             <section>
-                                <PanelHeader title="5G信号" checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
-                                    <label className = 'firstLabel'>Wi-Fi名称</label>
+                                <PanelHeader title={intl.get(MODULE, 53)} checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
+                                    <label className = 'firstLabel'>{intl.get(MODULE, 54)}</label>
                                     <FormItem type="small" showErrorTip={hostSsid5Tip} style={{ width : 320}}>
                                         <Input type="text" maxLength={32} value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
                                         <ErrorTip>{hostSsid5Tip}</ErrorTip>
                                     </FormItem>
                                     <ul className="ui-tiled compact">
-                                        <li><label>Wi-Fi密码</label></li>
-                                        <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>不设密码</Checkbox></li>
+                                        <li><label>{intl.get(MODULE, 55)}</label></li>
+                                        <li><Checkbox checked={pwdForbid5} onChange={this.onPwdForbid5Change} disabled={disabledType5}>{intl.get(MODULE, 56)}</Checkbox></li>
                                     </ul>
                                     <FormItem type="small" showErrorTip={hostSsid5PasswordTip} style={{ width : 320, marginBottom: 24}}>
                                         <Input type="password" maxLength={32} disabled={hostSsid5PasswordDisabled} value={hostSsid5Password} onChange={(value)=>this.onChange('hostSsid5Password',value)} />
                                         <ErrorTip>{hostSsid5PasswordTip}</ErrorTip>
                                     </FormItem>  
                                     <div className="ui-t3 ui-mute more" style={{width:90, cursor:'pointer'}} onClick={this.moreSetting5}>
-                                        更多设置 <CustomIcon type={moreSettingType5} size={14}/>
+                                    {intl.get(MODULE, 57)} <CustomIcon type={moreSettingType5} size={14}/>
                                     </div>
                                     <div style={{display:moreDisplaydHost5}}>
                                         <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
-                                            <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>隐藏网络不被发现</Checkbox></li>
+                                            <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>{intl.get(MODULE, 58)}</Checkbox></li>
                                         </ul>
                                         {!(encryption5 =='none')?
                                             (
                                                 <div className='moreDiv' id="encryption5Area">
-                                                    <label>加密方式</label>
+                                                    <label>{intl.get(MODULE, 59)}</label>
                                                     <Select value={encryption5} onChange={(value)=>this.onChange('encryption5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('encryption5Area')}>
-                                                        <Option value={'psk2+ccmp'}>强加密(WPA2)</Option>
-                                                        <Option value={'psk-mixed/ccmp+tkip'}>混合加密(WPA/WPA2)</Option>
+                                                        <Option value={'psk2+ccmp'}>{intl.get(MODULE, 60)}</Option>
+                                                        <Option value={'psk-mixed/ccmp+tkip'}>{intl.get(MODULE, 61)}</Option>
                                                     </Select>
                                                 </div>
                                             ) : ''
                                         }
                                         <div className='moreDiv' id="htmode5Area">
-                                            <label>频道带宽</label>
+                                            <label>{intl.get(MODULE, 62)}</label>
                                             <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('htmode5Area')}>
-                                                <Option value={'auto'}>自动</Option>
+                                                <Option value={'auto'}>{intl.get(MODULE, 63)}</Option>
                                                 <Option value={'HT20'}>20M</Option>
                                                 <Option value={'HT40'}>40M</Option>
                                                 <Option value={'HT80'}>80M</Option>
                                             </Select>
                                         </div>
                                         <div className='moreDiv' id="channel5Area">
-                                            <label>无线信道</label> 
+                                            <label>{intl.get(MODULE, 64)}</label> 
                                             <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
-                                                <Option value={'auto'}>自动(当前信道{current_channel5})</Option>
+                                                <Option value={'auto'}>{intl.get(MODULE, 65, current_channel5)}</Option>
                                                 {channelList5}
                                         </Select>
                                         </div>
@@ -726,49 +727,49 @@ export default class WIFI extends React.Component {
                     </section>
                     )}
                     <section className="wifi-setting-item">
-                        <PanelHeader title="客用Wi-Fi" checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
-                        <label className='ssidLabel'>Wi-Fi名称</label>
+                        <PanelHeader title={intl.get(MODULE, 65)} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
+                        <label className='ssidLabel'>{intl.get(MODULE, 66)}</label>
                         <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
                             <ErrorTip>{guestSsidTip}</ErrorTip>
                         </FormItem>
-                        <label className='ui-tiled compact'>密码方式</label>
+                        <label className='ui-tiled compact'>{intl.get(MODULE, 67)}</label>
                         <RadioGroup className='radio-choice' onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
-                            <Radio style={{display:'inline-block'}} value={'static'}>静态密码</Radio>
-                            <Radio style={{display:'inline-block'}} value={'dynamic'}>动态密码</Radio>
+                            <Radio style={{display:'inline-block'}} value={'static'}>{intl.get(MODULE, 68)}</Radio>
+                            <Radio style={{display:'inline-block'}} value={'dynamic'}>{intl.get(MODULE, 69)}</Radio>
                         </RadioGroup>
                         <section style={{display:displayType}}>
-                            <label>动态变更周期</label>
+                            <label>{intl.get(MODULE, 70)}</label>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={periodTip} style={{ width : 320}}>
-                                <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={'请输入变更周期时间(1～72)'}/>
+                                <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={intl.get(MODULE, 71)}/>
                                 <ErrorTip>{periodTip}</ErrorTip>    
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1,opacity:0.5}}>小时</span>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1,opacity:0.5}}>{intl.get(MODULE, 72)}</span>
                             </div>
                             <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap', marginBottom: 0}}>
-                                <label>当前密码是：</label>
+                                <label>{intl.get(MODULE, 73)}</label>
                                 <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
                             </div> 
-                            <span style={{display: 'none', opacity:'0.5'}}>如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上</span>   
+                            <span style={{display: 'none', opacity:'0.5'}}>{intl.get(MODULE, 74)}</span>   
                         </section>
                         <section style={{display:displayType=='none'?'block':'none'}}>
                             <ul className="ui-tiled compact">
-                                <li><label>Wi-Fi密码</label></li>
-                                <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>不设密码</Checkbox></li>
+                                <li><label>{intl.get(MODULE, 55)}</label></li>
+                                <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>{intl.get(MODULE, 75)}</Checkbox></li>
                             </ul>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
                             <FormItem type="small" showErrorTip={guestStaticPasswordTip} style={{ width : 320, marginBottom: 0}}>
                                 <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
                                 <ErrorTip>{guestStaticPasswordTip}</ErrorTip>
                             </FormItem>
-                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上</span>
+                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>{intl.get(MODULE, 76)}</span>
                             </div>
                         </section>  
                     </section>
                 </Form>
                 <section className="save">
-                        <Button type="primary" size="large" style={{ width: 320 }} disabled={saveDisabled} onClick={this.submit}>保存</Button>
+                        <Button type="primary" size="large" style={{ width: 320 }} disabled={saveDisabled} onClick={this.submit}>{intl.get(MODULE, 77)}</Button>
                 </section>
                 <Modal
                     visible={true}
@@ -781,7 +782,7 @@ export default class WIFI extends React.Component {
                 >
                     <div className="progress">
                         <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
-                        <Tips size="16" top={5}>正在等待Wi-Fi重启，请稍候...</Tips>
+                        <Tips size="16" top={5}>{intl.get(MODULE, 78)}</Tips>
                     </div>
                         
                 </Modal>
@@ -792,20 +793,20 @@ export default class WIFI extends React.Component {
                     centered={true}
                     footer={
                         <Button className="backup-btm" type="primary" onClick={this.resCancle}>
-                        {result? '确定' : '我知道了'}
+                        {result? intl.get(MODULE, 81) : intl.get(MODULE, 82)}
                         </Button>
                     }
                     width={560}>
                     {result?
                         <div className="backup-icon">
                             <CustomIcon color="#87D068" type="succeed" size={64} />
-                            <div className="backup-result">配置生效，请重新连接无线网络</div>
+                            <div className="backup-result">{intl.get(MODULE, 79)}</div>
                         </div>
                         :
                         <div className="backup-icon">
                             <CustomIcon color="#FF5500" type="defeated" size={64} />
                             <div className="backup-result">
-                                <div style={{fontSize: 16}}>配置失败!</div>
+                                <div style={{fontSize: 16}}>{intl.get(MODULE, 80)}</div>
                                 <div style={{ fontSize: 12, color: '#ADB1B9' }}>{this.state.err}</div>
                             </div>
                         </div>
