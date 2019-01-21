@@ -125,7 +125,7 @@ export default {
 		"setpwd2": "已设置过密码",
 		"setpwd3": "取消",
 		"setpwd4": "确定",
-		"setpwd5": "未知错误",
+		"setpwd5": "未知错误[{error}]",
 		"setpwd6": "密码",
 		"setpwd7": "设置管理密码",
 		"setpwd8": "管理员密码是进入路由器管理页面的凭证",
