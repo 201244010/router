@@ -1,6 +1,6 @@
 import intl from 'react-intl-universal';
 import {getLang} from './index';
-import locales from './locales';
+import locales from './locales.json';
 
 /**
  * 设置语言

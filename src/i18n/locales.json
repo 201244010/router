@@ -1,4 +1,4 @@
-export default {
+{
 	"zh-cn": {
 		"app.file": "src/app.js",
 		"app0": "您可能开启了隐私模式，请关闭后重试",
@@ -496,7 +496,7 @@ export default {
 		"bootdevice31": "备注名称",
 		"bootdevice32": "请输入备注名称",
 		"bootdevice33": "MAC地址",
-		"bootdevice34": '已添加{total}台设备',
+		"bootdevice34": "已添加{total}台设备",
 		"advance.file": "src/pages/Advance/index.jsx",
 		"advance0": "网速智能分配",
 		"advance1": "微信连Wi-Fi",
@@ -2225,4 +2225,4 @@ export default {
 		"upgrade10": "Upgrading system in progress, please wait patiently",
 		"upgrade11": " Please don’t power off during the upgrade process"
 	}
-};
+}
