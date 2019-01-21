@@ -1,5 +1,5 @@
 export default {
-	"zh-CN": {
+	"zh-cn": {
 		"app.file": "src/app.js",
 		"app0": "您可能开启了隐私模式，请关闭后重试",
 		"check.file": "src/assets/common/check.js",
@@ -1103,7 +1103,7 @@ export default {
 		"upgrade10": "正在升级系统，请耐心等待",
 		"upgrade11": "升级过程中请勿断电"
 	},
-	"en-US": {
+	"en-us": {
 		"app0": "You may have enabled the privacy mode, please try again after closing it",
 		"check0": "Please enter the correct number",
 		"check1": "Number",
