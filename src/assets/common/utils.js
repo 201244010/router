@@ -1,4 +1,4 @@
-const MODULE = 'check';
+const MODULE = 'utils';
 
 let formatTime = (total) => {
     let seconds = parseInt(total, 10);
