@@ -29,14 +29,16 @@ export default class SetPassword extends React.Component {
 
         if (pwd !== surePwd && surePwd !== '') {
             this.setState({
-                surePwdTip: intl.get(MODULE, 0)
+                // surePwdTip: '两次密码输入不一致',
+                surePwdTip: intl.get(MODULE, 0),
             });
             return;
         }
 
         if (pwd !== surePwd && surePwd === '') {
             this.setState({
-                surePwdTip: intl.get(MODULE, 1)
+                // surePwdTip: '请再次输入密码',
+                surePwdTip: intl.get(MODULE, 1),
             });
             return;
         }
@@ -56,6 +58,9 @@ export default class SetPassword extends React.Component {
             break;
         case '-1608':
             Modal.info({
+                    // title: '提示',
+                    // content: '已设置过密码',
+                    // okText: '确定',
                     title: intl.get(MODULE, 2),
                     content: intl.get(MODULE, 3),
                     okText: intl.get(MODULE, 4),
@@ -66,7 +71,8 @@ export default class SetPassword extends React.Component {
                 });
             break;
         default:
-            this.setState({pwdTip: intl.get(MODULE, 5, {errcode})});
+            // this.setState({pwdTip: `未知错误[${errcode}]`});
+            this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})});
             break;
         }
     }

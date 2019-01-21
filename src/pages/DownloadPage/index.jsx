@@ -1,26 +1,29 @@
 import React, {PureComponent} from 'react';
+
 import './downloadPage.scss';
+
+const MODULE = 'downloadpage';
 
 export default function DownloadPage() {
     return (
         <div className='app-download ui-container'>
             <div className='app-header'>
                 <div className='title'>
-                    <h1>商米助手APP</h1>
-                    <p>下载商米助手APP，支持本地和远程管理路由器，随时随地查看店铺设备状态</p>
+                    <h1>{intl.get(MODULE, 0)}</h1>
+                    <p>{intl.get(MODULE, 1)}</p>
                 </div>
                 <div className='QRcode'>
                     <img className='QRcode-img' src={require('~/assets/images/qr.png')} />
-                    <p>扫码下载APP</p>
+                    <p>{intl.get(MODULE, 2)}</p>
                 </div>
             </div>
             <ul className='app-body'>
                 {
                     [
-                        { img: require('~/assets/images/remotecontrol.png'), h2: '远程管理', desc: '用手机随时随地轻松管理网络'},
-                        { img: require('~/assets/images/grouping.png'), h2: '分组管理', desc: '添加自定义店铺，分组管理设备' },
-                        { img: require('~/assets/images/terminal.png'), h2: '终端管理', desc: '轻松管理联网终端，支持一键优先/禁止上网' },
-                        { img: require('~/assets/images/route.png'), h2: '路由设置', desc: '支持多功能设置，全面管理路由器' }
+                        { img: require('~/assets/images/remotecontrol.png'), h2: intl.get(MODULE, 3), desc: intl.get(MODULE, 4)},
+                        { img: require('~/assets/images/grouping.png'), h2: intl.get(MODULE, 5), desc: intl.get(MODULE, 6) },
+                        { img: require('~/assets/images/terminal.png'), h2: intl.get(MODULE, 7), desc: intl.get(MODULE, 8) },
+                        { img: require('~/assets/images/route.png'), h2: intl.get(MODULE, 9), desc: intl.get(MODULE, 10) }
                     ].map((item, index) => {
                         return (
                             <li key={index}>

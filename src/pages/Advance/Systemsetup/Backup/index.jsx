@@ -89,7 +89,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 6, {errcode}));
+            message.error(intl.get(MODULE, 6, {error: error[errcode]}));
         }
     }
 
@@ -119,7 +119,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 7, {errcode}));
+            message.error(intl.get(MODULE, 7, {error: error[errcode]}));
         }
     }
 
@@ -228,7 +228,7 @@ export default class Backup extends React.Component{
                             }
                         }else{
                             // message.error(`获取备份进度失败${error[errcode]}`);
-                            message.error(intl.get(MODULE, 11, {errcode}));
+                            message.error(intl.get(MODULE, 11, {error: error[errcode]}));
                         }
                     })
             }else{
@@ -240,7 +240,7 @@ export default class Backup extends React.Component{
                     })
                 }else{
                     // message.error(`无法完成操作${error[errcode]}`);
-                    message.error(intl.get(MODULE, 13, {errcode}));
+                    message.error(intl.get(MODULE, 13, {error: error[errcode]}));
                 }
             }
         })
@@ -381,7 +381,7 @@ export default class Backup extends React.Component{
                 })
             }else{
                 // message.error(`无法完成操作${error[errcode]}`);
-                message.error(intl.get(MODULE, 23, {errcode}));
+                message.error(intl.get(MODULE, 23, {error: error[errcode]}));
             }
         })
     }

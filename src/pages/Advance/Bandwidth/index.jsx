@@ -252,7 +252,7 @@ export default class Bandwidth extends React.PureComponent {
                 manualShow :false,
                 btloading: false,
             });
-            message.error(intl.get(MODULE, 11, {errcode}));
+            message.error(intl.get(MODULE, 11, {error: errcode}));
         })
     }
 
@@ -293,7 +293,7 @@ export default class Bandwidth extends React.PureComponent {
             })
             return;
         }
-        message.error(intl.get(MODULE, 12, {errcode}));
+        message.error(intl.get(MODULE, 12, {error: errcode}));
     }
 
     //定义数据格式
