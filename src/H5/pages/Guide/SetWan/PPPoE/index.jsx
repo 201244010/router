@@ -10,6 +10,8 @@ import confirm from 'h5/components/confirm';
 import { checkStr } from '~/assets/common/check';
 import { detect } from '../wan';
 
+const MODULE = 'pppoe';
+
 export default class PPPoE extends React.Component {
     constructor(props) {
         super(props);
@@ -27,10 +29,10 @@ export default class PPPoE extends React.Component {
     onChange = (name, value) => {
         const type = {
             account: {
-                func: checkStr(value, { who:'账号', min: 1, max: 64, type: 'all' })
+                func: checkStr(value, { who:intl.get(MODULE, 0), min: 1, max: 64, type: 'all' })
             },
             pwd: {
-                func: checkStr(value, { who: '密码', min: 1, max: 32, type: 'english' })
+                func: checkStr(value, { who: intl.get(MODULE, 1), min: 1, max: 32, type: 'english' })
             }
         }
 
@@ -83,10 +85,10 @@ export default class PPPoE extends React.Component {
 
             if(false === online) {   //联网失败
                 confirm({
-                    title: '无法连接网络',
-                    content: '检查您的上网方式是否正确',
-                    cancelText: '继续设置',
-                    okText: '重新设置',
+                    title: intl.get(MODULE, 2),
+                    content: intl.get(MODULE, 3),
+                    cancelText: intl.get(MODULE, 4),
+                    okText: intl.get(MODULE, 5),
                     onCancel: this.nextStep,
                 });
             } else {
@@ -94,7 +96,7 @@ export default class PPPoE extends React.Component {
             }
             return;
         }
-        toast({tip: `参数非法[${errcode}]`});
+        toast({tip: intl.get(MODULE, 6, {error: errcode})});
     }
 
     changeType = () => {
@@ -128,14 +130,14 @@ export default class PPPoE extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='宽带拨号上网（PPPoE）' tips='请输入运营商提供的宽带账号和密码' />
-                <Loading visible={visible} content='正在联网，请稍候...' />
+                <GuideHeader title={intl.get(MODULE, 7)} tips={intl.get(MODULE, 8)} />
+                <Loading visible={visible} content={intl.get(MODULE, 9)} />
                 <form>
                     <Form
                         value={account}
                         onChange={value => this.onChange('account', value)}
                         tip={accountTip}
-                        placeholder='请输入账号'
+                        placeholder={intl.get(MODULE, 10)}
                         maxLength={64}
                     />
                     <Form
@@ -143,12 +145,12 @@ export default class PPPoE extends React.Component {
                         value={pwd}
                         onChange={value => this.onChange('pwd', value)}
                         tip={pwdTip}
-                        placeholder='请输入密码'
+                        placeholder={intl.get(MODULE, 11)}
                         maxLength={32}
                     />
-                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>下一步</Button>
+                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)}</Button>
                     <div className='bottom-link'>
-                        <Link onClick={this.changeType}>切换上网方式</Link>
+                        <Link onClick={this.changeType}>{intl.get(MODULE, 13)}</Link>
                     </div>
                 </form>
             </div>

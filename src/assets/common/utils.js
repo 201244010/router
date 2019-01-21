@@ -1,3 +1,4 @@
+const MODULE = 'utils';
 
 let formatTime = (total) => {
     let seconds = parseInt(total, 10);
@@ -8,19 +9,19 @@ let formatTime = (total) => {
 
     let timeStr = "";
     if (day > 0) {
-        timeStr += day + "天";
+        timeStr += day + intl.get(MODULE, 0);
     }
 
     if (hour > 0) {
-        timeStr += hour + "时";
+        timeStr += hour + intl.get(MODULE, 1);
     }
 
     if (minute > 0) {
-        timeStr += minute + "分";
+        timeStr += minute + intl.get(MODULE, 2);
     }
 
     if (second >= 0) {
-        timeStr += second + "秒";
+        timeStr += second + intl.get(MODULE, 3);
     }
 
     return timeStr;

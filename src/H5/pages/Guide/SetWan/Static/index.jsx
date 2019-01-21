@@ -9,6 +9,8 @@ import confirm from 'h5/components/confirm';
 import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 import { detect } from '../wan';
 
+const MODULE = 'static';
+
 export default class Static extends React.Component {
     constructor(props) {
         super(props);
@@ -33,29 +35,29 @@ export default class Static extends React.Component {
         let valid = {
             ip:{
                 func: checkIp,
-                who:'IP地址',
+                who: intl.get(MODULE, 0),
             },
             subnetmask:{
                 func: checkMask,
-                who:'子网掩码',
+                who: intl.get(MODULE, 1),
             },
             gateway:{
                 func: checkIp,
-                who:'默认网关',
+                who: intl.get(MODULE, 2),
             },
             dns:{
                 func: checkIp,
-                who:'首选DNS',
+                who: intl.get(MODULE, 3),
             },
             dnsbackup:{
                 func: (value) => {
                     if('' === value.join('.')){
                         return '';
                     }else {
-                        return checkIp(value, { who: '备选DNS' });
+                        return checkIp(value, { who: intl.get(MODULE, 4) });
                     }
                 },
-                who:'备选DNS',
+                who: intl.get(MODULE, 5),
             },
         }
 
@@ -80,13 +82,13 @@ export default class Static extends React.Component {
         });
 
         if(ip === gateway){
-            toast({tip: 'IP地址与默认网关不能相同'});
+            toast({tip: intl.get(MODULE, 6)});
             this.setState({ loading: false });
             return ;
         }
 
         if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
-            toast({tip: 'IP地址与默认网关需在同一网段'});
+            toast({tip: intl.get(MODULE, 7)});
             this.setState({ loading: false });
             return ;
         }
@@ -125,10 +127,10 @@ export default class Static extends React.Component {
 
             if(false === online) {   //联网失败
                 confirm({
-                    title: '无法连接网络',
-                    content: '检查您的上网方式是否正确',
-                    cancelText: '继续设置',
-                    okText: '重新设置',
+                    title: intl.get(MODULE, 8),
+                    content: intl.get(MODULE, 9),
+                    cancelText: intl.get(MODULE, 10),
+                    okText: intl.get(MODULE, 11),
                     onOk: this.onOk,
                     onCancel: this.nextStep,
                 });
@@ -137,7 +139,7 @@ export default class Static extends React.Component {
             }
             return;
         }
-        toast({tip: `参数非法[${errcode}]`});
+        toast({tip: intl.get(MODULE, 12, {error: errcode})});
     }
 
     checkDisabled(state){
@@ -179,47 +181,47 @@ export default class Static extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='手动输入IP（静态IP）' tips='请输入运营商提供的 IP地址、子网掩码、网关、DNS服务器地址' />
-                <Loading visible={visible} content='正在联网，请稍候...' />
+                <GuideHeader title={intl.get(MODULE, 13)} tips={intl.get(MODULE, 14)} />
+                <Loading visible={visible} content={intl.get(MODULE, 15)} />
                 <form>
                     <Form
                         value={ip}
                         onChange={value => this.onChange('ip', value)}
                         tip={ipTip}
-                        placeholder='请输入IP地址'
+                        placeholder={intl.get(MODULE, 16)}
                         maxLength={15}
                     />
                     <Form
                         value={subnetmask}
                         onChange={value => this.onChange('subnetmask', value)}
                         tip={subnetmaskTip}
-                        placeholder='请输入子网掩码'
+                        placeholder={intl.get(MODULE, 17)}
                         maxLength={15}
                     />
                     <Form
                         value={gateway}
                         onChange={value => this.onChange('gateway', value)}
                         tip={gatewayTip}
-                        placeholder='请输入默认网关'
+                        placeholder={intl.get(MODULE, 18)}
                         maxLength={15}
                     />
                     <Form
                         value={dns}
                         onChange={value => this.onChange('dns', value)}
                         tip={dnsTip}
-                        placeholder='请输入首选DNS服务器'
+                        placeholder={intl.get(MODULE, 19)}
                         maxLength={15}
                     />
                     <Form
                         value={dnsbackup}
                         onChange={value => this.onChange('dnsbackup', value)}
                         tip={dnsbackupTip}
-                        placeholder='备选DNS服务器（可选）'
+                        placeholder={intl.get(MODULE, 20)}
                         maxLength={15}
                     />
-                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>下一步</Button>
+                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)}</Button>
                     <div className='bottom-link'>
-                        <Link onClick={this.changeType}>切换上网方式</Link>
+                        <Link onClick={this.changeType}>{intl.get(MODULE, 22)}</Link>
                     </div>
                 </form>
             </div>

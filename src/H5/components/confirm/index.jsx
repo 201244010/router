@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './confirm.scss';
 
+const MODULE = 'confirm';
 const MOUNT = 'body';
 
 class Confirm extends React.PureComponent {
@@ -33,7 +34,7 @@ class Confirm extends React.PureComponent {
 
     render() {
         const props = this.props;
-        const { title, content, okText = '确定', cancelText = '取消' } = props;
+        const { title, content, okText = intl.get(MODULE, 0), cancelText = intl.get(MODULE, 1) } = props;
 
         return (
             [

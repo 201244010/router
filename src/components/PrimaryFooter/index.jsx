@@ -1,6 +1,8 @@
 import React from 'react';
 import { get } from '~/assets/common/auth';
 
+const MODULE = 'primaryfooter';
+
 export default class PrimaryFooter extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -45,9 +47,9 @@ export default class PrimaryFooter extends React.PureComponent {
         const visible = logined ? 'visibility' : 'hidden';
         return (
             <footer className={this.props.className}>
-                <p style={{visibility : visible}}> <span>系统版本：{version}</span><span>MAC地址：{mac}</span></p>
+                <p style={{visibility : visible}}> <span>{intl.get(MODULE, 0, {version})}</span><span>{intl.get(MODULE, 2, {mac})}</span></p>
                 <p>
-                    <span>©2018 上海商米科技有限公司 版权所有 </span>|<a href="https://sunmi.com/" target='_blank'>官网</a>|<span>服务热线：400-902-1168</span>
+                    <span>{intl.get(MODULE, 1)}</span>|<a href="https://sunmi.com/" target='_blank'>{intl.get(MODULE, 3)}</a>|<span>{intl.get(MODULE, 4)}</span>
                 </p>
             </footer>
         )
