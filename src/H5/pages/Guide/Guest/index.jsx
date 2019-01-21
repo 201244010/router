@@ -11,6 +11,8 @@ import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
 import { TIME_WIFI_RELOAD } from '~/assets/common/constants';
 
+const MODULE = 'guest';
+
 export default class Guest extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +32,7 @@ export default class Guest extends React.Component {
         const checkMap = {
             ssid: {
                 func: checkStr,
-                args: { who: 'Wi-Fi名称', min: 1, max: 32, type: 'all', byte: true },
+                args: { who: intl.get(MODULE, 0), min: 1, max: 32, type: 'all', byte: true },
             },
             password: {
                 func: (value) => {
@@ -38,9 +40,9 @@ export default class Guest extends React.Component {
                         // Wi-Fi密码可以为空
                         return '';
                     } else if ('' == value.trim()) {
-                        return 'Wi-Fi密码不能全为空格';
+                        return intl.get(MODULE, 1);
                     } else {
-                        return checkStr(value, { who: 'Wi-Fi密码', min: 8, max: 32, type: 'english', byte: true });
+                        return checkStr(value, { who: intl.get(MODULE, 2), min: 8, max: 32, type: 'english', byte: true });
                     }
                 },
             }
@@ -90,7 +92,7 @@ export default class Guest extends React.Component {
         const errcode = res.errcode;
         if (0 !== errcode) {
             this.setState({ loading : false});
-            toast({tip: `未知错误[${errcode}]`});
+            toast({tip: intl.get(MODULE, 3, {error: errcode})});
             return;
         }
 
@@ -104,7 +106,7 @@ export default class Guest extends React.Component {
     nextStep = () => {
         if ('' === this.state.password) {
             confirm({
-                content: '客用Wi-Fi密码未设置，确定继续?',
+                content: intl.get(MODULE, 4),
                 onOk: this.submitData,
             });
         } else {
@@ -146,17 +148,17 @@ export default class Guest extends React.Component {
 
         if( ssid === this.hostSSID){    //客用Wi-Fi与商户Wi-Fi名称相同的情况
             disabled = true;
-            ssidTip = '客用Wi-Fi名称与商户Wi-Fi名称不能相同';
+            ssidTip = intl.get(MODULE, 5);
         }
 
         return (
             <div>
-                <GuideHeader title='设置客用Wi-Fi' tips='请设置为顾客或客人开放的公共Wi-Fi名称与密码' />
-                <Loading visible={loading} content='正在保存Wi-Fi设置，请稍候...' />
+                <GuideHeader title={intl.get(MODULE, 6)} tips={intl.get(MODULE, 7)} />
+                <Loading visible={loading} content={intl.get(MODULE, 8)} />
                 <form>
                     <Form
                         value={ssid}
-                        placeholder='请设置Wi-Fi名称'
+                        placeholder={intl.get(MODULE, 9)}
                         maxLength={32}
                         tip={ssidTip}
                         onChange={value => this.onChange('ssid', value)}
@@ -164,14 +166,14 @@ export default class Guest extends React.Component {
                     <Form
                         value={password}
                         type='password'
-                        placeholder='请设置Wi-Fi密码'
+                        placeholder={intl.get(MODULE, 10)}
                         maxLength={32}
                         tip={passwordTip}
                         onChange={value => this.onChange('password', value)}
                     />
-                    <Button type='primary' loading={loading} onClick={this.nextStep} disabled={disabled}>下一步</Button>
+                    <Button type='primary' loading={loading} onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 11)}</Button>
                     <div className='bottom-link'>
-                        <Link onClick={this.laterSet}>稍后设置</Link>
+                        <Link onClick={this.laterSet}>{intl.get(MODULE, 12)}</Link>
                     </div>
                 </form>
             </div>
