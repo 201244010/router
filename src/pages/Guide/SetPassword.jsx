@@ -71,8 +71,8 @@ export default class SetPassword extends React.Component {
                 });
             break;
         default:
-            // this.setState({pwdTip: `未知错误${errcode}`});
-            this.setState({pwdTip: intl.get(MODULE, 5, {errcode})});
+            // this.setState({pwdTip: `未知错误[${errcode}]`});
+            this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})});
             break;
         }
     }

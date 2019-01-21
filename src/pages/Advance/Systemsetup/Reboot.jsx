@@ -36,7 +36,7 @@ export default class Reboot extends React.Component{
             }, duration * 1000);
         } else {
             // message.error(`路由器重启失败[${errcode}]`);
-            message.error(intl.get(MODULE, 0, {errcode}));    
+            message.error(intl.get(MODULE, 0, {error: errcode}));    
         }
     }
 

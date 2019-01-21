@@ -191,7 +191,7 @@ export default class SetWan extends React.PureComponent {
             });  
         }else{
             // message.error(`参数不合法[${errcode}]`);
-            message.error(intl.get(MODULE, 6, {errcode}));
+            message.error(intl.get(MODULE, 6, {error: errcode}));
             this.setState({loading : false});
         }   
     }
@@ -268,7 +268,7 @@ export default class SetWan extends React.PureComponent {
                             }else{
                                 this.setState({ detect: false });
                                 // message.error(`上网方式检查检测失败[${errcode}]`);
-                                message.error(intl.get(MODULE, 7, {errcode}));
+                                message.error(intl.get(MODULE, 7, {error: errcode}));
                             }
                         }); 
                     }); 
@@ -277,7 +277,7 @@ export default class SetWan extends React.PureComponent {
                 }   
             }else{
                 // message.error(`获取网线插拔状态失败[${errcode}]`);
-                message.error(intl.get(MODULE, 8, {errcode}));
+                message.error(intl.get(MODULE, 8, {error: errcode}));
             }          
         });
         
@@ -301,7 +301,7 @@ export default class SetWan extends React.PureComponent {
             return;
         }
         // message.error(`IP信息获取失败[${errcode}]`);
-        message.error(intl.get(MODULE, 9, {errcode}));
+        message.error(intl.get(MODULE, 9, {error: errcode}));
     }
 
     componentDidMount(){

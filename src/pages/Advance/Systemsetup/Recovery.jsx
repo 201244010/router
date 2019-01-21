@@ -37,7 +37,7 @@ export default class Recovery extends React.Component{
             }, duration * 1000);
         } else {
             // message.error(`恢复出厂失败[${errcode}]`);
-            message.error(intl.get(MODULE, 0, {errcode}));
+            message.error(intl.get(MODULE, 0, {error: errcode}));
         }
     }
 

@@ -43,7 +43,7 @@ export default class Dosd extends React.Component {
             message.success(intl.get(MODULE, 1));
             return;
         }
-        message.error(intl.get(MODULE, 2, {errcode}));
+        message.error(intl.get(MODULE, 2, {error: errcode}));
     }
 
     fetchDosInfo = async () => {
@@ -54,7 +54,7 @@ export default class Dosd extends React.Component {
 
         let { errcode, data, message } = response;
         if (0 !== errcode) {
-            message.error(intl.get(MODULE, 3, {errcode}));
+            message.error(intl.get(MODULE, 3, {error: errcode}));
             return;
         }
 
@@ -87,7 +87,7 @@ export default class Dosd extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 4, {errcode}));
+        message.error(intl.get(MODULE, 4, {error: errcode}));
     }
 
     onChange = (key) => {
