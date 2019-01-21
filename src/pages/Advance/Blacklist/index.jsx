@@ -97,7 +97,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 5, {errcode}));
+        message.error(intl.get(MODULE, 5, {error: errcode}));
     }
 
     handleSelect = (mac) => {
@@ -168,7 +168,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 6, {errcode}));
+        message.error(intl.get(MODULE, 6, {error: errcode}));
     }
 
     onEditOk = async () => {
@@ -247,7 +247,7 @@ export default class Blacklist extends React.Component {
 
         let { errcode, data } = response;
         if (0 !== errcode) {
-            message.error(intl.get(MODULE, 8, {errcode}));
+            message.error(intl.get(MODULE, 8, {error: errcode}));
             return;
         }
 

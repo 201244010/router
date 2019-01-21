@@ -115,7 +115,7 @@ export default class Bootdevice extends React.Component {
         }
 
         //message.error(`删除失败[${errcode}]`);
-        message.error(intl.get(MODULE, 2, {errcode}));
+        message.error(intl.get(MODULE, 2, {error: errcode}));
     }
 
     handleSelect = (mac) => {
@@ -187,7 +187,7 @@ export default class Bootdevice extends React.Component {
         }
 
         // message.error(`保存失败[${errcode}]`);
-        message.error(intl.get(MODULE, 3, {errcode}));
+        message.error(intl.get(MODULE, 3, {error: errcode}));
         
     }
 
@@ -292,7 +292,7 @@ export default class Bootdevice extends React.Component {
         let { errcode, data, message } = response;
         if (0 !== errcode) {
             // message.error(`获取列表指令异常[${errcode}]`);
-            message.error(intl.get(MODULE, 8, {errcode}));
+            message.error(intl.get(MODULE, 8, {error: errcode}));
             return;
         }
 
