@@ -106,7 +106,7 @@ export default class SetWifi extends React.Component {
             this.props.history.push(`/guide/finish/applying/` + encodeURIComponent(param));
         } else {
             // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
-            message.error(`${intl.get(MODULE, 9)}[${errorMessage[errcode] || errcode}]`);
+            message.error(intl.get(MODULE, 9, {errcode: errorMessage[errcode] || errcode}));
         }
         
     }

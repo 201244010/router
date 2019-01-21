@@ -757,7 +757,7 @@ export default {
 		"setwifi6": "Wi-Fi名称",
 		"setwifi7": "Wi-Fi密码",
 		"setwifi8": "密码不能全为空格",
-		"setwifi9": "Wi-Fi设置失败",
+		"setwifi9": "Wi-Fi设置失败[{errcode}]",
 		"setwifi10": "提示：",
 		"setwifi11": "商户Wi-Fi",
 		"setwifi12": "、",
