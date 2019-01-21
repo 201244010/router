@@ -75,7 +75,7 @@ class Login extends React.Component {
                 tip = intl.get(MODULE, 4);
                 break;
             default:
-                tip = intl.get(MODULE, 5, {errcode});
+                tip = intl.get(MODULE, 5, {error: errcode});
                 break;
         }
 

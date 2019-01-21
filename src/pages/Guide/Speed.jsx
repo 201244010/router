@@ -94,7 +94,7 @@ export default class Speed extends React.Component {
             });
             return;
         }
-        message.error(intl.get(MODULE, 4, {errcode}));
+        message.error(intl.get(MODULE, 4, {error: errcode}));
     }
 
   //  手动配速  
@@ -118,7 +118,7 @@ export default class Speed extends React.Component {
                 return this.props.history.push('/guide/setwifi');
             }
             this.setState({ loading: false });
-            message.error(intl.get(MODULE, 5, {errcode}));
+            message.error(intl.get(MODULE, 5, {error: errcode}));
         })
     }
 
@@ -133,7 +133,7 @@ export default class Speed extends React.Component {
         if(errcode == 0){
             return this.qos = data[0].result.qos;
         }
-        message.error(intl.get(MODULE, 6, {errcode}));
+        message.error(intl.get(MODULE, 6, {error: errcode}));
     }
 
   autoSpeedTest = () => {

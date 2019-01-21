@@ -356,7 +356,7 @@ export default class NETWORK extends React.Component {
                 return;
             }
             this.setState({ loading: false });
-            message.error(intl.get(MODULE, 14, {errcode, error}));
+            message.error(intl.get(MODULE, 14, {error: err[errcode] || errcode}));
         })
     }
 
@@ -412,7 +412,7 @@ export default class NETWORK extends React.Component {
 
             return;
         }
-        message.error(intl.get(MODULE, 15, {errcode, error}));
+        message.error(intl.get(MODULE, 15, {error: err[errcode] || errcode}));
     }
 
     updateNetStatus = (wan) => {

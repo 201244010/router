@@ -169,7 +169,7 @@ export default class Lan extends React.Component {
         }
 
         //message.error(`获取局域网配置指令异常[${error[errcode] || errcode}]`);
-        message.error(intl.get(MODULE, 13, {error, errcode}));
+        message.error(intl.get(MODULE, 13, {error: error[errcode] || errcode}));
     }
 
     submitAll = async () => {
@@ -217,7 +217,7 @@ export default class Lan extends React.Component {
             return;
         }else{
             Loading.close();
-            message.error(intl.get(MODULE, 15, {error, errcode}));
+            message.error(intl.get(MODULE, 15, {error: error[errcode] || errcode}));
         }
     }
 

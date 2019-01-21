@@ -289,7 +289,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 18, {errcode}));
+        message.error(intl.get(MODULE, 18, {error: errcode}));
     }
 
     handleDelete = async (record) => {
@@ -314,7 +314,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 21, {errcode}));
+        message.error(intl.get(MODULE, 21, {error: errcode}));
     }
 
     handleSave = async (record, toggleEdit) => {

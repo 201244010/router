@@ -527,7 +527,7 @@ export default class WIFI extends React.Component {
             });
             return;
         }
-        message.error(intl.get(MODULE, 27, {errcode})); 
+        message.error(intl.get(MODULE, 27, {error: errcode})); 
     }
 
     componentDidMount(){

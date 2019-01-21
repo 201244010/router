@@ -128,8 +128,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        // message.error(`${error[errcode]}` || `删除失败[${errcode}]`);
-        message.error(intl.get(MODULE, 10, {errcode, error}));
+        message.error(intl.get(MODULE, 10, {error: errcode}));
     }
 
     handleSelect = (mac) => {
@@ -219,7 +218,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 11, {errcode, error}));
+        message.error(intl.get(MODULE, 11, {error: errcode}));
     }
 
     onEditOk = async () => {
@@ -289,7 +288,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 11, {errcode, error}));
+        message.error(intl.get(MODULE, 11, {error: errcode}));
     }
 
     onSelectCancle = () => {
@@ -361,7 +360,7 @@ export default class StaticBind extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 13, {errcode}));
+        message.error(intl.get(MODULE, 13, {error: errcode}));
     }
 
     componentDidMount() {
