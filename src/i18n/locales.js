@@ -854,6 +854,7 @@ export default {
 		"clientlist36": "解除优先",
 		"clientlist37": "优先上网",
 		"clientlist38": "禁止上网",
+		"clientlist39": "{deviceType}({total}台)",
 		"mesh.file": "src/pages/Home/Mesh/index.jsx",
 		"mesh0": "搜寻设备",
 		"mesh1": "我知道了",
