@@ -23,6 +23,7 @@
 
 // 要提取的中午字符的文件类型，如有需要，请更改
 const file_type = ['html', 'htm', 'js', 'jsx', 'json'];
+const exclude_files = ['locales.json', 'funcMap.js'];
 
 // 引入需要的模块
 var program = require("commander");
@@ -75,8 +76,18 @@ function readFileContent(filePath) {
 function fileDisplay(filePath, result) {
     //根据文件路径读取文件，返回文件列表
     var files = fs.readdirSync(filePath);
+    var len = files.length;
 
-    files.forEach(function (filename) {
+    for (var i = 0; i < len; i++) {
+        var filename = files[i];
+
+        // 排除文件
+        if (exclude_files.some(file => {
+            return filename.indexOf(file) !== -1;
+        })) {
+            continue;
+        };
+
         //获取当前文件的绝对路径
         var filedir = path.join(filePath, filename);
         //根据文件路径获取文件信息，返回一个fs.Stats对象
@@ -95,7 +106,7 @@ function fileDisplay(filePath, result) {
         if (isDir) {
             fileDisplay(filedir, result);//递归，如果是文件夹，就继续遍历该文件夹下面的文件
         }
-    });
+    };
 }
 
 

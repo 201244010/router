@@ -13,13 +13,14 @@ import Mesh from './Mesh';
 
 import './home.scss';
 
-const RSSI_GOOD = '较好', RSSI_BAD = '较差';
+const MODULE = 'home';
+const RSSI_GOOD = intl.get(MODULE, 0), RSSI_BAD = intl.get(MODULE, 25);
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 const err = {
-    '-1001': '参数格式错误',
-    '-1002': '参数非法',
-    '-1005': '内存不足，无法进行测速',
-    '-1007': '网络异常，无法进行测速'
+    '-1001': intl.get(MODULE, 1),
+    '-1002': intl.get(MODULE, 2),
+    '-1005': intl.get(MODULE, 3),
+    '-1007': intl.get(MODULE, 4)
 }
 
 export default class Home extends React.Component {
@@ -257,17 +258,17 @@ export default class Home extends React.Component {
             }*/
         ],
         qosData: [{
-            name: '优先设备',
+            name: intl.get(MODULE, 5),
             value: 0,
             color: '#87D068'
         },
         {
-            name: '普通设备',
+            name: intl.get(MODULE, 6),
             value: 0,
             color: '#4687FF'
         },
         {
-            name: '剩余带宽',
+            name: intl.get(MODULE, 7),
             value: 100,
             color: '#DFE8F3'
         }]
@@ -315,7 +316,7 @@ export default class Home extends React.Component {
         const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
-            message.warning(`请求失败[${errcode}]`);
+            message.warning(intl.get(MODULE, 8, {error: errcode}));
             return;
         }
 
@@ -510,52 +511,52 @@ export default class Home extends React.Component {
                         <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
                         <img className='router' src={require('~/assets/images/router.png')} />
                         <div className={classnames(['content', { 'internet-error': !online }])}>
-                            <h4><span>网络状态</span><span className='state'>{online ? '正常' : '异常'}</span></h4>
+                            <h4><span>{intl.get(MODULE, 9)}</span><span className='state'>{online ? intl.get(MODULE, 10) : intl.get(MODULE, 11)}</span></h4>
                             <div className='internet-status'>
                                 <div className='up'>
                                     <label className='speed'>{upSpeed}</label>
                                     <div className='tip'>
-                                        <span>上行速率</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
+                                        <span>{intl.get(MODULE, 12)}</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
                                         <div className='unit'>{upUnit}</div>
                                     </div>
                                 </div>
                                 <div className='down'>
                                     <label className='speed'>{downSpeed}</label>
                                     <div className='tip'>
-                                        <span>下行速率</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
+                                        <span>{intl.get(MODULE, 13)}</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
                                         <div className='unit'>{downUnit}</div>
                                     </div>
                                 </div>
-                                <Button onClick={this.startSpeedTest} className='test-speed'>一键测速</Button>
+                                <Button onClick={this.startSpeedTest} className='test-speed'>{intl.get(MODULE, 14)}</Button>
                             </div>
-                            <Button onClick={this.startDiagnose} className='diagnose'>立即诊断</Button>
+                            <Button onClick={this.startDiagnose} className='diagnose'>{intl.get(MODULE, 15)}</Button>
                         </div>
                         {visible && 
                             <Progress
                                 duration={TIME_SPEED_TEST}
-                                title='正在进行网络测速，请耐心等待…'
+                                title={intl.get(MODULE, 16)}
                                 showPercent={true}
                             />
                         }
                         <Modal className='speed-result-modal' width={560} closable={false} visible={successShow} centered={true}
-                            footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>}>
+                            footer={<Button type="primary" onClick={this.closeSpeedTest}>{intl.get(MODULE, 17)}</Button>}>
                             <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                            <h4>带宽测速完成</h4>
+                            <h4>{intl.get(MODULE, 18)}</h4>
                             <ul className='speed-result'>
                                 <li>
                                     <CustomIcon color="#3D76F6" type="kbyte" size={12} />
-                                    <label>上行带宽：</label><span>{upBand}Mbps</span>
+                                    <label>{intl.get(MODULE, 19)}</label><span>{upBand}Mbps</span>
                                 </li>
                                 <li>
                                     <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
-                                    <label>下行带宽：</label><span>{downBand}Mbps</span>
+                                    <label>{intl.get(MODULE, 20)}</label><span>{downBand}Mbps</span>
                                 </li>
                             </ul>
                         </Modal>
                         <Modal className='speed-result-modal' width={560} closable={false} visible={failShow} centered={true}
-                            footer={<Button type="primary" onClick={this.closeSpeedTest}>确定</Button>} >
+                            footer={<Button type="primary" onClick={this.closeSpeedTest}>{intl.get(MODULE, 21)}</Button>} >
                             <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
-                            <h4>带宽测速失败，请重试</h4>
+                            <h4>{intl.get(MODULE, 22)}</h4>
                         </Modal>
                     </li>
                     <QoS data={qosData} enable={qosEnable} online={online} history={this.props.history}/>
@@ -563,8 +564,8 @@ export default class Home extends React.Component {
                         <img className='radar' src={require('~/assets/images/radar.png')} />
                         <div className='content'>
                             <h3>SUNMI Link</h3>
-                            <p>一键连接附近商米设备</p>
-                            <Button onClick={this.startSunmiMesh} className='search'>搜寻设备</Button>
+                            <p>{intl.get(MODULE, 23)}</p>
+                            <Button onClick={this.startSunmiMesh} className='search'>{intl.get(MODULE, 24)}</Button>
                         </div>
                         <Mesh ref="sunmiMesh" />
                     </li>

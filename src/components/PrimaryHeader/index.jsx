@@ -5,6 +5,8 @@ import SubLayout from "../SubLayout";
 import { withRouter, NavLink } from "react-router-dom";
 import { get, clear } from '~/assets/common/auth';
 
+const MODULE = 'primaryheader';
+
 class PrimaryHeader extends React.Component {
 	constructor(props) {
         super(props);
@@ -56,16 +58,16 @@ class PrimaryHeader extends React.Component {
                             !isGuidePage ? [
                                 <nav key="1" className="menu">
                                     <Icon type="netstat"></Icon>
-                                    <NavLink to={match.path + "home"} activeClassName="active">网络状态</NavLink>
+                                    <NavLink to={match.path + "home"} activeClassName="active">{intl.get(MODULE, 0)}</NavLink>
                                     <Icon type="set"></Icon>
-                                    <NavLink to={match.path + "settings"} activeClassName="active">基础设置</NavLink>
+                                    <NavLink to={match.path + "settings"} activeClassName="active">{intl.get(MODULE, 1)}</NavLink>
                                     <Icon type="advancedsetup"></Icon>
-                                    <NavLink to={match.path + "advance"} activeClassName="active">高级设置</NavLink>
+                                    <NavLink to={match.path + "advance"} activeClassName="active">{intl.get(MODULE, 2)}</NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
-                                    <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">下载手机版</a>
+                                    <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">{intl.get(MODULE, 3)}</a>
                                     <span className="ui-ib">|</span>
-                                    <a href="javascript:;" onClick={this.logout} className="ui-ib">退出管理</a>
+                                    <a href="javascript:;" onClick={this.logout} className="ui-ib">{intl.get(MODULE, 4)}</a>
                                 </li>
                             ] : ''
                         }

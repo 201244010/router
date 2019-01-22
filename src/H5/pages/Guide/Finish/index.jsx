@@ -7,6 +7,8 @@ import { Base64 } from 'js-base64';
 
 import './finish.scss';
 
+const MODULE = 'finish';
+
 export default class Finish extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -40,24 +42,24 @@ export default class Finish extends React.PureComponent {
 
         return (
             <div className='finish-wrap'>
-                <GuideHeader title='设置完成' />
+                <GuideHeader title={intl.get(MODULE, 0)} />
                 <form>
                     <WifiInfo
-                        title='商户Wi-Fi'
+                        title={intl.get(MODULE, 1)}
                         ssid={host.ssid}
                         password={host.password}
                         color='rgba(255,96,0,0.60)'
                     />
                     { ('1' === guest.enable) &&
                     <WifiInfo
-                        title='客用Wi-Fi'
+                        title={intl.get(MODULE, 2)}
                         ssid={guest.ssid}
                         password={guest.password}
                         color='rgba(45,187,26,0.60)'
                     />
                     }
-                    <p className='tip-reconnect'>Wi-Fi可能会断开，如有需要请重新连接</p>
-                    <Button type='primary' onClick={this.nextStep}>完成</Button>
+                    <p className='tip-reconnect'>{intl.get(MODULE, 3)}</p>
+                    <Button type='primary' onClick={this.nextStep}>{intl.get(MODULE, 4)}</Button>
                 </form>
             </div>
         )
@@ -75,10 +77,10 @@ const WifiInfo = function(props) {
                 <h4 className='title'>{title}</h4>
             </div>
             <ul className='info-list'>
-                <li><label>名称：</label><span>{ssid}</span></li>
+                <li><label>{intl.get(MODULE, 5)}</label><span>{ssid}</span></li>
                 <li>{(password && password.length > 0) ?
-                    [<label>密码：</label>,<span>{password}</span>] :
-                    <label>无密码</label>
+                    [<label>{intl.get(MODULE, 6)}</label>,<span>{password}</span>] :
+                    <label>{intl.get(MODULE, 7)}</label>
                 }</li>
             </ul>
         </div>

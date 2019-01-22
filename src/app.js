@@ -8,12 +8,13 @@ import { UA, PAGE_STYLE_KEY, PAGE_STYLE_H5, PAGE_STYLE_WEB } from './utils';
 import Web from './pages/index.js';     // PC Web页面
 import H5 from './H5';       // H5页面
 
+const MODULE = 'app';
+
 let web = PAGE_STYLE_WEB;
 try {
     web = window.sessionStorage.getItem(PAGE_STYLE_KEY);
 } catch (e) {
-    alert('您可能开启了隐私模式，请关闭后重试');
-    console.error('[sessionStorage]', e);
+    alert(intl.get(MODULE, 0));
 }
 
 // 根据UA渲染不同的页面

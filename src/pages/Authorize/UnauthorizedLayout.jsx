@@ -1,8 +1,9 @@
 
 import React from 'react';
 
+const MODULE = 'unauthorizedlayout';
 
 export default function (props){
-    return <div>Unauthorize 这是登录页</div>
+    return <div>{intl.get(MODULE, 0)}</div>
 };
 

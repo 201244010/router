@@ -5,6 +5,7 @@ import Logo from '~/components/Logo';
 
 import './mesh.scss';
 
+const MODULE = 'mesh';
 export default class Mesh extends React.Component{
     constructor(props) {
         super(props);
@@ -35,9 +36,9 @@ export default class Mesh extends React.Component{
             if ((currentTime - this.startTime) > duration * 1000){
                 clearInterval(this.timer);
                 this.setState({
-                    title: '搜寻设备',
+                    title: intl.get(MODULE, 0),
                     showBtn: true,
-                    btnStr: '我知道了',
+                    btnStr: intl.get(MODULE, 1),
                     state: 'done',
                 });
                 return;
@@ -49,7 +50,7 @@ export default class Mesh extends React.Component{
                 if (errcode == 0) {
                     let { devices } = data[0].result.sunmimesh;
                     let num = devices.length;
-                    let title = (num > 0) ? `搜寻到 ${num} 台商米设备，已自动接入商米网络` : '正在搜寻商米设备...';
+                    let title = (num > 0) ? intl.get(MODULE, 2, {num}) : intl.get(MODULE, 4);
                     this.setState({
                         devices: devices.map(item => Object.assign({}, item)),
                         title: title,
@@ -57,7 +58,7 @@ export default class Mesh extends React.Component{
                     });
                 } else {
                     clearInterval(this.timer);
-                    Modal.error({ title: '获取商米设备列表指令异常', content: message, centered: true });
+                    Modal.error({ title: intl.get(MODULE, 5), content: message, centered: true });
                 }
             })
         }, 5000);
@@ -69,8 +70,8 @@ export default class Mesh extends React.Component{
             visible: true,
             showBtn: false,
             state: 'running',
-            title: '正在搜寻商米设备...',
-            btnStr: '已找到全部商米设备',
+            title: intl.get(MODULE, 6),
+            btnStr: intl.get(MODULE, 7),
             devices: [],
         });
 
@@ -117,13 +118,13 @@ export default class Mesh extends React.Component{
             {'done' === state && num > 0 &&
             <div>
                 <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                <h4>搜寻到<span>{num}</span>台新商米设备，已自动接入商米网络</h4>
+                <h4>{intl.getHTML(MODULE, 9)}</h4>
             </div>
             }
             {'done' === state && num == 0 &&
             <div>
                 <div className='status-icon'><CustomIcon color="#FF5500" type="hint" size={64} /></div>
-                <h4>没有搜寻到新商米设备</h4>
+                <h4>{intl.get(MODULE, 8)}</h4>
             </div>
             }
         </Modal>
