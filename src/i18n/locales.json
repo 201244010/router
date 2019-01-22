@@ -665,8 +665,6 @@
 		"sysupgrade6": "知道了",
 		"sysupgrade7": "最新版本:",
 		"sysupgrade8": "（版本说明）",
-		"unauthorizedlayout.file": "src/pages/Authorize/UnauthorizedLayout.jsx",
-		"unauthorizedlayout0": "Unauthorize 这是登录页",
 		"diagnose.file": "src/pages/Diagnose/index.jsx",
 		"diagnose0": "重新检测",
 		"diagnose1": "网线异常",
