@@ -22,22 +22,15 @@ export default class SwitchLang extends React.Component {
 
     render() {
         const { className } = this.props;
-        console.log('className',className);
         const { lang } = this.state;
-        let language = 'zh-cn' === lang ? SUPPORTED_LANG.map(item => {
-            if ('en-us' === item.key) {
-                return item.label;
-            }
-        }) : SUPPORTED_LANG.map(item => {
-            if ('zh-cn' === item.key) {
-                return item.label;
-            }
-        });
+        let language = 'zh-cn' === lang ? SUPPORTED_LANG.find(item => {
+            return 'en-us' === item.key;
+        }).label : SUPPORTED_LANG.find(item => {
+            return 'zh-cn' === item.key;
+        }).label;
 
         return (
-            <React.Fragment>
-                <Button className={className} onClick={this.changeLang} ghost>{language}</Button>  
-            </React.Fragment>   
+            <Button className={className} onClick={this.changeLang} ghost>{language}</Button>   
         );
     }  
 }
