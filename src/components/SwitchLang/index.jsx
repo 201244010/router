@@ -23,10 +23,9 @@ export default class SwitchLang extends React.Component {
     render() {
         const { className } = this.props;
         const { lang } = this.state;
-        let language = 'zh-cn' === lang ? SUPPORTED_LANG.find(item => {
-            return 'en-us' === item.key;
-        }).label : SUPPORTED_LANG.find(item => {
-            return 'zh-cn' === item.key;
+        let show = 'zh-cn' === lang ? 'en-us' : 'zh-cn';
+        let language = SUPPORTED_LANG.find(item => {
+            return show === item.key;
         }).label;
 
         return (
