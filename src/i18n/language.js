@@ -82,7 +82,7 @@ function writeExcel () {
     }
 
     const date = new Date();
-    workbook.xlsx.writeFile(`language-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function() {
+    workbook.xlsx.writeFile(`i18n-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function() {
         console.log("xls file is written.");
     });
 }
