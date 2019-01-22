@@ -9,11 +9,11 @@ var workbook = new Excel.Workbook();
 var worksheet = workbook.addWorksheet("W1");
 
 var columns  = [
-    { header: intl.get(MODULE, 0), key: 'func', width: 30 },
-    { header: intl.get(MODULE, 1), key: 'id', width: 6 },
-    { header: intl.get(MODULE, 2), key: 'zh', width: 50 },
-    { header: intl.get(MODULE, 3), key: 'en', width: 50 },
-    { header: intl.get(MODULE, 4), key: 'comments', width: 30}
+    { header: "功能", key: 'func', width: 30 },
+    { header: "键值", key: 'id', width: 6 },
+    { header: "中文", key: 'zh', width: 50 },
+    { header: "英文", key: 'en', width: 50 },
+    { header: "备注", key: 'comments', width: 30}
 ];
 
 worksheet.columns = columns;
