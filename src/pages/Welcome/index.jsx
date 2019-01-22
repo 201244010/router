@@ -58,7 +58,7 @@ export default class Welcome extends React.Component {
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
                             <span style={{opacity:'0.6'}}>
-                            {intl.get(MODULE, 3)}<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>{intl.get(MODULE, 4)}</a>{intl.get(MODULE, 5)}<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>{intl.get(MODULE, 6)}</a>{intl.get(MODULE, 7)}
+                            {intl.getHTML(MODULE, 3)}
                             </span>
                         </Checkbox>
                     </div>

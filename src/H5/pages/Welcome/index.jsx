@@ -77,7 +77,7 @@ export default class Home extends React.Component {
                         onChange={this.onCheckBoxChange}>
                     </CheckBox>
                     <span className='agreement'>
-                        {intl.get(MODULE, 3)}<Link onClick={this.showAgreement}>{intl.get(MODULE, 4)}</Link>{intl.get(MODULE, 5)}<Link onClick={this.showPolicy}>{intl.get(MODULE, 6)}</Link>{intl.get(MODULE, 7)}
+                        {intl.getHTML(MODULE, 3)}
                     </span>
                 </div>
                 <Modal
