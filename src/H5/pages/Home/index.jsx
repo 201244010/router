@@ -7,6 +7,8 @@ import { UA, PAGE_STYLE_KEY, PAGE_STYLE_WEB } from '~/utils';
 
 import style from './home.useable.scss';
 
+const MODULE = 'h5home';
+
 export default class Home extends React.PureComponent{
     constructor(props){
         super(props);
@@ -54,12 +56,12 @@ export default class Home extends React.PureComponent{
                     left: '-2.3067rem',
                     zIndex: '-1'
                 }} />
-                <h2>欢迎使用商米路由器</h2>
-                <p>下载商米助手APP，随时随地管理您的网络</p>
-                <div><Button onClick={this.downloadApp} className='download' type='primary'>下载APP</Button></div>
-                <div><Button onClick={this.openApp}>已安装，直接打开</Button></div>
+                <h2>{intl.get(MODULE, 0)}</h2>
+                <p>{intl.get(MODULE, 1)}</p>
+                <div><Button onClick={this.downloadApp} className='download' type='primary'>{intl.get(MODULE, 2)}</Button></div>
+                <div><Button onClick={this.openApp}>{intl.get(MODULE, 3)}</Button></div>
                 <div className='web-config'>
-                    <Link onClick={this.goWeb}>进入网页版配置</Link>
+                    <Link onClick={this.goWeb}>{intl.get(MODULE, 4)}</Link>
                 </div>
                 <Icon type='earth' size={'10.6667rem'} style={{
                     color: '#FFF',

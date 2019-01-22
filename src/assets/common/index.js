@@ -163,7 +163,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                         }
                         break;
                     case 'string':
-                        throw new Error('fetchApi 要求循环参数为 boolean 或 number');
+                        throw new Error(intl.get(MODULE, 0));
                 }
 
                 if (error.toString().indexOf('403') > -1) {
@@ -176,7 +176,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 }
 
                 if (error.toString().indexOf('Network Error') > -1 && !options.ignoreErr) {
-                    message.error(intl.get(MODULE, 0));
+                    message.error(intl.get(MODULE, 1));
                 }
 
                 return reject(error);

@@ -3,15 +3,17 @@ var Excel = require("exceljs");
 
 var locales = require('./locales.json');
 
+const MODULE = 'language';
+
 var workbook = new Excel.Workbook();
 var worksheet = workbook.addWorksheet("W1");
 
 var columns  = [
-    { header: '功能', key: 'func', width: 30 },
-    { header: '键值', key: 'id', width: 6 },
-    { header: '中文', key: 'zh', width: 50 },
-    { header: '英文', key: 'en', width: 50 },
-    { header: '备注', key: 'comments', width: 30}
+    { header: "功能", key: 'func', width: 30 },
+    { header: "键值", key: 'id', width: 6 },
+    { header: "中文", key: 'zh', width: 50 },
+    { header: "英文", key: 'en', width: 50 },
+    { header: "备注", key: 'comments', width: 30}
 ];
 
 worksheet.columns = columns;

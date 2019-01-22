@@ -29,7 +29,7 @@ export default class PPPoE extends React.Component {
     onChange = (name, value) => {
         const type = {
             account: {
-                func: checkStr(value, { who:intl.get(MODULE, 0), min: 1, max: 64, type: 'all' })
+                func: checkStr(value, { who: intl.get(MODULE, 0), min: 1, max: 64, type: 'all' })
             },
             pwd: {
                 func: checkStr(value, { who: intl.get(MODULE, 1), min: 1, max: 32, type: 'english' })
