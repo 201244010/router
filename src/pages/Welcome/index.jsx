@@ -3,6 +3,8 @@ import React from 'react';
 import { Button, Checkbox } from 'antd';
 import Icon from '~/components/Icon';
 
+const MODULE = 'welcome';
+
 export default class Welcome extends React.Component {
     constructor(props) {
         super(props);
@@ -40,15 +42,15 @@ export default class Welcome extends React.Component {
                         textAlign: 'center',
                         lineHeight: '46px',
                         marginBottom:12
-                    }}>欢迎使用商米路由器</h1>
-                    <p style={{ fontSize: 18, color: '#FFF' }}>简单几步设置，路由器就可以上网啦</p>
+                    }}>{intl.get(MODULE, 0)}</h1>
+                    <p style={{ fontSize: 18, color: '#FFF' }}>{intl.get(MODULE, 1)}</p>
                     <Button
                         type="primary"
                         size='large'
                         disabled={!checked}
                         onClick={this.post}
                         style={{ margin: "40px 0 12px", width: 320, height:42 }}>
-                        开始设置
+                        {intl.get(MODULE, 2)}
                     </Button>
                     <div>
                         <Checkbox
@@ -56,9 +58,7 @@ export default class Welcome extends React.Component {
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
                             <span style={{opacity:'0.6'}}>
-                            同意《<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>商米用户协议</a>》
-                            和
-                            《<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>隐私政策</a>》
+                            {intl.get(MODULE, 3)}<a href='/agreement/user.html' target='_blank' style={{textDecoration:'underline'}}>{intl.get(MODULE, 4)}</a>{intl.get(MODULE, 5)}<a href='/agreement/secret.html' target='_blank' style={{textDecoration:'underline'}}>{intl.get(MODULE, 6)}</a>{intl.get(MODULE, 7)}
                             </span>
                         </Checkbox>
                     </div>
