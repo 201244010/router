@@ -51,7 +51,7 @@ export default class TimeZone extends React.Component {
         const { timezone, loading } = this.state;
 
         return (
-            <div>
+            <div className='guide-timezone'>
                 <h2>时区</h2>
                 <p className="ui-tips guide-tip">这个是时区</p>
                 <div className='content'>
