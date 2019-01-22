@@ -12,6 +12,8 @@ import { UA, PAGE_STYLE_KEY, PAGE_STYLE_WEB } from '~/utils';
 
 import './welcome.scss';
 
+const MODULE = 'h5welcome';
+
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -65,9 +67,9 @@ export default class Home extends React.Component {
                     left: '-2.3067rem',
                     zIndex: '-1'
                 }} />
-                <h2>欢迎使用商米路由器</h2>
-                <p>简单几步设置，路由器就可以上网啦</p>
-                <div><Button disabled={!checked} onClick={this.nextStep} className='start-setup' type='primary'>开始配置</Button></div>
+                <h2>{intl.get(MODULE, 0)}</h2>
+                <p>{intl.get(MODULE, 1)}</p>
+                <div><Button disabled={!checked} onClick={this.nextStep} className='start-setup' type='primary'>{intl.get(MODULE, 2)}</Button></div>
                 <div className='policy'>
                     <CheckBox
                         style={{ color: '#FFF' }}
@@ -75,25 +77,24 @@ export default class Home extends React.Component {
                         onChange={this.onCheckBoxChange}>
                     </CheckBox>
                     <span className='agreement'>
-                        同意《<Link onClick={this.showAgreement}>商米用户协议</Link>》和
-                            《<Link onClick={this.showPolicy}>隐私政策</Link>》
+                        {intl.get(MODULE, 3)}<Link onClick={this.showAgreement}>{intl.get(MODULE, 4)}</Link>{intl.get(MODULE, 5)}<Link onClick={this.showPolicy}>{intl.get(MODULE, 6)}</Link>{intl.get(MODULE, 7)}
                     </span>
                 </div>
                 <Modal
-                    title='商米用户协议'
+                    title={intl.get(MODULE, 8)}
                     visible={visible}
-                    footer={<div onClick={this.iknow}>我知道了</div>}
+                    footer={<div onClick={this.iknow}>{intl.get(MODULE, 9)}</div>}
                 >
                     <Agreement />
                 </Modal>
                 <Modal
-                    title='隐私政策'
+                    title={intl.get(MODULE, 10)}
                     visible={policy}
-                    footer={<div onClick={this.iknow}>我知道了</div>}
+                    footer={<div onClick={this.iknow}>{intl.get(MODULE, 11)}</div>}
                 >
                     <Privacy />
                 </Modal>
-                <div className='copyright'>© 2018 上海商米科技有限公司</div>
+                <div className='copyright'>{intl.get(MODULE, 12)}</div>
                 <Icon type='earth' size={'10.6667rem'} style={{
                     color: '#FFF',
                     opacity: 0.06,
