@@ -4,6 +4,7 @@ import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
+import { getLang, setLang } from '~/i18n/index.js';
 import "./QRcode.scss";
 
 const MODULE = 'login';
@@ -18,6 +19,7 @@ class Login extends React.Component {
         password: '',
         tip : '',
         loading: false,
+        lang: getLang(),
     };
 
     onChange = value => {
@@ -84,9 +86,21 @@ class Login extends React.Component {
         });
     }
 
+    changeLang = () => {
+        let  language = 'zh-cn' === this.state.lang ? 'en-us' : 'zh-cn';
+
+        setLang(language);
+        this.setState({
+            lang: language,
+        })
+    }
+
     render() {
-        const { tip, password } = this.state;
+        const { lang, tip, password } = this.state;
+        let language = 'zh-cn' === lang ? 'English' : '简体中文';
+
         return <div className="ui-center ui-fullscreen">
+                    <div className='lang' onClick={this.changeLang}>{language}</div>
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
