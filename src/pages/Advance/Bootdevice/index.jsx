@@ -426,7 +426,7 @@ export default class Bootdevice extends React.Component {
             width: 143,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title={intl.get(MODULE, 17)} okText="确定" cancelText="取消" onConfirm={() => this.handleDelete(record)}>
+                    <Popconfirm title={intl.get(MODULE, 17)} okText={intl.get(MODULE, 35)} cancelText={intl.get(MODULE, 36)} onConfirm={() => this.handleDelete(record)}>
                         <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 18)}</a>
                     </Popconfirm>
                 </span>

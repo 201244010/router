@@ -7,11 +7,11 @@ var workbook = new Excel.Workbook();
 var worksheet = workbook.addWorksheet("W1");
 
 var columns  = [
-    { header: '功能', key: 'func', width: 30 },
-    { header: '键值', key: 'id', width: 6 },
-    { header: '中文', key: 'zh', width: 50 },
-    { header: '英文', key: 'en', width: 50 },
-    { header: '备注', key: 'comments', width: 30}
+    { header: "功能", key: 'func', width: 30 },
+    { header: "键值", key: 'id', width: 6 },
+    { header: "中文", key: 'zh', width: 50 },
+    { header: "英文", key: 'en', width: 50 },
+    { header: "备注", key: 'comments', width: 30}
 ];
 
 worksheet.columns = columns;
@@ -27,7 +27,7 @@ function writeExcel () {
     var data = {};
 
     for (var k in zhDoc) {
-        var match = k.match(/\.file|\d+/gi);
+        var match = k.match(/\.file|\d+$/gi);
         if (match) {
             match = match.toString();
             var func = k.substr(0, k.length - match.length);
@@ -80,7 +80,7 @@ function writeExcel () {
     }
 
     const date = new Date();
-    workbook.xlsx.writeFile(`language-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function() {
+    workbook.xlsx.writeFile(`i18n-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function() {
         console.log("xls file is written.");
     });
 }

@@ -8,10 +8,11 @@ import confirm from 'h5/components/confirm';
 import { detect } from './wan';
 import Icon from 'h5/components/Icon';
 
+const MODULE = 'h5setwan';
 const options = [
-    { value: 'dhcp', label: '自动获取IP（DHCP）' },
-    { value: 'pppoe', label: '宽带拨号上网（PPPoE）' },
-    { value: 'static', label: '手动输入IP（静态IP）' },
+    { value: 'dhcp', label: intl.get(MODULE, 0) },
+    { value: 'pppoe', label: intl.get(MODULE, 1) },
+    { value: 'static', label: intl.get(MODULE, 2) },
 ];
 
 export default class SetWan extends React.Component {
@@ -23,7 +24,7 @@ export default class SetWan extends React.Component {
         wanType: 'dhcp',
         loading: false,
         visible: false,
-        content: '正在联网，请稍候...',
+        content: intl.get(MODULE, 3),
     }
 
     static getDerivedStateFromProps(props, prevState) {
@@ -78,7 +79,7 @@ export default class SetWan extends React.Component {
 
             let { errcode } = response;
             if (0 !== errcode) {
-                toast({tip: `参数非法[${errcode}]`});
+                toast({tip: intl.get(MODULE, 4, {error: errcode})});
                 return;
             }
 
@@ -86,7 +87,7 @@ export default class SetWan extends React.Component {
             this.setState({
                 loading: false,
                 visible: true,
-                content: '正在联网，请稍候...'
+                content: intl.get(MODULE, 5)
             });
 
             let online = await detect(this.props);
@@ -96,10 +97,10 @@ export default class SetWan extends React.Component {
 
             if(!online) {   // 不能上网，提示用户
                 confirm({
-                    title: '无法连接网络',
-                    content: '检查您的上网方式是否正确',
-                    cancelText: '继续设置',
-                    okText: '重新设置',
+                    title: intl.get(MODULE, 6),
+                    content: intl.get(MODULE, 7),
+                    cancelText: intl.get(MODULE, 8),
+                    okText: intl.get(MODULE, 9),
                     onCancel: this.setWifi
                 });
             } else {    // 可以上网，跳到下一步
@@ -111,7 +112,7 @@ export default class SetWan extends React.Component {
     dialDetect = async () => {
         this.setState({
             visible: true,
-            content: '正在检测上网方式，请稍候...',
+            content: intl.get(MODULE, 10),
         });
 
         let resp = await common.fetchApi({ opcode: 'WANWIDGET_WAN_LINKSTATE_GET' });
@@ -130,10 +131,10 @@ export default class SetWan extends React.Component {
             });
 
             confirm({
-                title: '无法连接网络',
-                content: '请检查您的网线是否插好',
-                cancelText: '继续设置',
-                okText: '重新检测',
+                title: intl.get(MODULE, 11),
+                content: intl.get(MODULE, 12),
+                cancelText: intl.get(MODULE, 13),
+                okText: intl.get(MODULE, 14),
                 onCancel: this.defaultSet,
                 onOk: this.dialDetect,
             });
@@ -181,11 +182,11 @@ export default class SetWan extends React.Component {
 
         return (
             <div>
-                <GuideHeader title='确认上网方式' tips='请选择正确的上网方式' />
+                <GuideHeader title={intl.get(MODULE, 15)} tips={intl.get(MODULE, 16)} />
                 <Loading visible={visible} content={content} />
                 <form style={{marginTop:'0.6267rem'}}>
                     <Select options={options} value={wanType} onChange={this.onTypeChange} />
-                    <Button type='primary' loading={loading} onClick={this.nextStep}>下一步</Button>
+                    <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)}</Button>
                 </form>
             </div>
         );

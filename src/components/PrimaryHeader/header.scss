@@ -21,6 +21,7 @@
         padding: 0;
         height: 55px;
         font-size : 14px;
+        position: relative;
 
         a {
             font-weight: normal;
@@ -43,6 +44,7 @@
         }
 
         .menu {
+            position: relative;
             font-size : 16px;
             text-align: center;
             .ui-icon{
@@ -65,11 +67,22 @@
         li:nth-of-type(1) {
             flex : none;
             width : auto;
+            position: absolute;
+            left: 0;
         }
 
         .sidebar {
+            position: absolute;
+            right: 0;
             font-size: 14px;
             flex : none;
+            .lang {
+                border: 0;
+                padding: 0;
+                span{
+                    margin: 0;
+                }
+            }
             span { margin : 0 15px; }
         }
     }

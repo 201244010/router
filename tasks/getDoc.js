@@ -23,7 +23,7 @@
 
 // 要提取的中午字符的文件类型，如有需要，请更改
 const file_type = ['html', 'htm', 'js', 'jsx', 'json'];
-const exclude_files = ['locales.json', 'funcMap.js'];
+const exclude_files = ['locales.json', 'funcMap.js', 'language.js', 'Wechat'];
 
 // 引入需要的模块
 var program = require("commander");

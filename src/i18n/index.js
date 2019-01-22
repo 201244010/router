@@ -2,9 +2,18 @@ import { get, set } from '~/assets/common/cookie';
 
 const LANG_KEY = '_AP_LANGUAGE';
 
+//系统支持的语言包
+const SUPPORTED_LANG = [
+  { key: 'zh-cn', label: '简体中文' },
+  { key: 'en-us', label: 'English' },
+];
+
+export { SUPPORTED_LANG };
+
 export function getLang() {
-  //系统支持的语言包
-  const supportLangs = ['zh-cn', 'en-us'];
+  let supportLangs = SUPPORTED_LANG.map(lang => {
+    return lang.key;
+  });
 
   //浏览器语言
   let browserLang = (navigator.language || navigator.browserLanguage);
@@ -20,4 +29,5 @@ export function getLang() {
 
 export function setLang(lang) {
   set(LANG_KEY, lang);
+  window.location.reload();
 }
