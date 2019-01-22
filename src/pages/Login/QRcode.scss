@@ -20,20 +20,20 @@
         padding: 0;
     }
 }
-
-.lang{
-    width: 65px;
-    height: 32px;
-    position: absolute;
-    top: 24px;
-    right: 32px;
-    padding: 7px 0;
-    border: 1px solid #FFF;
-    border-radius: 4px;
-    text-align: center;
-    vertical-align: middle;
-    font-family: PingFangSC-Regular;
-    font-size: 12px;
-    line-height: 17px;
-    color: #FFF;
+.ui-center.ui-fullscreen{
+    .lang{
+        width: 65px;
+        height: 32px;
+        position: absolute;
+        top: 24px;
+        right: 32px;
+        padding: 7px 0;
+        border: 1px solid #FFF;
+        border-radius: 4px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+        line-height: 17px;
+        color: #FFF;
+    }
 }

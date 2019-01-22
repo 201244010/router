@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
 import SubLayout from '~/components/SubLayout';
 import SetPassword from './SetPassword';
+import TimeZone from './TimeZone';
 import SetWan from './SetWan';
 // import Speed from './Speed';
 import SetWifi from './SetWifi';
@@ -94,6 +95,7 @@ export default class Guide extends React.Component {
                 <div className="guide-body">
                     <Switch>
                         <Route path={`${match.path}/setpassword`} component={SetPassword} />
+                        <Route path={`${match.path}/timezone`} component={TimeZone} />
                         <Route path={`${match.path}/setwan`} component={SetWan} />
                         {/* <Route path={`${match.path}/speed`} component={Speed} /> */}
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
