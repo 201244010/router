@@ -29,7 +29,7 @@ function writeExcel () {
     var data = {};
 
     for (var k in zhDoc) {
-        var match = k.match(/\.file|\d+/gi);
+        var match = k.match(/\.file|\d+$/gi);
         if (match) {
             match = match.toString();
             var func = k.substr(0, k.length - match.length);
