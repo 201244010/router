@@ -18,6 +18,10 @@ let get = (key) => {
     }
 }
 
+let set =(key, val) => {
+    document.cookie = `${key}=${val}`;
+}
+
 /** 删除指定key的值的cookie
  *  如果参数key未传参，删除所有的cookie
  */
@@ -33,4 +37,4 @@ let clear = (del) => {
     }
 }
 
-export { get, clear };
+export { get, set, clear };

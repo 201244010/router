@@ -3,8 +3,6 @@ var Excel = require("exceljs");
 
 var locales = require('./locales.json');
 
-const MODULE = 'language';
-
 var workbook = new Excel.Workbook();
 var worksheet = workbook.addWorksheet("W1");
 
