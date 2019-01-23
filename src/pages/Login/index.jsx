@@ -89,7 +89,7 @@ class Login extends React.Component {
         const { tip, password } = this.state;
 
         return <div className="ui-center ui-fullscreen">
-                    <SwitchLang className='lang'/>
+                    <SwitchLang className='login-lang'/>
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >

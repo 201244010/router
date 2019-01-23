@@ -1,0 +1,50 @@
+.welcome {
+    .welcome-lang {
+        width: 65px;
+        height: 32px;
+        position: absolute;
+        top: 24px;
+        right: 32px;
+        padding: 7px 0;
+        border-radius: 4px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+        line-height: 17px;
+    }
+
+    .sunmi-logo {
+        position: absolute;
+        left: 2.5%;
+        top: 3.6%;
+    }
+
+    .form-box {
+        text-align: center;
+        h1 {
+            color: #FFF;
+            font-size: 46px;    
+            text-align: center;
+            line-height: 46px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #FFF;
+            font-size: 18px;
+        }
+
+        .btn {
+            margin: 40px 0 12px;
+            width: 320px;
+            height: 42px;
+        }
+
+        .checkbox {
+            color: #fff;
+            span{
+                opacity: 0.6
+            }
+        }
+    }
+}
