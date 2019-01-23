@@ -23,7 +23,7 @@
 
 // 要提取的中午字符的文件类型，如有需要，请更改
 const file_type = ['html', 'htm', 'js', 'jsx', 'json'];
-const exclude_files = ['locales.json', 'funcMap.js', 'language.js', 'Wechat'];
+const exclude_files = ['/i18n', 'Wechat'];
 
 // 引入需要的模块
 var program = require("commander");
@@ -74,6 +74,12 @@ function readFileContent(filePath) {
 
 
 function fileDisplay(filePath, result) {
+    if(exclude_files.some(file => {
+        return filePath.indexOf(file) !== -1;
+    })){
+        return;
+    }
+
     //根据文件路径读取文件，返回文件列表
     var files = fs.readdirSync(filePath);
     var len = files.length;
@@ -109,29 +115,4 @@ function fileDisplay(filePath, result) {
     };
 }
 
-
-function commander() {
-    program
-        .version('1.0.0')
-        .option("-s,--search <string>", "search path to find Chinese character!")
-        .parse(process.argv)
-
-    if (program.search) {
-        var pathName = program.search.toString();
-        fs.access(pathName, function (err) {
-            if (err) {
-                console.log("目录不存在")
-            } else {
-                var result = {};
-                fileDisplay(pathName, result);
-                const resultStr = JSON.stringify(result);
-                const output = pathName.replace(/[^0-9a-z]/gi, '');
-                fs.writeFileSync(`i18n-zh-${output}.json`, resultStr);
-                //console.log(resultStr);
-            }
-        })
-    }
-}
-
-commander();
-
+module.exports = fileDisplay;

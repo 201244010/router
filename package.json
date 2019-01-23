@@ -10,7 +10,7 @@
     "dev:a": "node tasks/dev.js --analysis",
     "server": "node ./server/bin/www",
     "server:w": "./node_modules/.bin/nodemon server/bin/www",
-    "i18n": "node tasks/getDoc.js -s "
+    "i18n": "node tasks/i18n.js "
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
