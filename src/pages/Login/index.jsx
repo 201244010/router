@@ -5,7 +5,7 @@ import CustomIcon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import SwitchLang from '~/components/SwitchLang';
-import "./QRcode.scss";
+import "./login.scss";
 
 const MODULE = 'login';
 const { FormItem, ErrorTip, Input }  = Form;
@@ -89,7 +89,7 @@ class Login extends React.Component {
         const { tip, password } = this.state;
 
         return <div className="ui-center ui-fullscreen">
-                    <SwitchLang className='lang'/>
+                    <SwitchLang className='login-lang'/>
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >

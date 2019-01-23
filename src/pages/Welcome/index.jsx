@@ -1,7 +1,8 @@
-
 import React from 'react';
 import { Button, Checkbox } from 'antd';
 import Icon from '~/components/Icon';
+import SwitchLang from '~/components/SwitchLang';
+import './welcome.scss';
 
 const MODULE = 'welcome';
 
@@ -27,37 +28,29 @@ export default class Welcome extends React.Component {
     render() {
         const { checked } = this.state;
         return (
-            <div className="ui-center ui-fullscreen">
-                <div style={{
-                    position: 'absolute',
-                    left: '2.5%',
-                    top: '3.6%',
-                }}>
+            <div className="ui-center ui-fullscreen web-welcome">
+                <SwitchLang className='welcome-lang'/>
+                <div className='sunmi-logo'>
                     <Icon type="logo" size={40} color="#fff" />
                 </div>
                 <div className="form-box" style={{ textAlign : 'center' }}>
-                    <h1 style={{
-                        fontSize :46,
-                        color: '#FFF',
-                        textAlign: 'center',
-                        lineHeight: '46px',
-                        marginBottom:12
-                    }}>{intl.get(MODULE, 0)}</h1>
-                    <p style={{ fontSize: 18, color: '#FFF' }}>{intl.get(MODULE, 1)}</p>
+                    <h1>{intl.get(MODULE, 0)}</h1>
+                    <p>{intl.get(MODULE, 1)}</p>
                     <Button
                         type="primary"
                         size='large'
                         disabled={!checked}
                         onClick={this.post}
-                        style={{ margin: "40px 0 12px", width: 320, height:42 }}>
+                        className='btn'
+                    >
                         {intl.get(MODULE, 2)}
                     </Button>
                     <div>
                         <Checkbox
-                            style={{ color: '#FFF' }}
+                            className='checkbox'
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
-                            <span style={{opacity:'0.6'}}>
+                            <span>
                             {intl.getHTML(MODULE, 3)}
                             </span>
                         </Checkbox>

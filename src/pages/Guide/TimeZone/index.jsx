@@ -56,7 +56,7 @@ export default class TimeZone extends React.Component {
                 <p className="ui-tips guide-tip">这个是时区</p>
                 <div className='content'>
                     <span>时区</span>
-                    <Select style={{width: 400, marginLeft: 12}} value={timezone} onChange={this.onChange}>
+                    <Select defaultActiveFirstOption={false} style={{width: 400, marginLeft: 12}} value={timezone} onChange={this.onChange}>
                         {children}
                     </Select>
                     <div>

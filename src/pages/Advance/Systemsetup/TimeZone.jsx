@@ -226,7 +226,7 @@ export default class TimeZone extends React.Component {
                 {
                     '1' === enable  ?
                         <div className="item">
-                            <Select style={{width: 460}} value={timezone} onChange={this.onChange}>
+                            <Select defaultActiveFirstOption={false} style={{width: 460}} value={timezone} onChange={this.onChange}>
                                 {children}
                             </Select>
                         </div> :
