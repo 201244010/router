@@ -33,5 +33,13 @@
         vertical-align: middle;
         font-size: 12px;
         line-height: 17px;
+        &:hover {
+            color: #FB9E5B;
+            border: 1px solid #FB9E5B;
+        }
+        &:active {
+            color: #C86B28;
+            border: 1px solid #C86B28;
+        }
     }
 }

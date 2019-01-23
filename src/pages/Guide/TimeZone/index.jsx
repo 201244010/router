@@ -4,6 +4,7 @@ import timeZones from '~/assets/common/timezone';
 
 import './timezone.scss';
 
+const MODULE = 'guidetimezone';
 const Option = Select.Option;
 const children = timeZones.map(item => {
     return <Option value={item[0]}>{item[1]}</Option>
@@ -52,10 +53,10 @@ export default class TimeZone extends React.Component {
 
         return (
             <div className='guide-timezone'>
-                <h2>时区</h2>
-                <p className="ui-tips guide-tip">这个是时区</p>
+                <h2>{intl.get(MODULE, 0)}</h2>
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 1)}</p>
                 <div className='content'>
-                    <span>时区</span>
+                    <span>{intl.get(MODULE, 2)}</span>
                     <Select defaultActiveFirstOption={false} style={{width: 400, marginLeft: 12}} value={timezone} onChange={this.onChange}>
                         {children}
                     </Select>
