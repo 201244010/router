@@ -17,9 +17,9 @@ export default class Upgrade extends React.Component{
 
         visible: false,
         duration : 150,//文件下载时间
-        downloadTip : intl.get(MODULE, 0),
-        warningTip : intl.get(MODULE, 1),
-        downloadFailtip : intl.get(MODULE, 2),
+        downloadTip : intl.get(MODULE, 0)/*_i18n:正在下载软件，请耐心等待*/,
+        warningTip : intl.get(MODULE, 1)/*_i18n:下载过程中请勿断电！！！*/,
+        downloadFailtip : intl.get(MODULE, 2)/*_i18n:升级文件下载失败，请重试*/,
         failReason : ''
     }
 
@@ -52,15 +52,15 @@ export default class Upgrade extends React.Component{
                         this.setState({
                             downloadFail : true,
                             download : false,
-                            failReason : intl.get(MODULE, 3, {errcode})
+                            failReason : intl.get(MODULE, 3, {errcode})/*_i18n:错误码：*/
                         });
                         return;
                     case 'check failed!':
                         this.setState({
                             download : false,
                             downloadFail : true,
-                            downloadFailtip : intl.get(MODULE, 4),
-                            failReason : intl.get(MODULE, 5, {errcode})
+                            downloadFailtip : intl.get(MODULE, 4)/*_i18n:文件校验失败，请重试*/,
+                            failReason : intl.get(MODULE, 5, {errcode})/*_i18n:错误码：*/
                         })
                         return;
                     case 'check success!':
@@ -81,7 +81,7 @@ export default class Upgrade extends React.Component{
                 }
             }) 
         }else{
-            Modal.error({title : intl.get(MODULE, 6), centered: true});
+            Modal.error({title : intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
         }});
     }
 
@@ -111,24 +111,24 @@ export default class Upgrade extends React.Component{
                     <h4 key="active-h4" className="upgrade-warning">{warningTip}</h4>
                     </div>
                 </Modal>
-                <Modal closable={false} maskClosable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>{intl.get(MODULE, 7)}</Button>} width={560}>
+                <Modal closable={false} maskClosable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>{intl.get(MODULE, 7)/*_i18n:我知道了*/}</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="red" type="defeated" size={64}/>
                         <div className="progressfill">{downloadFailtip}</div>
                         <div className="progressfail">{failReason}</div>
                     </div>
                 </Modal>
-                <Modal closable={false} maskClosable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>{intl.get(MODULE, 8)}</Button>} width={560}>
+                <Modal closable={false} maskClosable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>} width={560}>
                     <div className="progress-result">
                         <CustomIcon color="lightgreen" type="succeed" size={64}/>
-                        <div className="progressfill" style={{color : '#333C4F'}}>{intl.get(MODULE, 9)}</div>
+                        <div className="progressfill" style={{color : '#333C4F'}}>{intl.get(MODULE, 9)/*_i18n:升级完成，请重新登录管理界面*/}</div>
                     </div>
                 </Modal>
                 {visible && 
                     <Progress
                     duration={duration}
-                    title={intl.get(MODULE, 10)}
-                    tips={intl.get(MODULE, 11)}
+                    title={intl.get(MODULE, 10)/*_i18n:正在升级系统，请耐心等待*/}
+                    tips={intl.get(MODULE, 11)/*_i18n:升级过程中请勿断电*/}
                     showPercent={false}
                     />
                 }

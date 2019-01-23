@@ -9,13 +9,13 @@ import Logo from '~/components/Logo';
 import './clients.scss';
 
 const MODULE = 'clientlist';
-const RSSI_GOOD = intl.get(MODULE, 0), RSSI_BAD = intl.get(MODULE, 1);
+const RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/, RSSI_BAD = intl.get(MODULE, 1)/*_i18n:较差*/;
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
 
 const modeMap = {
     '0': '5G',
     '1': '2.4G',
-    '2': intl.get(MODULE, 2),
+    '2': intl.get(MODULE, 2)/*_i18n:有线*/,
 };
 
 const FormItem = Form.Item;
@@ -97,7 +97,7 @@ class EditableCell extends React.Component {
                                         {form.getFieldDecorator(dataIndex, {
                                             rules: [{
                                                 required: true,
-                                                message: intl.get(MODULE, 3, {title}),
+                                                message: intl.get(MODULE, 3, {title})/*_i18n:请输入{title}*/,
                                             }],
                                             initialValue: record[dataIndex],
                                         })(
@@ -143,7 +143,7 @@ export default class ClientList extends React.Component {
                 )
             }
         }, {
-            title: intl.get(MODULE, 4),
+            title: intl.get(MODULE, 4)/*_i18n:设备名称*/,
             width: 160,
             dataIndex: 'name',
             className: 'editable-cell',
@@ -162,12 +162,12 @@ export default class ClientList extends React.Component {
                 return ([
                     <div className='device hostname' title={hostname}>{hostname}</div>,
                     <div className='device' title={ontime}>
-                        <label style={{ marginRight: 3 }}>{intl.get(MODULE, 5)}</label><label>{ontime}</label>
+                        <label style={{ marginRight: 3 }}>{intl.get(MODULE, 5)/*_i18n:在线时长:*/}</label><label>{ontime}</label>
                     </div>
                 ])
             }
         }, {
-            title: intl.get(MODULE, 6),
+            title: intl.get(MODULE, 6)/*_i18n:IP/MAC地址*/,
             width: 190,
             render: (text, record) => (
                 <div>
@@ -176,7 +176,7 @@ export default class ClientList extends React.Component {
                 </div>
             )
         }, {
-            title: intl.get(MODULE, 7),
+            title: intl.get(MODULE, 7)/*_i18n:接入方式*/,
             dataIndex: 'mode',
             filters: [{
                 text: modeMap['2'],
@@ -193,7 +193,7 @@ export default class ClientList extends React.Component {
             render: (mode, record) => modeMap[mode],
             width: 116
         }, {
-            title: intl.get(MODULE, 8),
+            title: intl.get(MODULE, 8)/*_i18n:信号*/,
             dataIndex: 'rssi',
             filters: [{
                 text: RSSI_GOOD,
@@ -215,7 +215,7 @@ export default class ClientList extends React.Component {
                 <div><i className={'dot ' + (RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
-            title: intl.get(MODULE, 9),
+            title: intl.get(MODULE, 9)/*_i18n:当前速率*/,
             width: 110,
             render: (text, record) => (
                 <div>
@@ -224,13 +224,13 @@ export default class ClientList extends React.Component {
                 </div>
             )
         }, {
-            title: intl.get(MODULE, 10),
+            title: intl.get(MODULE, 10)/*_i18n:流量消耗*/,
             width: 120,
             dataIndex: 'flux',
             sorter: (a, b) => a.flux - b.flux,
             render: (flux, record) => formatSpeed(flux).replace('/s', ''),
         }, {
-            title: intl.get(MODULE, 11),
+            title: intl.get(MODULE, 11)/*_i18n:操作*/,
             width: 150,
             render: (text, record) => {
                 let type = record.type;
@@ -242,17 +242,17 @@ export default class ClientList extends React.Component {
                                 href="javascript:;"
                                 style={{ color: "#3D76F6" }}
                             >
-                                {TYPE_WHITE === record.type ? intl.get(MODULE, 12) : intl.get(MODULE, 13)}
+                                {TYPE_WHITE === record.type ? intl.get(MODULE, 12)/*_i18n:解除优先*/ : intl.get(MODULE, 13)/*_i18n:优先上网*/}
                             </a>
                         }
                         {TYPE_SUNMI !== type && <Divider type="vertical" />}
                         <Popconfirm
-                            title={intl.get(MODULE, 14)}
-                            okText={intl.get(MODULE, 15)}
-                            cancelText={intl.get(MODULE, 16)}
+                            title={intl.get(MODULE, 14)/*_i18n:确定禁止此设备上网？*/}
+                            okText={intl.get(MODULE, 15)/*_i18n:确定*/}
+                            cancelText={intl.get(MODULE, 16)/*_i18n:取消*/}
                             placement="topRight"
                             onConfirm={() => this.handleDelete(record)}>
-                            <a href="javascript:;" style={{ color: "#BF4C41" }}>{intl.get(MODULE, 17)}</a>
+                            <a href="javascript:;" style={{ color: "#BF4C41" }}>{intl.get(MODULE, 17)/*_i18n:禁止上网*/}</a>
                         </Popconfirm>
                     </span>
                 );
@@ -289,12 +289,12 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 18, {error: errcode}));
+        message.error(intl.get(MODULE, 18, {error: errcode})/*_i18n:操作失败[{error}]*/);
     }
 
     handleDelete = async (record) => {
         if (this.props.mac === record.mac) {
-            message.warning(intl.get(MODULE, 19));
+            message.warning(intl.get(MODULE, 19)/*_i18n:不能禁止本机上网*/);
             return;
         }
 
@@ -305,7 +305,7 @@ export default class ClientList extends React.Component {
 
         let { errcode } = response;
         if (errcode == 0) {
-            message.success(intl.get(MODULE, 20));
+            message.success(intl.get(MODULE, 20)/*_i18n:配置生效！如需恢复，可在高级设置-防蹭网中恢复上网*/);
 
             // 后台生效需要1秒左右，延迟2秒刷新数据，
             setTimeout(() => {
@@ -314,7 +314,7 @@ export default class ClientList extends React.Component {
             return;
         }
 
-        message.error(intl.get(MODULE, 21, {error: errcode}));
+        message.error(intl.get(MODULE, 21, {error: errcode})/*_i18n:操作失败[{error}]*/);
     }
 
     handleSave = async (record, toggleEdit) => {
@@ -333,7 +333,7 @@ export default class ClientList extends React.Component {
 
             let { errcode } = resp;
             if (0 !== errcode) {
-                message.error(intl.get(MODULE, 22));
+                message.error(intl.get(MODULE, 22)/*_i18n:保存失败，设备名称过长*/);
                 return;
             }
 
@@ -383,8 +383,8 @@ export default class ClientList extends React.Component {
             [TYPE_PRIORITY]: 18,
         };
         const deviceTypeMap = {
-            [TYPE_NORMAL]: intl.get(MODULE, 23),
-            [TYPE_PRIORITY]: intl.get(MODULE, 24)
+            [TYPE_NORMAL]: intl.get(MODULE, 23)/*_i18n:普通设备*/,
+            [TYPE_PRIORITY]: intl.get(MODULE, 24)/*_i18n:优先设备*/
         };
 
         const deviceType = deviceTypeMap[props.type];
@@ -441,16 +441,16 @@ export default class ClientList extends React.Component {
             <div className={classnames(['list-content', props.type + '-list'])}>
                 <div className='list-header'>
                     <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
-                    <Button className='more' onClick={this.showMore}>{intl.get(MODULE, 25)}</Button>
+                    <Button className='more' onClick={this.showMore}>{intl.get(MODULE, 25)/*_i18n:查看全部*/}</Button>
                 </div>
                 <ul>{listItems}</ul>
                 {(TYPE_PRIORITY === props.type && clients.length <= 0) &&
                     <div className='null-tip'>
-                        <label>{intl.get(MODULE, 26)}</label><a onClick={this.goWhiteList} href="javascript:;">{intl.get(MODULE, 27)}</a>
+                        <label>{intl.get(MODULE, 26)/*_i18n:暂无优先设备，*/}</label><a onClick={this.goWhiteList} href="javascript:;">{intl.get(MODULE, 27)/*_i18n:添加优先设备*/}</a>
                     </div>
                 }
                 <Modal
-                    title={intl.get(MODULE, 39, {deviceType, total})}
+                    title={intl.get(MODULE, 39, {deviceType, total})/*_i18n:{deviceType}({total}台)*/}
                     closable={false}
                     maskClosable={false}
                     centered
@@ -459,7 +459,7 @@ export default class ClientList extends React.Component {
                     style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
-                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)}</Button>
+                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)/*_i18n:取消*/}</Button>
                     ]}
                 >
                     <Button style={{
@@ -480,7 +480,7 @@ export default class ClientList extends React.Component {
                         style={{ minHeight: 360 }}
                         size="middle"
                         pagination={false}
-                        locale={{ emptyText: intl.get(MODULE, 28), filterConfirm: intl.get(MODULE, 15), filterReset: intl.get(MODULE, 29) }}
+                        locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
                     />
                 </Modal>
             </div>);
@@ -505,9 +505,9 @@ class Item extends React.Component {
         let mac = client.mac;
         let info = (
             <ul>
-                <li><label>{intl.get(MODULE, 30)}</label><span>{signal}</span></li><li><label>{intl.get(MODULE, 31)}</label><span>{access}</span></li>
-                <li><label>{intl.get(MODULE, 32)}</label><span title={time}>{time}</span></li><li><label>{intl.get(MODULE, 33)}</label><span>{flux}</span></li>
-                <li><label>{intl.get(MODULE, 34)}</label><span>{up}</span></li><li><label>{intl.get(MODULE, 35)}</label><span>{down}</span></li>
+                <li><label>{intl.get(MODULE, 30)/*_i18n:信号：*/}</label><span>{signal}</span></li><li><label>{intl.get(MODULE, 31)/*_i18n:接入方式：*/}</label><span>{access}</span></li>
+                <li><label>{intl.get(MODULE, 32)/*_i18n:接入时间：*/}</label><span title={time}>{time}</span></li><li><label>{intl.get(MODULE, 33)/*_i18n:流量消耗：*/}</label><span>{flux}</span></li>
+                <li><label>{intl.get(MODULE, 34)/*_i18n:上传速率：*/}</label><span>{up}</span></li><li><label>{intl.get(MODULE, 35)/*_i18n:下载速率：*/}</label><span>{down}</span></li>
                 <li><label>IP：</label><span>{ip}</span></li><li><label>MAC：</label><span>{mac}</span></li>
             </ul>
         );
@@ -521,7 +521,7 @@ class Item extends React.Component {
                         <p>{hostname}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>{intl.get(MODULE, 38)}</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
                         </div>
                     </div>
                 );
@@ -531,8 +531,8 @@ class Item extends React.Component {
                         <p>{hostname}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 36)}</Button>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)}</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 36)/*_i18n:解除优先*/}</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
                         </div>
                     </div>);
             case TYPE_NORMAL:
@@ -542,8 +542,8 @@ class Item extends React.Component {
                         <p>{hostname}</p>
                         {info}
                         <div>
-                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 37)}</Button>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)}</Button>
+                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 37)/*_i18n:优先上网*/}</Button>
+                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
 
                         </div>
                     </div>);

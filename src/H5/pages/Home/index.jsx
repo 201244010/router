@@ -56,12 +56,12 @@ export default class Home extends React.PureComponent{
                     left: '-2.3067rem',
                     zIndex: '-1'
                 }} />
-                <h2>{intl.get(MODULE, 0)}</h2>
-                <p>{intl.get(MODULE, 1)}</p>
-                <div><Button onClick={this.downloadApp} className='download' type='primary'>{intl.get(MODULE, 2)}</Button></div>
-                <div><Button onClick={this.openApp}>{intl.get(MODULE, 3)}</Button></div>
+                <h2>{intl.get(MODULE, 0)/*_i18n:欢迎使用商米路由器*/}</h2>
+                <p>{intl.get(MODULE, 1)/*_i18n:下载商米助手APP，随时随地管理您的网络*/}</p>
+                <div><Button onClick={this.downloadApp} className='download' type='primary'>{intl.get(MODULE, 2)/*_i18n:下载APP*/}</Button></div>
+                <div><Button onClick={this.openApp}>{intl.get(MODULE, 3)/*_i18n:已安装，直接打开*/}</Button></div>
                 <div className='web-config'>
-                    <Link onClick={this.goWeb}>{intl.get(MODULE, 4)}</Link>
+                    <Link onClick={this.goWeb}>{intl.get(MODULE, 4)/*_i18n:进入网页版配置*/}</Link>
                 </div>
                 <Icon type='earth' size={'10.6667rem'} style={{
                     color: '#FFF',

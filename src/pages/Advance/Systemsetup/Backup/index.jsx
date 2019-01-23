@@ -20,10 +20,10 @@ const error = {
     // '-1501' : '响应超时，请检查网络连接并重试',
     // '-1502' : '响应超时，请检查网络连接并重试',
     // '-1503' : '抱歉，服务暂时不可用，请稍后再试'
-    '-1500' : intl.get(MODULE, 0),
-    '-1501' : intl.get(MODULE, 1),
-    '-1502' : intl.get(MODULE, 2),
-    '-1503' : intl.get(MODULE, 3),
+    '-1500' : intl.get(MODULE, 0)/*_i18n:未绑定商米账号，请先下载商米助手APP进行绑定*/,
+    '-1501' : intl.get(MODULE, 1)/*_i18n:响应超时，请检查网络连接并重试*/,
+    '-1502' : intl.get(MODULE, 2)/*_i18n:响应超时，请检查网络连接并重试*/,
+    '-1503' : intl.get(MODULE, 3)/*_i18n:抱歉，服务暂时不可用，请稍后再试*/,
 }
 
 export default class Backup extends React.Component{
@@ -31,10 +31,10 @@ export default class Backup extends React.Component{
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
         // backupFailTip : '备份失败！请重试～',//备份失败以及网络未连接提示
-        backupFailTip : intl.get(MODULE, 4),//备份失败以及网络未连接提示
+        backupFailTip : intl.get(MODULE, 4)/*_i18n:备份失败！请重试～*/,//备份失败以及网络未连接提示
         backupSuccess : false,//备份成功 , 恢复成功
         // backupSuccessTip : '备份成功！',
-        backupSuccessTip : intl.get(MODULE, 5),
+        backupSuccessTip : intl.get(MODULE, 5)/*_i18n:备份成功！*/,
         filename : '',
 
         baseBackup : true,
@@ -89,7 +89,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 6, {error: error[errcode]}));
+            message.error(intl.get(MODULE, 6, {error: error[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
         }
     }
 
@@ -119,7 +119,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 7, {error: error[errcode]}));
+            message.error(intl.get(MODULE, 7, {error: error[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
         }
     }
 
@@ -168,7 +168,7 @@ export default class Backup extends React.Component{
         }).then(res => {
             if (res.errcode) {
                 // message.error('备份到本地失败');
-                message.error(intl.get(MODULE, 8));
+                message.error(intl.get(MODULE, 8)/*_i18n:备份到本地失败*/);
             }
         }).catch(error => {
             console.log(error);
@@ -213,7 +213,7 @@ export default class Backup extends React.Component{
                                     backupSuccess : true,
                                     backupCloud : false,
                                     // backupSuccessTip : '备份成功',
-                                    backupSuccessTip : intl.get(MODULE, 9),
+                                    backupSuccessTip : intl.get(MODULE, 9)/*_i18n:备份成功*/,
                                     filename : '',
                                 });
                                 return;
@@ -222,13 +222,13 @@ export default class Backup extends React.Component{
                                     backupFail : true,
                                     backupCloud : false,
                                     // backupFailTip : '备份失败！请重试~',
-                                    backupFailTip : intl.get(MODULE, 10),
+                                    backupFailTip : intl.get(MODULE, 10)/*_i18n:备份失败！请重试~*/,
                                 });
                                 return;
                             }
                         }else{
                             // message.error(`获取备份进度失败${error[errcode]}`);
-                            message.error(intl.get(MODULE, 11, {error: error[errcode]}));
+                            message.error(intl.get(MODULE, 11, {error: error[errcode]})/*_i18n:获取备份进度失败[{error}]*/);
                         }
                     })
             }else{
@@ -236,11 +236,11 @@ export default class Backup extends React.Component{
                     this.setState({
                         backupFail : true,
                         // backupFailTip : '路由器无法连接网络，请检查～',
-                        backupFailTip : intl.get(MODULE, 12),
+                        backupFailTip : intl.get(MODULE, 12)/*_i18n:路由器无法连接网络，请检查～*/,
                     })
                 }else{
                     // message.error(`无法完成操作${error[errcode]}`);
-                    message.error(intl.get(MODULE, 13, {error: error[errcode]}));
+                    message.error(intl.get(MODULE, 13, {error: error[errcode]})/*_i18n:无法完成操作[{error}]*/);
                 }
             }
         })
@@ -263,7 +263,7 @@ export default class Backup extends React.Component{
                                 loadingActive: false,
                                 backupSuccess : true,
                                 // backupSuccessTip : '恢复成功！请重新连接无线网络',
-                                backupSuccessTip : intl.get(MODULE, 14),
+                                backupSuccessTip : intl.get(MODULE, 14)/*_i18n:恢复成功！请重新连接无线网络*/,
                                 recoverCloud : false
                             });
                         }, duration * 1000);
@@ -274,7 +274,7 @@ export default class Backup extends React.Component{
                         });
                         //Loading.close();
                         // message.error('重启失败!');
-                        message.error(intl.get(MODULE, 15));
+                        message.error(intl.get(MODULE, 15)/*_i18n:重启失败*/);
                         return;
                     }
                 });
@@ -283,7 +283,7 @@ export default class Backup extends React.Component{
                 this.setState({
                     backupFail : true,
                     // backupFailTip : '恢复失败！请重试～',
-                    backupFailTip : intl.get(MODULE, 16),
+                    backupFailTip : intl.get(MODULE, 16)/*_i18n:恢复失败！请重试～*/,
                     recoverCloud : false,
                 });
                 return;
@@ -296,7 +296,7 @@ export default class Backup extends React.Component{
             }
 
             // message.error('上传失败');
-            message.error(intl.get(MODULE, 17));
+            message.error(intl.get(MODULE, 17)/*_i18n:上传失败*/);
         }
     }
 
@@ -339,7 +339,7 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     // backupFailTip : '下载失败，请重试～',
-                                    backupFailTip : intl.get(MODULE, 18),
+                                    backupFailTip : intl.get(MODULE, 18)/*_i18n:下载失败，请重试～*/,
                                 });
                                 return;
                             case 'restore fail':
@@ -347,7 +347,7 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     // backupFailTip : '恢复失败！请重试～',
-                                    backupFailTip : intl.get(MODULE, 19),
+                                    backupFailTip : intl.get(MODULE, 19)/*_i18n:恢复失败！请重试～*/,
                                 });
                                 return;
                             case 'restore success':
@@ -358,7 +358,7 @@ export default class Backup extends React.Component{
                                         this.setState({
                                             loadingActive: false,
                                             backupSuccess : true,
-                                            backupSuccessTip : intl.get(MODULE, 20),
+                                            backupSuccessTip : intl.get(MODULE, 20)/*_i18n:恢复成功！请重新连接无线网络*/,
                                         });
                                     }, 90000);
                                     return;
@@ -367,7 +367,7 @@ export default class Backup extends React.Component{
                                         loadingActive: false,
                                     });
                                     // message.error('重启失败!');
-                                    message.error(intl.get(MODULE, 21));
+                                    message.error(intl.get(MODULE, 21)/*_i18n:重启失败*/);
                                 }
                             })
                         }
@@ -376,12 +376,12 @@ export default class Backup extends React.Component{
                             loadingActive: false,
                         });
                         // message.error('获取云恢复状态失败');
-                        message.error(intl.get(MODULE, 22));
+                        message.error(intl.get(MODULE, 22)/*_i18n:获取云恢复状态失败*/);
                     }
                 })
             }else{
                 // message.error(`无法完成操作${error[errcode]}`);
-                message.error(intl.get(MODULE, 23, {error: error[errcode]}));
+                message.error(intl.get(MODULE, 23, {error: error[errcode]})/*_i18n:无法完成操作[{error}]*/);
             }
         })
     }
@@ -404,20 +404,20 @@ export default class Backup extends React.Component{
             <div className="backup-restore">
                 <Form>
                     <section style={{marginTop:10}}>
-                        <PanelHeader title={intl.get(MODULE, 24)} checkable={false} onChange={{}} />
+                        <PanelHeader title={intl.get(MODULE, 24)/*_i18n:备份*/} checkable={false} onChange={{}} />
                     </section>
                     <section>
                         <ul className='backup-list'>
-                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>{intl.get(MODULE, 25)}</Checkbox></li>
-                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>{intl.get(MODULE, 26)}</Checkbox></li>
+                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>{intl.get(MODULE, 25)/*_i18n:管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、防蹭网*/}</Checkbox></li>
+                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>{intl.get(MODULE, 26)/*_i18n:微信连Wi-Fi配置*/}</Checkbox></li>
                         </ul>
                         <div className='func-btn'>
-                            <Button onClick={this.postBackupLocal}>{intl.get(MODULE, 27)}</Button>
-                            <Button onClick={this.cloudBackup}>{intl.get(MODULE, 28)}</Button>
+                            <Button onClick={this.postBackupLocal}>{intl.get(MODULE, 27)/*_i18n:备份到本地*/}</Button>
+                            <Button onClick={this.cloudBackup}>{intl.get(MODULE, 28)/*_i18n:备份到云*/}</Button>
                         </div>
                     </section>
                     <section className='restore'>
-                        <PanelHeader title={intl.get(MODULE, 29)} checkable={false} onChange={{}} />
+                        <PanelHeader title={intl.get(MODULE, 29)/*_i18n:恢复*/} checkable={false} onChange={{}} />
                         <div className='restore-func'>
                             <Upload
                                 onChange={this.postRecoverLocal}
@@ -429,45 +429,45 @@ export default class Backup extends React.Component{
                                 }}
                                 action={__BASEAPI__}
                             >
-                                <Button>{intl.get(MODULE, 30)}</Button>
+                                <Button>{intl.get(MODULE, 30)/*_i18n:从本地恢复*/}</Button>
                             </Upload>
-                            <Button className='cloud-restore' onClick={this.cloudRecover}>{intl.get(MODULE, 31)}</Button>
+                            <Button className='cloud-restore' onClick={this.cloudRecover}>{intl.get(MODULE, 31)/*_i18n:从云恢复*/}</Button>
                         </div>
                     </section>
                 </Form>
-                <Modal title={intl.get(MODULE, 32)} visible={backupCloud} maskClosable={false} centered={true} width={360} closable={false} cancelText={intl.get(MODULE, 44)} okText={intl.get(MODULE, 33)} okButtonProps={{disabled : backupDisable}} onCancel={this.handleCancle} onOk={this.postBackupCloud}>
+                <Modal title={intl.get(MODULE, 32)/*_i18n:备份到云*/} visible={backupCloud} maskClosable={false} centered={true} width={360} closable={false} cancelText={intl.get(MODULE, 44)/*_i18n:取消*/} okText={intl.get(MODULE, 33)/*_i18n:开始备份*/} okButtonProps={{disabled : backupDisable}} onCancel={this.handleCancle} onOk={this.postBackupCloud}>
                     <div className="backup-modal">
-                        <div className="backup-filename">{intl.get(MODULE, 34)}</div>
+                        <div className="backup-filename">{intl.get(MODULE, 34)/*_i18n:文件名*/}</div>
                         <div>
                             <FormItem type="small" >
-                                <Input type="text" value={filename} maxLength={32} onChange={value => this.onChange(value, 'filename')} placeholder={intl.get(MODULE, 35)} />
+                                <Input type="text" value={filename} maxLength={32} onChange={value => this.onChange(value, 'filename')} placeholder={intl.get(MODULE, 35)/*_i18n:请输入文件名*/} />
                             </FormItem>
                         </div>
                         <div className="backup-latest">
-                            <div>{intl.get(MODULE, 36)}</div>
+                            <div>{intl.get(MODULE, 36)/*_i18n:最新的备份：*/}</div>
                             {
-                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 37)}</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time} />
+                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 37)/*_i18n:您还未进行过备份~*/}</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time} />
                             }
                         </div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={backupFail} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>{intl.get(MODULE, 38)}</Button>} width={560}>
+                <Modal closable={false} visible={backupFail} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>{intl.get(MODULE, 38)/*_i18n:我知道了*/}</Button>} width={560}>
                     <div className="backup-icon">
                         <CustomIcon color="#FF5500" type="defeated" size={64} />
                         <div className="backup-result">{backupFailTip}</div>
                     </div>
                 </Modal>
-                <Modal closable={false} visible={backupSuccess} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>{intl.get(MODULE, 39)}</Button>} width={560} >
+                <Modal closable={false} visible={backupSuccess} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>{intl.get(MODULE, 39)/*_i18n:确定*/}</Button>} width={560} >
                     <div className="backup-icon">
                         <CustomIcon color="#87D068" type="succeed" size={64} />
                         <div className="backup-result">{backupSuccessTip}</div>
                     </div>
                 </Modal>
-                <Modal title={intl.get(MODULE, 41)} visible={recoverCloud} maskClosable={false} width={360} centered={true} closable={false} cancelText={intl.get(MODULE, 44)} okText={intl.get(MODULE, 40)} okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
+                <Modal title={intl.get(MODULE, 41)/*_i18n:从云选择备份文件*/} visible={recoverCloud} maskClosable={false} width={360} centered={true} closable={false} cancelText={intl.get(MODULE, 44)/*_i18n:取消*/} okText={intl.get(MODULE, 40)/*_i18n:开始恢复*/} okButtonProps={{disabled : recoverDisable}} onCancel={this.handleCancle} onOk={this.postRecoverCloud}>
                     <ul className="recover-ul">
                         <RadioGroup onChange={this.radioChange} value={radioChoose}>
                             {
-                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 42)}</div> : recoverList
+                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 42)/*_i18n:您还未进行过备份*/}</div> : recoverList
                             }
                         </RadioGroup>
                     </ul>
@@ -475,7 +475,7 @@ export default class Backup extends React.Component{
                 {loadingActive &&
                     <Progress
                         duration={duration}
-                        title={intl.get(MODULE, 43)}
+                        title={intl.get(MODULE, 43)/*_i18n:正在恢复配置，请耐心等待...*/}
                     />
                 }
             </div>

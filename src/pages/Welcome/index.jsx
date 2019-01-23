@@ -34,8 +34,8 @@ export default class Welcome extends React.Component {
                     <Icon type="logo" size={40} color="#fff" />
                 </div>
                 <div className="form-box" style={{ textAlign : 'center' }}>
-                    <h1>{intl.get(MODULE, 0)}</h1>
-                    <p>{intl.get(MODULE, 1)}</p>
+                    <h1>{intl.get(MODULE, 0)/*_i18n:欢迎使用商米路由器*/}</h1>
+                    <p>{intl.get(MODULE, 1)/*_i18n:简单几步设置，路由器就可以上网啦*/}</p>
                     <Button
                         type="primary"
                         size='large'
@@ -43,7 +43,7 @@ export default class Welcome extends React.Component {
                         onClick={this.post}
                         className='btn'
                     >
-                        {intl.get(MODULE, 2)}
+                        {intl.get(MODULE, 2)/*_i18n:开始设置*/}
                     </Button>
                     <div>
                         <Checkbox

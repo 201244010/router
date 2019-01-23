@@ -28,31 +28,31 @@ export default class Advance extends React.PureComponent {
                     <NavLink to={match.path + "/bandwidth"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="networkspeeddistribution" size={28}/>
-                            <span>{intl.get(MODULE, 0)}</span>
+                            <span>{intl.get(MODULE, 0)/*_i18n:网速智能分配*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/wechat"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="auth" size={28} />
-                            <span>{intl.get(MODULE, 1)}</span>
+                            <span>{intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/whitelist"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="bootdevice" size={28}/>
-                            <span>{intl.get(MODULE, 2)}</span>
+                            <span>{intl.get(MODULE, 2)/*_i18n:优先设备*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/blacklist"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="blacklis" size={28}/>
-                            <span>{intl.get(MODULE, 3)}</span>
+                            <span>{intl.get(MODULE, 3)/*_i18n:防蹭网*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/systemsetup"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="systemsetup" size={28}/>
-                            <span>{intl.get(MODULE, 4)}</span>
+                            <span>{intl.get(MODULE, 4)/*_i18n:系统设置*/}</span>
                         </div>
                     </NavLink>
                 </nav>

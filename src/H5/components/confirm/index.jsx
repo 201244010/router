@@ -34,7 +34,7 @@ class Confirm extends React.PureComponent {
 
     render() {
         const props = this.props;
-        const { title, content, okText = intl.get(MODULE, 0), cancelText = intl.get(MODULE, 1) } = props;
+        const { title, content, okText = intl.get(MODULE, 0)/*_i18n:确定*/, cancelText = intl.get(MODULE, 1)/*_i18n:取消*/ } = props;
 
         return (
             [
