@@ -14,8 +14,8 @@ export default class Lan extends React.Component {
     render(){
         return (
             <Tabs className="lan-set-tab">
-                <TabPane tab={intl.get(MODULE, 0)} key="1"><LanSet /></TabPane>
-                <TabPane tab={intl.get(MODULE, 1)} key="2"><StaticBind /></TabPane>
+                <TabPane tab={intl.get(MODULE, 0)/*_i18n:局域网设置*/} key="1"><LanSet /></TabPane>
+                <TabPane tab={intl.get(MODULE, 1)/*_i18n:静态地址分配*/} key="2"><StaticBind /></TabPane>
             </Tabs>
         );
     }

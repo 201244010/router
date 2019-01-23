@@ -44,7 +44,7 @@ export default class SysUpgrade extends React.Component{
             return;
         }else{
             // Modal.error({ title: '获取路由器当前版本信息和最新版本信息失败', centered: true });
-            Modal.error({ title: intl.get(MODULE, 0), centered: true });
+            Modal.error({ title: intl.get(MODULE, 0)/*_i18n:获取路由器当前版本信息和最新版本信息失败*/, centered: true });
         }
     }
 
@@ -74,7 +74,7 @@ export default class SysUpgrade extends React.Component{
 
     render(){
         let Title = [
-            <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)}</span>
+            <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)/*_i18n:版本说明*/}</span>
         ];
         const {releaseLog, loading, disable, version, currentVersion, latestVersion} = this.state;
 
@@ -82,21 +82,21 @@ export default class SysUpgrade extends React.Component{
             <div style={{paddingLeft : 60}}>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
                     <section className="online-update">
-                        <PanelHeader title={intl.get(MODULE, 2)} checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
+                        <PanelHeader title={intl.get(MODULE, 2)/*_i18n:在线升级*/} checkable={false} onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
                 </Form>
                 <div style={{height :　44, marginTop : 20}}>
-                    <ul className="ui-mute">{intl.get(MODULE, 3)}:</ul>
+                    <ul className="ui-mute">{intl.get(MODULE, 3)/*_i18n:当前版本*/}:</ul>
                     <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{currentVersion}</label>
                 </div>
                 {
-                    (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>{intl.get(MODULE, 4)}</div>
+                    (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>{intl.get(MODULE, 4)/*_i18n:当前已是最新版本，无需升级*/}</div>
                     : <LatestVer latestVersion={latestVersion} versionClick={this.versionClick}/>
                 }
                 <section className="upgrade-save" style={{marginTop : -10 ,borderTop : 'none'}}>
-                    <Button disabled={disable} style={{left:0}} className="upgrade-btn" type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 5)}</Button>
+                    <Button disabled={disable} style={{left:0}} className="upgrade-btn" type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 5)/*_i18n:立即更新*/}</Button>
                 </section>
-                <Modal title={Title} closable={false} visible={version} maskClosable={false} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>{intl.get(MODULE, 6)}</Button>} okText={intl.get(MODULE, 6)}
+                <Modal title={Title} closable={false} visible={version} maskClosable={false} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.handleCancle}>{intl.get(MODULE, 6)/*_i18n:知道了*//*_i18n:知道了*/}</Button>} okText={intl.get(MODULE, 6)}
                     onCancel={this.handleCancle}
                 >
                     <pre className="head-content">
@@ -112,9 +112,9 @@ export default class SysUpgrade extends React.Component{
 const LatestVer = props => {
     return [
         <div key='latest' style={{height :　44}}>
-            <ul className="ui-mute">{intl.get(MODULE, 7)}</ul>
+            <ul className="ui-mute">{intl.get(MODULE, 7)/*_i18n:最新版本:*/}</ul>
             <label className="oneline" style={{marginLeft : 10, color : 'black'}}>{props.latestVersion}</label>
-            <label style={{ cursor: 'pointer', color : 'blue',marginLeft : 6}} onClick={props.versionClick}>{intl.get(MODULE, 8)}</label>
+            <label style={{ cursor: 'pointer', color : 'blue',marginLeft : 6}} onClick={props.versionClick}>{intl.get(MODULE, 8)/*_i18n:（版本说明）*/}</label>
         </div>
     ]
 }

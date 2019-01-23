@@ -214,13 +214,13 @@ export default class TimeZone extends React.Component {
         return (
             <div className="time-zone">
                 <p className="current-system-time">
-                    {intl.get(MODULE, 0)}<span>{systemTime}</span>
+                    {intl.get(MODULE, 0)/*_i18n:当前系统时间：*/}<span>{systemTime}</span>
                 </p>
                 <div className="system-time-choose">
-                    <p className="title">{intl.get(MODULE, 1)}</p>
+                    <p className="title">{intl.get(MODULE, 1)/*_i18n:系统时间获取方式*/}</p>
                     <RadioGroup onChange={this.onTypeChange} value={enable}>
-                        <Radio value='1'>{intl.get(MODULE, 2)}</Radio>
-                        <Radio value='0'>{intl.get(MODULE, 3)}</Radio>
+                        <Radio value='1'>{intl.get(MODULE, 2)/*_i18n:通过网络获取（推荐）*/}</Radio>
+                        <Radio value='0'>{intl.get(MODULE, 3)/*_i18n:获取本机时间*/}</Radio>
                     </RadioGroup>
                 </div>
                 {
@@ -231,11 +231,11 @@ export default class TimeZone extends React.Component {
                             </Select>
                         </div> :
                         <div className="item">
-                            <p className=''>{intl.get(MODULE, 4)}{hostTime}</p>
+                            <p className=''>{intl.get(MODULE, 4)/*_i18n:当前本机时间：*/}{hostTime}</p>
                         </div>
                 }
                 <div className="btn">
-                    <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)}</Button>
+                    <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)/*_i18n:保存*/}</Button>
                 </div>
             </div>
         );

@@ -10,9 +10,9 @@ import Icon from 'h5/components/Icon';
 
 const MODULE = 'h5setwan';
 const options = [
-    { value: 'dhcp', label: intl.get(MODULE, 0) },
-    { value: 'pppoe', label: intl.get(MODULE, 1) },
-    { value: 'static', label: intl.get(MODULE, 2) },
+    { value: 'dhcp', label: intl.get(MODULE, 0)/*_i18n:自动获取IP（DHCP）*/ },
+    { value: 'pppoe', label: intl.get(MODULE, 1)/*_i18n:宽带拨号上网（PPPoE）*/ },
+    { value: 'static', label: intl.get(MODULE, 2)/*_i18n:手动输入IP（静态IP）*/ },
 ];
 
 export default class SetWan extends React.Component {
@@ -24,7 +24,7 @@ export default class SetWan extends React.Component {
         wanType: 'dhcp',
         loading: false,
         visible: false,
-        content: intl.get(MODULE, 3),
+        content: intl.get(MODULE, 3)/*_i18n:正在联网，请稍候...*/,
     }
 
     static getDerivedStateFromProps(props, prevState) {
@@ -79,7 +79,7 @@ export default class SetWan extends React.Component {
 
             let { errcode } = response;
             if (0 !== errcode) {
-                toast({tip: intl.get(MODULE, 4, {error: errcode})});
+                toast({tip: intl.get(MODULE, 4, {error: errcode})/*_i18n:参数非法[{error}]*/});
                 return;
             }
 
@@ -87,7 +87,7 @@ export default class SetWan extends React.Component {
             this.setState({
                 loading: false,
                 visible: true,
-                content: intl.get(MODULE, 5)
+                content: intl.get(MODULE, 5)/*_i18n:正在联网，请稍候...*/
             });
 
             let online = await detect(this.props);
@@ -97,10 +97,10 @@ export default class SetWan extends React.Component {
 
             if(!online) {   // 不能上网，提示用户
                 confirm({
-                    title: intl.get(MODULE, 6),
-                    content: intl.get(MODULE, 7),
-                    cancelText: intl.get(MODULE, 8),
-                    okText: intl.get(MODULE, 9),
+                    title: intl.get(MODULE, 6)/*_i18n:无法连接网络*/,
+                    content: intl.get(MODULE, 7)/*_i18n:检查您的上网方式是否正确*/,
+                    cancelText: intl.get(MODULE, 8)/*_i18n:继续设置*/,
+                    okText: intl.get(MODULE, 9)/*_i18n:重新设置*/,
                     onCancel: this.setWifi
                 });
             } else {    // 可以上网，跳到下一步
@@ -112,7 +112,7 @@ export default class SetWan extends React.Component {
     dialDetect = async () => {
         this.setState({
             visible: true,
-            content: intl.get(MODULE, 10),
+            content: intl.get(MODULE, 10)/*_i18n:正在检测上网方式，请稍候...*/,
         });
 
         let resp = await common.fetchApi({ opcode: 'WANWIDGET_WAN_LINKSTATE_GET' });
@@ -131,10 +131,10 @@ export default class SetWan extends React.Component {
             });
 
             confirm({
-                title: intl.get(MODULE, 11),
-                content: intl.get(MODULE, 12),
-                cancelText: intl.get(MODULE, 13),
-                okText: intl.get(MODULE, 14),
+                title: intl.get(MODULE, 11)/*_i18n:无法连接网络*/,
+                content: intl.get(MODULE, 12)/*_i18n:请检查您的网线是否插好*/,
+                cancelText: intl.get(MODULE, 13)/*_i18n:继续设置*/,
+                okText: intl.get(MODULE, 14)/*_i18n:重新检测*/,
                 onCancel: this.defaultSet,
                 onOk: this.dialDetect,
             });
@@ -182,11 +182,11 @@ export default class SetWan extends React.Component {
 
         return (
             <div>
-                <GuideHeader title={intl.get(MODULE, 15)} tips={intl.get(MODULE, 16)} />
+                <GuideHeader title={intl.get(MODULE, 15)/*_i18n:确认上网方式*/} tips={intl.get(MODULE, 16)/*_i18n:请选择正确的上网方式*/} />
                 <Loading visible={visible} content={content} />
                 <form style={{marginTop:'0.6267rem'}}>
                     <Select options={options} value={wanType} onChange={this.onTypeChange} />
-                    <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)}</Button>
+                    <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
                 </form>
             </div>
         );

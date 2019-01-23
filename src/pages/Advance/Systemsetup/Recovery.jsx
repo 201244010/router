@@ -37,7 +37,7 @@ export default class Recovery extends React.Component{
             }, duration * 1000);
         } else {
             // message.error(`恢复出厂失败[${errcode}]`);
-            message.error(intl.get(MODULE, 0, {error: errcode}));
+            message.error(intl.get(MODULE, 0, {error: errcode})/*_i18n:恢复出厂失败[{error}]*/);
         }
     }
 
@@ -48,10 +48,10 @@ export default class Recovery extends React.Component{
             // content: '确定要立即恢复出厂设置？',
             // okText: '立即恢复',
             // cancelText: '取消',
-            title: intl.get(MODULE, 1),
-            content: intl.get(MODULE, 2),
-            okText: intl.get(MODULE, 3),
-            cancelText: intl.get(MODULE, 4),
+            title: intl.get(MODULE, 1)/*_i18n:警告*/,
+            content: intl.get(MODULE, 2)/*_i18n:确定要立即恢复出厂设置？*/,
+            okText: intl.get(MODULE, 3)/*_i18n:立即恢复*/,
+            cancelText: intl.get(MODULE, 4)/*_i18n:取消*/,
             onOk: this.reset,
         });
     }
@@ -70,16 +70,16 @@ export default class Recovery extends React.Component{
         return (
             <div>
                 <div style={{marginTop : 6}}>
-                    <span style={{marginLeft:60}}>{intl.get(MODULE, 5)}</span>
+                    <span style={{marginLeft:60}}>{intl.get(MODULE, 5)/*_i18n:说明：恢复出厂设置后，需重新设置后才能正常上网，请注意备份配置信息*/}</span>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
-                        <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)}</Button>
+                        <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即恢复*/}</Button>
                     </section>
                 </div>
                 {loadingActive &&
                     <Progress
                         duration={duration}
-                        title={intl.get(MODULE, 7)}
-                        tips={intl.get(MODULE, 8)}
+                        title={intl.get(MODULE, 7)/*_i18n:正在恢复出厂设置，请耐心等待...*/}
+                        tips={intl.get(MODULE, 8)/*_i18n:恢复出厂过程中请勿断电！*/}
                     />
                 }
                 <Modal
@@ -87,10 +87,10 @@ export default class Recovery extends React.Component{
                     className='modal-center'
                     closable={false}
                     centered={true}
-                    footer={[<Button type="primary" onClick={this.guide}>{intl.get(MODULE, 9)}</Button>]}
+                    footer={[<Button type="primary" onClick={this.guide}>{intl.get(MODULE, 9)/*_i18n:确定*/}</Button>]}
                 >
                     <CustomIcon type="succeed" size={64} color='#87D068' style={{marginTop:20}} />
-                    <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 10)}</h3>
+                    <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 10)/*_i18n:恢复出厂设置完成，请重新连接无线网络*/}</h3>
                 </Modal>
         </div>
         );

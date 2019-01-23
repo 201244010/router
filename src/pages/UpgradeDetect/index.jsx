@@ -79,11 +79,11 @@ export default class UpdateDetect extends React.Component {
     render() {
         let { update, releaseLog } = this.state;
         let Title = [
-            <span style={{ fontSize: 14, color: '#333C4F' }}><CustomIcon style={{ marginRight: 5 }} color="#333C4F" type="hint" size={14} />{intl.get(MODULE, 0)}</span>
+            <span style={{ fontSize: 14, color: '#333C4F' }}><CustomIcon style={{ marginRight: 5 }} color="#333C4F" type="hint" size={14} />{intl.get(MODULE, 0)/*_i18n:软件升级提醒*/}</span>
         ];
         return (
             <div>
-                <Modal visible={update} maskClosable={false} title={Title} centered={true} closable={false} okText={intl.get(MODULE, 1)} cancelText={intl.get(MODULE, 2)} onCancel={this.cancle} onOk={this.post}>
+                <Modal visible={update} maskClosable={false} title={Title} centered={true} closable={false} okText={intl.get(MODULE, 1)/*_i18n:立即升级*/} cancelText={intl.get(MODULE, 2)/*_i18n:暂不升级*/} onCancel={this.cancle} onOk={this.post}>
                     <pre style={{ color: '#333C4F' }}>{releaseLog}</pre>
                 </Modal>
                 <Upgrade ref='Upgrade' />

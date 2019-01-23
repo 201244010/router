@@ -31,14 +31,14 @@ export default class SetPwd extends React.Component {
 
         if (pwd !== surePwd && surePwd !== '') {
             this.setState({
-                surePwdTip: intl.get(MODULE, 0)
+                surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/
             });
             return;
         }
 
         if (pwd !== surePwd && surePwd === '') {
             this.setState({
-                surePwdTip: intl.get(MODULE, 1)
+                surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/
             });
             return;
         }
@@ -58,14 +58,14 @@ export default class SetPwd extends React.Component {
             break;
         case '-1608':
             confirm({
-                    content: intl.get(MODULE, 2),
-                    cancelText: intl.get(MODULE, 3),
-                    okText: intl.get(MODULE, 4),
+                    content: intl.get(MODULE, 2)/*_i18n:已设置过密码*/,
+                    cancelText: intl.get(MODULE, 3)/*_i18n:取消*/,
+                    okText: intl.get(MODULE, 4)/*_i18n:确定*/,
                     onOk: this.onOk
                 });
             break;
         default:
-            this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})});
+            this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/});
             break;
         }
     }
@@ -75,7 +75,7 @@ export default class SetPwd extends React.Component {
         const type = {
             pwd: {
                 func: checkStr,
-                agr: { who: intl.get(MODULE, 6), min: 6, max: 32, type: 'english' }
+                agr: { who: intl.get(MODULE, 6)/*_i18n:密码*/, min: 6, max: 32, type: 'english' }
             },
             surePwd: {
                 func: () => {
@@ -98,12 +98,12 @@ export default class SetPwd extends React.Component {
 
         return (
             <div>
-                <GuideHeader title={intl.get(MODULE, 7)} tips={intl.get(MODULE, 8)} />
+                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips={intl.get(MODULE, 8)/*_i18n:管理员密码是进入路由器管理页面的凭证*/} />
                 <form>
                     <Form
                         value={pwd}
                         type='password'
-                        placeholder={intl.get(MODULE, 9)}
+                        placeholder={intl.get(MODULE, 9)/*_i18n:密码长度6～32位*/}
                         maxLength={32}
                         tip={pwdTip}
                         onChange={value => this.onChange('pwd', value)}
@@ -111,11 +111,11 @@ export default class SetPwd extends React.Component {
                     <Form
                         value={surePwd}
                         type='password'
-                        placeholder={intl.get(MODULE, 10)}
+                        placeholder={intl.get(MODULE, 10)/*_i18n:请再次输入密码*/}
                         tip={surePwdTip}
                         onChange={value => this.onChange('surePwd', value)}
                     />
-                    <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)}</Button>
+                    <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
                 </form>
             </div>
         )

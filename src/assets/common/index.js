@@ -163,7 +163,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                         }
                         break;
                     case 'string':
-                        throw new Error(intl.get(MODULE, 0));
+                        throw new Error(intl.get(MODULE, 0)/*_i18n:参数非法*/);
                 }
 
                 if (error.toString().indexOf('403') > -1) {
@@ -176,7 +176,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
                 }
 
                 if (error.toString().indexOf('Network Error') > -1 && !options.ignoreErr) {
-                    message.error(intl.get(MODULE, 1));
+                    message.error(intl.get(MODULE, 1)/*_i18n:网络异常，请检查*/);
                 }
 
                 return reject(error);

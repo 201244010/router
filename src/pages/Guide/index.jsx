@@ -65,13 +65,13 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('setpassword')}>
                         <i className="ui-ib order-num">1</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 0)}</span>
+                        <span className="ui-ib">{intl.get(MODULE, 0)/*_i18n:设置管理密码*/}</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('setwan')}>
                         <i className="ui-ib order-num">2</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 1)}</span>
+                        <span className="ui-ib">{intl.get(MODULE, 1)/*_i18n:设置上网参数*/}</span>
                     </li>
                     {/* <li className="line"></li>
                     <li className={this.initStepMenu('speed')}>
@@ -83,13 +83,13 @@ export default class Guide extends React.Component {
                     <li className={this.initStepMenu('setwifi')}>
                         <i className="ui-ib order-num">3</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 2)}</span>
+                        <span className="ui-ib">{intl.get(MODULE, 2)/*_i18n:设置无线网络*/}</span>
                     </li>
                     <li className="line"></li>
                     <li className={this.initStepMenu('finish')}>
                         <i className="ui-ib order-num">4</i>
                         <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 3)}</span>
+                        <span className="ui-ib">{intl.get(MODULE, 3)/*_i18n:设置完成*/}</span>
                     </li>
                 </ul>
                 <div className="guide-body">

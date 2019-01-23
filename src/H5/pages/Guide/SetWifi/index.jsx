@@ -27,7 +27,7 @@ export default class SetWifi extends React.Component {
         const checkMap = {
             ssid: {
                 func: checkStr,
-                args: { who: intl.get(MODULE, 0), min: 1, max: 32, type: 'all', byte: true },
+                args: { who: intl.get(MODULE, 0)/*_i18n:Wi-Fi名称*/, min: 1, max: 32, type: 'all', byte: true },
             },
             password: {
                 func: (value) => {
@@ -35,9 +35,9 @@ export default class SetWifi extends React.Component {
                         // Wi-Fi密码可以为空
                         return '';
                     } else if ('' == value.trim()) {
-                        return intl.get(MODULE, 1);
+                        return intl.get(MODULE, 1)/*_i18n:Wi-Fi密码不能全为空格*/;
                     } else {
-                        return checkStr(value, { who: intl.get(MODULE, 2), min: 8, max: 32, type: 'english', byte: true });
+                        return checkStr(value, { who: intl.get(MODULE, 2)/*_i18n:Wi-Fi密码*/, min: 8, max: 32, type: 'english', byte: true });
                     }
                 },
             }
@@ -84,7 +84,7 @@ export default class SetWifi extends React.Component {
         if ('' === password) {
             confirm({
                 //title: '提示',
-                content: intl.get(MODULE, 3),
+                content: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi密码未设置，确定继续?*/,
                 onOk: next,
             });
         } else {
@@ -119,11 +119,11 @@ export default class SetWifi extends React.Component {
 
         return (
             <div>
-                <GuideHeader title={intl.get(MODULE, 4)} tips={intl.get(MODULE, 5)} />
+                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips={intl.get(MODULE, 5)/*_i18n:请设置您为自己或店员开放的个人Wi-Fi名称与密码*/} />
                 <form>
                     <Form
                         value={ssid}
-                        placeholder={intl.get(MODULE, 6)}
+                        placeholder={intl.get(MODULE, 6)/*_i18n:请设置Wi-Fi名称*/}
                         maxLength={32}
                         tip={ssidTip}
                         onChange={value => this.onChange('ssid', value)}
@@ -131,12 +131,12 @@ export default class SetWifi extends React.Component {
                     <Form
                         value={password}
                         type='password'
-                        placeholder={intl.get(MODULE, 7)}
+                        placeholder={intl.get(MODULE, 7)/*_i18n:请设置Wi-Fi密码*/}
                         maxLength={32}
                         tip={passwordTip}
                         onChange={value => this.onChange('password', value)}
                     />
-                    <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)}</Button>
+                    <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
                 </form>
             </div>
         )
