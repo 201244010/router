@@ -28,7 +28,7 @@ export default class Welcome extends React.Component {
     render() {
         const { checked } = this.state;
         return (
-            <div className="ui-center ui-fullscreen welcome">
+            <div className="ui-center ui-fullscreen web-welcome">
                 <SwitchLang className='welcome-lang'/>
                 <div className='sunmi-logo'>
                     <Icon type="logo" size={40} color="#fff" />
