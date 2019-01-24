@@ -1,0 +1,181 @@
+.user-experience-cn{
+    width: 880px;
+    margin: auto;
+    color: #333C4F;
+    .head{
+        border-bottom: 1px solid #ECECEC;
+        padding: 20px 0 19px;
+        h4{
+            color: #333C4F;
+            font-size: 20px;
+            font-weight: 550;
+            display: inline-block;
+        }
+        .go-home{
+            position: relative;
+            float: right;
+            bottom: 5px;
+        }
+    }
+    .body{
+        padding: 32px 0 64px;
+        ul{
+            li{
+                width: 400px;
+                height: 160px;
+                margin-bottom: 32px;
+                position: relative;
+                display: inline-block;
+                background-color: #FFF;
+                border: 0.5px solid rgba(0,0,0,0.1);
+                border-radius: 12px;
+                .func-item{
+                    cursor: pointer;
+                    padding: 40px 0 8px 20px;
+                    .img {
+                        width: 80px;
+                        height: 80px;
+                        display: inline-block;
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+
+                    .description {
+                        display: inline-block;
+                        margin-left: 12px;
+                        vertical-align: middle;
+                        color: #333C4F;
+                        h4 {
+                            margin-bottom: 8px;
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                        p {
+                            font-size: 16px;
+                        }
+                    }
+
+                    .background {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        opacity: 0.1;
+                    }
+                }
+                &:nth-child(1){   
+                    margin-right: 80px;
+                }
+                &:hover{
+                    box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+                }
+            }
+        }
+    }
+}
+
+.user-experience-us {
+    .head-us {
+        padding-bottom: 40px;
+        border-bottom: 1px solid #ECECEC;
+        margin-top: 20px;
+        margin-bottom: 43px;
+        h4 {
+            font-size: 28px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .body-us {
+        .title {
+            position: relative;
+            margin-bottom: 42px;
+            h4 {
+                display: inline-block;    
+                font-size: 24px;
+                line-height: 32px;
+            }
+            .go-home {
+                position: absolute;
+                right: 0;
+            }
+        }
+        ul {
+            white-space: nowrap;
+            li {
+                width: 350px;
+                height: 200px;
+                display: inline-block;
+                position: relative;
+                background-color: #FFF;
+                border: 0.5px solid rgba(0,0,0,0.1);
+                border-radius: 12px;
+                .func-item{
+                    cursor: pointer;
+                    padding: 40px 0 8px 20px;
+                    .img {
+                        width: 80px;
+                        height: 80px;
+                        display: inline-block;
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+
+                    .description {
+                        display: inline-block;
+                        margin-left: 12px;
+                        vertical-align: middle;
+                        color: #333C4F;
+                        h4 {
+                            margin-bottom: 8px;
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                        p {
+                            font-size: 16px;
+                        }
+                    }
+
+                    .background {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        opacity: 0.1;
+                    }
+                }
+                &:nth-last-child(n+2){
+                    margin-right: 25px;
+                }
+            }
+        }
+    }
+}
+
+.QR_img-cn{
+    position: absolute;
+    right: 28px;
+    bottom: 20px;
+    img{
+        height: 80px;
+        width: 80px;
+    }
+    p{
+        font-size: 14px;
+        color: #ADB1B9;
+        text-align: center;
+    }
+}
+
+.QR_img-us{
+    position: absolute;
+    right: 40px;
+    bottom: 20px;
+    img{
+        height: 80px;
+        width: 80px;
+    }
+    p{
+        font-size: 14px;
+        color: #ADB1B9;
+        text-align: center;
+    }
+}

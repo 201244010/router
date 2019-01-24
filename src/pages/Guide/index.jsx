@@ -8,7 +8,8 @@ import TimeZone from './TimeZone';
 import SetWan from './SetWan';
 // import Speed from './Speed';
 import SetWifi from './SetWifi';
-import Finish from './Finish';
+import Success from './Success';
+// import Finish from './Finish';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
