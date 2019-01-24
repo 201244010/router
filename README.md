@@ -125,3 +125,77 @@ sessionStorage.setItem("__PAGE_STYLE__", 'WEB');
 window.location.href = "/";
 ```
 
+#### 国际化
+
+国际化我们采用**react-intl-universal**方案，详见：https://www.npmjs.com/package/react-intl-universal。我们在其基础上稍微做了二次封装：
+
+```shell
+liguanguadeMini:web-w1 liguanghua$ tree src/i18n/
+src/i18n/
+├── index.js		// i18n配置，提供getLang && setLang函数
+├── intl.js			// export intl.get && intl.getHTML函数给外部调用
+├── language.js		// 将locales.json转换成excel文件（i18n-2019-1-22.xlsx）方便翻译员翻译
+├── i18n-2019-1-22.xlsx	// locales.json转换成的excel
+└── locales.json	// 运行环境需要用到的多语言文件
+```
+
+开发示例：
+
+```javascript
+// 1.先声明模块名，名字不要和现有模块重复，一般跟模块名相同
+const MODULE = 'welcome';
+
+// 2.在locales.json中添加相应中文、英文
+/* locales.json:
+{
+    "zh-cn": {
+    	// ...
+    	"welcome0": "欢迎使用商米路由器",
+		"welcome1": "简单几步设置，路由器就可以上网啦",
+    	// ...
+    }
+}
+*/
+
+// 3.代码中引用它
+// intl.get('welcome' + '0');
+{intl.get(MODULE, 0)/*_i18n:欢迎使用商米路由器*/}
+
+// intl.get('welcome' + '1');
+{intl.get(MODULE, 1)/*_i18n:简单几步设置，路由器就可以上网啦*/}
+```
+
+有用信息：
+
+1.如何将翻译的导入和导出?
+
+```javascript
+// 翻译导出：locales.json转换成excel文件（i18n-xxx-xx-xx.xlsx）方便翻译员翻译
+node src/i18n/language.js
+
+// 翻译导入：将翻译员翻译好的excel（i18n-xxx-xx-xx.xlsx）转换成locales.json
+// TODO
+```
+
+2.如何检测翻译的遗漏？
+
+```javascript
+// 我们写了一个工具，可以自动检测出有哪些代码中直接HARD CODE中文在代码中
+liguanguadeMini:web-w1 liguanghua$ npm run i18n -- -gs src
+
+// 执行后会生成"i18n-zh-src.json"文件
+```
+
+3.“intl.get(MODULE, xx)”降低了代码的可读性，如何解决？
+
+```javascript
+// 我们写了一个工具，可以给代码中自动加入注释，像下面这样：
+{intl.get(MODULE, 1)}
+
+// 执行如下命令自动插入注释
+liguanguadeMini:web-w1 liguanghua$ npm run i18n -- -is src
+
+// 插入注释后代码(/*_i18n:xxx*/)
+{intl.get(MODULE, 1)/*_i18n:简单几步设置，路由器就可以上网啦*/}
+```
+
