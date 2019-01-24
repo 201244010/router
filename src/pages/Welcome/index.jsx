@@ -50,9 +50,7 @@ export default class Welcome extends React.Component {
                             className='checkbox'
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
-                            <span>
-                            {intl.getHTML(MODULE, 3)}
-                            </span>
+                            <span dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 3) }} />
                         </Checkbox>
                     </div>
                 </div>

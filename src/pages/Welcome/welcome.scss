@@ -51,7 +51,10 @@
         .checkbox {
             color: #fff;
             span{
-                opacity: 0.6
+                opacity: 0.6;
+                a {
+                    text-decoration: underline;
+                }
             }
         }
     }
