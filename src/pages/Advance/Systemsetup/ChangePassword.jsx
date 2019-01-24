@@ -10,8 +10,8 @@ const {FormItem,Input,ErrorTip} = Form;
 const err = {
     // '-1605': '原密码错误',
     // '-1606': '原密码错误次数过多，请5分钟后再试',
-    '-1605': intl.get(MODULE, 0),
-    '-1606': intl.get(MODULE, 1),
+    '-1605': intl.get(MODULE, 0)/*_i18n:原密码错误*/,
+    '-1606': intl.get(MODULE, 1)/*_i18n:原密码错误次数过多，请5分钟后再试*/,
 };
 
 export default class ChangePassword extends React.Component{
@@ -30,7 +30,7 @@ export default class ChangePassword extends React.Component{
     onChange = (name,value) =>{
         const field = {
             newPWD: {
-                func: checkStr(value, { who: intl.get(MODULE, 2), min: 6,max:  32, type: 'english'}),
+                func: checkStr(value, { who: intl.get(MODULE, 2)/*_i18n:新密码*/, min: 6,max:  32, type: 'english'}),
             },
             oldPWD: {
                 func: '',
@@ -52,7 +52,7 @@ export default class ChangePassword extends React.Component{
         if(this.state.newPWD != this.state.surePWD){
             this.setState({
                 // surePWDTip: '两次密码不一致'
-                surePWDTip: intl.get(MODULE, 3),
+                surePWDTip: intl.get(MODULE, 3)/*_i18n:两次密码不一致*/,
             });
             return ;
         }else{
@@ -68,7 +68,7 @@ export default class ChangePassword extends React.Component{
                 let { errcode } = resp; 
                 if(errcode === 0){
                     // message.success('修改成功,5秒后将跳转到登陆页面');
-                    message.success(intl.get(MODULE, 4));
+                    message.success(intl.get(MODULE, 4)/*_i18n:修改成功,5秒后将跳转到登陆页面*/);
                     setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
                     message.error(`${err[errcode]}`);
@@ -86,26 +86,26 @@ export default class ChangePassword extends React.Component{
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div style={{paddingLeft:60,marginTop:30,marginBottom:124}}>
-                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 5)}</label>                       
+                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 5)/*_i18n:原密码*/}</label>                       
                         <FormItem type="small" showErrorTip={oldPWDTip} style={{ width : 320}}>    
-                            <Input type="password" placeholder={intl.get(MODULE, 6)} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
+                            <Input type="password" placeholder={intl.get(MODULE, 6)/*_i18n:请输入原密码*/} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
                             <ErrorTip>{oldPWDTip}</ErrorTip>
                         </FormItem> 
-                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 7)}</label>                      
+                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 7)/*_i18n:新密码*/}</label>                      
                         <FormItem type="small" showErrorTip={newPWDTip} style={{ width : 320}}>    
-                            <Input type="password" maxLength={32} placeholder={intl.get(MODULE, 8)} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
+                            <Input type="password" maxLength={32} placeholder={intl.get(MODULE, 8)/*_i18n:请输入新密码*/} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
                             <ErrorTip>{newPWDTip}</ErrorTip>
                         </FormItem>
-                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 9)}</label>  
+                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 9)/*_i18n:确认新密码*/}</label>  
                         <FormItem type="small" showErrorTip={surePWDTip} style={{ width : 320}}> 
-                            <Input type="password" placeholder={intl.get(MODULE, 10)} value={surePWD} onChange={(value)=>this.onChange('surePWD',value)} />
+                            <Input type="password" placeholder={intl.get(MODULE, 10)/*_i18n:请确认新密码*/} value={surePWD} onChange={(value)=>this.onChange('surePWD',value)} />
                             <ErrorTip>{surePWDTip}</ErrorTip>
                         </FormItem>
                     </div>
                 </Form>
                 <section className="save">
                     <Button loading={loading} disabled={disabled} size='large' style={{ width: 320 }} type="primary" 
-                    onClick={this.submit}>{intl.get(MODULE, 11)}</Button>
+                    onClick={this.submit}>{intl.get(MODULE, 11)/*_i18n:保存*/}</Button>
                 </section>
             </div>
         );

@@ -5,7 +5,7 @@ import CustomIcon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import SwitchLang from '~/components/SwitchLang';
-import "./QRcode.scss";
+import "./login.scss";
 
 const MODULE = 'login';
 const { FormItem, ErrorTip, Input }  = Form;
@@ -24,7 +24,7 @@ class Login extends React.Component {
     onChange = value => {
         this.setState({ 
             password: value,
-            tip: (value.length > 0) ? '' : intl.get(MODULE, 0),
+            tip: (value.length > 0) ? '' : intl.get(MODULE, 0)/*_i18n:请输入密码*/,
         });
     }
 
@@ -42,7 +42,7 @@ class Login extends React.Component {
 
         if ('' === password) {
             this.setState({
-                tip: intl.get(MODULE, 1),
+                tip: intl.get(MODULE, 1)/*_i18n:请输入密码*/,
             });
             return;
         }
@@ -67,16 +67,16 @@ class Login extends React.Component {
                 this.props.history.push('/welcome');
                 return;
             case '-1601':
-                tip = intl.get(MODULE, 2);
+                tip = intl.get(MODULE, 2)/*_i18n:请输入密码*/;
                 break;
             case '-1605':
-                tip = intl.get(MODULE, 3);
+                tip = intl.get(MODULE, 3)/*_i18n:密码错误*/;
                 break;
             case '-1606':
-                tip = intl.get(MODULE, 4);
+                tip = intl.get(MODULE, 4)/*_i18n:密码错误次数过多，请5分钟后再试*/;
                 break;
             default:
-                tip = intl.get(MODULE, 5, {error: errcode});
+                tip = intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/;
                 break;
         }
 
@@ -89,12 +89,12 @@ class Login extends React.Component {
         const { tip, password } = this.state;
 
         return <div className="ui-center ui-fullscreen">
-                    <SwitchLang className='lang'/>
+                    <SwitchLang className='login-lang'/>
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
                         <Form style={{ width : 320, padding: 0 }} >
                             <FormItem style={{ margin: '45px auto 30px' }}>
-                                <Input placeholder={intl.get(MODULE, 6)}
+                                <Input placeholder={intl.get(MODULE, 6)/*_i18n:请输入您的管理密码*/}
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
@@ -114,12 +114,12 @@ class Login extends React.Component {
                                 size='large'
                                 onClick={this.post}
                                 style={{ margin: "0 0 10px", width: 320 }}
-                                loading={this.state.loading}>{intl.get(MODULE, 7)}</Button>
-                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>{intl.get(MODULE, 8)}</p>
+                                loading={this.state.loading}>{intl.get(MODULE, 7)/*_i18n:登录*/}</Button>
+                        <p style={{ fontSize : 12, lineHeight : 1.5, color: '#FFF', opacity: 0.6 }}>{intl.get(MODULE, 8)/*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}</p>
                     </div>
                     <div className="qr">
                         <img src={require('~/assets/images/qr.png')} />
-                        <p>{intl.get(MODULE, 9)}</p>
+                        <p>{intl.get(MODULE, 9)/*_i18n:扫描二维码下载APP*/}</p>
                     </div>
             </div>;
     }

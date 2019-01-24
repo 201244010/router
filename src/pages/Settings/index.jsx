@@ -24,19 +24,19 @@ export default class Setting extends React.Component {
                     <NavLink to={match.path + "/wifi"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="wifiset" size={28} />
-                            <span>{intl.get(MODULE, 0)}</span>
+                            <span>{intl.get(MODULE, 0)/*_i18n:Wi-Fi设置*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/network"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="browser" size={28} />
-                            <span>{intl.get(MODULE, 1)}</span>
+                            <span>{intl.get(MODULE, 1)/*_i18n:上网设置*/}</span>
                         </div>
                     </NavLink>
                     <NavLink to={match.path + "/lan"} activeClassName="active">
                         <div className="nav-item">
                             <CustomIcon type="lanset" size={28} />
-                            <span>{intl.get(MODULE, 2)}</span>
+                            <span>{intl.get(MODULE, 2)/*_i18n:局域网设置*/}</span>
                         </div>
                     </NavLink>
                 </nav>

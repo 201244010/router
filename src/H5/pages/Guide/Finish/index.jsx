@@ -42,24 +42,24 @@ export default class Finish extends React.PureComponent {
 
         return (
             <div className='finish-wrap'>
-                <GuideHeader title={intl.get(MODULE, 0)} />
+                <GuideHeader title={intl.get(MODULE, 0)/*_i18n:设置完成*/} />
                 <form>
                     <WifiInfo
-                        title={intl.get(MODULE, 1)}
+                        title={intl.get(MODULE, 1)/*_i18n:商户Wi-Fi*/}
                         ssid={host.ssid}
                         password={host.password}
                         color='rgba(255,96,0,0.60)'
                     />
                     { ('1' === guest.enable) &&
                     <WifiInfo
-                        title={intl.get(MODULE, 2)}
+                        title={intl.get(MODULE, 2)/*_i18n:客用Wi-Fi*/}
                         ssid={guest.ssid}
                         password={guest.password}
                         color='rgba(45,187,26,0.60)'
                     />
                     }
-                    <p className='tip-reconnect'>{intl.get(MODULE, 3)}</p>
-                    <Button type='primary' onClick={this.nextStep}>{intl.get(MODULE, 4)}</Button>
+                    <p className='tip-reconnect'>{intl.get(MODULE, 3)/*_i18n:Wi-Fi可能会断开，如有需要请重新连接*/}</p>
+                    <Button type='primary' onClick={this.nextStep}>{intl.get(MODULE, 4)/*_i18n:完成*/}</Button>
                 </form>
             </div>
         )
@@ -77,10 +77,10 @@ const WifiInfo = function(props) {
                 <h4 className='title'>{title}</h4>
             </div>
             <ul className='info-list'>
-                <li><label>{intl.get(MODULE, 5)}</label><span>{ssid}</span></li>
+                <li><label>{intl.get(MODULE, 5)/*_i18n:名称：*/}</label><span>{ssid}</span></li>
                 <li>{(password && password.length > 0) ?
-                    [<label>{intl.get(MODULE, 6)}</label>,<span>{password}</span>] :
-                    <label>{intl.get(MODULE, 7)}</label>
+                    [<label>{intl.get(MODULE, 6)/*_i18n:密码：*/}</label>,<span>{password}</span>] :
+                    <label>{intl.get(MODULE, 7)/*_i18n:无密码*/}</label>
                 }</li>
             </ul>
         </div>

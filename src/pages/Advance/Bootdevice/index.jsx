@@ -13,14 +13,14 @@ const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
 const err = {
     //'-1070': '设备已存在，请勿重复添加',
-    '-1070': intl.get(MODULE, 0),
+    '-1070': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
 };
 
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     //showTotal: total => `已添加${total}台设备`,
-    showTotal: total => intl.get(MODULE, 34, {total}),
+    showTotal: total => intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/,
 };
 
 export default class Bootdevice extends React.Component {
@@ -60,7 +60,7 @@ export default class Bootdevice extends React.Component {
             name: {
                 func: (val) => {
                     //return (val.length <= 0) ? '请输入备注名称' : '';
-                    return (val.length <= 0) ? intl.get(MODULE, 1) : '';
+                    return (val.length <= 0) ? intl.get(MODULE, 1)/*_i18n:请输入备注名称*/ : '';
                 },
             },
             mac: {
@@ -115,7 +115,7 @@ export default class Bootdevice extends React.Component {
         }
 
         //message.error(`删除失败[${errcode}]`);
-        message.error(intl.get(MODULE, 2, {error: errcode}));
+        message.error(intl.get(MODULE, 2, {error: errcode})/*_i18n:删除失败[{error}]*/);
     }
 
     handleSelect = (mac) => {
@@ -187,7 +187,7 @@ export default class Bootdevice extends React.Component {
         }
 
         // message.error(`保存失败[${errcode}]`);
-        message.error(intl.get(MODULE, 3, {error: errcode}));
+        message.error(intl.get(MODULE, 3, {error: errcode})/*_i18n:保存失败[{error}]*/);
         
     }
 
@@ -261,22 +261,22 @@ export default class Bootdevice extends React.Component {
         let timeStr = "";
         if (day > 0) {
             // timeStr += day + "天";
-            timeStr += day + intl.get(MODULE, 4);
+            timeStr += day + intl.get(MODULE, 4)/*_i18n:天*/;
         }
 
         if (hour > 0) {
             // timeStr += hour + "时";
-            timeStr += hour + intl.get(MODULE, 5);
+            timeStr += hour + intl.get(MODULE, 5)/*_i18n:时*/;
         }
 
         if (minute > 0) {
             // timeStr += minute + "分";
-            timeStr += minute + intl.get(MODULE, 6);   
+            timeStr += minute + intl.get(MODULE, 6)/*_i18n:分*/;   
         }
 
         if (second >= 0) {
             // timeStr += second + "秒";
-            timeStr += second + intl.get(MODULE, 7);   
+            timeStr += second + intl.get(MODULE, 7)/*_i18n:秒*/;   
         }
 
         return timeStr;
@@ -292,7 +292,7 @@ export default class Bootdevice extends React.Component {
         let { errcode, data, message } = response;
         if (0 !== errcode) {
             // message.error(`获取列表指令异常[${errcode}]`);
-            message.error(intl.get(MODULE, 8, {error: errcode}));
+            message.error(intl.get(MODULE, 8, {error: errcode})/*_i18n:获取列表指令异常[{error}]*/);
             return;
         }
 
@@ -318,9 +318,9 @@ export default class Bootdevice extends React.Component {
             '2.4g': '2.4G',
             '5g': '5G',
             //'sunmi': '商米专用Wi-Fi',
-            'sunmi': intl.get(MODULE, 9),
+            'sunmi': intl.get(MODULE, 9)/*_i18n:商米专用Wi-Fi*/,
             // 'not wifi': '有线',
-            'not wifi': intl.get(MODULE, 10),
+            'not wifi': intl.get(MODULE, 10)/*_i18n:有线*/,
         };
 
         this.setState({
@@ -383,7 +383,7 @@ export default class Bootdevice extends React.Component {
             )
         }, {
             // title: '设备名称',
-            title: intl.get(MODULE, 11), 
+            title: intl.get(MODULE, 11)/*_i18n:设备名称*/, 
             width: 300,
             render: (text, record) => (
                 <div>
@@ -402,14 +402,14 @@ export default class Bootdevice extends React.Component {
                         borderRadius: '50%',
                     }}></i>
                     {record.online?(
-                        <span><label>{intl.get(MODULE, 12)}</label><label>{record.ontime}</label></span>
+                        <span><label>{intl.get(MODULE, 12)/*_i18n:在线时长：*/}</label><label>{record.ontime}</label></span>
                     ) : (
-                        <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 13)}</span>
+                        <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 13)/*_i18n:离线*/}</span>
                     )}
                 </div>
             )
         }, {
-            title: intl.get(MODULE, 14),
+            title: intl.get(MODULE, 14)/*_i18n:IP/MAC地址*/,
             width: 220,
             render: (text, record) => (
                 <span>
@@ -418,16 +418,16 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: intl.get(MODULE, 15),
+            title: intl.get(MODULE, 15)/*_i18n:接入方式*/,
             dataIndex: 'network',
             width: 210
         }, {
-            title: intl.get(MODULE, 16),
+            title: intl.get(MODULE, 16)/*_i18n:操作*/,
             width: 143,
             render: (text, record) => (
                 <span>
-                    <Popconfirm title={intl.get(MODULE, 17)} okText={intl.get(MODULE, 35)} cancelText={intl.get(MODULE, 36)} onConfirm={() => this.handleDelete(record)}>
-                        <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 18)}</a>
+                    <Popconfirm title={intl.get(MODULE, 17)/*_i18n:确定解除优先？*/} okText={intl.get(MODULE, 35)/*_i18n:确定*/} cancelText={intl.get(MODULE, 36)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
+                        <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 18)/*_i18n:解除优先*/}</a>
                     </Popconfirm>
                 </span>
             )
@@ -442,15 +442,15 @@ export default class Bootdevice extends React.Component {
                 <Logo mac={mac} size={32} />
             )
         }, {
-            title: intl.get(MODULE, 19),
+            title: intl.get(MODULE, 19)/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 245
         }, {
-            title: intl.get(MODULE, 20),
+            title: intl.get(MODULE, 20)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
             width: 210,
         }, {
-            title: intl.get(MODULE, 21),
+            title: intl.get(MODULE, 21)/*_i18n:操作*/,
             dataIndex: 'checked',
             width: 60,
             render: (checked, record) => (
@@ -460,20 +460,20 @@ export default class Bootdevice extends React.Component {
 
         return (
             <div style={{ margin: "0 60px" }}>
-                <PanelHeader title={intl.get(MODULE, 22)} />
+                <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
                 <div style={{ margin: "20px 20px 20px 0" }}>
-                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)}</Button>
-                    <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)}</Button>
+                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>
+                    <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
                 </div>
                 <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25) }} />
-                <Modal title={intl.get(MODULE, 26)} cancelText={intl.get(MODULE, 27)} okText={intl.get(MODULE, 28)} closable={false} maskClosable={false} centered={true}
+                    bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
+                <Modal title={intl.get(MODULE, 26)/*_i18n:在线列表*/} cancelText={intl.get(MODULE, 27)/*_i18n:取消*/} okText={intl.get(MODULE, 28)/*_i18n:添加*/} closable={false} maskClosable={false} centered={true}
                     width={960} style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
-                        <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 27)}</Button>,
+                        <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 27)/*_i18n:取消*/}</Button>,
                         <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
-                            {intl.get(MODULE, 28)}
+                            {intl.get(MODULE, 28)/*_i18n:添加*/}
                         </Button>,
                     ]} >
                     <Button size="large" style={{
@@ -486,22 +486,22 @@ export default class Bootdevice extends React.Component {
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
-                        bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 29) }} />
+                        bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/ }} />
                 </Modal>
-                <Modal title={intl.get(MODULE, 30)} centered={true}
-                    cancelText={intl.get(MODULE, 27)} okText={intl.get(MODULE, 28)}
+                <Modal title={intl.get(MODULE, 30)/*_i18n:添加优先设备*/} centered={true}
+                    cancelText={intl.get(MODULE, 27)/*_i18n:取消*/} okText={intl.get(MODULE, 28)/*_i18n:添加*/}
                     closable={false} maskClosable={false} width={360}
                     visible={editShow}
                     confirmLoading={editLoading}
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: disabled }}
                     onCancel={this.onEditCancle} >
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 31)}</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 31)/*_i18n:备注名称*/}</label>
                     <FormItem showErrorTip={nameTip} type="small" >
-                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 32)} maxLength={32} />
+                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 32)/*_i18n:请输入备注名称*/} maxLength={32} />
                         <ErrorTip>{nameTip}</ErrorTip>
                     </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 33)}</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 33)/*_i18n:MAC地址*/}</label>
                     <FormItem showErrorTip={macTip} style={{ marginBottom: 8 }}>
                         <InputGroup size="small" type="mac"
                             inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}

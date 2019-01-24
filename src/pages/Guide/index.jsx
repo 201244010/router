@@ -23,13 +23,12 @@ export default class Guide extends React.Component {
         };
     }
 
-    dones = {
-        setpassword: [],
-        setwan: ['setpassword'],
-        // speed: ['setpassword', 'setwan'],
-        setwifi: ['setpassword', 'setwan', 'speed'],
-        finish: ['setpassword', 'setwan', 'speed', 'setwifi'],
-    };
+    steps = [
+        {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
+        {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
+        {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
+        {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+    ];
 
     static getDerivedStateFromProps(nextProps){
         let { match } = nextProps, path = match.path, pathname = location.pathname;
@@ -40,16 +39,16 @@ export default class Guide extends React.Component {
     }   
 
     // 根据路由或得当前菜单的 class list
-    initStepMenu(step){
+    initStepMenu(route, index, total){
         let activeRouteName = this.state.activeRouteName;
         return classnames({
-            now : activeRouteName === step,
-            done : this.dones[activeRouteName] && this.dones[activeRouteName].indexOf(step) > -1
+            now : activeRouteName === route,
+            done : (index >= total)
         });
     }
 
     render(){
-        const { match } = this.props, activeRouteName = this.state.activeRouteName;
+        const path = this.props.match.path;
         return (
             <SubLayout className="steps ui-relative">
                 <div className="header">
@@ -62,45 +61,31 @@ export default class Guide extends React.Component {
                     </ul>
                 </div>
                 <ul className="guide-header">
-                    <li className={this.initStepMenu('setpassword')}>
-                        <i className="ui-ib order-num">1</i>
-                        <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 0)}</span>
-                    </li>
-                    <li className="line"></li>
-                    <li className={this.initStepMenu('setwan')}>
-                        <i className="ui-ib order-num">2</i>
-                        <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 1)}</span>
-                    </li>
-                    {/* <li className="line"></li>
-                    <li className={this.initStepMenu('speed')}>
-                        <i className="ui-ib order-num">3</i>
-                        <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">设置上下行带宽</span>
-                    </li> */}
-                    <li className="line"></li>
-                    <li className={this.initStepMenu('setwifi')}>
-                        <i className="ui-ib order-num">3</i>
-                        <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 2)}</span>
-                    </li>
-                    <li className="line"></li>
-                    <li className={this.initStepMenu('finish')}>
-                        <i className="ui-ib order-num">4</i>
-                        <Icon type="correct" color="#fff" size={26} />
-                        <span className="ui-ib">{intl.get(MODULE, 3)}</span>
-                    </li>
+                {
+                    this.steps.map((step, index, array) => {
+                        return (
+                            <React.Fragment>
+                                <li className={this.initStepMenu(step.route, index, array.length)}>
+                                    <i className="ui-ib order-num">{index + 1}</i>
+                                    <Icon type="correct" color="#fff" size={26} />
+                                    <span className="ui-ib">{step.lang}</span>
+                                </li>
+                                {(index < array.length - 1) &&
+                                    <li className='line'></li>
+                                }
+                            </React.Fragment>
+                        );
+                    })
+                }
                 </ul>
                 <div className="guide-body">
                     <Switch>
-                        <Route path={`${match.path}/setpassword`} component={SetPassword} />
-                        <Route path={`${match.path}/timezone`} component={TimeZone} />
-                        <Route path={`${match.path}/setwan`} component={SetWan} />
-                        {/* <Route path={`${match.path}/speed`} component={Speed} /> */}
-                        <Route path={`${match.path}/setwifi`} component={SetWifi} />
-                        <Route path={`${match.path}/finish`} component={Finish} />
-                        <Redirect from={match.path} to={`${match.path}/setpassword`}></Redirect>
+                        {
+                            this.steps.map((step, index, array) => {
+                                return <Route path={`${path}/${step.route}`} component={step.component} />;
+                            })
+                        }
+                        <Redirect from={path} to={`${path}/${this.steps[0].route}`}></Redirect>
                     </Switch>
                 </div>
             </SubLayout>

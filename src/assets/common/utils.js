@@ -9,19 +9,19 @@ let formatTime = (total) => {
 
     let timeStr = "";
     if (day > 0) {
-        timeStr += day + intl.get(MODULE, 0);
+        timeStr += day + intl.get(MODULE, 0)/*_i18n:天*/;
     }
 
     if (hour > 0) {
-        timeStr += hour + intl.get(MODULE, 1);
+        timeStr += hour + intl.get(MODULE, 1)/*_i18n:时*/;
     }
 
     if (minute > 0) {
-        timeStr += minute + intl.get(MODULE, 2);
+        timeStr += minute + intl.get(MODULE, 2)/*_i18n:分*/;
     }
 
     if (second >= 0) {
-        timeStr += second + intl.get(MODULE, 3);
+        timeStr += second + intl.get(MODULE, 3)/*_i18n:秒*/;
     }
 
     return timeStr;

@@ -12,10 +12,10 @@ const MODULE = 'bandwidth';
 
 const {FormItem, Input, ErrorTip} = Form;
 const err = {
-    '-1001': intl.get(MODULE, 0),
-    '-1002': intl.get(MODULE, 1),
-    '-1005': intl.get(MODULE, 2),
-    '-1007': intl.get(MODULE, 3),
+    '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
+    '-1002': intl.get(MODULE, 1)/*_i18n:参数非法*/,
+    '-1005': intl.get(MODULE, 2)/*_i18n:内存不足，无法进行测速*/,
+    '-1007': intl.get(MODULE, 3)/*_i18n:网络异常，无法进行测速*/,
 }
 
 import './bandwidth.scss';
@@ -34,7 +34,7 @@ export default class Bandwidth extends React.PureComponent {
         loading: false,
 
         //自动设置
-        failTip: intl.get(MODULE, 4),
+        failTip: intl.get(MODULE, 4)/*_i18n:网络未连接*/,
         speedTest : false, //1测速成功，0测速失败
 
         //设备权重
@@ -63,7 +63,7 @@ export default class Bandwidth extends React.PureComponent {
                 args : {
                     min : 1,
                     max : 1000,
-                    who : intl.get(MODULE, 5)
+                    who : intl.get(MODULE, 5)/*_i18n:上行带宽*/
                 }
             },
             downbandTmp : {
@@ -71,7 +71,7 @@ export default class Bandwidth extends React.PureComponent {
                 args : {
                     min : 1,
                     max : 1000,
-                    who : intl.get(MODULE, 6)
+                    who : intl.get(MODULE, 6)/*_i18n:下行带宽*/
                 }
             }
         }
@@ -96,7 +96,7 @@ export default class Bandwidth extends React.PureComponent {
                 args: {
                     min: 0,
                     max: 100,
-                    who: intl.get(MODULE, 7),
+                    who: intl.get(MODULE, 7)/*_i18n:带宽比例*/,
                 }
             },
             white: {
@@ -104,7 +104,7 @@ export default class Bandwidth extends React.PureComponent {
                 args: {
                     min: 0,
                     max: 100,
-                    who: intl.get(MODULE, 7),
+                    who: intl.get(MODULE, 7)/*_i18n:带宽比例*/,
                 }
             },
             normal: {
@@ -112,7 +112,7 @@ export default class Bandwidth extends React.PureComponent {
                 args: {
                     min: 0,
                     max: 100,
-                    who: intl.get(MODULE, 7),
+                    who: intl.get(MODULE, 7)/*_i18n:带宽比例*/,
                 }
             }
         };
@@ -125,7 +125,7 @@ export default class Bandwidth extends React.PureComponent {
             let tips = ['sunmi', 'white', 'normal'];
             let ok = tips.every((tip) => { 
                 let stateTip = this.state[tip + 'Tip'];
-                return intl.get(MODULE, 8) === stateTip || '' === stateTip
+                return intl.get(MODULE, 8)/*_i18n:带宽比例总和不能大于100%*/ === stateTip || '' === stateTip
              });
 
             if (ok) {
@@ -133,7 +133,7 @@ export default class Bandwidth extends React.PureComponent {
                 let total = parseInt(sunmi) + parseInt(white) + parseInt(normal);
                 if (total > 100) {
                     this.setState({
-                        [key + 'Tip']: intl.get(MODULE, 9),
+                        [key + 'Tip']: intl.get(MODULE, 9)/*_i18n:带宽比例总和不能大于100%*/,
                         saveDisable: true,
                     });
                     return;
@@ -157,7 +157,7 @@ export default class Bandwidth extends React.PureComponent {
     OnBandEnable = async (value) => {
         let { source } = this.state;
         if(source === 'default'){
-            message.error(intl.get(MODULE, 10));
+            message.error(intl.get(MODULE, 10)/*_i18n:请先设置带宽*/);
             return;
         }else{
             this.setState({
@@ -252,7 +252,7 @@ export default class Bandwidth extends React.PureComponent {
                 manualShow :false,
                 btloading: false,
             });
-            message.error(intl.get(MODULE, 11, {error: errcode}));
+            message.error(intl.get(MODULE, 11, {error: errcode})/*_i18n:配置失败[{error}]*/);
         })
     }
 
@@ -293,7 +293,7 @@ export default class Bandwidth extends React.PureComponent {
             })
             return;
         }
-        message.error(intl.get(MODULE, 12, {error: errcode}));
+        message.error(intl.get(MODULE, 12, {error: errcode})/*_i18n:信息获取失败![{error}]*/);
     }
 
     //定义数据格式
@@ -322,7 +322,7 @@ export default class Bandwidth extends React.PureComponent {
     post = async ()=>{
         let { source } = this.state;
         if(source === 'default'){
-            message.error(intl.get(MODULE, 13));
+            message.error(intl.get(MODULE, 13)/*_i18n:请先设置带宽*/);
             return;
         }
         this.setState({ loading: true });
@@ -333,13 +333,13 @@ export default class Bandwidth extends React.PureComponent {
         }).then(response => {
             let { errcode } = response;
             if (errcode == 0){
-                message.success(intl.get(MODULE, 14));
+                message.success(intl.get(MODULE, 14)/*_i18n:配置生效*/);
                 this.getBandInfo();
                 this.setState({ loading: false });
                 return;
             }
             this.setState({ loading: false });
-            message.error(intl.get(MODULE, 11, {errcode}));
+            message.error(intl.get(MODULE, 11, {errcode})/*_i18n:配置失败[{error}]*/);
         })
     }
 
@@ -348,13 +348,13 @@ export default class Bandwidth extends React.PureComponent {
             speedFill, failTip, upband, downband, disable, sunmi,  
             white, normal, sunmiTip, whiteTip, normalTip, upbandTmp, downbandTmp, upbandTmpTip, downbandTmpTip, loading,btloading } = this.state;
         const columns = [{
-            title : intl.get(MODULE, 15),
+            title : intl.get(MODULE, 15)/*_i18n:设备类型*/,
             dataIndex : 'type'
         },{
-            title : intl.get(MODULE, 16),
+            title : intl.get(MODULE, 16)/*_i18n:带宽分配优先级*/,
             dataIndex : 'priority'
         },{
-            title : intl.get(MODULE, 17),
+            title : intl.get(MODULE, 17)/*_i18n:最低保证比例*/,
             dataIndex : 'percent',
             render: (text,record) =><div>
                 <FormItem type="small" style={{marginBottom : 0}}>
@@ -369,20 +369,20 @@ export default class Bandwidth extends React.PureComponent {
     
         const data = [{
             key : 'sunmi',
-            type : intl.get(MODULE, 18),
-            priority : intl.get(MODULE, 19),
+            type : intl.get(MODULE, 18)/*_i18n:商米设备*/,
+            priority : intl.get(MODULE, 19)/*_i18n:高*/,
             percent : sunmi,
             errorTip : sunmiTip
         },{
             key : 'white',
-            type : intl.get(MODULE, 20),
-            priority : intl.get(MODULE, 21),
+            type : intl.get(MODULE, 20)/*_i18n:优先设备*/,
+            priority : intl.get(MODULE, 21)/*_i18n:中*/,
             percent : white,
             errorTip : whiteTip
         },{
             key : 'normal',
-            type : intl.get(MODULE, 22),
-            priority : intl.get(MODULE, 23),
+            type : intl.get(MODULE, 22)/*_i18n:普通设备*/,
+            priority : intl.get(MODULE, 23)/*_i18n:低*/,
             percent : normal,
             errorTip : normalTip
         }]  
@@ -392,8 +392,8 @@ export default class Bandwidth extends React.PureComponent {
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 60}}>
                     <section className="wifi-setting-item">
                         <PanelHeader
-                            title={intl.get(MODULE, 24)}
-                            tip={intl.get(MODULE, 25)}
+                            title={intl.get(MODULE, 24)/*_i18n:总带宽*/}
+                            tip={intl.get(MODULE, 25)/*_i18n:自动测速结果受环境因素影响会有不同程度波动，如测试结果与实际不符，建议您采用手动方式设置*/}
                             checkable={false}
                             onChange={(value)=>this.onChange('channelType',value)}/>
                     </section>
@@ -402,7 +402,7 @@ export default class Bandwidth extends React.PureComponent {
                             <div className="band-left">{upband}</div>
                             <div className="band-right">
                                 <span className="band-unit">{unit}</span>
-                                <span className="band-unit">{intl.get(MODULE, 26)}
+                                <span className="band-unit">{intl.get(MODULE, 26)/*_i18n:上行带宽*/}
                                     <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#3D76F6" type="kbyte"/></span>
                                 </span>
                             </div>
@@ -412,73 +412,73 @@ export default class Bandwidth extends React.PureComponent {
                             <div className="band-left">{downband}</div>
                             <div className="band-right">
                                 <span className="band-unit">{unit}</span>
-                                <span className="band-unit">{intl.get(MODULE, 27)}
+                                <span className="band-unit">{intl.get(MODULE, 27)/*_i18n:下行带宽*/}
                                     <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#87D068" type="downloadtraffic"/></span>
                                 </span>
                             </div>
                         </div>
                     </section>
                     <section style={{margin:"16px 20px 32px 0"}}>
-                            <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>{intl.get(MODULE, 28)}</Button>
-                            <Button style={{width : 116}} onClick={this.showManual}>{intl.get(MODULE, 29)}</Button>
+                            <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>{intl.get(MODULE, 28)/*_i18n:自动测速*/}</Button>
+                            <Button style={{width : 116}} onClick={this.showManual}>{intl.get(MODULE, 29)/*_i18n:手动设置*/}</Button>
                     </section>
                     <section>
-                        <PanelHeader title={intl.get(MODULE, 43)} checkable={true} checked={bandenable} tip={intl.get(MODULE, 30)} onChange={this.OnBandEnable}/>
+                        <PanelHeader title={intl.get(MODULE, 43)/*_i18n:网速智能分配*/} checkable={true} checked={bandenable} tip={intl.get(MODULE, 30)/*_i18n:启用后，当网络带宽占满时，路由器将按照设置的最低保证比例为三类设备划分带宽，进而保证核心设备业务正常处理*/} onChange={this.OnBandEnable}/>
                         <Table className="qos-table" style={{fontSize : 16,marginTop:12}}  pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
                 <section className="save">
-                    <Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)}</Button>
+                    <Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)/*_i18n:保存*/}</Button>
                 </section>
                 {visible &&
                     <Progress
                         duration={TIME_SPEED_TEST}
-                        title={intl.get(MODULE, 32)}
+                        title={intl.get(MODULE, 32)/*_i18n:正在进行网络测速，请耐心等待…*/}
                         showPercent={true}
                     />
                 }
-                <Modal title={intl.get(MODULE, 33)} okText={intl.get(MODULE, 39)} cancelText={intl.get(MODULE, 34)} 
+                <Modal title={intl.get(MODULE, 33)/*_i18n:手动设置带宽*/} okText={intl.get(MODULE, 39)/*_i18n:确定*/} cancelText={intl.get(MODULE, 34)/*_i18n:取消*/} 
                     onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 35)}</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 35)/*_i18n:上行总带宽*/}</label>
                     <FormItem showErrorTip={upbandTmpTip} type="small" >
                         <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                        <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder={intl.get(MODULE, 36)} />
+                        <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder={intl.get(MODULE, 36)/*_i18n:请输入上行总带宽*/} />
                         <ErrorTip>{upbandTmpTip}</ErrorTip>
                     </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 37)}</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 37)/*_i18n:下行总带宽*/}</label>
                     <FormItem showErrorTip={downbandTmpTip} type="small" style={{ marginBottom: 8 }}>
                         <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
-                        <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder={intl.get(MODULE, 38)} />
+                        <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder={intl.get(MODULE, 38)/*_i18n:请输入下行总带宽*/} />
                         <ErrorTip>{downbandTmpTip}</ErrorTip>
                     </FormItem>
                 </Modal>
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
-                footer={<Button type="primary" onClick={this.onSpeedFillCancle}>{intl.get(MODULE, 39)}</Button>}>
+                footer={<Button type="primary" onClick={this.onSpeedFillCancle}>{intl.get(MODULE, 39)/*_i18n:确定*/}</Button>}>
                     <div className='status-icon'>
                         <CustomIcon color="#87D068" type="succeed" size={64}/>   
                     </div>
-                    <h4>{intl.get(MODULE, 40)}</h4>
+                    <h4>{intl.get(MODULE, 40)/*_i18n:带宽测速完成*/}</h4>
                     <ul className='speed-result'>
                         <li>
                             <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                            <label>{intl.get(MODULE, 44)}{upband}{unit}</label>
+                            <label>{intl.get(MODULE, 44)/*_i18n:上行带宽：*/}{upband}{unit}</label>
                         </li>
                         <li>
                             <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                            <label>{intl.get(MODULE, 45)}{downband}{unit}</label>
+                            <label>{intl.get(MODULE, 45)/*_i18n:下行带宽：*/}{downband}{unit}</label>
                         </li>
                     </ul>
                 </Modal>
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFail} centered={true} 
-                footer={<Button type="primary" onClick={this.onSpeedFailCancle}>{intl.get(MODULE, 41)}</Button>}>
+                footer={<Button type="primary" onClick={this.onSpeedFailCancle}>{intl.get(MODULE, 41)/*_i18n:我知道了*/}</Button>}>
                     <div className="status-icon">
                         <CustomIcon color="red" type="defeated" size={64}/>
                     </div>
-                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 42)}</div>
+                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 42)/*_i18n:带宽测速失败，请重试*/}</div>
                     <div style={{ textAlign:'center',margin: '4px auto 6px'}}>   
                         <div style={{fontSize : 12,color: '#ADB1B9'}}>{failTip}</div>
                     </div>   

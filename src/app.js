@@ -14,7 +14,7 @@ let web = PAGE_STYLE_WEB;
 try {
     web = window.sessionStorage.getItem(PAGE_STYLE_KEY);
 } catch (e) {
-    alert(intl.get(MODULE, 0));
+    alert(intl.get(MODULE, 0)/*_i18n:您可能开启了隐私模式，请关闭后重试*/);
 }
 
 // 根据UA渲染不同的页面

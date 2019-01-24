@@ -1,4 +1,4 @@
-.qr{
+.qr {
     width:132px;
     height:149px;
     border-radius:4px;
@@ -13,27 +13,33 @@
     background: rgba(255, 255, 255, 0.8);
     padding: 16px 0 0 0;
 
-    img{
+    img {
         width: 100px;
         height: 100px;
         margin: 0; 
         padding: 0;
     }
 }
-.ui-center.ui-fullscreen{
-    .lang{
+.ui-center.ui-fullscreen {
+    .login-lang {
         width: 65px;
         height: 32px;
         position: absolute;
         top: 24px;
         right: 32px;
-        padding: 7px 0;
-        border: 1px solid #FFF;
+        padding: 7px 0; 
         border-radius: 4px;
         text-align: center;
         vertical-align: middle;
         font-size: 12px;
         line-height: 17px;
-        color: #FFF;
+        &:hover {
+            color: #FB9E5B;
+            border: 1px solid #FB9E5B;
+        }
+        &:active {
+            color: #C86B28;
+            border: 1px solid #C86B28;
+        }
     }
 }
