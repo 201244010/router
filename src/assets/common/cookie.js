@@ -19,6 +19,8 @@ let get = (key) => {
 }
 
 let set =(key, val) => {
+    clear(key);     // 先删除原来的cookie
+
     document.cookie = `${key}=${val}`;
 }
 
