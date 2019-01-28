@@ -107,13 +107,14 @@ export default class SetPassword extends React.Component {
             <div className="setpassword"> 
                 <h2>{intl.get(MODULE, 7)/*_i18n:设置管理密码*/}</h2>
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 8)/*_i18n:管理密码是进入路由器管理页面的凭证*/}</p>
-                <Form style={{margin : '24px auto', width:335}}>
+                <Form style={{margin : '24px auto', width:419}}>
                     <FormItem label={intl.get(MODULE, 9)/*_i18n:设置密码*/} showErrorTip={pwdTip}>
                         <Input
                             placeholder={intl.get(MODULE, 10)/*_i18n:请设置密码*/}
                             value={pwd}
                             onChange = {value => this.onChange('pwd', value)}
-                            maxLength={32} />
+                            maxLength={32}
+                             />
                         <ErrorTip>{pwdTip}</ErrorTip>
                     </FormItem>
                     <FormItem label={intl.get(MODULE, 11)/*_i18n:确认密码*/} showErrorTip={surePwdTip}>
