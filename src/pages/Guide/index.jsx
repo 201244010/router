@@ -26,9 +26,10 @@ export default class Guide extends React.Component {
 
     steps = [
         {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
+        {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
         {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
         {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-        {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+        // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
     ];
 
     static getDerivedStateFromProps(nextProps){
@@ -50,6 +51,8 @@ export default class Guide extends React.Component {
 
     render(){
         const path = this.props.match.path;
+        let activeRouteName = this.state.activeRouteName;
+
         return (
             <SubLayout className="steps ui-relative">
                 <div className="header">
@@ -61,7 +64,7 @@ export default class Guide extends React.Component {
                         </li>
                     </ul>
                 </div>
-                <ul className="guide-header">
+                {'success' !== activeRouteName && <ul className="guide-header">
                 {
                     this.steps.map((step, index, array) => {
                         return (
@@ -78,7 +81,7 @@ export default class Guide extends React.Component {
                         );
                     })
                 }
-                </ul>
+                </ul>}
                 <div className="guide-body">
                     <Switch>
                         {
@@ -86,6 +89,7 @@ export default class Guide extends React.Component {
                                 return <Route path={`${path}/${step.route}`} component={step.component} />;
                             })
                         }
+                        <Route path={`${path}/success`} component={Success} />
                         <Redirect from={path} to={`${path}/${this.steps[0].route}`}></Redirect>
                     </Switch>
                 </div>
