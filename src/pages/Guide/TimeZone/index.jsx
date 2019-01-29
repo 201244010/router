@@ -16,7 +16,7 @@ export default class TimeZone extends React.Component {
     }
 
     state = {
-        timezone: 'GMT',
+        timezone: '',
         loading: false,
     };
 
@@ -46,6 +46,18 @@ export default class TimeZone extends React.Component {
             const {match} = this.props;
             this.props.history.push("/guide/setwan");
         }
+    }
+
+    getTimezone = async() => {
+        let resp = await common.fetchApi({ opcode: 'TIME_GET' });
+
+        this.setState({
+            timezone: resp.data[0].result.time.timezone,
+        });
+    }
+
+    componentDidMount() {
+        this.getTimezone();
     }
 
     render() {
