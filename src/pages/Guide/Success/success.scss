@@ -1,9 +1,9 @@
-.user-experience-cn{
+.user-experience-domestic {
     // width: 880px;
     margin: auto;
     color: #333C4F;
     padding: 0 50px;
-    .head-cn{
+    .head-domestic {
         border-bottom: 1px solid #ECECEC;
         padding: 20px 0 40px;
         h4{
@@ -13,7 +13,7 @@
             vertical-align: middle;
         }
     }
-    .body-cn{
+    .body-domestic {
         padding: 40px 0 0;
         position: relative;
         .title {
@@ -85,7 +85,7 @@
                 }
             }
         }
-        .QR_img-cn{
+        .QR_img-domestic {
             width: 92px;
             float: right;
             img{
@@ -101,8 +101,8 @@
     }
 }
 
-.user-experience-us {
-    .head-us {
+.user-experience-abroad {
+    .head-abroad {
         padding-bottom: 40px;
         border-bottom: 1px solid #ECECEC;
         margin-top: 20px;
@@ -113,7 +113,7 @@
             vertical-align: middle;
         }
     }
-    .body-us {
+    .body-abroad {
         position: relative;
         .title {
             position: relative;
@@ -122,6 +122,9 @@
                 display: inline-block;
                 font-size: 24px;
                 line-height: 32px;
+            }
+            .font-bold{
+                font-weight: bold;
             }
             .go-home {
                 position: absolute;
@@ -135,15 +138,48 @@
             li {
                 text-align: left;
                 width: 350px;
-                height: 200px;
                 display: inline-block;
                 position: relative;
                 background-color: #FFF;
                 border: 0.5px solid rgba(0,0,0,0.1);
                 border-radius: 12px;
-                .func-item{
+                .func-item-cn{
                     cursor: pointer;
-                    padding: 20px 0 8px 20px;
+                    padding: 40px 0 40px 20px;
+                    .img {
+                        width: 80px;
+                        height: 80px;
+                        display: inline-block;
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+
+                    .description {
+                        display: inline-block;
+                        margin-left: 12px;
+                        vertical-align: middle;
+                        h4 {
+                            color: #333C4F;
+                            margin-bottom: 8px;
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                        p {
+                            color: #333C4F;
+                            font-size: 16px;
+                        }
+                    }
+
+                    .background {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        opacity: 0.1;
+                    }
+                }
+                .func-item-us{
+                    cursor: pointer;
+                    padding: 20px 0 40px 20px;
                     .img {
                         width: 80px;
                         height: 80px;
@@ -180,9 +216,12 @@
                 &:nth-last-child(n+2){
                     margin-right: 20px;
                 }
+                &:hover{
+                    box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+                }
             }
         }
-        .QR_img-us{
+        .QR_img-abroad {
             width: 92px;
             margin-top: 32px;
             float: right;
