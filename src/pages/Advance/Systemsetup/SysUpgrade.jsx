@@ -2,8 +2,9 @@
 import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
-import {Button, Modal} from 'antd';
+import {Button, Modal, Upload, Icon, message} from 'antd';
 import CustomIcon from '~/components/Icon';
+import { get } from '~/assets/common/auth';
 import Upgrade from '../../UpgradeDetect/Upgrade';
 
 const MODULE = 'sysupgrade';
@@ -17,6 +18,8 @@ export default class SysUpgrade extends React.Component{
         latestVersion : '',//最新版本
         releaseLog : '',//版本说明
         version : false,//版本说明弹窗
+        manual: false,
+        fileList: '',
     }
 
     post = () => {
@@ -75,6 +78,7 @@ export default class SysUpgrade extends React.Component{
 
     manualUpgrade = () =>{
         clearInterval(this.onClickTimer);
+        console.log('num',num);
         num++;
         this.onClickTimer = setInterval(() => {
             num--;
@@ -85,6 +89,35 @@ export default class SysUpgrade extends React.Component{
 
         if (num >= 5) {
             this.setState({manual: true});
+        }
+    }
+
+    handleUploadChange = (info) => {
+        let fileList = info.fileList;
+
+        // 1. Limit the number of uploaded files
+        fileList = fileList.slice(-1);
+
+        this.setState({ fileList: fileList });
+
+        const file = info.file;
+        switch (file.status) {
+            case 'done':
+                if (0 === file.response.errcode) {
+                    message.success('上传成功');
+                    common.fetchApi({ opcode: '4' });
+                } else {
+                    message.error('上传失败');
+                }
+                break;
+            case 'error':
+                if (403 == file.error.status) {
+                    this.props.history.push('/login');
+                    return;
+                }
+
+                message.error('上传失败');
+                break;
         }
     }
 
@@ -136,7 +169,22 @@ export default class SysUpgrade extends React.Component{
                     footer={<Button className="speed-btn" type="primary" onClick={this.manualCancle}>知道了</Button>}
                 >
                     <Button type="primary" onClick={this.openTelnet}>开启Telnet</Button>
-                    
+                    <Upload
+                        onChange={(file) => {
+                            this.handleUploadChange(file);
+                        }}
+                        name='file'
+                        fileList={this.state.fileList}
+                        data={{ opcode: '4' }}
+                        action={__BASEAPI__}
+                        uploadTitle={'手动升级'}
+                        multiple={false}
+                        headers={{
+                            'XSRF-TOKEN': get(),
+                        }}
+                    >
+                        <Button><Icon type="upload" />手动升级</Button>
+                    </Upload>
                 </Modal>
                 <Upgrade ref='Upgrade'/>
             </div>
