@@ -92,7 +92,7 @@ class Login extends React.Component {
                     <SwitchLang className='login-lang'/>
                     <div className="form-box" style={{ textAlign : 'center' }}>
                         <CustomIcon type="logo" size={90} color="#fff" />
-                        <Form style={{ width : 320, padding: 0 }} >
+                        <Form style={{ width : 320, padding: 0 , margin: '0 auto'}} >
                             <FormItem style={{ margin: '45px auto 30px' }}>
                                 <Input placeholder={intl.get(MODULE, 6)/*_i18n:请输入您的管理密码*/}
                                         type="password"

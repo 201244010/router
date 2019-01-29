@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button, Switch, Modal, Icon, message } from 'antd';
 import { Base64 } from 'js-base64';
@@ -103,7 +102,7 @@ export default class SetWifi extends React.Component {
         
         let {errcode} = response;
         if(errcode === 0){
-            this.props.history.push(`/guide/finish/applying/` + encodeURIComponent(param));
+            this.props.history.push(`/guide/setwifi/applying/` + encodeURIComponent(param));
         } else {
             // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
             message.error(intl.get(MODULE, 9, {error: errorMessage[errcode] || errcode})/*_i18n:Wi-Fi设置失败[{error}]*/);

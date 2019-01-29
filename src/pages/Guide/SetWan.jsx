@@ -184,7 +184,7 @@ export default class SetWan extends React.PureComponent {
                         online :online
                     });
                     if(online){
-                        setTimeout(() => { this.props.history.push("/guide/setwifi") }, 3000);
+                        setTimeout(() => { this.props.history.push("/guide/setwifi/setting") }, 3000);
                     }
                     return;
                 }
