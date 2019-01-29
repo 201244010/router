@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 import {NavLink} from "react-router-dom";
+import {getLang} from '~/i18n/index.js';
 import CustomIcon from '~/components/Icon';
 
 import './success.scss';
@@ -19,7 +20,7 @@ export default class Success extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {true ?
+                { 'zh-cn' === getLang() ?
                 [<div className='user-experience-cn'>
                     <div className='head-cn'>
                         <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)}</h4>
