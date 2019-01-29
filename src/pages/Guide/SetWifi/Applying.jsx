@@ -65,7 +65,7 @@ export default class Applying extends React.Component {
             <div className='create-wifi'>
                 <div className='head'>
                     { time >= 0 ?
-                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>{intl.get(MODULE, 0)}</p>]
+                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>{intl.get(MODULE, 0,{time})}</p>]
                     :
                     [<CustomIcon type='correct' color='#FB8632' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})}</p>]
                     }  
