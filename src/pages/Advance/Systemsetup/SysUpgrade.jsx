@@ -8,7 +8,6 @@ import { get } from '~/assets/common/auth';
 import Upgrade from '../../UpgradeDetect/Upgrade';
 
 const MODULE = 'sysupgrade';
-let num = 0;
 
 export default class SysUpgrade extends React.Component{
     state = {
@@ -20,6 +19,7 @@ export default class SysUpgrade extends React.Component{
         version : false,//版本说明弹窗
         manual: false,
         fileList: '',
+        num: 0,
     }
 
     post = () => {
@@ -78,15 +78,16 @@ export default class SysUpgrade extends React.Component{
 
     manualUpgrade = () =>{
         clearInterval(this.onClickTimer);
-        num++;
+
+        this.state.num++;
         this.onClickTimer = setInterval(() => {
-            num--;
-            if (0 === num) {
+            this.state.num--;
+            if (0 === this.state.num) {
                 clearInterval(this.onClickTimer);
             }
         }, 2000);
 
-        if (num >= 5) {
+        if (this.state.num >= 5) {
             this.setState({manual: true});
         }
     }
