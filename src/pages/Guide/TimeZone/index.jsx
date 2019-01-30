@@ -48,11 +48,45 @@ export default class TimeZone extends React.Component {
         }
     }
 
-    getTimezone = async() => {
-        let resp = await common.fetchApi({ opcode: 'TIME_GET' });
+    getTimezone = () => {
+        let time = new Date();                                          //获取本机时间，计算本机时区
+        let localOffset = time.getTimezoneOffset();                     //时区偏移量，单位分钟
+        let hour = Math.abs(parseInt(localOffset/60)).toString();       //时区偏移量，小时的部分
+        let minute = Math.abs(parseInt(localOffset%60)).toString();     //时区偏移量，分钟的部分
+
+        let timezone = '';
+        if (0 !== localOffset ) {             //构建主机时区的格式，如 'GMT-03:30'、'GMT'、'GMT+04:30'
+            if (localOffset < 0) {            //偏移量小于0，则处于东时区
+                if (1 === hour.length) {
+                    hour = '+0' + hour;
+                }
+
+                if (2 === hour.length) {
+                    hour = '+' + hour;
+                }
+            }
+
+            if (localOffset > 0) {          //偏移量大于0，则处于西时区
+                if (1 === hour.length) {
+                    hour = '-0' + hour;
+                }
+
+                if (2 === hour.length) {
+                    hour = '-' + hour;
+                }
+            }
+
+            if (1 === minute.length) {
+                minute = '0' + minute;
+            }
+
+            timezone = 'GMT' + hour + ':' + minute;
+        } else {
+            timezone = 'GMT';
+        }
 
         this.setState({
-            timezone: resp.data[0].result.time.timezone,
+            timezone: timezone,
         });
     }
 
