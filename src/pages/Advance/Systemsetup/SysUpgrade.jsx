@@ -82,7 +82,7 @@ export default class SysUpgrade extends React.Component{
 
     manualUpgrade = () =>{
         clearInterval(this.onClickTimer);
-        console.log(this.num);
+
         this.num++;
         this.onClickTimer = setInterval(() => {
             this.num--;
@@ -141,6 +141,9 @@ export default class SysUpgrade extends React.Component{
         message.error('Telnet 开启失败，稍后重试');
     }
 
+    componentWillUnmount() {
+        clearInterval(this.onClickTimer);
+    }
     render(){
         let Title = [
             <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)/*_i18n:版本说明*/}</span>
