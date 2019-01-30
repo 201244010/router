@@ -54,7 +54,7 @@ export default class SetPassword extends React.Component {
         switch (errcode) {
         case 0:
             init(data[0].result.account.token);
-            this.props.history.push(routes.guideSetWan);
+            this.props.history.push('/guide/timezone');
             break;
         case '-1608':
             Modal.info({
