@@ -78,7 +78,6 @@ export default class SysUpgrade extends React.Component{
 
     manualUpgrade = () =>{
         clearInterval(this.onClickTimer);
-        console.log('num',num);
         num++;
         this.onClickTimer = setInterval(() => {
             num--;
@@ -105,10 +104,9 @@ export default class SysUpgrade extends React.Component{
             case 'done':
                 if (0 === file.response.errcode) {
                     message.success('上传成功');
-                    common.fetchApi({ opcode: '4' });
-                } else {
-                    message.error('上传失败');
+                    common.fetchApi({ opcode: 'MANUAL_UPGRADE' });
                 }
+
                 break;
             case 'error':
                 if (403 == file.error.status) {
@@ -125,8 +123,17 @@ export default class SysUpgrade extends React.Component{
         this.setState({manual: false});
     }
 
-    openTelnet = () => {
+    openTelnet = async() => {
         //var param = { "msg_id": "5678", "params": [{ "opcode": "5", "param": {} }] };
+        let resp = await common.fetchApi({ opcode: 'START_TELNET'});
+        const {errcode} = resp;
+
+        if(0 === errcode) {
+            message.success('Telnet 开启成功');     //telnet 开启成功
+            return;
+        }
+
+        message.error('Telnet 开启失败，稍后重试');
     }
 
     render(){
@@ -168,7 +175,7 @@ export default class SysUpgrade extends React.Component{
                     centered={true}
                     footer={<Button className="speed-btn" type="primary" onClick={this.manualCancle}>知道了</Button>}
                 >
-                    <Button type="primary" onClick={this.openTelnet}>开启Telnet</Button>
+                    <Button style={{marginRight: 10}} onClick={this.openTelnet}>开启Telnet</Button>
                     <Upload
                         onChange={(file) => {
                             this.handleUploadChange(file);
