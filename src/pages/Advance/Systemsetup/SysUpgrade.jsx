@@ -10,16 +10,20 @@ import Upgrade from '../../UpgradeDetect/Upgrade';
 const MODULE = 'sysupgrade';
 
 export default class SysUpgrade extends React.Component{
-    state = {
-        loading : false,
-        disable : true,
-        currentVersion : '',//当前版本
-        latestVersion : '',//最新版本
-        releaseLog : '',//版本说明
-        version : false,//版本说明弹窗
-        manual: false,
-        fileList: '',
-        num: 0,
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading : false,
+            disable : true,
+            currentVersion : '',//当前版本
+            latestVersion : '',//最新版本
+            releaseLog : '',//版本说明
+            version : false,//版本说明弹窗
+            manual: false,
+            fileList: '',
+        }
+        this.num = 0;
     }
 
     post = () => {
@@ -78,16 +82,16 @@ export default class SysUpgrade extends React.Component{
 
     manualUpgrade = () =>{
         clearInterval(this.onClickTimer);
-
-        this.state.num++;
+        console.log(this.num);
+        this.num++;
         this.onClickTimer = setInterval(() => {
-            this.state.num--;
-            if (0 === this.state.num) {
+            this.num--;
+            if (0 === this.num) {
                 clearInterval(this.onClickTimer);
             }
         }, 2000);
 
-        if (this.state.num >= 5) {
+        if (this.num >= 5) {
             this.setState({manual: true});
         }
     }
