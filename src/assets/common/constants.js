@@ -121,6 +121,10 @@ export const DIRECTIVE = {
     //时区/时间
     TIME_GET: '0x2030',
     TIME_SET: '0x2031',
+
+    //开启Telnet、upgrade升级
+    START_TELNET: '5',
+    MANUAL_UPGRADE: '4',
 };
 
 
