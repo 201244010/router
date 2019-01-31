@@ -1,6 +1,6 @@
 import React from 'react';
 import { Radio, Select, Button } from 'antd';
-import {getNowTimeStr} from '../../../utils';
+import moment from 'moment';
 import timeZones from '~/assets/common/timezone';
 import './timezone.scss';
 
@@ -37,7 +37,7 @@ export default class TimeZone extends React.Component {
         if ('0' === e.target.value) {             //切换为手动设置时，启动定时器
             this.hostTimeCounter = setInterval(() => {
                 this.setState({
-                    hostTime: getNowTimeStr(),
+                    hostTime: moment().format("YYYY-MM-DD HH:mm:ss"),
                 });
             }, 1000);
         } else {
@@ -61,45 +61,13 @@ export default class TimeZone extends React.Component {
         }
 
         if ('0' === enable) {                                               //同步主机时间
-            let time = new Date();
-            let localOffset = time.getTimezoneOffset();                     //时区偏移量，单位分钟
-            let hour = Math.abs(parseInt(localOffset/60)).toString();       //时区偏移量，小时的部分
-            let minute = Math.abs(parseInt(localOffset%60)).toString();     //时区偏移量，分钟的部分
-
-            if (0 !== localOffset ) {             //构建主机时区的格式，如 'GMT-03:30'、'GMT'、'GMT+04:30'
-                if (localOffset < 0) {            //偏移量小于0，则处于东时区
-                    if (1 === hour.length) {
-                        hour = '+0' + hour;
-                    }
-
-                    if (2 === hour.length) {
-                        hour = '+' + hour;
-                    }
-                }
-
-                if (localOffset > 0) {          //偏移量大于0，则处于西时区
-                    if (1 === hour.length) {
-                        hour = '-0' + hour;
-                    }
-
-                    if (2 === hour.length) {
-                        hour = '-' + hour;
-                    }
-                }
-
-                if (1 === minute.length) {
-                    minute = '0' + minute;
-                }
-
-                timezone = 'GMT' + hour + ':' + minute;
-            } else {
-                timezone = 'GMT';
-            }
+            let timezone = 'GMT' + moment().format("Z");                    //获取时区信息
+            let time = moment().format("YYYY-MM-DD HH:mm:ss");              //获取本机时间
 
             data = {
                 time: {
                     enable: enable,
-                    time: getNowTimeStr(),
+                    time: time,
                     timezone: timezone,
                 }
             }
@@ -135,26 +103,25 @@ export default class TimeZone extends React.Component {
         if (0 === errcode) {
             let { timezone, enable, time } = data[0].result.time;
             timezone = timezone || 'GMT';
-            time = new Date(time);
-            let systemTime = time.getTime();
+            time = moment(time).valueOf();
 
             this.setState({
                 enable: enable,
                 timezone: timezone,
-                systemTime: systemTime,
+                systemTime: time,
             });
 
             this.addSelfTime = setInterval(() => {            //定时器显示系统时间，1秒自加一次
-                systemTime = systemTime + 1000;
+                time = time + 1000;
                 this.setState({
-                    systemTime: systemTime,
+                    systemTime: time,
                 });
             },1000);
 
             if ('0' === enable) {                            //获取本机时间的情况
                 this.hostTimeCounter = setInterval(() => {
                     this.setState({
-                        hostTime: getNowTimeStr(),
+                        hostTime: moment().format("YYYY-MM-DD HH:mm:ss"),
                     });
                 }, 1000);
             }
@@ -162,6 +129,7 @@ export default class TimeZone extends React.Component {
     };
 
     componentDidMount() {
+        clearInterval(this.systemTimeCounter);
         this.getTime();
         this.systemTimeCounter = setInterval(async() => {                   //定时器5秒获取一次系统时间
             let resp = await common.fetchApi({ opcode: 'TIME_GET'});
@@ -169,36 +137,20 @@ export default class TimeZone extends React.Component {
             let {errcode, data} = resp;
             if (0 === errcode) {
                 clearInterval(this.addSelfTime);
-                let time = new Date(data[0].result.time.time);
-                let systemTime = time.getTime();
+
+                let time = moment(data[0].result.time.time).valueOf();
                 this.setState({
-                    systemTime: systemTime,
+                    systemTime: time,
                 });
 
                 this.addSelfTime = setInterval(() => {                      //定时器显示系统时间，1秒自加一次
-                    systemTime = systemTime + 1000;
+                    time = time + 1000;
                     this.setState({
-                        systemTime: systemTime,
+                        systemTime: time,
                     });
                 },1000);
             }
         }, 5000);
-    }
-
-    exchangeTime = time =>{           //显示系统时间，将时间戳转换为格式为 2019-01-17 14:24:05 的时间
-        function paddingLeftZero(num) {
-            return num < 10 ? `0${num}` : `${num}`;
-        }
-
-        let exchange = new Date(time);
-        const year = exchange.getFullYear();
-        const month = paddingLeftZero(exchange.getMonth() + 1);
-        const date = paddingLeftZero(exchange.getDate());
-        const hour = paddingLeftZero(exchange.getHours());
-        const minute = paddingLeftZero(exchange.getMinutes());
-        const second = paddingLeftZero(exchange.getSeconds());
-
-        return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
     }
 
     componentWillUnmount() {                    //组件卸载，清除所有定时器
@@ -209,7 +161,7 @@ export default class TimeZone extends React.Component {
 
     render() {
         let { systemTime, enable, timezone, loading, hostTime } = this.state;
-        systemTime = this.exchangeTime(systemTime);
+        systemTime = moment(systemTime).format("YYYY-MM-DD HH:mm:ss");
 
         return (
             <div className="time-zone">
