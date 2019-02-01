@@ -86,15 +86,16 @@ export default class TimeZone extends React.Component {
                 data: data,
             },
         );
-        this.setState({loading: false});
 
         let {errcode} = response;
         if (0 === errcode) {
             this.getTime();
         }
+        this.setState({loading: false});
     };
 
     getTime = async() => {
+        clearInterval(this.systemTimeCounter);
         clearInterval(this.hostTimeCounter);
         clearInterval(this.addSelfTime);
         let response = await common.fetchApi({ opcode: 'TIME_GET'});
@@ -118,6 +119,27 @@ export default class TimeZone extends React.Component {
                 });
             },1000);
 
+            this.systemTimeCounter = setInterval(async() => {                   //定时器5秒获取一次系统时间
+                let resp = await common.fetchApi({ opcode: 'TIME_GET'});
+
+                let {errcode, data} = resp;
+                if (0 === errcode) {
+                    clearInterval(this.addSelfTime);
+
+                    let time = moment(data[0].result.time.time).valueOf();
+                    this.setState({
+                        systemTime: time,
+                    });
+
+                    this.addSelfTime = setInterval(() => {                      //定时器显示系统时间，1秒自加一次
+                        time = time + 1000;
+                        this.setState({
+                            systemTime: time,
+                        });
+                    },1000);
+                }
+            }, 5000);
+
             if ('0' === enable) {                            //获取本机时间的情况
                 this.hostTimeCounter = setInterval(() => {
                     this.setState({
@@ -129,28 +151,7 @@ export default class TimeZone extends React.Component {
     };
 
     componentDidMount() {
-        clearInterval(this.systemTimeCounter);
         this.getTime();
-        this.systemTimeCounter = setInterval(async() => {                   //定时器5秒获取一次系统时间
-            let resp = await common.fetchApi({ opcode: 'TIME_GET'});
-
-            let {errcode, data} = resp;
-            if (0 === errcode) {
-                clearInterval(this.addSelfTime);
-
-                let time = moment(data[0].result.time.time).valueOf();
-                this.setState({
-                    systemTime: time,
-                });
-
-                this.addSelfTime = setInterval(() => {                      //定时器显示系统时间，1秒自加一次
-                    time = time + 1000;
-                    this.setState({
-                        systemTime: time,
-                    });
-                },1000);
-            }
-        }, 5000);
     }
 
     componentWillUnmount() {                    //组件卸载，清除所有定时器
