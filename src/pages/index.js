@@ -1,5 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import { setLang } from '~/i18n/index.js';
+import { get as getCookie} from '~/assets/common/cookie';
 import {message} from 'antd';
 import { get } from 'common/auth';
 import style from "styles/index.useable.scss";
@@ -96,11 +98,13 @@ class PrimaryLayout extends React.Component {
     }
 }
 
+const LANG_KEY = '_AP_LANGUAGE';
+
 class Default extends React.Component{
     constructor(props) {
         super(props);
     }
-
+    
     redirect() {
         const path = location.pathname;
         const welcome = '/welcome';
@@ -127,7 +131,10 @@ class Default extends React.Component{
          */
         common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
             let { errcode, data } = res;
-            if (0 == errcode && 1 === parseInt(data[0].result.system.factory)) {
+            const result = data[0].result.system;
+            let sdLang = getCookie(LANG_KEY);
+            !sdLang && setLang(result.language.toLowerCase());
+            if (0 === errcode && 1 === parseInt(result.factory)) {
                 this.props.history.push(welcome);
             } else {
                 this.props.history.push(redirect);
@@ -140,7 +147,7 @@ class Default extends React.Component{
     }
 
     render() {
-        return null;
+        return <noscript />;
     }
 }
 

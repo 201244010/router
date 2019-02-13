@@ -122,6 +122,9 @@ export const DIRECTIVE = {
     TIME_GET: '0x2030',
     TIME_SET: '0x2031',
 
+    //语言设置
+    LANGUAGE_SET: '0x208d',
+
     //开启Telnet、upgrade升级
     START_TELNET: '5',
     MANUAL_UPGRADE: '4',

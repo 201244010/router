@@ -98,7 +98,7 @@ class Login extends React.Component {
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
-                                        maxLength='32'
+                                        maxLength={32}
                                         onEnter={this.onEnter}
                                         />
                             <ErrorTip style={{
