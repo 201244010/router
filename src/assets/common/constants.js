@@ -125,6 +125,9 @@ export const DIRECTIVE = {
     //语言设置
     LANGUAGE_SET: '0x208d',
 
+    //功能列表
+    SRVICELIST_GET: '0x2036',
+
     //开启Telnet、upgrade升级
     START_TELNET: '5',
     MANUAL_UPGRADE: '4',

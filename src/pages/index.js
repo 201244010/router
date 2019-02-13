@@ -1,7 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import { setLang } from '~/i18n/index.js';
-import { get as getCookie} from '~/assets/common/cookie';
+import { get as getCookie, set} from '~/assets/common/cookie';
 import {message} from 'antd';
 import { get } from 'common/auth';
 import style from "styles/index.useable.scss";
@@ -129,7 +129,9 @@ class Default extends React.Component{
          * logined -> redirect to /home
          * unauth -> redirect to /login
          */
-        common.fetchApi({ opcode: 'SYSTEM_GET' }).then(res => {
+        common.fetchApi([
+            { opcode: 'SYSTEM_GET' }
+        ], { ignoreErr: true }).then(res => {
             let { errcode, data } = res;
             const result = data[0].result.system;
             let sdLang = getCookie(LANG_KEY);
