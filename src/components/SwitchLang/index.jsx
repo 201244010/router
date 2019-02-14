@@ -12,12 +12,20 @@ export default class SwitchLang extends React.Component {
     }
 
     changeLang = () => {
-        let  language = 'zh-cn' === this.state.lang ? 'en-us' : 'zh-cn';
+        let language = 'zh-cn' === this.state.lang ? 'en-us' : 'zh-cn';
+        let language_param = 'zh-cn' === this.state.lang ? 'en-US' : 'zh-CN';
 
-        setLang(language);
-        this.setState({
-            lang: language,
-        })
+        common.fetchApi({
+            opcode: 'LANGUAGE_SET',
+            data: {
+                "language": language_param
+            }
+         }).then(res => {
+             setLang(language);
+             this.setState({
+                 lang: language,
+             })
+        });
     }
 
     render() {

@@ -3,6 +3,7 @@ import SubLayout from '~/components/SubLayout';
 
 import {Switch, Route, Redirect, NavLink} from "react-router-dom";
 import CustomIcon from '../../components/Icon';
+import { get } from '~/assets/common/cookie';
 
 import '../Settings/settings.scss'
 
@@ -14,10 +15,18 @@ import Systemsetup from './Systemsetup';
 
 
 const MODULE = 'advance';
-
 export default class Advance extends React.PureComponent {
     constructor(props){
         super(props);
+        this.navList = [
+            {route: 'bandwidth', type: 'networkspeeddistribution', content: intl.get(MODULE, 0)/*_i18n:网速智能分配*/},
+            {route: 'whitelist', type: 'bootdevice', content: intl.get(MODULE, 2)/*_i18n:优先设备*/},
+            {route: 'blacklist', type: 'blacklis', content: intl.get(MODULE, 3)/*_i18n:防蹭网*/},
+            {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:系统设置*/}
+        ];
+        if (get('_WECHAT') === 'IS_WECHAT') {
+            this.navList.splice(1, 0, {route: 'wechat', type: 'auth', content: intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/})
+        }
     }
 
     render(){
@@ -25,36 +34,18 @@ export default class Advance extends React.PureComponent {
         return (
             <SubLayout className="settings">
                 <nav>
-                    <NavLink to={match.path + "/bandwidth"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="networkspeeddistribution" size={28}/>
-                            <span>{intl.get(MODULE, 0)/*_i18n:网速智能分配*/}</span>
-                        </div>
-                    </NavLink>
-                    <NavLink to={match.path + "/wechat"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="auth" size={28} />
-                            <span>{intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/}</span>
-                        </div>
-                    </NavLink>
-                    <NavLink to={match.path + "/whitelist"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="bootdevice" size={28}/>
-                            <span>{intl.get(MODULE, 2)/*_i18n:优先设备*/}</span>
-                        </div>
-                    </NavLink>
-                    <NavLink to={match.path + "/blacklist"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="blacklis" size={28}/>
-                            <span>{intl.get(MODULE, 3)/*_i18n:防蹭网*/}</span>
-                        </div>
-                    </NavLink>
-                    <NavLink to={match.path + "/systemsetup"} activeClassName="active">
-                        <div className="nav-item">
-                            <CustomIcon type="systemsetup" size={28}/>
-                            <span>{intl.get(MODULE, 4)/*_i18n:系统设置*/}</span>
-                        </div>
-                    </NavLink>
+                    {
+                        this.navList.length > 0 && this.navList.map(item =>{
+                            return (
+                                <NavLink to={match.path + "/" + item.route} activeClassName="active">
+                                    <div className="nav-item">
+                                        <CustomIcon type={item.type} size={28}/>
+                                        <span>{item.content}</span>
+                                    </div>
+                                </NavLink>
+                            )
+                        })
+                    }
                 </nav>
                 <article>
                     <Switch>
