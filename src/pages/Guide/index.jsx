@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
 import SubLayout from '~/components/SubLayout';
 import SetPassword from './SetPassword';
-import TimeZone from './TimeZone';
+import TimeZone from './GuideTimeZone';
 import SetWan from './SetWan';
 // import Speed from './Speed';
 import SetWifi from './SetWifi';
