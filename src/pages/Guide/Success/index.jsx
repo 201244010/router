@@ -146,7 +146,7 @@ export default class Success extends React.Component {
                                 <NavLink to={'/home'}>
                                     <div className={version}>
                                         <div className='img'>
-                                            <CustomIcon style={{ margin: 7 }} size={66} color='#F79D5C' type="search" />
+                                            <CustomIcon style={{ margin: 13 }} size={54} color='#F9AFDD' type="blacklis" />
                                         </div>
                                         {format ?   //海外版-中英文的排版不同
                                             <div className='description'>
@@ -160,7 +160,7 @@ export default class Success extends React.Component {
                                             <p>{intl.get(MODULE, 9)}</p>]
                                         }
                                         <div className='background'>
-                                            <CustomIcon size={128} color='#F79D5C' type="bg_search" />
+                                            <CustomIcon size={128} color='#F9AFDD' type="bg_equipment" />
                                         </div>
                                     </div>
                                 </NavLink>
@@ -169,7 +169,7 @@ export default class Success extends React.Component {
                                 <NavLink to={'/home'}>
                                     <div className={version}>
                                         <div className='img'>
-                                            <CustomIcon style={{ margin: 13 }} size={54} color='#F9AFDD' type="blacklis" />
+                                            <CustomIcon style={{ margin: 7 }} size={66} color='#F79D5C' type="search" />
                                         </div>
                                         {format ?   //海外版-中英文的排版不同
                                             <div className='description'>
@@ -183,7 +183,7 @@ export default class Success extends React.Component {
                                             <p>{intl.get(MODULE, 7)}</p>]
                                         }
                                         <div className='background'>
-                                            <CustomIcon size={128} color='#F9AFDD' type="bg_equipment" />
+                                            <CustomIcon size={128} color='#F79D5C' type="bg_search" />
                                         </div>
                                     </div>
                                 </NavLink>
