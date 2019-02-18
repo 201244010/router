@@ -133,7 +133,21 @@ export const DIRECTIVE = {
     MANUAL_UPGRADE: '4',
 };
 
+/**
+ * 前端语言列表
+ */
+export const SUPPORTED_LANG = {
+    'zh-cn': '简体中文',
+    'en-us': 'English'
+};
 
+/**
+ * 用于本地调试的语言列表，本地无法通过指令设置sessionStorage
+ */
+export const LANGUAGE_LIST = [
+    { key: 'zh-cn', label: '简体中文' },
+    { key: 'en-us', label: 'English' },
+  ];
 
 /**
  * 请求响应错误码
