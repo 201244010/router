@@ -28,16 +28,4 @@ if (PAGE_STYLE_WEB === web) {
     App = UA.mobile ? H5 : Web;
 }
 
-common.fetchApi([
-    { opcode: 'SRVICELIST_GET'}
-], { ignoreErr: true }).then(res => {
-    let { data } = res;
-    const list = data[0].result.services;
-    list.map(item => {
-        if (item.service === 'wifidog_mod') {
-            set('_WECHAT', 'IS_WECHAT');
-        }
-    });
-});
-
 ReactDOM.render(<App />, document.querySelector('#wrap'));

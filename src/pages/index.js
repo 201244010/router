@@ -1,7 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import { setLang } from '~/i18n/index.js';
-import { get as getCookie, set} from '~/assets/common/cookie';
+import {SUPPORTED_LANG} from '~/assets/common/constants'
 import {message} from 'antd';
 import { get } from 'common/auth';
 import style from "styles/index.useable.scss";
@@ -98,8 +97,6 @@ class PrimaryLayout extends React.Component {
     }
 }
 
-const LANG_KEY = '_AP_LANGUAGE';
-
 class Default extends React.Component{
     constructor(props) {
         super(props);
@@ -134,8 +131,12 @@ class Default extends React.Component{
         ], { ignoreErr: true }).then(res => {
             let { errcode, data } = res;
             const result = data[0].result.system;
-            let sdLang = getCookie(LANG_KEY);
-            !sdLang && setLang(result.language.toLowerCase());
+            const languageList = [];
+            result.language_list.map(item => {
+                const lang = item.toLowerCase();
+                languageList.push({key: lang, label: SUPPORTED_LANG[lang]});
+            });
+            window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
             if (0 === errcode && 1 === parseInt(result.factory)) {
                 this.props.history.push(welcome);
             } else {

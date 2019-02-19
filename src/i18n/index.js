@@ -1,17 +1,12 @@
 import { get, set } from '~/assets/common/cookie';
+import {LANGUAGE_LIST} from '~/assets/common/constants';
 
 const LANG_KEY = '_AP_LANGUAGE';
 
-//系统支持的语言包
-const SUPPORTED_LANG = [
-  { key: 'zh-cn', label: '简体中文' },
-  { key: 'en-us', label: 'English' },
-];
-
-export { SUPPORTED_LANG };
-
 export function getLang() {
-  let supportLangs = SUPPORTED_LANG.map(lang => {
+  const SUPPORTED_LANGUAGE = JSON.parse(window.sessionStorage.getItem('_LANGUAGE_LIST')) || LANGUAGE_LIST;
+
+  let supportLangs = SUPPORTED_LANGUAGE.map(lang => {
     return lang.key;
   });
 

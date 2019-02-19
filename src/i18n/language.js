@@ -101,7 +101,7 @@ function readExcel () {
         "zh-cn": {},
         "en-us": {}
     };
-    workbook.xlsx.readFile(`i18n-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.xlsx`).then(function(data) {
+    workbook.xlsx.readFile(`i18n-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}1.xlsx`).then(function(data) {
         var worksheet = workbook.getWorksheet('W1');
         worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
             //第1行 为功能菜单页
@@ -117,7 +117,7 @@ function readExcel () {
                 } else {
                     funcKey = funcPath[funcPath.length - 1].toLowerCase()
                 }
-
+                
                 result['zh-cn'][funcKey + rowValue[2]] = rowValue[3];
                 result['en-us'][funcKey + rowValue[2]] = rowValue[4];
             }
@@ -129,8 +129,8 @@ function readExcel () {
 function commander() {
     program
         .version('1.0.0')
-        .option("-r,--writeExcel", "to create excelFile!")
-        .option("-w,--readExcel", "to create translate file!")
+        .option("-w,--writeExcel", "to create excelFile!")
+        .option("-r,--readExcel", "to create translate file!")
         .parse(process.argv);
 
     if (program.writeExcel) {
