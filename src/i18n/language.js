@@ -110,14 +110,23 @@ function readExcel () {
                 var reg = /\..*/g;
                 const funcPath = listMap[rowValue[1]].replace(reg, '').split('\/');
                 let funcKey;
-                if (funcPath[funcPath.length - 1] === 'index') {
-                    funcKey = funcPath[funcPath.length - 2].toLowerCase();
-                } else if (funcPath[funcPath.length - 1] === 'timezone') {
-                    funcKey = 'tz';
+                const pageStyle = funcPath[1].toLowerCase();
+                if ( pageStyle === 'h5') {
+                    if (funcPath[funcPath.length - 1] === 'index') {
+                        funcKey = pageStyle + funcPath[funcPath.length - 2].toLowerCase();
+                    } else {
+                        funcKey = pageStyle + funcPath[funcPath.length - 1].toLowerCase()
+                    }
                 } else {
-                    funcKey = funcPath[funcPath.length - 1].toLowerCase()
+                    if (funcPath[funcPath.length - 1] === 'index') {
+                        funcKey = funcPath[funcPath.length - 2].toLowerCase();
+                    } else if (funcPath[funcPath.length - 1] === 'timezone') {
+                        funcKey = 'tz';
+                    } else {
+                        funcKey = funcPath[funcPath.length - 1].toLowerCase()
+                    }
                 }
-                
+
                 result['zh-cn'][funcKey + rowValue[2]] = rowValue[3];
                 result['en-us'][funcKey + rowValue[2]] = rowValue[4];
             }

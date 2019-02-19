@@ -4,7 +4,6 @@ import React from "react";
 import ReactDOM from 'react-dom';
 
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_H5, PAGE_STYLE_WEB } from './utils';
-import {set} from '~/assets/common/cookie';
 
 import Web from './pages/index.js';     // PC Web页面
 import H5 from './H5';       // H5页面
