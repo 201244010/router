@@ -16,6 +16,7 @@ import Welcome from './Welcome';
 import DownloadPage from './DownloadPage';
 import Diagnose from './Diagnose';
 import UpdateDetect from './UpgradeDetect';
+import UserAgreement from './UserAgreement';
 
 class PrimaryLayout extends React.Component {
     constructor(props) {
@@ -58,6 +59,7 @@ class PrimaryLayout extends React.Component {
             'settings': { main: 'bg', footer: '', header: true },
             'advance': { main: 'bg', footer: '', header: true },
             'welcome': { main: 'index-bg', footer: '', header: false },
+            'agreement': { main: '', footer: '', header: false },
             'app': { main: 'bg', footer: '', header: true },
             'home': { main: 'home-bg', footer: 'home-footer', header: true },
             'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
@@ -79,6 +81,7 @@ class PrimaryLayout extends React.Component {
                         <Switch>
                             <Route path="/login" component={Login} />
                             <Route path='/welcome' component={Welcome} />
+                            <Route path='/agreement' component={UserAgreement} />
                             <Route path="/guide" component={Guide} />
                             <Route path="/home" component={Home} />
                             <Route path="/settings" component={Settings} />
