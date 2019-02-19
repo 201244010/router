@@ -99,10 +99,10 @@ export default class TimeZone extends React.Component {
 
         return (
             <div className='guide-timezone'>
-                <h2>{intl.get(MODULE, 0)}</h2>
-                <p className="ui-tips guide-tip">{intl.get(MODULE, 1)}</p>
+                <h2>{intl.get(MODULE, 0)/*_i18n:设置时区*/}</h2>
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 1)/*_i18n:请选择您所在的时区，时间将自动同步*/}</p>
                 <div className='content'>
-                    <span>{intl.get(MODULE, 2)}</span>
+                    <span>{intl.get(MODULE, 2)/*_i18n:时区*/}</span>
                     <Select defaultActiveFirstOption={false} style={{width: 400, marginLeft: 12}} value={timezone} onChange={this.onChange}>
                         {children}
                     </Select>

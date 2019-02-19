@@ -6,7 +6,7 @@ import confirm from 'h5/components/confirm';
 import {checkStr} from '~/assets/common/check';
 import { init } from '~/assets/common/auth';
 
-const MODULE = 'setpwd';
+const MODULE = 'h5setpwd';
 
 export default class SetPwd extends React.Component {
     constructor(props) {

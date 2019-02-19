@@ -2,7 +2,7 @@ import React from 'react';
 
 import './agreement.scss';
 
-const MODULE = 'agreement';
+const MODULE = 'h5agreement';
 
 export default function Agreement(props) {
     return (

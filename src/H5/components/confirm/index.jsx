@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './confirm.scss';
 
-const MODULE = 'confirm';
+const MODULE = 'h5confirm';
 const MOUNT = 'body';
 
 class Confirm extends React.PureComponent {

@@ -20,7 +20,7 @@ let checkRange = (num, opt = {}) => {
 
     num = (typeof num === 'string') ? parseInt(num, 10) : num;
     if (!(num >= min && num <= max)) {
-        return intl.get(MODULE, 2, {who, min, max})/*_i18n:{who}范围必须在{min}-{max}之间*/;
+        return intl.get(MODULE, 2, {who, min, max})/*_i18n:{who}范围应在{min}-{max}之间*/;
     }
 
     return '';
@@ -50,7 +50,7 @@ let checkIpFormat = (ip, opt = {}) => {
 
     valid = valid && (4 === ip.length);
 
-    return valid ? '' : intl.get(MODULE, 4, {who: opt.who})/*_i18n:{who}非法（形如X.X.X.X，其中X为0-255之间的数字）*/;
+    return valid ? '' : intl.get(MODULE, 4, {who: opt.who})/*_i18n:{who}格式错误，应为X.X.X.X，其中X为0-255之间的整数*/;
 }
 
 let checkIp = (ip, opt = {}) => {
@@ -120,7 +120,7 @@ let checkMask = (mask, opt = {}) => {
                 return '';
             }
 
-            return intl.get(MODULE, 14, {who})/*_i18n:{who}非法*/;
+            return intl.get(MODULE, 14, {who})/*_i18n:{who}格式错误*/;
         }
     }
 
@@ -143,7 +143,7 @@ let checkSameNet = (ip1, ip2, netmask) => {
 let validMacFormat = function (value, who = intl.get(MODULE, 15)/*_i18n:MAC地址*/) {
     let result = /^([0-9a-f]{2}:){5}([0-9a-f]{2})$/gi.test(value);
 
-    return (result == true ? '' : intl.get(MODULE, 16, {who})/*_i18n:{who}非法（形如XX:XX:XX:XX:XX:XX，X为[0-9,A-F]）*/);
+    return (result == true ? '' : intl.get(MODULE, 16, {who})/*_i18n:{who}格式错误，应为XX:XX:XX:XX:XX:XX，X为[0-9,A-F]）*/);
 };
 
 /* 检查MAC地址范围是否合法 */
@@ -154,16 +154,16 @@ let validMacAddr = function (value, opt) {
 
     const zero = "00:00:00:00:00:00";
     if (opt.zero && macAddr == zero) {
-        return intl.get(MODULE, 17, {who})/*_i18n:{who}不能为00:00:00:00:00:00*/;
+        return intl.get(MODULE, 17, {who})/*_i18n:{who}不能全为0，请重新输入*/;
     }
 
     const broadcast = "FF:FF:FF:FF:FF:FF";
     if (opt.broadcast && macAddr == broadcast) {
-        return intl.get(MODULE, 18, {who})/*_i18n:{who}不能为广播地址（FF:FF:FF:FF:FF:FF）*/;
+        return intl.get(MODULE, 18, {who})/*_i18n:{who}不能为广播地址，请重新输入*/;
     }
 
     if (opt.multicast && 1 == charSet.indexOf(macAddr.charAt(1)) % 2) {
-        return intl.get(MODULE, 19, {who})/*_i18n:{who}不能为组播地址*/;
+        return intl.get(MODULE, 19, {who})/*_i18n:{who}不能为组播地址，请重新输入*/;
     }
 
     return '';

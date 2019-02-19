@@ -84,7 +84,7 @@ export default class SetWifi extends React.Component {
         if ('' === password) {
             confirm({
                 //title: '提示',
-                content: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi密码未设置，确定继续?*/,
+                content: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi未设置密码，存在安全风险，确定不设置？*/,
                 onOk: next,
             });
         } else {
