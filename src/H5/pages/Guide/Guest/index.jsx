@@ -11,7 +11,7 @@ import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
 import { TIME_WIFI_RELOAD } from '~/assets/common/constants';
 
-const MODULE = 'guest';
+const MODULE = 'h5guest';
 
 export default class Guest extends React.Component {
     constructor(props) {
@@ -106,7 +106,7 @@ export default class Guest extends React.Component {
     nextStep = () => {
         if ('' === this.state.password) {
             confirm({
-                content: intl.get(MODULE, 4)/*_i18n:客用Wi-Fi密码未设置，确定继续?*/,
+                content: intl.get(MODULE, 4)/*_i18n:客用Wi-Fi未设置密码，存在安全风险，确定不设置？*/,
                 onOk: this.submitData,
             });
         } else {

@@ -1,5 +1,14 @@
-var funcMap = require("./funcMap");
+/**
+ * 语言文件转excel，excel转语言文件的脚本，用于提供给产品进行多语言翻译。用于批量处理翻译语言
+ * 使用方法：
+ * node language.js -r / -w、-w用于生成excel，-r用于读取excel，生成语言文件。
+ * 生成的en-us.json文件仅用来和locales.json文件对比，不上传到git仓库。
+ **/
+
+var {funcMap, listMap} = require("./funcMap");
 var Excel = require("exceljs");
+var fs = require("fs");
+var program = require("commander");
 
 var locales = require('./locales.json');
 
@@ -85,4 +94,62 @@ function writeExcel () {
     });
 }
 
-writeExcel();
+function readExcel () {
+    var workbook = new Excel.Workbook();
+    const date = new Date();
+    var result = {
+        "zh-cn": {},
+        "en-us": {}
+    };
+    workbook.xlsx.readFile(`i18n-${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}1.xlsx`).then(function(data) {
+        var worksheet = workbook.getWorksheet('W1');
+        worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+            //第1行 为功能菜单页
+            if (rowNumber !== 1) {
+                const rowValue = row.values;
+                var reg = /\..*/g;
+                const funcPath = listMap[rowValue[1]].replace(reg, '').split('\/');
+                let funcKey;
+                const pageStyle = funcPath[1].toLowerCase();
+                if ( pageStyle === 'h5') {
+                    if (funcPath[funcPath.length - 1] === 'index') {
+                        funcKey = pageStyle + funcPath[funcPath.length - 2].toLowerCase();
+                    } else {
+                        funcKey = pageStyle + funcPath[funcPath.length - 1].toLowerCase()
+                    }
+                } else {
+                    if (funcPath[funcPath.length - 1] === 'index') {
+                        funcKey = funcPath[funcPath.length - 2].toLowerCase();
+                    } else if (funcPath[funcPath.length - 1] === 'timezone') {
+                        funcKey = 'tz';
+                    } else {
+                        funcKey = funcPath[funcPath.length - 1].toLowerCase()
+                    }
+                }
+
+                result['zh-cn'][funcKey + rowValue[2]] = rowValue[3];
+                result['en-us'][funcKey + rowValue[2]] = rowValue[4];
+            }
+        });
+        fs.writeFileSync(`en-us.json`, JSON.stringify(result));
+    });
+}
+
+function commander() {
+    program
+        .version('1.0.0')
+        .option("-w,--writeExcel", "to create excelFile!")
+        .option("-r,--readExcel", "to create translate file!")
+        .parse(process.argv);
+
+    if (program.writeExcel) {
+        writeExcel();
+    }
+
+    if (program.readExcel) {
+        readExcel();
+    }
+}
+
+commander();
+

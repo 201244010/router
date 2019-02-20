@@ -1,7 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import { setLang } from '~/i18n/index.js';
-import { get as getCookie, set} from '~/assets/common/cookie';
+import {SUPPORTED_LANG} from '~/assets/common/constants'
 import {message} from 'antd';
 import { get } from 'common/auth';
 import style from "styles/index.useable.scss";
@@ -17,6 +16,7 @@ import Welcome from './Welcome';
 import DownloadPage from './DownloadPage';
 import Diagnose from './Diagnose';
 import UpdateDetect from './UpgradeDetect';
+import UserAgreement from './UserAgreement';
 
 class PrimaryLayout extends React.Component {
     constructor(props) {
@@ -59,6 +59,7 @@ class PrimaryLayout extends React.Component {
             'settings': { main: 'bg', footer: '', header: true },
             'advance': { main: 'bg', footer: '', header: true },
             'welcome': { main: 'index-bg', footer: '', header: false },
+            'agreement': { main: '', footer: '', header: false },
             'app': { main: 'bg', footer: '', header: true },
             'home': { main: 'home-bg', footer: 'home-footer', header: true },
             'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
@@ -80,6 +81,7 @@ class PrimaryLayout extends React.Component {
                         <Switch>
                             <Route path="/login" component={Login} />
                             <Route path='/welcome' component={Welcome} />
+                            <Route path='/agreement' component={UserAgreement} />
                             <Route path="/guide" component={Guide} />
                             <Route path="/home" component={Home} />
                             <Route path="/settings" component={Settings} />
@@ -97,8 +99,6 @@ class PrimaryLayout extends React.Component {
         );
     }
 }
-
-const LANG_KEY = '_AP_LANGUAGE';
 
 class Default extends React.Component{
     constructor(props) {
@@ -134,8 +134,12 @@ class Default extends React.Component{
         ], { ignoreErr: true }).then(res => {
             let { errcode, data } = res;
             const result = data[0].result.system;
-            let sdLang = getCookie(LANG_KEY);
-            !sdLang && setLang(result.language.toLowerCase());
+            const languageList = [];
+            result.language_list.map(item => {
+                const lang = item.toLowerCase();
+                languageList.push({key: lang, label: SUPPORTED_LANG[lang]});
+            });
+            window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
             if (0 === errcode && 1 === parseInt(result.factory)) {
                 this.props.history.push(welcome);
             } else {

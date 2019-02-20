@@ -7,7 +7,7 @@ import { Base64 } from 'js-base64';
 
 import './finish.scss';
 
-const MODULE = 'finish';
+const MODULE = 'h5finish';
 
 export default class Finish extends React.PureComponent {
     constructor(props) {

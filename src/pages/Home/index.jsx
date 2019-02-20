@@ -10,6 +10,7 @@ import CustomIcon from '~/components/Icon';
 import ClientList from "./ClientList";
 import QoS from './QoS';
 import Mesh from './Mesh';
+import { set, clear } from '~/assets/common/cookie';
 
 import './home.scss';
 
@@ -311,6 +312,7 @@ export default class Home extends React.Component {
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
+            { opcode: 'SRVICELIST_GET'}
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -323,7 +325,16 @@ export default class Home extends React.Component {
         let clients = data[0].result.data,
             alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
-            wifiInfo = data[2].result.rssilist || {};
+            wifiInfo = data[2].result.rssilist || {},
+            serviceList = data[5].result.services;
+
+        clear('_WECHAT');
+        //weChat
+        serviceList.map(item => {
+            if (item.service === 'wifidog_mod') {
+                set('_WECHAT', 'IS_WECHAT');
+            }
+        });
         let band = {
             sunmi: 0,
             whitelist: 0,

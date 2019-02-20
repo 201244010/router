@@ -10,7 +10,7 @@ import confirm from 'h5/components/confirm';
 import { checkStr } from '~/assets/common/check';
 import { detect } from '../wan';
 
-const MODULE = 'pppoe';
+const MODULE = 'h5pppoe';
 
 export default class PPPoE extends React.Component {
     constructor(props) {
@@ -131,7 +131,7 @@ export default class PPPoE extends React.Component {
         return (
             <div>
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:宽带拨号上网（PPPoE）*/} tips={intl.get(MODULE, 8)/*_i18n:请输入运营商提供的宽带账号和密码*/} />
-                <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在联网，请稍候...*/} />
+                <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在连网，请稍候...*/} />
                 <form>
                     <Form
                         value={account}

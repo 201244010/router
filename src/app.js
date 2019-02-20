@@ -4,7 +4,6 @@ import React from "react";
 import ReactDOM from 'react-dom';
 
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_H5, PAGE_STYLE_WEB } from './utils';
-import {set} from '~/assets/common/cookie';
 
 import Web from './pages/index.js';     // PC Web页面
 import H5 from './H5';       // H5页面
@@ -27,17 +26,5 @@ if (PAGE_STYLE_WEB === web) {
 }else {
     App = UA.mobile ? H5 : Web;
 }
-
-common.fetchApi([
-    { opcode: 'SRVICELIST_GET'}
-], { ignoreErr: true }).then(res => {
-    let { data } = res;
-    const list = data[0].result.services;
-    list.map(item => {
-        if (item.service === 'wifidog_mod') {
-            set('_WECHAT', 'IS_WECHAT');
-        }
-    });
-});
 
 ReactDOM.render(<App />, document.querySelector('#wrap'));

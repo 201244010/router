@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 import { Button, Checkbox } from 'antd';
 import Icon from '~/components/Icon';
 import SwitchLang from '~/components/SwitchLang';
@@ -27,6 +28,8 @@ export default class Welcome extends React.Component {
 
     render() {
         const { checked } = this.state;
+        const {match} = this.props;
+        console.log(match);
         return (
             <div className="ui-center ui-fullscreen web-welcome">
                 <SwitchLang className='welcome-lang'/>
@@ -49,7 +52,7 @@ export default class Welcome extends React.Component {
                         <Checkbox
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
-                            <span className='checkbox' dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 3) }} />
+                            <span className='checkbox' >{intl.get(MODULE, 3)/*_i18n:同意*/}<Link to={`/agreement/user`} target='_blank'>{intl.get(MODULE, 4)/*_i18n:《商米用户协议》*/}</Link>{intl.get(MODULE, 5)/*_i18n:和*/}<Link to={`/agreement/secret`} target='_blank'>{intl.get(MODULE, 6)/*_i18n:《隐私政策》*/}</Link></span>
                         </Checkbox>
                     </div>
                 </div>

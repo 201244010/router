@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
-import { getLang, setLang, SUPPORTED_LANG } from '~/i18n/index.js';
+import { getLang, setLang } from '~/i18n/index.js';
+import {LANGUAGE_LIST} from '~/assets/common/constants';
 
 export default class SwitchLang extends React.Component {
     constructor(props) {
@@ -32,7 +33,8 @@ export default class SwitchLang extends React.Component {
         const { className } = this.props;
         const { lang } = this.state;
         let show = 'zh-cn' === lang ? 'en-us' : 'zh-cn';
-        let language = SUPPORTED_LANG.find(item => {
+        const SUPPORT_LANG = JSON.parse(window.sessionStorage.getItem('_LANGUAGE_LIST')) || LANGUAGE_LIST;
+        let language = SUPPORT_LANG.find(item => {
             return show === item.key;
         }).label;
 

@@ -87,7 +87,7 @@ export default class SetWan extends React.Component {
             this.setState({
                 loading: false,
                 visible: true,
-                content: intl.get(MODULE, 5)/*_i18n:正在联网，请稍候...*/
+                content: intl.get(MODULE, 5)/*_i18n:正在连网，请稍候...*/
             });
 
             let online = await detect(this.props);
