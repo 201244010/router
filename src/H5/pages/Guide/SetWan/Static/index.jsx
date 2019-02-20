@@ -9,7 +9,7 @@ import confirm from 'h5/components/confirm';
 import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 import { detect } from '../wan';
 
-const MODULE = 'static';
+const MODULE = 'h5static';
 
 export default class Static extends React.Component {
     constructor(props) {
@@ -182,7 +182,7 @@ export default class Static extends React.Component {
         return (
             <div>
                 <GuideHeader title={intl.get(MODULE, 13)/*_i18n:手动输入IP（静态IP）*/} tips={intl.get(MODULE, 14)/*_i18n:请输入运营商提供的IP地址、子网掩码、网关、DNS服务器地址*/} />
-                <Loading visible={visible} content={intl.get(MODULE, 15)/*_i18n:正在联网，请稍候...*/} />
+                <Loading visible={visible} content={intl.get(MODULE, 15)/*_i18n:正在连网，请稍候...*/} />
                 <form>
                     <Form
                         value={ip}

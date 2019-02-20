@@ -26,12 +26,12 @@ export default class Success extends React.Component {
                 {false ? //默认海外版，不显示国内版
                 [<div className='user-experience-domestic'>
                     <div className='head-domestic'>
-                        <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)}</h4>
+                        <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)/*_i18n:设置完成*/}</h4>
                     </div>
                     <div className='body-domestic'>
                         <div className='title'>
-                            <h4>{intl.get(MODULE, 0)}</h4>
-                            <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)}</Button>
+                            <h4>{intl.get(MODULE, 0)/*_i18n:我们为您准备以下功能，开始体验吧*/}</h4>
+                            <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)/*_i18n:去首页*/}</Button>
                         </div>
                         <ul>
                             <li>
@@ -41,8 +41,8 @@ export default class Success extends React.Component {
                                             <CustomIcon style={{ margin: 13 }} size={54} color='#92ABF6' type="networkspeeddistribution" />
                                         </div>
                                         <div className='description'>
-                                            <h4>{intl.get(MODULE, 2)}</h4>
-                                            <p>{intl.get(MODULE, 3)}</p>
+                                            <h4>{intl.get(MODULE, 2)/*_i18n:网速智能分配*/}</h4>
+                                            <p>{intl.get(MODULE, 3)/*_i18n:优先保障商家设备网速*/}</p>
                                         </div>
                                         <div className='background'>
                                             <CustomIcon size={128} color='#92ABF6' type="bg_speed" />
@@ -57,8 +57,8 @@ export default class Success extends React.Component {
                                             <CustomIcon style={{ margin: 13 }} size={54} color='#99DD8B' type="auth" />
                                         </div>
                                         <div className='description'>
-                                            <h4>{intl.get(MODULE, 4)}</h4>
-                                            <p>{intl.get(MODULE, 5)}</p>
+                                            <h4>{intl.get(MODULE, 4)/*_i18n:微信连Wi-Fi*/}</h4>
+                                            <p>{intl.get(MODULE, 5)/*_i18n:为您轻松吸粉精准营销*/}</p>
                                         </div>
                                         <div className='background'>
                                             <CustomIcon size={128} color='#99DD8B' type="bg_wechat" />
@@ -75,8 +75,8 @@ export default class Success extends React.Component {
                                             <CustomIcon style={{ margin: 7 }} size={66} color='#F79D5C' type="search" />
                                         </div>
                                         <div className='description'>
-                                            <h4>{intl.get(MODULE, 6)}</h4>
-                                            <p>{intl.get(MODULE, 7)}</p>
+                                            <h4>{intl.get(MODULE, 6)/*_i18n:搜寻附近商米设备*/}</h4>
+                                            <p>{intl.get(MODULE, 7)/*_i18n:商米设备一键入网*/}</p>
                                         </div>
                                         <div className='background'>
                                             <CustomIcon size={128} color='#F79D5C' type="bg_search" />
@@ -91,8 +91,8 @@ export default class Success extends React.Component {
                                             <CustomIcon style={{ margin: 13 }} size={54} color='#F9AFDD' type="blacklis" />
                                         </div>
                                         <div className='description'>
-                                            <h4>{intl.get(MODULE, 8)}</h4>
-                                            <p>{intl.get(MODULE, 9)}</p>
+                                            <h4>{intl.get(MODULE, 8)/*_i18n:联网设备管理*/}</h4>
+                                            <p>{intl.get(MODULE, 9)/*_i18n:轻松设置上网权限*/}</p>
                                         </div>
                                         <div className='background'>
                                             <CustomIcon size={128} color='#F9AFDD' type="bg_equipment" />
@@ -103,7 +103,7 @@ export default class Success extends React.Component {
                         </ul>
                         <div className='QR_img-domestic'>
                             <img src={require('~/assets/images/qr.png')} />
-                            <p>{intl.get(MODULE, 10)}</p>
+                            <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
                         </div>
                     </div>
                 </div>
@@ -111,12 +111,12 @@ export default class Success extends React.Component {
                 :
                 [<div className='user-experience-abroad'>
                     <div className='head-abroad'>
-                        <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)}</h4>
+                        <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)/*_i18n:设置完成*/}</h4>
                     </div>
                     <div className='body-abroad'>
                         <div className='title'>
-                            <h4 className={format&&'font-bold'}>{intl.get(MODULE, 0)}</h4>{/* 海外版中文版，字体为bold;英文版为normal */}
-                            <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)}</Button>
+                            <h4 className={format&&'font-bold'}>{intl.get(MODULE, 0)/*_i18n:我们为您准备以下功能，开始体验吧*/}</h4>{/* 海外版中文版，字体为bold;英文版为normal */}
+                            <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)/*_i18n:去首页*/}</Button>
                         </div>
                         <ul>
                             <li>
@@ -127,14 +127,14 @@ export default class Success extends React.Component {
                                         </div>
                                         {format ?   //海外版-中英文的排版不同
                                             <div className='description'>
-                                                <h4>{intl.get(MODULE, 2)}</h4>
-                                                <p>{intl.get(MODULE, 3)}</p>
+                                                <h4>{intl.get(MODULE, 2)/*_i18n:网速智能分配*/}</h4>
+                                                <p>{intl.get(MODULE, 3)/*_i18n:优先保障商家设备网速*/}</p>
                                             </div>
                                             :
                                             [<div className='description'>
-                                                <h4>{intl.get(MODULE, 2)}</h4>
+                                                <h4>{intl.get(MODULE, 2)/*_i18n:网速智能分配*/}</h4>
                                             </div>,
-                                            <p>{intl.get(MODULE, 3)}</p>]
+                                            <p>{intl.get(MODULE, 3)/*_i18n:优先保障商家设备网速*/}</p>]
                                         }
                                         <div className='background'>
                                             <CustomIcon size={128} color='#92ABF6' type="bg_speed" />
@@ -150,14 +150,14 @@ export default class Success extends React.Component {
                                         </div>
                                         {format ?   //海外版-中英文的排版不同
                                             <div className='description'>
-                                                <h4>{intl.get(MODULE, 8)}</h4>
-                                                <p>{intl.get(MODULE, 9)}</p>
+                                                <h4>{intl.get(MODULE, 8)/*_i18n:联网设备管理*/}</h4>
+                                                <p>{intl.get(MODULE, 9)/*_i18n:轻松设置上网权限*/}</p>
                                             </div>
                                             :
                                             [<div className='description'>
-                                                <h4>{intl.get(MODULE, 8)}</h4>
+                                                <h4>{intl.get(MODULE, 8)/*_i18n:联网设备管理*/}</h4>
                                             </div>,
-                                            <p>{intl.get(MODULE, 9)}</p>]
+                                            <p>{intl.get(MODULE, 9)/*_i18n:轻松设置上网权限*/}</p>]
                                         }
                                         <div className='background'>
                                             <CustomIcon size={128} color='#F9AFDD' type="bg_equipment" />
@@ -173,14 +173,14 @@ export default class Success extends React.Component {
                                         </div>
                                         {format ?   //海外版-中英文的排版不同
                                             <div className='description'>
-                                                <h4>{intl.get(MODULE, 6)}</h4>
-                                                <p>{intl.get(MODULE, 7)}</p>
+                                                <h4>{intl.get(MODULE, 6)/*_i18n:搜寻附近商米设备*/}</h4>
+                                                <p>{intl.get(MODULE, 7)/*_i18n:商米设备一键入网*/}</p>
                                             </div>
                                             :
                                             [<div className='description'>
-                                                <h4>{intl.get(MODULE, 6)}</h4>
+                                                <h4>{intl.get(MODULE, 6)/*_i18n:搜寻附近商米设备*/}</h4>
                                             </div>,
-                                            <p>{intl.get(MODULE, 7)}</p>]
+                                            <p>{intl.get(MODULE, 7)/*_i18n:商米设备一键入网*/}</p>]
                                         }
                                         <div className='background'>
                                             <CustomIcon size={128} color='#F79D5C' type="bg_search" />
@@ -191,7 +191,7 @@ export default class Success extends React.Component {
                         </ul>
                         <div className='QR_img-abroad'>
                             <img src={require('~/assets/images/qr.png')} />
-                            <p>{intl.get(MODULE, 10)}</p>
+                            <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
                         </div>
                     </div>
                 </div>

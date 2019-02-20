@@ -417,7 +417,7 @@ export default class NETWORK extends React.Component {
 
     updateNetStatus = (wan) => {
         const diagType = {
-            dhcp: intl.get(MODULE, 16)/*_i18n:自动获取IP（DHCP））*/,
+            dhcp: intl.get(MODULE, 16)/*_i18n:自动获取IP（DHCP）*/,
             pppoe: intl.get(MODULE, 17)/*_i18n:宽带拨号上网（PPPoE）*/,
             static: intl.get(MODULE, 18)/*_i18n:手动输入IP（静态IP）*/,
         };

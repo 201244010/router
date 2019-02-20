@@ -2,7 +2,7 @@ import React from 'react';
 
 import './agreement.scss';
 
-const MODULE = 'privacy';
+const MODULE = 'h5privacy';
 
 export default function Privacy(props) {
     return (

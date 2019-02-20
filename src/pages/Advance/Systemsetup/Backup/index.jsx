@@ -31,7 +31,7 @@ export default class Backup extends React.Component{
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
         // backupFailTip : '备份失败！请重试～',//备份失败以及网络未连接提示
-        backupFailTip : intl.get(MODULE, 4)/*_i18n:备份失败！请重试～*/,//备份失败以及网络未连接提示
+        backupFailTip : intl.get(MODULE, 4)/*_i18n:备份失败！请重试*/,//备份失败以及网络未连接提示
         backupSuccess : false,//备份成功 , 恢复成功
         // backupSuccessTip : '备份成功！',
         backupSuccessTip : intl.get(MODULE, 5)/*_i18n:备份成功！*/,
@@ -222,7 +222,7 @@ export default class Backup extends React.Component{
                                     backupFail : true,
                                     backupCloud : false,
                                     // backupFailTip : '备份失败！请重试~',
-                                    backupFailTip : intl.get(MODULE, 10)/*_i18n:备份失败！请重试~*/,
+                                    backupFailTip : intl.get(MODULE, 10)/*_i18n:备份失败！请重试*/,
                                 });
                                 return;
                             }
@@ -236,7 +236,7 @@ export default class Backup extends React.Component{
                     this.setState({
                         backupFail : true,
                         // backupFailTip : '路由器无法连接网络，请检查～',
-                        backupFailTip : intl.get(MODULE, 12)/*_i18n:路由器无法连接网络，请检查～*/,
+                        backupFailTip : intl.get(MODULE, 12)/*_i18n:路由器无法连接网络，请检查*/,
                     })
                 }else{
                     // message.error(`无法完成操作${error[errcode]}`);
@@ -283,7 +283,7 @@ export default class Backup extends React.Component{
                 this.setState({
                     backupFail : true,
                     // backupFailTip : '恢复失败！请重试～',
-                    backupFailTip : intl.get(MODULE, 16)/*_i18n:恢复失败！请重试～*/,
+                    backupFailTip : intl.get(MODULE, 16)/*_i18n:恢复失败！请重试*/,
                     recoverCloud : false,
                 });
                 return;
@@ -339,7 +339,7 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     // backupFailTip : '下载失败，请重试～',
-                                    backupFailTip : intl.get(MODULE, 18)/*_i18n:下载失败，请重试～*/,
+                                    backupFailTip : intl.get(MODULE, 18)/*_i18n:下载失败，请重试*/,
                                 });
                                 return;
                             case 'restore fail':
@@ -347,7 +347,7 @@ export default class Backup extends React.Component{
                                     loadingActive: false,
                                     backupFail : true,
                                     // backupFailTip : '恢复失败！请重试～',
-                                    backupFailTip : intl.get(MODULE, 19)/*_i18n:恢复失败！请重试～*/,
+                                    backupFailTip : intl.get(MODULE, 19)/*_i18n:恢复失败！请重试*/,
                                 });
                                 return;
                             case 'restore success':
@@ -446,7 +446,7 @@ export default class Backup extends React.Component{
                         <div className="backup-latest">
                             <div>{intl.get(MODULE, 36)/*_i18n:最新的备份：*/}</div>
                             {
-                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 37)/*_i18n:您还未进行过备份~*/}</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time} />
+                                cloudList.length === 0 ? <div className="backup-not">{intl.get(MODULE, 37)/*_i18n:您还未进行过备份*/}</div> : <Latestbackup cloudList={cloudList[0].filename} time={cloudList[0].upload_time} />
                             }
                         </div>
                     </div>
