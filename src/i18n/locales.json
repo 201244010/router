@@ -738,7 +738,7 @@
 		"guide0": "设置管理密码",
 		"guide1": "设置上网参数",
 		"guide2": "设置无线网络",
-		"guide3": "设置完成",
+		"guide3": "设置时区",
 		"setpassword.file": "src/pages/Guide/SetPassword.jsx",
 		"setpassword0": "两次密码输入不一致",
 		"setpassword1": "请再次输入密码",
