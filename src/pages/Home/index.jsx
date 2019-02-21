@@ -283,7 +283,7 @@ export default class Home extends React.Component {
         this.refreshStatus();
         if (!once) {
             clearInterval(this.timer);
-            this.timer = setInterval(this.refreshStatus, 6000);
+            this.timer = setInterval(this.refreshStatus, 3000);
         }
     }
 
