@@ -66,7 +66,12 @@
                         font-size: 12px;
                         transform: scale(0.9);
                         margin-top: -2px;
-                    }
+                    } 
+                }
+
+                .title-us {
+                    @extend .title;
+                    left: 40px;
                 }
 
                 .pie{
@@ -103,6 +108,13 @@
                         margin-right: 8px;
                     }
                 }
+                
+                .band-desc-us {
+                    @extend .band-desc;
+                        left: 282px;
+                        top: 52px;
+                }
+
                 .qos-disabled{
                     position: absolute;
                     width: 200px;

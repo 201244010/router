@@ -305,14 +305,29 @@ export default class Home extends React.Component {
         }
     }
 
+    fetchService = async () => {
+        let response = await common.fetchApi([
+            { opcode: 'SRVICELIST_GET'}
+        ]);
+        let { errcode, data } = response;
+        if (errcode == 0) {
+            const serviceList = data[0].result.services;
+            clear('_WECHAT');
+            //weChat
+            serviceList.map(item => {
+                if (item.service === 'wifidog_mod') {
+                    set('_WECHAT', 'IS_WECHAT');
+                }
+            });
+        }
+    }
     refreshStatus = async () => {
         let resp = await common.fetchApi([
             { opcode:'CLIENT_LIST_GET' },
             { opcode: 'TRAFFIC_STATS_GET' },
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
-            { opcode: 'CLIENT_ALIAS_GET' },
-            { opcode: 'SRVICELIST_GET'}
+            { opcode: 'CLIENT_ALIAS_GET' }
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -325,16 +340,8 @@ export default class Home extends React.Component {
         let clients = data[0].result.data,
             alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
-            wifiInfo = data[2].result.rssilist || {},
-            serviceList = data[5].result.services;
+            wifiInfo = data[2].result.rssilist || {};
 
-        clear('_WECHAT');
-        //weChat
-        serviceList.map(item => {
-            if (item.service === 'wifidog_mod') {
-                set('_WECHAT', 'IS_WECHAT');
-            }
-        });
         let band = {
             sunmi: 0,
             whitelist: 0,
@@ -504,6 +511,7 @@ export default class Home extends React.Component {
         this.stop = false;
         this.fetchBasic();
         this.startRefresh();
+        this.fetchService();
     }
 
     componentWillUnmount(){
