@@ -446,8 +446,14 @@ export default class StaticBind extends React.Component {
                 </div>
                 <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
                     bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/}} />
-                <Modal title={intl.get(MODULE, 30)/*_i18n:在线列表*/} cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} okText={intl.get(MODULE, 32)/*_i18n:添加*/} closable={false} maskClosable={false} centered={true}
-                    width={960} style={{ position:'relative'}}
+                <Modal
+                    cancelText={intl.get(MODULE, 31)/*_i18n:取消*/}
+                    okText={intl.get(MODULE, 32)/*_i18n:添加*/}
+                    closable={false}
+                    maskClosable={false}
+                    centered={true}
+                    width={960}
+                    style={{ position:'relative'}}
                     visible={visible}
                     footer={[
                         <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 31)/*_i18n:取消*/}</Button>,
@@ -455,13 +461,16 @@ export default class StaticBind extends React.Component {
                             {intl.get(MODULE, 32)/*_i18n:添加*/}
                         </Button>,
                     ]} >
-                    <Button size="large" style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 100,
-                        border: 0,
-                        padding: 0
-                    }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+                    <div style={{padding: '0 0 16px',marginBottom: 24}}>
+                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 30)/*_i18n:在线列表*/}</p>
+                        <Button size="large" style={{
+                            display: 'inline-block',
+                            border: 0,
+                            padding: 0,
+                            height: 22,
+                        }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+                    </div>
+                    <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}

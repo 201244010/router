@@ -168,7 +168,7 @@ export default class ClientList extends React.Component {
             }
         }, {
             title: intl.get(MODULE, 6)/*_i18n:IP/MAC地址*/,
-            width: 190,
+            width: 187,
             render: (text, record) => (
                 <div>
                     <div style={{ lineHeight: '31px', verticalAlign: 'middle' }}><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>
@@ -191,7 +191,7 @@ export default class ClientList extends React.Component {
             onFilter: (value, record) => record.mode.indexOf(value) === 0,
             sorter: (a, b) => parseInt(a.mode) - parseInt(b.mode),
             render: (mode, record) => modeMap[mode],
-            width: 116
+            width: 113
         }, {
             title: intl.get(MODULE, 8)/*_i18n:信号*/,
             dataIndex: 'rssi',
@@ -210,7 +210,7 @@ export default class ClientList extends React.Component {
 
                 return 1;
             },
-            width: 92,
+            width: 102,
             render: (rssi, record) => (
                 <div><i className={'dot ' + (RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
@@ -225,7 +225,7 @@ export default class ClientList extends React.Component {
             )
         }, {
             title: intl.get(MODULE, 10)/*_i18n:流量消耗*/,
-            width: 120,
+            width: 115,
             dataIndex: 'flux',
             sorter: (a, b) => a.flux - b.flux,
             render: (flux, record) => formatSpeed(flux).replace('/s', ''),
@@ -450,7 +450,6 @@ export default class ClientList extends React.Component {
                     </div>
                 }
                 <Modal
-                    title={intl.get(MODULE, 39, {deviceType, total})/*_i18n:{deviceType}({total}台)*/}
                     closable={false}
                     maskClosable={false}
                     centered
@@ -462,13 +461,16 @@ export default class ClientList extends React.Component {
                         <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)/*_i18n:取消*/}</Button>
                     ]}
                 >
-                    <Button style={{
-                        position: "absolute",
-                        top: 10,
-                        left: 160,
-                        border: 0,
-                        padding: 0
-                    }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    <div style={{padding: '0 0 16px',marginBottom: 24}}>
+                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 39, {deviceType, total})}</p>
+                        <Button style={{
+                            display: 'inline-block',
+                            border: 0,
+                            padding: 0,
+                            height: 22,
+                        }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    </div>
+                    <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
                     <Table
                         columns={columns}
                         dataSource={clients}
