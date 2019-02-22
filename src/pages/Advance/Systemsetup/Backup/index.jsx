@@ -6,7 +6,8 @@ import {Checkbox, Button, Modal, Radio, Upload, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 import { get } from '~/assets/common/auth';
-
+import { get as getCookie } from '~/assets/common/cookie';
+import {getLang} from '~/i18n/index';
 
 const MODULE = 'backup';
 const {FormItem, Input} = Form;
@@ -390,7 +391,6 @@ export default class Backup extends React.Component{
         const { backupSuccessTip, baseBackup, authBackup, backupCloud, radioChoose, backupFail, backupSuccess, 
             backupFailTip, recoverCloud, cloudList, backupDisable, recoverDisable, filename, loadingActive, duration
              } = this.state;
-
         const recoverList = cloudList.map(item => {
             return (
                 <li key={item.id} className="recover-li">
@@ -407,11 +407,13 @@ export default class Backup extends React.Component{
                         <PanelHeader title={intl.get(MODULE, 24)/*_i18n:备份*/} checkable={false} onChange={{}} />
                     </section>
                     <section>
-                        <ul className='backup-list'>
-                            <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>{intl.get(MODULE, 25)/*_i18n:管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、防蹭网*/}</Checkbox></li>
-                            <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>{intl.get(MODULE, 26)/*_i18n:微信连Wi-Fi配置*/}</Checkbox></li>
-                        </ul>
-                        <div className='func-btn'>
+                        {
+                            getCookie('_WECHAT') === 'IS_WECHAT' ? (<ul className='backup-list'>
+                                <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>{intl.get(MODULE, 25)/*_i18n:管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、防蹭网*/}</Checkbox></li>
+                                <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>{intl.get(MODULE, 26)/*_i18n:微信连Wi-Fi配置*/}</Checkbox></li>
+                            </ul>) : ''
+                        }
+                        <div className={getLang() === 'zh-cn' ? 'func-btn' : 'func-btn-us'}>
                             <Button onClick={this.postBackupLocal}>{intl.get(MODULE, 27)/*_i18n:备份到本地*/}</Button>
                             <Button onClick={this.cloudBackup}>{intl.get(MODULE, 28)/*_i18n:备份到云*/}</Button>
                         </div>
@@ -431,7 +433,7 @@ export default class Backup extends React.Component{
                             >
                                 <Button>{intl.get(MODULE, 30)/*_i18n:从本地恢复*/}</Button>
                             </Upload>
-                            <Button className='cloud-restore' onClick={this.cloudRecover}>{intl.get(MODULE, 31)/*_i18n:从云恢复*/}</Button>
+                            <Button className={getLang() === 'zh-cn' ? 'cloud-restore' : 'cloud-restore-us'} onClick={this.cloudRecover}>{intl.get(MODULE, 31)/*_i18n:从云恢复*/}</Button>
                         </div>
                     </section>
                 </Form>

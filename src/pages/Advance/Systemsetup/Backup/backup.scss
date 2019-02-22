@@ -11,6 +11,10 @@
             margin-right: 20px;
         }
     }
+    .func-btn-us {
+        @extend .func-btn;
+        margin-top: 36px;
+    }
     .restore{
         margin-top: 40px;
         .restore-func{
@@ -19,6 +23,10 @@
                 position: relative;
                 top: -32px;
                 left: 120px;
+            }
+            .cloud-restore-us {
+                @extend .cloud-restore;
+                left: 150px;
             }
             .ant-upload-list-item{
                 display: none;
