@@ -140,6 +140,7 @@ class Default extends React.Component{
                 languageList.push({key: lang, label: SUPPORTED_LANG[lang]});
             });
             window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
+            window.sessionStorage.setItem('_LANGUAGE', result.language.toLowerCase());
             if (0 === errcode && 1 === parseInt(result.factory)) {
                 this.props.history.push(welcome);
             } else {

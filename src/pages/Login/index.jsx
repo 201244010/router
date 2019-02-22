@@ -105,7 +105,7 @@ class Login extends React.Component {
                                 color: '#FF5500',
                                 position: 'absolute',
                                 right: 35,
-                                top: 10,
+                                top: 13,
                                 textAlign: 'right',
                                 }}>{ tip }</ErrorTip>
                             </FormItem>
