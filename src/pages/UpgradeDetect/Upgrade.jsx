@@ -2,6 +2,7 @@ import {Modal, Icon,Button} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import React from "react";
+import '../Advance/Systemsetup/system.scss';
 
 const MODULE = 'upgrade';
 
