@@ -12,7 +12,7 @@ export default class Privacy extends React.Component{
 
         return (
             <div className="totalStyle">
-                <p style={{textAlign: 'center'}} className="titleWrap"><span className="title">商米隐私政策</span></p>
+                <p style={{textAlign: 'center'}} className="titleWrap"><span className="title">{intl.get(MODULE, 66)}</span></p>
                 <p onScroll={this.onScroll} className='content'>
                     <br/>
                     <ie className="ieStyle">{intl.get(MODULE, 0)/*_i18n:我们向您承诺*/}</ie>
