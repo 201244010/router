@@ -42,7 +42,7 @@
                         margin-bottom: 10px;
                     }
                     p{
-                        font-size: 16px;
+                        font-size: 12px;
                         color: #333C4F;
                         min-height: 44px;
                         margin-bottom: 1em;
@@ -112,7 +112,7 @@
                 .band-desc-us {
                     @extend .band-desc;
                         left: 282px;
-                        top: 52px;
+                        top: 51px;
                 }
 
                 .qos-disabled{
@@ -166,7 +166,7 @@
                     }
                     .speed{
                         font-weight: bold;
-                        font-size: 34px;
+                        font-size: 32px;
                         vertical-align: middle;
                     }
                     .tip{

@@ -465,11 +465,11 @@ export default class Bandwidth extends React.PureComponent {
                     <ul className='speed-result'>
                         <li>
                             <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 44)/*_i18n:上行带宽：*/}</span>{upband}{unit}</label>
+                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 44)/*_i18n:上行带宽：*/}</span><span>{upband}{unit}</span></label>
                         </li>
                         <li>
                             <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 45)/*_i18n:下行带宽：*/}</span>{downband}{unit}</label>
+                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 45)/*_i18n:下行带宽：*/}</span><span>{downband}{unit}</span></label>
                         </li>
                     </ul>
                 </Modal>
