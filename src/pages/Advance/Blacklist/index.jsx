@@ -315,7 +315,7 @@ export default class Blacklist extends React.Component {
         }, {
             title: intl.get(MODULE, 9)/*_i18n:设备名称*/,
             dataIndex: 'name',
-            width: 300
+            width: 200
         }, {
             title: intl.get(MODULE, 10)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
@@ -326,7 +326,7 @@ export default class Blacklist extends React.Component {
             width: 210
         }, {
             title: intl.get(MODULE, 12)/*_i18n:操作*/,
-            width: 143,
+            width: 243,
             render: (text, record) => (
                 <span>
                     <Popconfirm title={intl.get(MODULE, 13)/*_i18n:确定恢复上网？*/} okText={intl.get(MODULE, 30)/*_i18n:确定*/} cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
