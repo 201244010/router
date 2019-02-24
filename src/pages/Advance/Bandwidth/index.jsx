@@ -357,12 +357,12 @@ export default class Bandwidth extends React.PureComponent {
             title : intl.get(MODULE, 17)/*_i18n:最低保证比例*/,
             dataIndex : 'percent',
             render: (text,record) =><div>
-                <FormItem type="small" style={{marginBottom : 0}}>
+                <FormItem type="small" style={{marginBottom : 0,position: 'relative'}}>
                     <div className="qos-input">
-                        <Input  style={{height : 28}} disabled={!bandenable} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} /> 
+                        <Input  style={{height : 28}} disabled={!bandenable} maxLength={3} type="text" value={text} onChange={value => this.onChange(value, record.key)} />
                     </div>
                     <label>%</label>
-                    <label className="qos-tip">{record.errorTip}</label>
+                    <p className="qos-tip">{record.errorTip}</p>
                 </FormItem> 
             </div>   
         }]
