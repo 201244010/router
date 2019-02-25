@@ -564,11 +564,17 @@ export default class Home extends React.Component {
                             <ul className='speed-result'>
                                 <li>
                                     <CustomIcon color="#3D76F6" type="kbyte" size={12} />
-                                    <label>{intl.get(MODULE, 19)/*_i18n:上行带宽：*/}</label><span>{upBand}Mbps</span>
+                                    <label>
+                                        <span style={{color:'#adb1b9'}}>{intl.get(MODULE, 19)/*_i18n:上行带宽：*/}</span>
+                                    </label>
+                                    <span>{upBand}Mbps</span>
                                 </li>
                                 <li>
                                     <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
-                                    <label>{intl.get(MODULE, 20)/*_i18n:下行带宽：*/}</label><span>{downBand}Mbps</span>
+                                    <label>
+                                        <span style={{color:'#adb1b9'}}>{intl.get(MODULE, 20)/*_i18n:下行带宽：*/}</span>
+                                    </label>
+                                    <span>{downBand}Mbps</span>
                                 </li>
                             </ul>
                         </Modal>
