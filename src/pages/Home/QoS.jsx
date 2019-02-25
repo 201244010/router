@@ -64,6 +64,11 @@ export default class QoS extends React.Component {
         this.props.history.push('/advance/bandwidth');
     }
 
+    componentWillMount() {
+        this.title = getLang() === 'zh-cn' ? 'title' : 'title-us';
+        this.band = getLang() === 'zh-cn' ? 'band-desc': 'band-desc-us';
+    }
+
     componentDidMount() {
         this.initPie();
     }
@@ -87,7 +92,7 @@ export default class QoS extends React.Component {
 
         return (
             <li className='func-item bandwidth'>
-                <div className={getLang() === 'zh-cn' ? 'title' : 'title-us'}>
+                <div className={this.title}>
                     <div className='percent'>{cost + '%'}</div>
                     <div className='desc'>{intl.get(MODULE, 1)/*_i18n:下行带宽使用率*/}</div>
                 </div>
@@ -95,7 +100,7 @@ export default class QoS extends React.Component {
                 {enable && online && (cost >= 80 ?
                     <h4 className='warning'>{intl.get(MODULE, 2)/*_i18n:当前网络较为拥挤，建议将重要设备添加到优先队列*/}</h4> :
                     <h4 className='nice'>{intl.get(MODULE, 3)/*_i18n:当前网络畅通，可放心使用*/}</h4>)}
-                {<ul className={getLang() === 'zh-cn' ? 'band-desc': 'band-desc-us'}>{bandList}</ul>}
+                {<ul className={this.band}>{bandList}</ul>}
                 {!enable && <div className='qos-disabled'>{intl.get(MODULE, 4)/*_i18n:网速智能分配功能未开启*/}</div>}
                 <Button onClick={this.goQoS} className='set-band'>{enable ? intl.get(MODULE, 5)/*_i18n:设置带宽*/ : intl.get(MODULE, 6)/*_i18n:前往设置*/}</Button>
             </li>
