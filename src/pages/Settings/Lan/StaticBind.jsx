@@ -375,19 +375,19 @@ export default class StaticBind extends React.Component {
         const columns = [{
             title: intl.get(MODULE, 14)/*_i18n:设备名称*/,
             dataIndex: 'hostname',
-            width:300
+            width:260
         }, {
             title: intl.get(MODULE, 15)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
-            width:160
+            width:200
         }, {
             title: intl.get(MODULE, 16)/*_i18n:IP地址*/,
             dataIndex: 'ip',
-            width: 120
+            width: 160
         }, {
             title: intl.get(MODULE, 17)/*_i18n:状态*/,
             dataIndex: 'enable',
-            width:70,
+            width:90,
             render: enable => (
                 <span>
                     {!enable ? (<label style={{ color: '#D33419' }}>{intl.get(MODULE, 18)/*_i18n:失效*/}</label>) : (<label>{intl.get(MODULE, 19)/*_i18n:有效*/}</label>)}
@@ -395,7 +395,7 @@ export default class StaticBind extends React.Component {
             )
         }, {
             title: intl.get(MODULE, 20)/*_i18n:操作*/,
-            width:100,
+            width:140,
             render: (text, record) => (
                 <span>
                     <a onClick={() => this.handleEdit(record)} href="javascript:;" style={{ color:"#3D76F6"}}>{intl.get(MODULE, 21)/*_i18n:编辑*/}</a>
