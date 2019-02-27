@@ -136,7 +136,7 @@ export default class ClientList extends React.Component {
             render: (mac, record) => {
                 return (
                     <div className='logo-cell'>
-                        <Logo mac={mac} model={record.model} size={32} />
+                        <Logo logoColor='#AEB1B9' mac={mac} model={record.model} size={32} />
                         {(TYPE_SUNMI === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')}></img>}
                         {record.me && <img src={require('~/assets/images/me-badge.svg')}></img>}
                     </div>
