@@ -273,7 +273,7 @@ export default class Lan extends React.Component {
                                 disabled={!enable}
                                 value={leasetime}
                                 onChange={value => this.onChange(value, 'leasetime')}
-                                placeholder={intl.get(MODULE, 22)/*_i18n:请输入租期时间（2～1440）*/}
+                                placeholder='2～1440'
                                 maxLength={4} />
                             <ErrorTip>{leasetimeTip}</ErrorTip>
                         </FormItem>
