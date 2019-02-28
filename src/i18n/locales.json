@@ -2247,7 +2247,7 @@
 		"wi-fi48": "Channel bandwidth",
 		"wi-fi49": "Auto",
 		"wi-fi50": "wireless channel",
-		"wi-fi51": "Auto {current_channel5}",
+		"wi-fi51": "Auto ({current_channel24})",
 		"wi-fi52": "Current channel",
 		"wi-fi53": "5G Signal",
 		"wi-fi54": "Network Name",
