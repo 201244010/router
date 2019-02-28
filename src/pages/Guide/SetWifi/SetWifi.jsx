@@ -194,11 +194,11 @@ export default class SetWifi extends React.Component {
                         </div>
                         <FormItem label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/} showErrorTip={hostWifiNameTip}>
                             <Input value={hostWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'hostWifiName')} />
-                            <ErrorTip>{hostWifiNameTip}</ErrorTip>
+                            <ErrorTip style={{width: 260}}>{hostWifiNameTip}</ErrorTip>
                         </FormItem>
                         <FormItem label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/} showErrorTip={hostWifiPswTip}>
                             <Input value={hostWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'hostWifiPsw')} />
-                            <ErrorTip>{hostWifiPswTip}</ErrorTip>
+                            <ErrorTip style={{width: 260}}>{hostWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                     <div className="border"></div>
@@ -211,11 +211,11 @@ export default class SetWifi extends React.Component {
                         </div>
                         <FormItem label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/} showErrorTip={guestWifiNameTip}>
                             <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'guestWifiName')} />
-                            <ErrorTip>{guestWifiNameTip}</ErrorTip>
+                            <ErrorTip style={{width: 260}}>{guestWifiNameTip}</ErrorTip>
                         </FormItem>
                         <FormItem label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/} showErrorTip={guestWifiPswTip}>
                             <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'guestWifiPsw')} />
-                            <ErrorTip>{guestWifiPswTip}</ErrorTip>
+                            <ErrorTip style={{width: 260}}>{guestWifiPswTip}</ErrorTip>
                         </FormItem>
                     </Form>
                 </div>
