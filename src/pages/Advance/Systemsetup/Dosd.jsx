@@ -10,7 +10,9 @@ const { FormItem } = Form;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => intl.get(MODULE, 0, {total})/*_i18n:已阻止{total}台设备*/,
+    showTotal: total => {
+        return total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已阻止{total}台设备*/ : intl.get(MODULE, 19, {total})
+    }
 };
 
 export default class Dosd extends React.Component {
