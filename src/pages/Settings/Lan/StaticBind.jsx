@@ -13,7 +13,9 @@ const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/,
+    showTotal: total => {
+        return total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 41, {total})
+    }
 };
 
 const error = {

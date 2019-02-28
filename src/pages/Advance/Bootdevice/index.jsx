@@ -20,7 +20,9 @@ const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     //showTotal: total => `已添加${total}台设备`,
-    showTotal: total => intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/,
+    showTotal: total => {
+        return total > 1 ? intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 37, {total})
+    }
 };
 
 export default class Bootdevice extends React.Component {
