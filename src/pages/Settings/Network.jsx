@@ -493,7 +493,7 @@ export default class NETWORK extends React.Component {
                             <label className="oneline">{infoGateway}</label>
                         </div>
                         <div className='network-info' style={{marginBottom: 23}}>    
-                            <ul className="ui-mute">DNS:</ul>
+                            <ul className="ui-mute">{intl.get(MODULE, 49)}</ul>
                             <label className="oneline">{infoDns}</label>
                         </div>
                     </section>
