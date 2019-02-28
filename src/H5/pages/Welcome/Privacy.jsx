@@ -23,6 +23,11 @@ export default function Privacy(props) {
                 <li>{intl.get(MODULE, 12)/*_i18n:活跃信息：是否使用设备或APP的相关信息。例如，当天您的设备处于开机状态，我们会把这台设备标志为活跃。*/}</li>
                 <li>{intl.get(MODULE, 13)/*_i18n:使用信息：与您使用AP设备功能的相关数据。例如，CPU占用，APP功能使用情况，终端接入情况等，收集此类信息的目的在于优化设备性能，改善APP功能，提升用户体验。*/}</li>
                 <li>{intl.get(MODULE, 14)/*_i18n:其他基本信息：AP设备软硬件版本，设备ID，运行APP的设备型号、操作系统版本等必要的信息。*/}</li>
+                <li>{intl.get(MODULE, 67)}</li>
+                <li>{intl.get(MODULE, 68)}</li>
+                <li>{intl.get(MODULE, 69)}</li>
+                <li>{intl.get(MODULE, 70)}</li>
+                <li>{intl.get(MODULE, 71)}</li>
             </ul>
             <h3>{intl.get(MODULE, 15)/*_i18n:这些设备数据将会被如何使用*/}</h3>
             <p>{intl.get(MODULE, 16)/*_i18n:收集设备数据的目的在于向您提供产品或服务，并且我们保证遵守适用的相关法律。您特此同意我们出于本隐私政策规定的目的处理设备数据，并同意向我们的第三方渠道商披露相关设备数据。*/}</p>
