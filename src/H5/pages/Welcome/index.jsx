@@ -76,7 +76,7 @@ export default class Home extends React.Component {
                         checked={checked}
                         onChange={this.onCheckBoxChange}>
                     </CheckBox>
-                    <span dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 3) }} className='agreement' />
+                    <span className='checkbox' >{intl.get(MODULE, 3)/*_i18n:同意*/}<Link onClick={this.showAgreement}>{intl.get(MODULE, 4)/*_i18n:《商米用户协议》*/}</Link>{intl.get(MODULE, 5)/*_i18n:和*/}<Link onClick={this.showPolicy}>{intl.get(MODULE, 6)/*_i18n:《隐私政策》*/}</Link></span>
                 </div>
                 <Modal
                     title={intl.get(MODULE, 8)/*_i18n:商米用户协议*/}
