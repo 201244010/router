@@ -18,7 +18,9 @@ const { FormItem, ErrorTip, InputGroup, Input } = Form;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/,
+    showTotal: total => {
+        return total > 1 ? intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 2, {total})
+    }
 };
 
 export default class Blacklist extends React.Component {

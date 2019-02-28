@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon } from 'antd';
+import { Button, message } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
@@ -8,7 +8,7 @@ import SwitchLang from '~/components/SwitchLang';
 import "./login.scss";
 
 const MODULE = 'login';
-const { FormItem, ErrorTip, Input }  = Form;
+const { FormItem, Input }  = Form;
 
 class Login extends React.Component {
     constructor(props) {
@@ -17,15 +17,16 @@ class Login extends React.Component {
 
     state = {
         password: '',
-        tip : '',
         loading: false,
     };
 
     onChange = value => {
         this.setState({ 
             password: value,
-            tip: (value.length > 0) ? '' : intl.get(MODULE, 0)/*_i18n:请输入密码*/,
         });
+        if (0 >= value.length) {
+            message.error(intl.get(MODULE, 0));
+        }
     }
 
     onEnter = () => {
@@ -41,9 +42,7 @@ class Login extends React.Component {
         const password = this.state.password;
 
         if ('' === password) {
-            this.setState({
-                tip: intl.get(MODULE, 1)/*_i18n:请输入密码*/,
-            });
+            message.error(intl.get(MODULE, 1));
             return;
         }
 
@@ -57,7 +56,6 @@ class Login extends React.Component {
         const { errcode, data } = response;
         this.setState({ loading : false });
 
-        let tip = '';
         switch (errcode) {
             case 0:
                 init(data[0].result.account.token);
@@ -67,26 +65,22 @@ class Login extends React.Component {
                 this.props.history.push('/welcome');
                 return;
             case '-1601':
-                tip = intl.get(MODULE, 2)/*_i18n:请输入密码*/;
+                message.error(intl.get(MODULE, 2));
                 break;
             case '-1605':
-                tip = intl.get(MODULE, 3)/*_i18n:密码错误*/;
+                message.error(intl.get(MODULE, 3));
                 break;
             case '-1606':
-                tip = intl.get(MODULE, 4)/*_i18n:密码错误次数过多，请5分钟后再试*/;
+                message.error(intl.get(MODULE, 4));
                 break;
             default:
-                tip = intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/;
+                message.error(intl.get(MODULE, 5, {error: errcode}));
                 break;
         }
-
-        this.setState({
-            tip: tip,
-        });
     }
 
     render() {
-        const { tip, password } = this.state;
+        const { password } = this.state;
 
         return <div className="ui-center ui-fullscreen">
                     <SwitchLang className='login-lang'/>
@@ -101,13 +95,6 @@ class Login extends React.Component {
                                         maxLength={32}
                                         onEnter={this.onEnter}
                                         />
-                            <ErrorTip style={{
-                                color: '#FF5500',
-                                position: 'absolute',
-                                right: 35,
-                                top: 13,
-                                textAlign: 'right',
-                                }}>{ tip }</ErrorTip>
                             </FormItem>
                         </Form>
                         <Button type="primary"
