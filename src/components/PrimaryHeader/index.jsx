@@ -24,6 +24,18 @@ class PrimaryHeader extends React.Component {
         };
     }
 
+    getVersion = () => {
+        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
+
+        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
+            return "domestic";
+        }
+
+        if (4 === QUICK_SETUP.length) {
+            return "abroad";
+        }
+    }
+
     downloadPage = () =>{
         this.props.history.push('/app');
     }
@@ -46,7 +58,8 @@ class PrimaryHeader extends React.Component {
 	render() {
         const {match} = this.props;
         const { isGuidePage } = this.state;
- 
+        const version = this.getVersion();
+
 		return (
 			<div className="header">
 				<SubLayout>
@@ -67,8 +80,11 @@ class PrimaryHeader extends React.Component {
                                     <NavLink to={match.path + "advance"} activeClassName="active">{intl.get(MODULE, 2)/*_i18n:高级设置*/}</NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
-                                    <SwitchLang className='ui-ib lang'/>
-                                    <span className="ui-ib">|</span>
+                                    {'abroad' === version?
+                                        [<SwitchLang className='ui-ib lang'/>,
+                                        <span className="ui-ib">|</span>]
+                                        : ''
+                                    }
                                     <a href="javascript:"  onClick={this.downloadPage} className="ui-ib">{intl.get(MODULE, 3)/*_i18n:下载手机版*/}</a>
                                     <span className="ui-ib">|</span>
                                     <a href="javascript:;" onClick={this.logout} className="ui-ib">{intl.get(MODULE, 4)/*_i18n:退出管理*/}</a>

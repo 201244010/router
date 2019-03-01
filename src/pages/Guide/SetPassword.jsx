@@ -23,6 +23,18 @@ export default class SetPassword extends React.Component {
         loading: false
     };
 
+    getVersion = () => {
+        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
+
+        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
+            return "domestic";
+        }
+
+        if (4 === QUICK_SETUP.length) {
+            return "abroad";
+        }
+    }
+
     // 表单提交
     post = async () => {
         const {pwd, surePwd} = this.state;
@@ -54,7 +66,14 @@ export default class SetPassword extends React.Component {
         switch (errcode) {
         case 0:
             init(data[0].result.account.token);
-            this.props.history.push('/guide/timezone');
+
+            if ('domestic' === this.getVersion()) { //国内版，跳转到设置上网参数
+                this.props.history.push('/guide/setwan');
+            }
+
+            if ('abroad' === this.getVersion()) {   //海外版，跳转到设置时区
+                this.props.history.push('/guide/timezone');
+            }
             break;
         case '-1608':
             Modal.info({

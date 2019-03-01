@@ -12,6 +12,18 @@ export default class SwitchLang extends React.Component {
         lang: getLang()
     }
 
+    getVersion = () => {
+        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
+
+        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
+            return "domestic";
+        }
+
+        if (4 === QUICK_SETUP.length) {
+            return "abroad";
+        }
+    }
+
     changeLang = () => {
         let language = 'zh-cn' === this.state.lang ? 'en-us' : 'zh-cn';
         let language_param = 'zh-cn' === this.state.lang ? 'en-US' : 'zh-CN';
@@ -34,12 +46,20 @@ export default class SwitchLang extends React.Component {
         const { lang } = this.state;
         let show = 'zh-cn' === lang ? 'en-us' : 'zh-cn';
         const SUPPORT_LANG = JSON.parse(window.sessionStorage.getItem('_LANGUAGE_LIST')) || LANGUAGE_LIST;
-        let language = SUPPORT_LANG.find(item => {
-            return show === item.key;
-        }).label;
+        const version = this.getVersion();       //获取路由器版本（国内版还是海外版）
 
-        return (
-            <Button className={className} onClick={this.changeLang} ghost>{language}</Button>   
-        );
+        if ('domestic' === version) {       //判断版本（国内版还是海外版）
+            return '';
+        }
+
+        if ('abroad' === version) {
+            let language = SUPPORT_LANG.find(item => {
+                return show === item.key;
+            }).label;
+
+            return (
+                <Button className={className} onClick={this.changeLang} ghost>{language}</Button>
+            );
+        }
     }  
 }
