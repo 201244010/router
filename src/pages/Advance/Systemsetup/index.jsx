@@ -7,6 +7,7 @@ import Backup from './Backup';
 import TimeZone from './TimeZone';
 import Reboot from './Reboot';
 import Recovery from './Recovery';
+import {getQuickStartVersion} from '~/utils';
 
 import './system.scss'
 
@@ -14,20 +15,10 @@ const MODULE = 'systemsetup';
 const TabPane = Tabs.TabPane;
 
 export default class Systemsetup extends React.PureComponent {
-    getVersion = () => {
-        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
+    render() {
+        const quickStartVersion = getQuickStartVersion();
 
-        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
-            return "domestic";
-        }
-
-        if (4 === QUICK_SETUP.length) {
-            return "abroad";
-        }
-    }
-
-    render(){
-        if ('domestic' === this.getVersion()) {
+        if ('domestic' === quickStartVersion) {
             return (
                 <Tabs>
                     <TabPane tab={intl.get(MODULE, 0)/*_i18n:安全设置*/} key="1"><Dosd /></TabPane>
@@ -38,9 +29,7 @@ export default class Systemsetup extends React.PureComponent {
                     <TabPane tab={intl.get(MODULE, 5)/*_i18n:恢复出厂设置*/} key="7"><Recovery /></TabPane>
                 </Tabs>
             );
-        }
-
-        if ('abroad' === this.getVersion()) {
+        } else if ('abroad' === quickStartVersion) {
             return (
                 <Tabs>
                     <TabPane tab={intl.get(MODULE, 0)/*_i18n:安全设置*/} key="1"><Dosd /></TabPane>
@@ -52,8 +41,9 @@ export default class Systemsetup extends React.PureComponent {
                     <TabPane tab={intl.get(MODULE, 5)/*_i18n:恢复出厂设置*/} key="7"><Recovery /></TabPane>
                 </Tabs>
             );
-        } 
-        
+        } else {
+            return <noscript/>
+        }
     }
 };
 

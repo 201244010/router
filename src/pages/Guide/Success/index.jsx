@@ -2,36 +2,20 @@ import React from 'react';
 import {Button} from 'antd';
 import {NavLink} from "react-router-dom";
 import CustomIcon from '~/components/Icon';
-
+import {getQuickStartVersion} from '~/utils';
 import './success.scss';
 
 const MODULE = 'success';
 
 export default class Success extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    getVersion = () => {
-        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
-
-        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
-            return "domestic";
-        }
-
-        if (4 === QUICK_SETUP.length) {
-            return "abroad";
-        }
-    }
-
     goHome = () => {
         this.props.history.push('/home');
     }
 
     render() {
-        let version = this.getVersion();
-        let pattern = 'domestic' === version? 'func-item-cn' : 'func-item-us';  //海外版分中文版、英文版
-        let format = 'zh-cn' === version;    //海外版 className = 'decription' 中英文的排版不同
+        const version = getQuickStartVersion();
+        const pattern = 'domestic' === version ? 'func-item-cn' : 'func-item-us';  //海外版分中文版、英文版
+        const format = 'zh-cn' === version;    //海外版 className = 'decription' 中英文的排版不同
 
         return (
             <React.Fragment>

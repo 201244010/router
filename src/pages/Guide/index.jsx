@@ -11,6 +11,7 @@ import SetWifi from './SetWifi';
 import Success from './Success';
 // import Finish from './Finish';
 import Icon from '~/components/Icon';
+import {getQuickStartVersion} from '~/utils';
 
 import './guide.scss';
 
@@ -65,7 +66,8 @@ export default class Guide extends React.Component {
         const path = this.props.match.path;
         let activeRouteName = this.state.activeRouteName;
         let current_steps = [];
-        if ('domestic' === this.getVersion()) {
+        const quickStartVersion = getQuickStartVersion();
+        if ('domestic' === quickStartVersion) {
             current_steps = [
                 {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
                 // {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
@@ -73,9 +75,7 @@ export default class Guide extends React.Component {
                 {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
                 // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
             ];
-        }
-
-        if ('abroad' === this.getVersion()) {
+        } else if ('abroad' === quickStartVersion) {
             current_steps = [
                 {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
                 {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
@@ -128,12 +128,4 @@ export default class Guide extends React.Component {
             </SubLayout>
         );
     }
-
 }
-
-
-
-
-
-
-
