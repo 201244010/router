@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { getLang, setLang } from '~/i18n/index.js';
 import {LANGUAGE_LIST} from '~/assets/common/constants';
+import {getQuickStartVersion} from '~/utils';
 
 export default class SwitchLang extends React.Component {
     constructor(props) {
@@ -34,12 +35,17 @@ export default class SwitchLang extends React.Component {
         const { lang } = this.state;
         let show = 'zh-cn' === lang ? 'en-us' : 'zh-cn';
         const SUPPORT_LANG = JSON.parse(window.sessionStorage.getItem('_LANGUAGE_LIST')) || LANGUAGE_LIST;
-        let language = SUPPORT_LANG.find(item => {
-            return show === item.key;
-        }).label;
 
-        return (
-            <Button className={className} onClick={this.changeLang} ghost>{language}</Button>   
-        );
+        if ('abroad' === getQuickStartVersion()) {
+            let language = SUPPORT_LANG.find(item => {
+                return show === item.key;
+            }).label;
+
+            return (
+                <Button className={className} onClick={this.changeLang} ghost>{language}</Button>
+            );
+        } else {
+            return <noscript/>;
+        }
     }  
 }

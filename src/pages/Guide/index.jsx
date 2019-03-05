@@ -11,6 +11,7 @@ import SetWifi from './SetWifi';
 import Success from './Success';
 // import Finish from './Finish';
 import Icon from '~/components/Icon';
+import {getQuickStartVersion} from '~/utils';
 
 import './guide.scss';
 
@@ -52,6 +53,25 @@ export default class Guide extends React.Component {
     render(){
         const path = this.props.match.path;
         let activeRouteName = this.state.activeRouteName;
+        let current_steps = [];
+        const quickStartVersion = getQuickStartVersion();
+        if ('domestic' === quickStartVersion) {
+            current_steps = [
+                {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
+                // {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
+                {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
+                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+            ];
+        } else if ('abroad' === quickStartVersion) {
+            current_steps = [
+                {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
+                {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
+                {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
+                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+            ];
+        }
 
         return (
             <SubLayout className="steps ui-relative">
@@ -66,7 +86,7 @@ export default class Guide extends React.Component {
                 </div>
                 {'success' !== activeRouteName && <ul className="guide-header">
                 {
-                    this.steps.map((step, index, array) => {
+                    current_steps.map((step, index, array) => {
                         return (
                             <React.Fragment>
                                 <li className={this.initStepMenu(step.route, index, array.length)}>
@@ -85,23 +105,15 @@ export default class Guide extends React.Component {
                 <div className="guide-body">
                     <Switch>
                         {
-                            this.steps.map((step, index, array) => {
+                            current_steps.map((step, index, array) => {
                                 return <Route path={`${path}/${step.route}`} component={step.component} />;
                             })
                         }
                         <Route path={`${path}/success`} component={Success} />
-                        <Redirect from={path} to={`${path}/${this.steps[0].route}`}></Redirect>
+                        <Redirect from={path} to={`${path}/${current_steps[0].route}`}></Redirect>
                     </Switch>
                 </div>
             </SubLayout>
         );
     }
-
 }
-
-
-
-
-
-
-

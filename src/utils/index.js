@@ -14,6 +14,16 @@ export const getNowTimeStr = () => {
     return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
 };
 
+export const getQuickStartVersion = () => {
+    const quickSetup = JSON.parse(window.sessionStorage.getItem('_QUICK_SETUP'));
+    const versions = {
+        3: 'domestic',
+        4: 'abroad'
+    };
+
+    return versions[`${quickSetup.length}`];
+};
+
 export const UA = (function () {
     let windows = false;
     let windowsPhone = false;

@@ -47,6 +47,7 @@ common.fetchApi([
         window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
         window.sessionStorage.setItem('_LANGUAGE_DEFAULT', result.lang_default);
         window.sessionStorage.setItem('_LANGUAGE', result.language.toLowerCase());
+        window.sessionStorage.setItem('_QUICK_SETUP', JSON.stringify(result.quick_setup || []));
 
         if (1 === parseInt(result.factory)) {
             window.sessionStorage.setItem('_FACTORY', 'welcome');
