@@ -33,18 +33,6 @@ export default class Guide extends React.Component {
         // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
     ];
 
-    getVersion = () => {
-        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
-
-        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
-            return "domestic";
-        }
-
-        if (4 === QUICK_SETUP.length) {
-            return "abroad";
-        }
-    }
-
     static getDerivedStateFromProps(nextProps){
         let { match } = nextProps, path = match.path, pathname = location.pathname;
         let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
