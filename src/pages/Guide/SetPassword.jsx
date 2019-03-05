@@ -23,34 +23,14 @@ export default class SetPassword extends React.Component {
         loading: false
     };
 
-    getVersion = () => {
-        let QUICK_SETUP = JSON.parse(window.sessionStorage.getItem('QUICK_SETUP'));     //获取版本信息
-
-        if (3 === QUICK_SETUP.length) {             //根据快速设置的步骤数，判断是国内版还是海外版
-            return "domestic";
-        }
-
-        if (4 === QUICK_SETUP.length) {
-            return "abroad";
-        }
-    }
-
     // 表单提交
     post = async () => {
         const {pwd, surePwd} = this.state;
 
-        if (pwd !== surePwd && surePwd !== '') {
+        if (pwd !== surePwd) {
             this.setState({
                 // surePwdTip: '两次密码输入不一致',
-                surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/,
-            });
-            return;
-        }
-
-        if (pwd !== surePwd && surePwd === '') {
-            this.setState({
-                // surePwdTip: '请再次输入密码',
-                surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/,
+                surePwdTip: intl.get(MODULE, surePwd === '' ? 1 : 0)/*_i18n:两次密码输入不一致*/,
             });
             return;
         }
