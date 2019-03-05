@@ -6,7 +6,7 @@ const LANG_KEY = '_AP_LANGUAGE';
 export function getLang() {
   const SUPPORTED_LANGUAGE = JSON.parse(window.sessionStorage.getItem('_LANGUAGE_LIST')) || LANGUAGE_LIST;
   const LANGUAGE_DEFAULT = window.sessionStorage.getItem('_LANGUAGE_DEFAULT');
-  const LANGUAGE = window.sessionStorage.getItem('_LANGUAGE') || 'en-us';
+  const LANGUAGE = window.sessionStorage.getItem('_LANGUAGE');
   let supportLangs = SUPPORTED_LANGUAGE.map(lang => {
     return lang.key;
   });

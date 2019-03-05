@@ -1,29 +1,25 @@
 import React from 'react';
 import {Button} from 'antd';
 import {NavLink} from "react-router-dom";
-import {getLang} from '~/i18n/index';
 import CustomIcon from '~/components/Icon';
-
+import {getQuickStartVersion} from '~/utils';
 import './success.scss';
 
 const MODULE = 'success';
 
 export default class Success extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     goHome = () => {
         this.props.history.push('/home');
     }
 
     render() {
-        let version = 'zh-cn' === getLang()? 'func-item-cn' : 'func-item-us';  //海外版分中文版、英文版
-        let format = 'zh-cn' === getLang();    //海外版 className = 'decription' 中英文的排版不同
+        const version = getQuickStartVersion();
+        const pattern = 'domestic' === version ? 'func-item-cn' : 'func-item-us';  //海外版分中文版、英文版
+        const format = 'zh-cn' === version;    //海外版 className = 'decription' 中英文的排版不同
 
         return (
             <React.Fragment>
-                {false ? //默认海外版，不显示国内版
+                { 'domestic' === version ? //根据version 判断是国内版还是海外版
                 [<div className='user-experience-domestic'>
                     <div className='head-domestic'>
                         <CustomIcon size={40} color='#87D068' type='succeed' style={{marginRight: 16, display: 'inline-block'}} /><h4>{intl.get(MODULE, 11)/*_i18n:设置完成*/}</h4>
@@ -121,7 +117,7 @@ export default class Success extends React.Component {
                         <ul>
                             <li>
                                 <NavLink to={'/advance/bandwidth'}>
-                                    <div className={version}>
+                                    <div className={pattern}>
                                         <div className='img'>
                                             <CustomIcon style={{ margin: 13 }} size={54} color='#92ABF6' type="networkspeeddistribution" />
                                         </div>
@@ -144,7 +140,7 @@ export default class Success extends React.Component {
                             </li>
                             <li>
                                 <NavLink to={'/home'}>
-                                    <div className={version}>
+                                    <div className={pattern}>
                                         <div className='img'>
                                             <CustomIcon style={{ margin: 13 }} size={54} color='#F9AFDD' type="blacklis" />
                                         </div>
@@ -167,7 +163,7 @@ export default class Success extends React.Component {
                             </li>
                             <li>
                                 <NavLink to={'/home'}>
-                                    <div className={version}>
+                                    <div className={pattern}>
                                         <div className='img'>
                                             <CustomIcon style={{ margin: 7 }} size={66} color='#F79D5C' type="search" />
                                         </div>

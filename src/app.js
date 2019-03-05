@@ -1,12 +1,12 @@
-import "babel-polyfill";       // 解决兼容性问题
-
+import "babel-polyfill";
 import React from "react";
 import ReactDOM from 'react-dom';
-
+import intl from 'react-intl-universal';
 import { UA, PAGE_STYLE_KEY, PAGE_STYLE_H5, PAGE_STYLE_WEB } from './utils';
-
 import Web from './pages/index.js';     // PC Web页面
-import H5 from './H5';       // H5页面
+import H5 from './H5';
+import {SUPPORTED_LANG} from '~/assets/common/constants';
+import locales from '~/i18n/locales.json';
 
 const MODULE = 'app';
 
@@ -27,4 +27,36 @@ if (PAGE_STYLE_WEB === web) {
     App = UA.mobile ? H5 : Web;
 }
 document.title = intl.get(MODULE, 1);
-ReactDOM.render(<App />, document.querySelector('#wrap'));
+
+common.fetchApi([
+    { opcode: 'SYSTEM_GET' }
+], { ignoreErr: true }).then(res => {
+    const { data, errcode } = res;
+    
+    if (0 === errcode) {
+        const result = data[0].result.system;
+        const languageList = [];
+        result.language_list.map(item => {
+            const lang = item.toLowerCase();
+            languageList.push({key: lang, label: SUPPORTED_LANG[lang]});
+        });
+        intl.init({
+            currentLocale: result.language.toLowerCase(),
+            locales
+        });
+        window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
+        window.sessionStorage.setItem('_LANGUAGE_DEFAULT', result.lang_default);
+        window.sessionStorage.setItem('_LANGUAGE', result.language.toLowerCase());
+        window.sessionStorage.setItem('_QUICK_SETUP', JSON.stringify(result.quick_setup || []));
+
+        if (1 === parseInt(result.factory)) {
+            window.sessionStorage.setItem('_FACTORY', 'welcome');
+        } else {
+            window.sessionStorage.setItem('_FACTORY', 'redirect');
+        }
+        ReactDOM.render(<App />, document.querySelector('#wrap'));
+    } else {
+        throw new Error('todo something');
+    }
+    
+});

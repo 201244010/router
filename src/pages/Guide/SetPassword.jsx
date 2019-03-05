@@ -3,9 +3,9 @@ import React from 'react';
 import Form from '~/components/Form';
 import { Button, Modal } from 'antd';
 import { Base64 } from 'js-base64';
-import routes from '../../routes';
 import { init } from '~/assets/common/auth';
 import {checkStr} from '~/assets/common/check';
+import {getQuickStartVersion} from '~/utils';
 
 const MODULE = 'setpassword';
 const { FormItem, ErrorTip, Input }  = Form;
@@ -27,18 +27,10 @@ export default class SetPassword extends React.Component {
     post = async () => {
         const {pwd, surePwd} = this.state;
 
-        if (pwd !== surePwd && surePwd !== '') {
+        if (pwd !== surePwd) {
             this.setState({
                 // surePwdTip: '两次密码输入不一致',
-                surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/,
-            });
-            return;
-        }
-
-        if (pwd !== surePwd && surePwd === '') {
-            this.setState({
-                // surePwdTip: '请再次输入密码',
-                surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/,
+                surePwdTip: intl.get(MODULE, surePwd === '' ? 1 : 0)/*_i18n:两次密码输入不一致*/,
             });
             return;
         }
@@ -50,30 +42,36 @@ export default class SetPassword extends React.Component {
         });
         this.setState({ loading: false });
 
-        let { errcode, data } = response;
+        const {errcode, data} = response;
         switch (errcode) {
-        case 0:
-            init(data[0].result.account.token);
-            this.props.history.push('/guide/timezone');
-            break;
-        case '-1608':
-            Modal.info({
-                    // title: '提示',
-                    // content: '已设置过密码',
-                    // okText: '确定',
-                    title: intl.get(MODULE, 2)/*_i18n:提示*/,
-                    content: intl.get(MODULE, 3)/*_i18n:已设置过密码*/,
-                    okText: intl.get(MODULE, 4)/*_i18n:确定*/,
-                    centered: true,
-                    onOk: () => {
-                        location.href = '/';
-                    }
-                });
-            break;
-        default:
-            // this.setState({pwdTip: `未知错误[${errcode}]`});
-            this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/});
-            break;
+            case 0:
+                init(data[0].result.account.token);
+                const quickStartVersion = getQuickStartVersion();
+
+                if ('domestic' === quickStartVersion) { //国内版，跳转到设置上网参数
+                    this.props.history.push('/guide/setwan');
+                } else if ('abroad' === quickStartVersion) {   //海外版，跳转到设置时区
+                    this.props.history.push('/guide/timezone');
+                }
+                break;
+            case '-1608':
+                Modal.info({
+                        // title: '提示',
+                        // content: '已设置过密码',
+                        // okText: '确定',
+                        title: intl.get(MODULE, 2)/*_i18n:提示*/,
+                        content: intl.get(MODULE, 3)/*_i18n:已设置过密码*/,
+                        okText: intl.get(MODULE, 4)/*_i18n:确定*/,
+                        centered: true,
+                        onOk: () => {
+                            location.href = '/';
+                        }
+                    });
+                break;
+            default:
+                // this.setState({pwdTip: `未知错误[${errcode}]`});
+                this.setState({pwdTip: intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/});
+                break;
         }
     }
 
