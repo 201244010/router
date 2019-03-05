@@ -1,6 +1,5 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import {SUPPORTED_LANG} from '~/assets/common/constants'
 import {message} from 'antd';
 import { get } from 'common/auth';
 import style from "styles/index.useable.scss";
@@ -107,20 +106,20 @@ class Default extends React.Component{
     
     redirect() {
         const path = location.pathname;
-        const welcome = '/welcome';
-        const logined = !!get();
-        const redirect = logined ? '/home' : '/login';
+        const logined = !!get();        
+        const paths = {
+            welcome: '/welcome',
+            redirect: logined ? '/home' : '/login'
+        };
 
         // 向导页面（/welcome or /guide/xxx）不跳转
-        if ([welcome, '/guide'].some(url => {
-            return path.indexOf(url) > -1;
-        })) {
+        if ([paths.welcome, '/guide'].some(url => path.indexOf(url) > -1)) {
             return;
         }
 
         // for local debug
         if ("localhost" === location.hostname) {
-            this.props.history.push(redirect);
+            this.props.history.push(paths.redirect);
             return;
         }
 
@@ -129,25 +128,7 @@ class Default extends React.Component{
          * logined -> redirect to /home
          * unauth -> redirect to /login
          */
-        common.fetchApi([
-            { opcode: 'SYSTEM_GET' }
-        ], { ignoreErr: true }).then(res => {
-            let { errcode, data } = res;
-            const result = data[0].result.system;
-            const languageList = [];
-            result.language_list.map(item => {
-                const lang = item.toLowerCase();
-                languageList.push({key: lang, label: SUPPORTED_LANG[lang]});
-            });
-            window.sessionStorage.setItem('_LANGUAGE_LIST', JSON.stringify(languageList));
-            window.sessionStorage.setItem('_LANGUAGE_DEFAULT', result.lang_default);
-            window.sessionStorage.setItem('_LANGUAGE', result.language.toLowerCase());
-            if (0 === errcode && 1 === parseInt(result.factory)) {
-                this.props.history.push(welcome);
-            } else {
-                this.props.history.push(redirect);
-            }
-        });
+        this.props.history.push(paths[window.sessionStorage.getItem("_FACTORY")]);
     }
 
     componentDidMount() {
@@ -155,7 +136,7 @@ class Default extends React.Component{
     }
 
     render() {
-        return <noscript />;
+        return <noscript/>;
     }
 }
 
@@ -186,7 +167,7 @@ function Background(props) {
 export default function App() {
     return (
         <Router>
-            <PrimaryLayout />
+            <PrimaryLayout/>
         </Router>
     );
 };
