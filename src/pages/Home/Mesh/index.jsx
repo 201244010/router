@@ -118,7 +118,7 @@ export default class Mesh extends React.Component{
             {'done' === state && num > 0 &&
             <div>
                 <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                <h4 dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 9) }} />
+                <h4 dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 9, {num})}} />
             </div>
             }
             {'done' === state && num == 0 &&
