@@ -10,17 +10,16 @@ import { TIME_SPEED_TEST } from '~/assets/common/constants';
 const MODULE = 'speed';
 const { FormItem, Input, ErrorTip } = Form;
 const reg = /\D+/;
-const err = {
-    '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
-    '-1002': intl.get(MODULE, 1)/*_i18n:参数非法*/,
-    '-1005': intl.get(MODULE, 2)/*_i18n:内存不足，无法进行测速*/,
-    '-1007': intl.get(MODULE, 3)/*_i18n:网络异常，无法进行测速*/
-}
 
 export default class Speed extends React.Component {
   constructor(props){
     super(props);
-
+    this.err = {
+        '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
+        '-1002': intl.get(MODULE, 1)/*_i18n:参数非法*/,
+        '-1005': intl.get(MODULE, 2)/*_i18n:内存不足，无法进行测速*/,
+        '-1007': intl.get(MODULE, 3)/*_i18n:网络异常，无法进行测速*/
+    }
     this.state = {
 	  	showModal : false,
 	 	speedTestdone : false,
@@ -64,7 +63,7 @@ export default class Speed extends React.Component {
             });
 
         if(0 !== resp.errcode) {
-            message.error(err[resp.errcode]);
+            message.error(this.err[resp.errcode]);
             return;
         }
 

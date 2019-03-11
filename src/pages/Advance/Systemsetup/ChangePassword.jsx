@@ -7,15 +7,15 @@ import {checkStr} from '~/assets/common/check';
 
 const MODULE = 'changepassword';
 const {FormItem,Input,ErrorTip} = Form;
-const err = {
-    // '-1605': '原密码错误',
-    // '-1606': '原密码错误次数过多，请5分钟后再试',
-    '-1605': intl.get(MODULE, 0)/*_i18n:原密码错误*/,
-    '-1606': intl.get(MODULE, 1)/*_i18n:原密码错误次数过多，请5分钟后再试*/,
-};
 
 export default class ChangePassword extends React.Component{
-
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1605': intl.get(MODULE, 0)/*_i18n:原密码错误*/,
+            '-1606': intl.get(MODULE, 1)/*_i18n:原密码错误次数过多，请5分钟后再试*/,
+        };
+    }
     state={
         userName : 'admin',
         oldPWD: '',
@@ -71,7 +71,7 @@ export default class ChangePassword extends React.Component{
                     message.success(intl.get(MODULE, 4)/*_i18n:修改成功,5秒后将跳转到登陆页面*/);
                     setTimeout(()=>{location.href = '/login'}, 5000);
                 }else{
-                    message.error(`${err[errcode]}`);
+                    message.error(`${this.err[errcode]}`);
                     this.setState({loading : false});
                 }
             });  

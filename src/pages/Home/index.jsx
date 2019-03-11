@@ -15,16 +15,20 @@ import { set, clear } from '~/assets/common/cookie';
 import './home.scss';
 
 const MODULE = 'home';
-const RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/, RSSI_BAD = intl.get(MODULE, 25)/*_i18n:较差*/;
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
-const err = {
-    '-1001': intl.get(MODULE, 1)/*_i18n:参数格式错误*/,
-    '-1002': intl.get(MODULE, 2)/*_i18n:参数非法*/,
-    '-1005': intl.get(MODULE, 3)/*_i18n:内存不足，无法进行测速*/,
-    '-1007': intl.get(MODULE, 4)/*_i18n:网络异常，无法进行测速*/
-}
 
 export default class Home extends React.Component {
+    constructor(props){
+        super(props);
+        this.RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/;
+        this.RSSI_BAD = intl.get(MODULE, 25)/*_i18n:较差*/;
+        this.err = {
+            '-1001': intl.get(MODULE, 1)/*_i18n:参数格式错误*/,
+            '-1002': intl.get(MODULE, 2)/*_i18n:参数非法*/,
+            '-1005': intl.get(MODULE, 3)/*_i18n:内存不足，无法进行测速*/,
+            '-1007': intl.get(MODULE, 4)/*_i18n:网络异常，无法进行测速*/
+        }
+    }
     state = {
         visible: false,
         successShow: false,
@@ -369,10 +373,10 @@ export default class Home extends React.Component {
 
             let rssi;
             if ('not wifi' == client.wifi_mode) {
-                rssi = RSSI_GOOD;
+                rssi = this.RSSI_GOOD;
             } else {
                 let wi = wifiInfo[mac.toLowerCase()] || {rssi:0};
-                rssi = (wi.rssi >= 20) ? RSSI_GOOD : RSSI_BAD;
+                rssi = (wi.rssi >= 20) ? this.RSSI_GOOD : this.RSSI_BAD;
             }
 
             let aliasName = alias[mac] && alias[mac].alias;
@@ -448,7 +452,7 @@ export default class Home extends React.Component {
         let start = await common.fetchApi({ opcode: 'WANWIDGET_SPEEDTEST_START' });
 
         if(0 !== start.errcode) {
-            message.error(err[start.errcode]);
+            message.error(this.err[start.errcode]);
             return;
         }
 

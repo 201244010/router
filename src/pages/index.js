@@ -17,6 +17,8 @@ import Diagnose from './Diagnose';
 import UpdateDetect from './UpgradeDetect';
 import UserAgreement from './UserAgreement';
 
+const MODULE = 'page';
+
 class PrimaryLayout extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +41,7 @@ class PrimaryLayout extends React.Component {
     }
 
     componentDidMount() {
+        document.title = intl.get(MODULE, 0);
         style.use();
 
         // set global mesage conf
