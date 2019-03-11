@@ -9,15 +9,7 @@ import Logo from '~/components/Logo';
 import './clients.scss';
 
 const MODULE = 'clientlist';
-const RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/, RSSI_BAD = intl.get(MODULE, 1)/*_i18n:较差*/;
 const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
-
-const modeMap = {
-    '0': '5G',
-    '1': '2.4G',
-    '2': intl.get(MODULE, 2)/*_i18n:有线*/,
-};
-
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -129,6 +121,13 @@ class EditableCell extends React.Component {
 export default class ClientList extends React.Component {
     constructor(props) {
         super(props);
+        this.RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/;
+        this.RSSI_BAD = intl.get(MODULE, 1)/*_i18n:较差*/;
+        this.modeMap = {
+            '0': '5G',
+            '1': '2.4G',
+            '2': intl.get(MODULE, 2)/*_i18n:有线*/,
+        };
         this.columns = [{
             dataIndex: 'mac',
             width: 52,
@@ -179,40 +178,40 @@ export default class ClientList extends React.Component {
             title: intl.get(MODULE, 7)/*_i18n:接入方式*/,
             dataIndex: 'mode',
             filters: [{
-                text: modeMap['2'],
+                text: this.modeMap['2'],
                 value: '2',
             }, {
-                text: modeMap['1'],
+                text: this.modeMap['1'],
                 value: '1',
             }, {
-                text: modeMap['0'],
+                text: this.modeMap['0'],
                 value: '0',
             }],
             onFilter: (value, record) => record.mode.indexOf(value) === 0,
             sorter: (a, b) => parseInt(a.mode) - parseInt(b.mode),
-            render: (mode, record) => modeMap[mode],
+            render: (mode, record) => this.modeMap[mode],
             width: 113
         }, {
             title: intl.get(MODULE, 8)/*_i18n:信号*/,
             dataIndex: 'rssi',
             filters: [{
-                text: RSSI_GOOD,
-                value: RSSI_GOOD,
+                text: this.RSSI_GOOD,
+                value: this.RSSI_GOOD,
             }, {
-                text: RSSI_BAD,
-                value: RSSI_BAD,
+                text: this.RSSI_BAD,
+                value: this.RSSI_BAD,
             }],
             onFilter: (value, record) => record.rssi.indexOf(value) === 0,
             sorter: (a, b) => {
                 if (a.rssi !== b.rssi) {
-                    return (RSSI_GOOD === a.rssi) ? 1 : -1;
+                    return (this.RSSI_GOOD === a.rssi) ? 1 : -1;
                 }
 
                 return 1;
             },
             width: 102,
             render: (rssi, record) => (
-                <div><i className={'dot ' + (RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
+                <div><i className={'dot ' + (this.RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
         }, {
             title: intl.get(MODULE, 9)/*_i18n:当前速率*/,
@@ -398,7 +397,7 @@ export default class ClientList extends React.Component {
                 return (
                     <li key={client.mac} className='client-item'>
                         <Popover placement={placement} trigger='click'
-                            content={<Item client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
+                            content={<Item modeMap={this.modeMap} client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
                             <div className={`icon ${type}`}>
                                 <Logo mac={client.mac} model={client.model} size={36} />
                                 {(TYPE_SUNMI === type) && <img src={require('~/assets/images/sunmi.svg')}></img>}
@@ -406,7 +405,7 @@ export default class ClientList extends React.Component {
                             </div>
                         </Popover>
                         <div className='under-desc'>
-                            <i className={'dot ' + (RSSI_BAD == client.rssi ? 'warning' : '')}></i>
+                            <i className={'dot ' + (this.RSSI_BAD == client.rssi ? 'warning' : '')}></i>
                             <p title={hostname}>{hostname}</p>
                         </div>
                     </li>
@@ -498,7 +497,7 @@ class Item extends React.Component {
         let client = this.props.client;
         let type = client.type;
         let signal = client.rssi;
-        let access = modeMap[client.mode];
+        let access = this.props.modeMap[client.mode];
         let time = formatTime(client.ontime);
         let flux = formatSpeed(client.flux).replace('/s', '');
         let up = client.tx;

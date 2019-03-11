@@ -11,16 +11,18 @@ import CustomIcon from '~/components/Icon';
 const MODULE = 'bandwidth';
 
 const {FormItem, Input, ErrorTip} = Form;
-const err = {
-    '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
-    '-1002': intl.get(MODULE, 1)/*_i18n:参数非法*/,
-    '-1005': intl.get(MODULE, 2)/*_i18n:内存不足，无法进行测速*/,
-    '-1007': intl.get(MODULE, 3)/*_i18n:网络异常，无法进行测速*/,
-}
-
 import './bandwidth.scss';
 
 export default class Bandwidth extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
+            '-1002': intl.get(MODULE, 1)/*_i18n:参数非法*/,
+            '-1005': intl.get(MODULE, 2)/*_i18n:内存不足，无法进行测速*/,
+            '-1007': intl.get(MODULE, 3)/*_i18n:网络异常，无法进行测速*/,
+        }
+    }
     state = {
         visible:false,  //自动设置弹窗是否可见
         manualShow:false, //手动设置弹窗是否可见
@@ -170,7 +172,7 @@ export default class Bandwidth extends React.PureComponent {
         let resp = await common.fetchApi({ opcode :'WANWIDGET_SPEEDTEST_START' });
 
         if(0 !== resp.errcode) {
-            message.error(err[resp.errcode]);
+            message.error(this.err[resp.errcode]);
             return;
         }
 

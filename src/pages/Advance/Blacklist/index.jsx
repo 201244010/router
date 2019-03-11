@@ -10,9 +10,6 @@ import Form from "~/components/Form";
 
 const MODULE = 'blacklist';
 
-const err ={
-    '-1073': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
-};
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
 const pagination = {
@@ -24,6 +21,12 @@ const pagination = {
 };
 
 export default class Blacklist extends React.Component {
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1073': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
+        }
+    }
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
@@ -222,7 +225,7 @@ export default class Blacklist extends React.Component {
             return;
         }
 
-        message.error(err[errcode]);
+        message.error(this.err[errcode]);
     }
 
     onSelectCancle = () => {

@@ -26,7 +26,6 @@ if (PAGE_STYLE_WEB === web) {
 }else {
     App = UA.mobile ? H5 : Web;
 }
-document.title = intl.get(MODULE, 1);
 
 common.fetchApi([
     { opcode: 'SYSTEM_GET' }

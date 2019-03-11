@@ -12,13 +12,15 @@ const {FormItem, Input, InputGroup, ErrorTip} = Form;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-const err = {
-    '-1001' : intl.get(MODULE, 0)/*_i18n:参数非法*/ ,
-    '-1002' : intl.get(MODULE, 1)/*_i18n:数据值不符合要求*/,
-    '-1061' : intl.get(MODULE, 2)/*_i18n:WAN口IP地址与局域网IP地址冲突*/
-}
-
 export default class NETWORK extends React.Component {
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1001' : intl.get(MODULE, 0)/*_i18n:参数非法*/ ,
+            '-1002' : intl.get(MODULE, 1)/*_i18n:数据值不符合要求*/,
+            '-1061' : intl.get(MODULE, 2)/*_i18n:WAN口IP地址与局域网IP地址冲突*/
+        }
+    }
     state = {
         type : 'dhcp',
         disabled : false,
@@ -356,7 +358,7 @@ export default class NETWORK extends React.Component {
                 return;
             }
             this.setState({ loading: false });
-            message.error(intl.get(MODULE, 14, {error: err[errcode] || errcode})/*_i18n:配置失败{error}*/);
+            message.error(intl.get(MODULE, 14, {error: this.err[errcode] || errcode})/*_i18n:配置失败{error}*/);
         })
     }
 
@@ -412,7 +414,7 @@ export default class NETWORK extends React.Component {
 
             return;
         }
-        message.error(intl.get(MODULE, 15, {error: err[errcode] || errcode})/*_i18n:信息获取失败{error}*/);
+        message.error(intl.get(MODULE, 15, {error: this.err[errcode] || errcode})/*_i18n:信息获取失败{error}*/);
     }
 
     updateNetStatus = (wan) => {
