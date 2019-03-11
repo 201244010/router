@@ -11,11 +11,6 @@ const MODULE = 'bootdevice';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
-const err = {
-    //'-1070': '设备已存在，请勿重复添加',
-    '-1070': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
-};
-
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
@@ -26,6 +21,12 @@ const pagination = {
 };
 
 export default class Bootdevice extends React.Component {
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1070': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
+        }
+    }
     state = {
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
@@ -236,7 +237,7 @@ export default class Bootdevice extends React.Component {
             return;
         }
 
-        message.error(err[errcode]);
+        message.error(this.err[errcode]);
     }
 
     onSelectCancle = () => {
