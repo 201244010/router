@@ -53,7 +53,7 @@ export default class Upgrade extends React.Component{
                         this.setState({
                             downloadFail : true,
                             download : false,
-                            failReason : intl.get(MODULE, 3, {errcode})/*_i18n:错误码：*/
+                            failReason : intl.get(MODULE, 3, {error: errcode})/*_i18n:错误码：*/
                         });
                         return;
                     case 'check failed!':
@@ -61,7 +61,7 @@ export default class Upgrade extends React.Component{
                             download : false,
                             downloadFail : true,
                             downloadFailtip : intl.get(MODULE, 4)/*_i18n:文件校验失败，请重试*/,
-                            failReason : intl.get(MODULE, 5, {errcode})/*_i18n:错误码：*/
+                            failReason : intl.get(MODULE, 5, {error: errcode})/*_i18n:错误码：*/
                         })
                         return;
                     case 'check success!':
