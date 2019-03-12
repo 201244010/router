@@ -9,15 +9,15 @@ import { detect } from './wan';
 import Icon from 'h5/components/Icon';
 
 const MODULE = 'h5setwan';
-const options = [
-    { value: 'dhcp', label: intl.get(MODULE, 0)/*_i18n:自动获取IP（DHCP）*/ },
-    { value: 'pppoe', label: intl.get(MODULE, 1)/*_i18n:宽带拨号上网（PPPoE）*/ },
-    { value: 'static', label: intl.get(MODULE, 2)/*_i18n:手动输入IP（静态IP）*/ },
-];
 
 export default class SetWan extends React.Component {
     constructor(props) {
         super(props);
+        this.options = [
+            { value: 'dhcp', label: intl.get(MODULE, 0)/*_i18n:自动获取IP（DHCP）*/ },
+            { value: 'pppoe', label: intl.get(MODULE, 1)/*_i18n:宽带拨号上网（PPPoE）*/ },
+            { value: 'static', label: intl.get(MODULE, 2)/*_i18n:手动输入IP（静态IP）*/ },
+        ]
     }
 
     state = {
@@ -185,7 +185,7 @@ export default class SetWan extends React.Component {
                 <GuideHeader title={intl.get(MODULE, 15)/*_i18n:确认上网方式*/} tips={intl.get(MODULE, 16)/*_i18n:请选择正确的上网方式*/} />
                 <Loading visible={visible} content={content} />
                 <form style={{marginTop:'0.6267rem'}}>
-                    <Select options={options} value={wanType} onChange={this.onTypeChange} />
+                    <Select options={this.options} value={wanType} onChange={this.onTypeChange} />
                     <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
                 </form>
             </div>

@@ -1,20 +1,20 @@
 import React from 'react';
 import { Radio, Select, Button } from 'antd';
 import moment from 'moment';
-import timeZones from '~/assets/common/timezone';
+import {getTimezones} from '~/assets/common/timezone';
 import './timezone.scss';
 
 const MODULE = 'timezone';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const children = timeZones.map(item => {
-    return <Option value={item[0]}>{item[1]}</Option>
-});
 
 export default class TimeZone extends React.Component {
     constructor(props) {
         super(props);
+        this.children = getTimezones().map(item => {
+            return <Option value={item[0]}>{item[1]}</Option>
+        });
     }
 
     state = {
@@ -180,7 +180,7 @@ export default class TimeZone extends React.Component {
                     '1' === enable  ?
                         <div className="item">
                             <Select defaultActiveFirstOption={false} style={{width: 460}} value={timezone} onChange={this.onChange}>
-                                {children}
+                                {this.children}
                             </Select>
                         </div> :
                         <div className="item">

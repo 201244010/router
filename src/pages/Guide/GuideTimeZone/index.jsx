@@ -1,18 +1,19 @@
 import React from 'react';
 import { Select, Button } from 'antd';
-import timeZones from '~/assets/common/timezone';
+import {getTimezones} from '~/assets/common/timezone';
 
 import './timezone.scss';
 
 const MODULE = 'guidetimezone';
 const Option = Select.Option;
-const children = timeZones.map(item => {
-    return <Option value={item[0]}>{item[1]}</Option>
-});
 
 export default class TimeZone extends React.Component {
     constructor(props) {
         super(props);
+        console.log(getTimezones());
+        this.children = getTimezones().map(item => {
+            return <Option value={item[0]}>{item[1]}</Option>
+        });
     }
 
     state = {
@@ -96,7 +97,7 @@ export default class TimeZone extends React.Component {
 
     render() {
         const { timezone, loading } = this.state;
-
+        console.log(this.children);
         return (
             <div className='guide-timezone'>
                 <h2>{intl.get(MODULE, 0)/*_i18n:设置时区*/}</h2>
@@ -104,7 +105,7 @@ export default class TimeZone extends React.Component {
                 <div className='content'>
                     <span>{intl.get(MODULE, 2)/*_i18n:时区*/}</span>
                     <Select defaultActiveFirstOption={false} style={{width: 400, marginLeft: 12}} value={timezone} onChange={this.onChange}>
-                        {children}
+                        {this.children}
                     </Select>
                     <div>
                         <Button type='primary' className='btn' loading={loading} onClick={this.nextStep} >{intl.get(MODULE, 3)/*_i18n:设置时区*/}</Button>
