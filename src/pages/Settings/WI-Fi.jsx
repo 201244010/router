@@ -708,7 +708,7 @@ export default class WIFI extends React.Component {
                                         <div className='moreDiv' id="htmode5Area">
                                             <label>{intl.get(MODULE, 62)/*_i18n:频道带宽*/}</label>
                                             <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('htmode5Area')}>
-                                                <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:自动(当前信道{current_channel5})*/}</Option>
+                                                <Option value={'auto'}>{intl.get(MODULE, 49)/*_i18n:自动*/}</Option>
                                                 <Option value={'HT20'}>20M</Option>
                                                 <Option value={'HT40'}>40M</Option>
                                                 <Option value={'HT80'}>80M</Option>
@@ -717,7 +717,7 @@ export default class WIFI extends React.Component {
                                         <div className='moreDiv' id="channel5Area">
                                             <label>{intl.get(MODULE, 64)/*_i18n:无线信道*/}</label> 
                                             <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
-                                                <Option value={'auto'}>{intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/}</Option>
+                                                <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:客用Wi-Fi*/}</Option>
                                                 {channelList5}
                                         </Select>
                                         </div>
