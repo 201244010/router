@@ -316,11 +316,10 @@ export default class Home extends React.Component {
         let { errcode, data } = response;
         if (errcode == 0) {
             const serviceList = data[0].result.services;
-            clear('_WECHAT');
             //weChat
             serviceList.map(item => {
                 if (item.service === 'wifidog_mod') {
-                    set('_WECHAT', 'IS_WECHAT');
+                    window.sessionStorage.setItem('_WECHAT', 'IS_WECHAT');
                 }
             });
         }
