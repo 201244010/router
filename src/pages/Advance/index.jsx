@@ -24,7 +24,7 @@ export default class Advance extends React.PureComponent {
             {route: 'blacklist', type: 'blacklis', content: intl.get(MODULE, 3)/*_i18n:防蹭网*/},
             {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:系统设置*/}
         ];
-        if (get('_WECHAT') === 'IS_WECHAT') {
+        if (window.sessionStorage.getItem('_WECHAT') === 'IS_WECHAT') {
             this.navList.splice(1, 0, {route: 'wechat', type: 'auth', content: intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/})
         }
     }
