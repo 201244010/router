@@ -1,0 +1,38 @@
+.progress-tip {
+    text-align: center;
+    h3 {
+        margin: 20px auto 5px;
+    }
+    h4 {
+        font-size: 14px;
+        color: #ccc;
+        margin-bottom: 25px;
+    }
+    .help {
+        margin-top: 5px;
+        font-size: 12px;
+        a:first-of-type {
+            flex: none;
+            width: 40px;
+        }
+    }
+}
+.set-wan {
+    .loading {
+        font-size: 80px;
+        margin-bottom: 30px;
+        color: #6174F1;
+    }
+    .ui-center {
+        height: 400px;
+    }
+    .none {
+        display: none;
+    }
+    .wan {
+        display: none
+    }
+    .wan.block {
+        display: block;
+    }
+}

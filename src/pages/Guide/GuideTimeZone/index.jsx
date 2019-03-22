@@ -10,7 +10,6 @@ const Option = Select.Option;
 export default class TimeZone extends React.Component {
     constructor(props) {
         super(props);
-        console.log(getTimezones());
         this.children = getTimezones().map(item => {
             return <Option value={item[0]}>{item[1]}</Option>
         });
@@ -97,7 +96,6 @@ export default class TimeZone extends React.Component {
 
     render() {
         const { timezone, loading } = this.state;
-        console.log(this.children);
         return (
             <div className='guide-timezone'>
                 <h2>{intl.get(MODULE, 0)/*_i18n:设置时区*/}</h2>

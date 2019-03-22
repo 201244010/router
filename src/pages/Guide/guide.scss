@@ -1,142 +1,38 @@
+
 .guide-bg {
-  background-image: linear-gradient(180deg, #446CE6 230px, #f2f3f7 230px);
-}
-.guide {
-  h1 {
-    margin-bottom: 20px;
-  }
-}
-.speed-test {
-  align-items: center;
+  background:#5F6FDE;
 }
 .steps {
   $white: rgba(255, 255, 255, .5);
   $pure-white: #fff;
   padding-bottom: 20px;
-  .setpassword {
-    .ui-form {
-      width: 320px;
-    }
-    .ui-form .ui-form-item-label {
-      min-width: 144px;
-    }
-  }
   .guide-header {
-    flex: none;
-    height: 85px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    color: $white;
-    width: 874px;
-    margin: auto;
-    li {
-      margin: 0 10px;
-      flex: none;
-      i {
-        width: 26px;
-        height: 26px;
-        font-style: normal;
-        font-weight: bolder;
-        border: 1px solid $white;
-        text-align: center;
-        border-radius: 100%;
-        margin-right: 10px;
-        font-size: 14px;
-        line-height: 25px;
-      }
-      &.line {
-        flex: 1;
-        height: 1px;
-        border-top: 1px solid $white;
-      }
-      &.now {
-        font-weight: bolder;
-        color: $pure-white;
-        i {
-          border-color: $pure-white;
-          background-color: #fff;
-          color: #446CE6;
-        }
-        & + .line {
-          border-color: $pure-white;
-        }
-        .ui-icon {
-          display: none;
-        }
-      }
-      .ui-icon {
-        margin-right: 8px;
-        display: none;
-      }
-      &.done {
-        color: $pure-white;
-        .ui-icon {
-          display: inline-block;
-        }
-        & + .line {
-          border-color: $pure-white;
-        }
-        .order-num {
-          display: none;
-        }
-      }
+    height: 72px;
+    .logo {
+      margin-top: 12px;
     }
   }
   .guide-body {
-    margin-top: 10px;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     height: calc(100% - 85px);
     background-color: #FAFBFC;
     color: #333C4F;
-    padding: 20px 57px 35px;
+    padding: 40px 58px 36px;
     position: relative;
     z-index: 200;
     overflow: auto;
     h2 {
-      height: 60px;
-      line-height: 60px;
+      font-family: 'PingFangSC-Semibold';
+      font-size: 24px;
+      line-height: 33px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #ECECEC;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .guide-tip {
-      margin-bottom: 25px;
-    }
-    .progress-tip {
-      text-align: center;
-      h3 {
-        margin: 20px auto 5px;
-      }
-      h4 {
-        font-size: 14px;
-        color: #ccc;
-        margin-bottom: 25px;
-      }
-      .help {
-        margin-top: 5px;
-        font-size: 12px;
-        a:first-of-type {
-          flex: none;
-          width: 40px;
-        }
-      }
-    }
-    .set-wan {
-      .ui-center {
-        height: 400px;
-      }
-      .none {
-        display: none;
-      }
-      .wan {
-        display: none
-      }
-      .wan.block {
-        display: block;
-      }
+      margin-bottom: 52px;
     }
     .help {
       display: flex;
@@ -163,113 +59,6 @@
       .more {
         flex: 1;
         text-align: right;
-      }
-    }
-    .speed {
-      .button-group {
-        position: absolute;
-        top: 0;
-        left: 0;
-        text-align: center;
-        margin-top: 2px;
-        margin-bottom: 5px;
-        background: #F8F8F8;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        border-radius: 4px;
-        box-sizing: border-box;
-        width: 192px;
-        a {
-          color: #ADB1B9;
-          height: 34px;
-          width: 94px;
-          line-height: 36px;
-          padding: 0 10px;
-          font-size: 14px;
-          &.now, &:hover {
-            color: #FB8632;
-            text-decoration: none;
-          }
-        }
-        span.border {
-          width: 1px;
-          height: 20px;
-          background-color: rgba(0, 0, 0, 0.12);
-        }
-      }
-      .entry {
-        margin: auto;
-        padding-top: 20px;
-      }
-      .button-wrap {
-        width: 260px;
-      }
-      .speed-result {
-        color: #333C4F;;
-        font-size: 14px;
-        padding-bottom: 20px;
-        padding-top: 30px;
-        .help {
-          color: #ccc;
-        }
-        .board {
-          display: flex;
-          font-size: 0;
-          padding: 20px 0;
-          margin: 40px 0;
-          line-height: 1;
-          em {
-            font-style: normal;
-          }
-          strong {
-            font-weight: normal;
-          }
-          .board-item {
-            display: inline-block;
-            font-size: 12px;
-            color: #adb1b9;
-            .band-width {
-              font-size: 52px;
-              margin: 0 5px;
-              color: #000;
-            }
-            .band-result {
-              display: inline-block;
-              .ui-tips {
-                display: block;
-              }
-            }
-          }
-          .board-split {
-            width: 1px;
-            margin: 11px 25px;
-            background-color: #ccc;
-            height: 30px;
-            padding: 5px 0;
-            align-items: center;
-          }
-        }
-      }
-    }
-    .wifi-box {
-      flex-flow: row wrap;
-      margin-top: 32px;
-      form {
-        flex: none;
-        width: auto;
-        .ui-icon-business:before,.ui-icon-customer:before{
-          vertical-align: middle;
-        }
-        .ui-form-item-label{
-          text-align: left;
-          min-width: 106px;
-        }
-      }
-      .border {
-        height: 160px;
-        width: 1px;
-        background: rgba(51,60,79,0.20);
-        flex: none;
-        margin: 0 80px 32px;
       }
     }
   }

@@ -10,6 +10,7 @@ const FormItem = props => {
     const showErrorTip = props.showErrorTip || props.errorTip;
     const suffix = props.suffix;
     const labelStyle = props.labelStyle || {};
+    const inputStyle = props.inputStyle || {};
     const klass = classnames([
         'ui-form-item',
         { 
@@ -23,7 +24,7 @@ const FormItem = props => {
             { 
                 (props.label || props.label == '#') ? [
                 <div key={'label'} className="ui-form-item-label ui-ib" style={labelStyle} >{props.label === '#' ? '' : props.label}</div>, 
-                <div key={'input'} className="ui-form-item-field ui-ib">
+                <div key={'input'} className="ui-form-item-field ui-ib" style={inputStyle}>
                     {props.children}
                     { suffix ? <div className="ui-form-item-suffix">{suffix}</div> : "" }
                 </div>] : 
@@ -38,7 +39,7 @@ const Form = props => {
     const blockSubmit = (e) => {e.preventDefault()};
     
     return (
-        <form className="ui-form" autoComplete="off" style={props.style} onSubmit={blockSubmit} >
+        <form className="ui-form" style={props.style} onSubmit={blockSubmit} >
             {props.children}
         </form>
     );
@@ -71,8 +72,7 @@ class Input extends React.Component {
         disabled : PropTypes.bool,
         width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
         visibilityChange : PropTypes.func,
-        placeholder : PropTypes.string
-
+        placeholder : PropTypes.string,
     };
 
     HandleVisibilityChange = ()=>{
@@ -119,17 +119,19 @@ class Input extends React.Component {
                         </i>
                     ] : ""
                 }
-                <input  className={classnames(classes)}
-                        onBlur={this.handleBlur}
-                        maxLength={this.props.maxLength}
-                        onKeyPress={this.handleKeyPress}
-                        onChange={this.handleChange} 
-                        value={this.props.value}
-                        disabled={this.props.disabled}
-                        name={this.props.name}
-                        placeholder={this.props.placeholder}
-                        autocomplete="new-password" // 修复chrome上密码自动填充问题
-                        type={this.state.type}/>
+                <input
+                    className={classnames(classes)}
+                    onBlur={this.handleBlur}
+                    maxLength={this.props.maxLength}
+                    onKeyPress={this.handleKeyPress}
+                    onChange={this.handleChange} 
+                    value={this.props.value}
+                    disabled={this.props.disabled}
+                    name={this.props.name}
+                    placeholder={this.props.placeholder}
+                    autoComplete="new-password" // 修复chrome上密码自动填充问题
+                    type={this.state.type}
+                />
             </div>
         );
     }

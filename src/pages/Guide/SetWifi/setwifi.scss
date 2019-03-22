@@ -48,3 +48,25 @@
         }
     }
 }
+.wifi-box {
+    flex-flow: row wrap;
+    margin-top: 32px;
+    form {
+        flex: none;
+        width: auto;
+        .ui-icon-business:before,.ui-icon-customer:before{
+            vertical-align: middle;
+        }
+        .ui-form-item-label{
+            text-align: left;
+            min-width: 106px;
+        }
+    }
+    .border {
+        height: 160px;
+        width: 1px;
+        background: rgba(51,60,79,0.20);
+        flex: none;
+        margin: 0 80px 32px;
+    }
+}

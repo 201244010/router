@@ -159,8 +159,8 @@ export default class SysUpgrade extends React.Component{
                 </Form>
                 <div style={{height :　44, marginTop : 20}}>
                     <ul className="ui-mute">{intl.get(MODULE, 3)/*_i18n:当前版本*/}:</ul>
-                    {/* <label className="oneline" style={{marginLeft : 10, color : '#333c4f'}} onClick={this.manualUpgrade}>{currentVersion}</label> */}
-                    <label className="oneline" style={{marginLeft : 10, color : '#333c4f'}}>{currentVersion}</label>
+                    <label className="oneline" style={{marginLeft : 10, color : '#333c4f'}} onClick={this.manualUpgrade}>{currentVersion}</label>
+                    {/* <label className="oneline" style={{marginLeft : 10, color : '#333c4f'}}>{currentVersion}</label> */}
                 </div>
                 {
                     (currentVersion === latestVersion || latestVersion === "") ? <div style={{color : '#ADB1B9', marginBottom : 20}}>{intl.get(MODULE, 4)/*_i18n:当前已是最新版本，无需升级*/}</div>
@@ -176,7 +176,7 @@ export default class SysUpgrade extends React.Component{
                         {releaseLog}
                     </pre>
                 </Modal>
-                {/* <Modal
+                <Modal
                     title='开启Telnet及手动升级'
                     visible={manual}
                     closable={false}
@@ -201,7 +201,7 @@ export default class SysUpgrade extends React.Component{
                     >
                         <Button><Icon type="upload" />手动升级</Button>
                     </Upload>
-                </Modal> */}
+                </Modal>
                 <Upgrade ref='Upgrade'/>
             </div>
         );

@@ -7,6 +7,8 @@ import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
 import { checkStr, checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 
+import './setwan.scss';
+
 const MODULE = 'setwan';
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
 const Option = Select.Option;
@@ -375,8 +377,8 @@ export default class SetWan extends React.PureComponent {
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 16)/*_i18n:上网参数设置完成后，即可连接网络*/}</p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
-                    <h3 key="active-h3">{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
+                    <Icon key="progress-icon" type="loading" className="loading"  spin />
+                    <h3 key="active-h3" style={{textAlign: "center"}}>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
                 </div>
                 {/* 显示网络连接状态 */}
                 {
