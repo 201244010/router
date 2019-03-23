@@ -478,8 +478,8 @@ const NetStatus = props => {
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>{intl.get(MODULE, 28)/*_i18n:重新设置*/}</Button>
             <div className="help">
-                <a href="javascript:;" onClick={props.reSet} className="ui-tips">{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
-                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
+                <a href="javascript:;" onClick={props.reSet} className="back">{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
+                <a href="javascript:;" className="next" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
             </div>
         </div>)
 }
