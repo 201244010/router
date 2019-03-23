@@ -9,7 +9,7 @@ const ErrorTip = props => <div style={props.style} className="ui-form-explain">{
 const FormItem = props => {
     const showErrorTip = props.showErrorTip || props.errorTip;
     const suffix = props.suffix;
-    const labelStyle = props.labelStyle || {};
+    const labelStyle = props.labelStyle || {width: 0};
     const inputStyle = props.inputStyle || {};
     const klass = classnames([
         'ui-form-item',
