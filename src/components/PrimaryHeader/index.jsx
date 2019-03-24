@@ -60,11 +60,11 @@ class PrimaryHeader extends React.Component {
 						{
                             !isGuidePage ? [
                                 <nav key="1" className="menu">
-                                    <Icon type="netstat"></Icon>
+                                    {/* <Icon type="netstat"></Icon> */}
                                     <NavLink to={match.path + "home"} activeClassName="active">{intl.get(MODULE, 0)/*_i18n:网络状态*/}</NavLink>
-                                    <Icon type="set"></Icon>
-                                    <NavLink to={match.path + "settings"} activeClassName="active">{intl.get(MODULE, 1)/*_i18n:基本设置*/}</NavLink>
-                                    <Icon type="advancedsetup"></Icon>
+                                    {/* <Icon type="set"></Icon> */}
+                                    <NavLink to={match.path + "clientlist"} activeClassName="active">{intl.get(MODULE, 1)/*_i18n:基本设置*/}</NavLink>
+                                    {/* <Icon type="advancedsetup"></Icon> */}
                                     <NavLink to={match.path + "advance"} activeClassName="active">{intl.get(MODULE, 2)/*_i18n:高级设置*/}</NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">

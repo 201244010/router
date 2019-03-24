@@ -1,15 +1,14 @@
 import React from 'react';
-import classnames from 'classnames';
+import './index.scss';
+import CustomIcon from '~/components/Icon';
 import { Button, Divider, Popover, Modal, Table, message, Popconfirm, Input, Form } from 'antd';
 import Loading from '~/components/Loading';
+import classnames from 'classnames';
 import { formatTime, formatSpeed } from '~/assets/common/utils';
-import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 
-import './clients.scss';
-
 const MODULE = 'clientlist';
-const TYPE_SUNMI = 'sunmi', TYPE_NORMAL = 'normal', TYPE_WHITE = 'whitelist', TYPE_PRIORITY = 'priority';
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -118,7 +117,7 @@ class EditableCell extends React.Component {
     }
 }
 
-export default class ClientList extends React.Component {
+export default class Device extends React.Component {
     constructor(props) {
         super(props);
         this.RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/;
@@ -128,71 +127,76 @@ export default class ClientList extends React.Component {
             '1': '2.4G',
             '2': intl.get(MODULE, 2)/*_i18n:有线*/,
         };
+        this.deviceList = {
+            'sunmi': '商米设备',
+            'whitelist': '优先设备',
+            'normal': '普通设备'
+        };
+        this.logoType = {
+            'sunmi': '商米',
+            'whitelist': '优先'
+        };
         this.columns = [{
             dataIndex: 'mac',
-            width: 52,
+            width: 60,
             className: 'center',
             render: (mac, record) => {
                 return (
                     <div className='logo-cell'>
                         <Logo logoColor='#AEB1B9' mac={mac} model={record.model} size={32} />
-                        {(TYPE_SUNMI === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')}></img>}
-                        {record.me && <img src={require('~/assets/images/me-badge.svg')}></img>}
+                        {('sunmi' === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')}></img>}
                     </div>
                 )
             }
         }, {
             title: intl.get(MODULE, 4)/*_i18n:设备名称*/,
-            width: 160,
+            width: 271,
             dataIndex: 'name',
             className: 'editable-cell',
             editable: true,
             defaultSortOrder: 'ascend',
-            sorter: (a, b) => {
-                if (a.type === b.type) {
-                    return (a.ontime - b.ontime);
-                } else {
-                    return (TYPE_SUNMI === a.type) ? -1 : 1;
-                }
-            },
-            render: (text, record) => {
+            filters: [{
+                text: this.deviceList['sunmi'],
+                value: 'sunmi',
+            }, {
+                text: this.deviceList['whitelist'],
+                value: 'whitelist',
+            }, {
+                text: this.deviceList['normal'],
+                value: 'normal',
+            }],
+            onFilter: (value, record) => record.type.indexOf(value) === 0,
+            render: (text, record, index) => {
                 let ontime = formatTime(record.ontime);
                 let hostname = record.name;
+                let type = record.type;
+                const maxWidth = (() => {
+                    if (record.me && 'normal' !== type) {
+                        return 130;
+                    } 
+                    if (record.me && 'normal' === type) {
+                        return 170;
+                    }
+                    if ('normal' !== type) {
+                        return 194;
+                    }
+                    return 243;
+                })();
                 return ([
-                    <div className='device hostname' title={hostname}>{hostname}</div>,
+                    <div style={{display: 'inline-flex', alignItems: 'center'}}>
+                        <label className='device hostname' style={{maxWidth: maxWidth}} title={hostname}>
+                            {hostname}
+                        </label>
+                        {record.me && <span className="current-device">（当前设备）</span>}
+                        <span className={`logo ${type}`}>{this.logoType[type]}</span>
+                    </div>,
                     <div className='device' title={ontime}>
                         <label style={{ marginRight: 3 }}>{intl.get(MODULE, 5)/*_i18n:在线时长:*/}</label><label>{ontime}</label>
                     </div>
                 ])
             }
         }, {
-            title: intl.get(MODULE, 6)/*_i18n:IP/MAC地址*/,
-            width: 187,
-            render: (text, record) => (
-                <div>
-                    <div style={{ lineHeight: '31px', verticalAlign: 'middle' }}><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>
-                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac}</label></div>
-                </div>
-            )
-        }, {
-            title: intl.get(MODULE, 7)/*_i18n:接入方式*/,
-            dataIndex: 'mode',
-            filters: [{
-                text: this.modeMap['2'],
-                value: '2',
-            }, {
-                text: this.modeMap['1'],
-                value: '1',
-            }, {
-                text: this.modeMap['0'],
-                value: '0',
-            }],
-            onFilter: (value, record) => record.mode.indexOf(value) === 0,
-            sorter: (a, b) => parseInt(a.mode) - parseInt(b.mode),
-            render: (mode, record) => this.modeMap[mode],
-            width: 113
-        }, {
-            title: intl.get(MODULE, 8)/*_i18n:信号*/,
+            title: '信号质量'/*_i18n:信号*/,
             dataIndex: 'rssi',
             filters: [{
                 text: this.RSSI_GOOD,
@@ -202,14 +206,7 @@ export default class ClientList extends React.Component {
                 value: this.RSSI_BAD,
             }],
             onFilter: (value, record) => record.rssi.indexOf(value) === 0,
-            sorter: (a, b) => {
-                if (a.rssi !== b.rssi) {
-                    return (this.RSSI_GOOD === a.rssi) ? 1 : -1;
-                }
-
-                return 1;
-            },
-            width: 102,
+            width: 140,
             render: (rssi, record) => (
                 <div><i className={'dot ' + (this.RSSI_BAD == rssi ? 'warning' : '')}></i><span>{rssi}</span></div>
             )
@@ -224,34 +221,35 @@ export default class ClientList extends React.Component {
             )
         }, {
             title: intl.get(MODULE, 10)/*_i18n:流量消耗*/,
-            width: 115,
+            width: 140,
             dataIndex: 'flux',
             sorter: (a, b) => a.flux - b.flux,
             render: (flux, record) => formatSpeed(flux).replace('/s', ''),
         }, {
             title: intl.get(MODULE, 11)/*_i18n:操作*/,
-            width: 150,
+            width: 169,
             render: (text, record) => {
                 let type = record.type;
                 return (
                     <span>
-                        {TYPE_SUNMI !== type &&
+                        {'sunmi' !== type &&
                             <a
                                 onClick={() => this.handleEdit(record)}
                                 href="javascript:;"
-                                style={{ color: "#3D76F6" }}
+                                style={{ color: "#3D76F6", fontSize: 12, marginRight: 12}}
                             >
-                                {TYPE_WHITE === record.type ? intl.get(MODULE, 12)/*_i18n:解除优先*/ : intl.get(MODULE, 13)/*_i18n:优先上网*/}
+                                {'whitelist' === record.type ? intl.get(MODULE, 12)/*_i18n:解除优先*/ : intl.get(MODULE, 13)/*_i18n:优先上网*/}
                             </a>
                         }
-                        {TYPE_SUNMI !== type && <Divider type="vertical" />}
                         <Popconfirm
                             title={intl.get(MODULE, 14)/*_i18n:确定禁止此设备上网？*/}
                             okText={intl.get(MODULE, 15)/*_i18n:确定*/}
                             cancelText={intl.get(MODULE, 16)/*_i18n:取消*/}
                             placement="topRight"
                             onConfirm={() => this.handleDelete(record)}>
-                            <a href="javascript:;" style={{ color: "#BF4C41" }}>{intl.get(MODULE, 17)/*_i18n:禁止上网*/}</a>
+                            {
+                                !record.me && <a href="javascript:;" style={{ color: "#BF4C41", fontSize: 12}}>{intl.get(MODULE, 17)/*_i18n:禁止上网*/}</a>
+                            }                       
                         </Popconfirm>
                     </span>
                 );
@@ -272,7 +270,7 @@ export default class ClientList extends React.Component {
     }
 
     handleEdit = async (record) => {
-        let directive = (TYPE_NORMAL === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
+        let directive = ('normal' === record.type) ? 'QOS_AC_WHITELIST_ADD' : 'QOS_AC_WHITELIST_DELETE';
 
         Loading.show({ duration: 3 });
         let response = await common.fetchApi(
@@ -291,6 +289,7 @@ export default class ClientList extends React.Component {
         message.error(intl.get(MODULE, 18, {error: errcode})/*_i18n:操作失败[{error}]*/);
     }
 
+
     handleDelete = async (record) => {
         if (this.props.mac === record.mac) {
             message.warning(intl.get(MODULE, 19)/*_i18n:不能禁止本机上网*/);
@@ -303,7 +302,7 @@ export default class ClientList extends React.Component {
         ).catch(ex => { });
 
         let { errcode } = response;
-        if (errcode == 0) {
+        if (errcode == 0) { 
             message.success(intl.get(MODULE, 20)/*_i18n:配置生效！如需恢复，可在高级设置-防蹭网中恢复上网*/);
 
             // 后台生效需要1秒左右，延迟2秒刷新数据，
@@ -316,9 +315,10 @@ export default class ClientList extends React.Component {
         message.error(intl.get(MODULE, 21, {error: errcode})/*_i18n:操作失败[{error}]*/);
     }
 
+
     handleSave = async (record, toggleEdit) => {
         const { mac, name } = record;
-        const clients = this.props.data;
+        const clients = this.props.totalList;
         const client = clients.find((client, index) => {
             return (client.mac === record.mac);
         });
@@ -353,65 +353,15 @@ export default class ClientList extends React.Component {
         });
     }
 
-    updateClientsInfo = () => {
-        // 转圈1秒
-        this.setState({
-            refresh: true,
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    refresh: false,
-                });
-            }, 1000);
-        });
-        this.props.startRefresh(true);
-    }
-
     goWhiteList = () => {
         this.props.history.push('/advance/whitelist');
     }
 
+
+
     render() {
-        const { visible, refresh } = this.state;
-        const props = this.props;
-        const clients = props.data;
-        const total = clients.length;
-        const placement = props.placement || 'top';
-        const maxConf = {
-            [TYPE_NORMAL]: 18,
-            [TYPE_PRIORITY]: 18,
-        };
-        const deviceTypeMap = {
-            [TYPE_NORMAL]: intl.get(MODULE, 23)/*_i18n:普通设备*/,
-            [TYPE_PRIORITY]: intl.get(MODULE, 24)/*_i18n:优先设备*/
-        };
-
-        const deviceType = deviceTypeMap[props.type];
-        const max = parseInt(maxConf[props.type], 10);
-        const current = (total < max) ? total : max;
-
-        const listItems = clients.map((client, index) => {
-            if (index < max) {
-                const type = client.type;
-                const hostname = client.name;
-                return (
-                    <li key={client.mac} className='client-item'>
-                        <Popover placement={placement} trigger='click'
-                            content={<Item modeMap={this.modeMap} client={client} btnL={this.handleEdit} btnR={this.handleDelete}/>} >
-                            <div className={`icon ${type}`}>
-                                <Logo mac={client.mac} model={client.model} size={36} />
-                                {(TYPE_SUNMI === type) && <img src={require('~/assets/images/sunmi.svg')}></img>}
-                                {client.me && <img src={require('~/assets/images/me.svg')}></img>}
-                            </div>
-                        </Popover>
-                        <div className='under-desc'>
-                            <i className={'dot ' + (this.RSSI_BAD == client.rssi ? 'warning' : '')}></i>
-                            <p title={hostname}>{hostname}</p>
-                        </div>
-                    </li>
-                );
-            }
-        });
+        const {visible, refresh} = this.state;
+        const {sunmiLength, priorityLength, normalLength, totalList} = this.props;
 
         const components = {
             body: {
@@ -435,33 +385,68 @@ export default class ClientList extends React.Component {
                 }),
             };
         });
-
-        return (
-            <div className={classnames(['list-content', props.type + '-list'])}>
-                <div className='list-header'>
-                    <Divider type="vertical" className='divider' /><span>{deviceType}</span><span className='statistics'>（{total}）</span>
-                    <Button className='more' onClick={this.showMore}>{intl.get(MODULE, 25)/*_i18n:查看全部*/}</Button>
-                </div>
-                <ul>{listItems}</ul>
-                {(TYPE_PRIORITY === props.type && clients.length <= 0) &&
-                    <div className='null-tip'>
-                        <label>{intl.get(MODULE, 26)/*_i18n:暂无优先设备，*/}</label><a onClick={this.goWhiteList} href="javascript:;">{intl.get(MODULE, 27)/*_i18n:添加优先设备*/}</a>
+        return(
+            <div className='device'>
+                <span className='first-title'>
+                    上网设备
+                </span>
+                <span className='second-title'>
+                    设置优先上网设备
+                </span>
+                <div className='third-div'>
+                    <div className='device-number'>
+                        <div className='yellow'>
+                        
+                        </div>
+                        <span className='left-border'>
+                            商米设备
+                        </span>
+                        <span className={sunmiLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                            {sunmiLength}
+                        </span>
                     </div>
-                }
+                    <div className='device-grid'>
+                    
+                    </div>
+                    <div className='device-number'>
+                        <div className='green'>
+    
+                        </div>
+                        <span className='left-border'>
+                            优先设备
+                        </span>
+                        <span className={priorityLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                            {priorityLength}
+                        </span>
+                    </div>
+                    <div className='device-grid'>
+                    
+                    </div>
+                    <div className='device-number'>
+                        <div className='blue'>
+    
+                        </div>
+                        <span className='left-border'>
+                            普通设备
+                        </span>
+                        <span className={normalLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                            {normalLength}
+                        </span>
+                    </div>
+                </div>
+                <Button onClick={this.viewDevice} className="button">查看设备</Button>
                 <Modal
-                    closable={false}
-                    maskClosable={false}
-                    centered
-                    destroyOnClose
-                    width={1060}
-                    style={{ position: 'relative' }}
                     visible={visible}
+                    width={960}
+                    closable={true}
+                    maskClosable={false}
+                    onCancel={this.handleCancel}
                     footer={[
-                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)/*_i18n:取消*/}</Button>
+                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
                     ]}
                 >
                     <div style={{padding: '0 0 16px',marginBottom: 24}}>
-                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 39, {deviceType, total})}</p>
+                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>上网设备 ({totalList.length}台)</p>
                         <Button style={{
                             display: 'inline-block',
                             border: 0,
@@ -472,9 +457,9 @@ export default class ClientList extends React.Component {
                     <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
                     <Table
                         columns={columns}
-                        dataSource={clients}
+                        dataSource={totalList}
                         components={components}
-                        rowClassName={() => 'editable-row'}
+                        rowClassName={() => 'editable-row-device'}
                         bordered
                         rowKey={record => record.mac}
                         scroll={{ y: 336 }}
@@ -484,70 +469,26 @@ export default class ClientList extends React.Component {
                         locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
                     />
                 </Modal>
-            </div>);
-    }
-}
-
-class Item extends React.Component {
-    constructor(props) {
-        super(props);
+            </div>
+        )
     }
 
-    render() {
-        let client = this.props.client;
-        let type = client.type;
-        let signal = client.rssi;
-        let access = this.props.modeMap[client.mode];
-        let time = formatTime(client.ontime);
-        let flux = formatSpeed(client.flux).replace('/s', '');
-        let up = client.tx;
-        let down = client.rx;
-        let ip = client.ip;
-        let mac = client.mac;
-        let info = (
-            <ul>
-                <li><label>{intl.get(MODULE, 30)/*_i18n:信号：*/}</label><span>{signal}</span></li><li><label>{intl.get(MODULE, 31)/*_i18n:接入方式：*/}</label><span>{access}</span></li>
-                <li><label>{intl.get(MODULE, 32)/*_i18n:接入时间：*/}</label><span title={time}>{time}</span></li><li><label>{intl.get(MODULE, 33)/*_i18n:流量消耗：*/}</label><span>{flux}</span></li>
-                <li><label>{intl.get(MODULE, 34)/*_i18n:上传速率：*/}</label><span>{up}</span></li><li><label>{intl.get(MODULE, 35)/*_i18n:下载速率：*/}</label><span>{down}</span></li>
-                <li><label>IP：</label><span>{ip}</span></li><li><label>MAC：</label><span>{mac}</span></li>
-            </ul>
-        );
-
-        const hostname = client.name;
-
-        switch (type) {
-            case TYPE_SUNMI:
-                return (
-                    <div className='client-info'>
-                        <p>{hostname}</p>
-                        {info}
-                        <div>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })} className='single'>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
-                        </div>
-                    </div>
-                );
-            case TYPE_WHITE:
-                return (
-                    <div className='client-info'>
-                        <p>{hostname}</p>
-                        {info}
-                        <div>
-                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 36)/*_i18n:解除优先*/}</Button>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
-                        </div>
-                    </div>);
-            case TYPE_NORMAL:
-            default:
-                return (
-                    <div className='client-info'>
-                        <p>{hostname}</p>
-                        {info}
-                        <div>
-                            <Button onClick={() => this.props.btnL({ type: client.type, name: client.name, mac: client.mac })}>{intl.get(MODULE, 37)/*_i18n:优先上网*/}</Button>
-                            <Button onClick={() => this.props.btnR({ name: client.name, mac: client.mac })}>{intl.get(MODULE, 38)/*_i18n:禁止上网*/}</Button>
-
-                        </div>
-                    </div>);
-        }
+    updateClientsInfo = () => {
+        // 转圈1秒
+        this.setState({
+            refresh: true,
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    refresh: false,
+                });
+            }, 1000);
+        });
+        // this.props.startRefresh(true);
+    }
+    viewDevice = () => {
+        this.setState({
+            visible: true
+        });
     }
 }

@@ -717,7 +717,7 @@ export default class WIFI extends React.Component {
                                         <div className='moreDiv' id="channel5Area">
                                             <label>{intl.get(MODULE, 64)/*_i18n:无线信道*/}</label> 
                                             <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
-                                                <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:客用Wi-Fi*/}</Option>
+                                            <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:客用Wi-Fi*/}</Option>
                                                 {channelList5}
                                         </Select>
                                         </div>

@@ -9,6 +9,7 @@ import CustomIcon from '~/components/Icon';
 import Login from './Login';
 import Guide from "./Guide";
 import Home from './Home';
+import ClientList from './ClientList';
 import Settings from './Settings';
 import Advance from './Advance';
 import Welcome from './Welcome';
@@ -58,6 +59,7 @@ class PrimaryLayout extends React.Component {
         const conf = {
             'guide': { main: 'guide-bg', footer: false, header: false },
             'login': { main: 'index-bg', footer: '', header: false},
+            'clientlist': { main: 'bg', footer: '', header: true},
             'settings': { main: 'bg', footer: '', header: true },
             'advance': { main: 'bg', footer: '', header: true },
             'welcome': { main: 'index-bg', footer: '', header: false },
@@ -86,6 +88,7 @@ class PrimaryLayout extends React.Component {
                             <Route path='/agreement' component={UserAgreement} />
                             <Route path="/guide" component={Guide} />
                             <Route path="/home" component={Home} />
+                            <Route path="/clientlist" component={ClientList} />
                             <Route path="/settings" component={Settings} />
                             <Route path="/advance" component={Advance} />
                             <Route path='/app' component={DownloadPage} />
