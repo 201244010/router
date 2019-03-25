@@ -7,6 +7,8 @@ import { Select, Button } from "antd";
 import CustomIcon from '~/components/Icon';
 import { checkStr, checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 
+import './setwan.scss';
+
 const MODULE = 'setwan';
 const { FormItem, Input : FormInput, InputGroup, ErrorTip } = Form;
 const Option = Select.Option;
@@ -375,8 +377,8 @@ export default class SetWan extends React.PureComponent {
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 16)/*_i18n:上网参数设置完成后，即可连接网络*/}</p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 80, marginBottom : 30, color : "#FB8632" }}  spin />
-                    <h3 key="active-h3">{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
+                    <Icon key="progress-icon" type="loading" className="loading"  spin />
+                    <h3 key="active-h3" style={{textAlign: "center"}}>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
                 </div>
                 {/* 显示网络连接状态 */}
                 {
@@ -389,9 +391,12 @@ export default class SetWan extends React.PureComponent {
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
-                            <Form style={{ margin : '0 auto',width:450 }}>
-                                <FormItem label={intl.get(MODULE, 18)/*_i18n:上网方式*/}>
-                                    <div style={{ padding: 0, position: 'relative' }} id="typeArea">
+                            <Form style={{margin : '24px auto', width:260}}>
+                                <FormItem 
+                                    label={intl.get(MODULE, 18)/*_i18n:上网方式*/}
+                                    labelStyle={{position: 'absolute',right: 272}}
+                                    >
+                                    <div style={{ padding: 0, position: 'relative',borderRadius: 8 }} id="typeArea">
                                         <Select value={type} style={{ width: "100%" }} onChange={this.handleChange} getPopupContainer={() => document.getElementById('typeArea')}>
                                             <Option value="pppoe">{intl.get(MODULE, 19)/*_i18n:宽带拨号上网（PPPoE）*/}</Option>
                                             <Option value="dhcp">{intl.get(MODULE, 20)/*_i18n:自动获取IP（DHCP）*/}</Option>
@@ -426,8 +431,18 @@ export default class SetWan extends React.PureComponent {
                                                                     dnsbackupTip={dnsbackupTip}
                                                             /> : ''
                                 }
-                                <FormItem label="#">
-                                    <Button type="primary" size='large' onClick={this.submit} disabled={disabled} loading={loading}  style={{ width : '100%' }}>{intl.get(MODULE, 22)/*_i18n:下一步*/}</Button>
+                                <FormItem
+                                    label="#"
+                                    >
+                                    <Button
+                                        className="nextButton" 
+                                        type="primary"
+                                        size='large'
+                                        onClick={this.submit}
+                                        disabled={disabled}
+                                        loading={loading}
+                                        >{intl.get(MODULE, 22)/*_i18n:下一步*/}
+                                    </Button>
                                 </FormItem>
                             </Form>
                         </div>
@@ -463,15 +478,19 @@ const NetStatus = props => {
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>{intl.get(MODULE, 28)/*_i18n:重新设置*/}</Button>
             <div className="help">
-                <a href="javascript:;" onClick={props.reSet} className="ui-tips">{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
-                <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
+                <a href="javascript:;" onClick={props.reSet} className="back">{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
+                <a href="javascript:;" className="next" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
             </div>
         </div>)
 }
 
 const PPPOE = props => {
     return [
-        <FormItem key='account' label={intl.get(MODULE, 31)/*_i18n:账号*/}>
+        <FormItem
+            key='account'
+            label={intl.get(MODULE, 31)/*_i18n:账号*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            >
             <FormInput placeholder={intl.get(MODULE, 32)/*_i18n:请输入账号*/}
                 type="text"
                 name="pppoe-account"
@@ -481,7 +500,11 @@ const PPPOE = props => {
                 maxLength='64'/>
             <ErrorTip style={{color: '#fb8632'}}>{props.pppoeAccountTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='password' label={intl.get(MODULE, 33)/*_i18n:密码*/}>
+        <FormItem
+            key='password'
+            label={intl.get(MODULE, 33)/*_i18n:密码*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            >
             <FormInput 
                 value={props.pppoePassword}
                 placeholder={intl.get(MODULE, 34)/*_i18n:密码*/} 
@@ -497,31 +520,56 @@ const PPPOE = props => {
 // 静态 IP 配置
 const StaticIp = props => {
     return [
-        <FormItem key='ip' label={intl.get(MODULE, 35)/*_i18n:IP地址*/} showErrorTip={props.ipTip}>
+        <FormItem
+            key='ip'
+            label={intl.get(MODULE, 35)/*_i18n:IP地址*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            showErrorTip={props.ipTip}
+            >
             <InputGroup
                 inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'ip')} />
                 <ErrorTip>{props.ipTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='subnetmask' label={intl.get(MODULE, 36)/*_i18n:子网掩码*/} showErrorTip={props.subnetmaskTip}>
+        <FormItem
+            key='subnetmask'
+            label={intl.get(MODULE, 36)/*_i18n:子网掩码*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            showErrorTip={props.subnetmaskTip}
+            >
             <InputGroup                                                                         
                 inputs={[{value : props.subnetmask[0], maxLength : 3}, {value : props.subnetmask[1], maxLength : 3}, {value : props.subnetmask[2], maxLength : 3}, {value : props.subnetmask[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'subnetmask')} />
             <ErrorTip>{props.subnetmaskTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='gateway' label={intl.get(MODULE, 37)/*_i18n:默认网关*/} showErrorTip={props.gatewayTip}>
+        <FormItem
+            key='gateway'
+            label={intl.get(MODULE, 37)/*_i18n:默认网关*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            showErrorTip={props.gatewayTip}
+            >
             <InputGroup 
                 inputs={[{value : props.gateway[0], maxLength : 3}, {value : props.gateway[1], maxLength : 3}, {value : props.gateway[2], maxLength : 3}, {value : props.gateway[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'gateway')} />
             <ErrorTip>{props.gatewayTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dns' label={intl.get(MODULE, 38)/*_i18n:首选DNS*/} showErrorTip={props.dnsTip}>
+        <FormItem
+            key='dns'
+            label={intl.get(MODULE, 38)/*_i18n:首选DNS*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            showErrorTip={props.dnsTip}
+            >
             <InputGroup 
                 inputs={[{value : props.dns[0], maxLength : 3}, {value : props.dns[1], maxLength : 3}, {value : props.dns[2], maxLength : 3}, {value : props.dns[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dns')} />
             <ErrorTip>{props.dnsTip}</ErrorTip>
         </FormItem>,
-        <FormItem key='dnsbackup' label={intl.get(MODULE, 39)/*_i18n:备选DNS(选填)*/} showErrorTip={props.dnsbackupTip}>
+        <FormItem
+            key='dnsbackup'
+            label={intl.get(MODULE, 39)/*_i18n:备选DNS(选填)*/}
+            labelStyle={{position: 'absolute',right: 272}}
+            showErrorTip={props.dnsbackupTip}
+            >
             <InputGroup 
                 inputs={[{value : props.dnsbackup[0], maxLength : 3}, {value : props.dnsbackup[1], maxLength : 3}, {value : props.dnsbackup[2], maxLength : 3}, {value : props.dnsbackup[3], maxLength : 3}]} 
                 onChange={value => props.onChange(value, 'dnsbackup')} />

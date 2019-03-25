@@ -2,6 +2,9 @@
     .content{
         margin-top: 36px;
         text-align: center;
+        .ant-select-selection {
+            border-radius: 8px;
+        }
         .btn{
             width: 260px;
             height: 42px;

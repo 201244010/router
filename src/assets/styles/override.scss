@@ -1,8 +1,16 @@
-button.ant-btn-primary,
-button.ant-btn-primary:hover, button.ant-btn-primary:focus {
+button.ant-btn-primary {
     color: #FFFFFF;
     background-color : $button-bg-color;
     border : 1px solid $button-bg-color;
+    border-radius: 8px;
+}
+button.ant-btn-primary:hover {
+    background-color : #808FF3;
+    border : 1px solid #808FF3;
+}
+button.ant-btn-primary:focus {
+    background-color : #4D5CC0;
+    border : 1px solid #4D5CC0;
 }
 
 button.ant-btn-primary.ant-btn-loading {
@@ -19,7 +27,7 @@ input.ant-input:hover {
 }
 
 button.ant-btn-primary.ant-btn-loading {
-    border-color : #FB8632!important;
+    border-color : #4D5CC0!important;
 }
 .ant-btn-primary.disabled, 
 .ant-btn-primary[disabled], 
@@ -52,7 +60,7 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-progress-circle-path {
-    stroke : #FB8632!important;
+    stroke : #4D5CC0!important;
 }
 
 .ant-progress-status-success .ant-progress-circle-path {
@@ -60,25 +68,25 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-progress-success-bg, .ant-progress-bg {
-    background-color : #FB8632!important;
+    background-color : #4D5CC0!important;
 }
 
 .ant-switch-checked {
-    background-color : #FB8632!important;
+    background-color : #4D5CC0!important;
 }
 
 .ant-click-animating-node {
-    border-color : #FB8632!important;
+    border-color : #4D5CC0!important;
 }
 
 
 .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
-    border-color : #FB8632!important;
+    border-color : #4D5CC0!important;
     box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2)!important;
 }
 
 .ant-select-selection:hover {
-    border-color : #FB8632!important;
+    border-color : #4D5CC0!important;
 }
 
 .ant-table-pagination.ant-pagination {
@@ -119,11 +127,11 @@ button.ant-btn-primary.ant-btn-loading {
     }
     .ant-tabs-tab-active{
         font-weight: bold !important;
-        color: #FB8632 !important;
+        color: #4D5CC0 !important;
     }
     .ant-tabs-ink-bar{
         height:3px !important;
-        background-color: #FB8632 !important;
+        background-color: #4D5CC0 !important;
     }
 }
 
@@ -133,8 +141,8 @@ button.ant-btn-primary.ant-btn-loading {
     }
     &.ant-checkbox-checked, .ant-checkbox-indeterminate{
         .ant-checkbox-inner{
-            background-color: #FB8632!important;
-            border-color: #FB8632!important;
+            background-color: #4D5CC0!important;
+            border-color: #4D5CC0!important;
         }
     }
 }
@@ -142,12 +150,12 @@ button.ant-btn-primary.ant-btn-loading {
 
 .ant-radio-checked{
     .ant-radio-inner{
-        border-color: #FB8632!important;
+        border-color: #4D5CC0!important;
         &:hover{
-            background-color: #FB8632!important;
+            background-color: #4D5CC0!important;
         }
         &:after{
-            background-color: #FB8632!important;
+            background-color: #4D5CC0!important;
         }
     }
 }
@@ -155,7 +163,7 @@ button.ant-btn-primary.ant-btn-loading {
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
 // .ant-select-selection:active {
-//   border-color: #FB8632;
+//   border-color: #4D5CC0;
 //   outline: 0;
 //   -webkit-box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
 //           box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2);
@@ -163,8 +171,8 @@ button.ant-btn-primary.ant-btn-loading {
 // }
 
 // .ant-select-open .ant-select-selection {
-//     border-color: #FB8632!important;
+//     border-color: #4D5CC0!important;
 // }
 // ::selection {
-//     background : #FB8632;
+//     background : #4D5CC0;
 // }
