@@ -1,241 +1,42 @@
-.user-experience-domestic {
-    // width: 880px;
-    margin: auto;
-    color: #333C4F;
-    padding: 0 50px;
-    .head-domestic {
-        border-bottom: 1px solid #ECECEC;
-        padding: 20px 0 40px;
-        h4{
-            color: #333C4F;
-            font-size: 28px;
-            display: inline-block;
-            vertical-align: middle;
-        }
+.success {
+    width: 100%;
+    padding: 57px 0;
+    text-align: center;
+    h4 {
+        font-family: 'PingFangSC-Medium';
+        font-size: 24px;
+        color: #333C4F;
     }
-    .body-domestic {
-        padding: 40px 0 0;
-        position: relative;
-        .title {
-            position: relative;
-            margin-bottom: 40px;
-            h4 {
-                color: #333C4F;
-                display: inline-block;    
-                font-size: 24px;
-                font-weight: bold;
-                line-height: 32px;
-            }
-            .go-home {
-                position: absolute;
-                right: 0;
-            }
+    p {
+        margin: 32px 0 12px;
+        font-family: 'PingFangSC-Regular';
+        font-size: 16px;
+        color: #333C4F;
+    }
+    .QR {
+        // width: 100px;
+        // height: 100px;
+        img{
+            height: 100px;
+            width: 100px;
         }
-        ul{
+        p{
+            font-size: 14px;
+            color: #ADB1B9;
             text-align: center;
-            li{
-                text-align: left;
-                width: 480px;
-                height: 160px;
-                margin-bottom: 32px;
-                position: relative;
-                display: inline-block;
-                background-color: #FFF;
-                border: 0.5px solid rgba(0,0,0,0.1);
-                border-radius: 12px;
-                .func-item{
-                    cursor: pointer;
-                    padding: 40px 0 40px 20px;
-                    .img {
-                        width: 80px;
-                        height: 80px;
-                        display: inline-block;
-                        text-align: center;
-                        vertical-align: middle;
-                    }
-
-                    .description {
-                        display: inline-block;
-                        margin-left: 12px;
-                        vertical-align: middle;
-                        h4 {
-                            color: #333C4F;
-                            margin-bottom: 8px;
-                            font-size: 20px;
-                            font-weight: bold;
-                        }
-                        p {
-                            color: #333C4F;
-                            font-size: 16px;
-                        }
-                    }
-
-                    .background {
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        opacity: 0.1;
-                    }
-                }
-                &:nth-child(1){   
-                    margin-right: 32px;
-                }
-                &:hover{
-                    box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
-                }
-            }
-        }
-        .QR_img-domestic {
-            width: 92px;
-            float: right;
-            img{
-                height: 92px;
-                width: 92px;
-            }
-            p{
-                font-size: 14px;
-                color: #ADB1B9;
-                text-align: center;
-            }
+            margin: 8px 0 32px;
         }
     }
-}
-
-.user-experience-abroad {
-    .head-abroad {
-        padding-bottom: 40px;
-        border-bottom: 1px solid #ECECEC;
-        margin-top: 20px;
-        margin-bottom: 43px;
-        h4 {
-            font-size: 28px;
-            display: inline-block;
-            vertical-align: middle;
+    .footButtons {
+        .complete, .addMore {
+            width:158px;
+            height: 42px;
         }
-    }
-    .body-abroad {
-        position: relative;
-        .title {
-            position: relative;
-            margin-bottom: 42px;
-            h4 {
-                display: inline-block;
-                font-size: 24px;
-                line-height: 32px;
-            }
-            .font-bold{
-                font-weight: bold;
-            }
-            .go-home {
-                position: absolute;
-                right: 0;
-            }
-        }
-        ul {
-            display: flex;
-            text-align: center;
-            margin-bottom: 32px;
-            li {
-                text-align: left;
-                width: 350px;
-                display: inline-block;
-                position: relative;
-                background-color: #FFF;
-                border: 0.5px solid rgba(0,0,0,0.1);
-                border-radius: 12px;
-                .func-item-cn{
-                    cursor: pointer;
-                    padding: 40px 0 40px 20px;
-                    .img {
-                        width: 80px;
-                        height: 80px;
-                        display: inline-block;
-                        text-align: center;
-                        vertical-align: middle;
-                    }
-
-                    .description {
-                        display: inline-block;
-                        margin-left: 12px;
-                        vertical-align: middle;
-                        h4 {
-                            color: #333C4F;
-                            margin-bottom: 8px;
-                            font-size: 20px;
-                            font-weight: bold;
-                        }
-                        p {
-                            color: #333C4F;
-                            font-size: 16px;
-                        }
-                    }
-
-                    .background {
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        opacity: 0.1;
-                    }
-                }
-                .func-item-us{
-                    cursor: pointer;
-                    padding: 20px 0 40px 20px;
-                    .img {
-                        width: 80px;
-                        height: 80px;
-                        display: inline-block;
-                        text-align: center;
-                        vertical-align: middle;
-                    }
-
-                    .description {
-                        width: 218px;
-                        display: inline-block;
-                        margin-left: 12px;
-                        vertical-align: middle;
-                        h4 {
-                            color: #333C4F;
-                            font-size: 20px;
-                            font-weight: bold;
-                        }
-                    }
-                    p {
-                        position: relative;
-                        width: 218px;
-                        color: #333C4F;
-                        margin-left: 92px;
-                        top: -17px;
-                        margin-bottom: -17px;
-                        font-size: 16px;
-                        word-break: break-word;
-                    }
-                    .background {
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        opacity: 0.1;
-                    }
-                }
-                &:nth-last-child(n+2){
-                    margin-right: 20px;
-                }
-                &:hover{
-                    box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
-                }
-            }
-        }
-        .QR_img-abroad {
-            margin-top: 32px;
-            float: right;
-            img{
-                height: 92px;
-                width: 92px;
-            }
-            p{
-                font-size: 14px;
-                color: #ADB1B9;
-                text-align: center;
-            }
+        .addMore {
+            background: #FFF;
+            border: 1px solid rgba(125,143,183, 0.2);
+            color: #61739D;
+            margin-left: 20px;
         }
     }
 }
