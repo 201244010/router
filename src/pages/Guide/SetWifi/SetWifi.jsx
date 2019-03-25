@@ -186,38 +186,58 @@ export default class SetWifi extends React.Component {
             <div className="setwifi">
                 <h2>{intl.get(MODULE, 19)/*_i18n:设置无线网络*/}</h2> 
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 20)/*_i18n:客用Wi-Fi可开放给客人使用，保障隐私安全*/}</p>
-                <div className="wifi-box ui-relative ui-center">
-                    <Form>
-                        <div style={{marginBottom: 20}}>
-                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#FB8632' type="business"></CustomIcon>
-                                <p style={{fontSize: 16}}>{intl.get(MODULE, 21)/*_i18n:商户Wi-Fi*/}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 22)/*_i18n:(建议店内设备和店员使用)*/}</span></p>
-                        </div>
-                        <FormItem label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/} showErrorTip={hostWifiNameTip}>
-                            <Input value={hostWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'hostWifiName')} />
-                            <ErrorTip style={{width: 260}}>{hostWifiNameTip}</ErrorTip>
-                        </FormItem>
-                        <FormItem label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/} showErrorTip={hostWifiPswTip}>
-                            <Input value={hostWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'hostWifiPsw')} />
-                            <ErrorTip style={{width: 260}}>{hostWifiPswTip}</ErrorTip>
-                        </FormItem>
-                    </Form>
+                <div className="wifi-box ui-relative">
+                    <div className="leftContent"> 
+                        <Form style={{float: 'right'}}>
+                            <div style={{marginBottom: 20}}>
+                                <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#FB8632' type="business"></CustomIcon>
+                                    <p style={{fontSize: 16}}>{intl.get(MODULE, 21)/*_i18n:商户Wi-Fi*/}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 22)/*_i18n:(建议店内设备和店员使用)*/}</span></p>
+                            </div>
+                            <FormItem
+                                label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/}
+                                labelStyle={{width: 'auto', verticalAlign: 'top'}}
+                                inputStyle={{marginLeft: 12, width: 260}}
+                                showErrorTip={hostWifiNameTip}>
+                                <Input value={hostWifiName} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'hostWifiName')} />
+                                <ErrorTip style={{width: 260}}>{hostWifiNameTip}</ErrorTip>
+                            </FormItem>
+                            <FormItem
+                                label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/}
+                                labelStyle={{width: 'auto',verticalAlign: 'top'}}
+                                inputStyle={{marginLeft: 12, width: 260}}
+                                showErrorTip={hostWifiPswTip}>
+                                <Input value={hostWifiPsw} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'hostWifiPsw')} />
+                                <ErrorTip style={{width: 260}}>{hostWifiPswTip}</ErrorTip>
+                            </FormItem>
+                        </Form>
+                    </div>
                     <div className="border"></div>
-                    <Form>
-                        <div style={{marginBottom: 20}}>
-                            <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
-                                <span style={{fontSize: 16}}>{intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 28)/*_i18n:(推荐开放给顾客使用)*/}</span>
-                                </span>
-                                {/* <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked /> */}
-                        </div>
-                        <FormItem label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/} showErrorTip={guestWifiNameTip}>
-                            <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'guestWifiName')} />
-                            <ErrorTip style={{width: 260}}>{guestWifiNameTip}</ErrorTip>
-                        </FormItem>
-                        <FormItem label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/} showErrorTip={guestWifiPswTip}>
-                            <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'guestWifiPsw')} />
-                            <ErrorTip style={{width: 260}}>{guestWifiPswTip}</ErrorTip>
-                        </FormItem>
-                    </Form>
+                    <div className="rightContent">
+                        <Form style={{float: 'left'}}>
+                            <div style={{marginBottom: 20}}>
+                                <CustomIcon style={{position: 'absolute', left: '-28px'}} size={20} color='#4EC53F' type="customer"></CustomIcon>
+                                    <span style={{fontSize: 16}}>{intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/}<span style={{fontSize: 14, color: '#ADB1B9'}}>{intl.get(MODULE, 28)/*_i18n:(推荐开放给顾客使用)*/}</span>
+                                    </span>
+                                    {/* <Switch style={{position: 'absolute', right: 0}} checked={guestWifi} onChange={this.openGuestSetting} defaultChecked /> */}
+                            </div>
+                            <FormItem
+                                label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/}
+                                labelStyle={{width: 'auto',verticalAlign: 'top'}}
+                                inputStyle={{marginLeft: 12, width: 260}}
+                                showErrorTip={guestWifiNameTip}>
+                                <Input value={guestWifiName} width={260} maxLength={32} type="text" placeholder={intl.get(MODULE, 24)/*_i18n:请输入Wi-Fi名称*/} onChange={value => this.handleChange(value, 'guestWifiName')} />
+                                <ErrorTip style={{width: 260}}>{guestWifiNameTip}</ErrorTip>
+                            </FormItem>
+                            <FormItem
+                                label={intl.get(MODULE, 25)/*_i18n:Wi-Fi密码*/}
+                                labelStyle={{width: 'auto',verticalAlign: 'top'}}
+                                inputStyle={{marginLeft: 12, width: 260}}
+                                showErrorTip={guestWifiPswTip}>
+                                <Input value={guestWifiPsw} width={260} maxLength={32} type="password" placeholder={intl.get(MODULE, 26)/*_i18n:请输入Wi-Fi密码*/} onChange={value => this.handleChange(value, 'guestWifiPsw')} />
+                                <ErrorTip style={{width: 260}}>{guestWifiPswTip}</ErrorTip>
+                            </FormItem>
+                        </Form>
+                    </div>
                 </div>
                 <div style={{ margin : "auto", textAlign : 'center', width : 260 }}>
                     <Button size='large' type="primary"  loading={this.state.loading} onClick={this.submit} disabled={disabled} style={{width : "100%"}} >{intl.get(MODULE, 30)/*_i18n:完成*/}</Button>

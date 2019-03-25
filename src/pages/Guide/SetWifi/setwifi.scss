@@ -2,9 +2,9 @@
     flex:none;
     color: #333C4F;
     .head{
-        height: 172px;
-        padding: 60px 0 80px;
-        text-align: center;
+        padding: 10px 0 28px;
+        border-bottom: 1px solid #ECECEC;
+        margin-bottom: 102px;
         p{
             display: inline-block;
             margin-left: 12px;
@@ -49,24 +49,36 @@
     }
 }
 .wifi-box {
-    flex-flow: row wrap;
-    margin-top: 32px;
-    form {
-        flex: none;
-        width: auto;
-        .ui-icon-business:before,.ui-icon-customer:before{
+    margin-bottom: 20px;
+    .leftContent {
+        width: 468px;
+        .ui-icon-business:before {
             vertical-align: middle;
         }
-        .ui-form-item-label{
-            text-align: left;
-            min-width: 106px;
+    }
+    .rightContent {
+        width: 458px;
+        .ui-icon-customer:before {
+            vertical-align: middle;
+        }
+    }
+    .leftContent, .rightContent {
+        display: inline-block;
+        vertical-align: top;
+        form {
+            margin-left: 0;
+            margin-right: 0;
+            display: inline-block;
+            .ui-form-item {
+                text-align: right;
+            }
         }
     }
     .border {
         height: 160px;
         width: 1px;
         background: rgba(51,60,79,0.20);
-        flex: none;
-        margin: 0 80px 32px;
+        display: inline-block;
+        margin: 0 82px 0 80px;
     }
 }
