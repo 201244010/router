@@ -23,11 +23,11 @@ const FormItem = props => {
         <div className={klass} style={props.style} >
             { 
                 (props.label || props.label == '#') ? [
-                <div key={'label'} className="ui-form-item-label ui-ib" style={labelStyle} >{props.label === '#' ? '' : props.label}</div>, 
+                <div key={'label'} className="ui-form-item-label ui-ib" style={labelStyle} >{props.label === '#' ? '' : props.label}</div>,
                 <div key={'input'} className="ui-form-item-field ui-ib" style={inputStyle}>
                     {props.children}
                     { suffix ? <div className="ui-form-item-suffix">{suffix}</div> : "" }
-                </div>] : 
+                </div>] :
                 <div className="ui-form-item-field">{props.children}</div> 
             }
         </div>

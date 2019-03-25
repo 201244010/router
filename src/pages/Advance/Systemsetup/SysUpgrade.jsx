@@ -146,7 +146,7 @@ export default class SysUpgrade extends React.Component{
     }
     render(){
         let Title = [
-            <span style={{fontSize : 14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)/*_i18n:版本说明*/}</span>
+            <span style={{fontSize:14, color : '#333C4F'}}><CustomIcon style={{marginRight : 5}} color="#333C4F" type="hint"  size={14} />{intl.get(MODULE, 1)/*_i18n:版本说明*/}</span>
         ];
         const {releaseLog, loading, disable, version, currentVersion, latestVersion, manual} = this.state;
 
