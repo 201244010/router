@@ -447,3 +447,59 @@
   content: "\e69f";
 }
 
+.ui-icon-Upload:before {
+  content: "\e6a4";
+}
+
+.ui-icon-Download:before {
+  content: "\e6a7";
+}
+
+.ui-icon-Selected:before {
+  content: "\e6a8";
+}
+
+.ui-icon-Normal:before {
+  content: "\e6a9";
+}
+
+.ui-icon-Rename:before {
+  content: "\e6aa";
+}
+
+.ui-icon-Link:before {
+  content: "\e6ab";
+}
+
+.ui-icon-Network:before {
+  content: "\e6ac";
+}
+
+.ui-icon-Equipment:before {
+  content: "\e6ad";
+}
+
+.ui-icon-Main:before {
+  content: "\e6ae";
+}
+
+.ui-icon-Router:before {
+  content: "\e6af";
+}
+
+.ui-icon-Screen:before {
+  content: "\e6b0";
+}
+
+.ui-icon-Break:before {
+  content: "\e6b1";
+}
+
+.ui-icon-Add:before {
+  content: "\e6b2";
+}
+
+.ui-icon-NoRoute:before {
+  content: "\e6b3";
+}
+

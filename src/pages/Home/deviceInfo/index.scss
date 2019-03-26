@@ -1,0 +1,332 @@
+.third-div{
+  margin-top: 20px;
+  .device-number {
+    float: left;
+    width: 82px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #ADB1B9;
+
+    .yellow {
+      width: 2px;
+      height: 12px;
+      background: #FB8632;
+      display: block;
+      margin-right: 4px;
+      float: left;
+      margin-top: 4px;
+    }
+    .green {
+      width: 2px;
+      height: 12px;
+      background: green;
+      display: block;
+      margin-right: 4px;
+      float: left;
+      margin-top: 4px;
+    }
+    .blue {
+      width: 2px;
+      height: 12px;
+      background: blue;
+      display: block;
+      margin-right: 4px;
+      float: left;
+      margin-top: 4px;
+    }
+    .left-border {
+      float: left;
+      margin-bottom: 3px;
+    }
+  }
+  .device-grid {
+    margin: 9px 11.5px 0 0 ;
+    float: left;
+    background: rgba(51,60,79,0.06);
+    height: 40px;
+    width: 1px;
+  }
+  .device-number-show {
+    font-family: Helvetica;
+    font-size: 26px;
+    color: #333C4F;
+    padding-left: 6px;
+  }
+  .device-number-show-zero {
+    @extend .device-number-show;
+    color: red;
+  }
+}
+
+
+i.dot{
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #87D068;
+  margin-right: 5px;
+  border-radius: 50%;
+  font-size: 12px;
+  &.warning{
+      background-color:#FF5500;
+  }
+}
+
+.editable-cell {
+  vertical-align: top;
+  position: relative;
+  .editable-cell-value-wrap {
+      width: 254px;
+      cursor: pointer;
+      .device {
+          max-width: 140px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 12px;
+          margin: 4px 10px;
+      }
+      .hostname {
+          border-width: 1px;
+          border-style: solid;
+          border-color: transparent;
+          border-radius: 4px;
+          font-size: 14px;
+      }
+      .logo {
+        width: 40px;
+        font-size: 12px;
+        text-align: center;
+        border-radius: 4px;
+      }
+      .sunmi {
+        color:  #FDB784;
+        border: 1px solid #FDB784;
+      }
+      .whitelist {
+        color:  #A0E172;
+        border: 1px solid #A0E172;
+      }
+      .normal {
+          width: auto;
+      }
+      .current-device {
+        font-size: 14px;
+        color: #333C4F;
+        line-height: 20px;
+        margin-left: -20px;
+      }
+  }
+  .ant-table-column-sorter{
+      visibility: hidden;
+  }
+}
+
+.editable-row-device{
+  .logo-cell{
+      position: relative;
+      img{
+          position: absolute;
+          right: 0;
+          top: -22px;
+          width: 32px;
+      }
+  }
+  input.ant-input:focus {
+      border-color: #749DF7;
+      box-shadow: none;
+  }
+
+  &:hover .editable-cell-value-wrap {
+      .hostname {
+          border-color: #d9d9d9;
+      }
+  }
+}
+
+.main{
+  .online-list{
+      margin-top: 40px;
+      .list-header{
+          font-size: 16px;
+          font-weight: bold;
+          color: #333C4F;
+          position: relative;
+          height: 32px;
+          margin: 16px 16px 20px;
+          .divider{
+              width:4px;
+              height: 20px;
+              border-radius: 2px;
+          }
+          .statistics{
+              font-weight:lighter;
+              color: #150000;
+          }
+          .more{
+              font-weight: lighter;
+              // color: #61739D;
+              position: absolute;
+              top: 0;
+              right: 5px;
+          }
+      }
+      .list-content {
+          position: relative;
+          background-color: #FFF;
+          border: 1px solid rgba(0, 0, 0, 0.04);
+          border-radius: 8px;
+          >ul {
+              min-height: 110px;  // 最小一行高度
+              margin-left: 24px;
+          }
+          &.priority-list {
+              .divider {
+                  background-color: #87D068;
+              }
+          }
+          &.normal-list {
+              margin-top: 12px;
+              .divider {
+                  background-color: #4687FF;
+              }
+          }
+          .client-item {
+              color: #9B9B9B;
+              width: 125px;
+              height: 90px;
+              display: inline-block;
+              text-align: center;
+              margin-bottom: 20px;
+              .icon {
+                  position: relative;
+                  $iconSize: 60px;
+                  cursor: pointer;
+                  width: $iconSize;
+                  height: $iconSize;
+                  margin: 0 auto 4px;
+                  border-radius: 50%;
+                  border: 1px solid rgba(125,143,183,0.2);
+                  text-align: center;
+                  .ui-icon {
+                      line-height: $iconSize !important;
+                      vertical-align: middle;
+                  }
+                  img{
+                      width: 48px;
+                      height: 10px;
+                      position: absolute;
+                      bottom: 0;
+                      left: 5px;
+                  }
+                  // 不同类型（商米、优先、普通）设备悬停背景色不一致
+                  &.sunmi{
+                      &:hover,
+                      &:focus {
+                          background: #FFF6EF;
+                      }
+                  }
+                  &.whitelist{
+                      &:hover,
+                      &:focus {
+                          background: #F3FAFE;
+                      }
+                  }
+                  &.normal{
+                      &:hover,
+                      &:focus {
+                          background: #F3F6FE;
+                      }
+                  }
+              }
+              .under-desc {
+                  position: relative;
+                  left: -4px;
+                  .dot {
+                      margin-right: 4px;
+                      display: inline-block;
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                  }
+                  p {
+                      font-size: 12px;
+                      color: #9B9B9B;
+                      display: inline-block;
+                      max-width: 100px;
+                      margin-bottom: 0;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: pre;
+                      vertical-align: bottom;
+                  }
+              }
+          }
+          .null-tip {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-size: 12px;
+              color: #ADB1B9;
+              text-align: center;
+              a {
+                  font-size: 12px;
+                  color: #4687FF;
+              }
+          }
+      }
+  }
+}
+
+.client-info{
+  padding: 5px 5px 0;
+  p{
+      width: 270px;
+      font-size: 14px;
+      font-weight:600;
+      color: #333C4F;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: pre;
+      margin-bottom:10px;
+  }
+  ul{
+      width: 280px;
+      li{
+          width: 140px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: pre;
+          font-size: 10px;
+          display: inline-block;
+          margin-bottom: 5px;
+          label{
+              color: #ADB1B9;
+          }
+          span{
+              color: #333C4F;
+          }
+      }
+  }
+  div{
+      border-top: 1px solid rgba(0,0,0,0.04);
+      padding-top: 10px;
+      button{
+          border-width: 0;
+          width: 140px;
+      }
+      button.single{
+          width: 100%;
+          border-right: 0 !important;
+      }
+      button:first-child{
+          color: #3D76F6;
+          border-radius: 0;
+          border-right: 1px solid #ECECEC;
+      }
+      button:last-child{
+          color: #BF4C41;
+      }
+  }
+}
