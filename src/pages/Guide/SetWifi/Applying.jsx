@@ -27,7 +27,7 @@ export default class Applying extends React.Component {
                 interval: 1000,
                 stop: resp => {resp !== 0},
             }
-        );
+        )
         this.props.history.push("/guide/success");
     }
 
@@ -50,11 +50,12 @@ export default class Applying extends React.Component {
 
             if (timeout <= 0) {
                 this.getWireless();
+                window.clearInterval(count);
             }
 
-            if (timeout < -1) {
-                window.clearInterval(count);
-            } 
+            // if (timeout < -1) {
+                
+            // } 
         }, 1000);
     }
 
@@ -65,10 +66,10 @@ export default class Applying extends React.Component {
             <div className='create-wifi'>
                 <div className='head'>
                     { time >= 0 ?
-                    [<CustomIcon type='loading' color='#FB8632' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
+                    [<CustomIcon type='loading' color='#6174F1' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
                     :
-                    [<CustomIcon type='correct' color='#FB8632' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
-                    }  
+                    [<CustomIcon type='hint' color='#FF6900' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
+                    }
                 </div>
                 <ul className='body'>
                     <li>

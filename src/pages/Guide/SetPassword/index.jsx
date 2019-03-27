@@ -6,6 +6,7 @@ import { Base64 } from 'js-base64';
 import { init } from '~/assets/common/auth';
 import {checkStr} from '~/assets/common/check';
 import {getQuickStartVersion} from '~/utils';
+import './setpassword.scss';
 
 const MODULE = 'setpassword';
 const { FormItem, ErrorTip, Input }  = Form;
@@ -102,11 +103,15 @@ export default class SetPassword extends React.Component {
         const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
 
         return (
-            <div className="setpassword"> 
+            <div className="setPassword"> 
                 <h2>{intl.get(MODULE, 7)/*_i18n:设置管理密码*/}</h2>
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 8)/*_i18n:管理密码是进入路由器管理页面的凭证*/}</p>
-                <Form style={{margin : '24px auto', width:419}}>
-                    <FormItem label={intl.get(MODULE, 9)/*_i18n:设置密码*/} showErrorTip={pwdTip}>
+                <Form style={{margin : '24px auto', width:260}}>
+                    <FormItem
+                        label={intl.get(MODULE, 9)/*_i18n:设置密码*/}
+                        showErrorTip={pwdTip}
+                        labelStyle={{position: 'absolute',right: 272}}
+                        >
                         <Input
                             placeholder={intl.get(MODULE, 10)/*_i18n:请设置密码*/}
                             value={pwd}
@@ -115,18 +120,27 @@ export default class SetPassword extends React.Component {
                              />
                         <ErrorTip>{pwdTip}</ErrorTip>
                     </FormItem>
-                    <FormItem label={intl.get(MODULE, 11)/*_i18n:确认密码*/} showErrorTip={surePwdTip}>
+                    <FormItem
+                        label={intl.get(MODULE, 11)/*_i18n:确认密码*/}
+                        showErrorTip={surePwdTip}
+                        labelStyle={{position: 'absolute',right: 272}}
+                        >
                         <Input
                             placeholder={intl.get(MODULE, 12)/*_i18n:请确认密码*/}
                             value={surePwd}
-                            onChange = {value => this.onChange('surePwd', value)} />
+                            onChange = {value => this.onChange('surePwd', value)}
+                            />
                         <ErrorTip>{surePwdTip}</ErrorTip>
                     </FormItem>
-                    <FormItem label="#">
+                    <FormItem
+                        label="#"
+                        labelStyle={{width:0}}
+                        >
                         <Button
+                            className="nextButton"
                             disabled={disabled}
                             loading={loading}
-                            style={{ width : '100%',height: 42 }}
+                            // style={{ width : '100%',height: 42 }}
                             onClick={this.post}
                             size="large"
                             type="primary">{intl.get(MODULE, 13)/*_i18n:下一步*/}</Button>

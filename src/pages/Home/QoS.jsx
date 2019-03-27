@@ -96,7 +96,7 @@ export default class QoS extends React.Component {
                     <div className='percent'>{cost + '%'}</div>
                     <div className='desc'>{intl.get(MODULE, 1)/*_i18n:下行带宽使用率*/}</div>
                 </div>
-                <div className='pie' ref={ID => this.ID = ID} style={{ height: 120, width: 320 }}></div>
+                <div className='pie' ref={ID => this.ID = ID} style={{ height: 120, width: 250 }}></div>
                 {enable && online && (cost >= 80 ?
                     <h4 className='warning'>{intl.get(MODULE, 2)/*_i18n:当前网络较为拥挤，建议将重要设备添加到优先队列*/}</h4> :
                     <h4 className='nice'>{intl.get(MODULE, 3)/*_i18n:当前网络畅通，可放心使用*/}</h4>)}
