@@ -1,17 +1,24 @@
 import React from 'react';
 import './index.scss'
 import { Button } from 'antd';
-
+// import echarts from 'echarts/lib/echarts';
+// import 'echarts/lib/chart/line';
+// import 'echarts/lib/component/legend';
 
 export default class Allocation extends React.Component{
     constructor(props) {
         super(props);
+        this.myChart = null;
+    }
+
+    initChart = () => {
+        const echarts = require('echarts');
+        this.myChart = echarts.init(this.refs['dom']);
+        this.renderChart();
     }
 
     renderChart = () => {
-        const echarts = require('echarts');
-        const myChart = echarts.init(this.refs['dom']);
-        myChart.setOption({
+        this.myChart.setOption({
             title: {
                 text: ''
             },
@@ -23,16 +30,23 @@ export default class Allocation extends React.Component{
                 bottom: 0
             },
             tooltip: {
+                trigger: 'axis',
                 backgroundColor: 'rgba(255,255,255,0.90)',
-                // extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
+                extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
+                formatter:  '<span style="display: inline-block;border-radius:100%;background:#FB8632;height:6px;width:6px;margin-right:8px"></span>{a0} : {c0}%<br>' +
+                '<span style="display: inline-block;border-radius:100%;background:#87D068;height:6px;width:6px;margin-right:8px"></span>{a1} : {c1}%<br>' +
+                '<span style="display: inline-block;border-radius:100%;background:#446CE6;height:6px;width:6px;margin-right:8px"></span>{a2} : {c2}%',
                 textStyle: {
-                    fontFamily: 'PingFangSC-Regular',
-                    fontSize: 12,
-                    color: '#333C4F',
+                    color: 'black'
                 },
-                padding: [12,12,12,12],
-                formatter: '<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
-                    '<span style="display: inline-block;height: 22px;line-height: 22px">接入用户： {c0}</span>',
+                axisPointer: {
+                    color: '#333C4F',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    },
+                },
+                padding: [12,32,12,13],
+                alwaysShowContent: true,
             },
             xAxis: {
                 type: 'category',
@@ -58,13 +72,13 @@ export default class Allocation extends React.Component{
             },
             series: [
                 {
-                    name: '普通设备',
+                    name: '普通',
                     type: 'line',
                     stack: 'device',
                     animation: false,
                     smooth: true,
                     symbol: 'circle',
-                    symbolSize: 0, //
+                    symbolSize: 1, //
                     lineStyle: {
                         width: 1,
                         color: 'rgba(73,116,255,1)'
@@ -93,13 +107,13 @@ export default class Allocation extends React.Component{
                     data: this.props.percent['normalPercent']
                 },
                 {
-                    name: '优先设备',
+                    name: '优先',
                     type: 'line',
                     animation: false,
                     stack: 'device',
                     smooth: true,
                     symbol: 'circle',
-                    symbolSize: 0,
+                    symbolSize: 1,
                     lineStyle: {
                         width: 1,
                         color: 'rgba(135,208,104,1)'
@@ -128,13 +142,13 @@ export default class Allocation extends React.Component{
                     data: this.props.percent['priorityPercent']
                 },
                 {
-                    name: '商米设备',
+                    name: '商米',
                     type: 'line',
                     animation: false,
                     stack: 'device',
                     smooth: true,
                     symbol: 'circle',
-                    symbolSize: 0,
+                    symbolSize: 1,
                     lineStyle: {
                         width: 1,
                         color: 'rgba(255,96,0,1)',
@@ -168,7 +182,7 @@ export default class Allocation extends React.Component{
     }
 
     componentDidMount() {
-        this.props.status && this.renderChart();
+        this.props.status && this.initChart();
     }
 
     componentDidUpdate() {
