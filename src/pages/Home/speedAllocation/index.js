@@ -1,9 +1,7 @@
 import React from 'react';
 import './index.scss'
 import { Button } from 'antd';
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/legend';
+
 
 export default class Allocation extends React.Component{
     constructor(props) {
@@ -11,6 +9,7 @@ export default class Allocation extends React.Component{
     }
 
     renderChart = () => {
+        const echarts = require('echarts');
         const myChart = echarts.init(this.refs['dom']);
         myChart.setOption({
             title: {
@@ -24,23 +23,21 @@ export default class Allocation extends React.Component{
                 bottom: 0
             },
             tooltip: {
-                show: true,
                 backgroundColor: 'rgba(255,255,255,0.90)',
-                extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
-                formatter:
-                    '<span style="display: inline-block;border-radius:100%;background:#FB8632;height:6px;width:6px;margin-right:8px"></span>{a0} : {c0}%<br>' +
-                    '<span style="display: inline-block;border-radius:100%;background:#87D068;height:6px;width:6px;margin-right:8px"></span>{a1} : {c1}%<br>' +
-                    '<span style="display: inline-block;border-radius:100%;background:#446CE6;height:6px;width:6px;margin-right:8px"></span>{a2} : {c2}%',
+                // extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
                 textStyle: {
-                    color: 'black'
+                    fontFamily: 'PingFangSC-Regular',
+                    fontSize: 12,
+                    color: '#333C4F',
                 },
-                padding: [12,32,12,13],
-                alwaysShowContent: true
+                padding: [12,12,12,12],
+                formatter: '<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
+                    '<span style="display: inline-block;height: 22px;line-height: 22px">接入用户： {c0}</span>',
             },
             xAxis: {
                 type: 'category',
                 show: false,
-                boundaryGap: false,
+                boundaryGap: true,
                 data: [1,2,3,4,5,6,7,8,9,10,11,12],
                 splitLine: {
                     show: false
@@ -55,8 +52,6 @@ export default class Allocation extends React.Component{
             yAxis: {
                 show: false,
                 type: 'value',
-                min: 0,
-                max: 100
             },
             legend:{
                 show: false
@@ -194,8 +189,7 @@ export default class Allocation extends React.Component{
                 <span className='percent'>
                     {largestPercent}%
                 </span>
-                    <div style={{height: 80, width: 250}} ref='dom'>
-                    </div>
+                    <div className='chart' style={{height: 80, width: 250}} ref='dom'></div>
                     <div className='legend'>
                             <div className='sunmi'></div>
                             <span>商米设备</span>

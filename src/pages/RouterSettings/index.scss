@@ -1,0 +1,32 @@
+.advance-settings {
+    border-radius: 8px; 
+    background-color : #fff;
+    padding: 37px 58px 30px 58px;
+    p {
+        font-size: 20px;
+        color: #333c4f;
+        border-bottom: 1px solid #ECECEC;
+        padding-bottom: 12px;
+    }
+    .nav-contain {
+        margin-bottom: 52px;
+        display: inline-block;
+        .nav-item {
+            color: gray;
+            display: inline-block;
+            width: 140px;
+            height: 140px;
+            margin-left: 40px;
+            .icon {
+                padding: 25px 36px 0 36px;
+            }
+            p {
+                text-align: center;
+                border: unset;
+                font-size: 16px;
+                color: #333C4F;
+            }
+        }
+    }
+   
+}

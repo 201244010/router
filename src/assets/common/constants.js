@@ -121,6 +121,7 @@ export const DIRECTIVE = {
     //自组网
     ROUTE_GET : '0x2116',
     ROUTE_SET : '0x2114',
+    ROUTENAME_SET : '0x2118',
 
     //时区/时间
     TIME_GET: '0x2030',

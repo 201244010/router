@@ -138,6 +138,8 @@ export default class ClientList extends React.Component {
             'whitelist': '优先设备',
             'normal': '普通设备'
         };
+        this.connectRouter = JSON.parse(window.sessionStorage.getItem('_ROUTER_LIST')) || [];
+        console.log(this.connectRouter, typeof this.connectRouter);
         this.columns = [{
             title: '设备'/*_i18n:设备名称*/,
             dataIndex: 'mac',
@@ -168,23 +170,16 @@ export default class ClientList extends React.Component {
             className: 'editable-cell-client',
             editable: true,
             defaultSortOrder: 'ascend',
-            sorter: (a, b) => {
-                if (a.type === b.type) {
-                    return (a.ontime - b.ontime);
-                } else {
-                    return (TYPE_SUNMI === a.type) ? -1 : 1;
-                }
-            },
             render: (text, record) => {
                 let ontime = formatTime(record.ontime);
                 let hostname = record.name;
                 let type = record.type;
                 const maxWidth = (() => {
                     if (record.me && 'normal' !== type) {
-                        return 70;
+                        return 64;
                     } 
                     if (record.me && 'normal' === type) {
-                        return 112;
+                        return 106;
                     }
                     if ('normal' !== type) {
                         return 135;
@@ -215,19 +210,14 @@ export default class ClientList extends React.Component {
             )
         }, {
             title: '连接路由',
-            dataIndex: 'mode',
-            filters: [{
-                text: this.modeMap['2'],
-                value: '2',
-            }, {
-                text: this.modeMap['1'],
-                value: '1',
-            }, {
-                text: this.modeMap['0'],
-                value: '0',
-            }],
-            onFilter: (value, record) => record.mode.indexOf(value) === 0,
-            render: (mode, record) => this.modeMap[mode],
+            dataIndex: 'routerName',
+            filters: this.connectRouter,
+            onFilter: (value, record) => record.routerName.indexOf(value) === 0,
+            render: (routerName, record) => (
+                <div className="routerName">
+                    {routerName}
+                </div>
+            ),
             width: 118
         }, {
             title: intl.get(MODULE, 7)/*_i18n:接入方式*/,
@@ -313,203 +303,37 @@ export default class ClientList extends React.Component {
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
         me: '',
-        clients: [{
-            "icon": "computer",
-            "name": "PC-2OR",
-            "ip": "192.168.100.181",
-            "mac": "0C:25:76:EC:24:69",
-            "type": "sunmi",
-            "mode": "有线",
-            "ontime": "17时23分8秒",
-            "rssi": "--",
-            "tx": "445B/s",
-            "rx": "88.54MB/s",
-            "flux": "10.90MB"
-        },
-        {
-            "me": '1',
-            "icon": "computer",
-            "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
-            "ip": "192.168.100.140",
-            "mac": "68:F7:28:F1:10:D4",
-            "type": "whitelist",
-            "mode": "有线",
-            "ontime": "43分26秒",
-            "rssi": "--",
-            "tx": "830B/s",
-            "rx": "5KB/s",
-            "flux": "771MB"
-        },
-        {
-            "icon": "android",
-            "name": "Honor_9-11984856d914199b",
-            "ip": "192.168.100.196",
-            "mac": "C8:14:51:B3:09:80",
-            "type": "whitelist",
-            "mode": "5G",
-            "ontime": "21分44秒",
-            "rssi": "较好",
-            "tx": "0B/s",
-            "rx": "1B/s",
-            "flux": "186KB"
-        },
-        {
-            "icon": "computer",
-            "name": "PC-20180711HEOR",
-            "ip": "192.168.100.181",
-            "mac": "F0:76:6F:EC:24:69",
-            "type": "normal",
-            "mode": "有线",
-            "ontime": "17时23分8秒",
-            "rssi": "--",
-            "tx": "445B/s",
-            "rx": "232B/s",
-            "flux": "10.90MB"
-        },
-        {
-            "icon": "computer",
-            "name": "WIN-NTSFVIF9B7A",
-            "ip": "192.168.100.140",
-            "model": "V1 S",
-            "mac": "0C:25:76:F1:10:D4",
-            "type": "sunmi",
-            "mode": "有线",
-            "ontime": "43分26秒",
-            "rssi": "--",
-            "tx": "830B/s",
-            "rx": "5KB/s",
-            "flux": "771MB"
-        },
-        {
-            "me": '1',
-            "icon": "android",
-            "name": "Honor_9-11984856d91419aaaaaaaaaaaaaaa9b",
-            "ip": "192.168.100.196",
-            "mac": "0C:25:76:B3:09:80",
-            "type": "normal",
-            "mode": "5G",
-            "ontime": "21分44秒",
-            "rssi": "较好",
-            "tx": "0B/s",
-            "rx": "1B/s",
-            "flux": "186KB"
-        }]
-    //     clients:  [{
-    //         "icon": "computer",
-    //         "name": "PC-20180711HEOR",
-    //         "ip": "192.168.100.181",
-    //         "mac": "0C:25:76:EC:24:69",
-    //         "type": "normal",
-    //         "mode": "0",
-    //         "ontime": "17时23分8秒",
-    //         "rssi": "--",
-    //         "tx": "445B/s",
-    //         "rx": "88.54MB/s",
-    //         "flux": "10.90MB"
-    //     },{
-    //         "icon": "computer",
-    //         "name": "PC-20180711HEOR",
-    //         "ip": "192.168.100.181",
-    //         "mac": "0C:25:76:EC:24:69",
-    //         "type": "normal",
-    //         "mode": "1",
-    //         "ontime": "17时23分8秒",
-    //         "rssi": "--",
-    //         "tx": "445B/s",
-    //         "rx": "88.54MB/s",
-    //         "flux": "10.90MB"
-    //     },{
-    //         "icon": "computer",
-    //         "name": "PC-20180711HEOR",
-    //         "ip": "192.168.100.181",
-    //         "mac": "0C:25:76:EC:24:69",
-    //         "type": "whitelist",
-    //         "mode": "2",
-    //         "ontime": "17时23分8秒",
-    //         "rssi": "--",
-    //         "tx": "445B/s",
-    //         "rx": "88.54MB/s",
-    //         "flux": "10.90MB"
-    //     },{
-    //         "icon": "computer",
-    //         "name": "PC-20180711HEOR",
-    //         "ip": "192.168.100.181",
-    //         "mac": "0C:25:76:EC:24:69",
-    //         "type": "normal",
-    //         "mode": "2",
-    //         "ontime": "17时23分8秒",
-    //         "rssi": "--",
-    //         "tx": "445B/s",
-    //         "rx": "88.54MB/s",
-    //         "flux": "10.90MB"
-    //     },
-    //     {
-    //         "icon": "computer",
-    //         "name": "WIN-NTSFVIF9B7A",
-    //         "ip": "192.168.100.140",
-    //         "mac": "68:F7:28:F1:10:D4",
-    //         "type": "whitelist",
-    //         "mode": "2",
-    //         "ontime": "43分26秒",
-    //         "rssi": "--",
-    //         "tx": "830B/s",
-    //         "rx": "5KB/s",
-    //         "flux": "771MB"
-    //     },
-    //     {
-    //         "icon": "android",
-    //         "name": "Honor_9-11984856d914199b",
-    //         "ip": "192.168.100.196",
-    //         "mac": "C8:14:51:B3:09:80",
-    //         "type": "normal",
-    //         "mode": "0",
-    //         "ontime": "21分44秒",
-    //         "rssi": "较好",
-    //         "tx": "0B/s",
-    //         "rx": "1B/s",
-    //         "flux": "186KB"
-    //     },
-    //     {
-    //         "icon": "computer",
-    //         "name": "PC-20180711HEOR",
-    //         "ip": "192.168.100.181",
-    //         "mac": "F0:76:6F:EC:24:69",
-    //         "type": "normal",
-    //         "mode": "0",
-    //         "ontime": "17时23分8秒",
-    //         "rssi": "--",
-    //         "tx": "445B/s",
-    //         "rx": "232B/s",
-    //         "flux": "10.90MB"
-    //     },
-    //     {
-    //         "icon": "computer",
-    //         "name": "WIN-NTSFVIF9B7A",
-    //         "ip": "192.168.100.140",
-    //         "model": "V1 S",
-    //         "mac": "0C:25:76:F1:10:D4",
-    //         "type": "sunmi",
-    //         "mode": "2",
-    //         "ontime": "43分26秒",
-    //         "rssi": "--",
-    //         "tx": "830B/s",
-    //         "rx": "5KB/s",
-    //         "flux": "771MB"
-    //     },
-    //     {
-    //         "icon": "android",
-    //         "name": "Honor_9-11984856d914199b",
-    //         "ip": "192.168.100.196",
-    //         "mac": "0C:25:76:B3:09:80",
-    //         "type": "sunmi",
-    //         "mode": "1",
-    //         "ontime": "21分44秒",
-    //         "rssi": "较好",
-    //         "tx": "0B/s",
-    //         "rx": "1B/s",
-    //         "flux": "186KB"
-    //     }
-    // ],
+        clients: [
+            // {
+            //     "icon": "computer",
+            //     "routerName": 'dasdasdasd',
+            //     "name": "PC-2OR",
+            //     "ip": "192.168.100.181",
+            //     "mac": "0C:25:76:EC:24:69",
+            //     "type": "sunmi",
+            //     "mode": "0",
+            //     "ontime": "17时23分8秒",
+            //     "rssi": "--",
+            //     "tx": "445B/s",
+            //     "rx": "88.54MB/s",
+            //     "flux": "10.90MB"
+            // },
+            // {
+            //     "me": '1',
+            //     "icon": "computer",
+            //     "routerName": "locationssdada",
+            //     "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
+            //     "ip": "192.168.100.140",
+            //     "mac": "68:F7:28:F1:10:D4",
+            //     "type": "whitelist",
+            //     "mode": "1",
+            //     "ontime": "43分26秒",
+            //     "rssi": "--",
+            //     "tx": "830B/s",
+            //     "rx": "5KB/s",
+            //     "flux": "771MB"
+            // }    
+        ]
     }
 
     handleEdit = async (record) => {
@@ -560,11 +384,10 @@ export default class ClientList extends React.Component {
 
     handleSave = async (record, toggleEdit) => {
         const { mac, name } = record;
-        const clients = this.state.data;
+        const clients = this.state.clients;
         const client = clients.find((client, index) => {
             return (client.mac === record.mac);
         });
-
         if (client.name !== name) {
             Loading.show({ duration: 2 });
             let resp = await common.fetchApi({
@@ -616,8 +439,10 @@ export default class ClientList extends React.Component {
             { opcode:'CLIENT_LIST_GET' },
             { opcode: 'TRAFFIC_STATS_GET' },
             { opcode: 'WIRELESS_LIST_GET' },
-            { opcode: 'CLIENT_ALIAS_GET' }
+            { opcode: 'CLIENT_ALIAS_GET' },
+            { opcode: 'ROUTE_GET' }
         ], { ignoreErr: true });
+
         const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
@@ -628,7 +453,8 @@ export default class ClientList extends React.Component {
         let clients = data[0].result.data,
             alias = data[3].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
-            wifiInfo = data[2].result.rssilist || {};
+            wifiInfo = data[2].result.rssilist || {},
+            routerInfo = data[4].result.sonconnect.devices;
 
         let band = {
             sunmi: 0,
@@ -673,9 +499,17 @@ export default class ClientList extends React.Component {
             client.type = client.type || TYPE_NORMAL;
             band[client.type] += tf.cur_rx_bytes;
 
+            let routerName;
+            routerInfo.map(item => {
+                if (item.mac.toUpperCase() === client.routermac.toUpperCase()) {
+                    routerName = item.location
+                }
+            });
+
             return {
                 me: (client.mac === ME),
                 name: hostname,
+                routerName: routerName,
                 model: client.model,
                 ip: client.ip,
                 mac: client.mac,
@@ -703,7 +537,6 @@ export default class ClientList extends React.Component {
     } 
 
     updateClientsInfo = () => {
-        console.log('aaa');        
         this.fetchStatus();
     }
 

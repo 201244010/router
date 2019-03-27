@@ -5,8 +5,7 @@ import {Switch, Route, Redirect, NavLink} from "react-router-dom";
 import CustomIcon from '../../components/Icon';
 import { get } from '~/assets/common/cookie';
 
-import '../Settings/settings.scss'
-
+import './index.scss';
 import Wechat from './Wechat';
 import Blacklist from './Blacklist';
 import Bootdevice from './Bootdevice';
@@ -32,8 +31,7 @@ export default class Advance extends React.PureComponent {
     render(){
         const {match} = this.props;
         return (
-            <SubLayout className="settings">
-                <nav>
+            <SubLayout className="advance-settings">
                     {
                         this.navList.length > 0 && this.navList.map(item =>{
                             return (
@@ -46,7 +44,6 @@ export default class Advance extends React.PureComponent {
                             )
                         })
                     }
-                </nav>
                 <article>
                     <Switch>
                         <Route path={`${match.path}/bandwidth`} component={Bandwidth} />
@@ -54,7 +51,7 @@ export default class Advance extends React.PureComponent {
                         <Route path={`${match.path}/blacklist`} component={Blacklist} />
                         <Route path={`${match.path}/wechat`} component={Wechat} />
                         <Route path={`${match.path}/systemsetup`} component={Systemsetup} />
-                        <Redirect from={match.path} to={`${match.path}/bandwidth`}></Redirect>
+                        {/* <Redirect from={match.path} to={`${match.path}/bandwidth`}></Redirect> */}
                     </Switch>
                 </article>
             </SubLayout>

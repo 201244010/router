@@ -11,7 +11,7 @@ import Guide from "./Guide";
 import Home from './Home';
 import ClientList from './ClientList';
 import Settings from './Settings';
-import Advance from './Advance';
+import RouterSettings from './RouterSettings';
 import Welcome from './Welcome';
 import DownloadPage from './DownloadPage';
 import Diagnose from './Diagnose';
@@ -61,7 +61,7 @@ class PrimaryLayout extends React.Component {
             'login': { main: 'index-bg', footer: '', header: false},
             'clientlist': { main: 'bg', footer: '', header: true},
             'settings': { main: 'bg', footer: '', header: true },
-            'advance': { main: 'bg', footer: '', header: true },
+            'routersetting': { main: 'bg', footer: '', header: true },
             'welcome': { main: 'index-bg', footer: '', header: false },
             'agreement': { main: '', footer: '', header: false },
             'app': { main: 'bg', footer: '', header: true },
@@ -90,7 +90,7 @@ class PrimaryLayout extends React.Component {
                             <Route path="/home" component={Home} />
                             <Route path="/clientlist" component={ClientList} />
                             <Route path="/settings" component={Settings} />
-                            <Route path="/advance" component={Advance} />
+                            <Route path="/routersetting" component={RouterSettings} />
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
                             <Route path="/" component={Default} />

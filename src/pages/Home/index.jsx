@@ -56,10 +56,10 @@ export default class Home extends React.Component {
         },
         largestPercent: 0,
         wechatList: [{
-            data: 1,
+            data: 0,
             time: '2018/01/01'
         },{
-            data: 2,
+            data: 0,
             time: '2018/01/01'
         },{
             data: 0,
@@ -98,112 +98,8 @@ export default class Home extends React.Component {
             data: 0,
             time: '2018/01/15'
         }],
-        totalList: [
-            {
-                "icon": "computer",
-                "name": "PC-2OR",
-                "ip": "192.168.100.181",
-                "mac": "0C:25:76:EC:24:69",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
-            },
-            {
-                "me": '1',
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
-                "ip": "192.168.100.140",
-                "mac": "68:F7:28:F1:10:D4",
-                "type": "whitelist",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "C8:14:51:B3:09:80",
-                "type": "whitelist",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "F0:76:6F:EC:24:69",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "model": "V1 S",
-                "mac": "0C:25:76:F1:10:D4",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "0C:25:76:B3:09:80",
-                "type": "sunmi",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            }
-        ],
-        reList: [{
-            "online": '1',
-            "name": "SUNMILINK_9DSSSSS",
-            "role": '0',
-            "mac": '12',
-            "ip": '192.168.100.1',
-            "rssi": 35,
-            "parent": 'SUNMI_XX'
-        },{
-            "online": '0',
-            "name": "大厅",
-            "role": '1',
-            "mac": '13',
-            "ip": '192.168.100.1',
-            "rssi": 52
-        },{
-            "online": '0',
-            "name": "等候区等候区等候区等候区等候区等候区等候区",
-            "role": '0',
-            "mac": '14',
-            "ip": '192.168.100.1',
-            "rssi": 13,
-            "parent": 'SUNMI_XXXXX'
-        }],
+        totalList: [],
+        reList: [],
         normalClients: [],
         priorityClients: [],
         qosData: [{
@@ -281,7 +177,7 @@ export default class Home extends React.Component {
             { opcode: 'NETWORK_WAN_IPV4_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
             { opcode: 'AUTH_CLIENT_LIST'},
-            // { opcode: 'ROUTE_GET'},
+            { opcode: 'ROUTE_GET'},
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -295,11 +191,11 @@ export default class Home extends React.Component {
             alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
             wifiInfo = data[2].result.rssilist || {},
-            wechats = data[5].result.auth.clientlist;
-            // reInfo = data[6].result.sonconnect.device;
-
+            wechats = data[5].result.auth.clientlist,
+            reInfo = data[6].result.sonconnect.devices;
         //时间戳转时间，获取每天微信接入的数量
         const timeData = {}, wechatList = this.state.wechatList;
+
         wechats.map(item => {
             if (!timeData[transformTime(item.access_time)]) {
                 timeData[transformTime(item.access_time)] = 1;
@@ -315,7 +211,7 @@ export default class Home extends React.Component {
             });
             wechatList.pop();
         });
-        
+
         let band = {
             sunmi: 0.2,
             whitelist: 0.1,
@@ -405,18 +301,32 @@ export default class Home extends React.Component {
     
         let { online } = data[3].result.wan.info;
 
-        // let reList = reInfo.map((re) => {
+        let routeList = {};
+        let routeName = [];
+        reInfo.map(item => {
+            routeList[item.mac.toUpperCase()] = item.location;
+            routeName.push({
+                text: item.location,
+                value: item.location
+            })
+        });
+
+        let reList = reInfo.map((re) => {
             
-        //     let rssi = wifiInfo[mac.toLowerCase()] || {rssi:0};
-        //     return {
-        //         mac: re.mac,
-        //         online: re.online,
-        //         location: re.location,
-        //         role: re.role,
-        //         rssi: rssi
-        //     }
-        // });
-    
+            let rssi = wifiInfo[re.mac.toLowerCase()] || {rssi:0};
+            return {
+                mac: re.mac.toUpperCase(),
+                online: re.online,
+                name: re.location,
+                role: re.role,
+                rssi: rssi,
+                ip: re.ip,
+                parent: routeList[re.routermac.toUpperCase()]
+            }
+        });
+
+        window.sessionStorage.setItem('_ROUTER_LIST', JSON.stringify(routeName));
+
         this.setState({
             online: online,
             upSpeed: tx.match(/[0-9\.]+/g),
@@ -430,6 +340,7 @@ export default class Home extends React.Component {
             priorityClients: priorityClients,
             normalClients: normalClients,
             wechatList: wechatList,
+            reList: reList,
             percent: {
                 normalPercent: (() => {
                     normalPercent.shift();

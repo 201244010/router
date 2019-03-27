@@ -199,7 +199,6 @@
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: pre;
-            margin-bottom:10px;
         }
     }
     ul{
@@ -218,6 +217,19 @@
             }
         }
     }
+    .ant-input {
+        height: 24px;
+        border-radius: unset;
+        margin-bottom: 10px;
+        margin-left: -2px;
+        padding: 2px;
+    }
+    .ant-input::placeholder {
+        font-size: 14px;
+        color: rgba(51,60,79,0.30);
+        text-align: left;
+    }
+
     .button {
         border-top: 1px solid rgba(0,0,0,0.04);
         padding-top: 6px;

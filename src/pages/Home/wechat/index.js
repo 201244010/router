@@ -16,7 +16,7 @@ export default class Connection extends React.Component {
             },
             tooltip: {
                 backgroundColor: 'rgba(255,255,255,0.90)',
-                extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
+                // extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
                 textStyle: {
                     fontFamily: 'PingFangSC-Regular',
                     fontSize: 12,
@@ -110,9 +110,7 @@ export default class Connection extends React.Component {
                 <span className='number'>
                     {chatTotal}
                 </span>
-                <div className='chart' style={{width: 250, height: 80}} ref='dom'>
-    
-                </div>
+                <div className='chart' style={{width: 250, height: 80}} ref='dom'></div>
                 <Button onClick={this.goWechat} className="button">修改设置</Button>
             </div>
         )

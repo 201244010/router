@@ -65,7 +65,7 @@ class PrimaryHeader extends React.Component {
                                     {/* <Icon type="set"></Icon> */}
                                     <NavLink to={match.path + "clientlist"} activeClassName="active">{intl.get(MODULE, 1)/*_i18n:基本设置*/}</NavLink>
                                     {/* <Icon type="advancedsetup"></Icon> */}
-                                    <NavLink to={match.path + "advance"} activeClassName="active">{intl.get(MODULE, 2)/*_i18n:高级设置*/}</NavLink>
+                                    <NavLink to={match.path + "routersetting"} activeClassName="active">{intl.get(MODULE, 2)/*_i18n:高级设置*/}</NavLink>
                                 </nav>,
                                 <li key="2" className="sidebar">
                                     {'abroad' === getQuickStartVersion()?

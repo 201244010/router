@@ -172,10 +172,10 @@ export default class Device extends React.Component {
                 let type = record.type;
                 const maxWidth = (() => {
                     if (record.me && 'normal' !== type) {
-                        return 130;
+                        return 124;
                     } 
                     if (record.me && 'normal' === type) {
-                        return 170;
+                        return 164;
                     }
                     if ('normal' !== type) {
                         return 194;
