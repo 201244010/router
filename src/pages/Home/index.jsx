@@ -5,10 +5,11 @@ import { Button, Modal, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
-import { formatSpeed } from '~/assets/common/utils';
-import CustomIcon from '~/components/Icon';
-import ClientList from "./ClientList";
-import QoS from './QoS';
+import { formatSpeed, transformTime } from '~/assets/common/utils';
+import Topology from './Topology';
+import Device from './deviceInfo';
+import Allocation from './speedAllocation';
+import Connection from './wechat';
 import Mesh from './Mesh';
 import { set, clear } from '~/assets/common/cookie';
 
@@ -42,226 +43,65 @@ export default class Home extends React.Component {
         online: true,
         qosEnable: true,
         totalBand: 8 * 1024 * 1024,
+        source: 'defaul',
         me: '',
-        normalClients: [/*
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "0C:25:76:EC:24:69",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "mac": "68:F7:28:F1:10:D4",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "C8:14:51:B3:09:80",
-                "type": "normal",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "F0:76:6F:EC:24:69",
-                "type": "normal",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            }*/
-        ],
-        priorityClients: [/*
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:EC:24:69",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "model": "V1 S",
-                "mac": "0C:25:76:F1:10:D4",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "0C:25:76:B3:09:80",
-                "type": "sunmi",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:EC:24:70",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:F1:10:D5",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:B3:09:81",
-                "type": "sunmi",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:EC:24:98",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "model": "V2 PRO",
-                "mac": "0C:25:76:F1:10:D6",
-                "type": "sunmi",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "74:5F:00:EC:24:69",
-                "type": "whitelist",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
-            },
-            {
-                "icon": "computer",
-                "name": "WIN-NTSFVIF9B7A",
-                "ip": "192.168.100.140",
-                "mac": "68:F7:28:F1:10:D4",
-                "type": "whitelist",
-                "mode": "有线",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            },
-            {
-                "icon": "android",
-                "name": "Honor_9-11984856d914199b",
-                "ip": "192.168.100.196",
-                "mac": "C8:14:51:B3:09:80",
-                "type": "whitelist",
-                "mode": "5G",
-                "ontime": "21分44秒",
-                "rssi": "较好",
-                "tx": "0B/s",
-                "rx": "1B/s",
-                "flux": "186KB"
-            },
-            {
-                "icon": "computer",
-                "name": "PC-20180711HEOR",
-                "ip": "192.168.100.181",
-                "mac": "F0:76:6F:EC:24:69",
-                "type": "whitelist",
-                "mode": "有线",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "232B/s",
-                "flux": "10.90MB"
-            }*/
-        ],
+        wechatConfig: false,
+        normalLength: 0,
+        priorityLength: 0,
+        sunmiLength: 0,
+        percent: {
+            normalPercent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            priorityPercent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            sunmiPercent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        },
+        largestPercent: 0,
+        wechatList: [{
+            data: 0,
+            time: '2018/01/01'
+        },{
+            data: 0,
+            time: '2018/01/01'
+        },{
+            data: 0,
+            time: '2018/01/04'
+        },{
+            data: 0,
+            time: '2018/01/05'
+        },{
+            data: 0,
+            time: '2018/01/06'
+        },{
+            data: 0,
+            time: '2018/01/07'
+        },{
+            data: 0,
+            time: '2018/01/08'
+        },{
+            data: 0,
+            time: '2018/01/09'
+        },{
+            data: 0,
+            time: '2018/01/10'
+        },{
+            data: 0,
+            time: '2018/01/11'
+        },{
+            data: 0,
+            time: '2018/01/12'
+        },{
+            data: 0,
+            time: '2018/01/13'
+        },{
+            data: 0,
+            time: '2018/01/14'
+        },{
+            data: 0,
+            time: '2018/01/15'
+        }],
+        totalList: [],
+        reList: [],
+        normalClients: [],
+        priorityClients: [],
         qosData: [{
             name: intl.get(MODULE, 5)/*_i18n:优先设备*/,
             value: 0,
@@ -294,16 +134,20 @@ export default class Home extends React.Component {
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'QOS_GET' },
-            { opcode: 'WHOAMI_GET' }
+            { opcode: 'WHOAMI_GET' },
+            { opcode: 'AUTH_WEIXIN_CONFIG_GET'}
         ]);
         let { errcode, data } = response;
         if (errcode == 0) {
             let { qos } = data[0].result;
             let { mac } = data[1].result;
+            let { weixin } = data[2].result;
             this.setState({
                 qosEnable: qos.enable,
                 totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
+                source: qos.source,
                 me: mac.toUpperCase(),
+                wechatConfig: weixin.initial === '1' ? true : false
             });
             return;
         }
@@ -324,13 +168,16 @@ export default class Home extends React.Component {
             });
         }
     }
+
     refreshStatus = async () => {
         let resp = await common.fetchApi([
             { opcode:'CLIENT_LIST_GET' },
             { opcode: 'TRAFFIC_STATS_GET' },
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
-            { opcode: 'CLIENT_ALIAS_GET' }
+            { opcode: 'CLIENT_ALIAS_GET' },
+            { opcode: 'AUTH_CLIENT_LIST'},
+            { opcode: 'ROUTE_GET'},
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -343,11 +190,31 @@ export default class Home extends React.Component {
         let clients = data[0].result.data,
             alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
-            wifiInfo = data[2].result.rssilist || {};
+            wifiInfo = data[2].result.rssilist || {},
+            wechats = data[5].result.auth.clientlist,
+            reInfo = data[6].result.sonconnect.devices;
+        //时间戳转时间，获取每天微信接入的数量
+        const timeData = {}, wechatList = this.state.wechatList;
+
+        wechats.map(item => {
+            if (!timeData[transformTime(item.access_time)]) {
+                timeData[transformTime(item.access_time)] = 1;
+            } else {
+                timeData[transformTime(item.access_time)] += 1;
+            }
+        })
+
+        Object.keys(timeData).forEach(function(key){
+            wechatList.unshift({
+                data: timeData[key],
+                time: key
+            });
+            wechatList.pop();
+        });
 
         let band = {
-            sunmi: 0,
-            whitelist: 0,
+            sunmi: 0.2,
+            whitelist: 0.1,
             normal: 0,
         };
         // merge clients && traffic info
@@ -423,11 +290,42 @@ export default class Home extends React.Component {
         let wan = data[1].result.traffic_stats.wan;
         let tx = formatSpeed(wan.cur_tx_bytes);
         let rx = formatSpeed(wan.cur_rx_bytes);
-        let total = this.state.totalBand;
-        let rest = total - (band.sunmi + band.whitelist + band.normal);
-        let bandCount = [(band.sunmi + band.whitelist), band.normal, (rest > 0 ? rest : 0)];
 
+        const {percent:{normalPercent, priorityPercent, sunmiPercent}, largestPercent} = this.state;
+        
+        let total = this.state.totalBand;
+        const normal = parseInt((band['normal'] / total * 100).toFixed(0));
+        const whitelist = parseInt((band['whitelist'] / total * 100).toFixed(0));
+        const sunmi = parseInt((band['sunmi'] / total * 100).toFixed(0));
+        const totalPercent = sunmi +  whitelist + normal;
+    
         let { online } = data[3].result.wan.info;
+
+        let routeList = {};
+        let routeName = [];
+        reInfo.map(item => {
+            routeList[item.mac.toUpperCase()] = item.location;
+            routeName.push({
+                text: item.location,
+                value: item.location
+            })
+        });
+
+        let reList = reInfo.map((re) => {
+            
+            let rssi = wifiInfo[re.mac.toLowerCase()] || {rssi:0};
+            return {
+                mac: re.mac.toUpperCase(),
+                online: re.online,
+                name: re.location,
+                role: re.role,
+                rssi: rssi,
+                ip: re.ip,
+                parent: routeList[re.routermac.toUpperCase()]
+            }
+        });
+
+        window.sessionStorage.setItem('_ROUTER_LIST', JSON.stringify(routeName));
 
         this.setState({
             online: online,
@@ -435,15 +333,32 @@ export default class Home extends React.Component {
             upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
             downUnit: rx.match(/[a-z/]+/gi),
+            priorityLength: priorityClients.length,
+            normalLength: normalClients.length,
+            sunmiLength: totalList.length - priorityClients.length - normalClients.length,
+            totalList: totalList,
             priorityClients: priorityClients,
             normalClients: normalClients,
-            qosData: this.state.qosData.map((item, index) => {
-                return {
-                    name: item.name,
-                    value: (bandCount[index] / total * 100) + '',
-                    color: item.color
-                }
-            }),
+            wechatList: wechatList,
+            reList: reList,
+            percent: {
+                normalPercent: (() => {
+                    normalPercent.shift();
+                    normalPercent.push(normal || 2 );
+                    return normalPercent;
+                })(),
+                priorityPercent: (() => {
+                    priorityPercent.shift();
+                    priorityPercent.push(whitelist || 1.5);
+                    return priorityPercent;
+                })(),
+                sunmiPercent: (() => {
+                    sunmiPercent.shift();
+                    sunmiPercent.push(sunmi || 1.5);
+                    return sunmiPercent;
+                })(),
+            },
+            largestPercent: totalPercent > largestPercent ? totalPercent : largestPercent
         });
     }
 
@@ -523,86 +438,61 @@ export default class Home extends React.Component {
     }
 
     render(){
-        const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit,
-                visible, successShow, upBand, downBand, failShow, me,
-                normalClients, priorityClients, qosData }  = this.state;
+        const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit, reList,
+                visible, successShow, upBand, downBand, failShow, me, wechatConfig,
+                normalClients, priorityClients, qosData, sunmiLength, priorityLength,
+                normalLength, totalList, wechatList, source, percent, largestPercent}  = this.state;
         return (
-            <SubLayout className='home'>
-                <ul className='func-list'>
-                    <li className='func-item internet' style={{ paddingRight: 0 }}>
-                        <img className='router-bg' src={require('~/assets/images/router-bg.png')} />
-                        <img className='router' src={require('~/assets/images/router.png')} />
-                        <div className={classnames(['content', { 'internet-error': !online }])}>
-                            <h4><span>{intl.get(MODULE, 9)/*_i18n:网络状态*/}</span><span className='state'>{online ? intl.get(MODULE, 10)/*_i18n:正常*/ : intl.get(MODULE, 11)/*_i18n:异常*/}</span></h4>
-                            <div className='internet-status'>
-                                <div className='up'>
-                                    <label className='speed'>{upSpeed}</label>
-                                    <div className='tip'>
-                                        <span>{intl.get(MODULE, 12)/*_i18n:上行速率*/}</span><CustomIcon type='kbyte' size={12} color='#3D76F6' />
-                                        <div className='unit'>{upUnit}</div>
-                                    </div>
-                                </div>
-                                <div className='down'>
-                                    <label className='speed'>{downSpeed}</label>
-                                    <div className='tip'>
-                                        <span>{intl.get(MODULE, 13)/*_i18n:下行速率*/}</span><CustomIcon type='downloadtraffic' size={12} color='#87D068' />
-                                        <div className='unit'>{downUnit}</div>
-                                    </div>
-                                </div>
-                                <Button onClick={this.startSpeedTest} className='test-speed'>{intl.get(MODULE, 14)/*_i18n:一键测速*/}</Button>
-                            </div>
-                            <Button onClick={this.startDiagnose} className='diagnose'>{intl.get(MODULE, 15)/*_i18n:立即诊断*/}</Button>
-                        </div>
-                        {visible && 
-                            <Progress
-                                duration={TIME_SPEED_TEST}
-                                title={intl.get(MODULE, 16)/*_i18n:正在进行网络测速，请耐心等待…*/}
-                                showPercent={true}
+            <SubLayout className="home">
+                <div>
+                    <Topology 
+                        upSpeed={upSpeed} upUnit={upUnit} downSpeed={downSpeed} downUnit={downUnit}
+                        reList={reList} online={online} history={this.props.history}
+                    />
+                    <ul className="container">
+                        <li>
+                            <Device 
+                                sunmiLength={sunmiLength}
+                                priorityLength={priorityLength}
+                                normalLength={normalLength}
+                                totalList={totalList}
+                                startRefresh={this.startRefresh} 
+                                stopRefresh={this.stopRefresh}
+                                history={this.props.history}
                             />
-                        }
-                        <Modal className='speed-result-modal' width={560} closable={false} visible={successShow} centered={true}
-                            footer={<Button type="primary" onClick={this.closeSpeedTest}>{intl.get(MODULE, 17)/*_i18n:确定*/}</Button>}>
-                            <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                            <h4>{intl.get(MODULE, 18)/*_i18n:带宽测速完成*/}</h4>
-                            <ul className='speed-result'>
-                                <li>
-                                    <CustomIcon color="#3D76F6" type="kbyte" size={12} />
-                                    <label>
-                                        <span style={{color:'#adb1b9'}}>{intl.get(MODULE, 19)/*_i18n:上行带宽：*/}</span>
-                                    </label>
-                                    <span>{upBand}Mbps</span>
-                                </li>
-                                <li>
-                                    <CustomIcon color="#87D068" type="downloadtraffic" size={12} />
-                                    <label>
-                                        <span style={{color:'#adb1b9'}}>{intl.get(MODULE, 20)/*_i18n:下行带宽：*/}</span>
-                                    </label>
-                                    <span>{downBand}Mbps</span>
-                                </li>
-                            </ul>
-                        </Modal>
-                        <Modal className='speed-result-modal' width={560} closable={false} visible={failShow} centered={true}
-                            footer={<Button type="primary" onClick={this.closeSpeedTest}>{intl.get(MODULE, 21)/*_i18n:确定*/}</Button>} >
-                            <div className='status-icon'><CustomIcon color="#FF5500" type="defeated" size={64} /></div>
-                            <h4>{intl.get(MODULE, 22)/*_i18n:带宽测速失败，请重试*/}</h4>
-                        </Modal>
-                    </li>
-                    <QoS data={qosData} enable={qosEnable} online={online} history={this.props.history}/>
-                    <li className='func-item search' style={{ padding: '10px 0px' }}>
-                        <img className='radar' src={require('~/assets/images/radar.png')} />
-                        <div className='content'>
-                            <h3>SUNMI Link</h3>
-                            <p>{intl.get(MODULE, 23)/*_i18n:一键连接附近商米设备*/}</p>
-                            <Button onClick={this.startSunmiMesh} className='search'>{intl.get(MODULE, 24)/*_i18n:搜寻设备*/}</Button>
-                        </div>
-                        <Mesh ref="sunmiMesh" />
-                    </li>
-                </ul>
-                <div className='online-list'>
-                    <ClientList type={TYPE_PRIORITY} data={priorityClients} mac={me} history={this.props.history}
-                        startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
-                    <ClientList type={TYPE_NORMAL} data={normalClients} mac={me}
-                        startRefresh={this.startRefresh} stopRefresh={this.stopRefresh} />
+                        </li>
+                        <div className='grid'></div>
+                        <li>
+                            <Allocation
+                                status={source === 'default' ? false : true}
+                                percent={percent}
+                                largestPercent={largestPercent}
+                                history={this.props.history}
+                            />
+                        </li>
+                        <div className='grid'></div>
+                        <li>
+                            <Connection
+                                chatTotal={10}
+                                wechatList={wechatList}
+                                wechatConfig={wechatConfig}
+                                history={this.props.history}
+                            />
+                        </li>
+                        <div className='grid'></div>
+                        <li>
+                            <span>搜寻商米设备</span>
+                            <span className='second-title'>
+                                商米设备一键联网
+                            </span>
+                            <p>
+                                <span>无需输入密码</span>
+                                <span>快捷安全</span>
+                            </p>
+                            <Button onClick={this.startSunmiMesh} className="button">搜寻</Button>
+                            <Mesh ref="sunmiMesh" />
+                        </li>
+                    </ul>
                 </div>
             </SubLayout>
         );

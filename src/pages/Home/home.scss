@@ -1,5 +1,5 @@
 .home-bg {
-    background-image : linear-gradient(180deg, #446CE6 243px, #f2f3f7 239px);
+    background-image : linear-gradient(180deg, #5F6FDE 400px, #f2f3f7 399px);
     .main{
         .home{
             height : auto;
@@ -227,6 +227,11 @@
     }
 }
 
+.home-bg-offline {
+    @extend .home-bg;
+    background-image : linear-gradient(180deg, #7A88A4 400px, #f2f3f7 399px);
+}
+
 .speed-result-modal{
     .status-icon{
         text-align: center;
@@ -267,4 +272,53 @@
             height: 42px;
         }
     }
+}
+
+.container {
+    padding-top: 50px;
+    display: flex;
+    li {
+        position: relative;
+        width: 232px;
+        height: 251px;
+        padding-left: 28px;
+        .first-title {
+            display: block;
+            font-size: 14px;
+            color: #ADB1B9;
+        }
+        .second-title {
+            display: block;
+            margin-top: 40px;
+            font-size: 18px;
+            color: #333C4F;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 14px;
+            color: #ADB1B9;
+            margin-top: 20px;
+            span:first-child::after{
+                content: '|';
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+        }
+
+        .button {
+            position: absolute;
+            bottom: 0;
+            left: 28px;
+        }
+    }
+    li:not(:last-child) {
+        width: 310px;
+    }
+}
+
+.grid {
+    margin-top: 26px;
+    width: 1px;
+    height: 200px;
+    background: rgba(173,177,185,0.20);
 }

@@ -27,7 +27,7 @@ export default class Applying extends React.Component {
                 interval: 1000,
                 stop: resp => {resp !== 0},
             }
-        );
+        )
         this.props.history.push("/guide/success");
     }
 
@@ -50,11 +50,12 @@ export default class Applying extends React.Component {
 
             if (timeout <= 0) {
                 this.getWireless();
+                window.clearInterval(count);
             }
 
-            if (timeout < -1) {
-                window.clearInterval(count);
-            } 
+            // if (timeout < -1) {
+                
+            // } 
         }, 1000);
     }
 

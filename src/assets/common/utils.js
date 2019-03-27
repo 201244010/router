@@ -27,6 +27,21 @@ let formatTime = (total) => {
     return timeStr;
 }
 
+let transformTime = (timestamp = +new Date()) => {
+        const time = new Date(timestamp);
+        const y = time.getFullYear();
+        const M = time.getMonth() + 1;
+        const d = time.getDate();
+        // var h = time.getHours();
+        // var m = time.getMinutes();
+        // var s = time.getSeconds();
+        return y + '-' + addZero(M) + '-' + addZero(d);
+}
+
+function addZero(m) {
+    return m < 10 ? '0' + m : m;
+}
+
 // 格式化网络速率，最多保留4位数字+单位
 let formatSpeed = (speed) => {
     let kSpeed = 1024;
@@ -43,14 +58,11 @@ let formatSpeed = (speed) => {
         let val = speed / mSpeed;
         speed = (val).toFixed(val > 99 ? 0 : 2) + "MB/s";
     }
-    else if (speed >= kSpeed) {
-        speed = (speed / kSpeed).toFixed(0) + "KB/s";
-    }
     else {
-        speed = speed.toFixed(0) + "B/s";
+        speed = (speed / kSpeed).toFixed(0) + "KB/s";
     }
 
     return speed + '';
 }
 
-export { formatTime, formatSpeed };
+export { formatTime, formatSpeed , transformTime};

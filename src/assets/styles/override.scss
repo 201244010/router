@@ -67,6 +67,10 @@ button.ant-btn-primary.ant-btn-loading {
     stroke: #52c41a!important;
 }
 
+.ant-table-filter-dropdown-link {
+    color: #3D76F6;
+}
+
 .ant-progress-success-bg, .ant-progress-bg {
     background-color : #4D5CC0!important;
 }
@@ -110,7 +114,7 @@ button.ant-btn-primary.ant-btn-loading {
     text-align: center;
 }
 .ant-table-fixed-header .ant-table-content .ant-table-scroll .ant-table-header{
-    padding-bottom: 3px;    // for firefox
+    // padding-bottom: 3px;    // for firefox
     &::-webkit-scrollbar-track{ // for chrome
         background: #fff;
     }
