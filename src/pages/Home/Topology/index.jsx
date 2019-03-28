@@ -207,7 +207,7 @@ class Item extends React.Component {
             if (!editing) {
                 return (
                     <p>
-                        <label>
+                        <label title={value}>
                             {value}
                         </label>
                         <label style={{marginTop: -30}} onClick={this.toggleEdit}>
@@ -293,7 +293,7 @@ class Item extends React.Component {
                         <CustomIcon size={60} color='#fff' type="router" />
                         <label>
                             <CustomIcon size={8} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
-                            <span>{reList.name}</span>
+                            <span title={reList.name}>{reList.name}</span>
                         </label>
                     </div>
                 )
@@ -305,7 +305,7 @@ class Item extends React.Component {
                                 <div>
                                     <CustomIcon size={60} color='#fff' type="router" />                                
                                 </div>
-                                <label>{reList.name}</label>
+                                <label title={reList.name}>{reList.name}</label>
                                 <p><span style={{color: color}}>{rssi}</span></p>
                             </div>
                         );
@@ -315,7 +315,7 @@ class Item extends React.Component {
                                 <div>
                                     <CustomIcon size={60} color='#fff' type="router" />
                                 </div>
-                                <label>{reList.name}</label>
+                                <label title={reList.name}>{reList.name}</label>
                                 <p className="sate-offline">已离线</p>
                             </div>
                         )   
