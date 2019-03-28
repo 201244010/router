@@ -3,6 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
 import Icon from '~/components/Icon';
+import SubLayout from '~/components/SubLayout';
 
 import Welcome from './Welcome';
 import Account from './Account';
@@ -58,6 +59,7 @@ export default class Guide extends React.Component {
     render() {
         const { match } = this.props;
         return (
+            <SubLayout className="settings">
             <div className='wechat-guide'>
                 <ul className='setup-list'>
                     {this.steps.map((item, index, steps) => {
@@ -79,6 +81,7 @@ export default class Guide extends React.Component {
                     </Switch>
                 </div>
             </div>
+        </SubLayout>
         );
     }
 }

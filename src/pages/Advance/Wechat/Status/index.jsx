@@ -7,6 +7,7 @@ import Loading from '~/components/Loading';
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 import { formatTime } from '~/assets/common/utils';
+import SubLayout from '~/components/SubLayout';
 
 import style from './status.useable.scss';
 
@@ -264,6 +265,7 @@ export default class Status extends React.Component {
         }];
 
         return (
+            <SubLayout className="settings">
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
@@ -349,6 +351,7 @@ export default class Status extends React.Component {
                     >重新设置</Button>
                 </section>
             </div>
+            </SubLayout>
         );
     }
 }

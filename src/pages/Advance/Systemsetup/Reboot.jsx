@@ -3,7 +3,7 @@ import { Button, Icon, Modal, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/auth';
-
+import SubLayout from '~/components/SubLayout';
 const MODULE = 'reboot';
 
 export default class Reboot extends React.Component{
@@ -62,6 +62,7 @@ export default class Reboot extends React.Component{
     render(){
         const { duration, loadingActive, succeedActive } = this.state;
         return (
+            <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 8}}>
                     <span style={{marginLeft:60}}>{intl.get(MODULE, 5)/*_i18n:说明：路由器系统将立即重新启动*/}</span>
@@ -86,6 +87,7 @@ export default class Reboot extends React.Component{
                     <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 9)/*_i18n:重启成功，请重新连接无线网络*/}</h3>
                 </Modal>
         </div>
+        </SubLayout>
         );
     }
 }

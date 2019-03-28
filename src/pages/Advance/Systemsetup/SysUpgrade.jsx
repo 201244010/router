@@ -6,7 +6,7 @@ import {Button, Modal, Upload, Icon, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import { get } from '~/assets/common/auth';
 import Upgrade from '../../UpgradeDetect/Upgrade';
-
+import SubLayout from '~/components/SubLayout';
 const MODULE = 'sysupgrade';
 
 export default class SysUpgrade extends React.Component{
@@ -151,6 +151,7 @@ export default class SysUpgrade extends React.Component{
         const {releaseLog, loading, disable, version, currentVersion, latestVersion, manual} = this.state;
 
         return (
+            <SubLayout className="net-setting">
             <div style={{paddingLeft : 60}}>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
                     <section className="online-update">
@@ -204,6 +205,7 @@ export default class SysUpgrade extends React.Component{
                 </Modal>
                 <Upgrade ref='Upgrade'/>
             </div>
+            </SubLayout>
         );
     }
 }

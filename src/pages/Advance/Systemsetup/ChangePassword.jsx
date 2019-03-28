@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
 import { message, Button } from 'antd';
 import {checkStr} from '~/assets/common/check';
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'changepassword';
 const {FormItem,Input,ErrorTip} = Form;
@@ -83,6 +84,7 @@ export default class ChangePassword extends React.Component{
         const disabled = surePWD === '' || oldPWD === '' || oldPWDTip !==''|| newPWDTip !== '' || surePWDTip !== '';
 
         return (
+            <SubLayout className="settings">
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div style={{paddingLeft:60,marginTop:30,marginBottom:124}}>
@@ -108,6 +110,7 @@ export default class ChangePassword extends React.Component{
                     onClick={this.submit}>{intl.get(MODULE, 11)/*_i18n:保存*/}</Button>
                 </section>
             </div>
+            </SubLayout>
         );
     }
 }

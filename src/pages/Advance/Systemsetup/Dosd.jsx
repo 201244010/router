@@ -3,6 +3,7 @@ import React from 'react';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { Button, Table, Checkbox, Popconfirm, message } from 'antd';
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'dosd';
 const { FormItem } = Form;
@@ -126,6 +127,7 @@ export default class Dosd extends React.Component {
         }];
 
         return (
+        <SubLayout className="settings">
         <div className="dosd-setting">
             <section>
                 <Form>
@@ -150,6 +152,7 @@ export default class Dosd extends React.Component {
                 </Form>
             </section>
         </div>
+        </SubLayout>
         );
     }
 };

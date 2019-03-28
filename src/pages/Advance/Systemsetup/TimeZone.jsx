@@ -3,7 +3,7 @@ import { Radio, Select, Button } from 'antd';
 import moment from 'moment';
 import {getTimezones} from '~/assets/common/timezone';
 import './timezone.scss';
-
+import SubLayout from '~/components/SubLayout';
 const MODULE = 'timezone';
 
 const RadioGroup = Radio.Group;
@@ -165,6 +165,7 @@ export default class TimeZone extends React.Component {
         systemTime = moment(systemTime).format("YYYY-MM-DD HH:mm:ss");
 
         return (
+            <SubLayout className="settings">
             <div className="time-zone">
                 <p className="current-system-time">
                     {intl.get(MODULE, 0)/*_i18n:当前系统时间：*/}<span>{systemTime}</span>
@@ -191,6 +192,7 @@ export default class TimeZone extends React.Component {
                     <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)/*_i18n:保存*/}</Button>
                 </div>
             </div>
+            </SubLayout>
         );
     }
 }

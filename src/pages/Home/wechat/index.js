@@ -87,7 +87,7 @@ export default class Connection extends React.Component {
     }
 
     componentDidMount() {
-        !this.props.wechatConfig && this.renderChart();
+        !this.props.wechatConfig && this.initChart();
     }
 
     componentDidUpdate() {
@@ -128,6 +128,6 @@ export default class Connection extends React.Component {
     }
 
     goWechat = () => {
-        this.props.history.push('./advance/wechat')
+        this.props.history.push('/wechat')
     }
 }

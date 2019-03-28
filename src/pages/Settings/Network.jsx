@@ -5,6 +5,7 @@ import { Select, Radio, Button, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'network';
 
@@ -470,102 +471,104 @@ export default class NETWORK extends React.Component {
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
                 ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
         return (
-            <div className="wifi-settings">
-                <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
-                    <section className="wifi-setting-item" style={{marginBottom : 0}}>
-                        <PanelHeader title={intl.get(MODULE, 21)/*_i18n:当前上网信息*/} checkable={false} checked={true} />
-                        <div className='network-info'>
-                            <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>
-                            <label className="oneline">{onlineStatus}</label>
-                        </div>
-                        <div className='network-info'>
-                            <ul className="ui-mute">{intl.get(MODULE, 23)/*_i18n:上网方式：*/}</ul>
-                            <label className="oneline">{dialType}</label>
-                        </div>
-                        <div className='network-info'>
-                            <ul className="ui-mute">{intl.get(MODULE, 24)/*_i18n:IP地址：*/}</ul>
-                            <label className="oneline">{infoIp}</label>
-                        </div>
-                        <div className='network-info'>
-                            <ul className="ui-mute">{intl.get(MODULE, 25)/*_i18n:子网掩码*/}</ul>
-                            <label className="oneline">{infoMask}</label>
-                        </div>
-                        <div className='network-info'>
-                            <ul className="ui-mute">{intl.get(MODULE, 26)/*_i18n:默认网关*/}</ul>
-                            <label className="oneline">{infoGateway}</label>
-                        </div>
-                        <div className='network-info' style={{marginBottom: 23}}>    
-                            <ul className="ui-mute">{intl.get(MODULE, 49)}</ul>
-                            <label className="oneline">{infoDns}</label>
-                        </div>
-                    </section>
-                    <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 27)/*_i18n:上网设置*/} checkable={false} checked={true} />
-                        <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
-                            <label>{intl.get(MODULE, 28)/*_i18n:上网方式*/}</label>
-                            <Select value={type} style={{ width: 320, marginBottom: 32}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
-                                <Option value='pppoe'>{intl.get(MODULE, 29)/*_i18n:宽带拨号上网（PPPoE）*/}</Option>
-                                <Option value='dhcp'>{intl.get(MODULE, 30)/*_i18n:自动获取IP（DHCP）*/}</Option>
-                                <Option value='static'>{intl.get(MODULE, 31)/*_i18n:手动输入IP（静态IP）*/}</Option>
-                            </Select>
-                        </div>
-                        {
-        
-                            type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}
-                                    pppoeAccountTip={pppoeAccountTip}
-                                    pppoePasswordTip={pppoePasswordTip}
-                                    pppoePassword={pppoePassword}
-                                    service={service}
-                                    handlePasswordChange={this.handlePasswordChange}
-                                    pppoeType={this.state.pppoeType}
-                                    onPppoeRadioChange={this.onPppoeRadioChange}
-                                    handleAccountChange={this.handleAccountChange}
-                            />: ''
-                        }
-                        {
-                            type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
-                            dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
-                            dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
-                        }
-                        {
-                            type === 'pppoe' ?  <div><label>{intl.get(MODULE, 32)/*_i18n:服务名(可选)*/}</label>
-                            <FormItem key="pppoeservice" type="small" style={{ width : 320}}>
-                                <Input maxLength={64} type="text" value={service} onChange={this.handleServiceChange}/>
-                            </FormItem></div> : ''
-                        }
-                        {   
-                            type === 'dhcp' ? <Dhcp onDhcpRadioChange={this.onDhcpRadioChange}
-                                    dhcpType={this.state.dhcpType}
-                            />: ''
-                        }
-                        {
-                            type === 'static' ? <Static ipv4={ipv4} 
-                                            gateway={gateway} 
-                                            subnetmask={subnetmask}
-                                            onChange={this.onIPConifgChange}
-                                            ipv4Tip={ipv4Tip}
-                                            gatewayTip={gatewayTip}
-                                            subnetmaskTip={subnetmaskTip}
+            <SubLayout className="settings">
+                <div className="wifi-settings">
+                    <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
+                        <section className="wifi-setting-item" style={{marginBottom : 0}}>
+                            <PanelHeader title={intl.get(MODULE, 21)/*_i18n:当前上网信息*/} checkable={false} checked={true} />
+                            <div className='network-info'>
+                                <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>
+                                <label className="oneline">{onlineStatus}</label>
+                            </div>
+                            <div className='network-info'>
+                                <ul className="ui-mute">{intl.get(MODULE, 23)/*_i18n:上网方式：*/}</ul>
+                                <label className="oneline">{dialType}</label>
+                            </div>
+                            <div className='network-info'>
+                                <ul className="ui-mute">{intl.get(MODULE, 24)/*_i18n:IP地址：*/}</ul>
+                                <label className="oneline">{infoIp}</label>
+                            </div>
+                            <div className='network-info'>
+                                <ul className="ui-mute">{intl.get(MODULE, 25)/*_i18n:子网掩码*/}</ul>
+                                <label className="oneline">{infoMask}</label>
+                            </div>
+                            <div className='network-info'>
+                                <ul className="ui-mute">{intl.get(MODULE, 26)/*_i18n:默认网关*/}</ul>
+                                <label className="oneline">{infoGateway}</label>
+                            </div>
+                            <div className='network-info' style={{marginBottom: 23}}>    
+                                <ul className="ui-mute">{intl.get(MODULE, 49)}</ul>
+                                <label className="oneline">{infoDns}</label>
+                            </div>
+                        </section>
+                        <section className="wifi-setting-item">
+                            <PanelHeader title={intl.get(MODULE, 27)/*_i18n:上网设置*/} checkable={false} checked={true} />
+                            <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
+                                <label>{intl.get(MODULE, 28)/*_i18n:上网方式*/}</label>
+                                <Select value={type} style={{ width: 320, marginBottom: 32}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                    <Option value='pppoe'>{intl.get(MODULE, 29)/*_i18n:宽带拨号上网（PPPoE）*/}</Option>
+                                    <Option value='dhcp'>{intl.get(MODULE, 30)/*_i18n:自动获取IP（DHCP）*/}</Option>
+                                    <Option value='static'>{intl.get(MODULE, 31)/*_i18n:手动输入IP（静态IP）*/}</Option>
+                                </Select>
+                            </div>
+                            {
+            
+                                type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}
+                                        pppoeAccountTip={pppoeAccountTip}
+                                        pppoePasswordTip={pppoePasswordTip}
+                                        pppoePassword={pppoePassword}
+                                        service={service}
+                                        handlePasswordChange={this.handlePasswordChange}
+                                        pppoeType={this.state.pppoeType}
+                                        onPppoeRadioChange={this.onPppoeRadioChange}
+                                        handleAccountChange={this.handleAccountChange}
+                                />: ''
+                            }
+                            {
+                                type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
+                                dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
+                                dns={pppoeDns} dnsname='pppoeDns' dnsbackupname='pppoeDnsbackup' onChange={this.onIPConifgChange}/> : ''
+                            }
+                            {
+                                type === 'pppoe' ?  <div><label>{intl.get(MODULE, 32)/*_i18n:服务名(可选)*/}</label>
+                                <FormItem key="pppoeservice" type="small" style={{ width : 320}}>
+                                    <Input maxLength={64} type="text" value={service} onChange={this.handleServiceChange}/>
+                                </FormItem></div> : ''
+                            }
+                            {   
+                                type === 'dhcp' ? <Dhcp onDhcpRadioChange={this.onDhcpRadioChange}
+                                        dhcpType={this.state.dhcpType}
+                                />: ''
+                            }
+                            {
+                                type === 'static' ? <Static ipv4={ipv4} 
+                                                gateway={gateway} 
+                                                subnetmask={subnetmask}
+                                                onChange={this.onIPConifgChange}
+                                                ipv4Tip={ipv4Tip}
+                                                gatewayTip={gatewayTip}
+                                                subnetmaskTip={subnetmaskTip}
 
-                            /> : ''
-                        } 
-                        {
-                            type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
-                            dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
-                            dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
-                        }             
-                        {
-                            type === 'static' ? <Dns dnsTip={staticDnsTip}
-                            dnsbackupTip={staticDnsbackupTip} dnsbackup={staticDnsbackup}
-                            dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
-                        }
+                                /> : ''
+                            } 
+                            {
+                                type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
+                                dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
+                                dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
+                            }             
+                            {
+                                type === 'static' ? <Dns dnsTip={staticDnsTip}
+                                dnsbackupTip={staticDnsbackupTip} dnsbackup={staticDnsbackup}
+                                dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
+                            }
 
+                        </section>
+                    </Form>
+                    <section className="save">
+                        <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)/*_i18n:保存*/}</Button>
                     </section>
-                </Form>
-                <section className="save">
-                    <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)/*_i18n:保存*/}</Button>
-                </section>
-            </div>
+                </div>
+            </SubLayout>
         );
     }
 };

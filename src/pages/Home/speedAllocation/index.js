@@ -66,6 +66,8 @@ export default class Allocation extends React.Component{
             yAxis: {
                 show: false,
                 type: 'value',
+                min: 0,
+                max: 100
             },
             legend:{
                 show: false
@@ -232,6 +234,6 @@ export default class Allocation extends React.Component{
     }
 
     goBandwidth = () => {
-        this.props.history.push('./advance/bandwidth');
+        this.props.history.push('/bandwidth');
     }
 }

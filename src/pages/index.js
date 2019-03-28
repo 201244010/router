@@ -6,6 +6,8 @@ import style from "styles/index.useable.scss";
 import PrimaryHeader from '~/components/PrimaryHeader';
 import PrimaryFooter from '~/components/PrimaryFooter';
 import CustomIcon from '~/components/Icon';
+import SubLayout from '~/components/SubLayout';
+
 import Login from './Login';
 import Guide from "./Guide";
 import Home from './Home';
@@ -17,6 +19,24 @@ import DownloadPage from './DownloadPage';
 import Diagnose from './Diagnose';
 import UpdateDetect from './UpgradeDetect';
 import UserAgreement from './UserAgreement';
+
+import Wechat from './Advance/Wechat';
+import Blacklist from './Advance/Blacklist';
+import Bootdevice from './Advance/Bootdevice';
+import Bandwidth from './Advance/Bandwidth';
+import Systemsetup from './Advance/Systemsetup';
+
+import Wifi from './Settings/WI-Fi';
+import Lan from './Settings/Lan';
+import Network from './Settings/Network';
+
+import Dosd from './Advance/Systemsetup/Dosd';
+import ChangePassword from './Advance/Systemsetup/ChangePassword';
+import SysUpgrade from './Advance/Systemsetup/SysUpgrade';
+import Backup from './Advance/Systemsetup/Backup';
+import TimeZone from './Advance/Systemsetup/TimeZone';
+import Reboot from './Advance/Systemsetup/Reboot';
+import Recovery from './Advance/Systemsetup/Recovery';
 
 const MODULE = 'page';
 
@@ -56,6 +76,24 @@ class PrimaryLayout extends React.Component {
     render() {
         const { pathname, logined } = this.state;
 
+        const routerSetting = {
+            'wechat': { main: 'bg', footer: '', header: true },
+            'blacklist': { main: 'bg', footer: '', header: true },
+            'bandwidth': { main: 'bg', footer: '', header: true },
+            'bootdevice': { main: 'bg', footer: '', header: true },
+            'systemsetup': { main: 'bg', footer: '', header: true },
+            'wifi': { main: 'bg', footer: '', header: true },
+            'network': { main: 'bg', footer: '', header: true },
+            'lan': { main: 'bg', footer: '', header: true },
+            'dosd': { main: 'bg', footer: '', header: true },
+            'changepassword': { main: 'bg', footer: '', header: true },
+            'upgrade': { main: 'bg', footer: '', header: true },
+            'backup': { main: 'bg', footer: '', header: true },
+            'reboot': { main: 'bg', footer: '', header: true },
+            'recovery': { main: 'bg', footer: '', header: true },
+            'timezone': { main: 'bg', footer: '', header: true },
+        }
+
         const conf = {
             'guide': { main: 'guide-bg', footer: false, header: false },
             'login': { main: 'index-bg', footer: '', header: false},
@@ -67,6 +105,7 @@ class PrimaryLayout extends React.Component {
             'app': { main: 'bg', footer: '', header: true },
             'home': { main: 'home-bg', footer: 'home-footer', header: true },
             'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
+            ...routerSetting,
         };
 
         let node = {main: '', footer: false, header: true};
@@ -93,6 +132,21 @@ class PrimaryLayout extends React.Component {
                             <Route path="/routersetting" component={RouterSettings} />
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
+                            <Route path="/bandwidth" component={Bandwidth} />
+                            <Route path="/wechat" component={Wechat} />
+                            <Route path="/blacklist" component={Blacklist} />
+                            <Route path="/bootdevice" component={Bootdevice} />
+                            <Route path="/systemsetup" component={Systemsetup} />
+                            <Route path="/wifi" component={Wifi} />
+                            <Route path="/network" component={Network} />
+                            <Route path="/lan" component={Lan} />
+                            <Route path="/dosd" component={Dosd} />
+                            <Route path="/changepassword" component={ChangePassword} />
+                            <Route path="/upgrade" component={SysUpgrade} />
+                            <Route path="/backup" component={Backup} />
+                            <Route path="/reboot" component={Reboot} />
+                            <Route path="/recovery" component={Recovery} />
+                            <Route path="/timezone" component={TimeZone} />
                             <Route path="/" component={Default} />
                         </Switch>
                         {false !== node.footer && <PrimaryFooter className={node.footer} />}
