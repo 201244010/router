@@ -1,7 +1,8 @@
 .advance-settings {
     border-radius: 8px; 
     background-color : #fff;
-    padding: 37px 58px 30px 58px;
+    padding: 37px 58px 0px 58px;
+    overflow-y: scroll;
     p {
         font-size: 20px;
         color: #333c4f;

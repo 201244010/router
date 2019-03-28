@@ -6,7 +6,7 @@ import Progress from '~/components/Progress';
 import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
-
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'bandwidth';
 
@@ -390,8 +390,10 @@ export default class Bandwidth extends React.PureComponent {
         }]  
 
         return (
-            <div>
-                <Form style={{width : '100%',marginTop : 0, paddingLeft : 60}}>
+            <SubLayout className="settings">
+                <div>
+                    {/* <a href="javascript:history.go(-1)" style={{color: 'black'}}>返回上一页</a>                  */}
+                    <Form style={{width : '100%',marginTop : 0, paddingLeft : 60}}>
                     <section className="wifi-setting-item">
                         <PanelHeader
                             title={intl.get(MODULE, 24)/*_i18n:总带宽*/}
@@ -486,6 +488,7 @@ export default class Bandwidth extends React.PureComponent {
                     </div>   
                 </Modal>
             </div>
+        </SubLayout>
         );
     }
 };

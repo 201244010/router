@@ -7,6 +7,7 @@ import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
 import Tips from '~/components/Tips';
 import { checkStr ,checkRange } from '~/assets/common/check';
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'wi-fi';
 const {FormItem, ErrorTip, Input} = Form;
@@ -579,6 +580,7 @@ export default class WIFI extends React.Component {
         let saveDisabled = this.checkDisabled(this.state);
 
         return (
+        <SubLayout className="settings">
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
@@ -813,6 +815,7 @@ export default class WIFI extends React.Component {
                     }
                 </Modal>
             </div>
+        </SubLayout>
         );
     }
 };

@@ -8,6 +8,7 @@ import Loading from '~/components/Loading';
 import { get } from '~/assets/common/auth';
 import { get as getCookie } from '~/assets/common/cookie';
 import {getLang} from '~/i18n/index';
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'backup';
 const {FormItem, Input} = Form;
@@ -401,6 +402,7 @@ export default class Backup extends React.Component{
         });
 
         return (
+            <SubLayout className="net-setting">
             <div className="backup-restore">
                 <Form>
                     <section style={{marginTop:10}}>
@@ -481,6 +483,7 @@ export default class Backup extends React.Component{
                     />
                 }
             </div>
+            </SubLayout>
         );
     }
 }

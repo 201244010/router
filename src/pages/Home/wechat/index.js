@@ -5,22 +5,33 @@ import './index.scss';
 export default class Connection extends React.Component {
     constructor(props) {
         super(props);
+        this.myChart = null;
     }
     
-    renderChart = () => {
+    initChart = () => {
         const echarts = require('echarts');
-        const myChart = echarts.init(this.refs['dom']);
-        myChart.setOption({
+        this.myChart = echarts.init(this.refs['dom']);
+        this.renderChart();
+    }
+
+    renderChart = () => {
+        this.myChart.setOption({
             title: {
                 text: ''
             },
             tooltip: {
+                trigger: 'axis',
                 backgroundColor: 'rgba(255,255,255,0.90)',
                 // extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
                 textStyle: {
                     fontFamily: 'PingFangSC-Regular',
                     fontSize: 12,
                     color: '#333C4F',
+                },
+                axisPointer: {
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
                 },
                 padding: [12,12,12,12],
                 formatter: '<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
@@ -76,7 +87,7 @@ export default class Connection extends React.Component {
     }
 
     componentDidMount() {
-        !this.props.wechatConfig && this.renderChart();
+        !this.props.wechatConfig && this.initChart();
     }
 
     componentDidUpdate() {
@@ -117,6 +128,6 @@ export default class Connection extends React.Component {
     }
 
     goWechat = () => {
-        this.props.history.push('./advance/wechat')
+        this.props.history.push('/wechat')
     }
 }
