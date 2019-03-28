@@ -4,7 +4,7 @@ import CustomIcon from '~/components/Icon';
 import Progress from '~/components/Progress';
 import { clear } from '~/assets/common/auth';
 import { PAGE_STYLE_KEY } from '~/utils';
-
+import SubLayout from '~/components/SubLayout';
 const MODULE = 'recovery';
 
 export default class Recovery extends React.Component{
@@ -68,6 +68,7 @@ export default class Recovery extends React.Component{
     render(){
         const { duration, loadingActive, succeedActive } = this.state;
         return (
+            <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 6}}>
                     <span style={{marginLeft:60}}>{intl.get(MODULE, 5)/*_i18n:说明：恢复出厂设置后，需重新设置后才能正常上网，请注意备份配置信息*/}</span>
@@ -93,6 +94,7 @@ export default class Recovery extends React.Component{
                     <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 10)/*_i18n:恢复出厂设置完成，请重新连接无线网络*/}</h3>
                 </Modal>
         </div>
+        </SubLayout>
         );
     }
 }

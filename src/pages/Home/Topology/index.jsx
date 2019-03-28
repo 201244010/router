@@ -54,7 +54,7 @@ export default class Topology extends React.Component{
                 <div className="internet">
                     <ul className="router">
                         <li>
-                            <CustomIcon size={100} color='#fff' type="Network" />
+                            <CustomIcon size={100} color='#fff' type="network" />
                         </li>
                         <li className='line'>
                             <div className="circle"></div>
@@ -67,7 +67,7 @@ export default class Topology extends React.Component{
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <CustomIcon size={15} color='#fff' style={{marginBottom: 8}} type="Break" />
+                                    <CustomIcon size={15} color='#fff' style={{marginBottom: 8}} type="break" />
                                     <div className="dashpart">
                                         <div></div>
                                         <div></div>
@@ -80,7 +80,7 @@ export default class Topology extends React.Component{
                             <div className="circle"></div>
                         </li>
                         <li>
-                            <CustomIcon size={100} color='#fff' type="Link" />
+                            <CustomIcon size={100} color='#fff' type="link" />
                         </li>
                         <li className='line'>
                             <div className="circle"></div>
@@ -88,7 +88,7 @@ export default class Topology extends React.Component{
                             <div className="circle"></div>
                         </li>
                         <li>
-                            <CustomIcon size={100} color='#fff' type="Equipment" />
+                            <CustomIcon size={100} color='#fff' type="equipment" />
                         </li>
                     </ul>
                     <ul className="func-label">
@@ -104,7 +104,7 @@ export default class Topology extends React.Component{
                             {listItems}
                             <li style={{display: reList.length > 4 ? 'none' : 'inline-block'}}>
                                 <div className='add-router' onClick={this.addRouter}>
-                                    <CustomIcon size={40} color='#fff' type="Add" />
+                                    <CustomIcon size={40} color='#fff' type="add" />
                                 </div>
                                 <label>添加子路由</label>
                             </li>
@@ -116,7 +116,7 @@ export default class Topology extends React.Component{
                         <li>
                             <div>
                                 <label>上传速度</label>
-                                <CustomIcon color="#fff" type="Upload" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
+                                <CustomIcon color="#fff" type="upload" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
                             </div>
                             <div>
                                 <label className="speed-value">{upSpeed}</label>
@@ -126,7 +126,7 @@ export default class Topology extends React.Component{
                         <li>
                             <div>
                                 <label>下载速度</label>
-                                <CustomIcon color="#fff" type="Download" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
+                                <CustomIcon color="#fff" type="download" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
                             </div>
                             <div>
                                 <label className="speed-value">{downSpeed}</label>
@@ -161,8 +161,9 @@ class Item extends React.Component {
         });
     }
 
-    save = async (e, defaultValue, mac) => {
+    save = async (e, defaultValue, mac, devid) => {
         const editName = e.target.value;
+        console.log(devid);
         if (editName === defaultValue) {
             this.setState({
                 editing: false
@@ -172,7 +173,11 @@ class Item extends React.Component {
             let resp = await common.fetchApi({
                 opcode: 'ROUTENAME_SET',
                 data: { 
-                    sonconnect: [{ mac, name: editName }] 
+                    sonconnect: [{ 
+                        mac, 
+                        name: editName,
+                        devid
+                    }] 
                 },
             });
             let { errcode } = resp;
@@ -198,7 +203,7 @@ class Item extends React.Component {
         const role = parseInt(reList.role);
         const color = reList.rssi > 20 ? '#60CC13' : '#DD726D';
         const rssi = reList.rssi > 20 ? '信号较好' : '信号较差';
-        const Title = (editing, value, mac) => {
+        const Title = (editing, value, mac, devid) => {
             if (!editing) {
                 return (
                     <p>
@@ -206,7 +211,7 @@ class Item extends React.Component {
                             {value}
                         </label>
                         <label style={{marginTop: -30}} onClick={this.toggleEdit}>
-                            <CustomIcon size={8}  type="Rename" />
+                            <CustomIcon size={8}  type="rename" />
                         </label>
                     </p>
                 )
@@ -216,8 +221,8 @@ class Item extends React.Component {
                         defaultValue={value}
                         placeholder="请输入设备位置"
                         autoFocus={true}
-                        onPressEnter={e => this.save(e, value, mac)}
-                        onBlur={e => this.save(e, value, mac)}
+                        onPressEnter={e => this.save(e, value, mac, devid)}
+                        onBlur={e => this.save(e, value, mac, devid)}
                     />
                 )
             }
@@ -226,7 +231,7 @@ class Item extends React.Component {
             if (role) {
                 return (
                     <div className='satelite-info'>
-                        {Title(this.state.editing, reList.name, reList.mac)}
+                        {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                         <ul>
                             <li><label>联网状态：</label><span style={{color: color}}>{rssi}</span></li>
                             <li><label>IP：</label><span>{reList.ip}</span></li>
@@ -239,7 +244,7 @@ class Item extends React.Component {
                     case 1://较差较好的情况
                         return (
                             <div className='satelite-info'>
-                                {Title(this.state.editing, reList.name, reList.mac)}
+                                {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                                 <ul>
                                     <li><label>信号强度：</label><span style={{color: color}}>{rssi}</span></li>
                                     <li><label>IP：</label><span>{reList.ip}</span></li>
@@ -251,7 +256,7 @@ class Item extends React.Component {
                     case 0://设备离线情况
                         return  (
                             <div className='satelite-info'>
-                                {Title(this.state.editing, reList.name, reList.mac)}
+                                {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                                 <ul>
                                     <li><label>离线</label></li>
                                     <li><label>IP：</label><span>--</span></li>
@@ -285,9 +290,9 @@ class Item extends React.Component {
             if (role) {
                 return (
                     <div className='sate-router'>
-                        <CustomIcon size={60} color='#fff' type="Router" />
+                        <CustomIcon size={60} color='#fff' type="router" />
                         <label>
-                            <CustomIcon size={8} color='#fff' style={{display: 'inline', marginRight: 4}} type="Main" />
+                            <CustomIcon size={8} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
                             <span>{reList.name}</span>
                         </label>
                     </div>
@@ -298,7 +303,7 @@ class Item extends React.Component {
                         return (
                             <div className='sate-router'>
                                 <div>
-                                    <CustomIcon size={60} color='#fff' type="Router" />                                
+                                    <CustomIcon size={60} color='#fff' type="router" />                                
                                 </div>
                                 <label>{reList.name}</label>
                                 <p><span style={{color: color}}>{rssi}</span></p>
@@ -308,7 +313,7 @@ class Item extends React.Component {
                         return  (
                             <div className='sate-router'>
                                 <div>
-                                    <CustomIcon size={60} color='#fff' type="Router" />
+                                    <CustomIcon size={60} color='#fff' type="router" />
                                 </div>
                                 <label>{reList.name}</label>
                                 <p className="sate-offline">已离线</p>

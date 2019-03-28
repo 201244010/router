@@ -321,6 +321,7 @@ export default class Home extends React.Component {
                 role: re.role,
                 rssi: rssi,
                 ip: re.ip,
+                devid: re.devid,
                 parent: routeList[re.routermac.toUpperCase()]
             }
         });

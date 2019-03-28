@@ -5,7 +5,7 @@ import Logo from '~/components/Logo';
 import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
-
+import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'bootdevice';
 
@@ -462,66 +462,68 @@ export default class Bootdevice extends React.Component {
         }];
 
         return (
-            <div style={{ margin: "0 60px" }}>
-                <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
-                <div style={{ margin: "20px 20px 20px 0" }}>
-                    <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>
-                    <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
-                </div>
-                <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
-                <Modal
-                    cancelText={intl.get(MODULE, 27)/*_i18n:取消*/}
-                    okText={intl.get(MODULE, 28)/*_i18n:添加*/}
-                    closable={false}
-                    maskClosable={false}
-                    centered={true}
-                    width={960}
-                    style={{ position: 'relative' }}
-                    visible={visible}
-                    footer={[
-                        <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 27)/*_i18n:取消*/}</Button>,
-                        <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
-                            {intl.get(MODULE, 28)/*_i18n:添加*/}
-                        </Button>,
-                    ]} >
-                    <div style={{padding: '0 0 16px',marginBottom: 24}}>
-                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 26)/*_i18n:在线列表*/}</p>
-                        <Button size="large" style={{
-                            display: 'inline-block',
-                            border: 0,
-                            padding: 0,
-                            height: 22,
-                        }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+            <SubLayout className="net-setting">
+                <div style={{ margin: "0 60px" }}>
+                    <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
+                    <div style={{ margin: "20px 20px 20px 0" }}>
+                        <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>
+                        <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
                     </div>
-                    <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
-                    <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
-                        scroll={{ y: 336 }}
-                        style={{ minHeight: 360 }}
-                        bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/ }} />
-                </Modal>
-                <Modal title={intl.get(MODULE, 30)/*_i18n:添加优先设备*/} centered={true}
-                    cancelText={intl.get(MODULE, 27)/*_i18n:取消*/} okText={intl.get(MODULE, 28)/*_i18n:添加*/}
-                    closable={false} maskClosable={false} width={360}
-                    visible={editShow}
-                    confirmLoading={editLoading}
-                    onOk={this.onEditOk}
-                    okButtonProps={{ disabled: disabled }}
-                    onCancel={this.onEditCancle} >
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 31)/*_i18n:备注名称*/}</label>
-                    <FormItem showErrorTip={nameTip} type="small" >
-                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 32)/*_i18n:请输入备注名称*/} maxLength={32} />
-                        <ErrorTip>{nameTip}</ErrorTip>
-                    </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 33)/*_i18n:MAC地址*/}</label>
-                    <FormItem showErrorTip={macTip} style={{ marginBottom: 8 }}>
-                        <InputGroup size="small" type="mac"
-                            inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
-                            onChange={value => this.onChange(value, 'mac')} />
-                        <ErrorTip>{macTip}</ErrorTip>
-                    </FormItem>
-                </Modal>
-            </div>
+                    <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
+                        bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
+                    <Modal
+                        cancelText={intl.get(MODULE, 27)/*_i18n:取消*/}
+                        okText={intl.get(MODULE, 28)/*_i18n:添加*/}
+                        closable={false}
+                        maskClosable={false}
+                        centered={true}
+                        width={960}
+                        style={{ position: 'relative' }}
+                        visible={visible}
+                        footer={[
+                            <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 27)/*_i18n:取消*/}</Button>,
+                            <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
+                                {intl.get(MODULE, 28)/*_i18n:添加*/}
+                            </Button>,
+                        ]} >
+                        <div style={{padding: '0 0 16px',marginBottom: 24}}>
+                            <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 26)/*_i18n:在线列表*/}</p>
+                            <Button size="large" style={{
+                                display: 'inline-block',
+                                border: 0,
+                                padding: 0,
+                                height: 22,
+                            }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+                        </div>
+                        <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
+                        <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
+                            scroll={{ y: 336 }}
+                            style={{ minHeight: 360 }}
+                            bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/ }} />
+                    </Modal>
+                    <Modal title={intl.get(MODULE, 30)/*_i18n:添加优先设备*/} centered={true}
+                        cancelText={intl.get(MODULE, 27)/*_i18n:取消*/} okText={intl.get(MODULE, 28)/*_i18n:添加*/}
+                        closable={false} maskClosable={false} width={360}
+                        visible={editShow}
+                        confirmLoading={editLoading}
+                        onOk={this.onEditOk}
+                        okButtonProps={{ disabled: disabled }}
+                        onCancel={this.onEditCancle} >
+                        <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 31)/*_i18n:备注名称*/}</label>
+                        <FormItem showErrorTip={nameTip} type="small" >
+                            <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 32)/*_i18n:请输入备注名称*/} maxLength={32} />
+                            <ErrorTip>{nameTip}</ErrorTip>
+                        </FormItem>
+                        <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 33)/*_i18n:MAC地址*/}</label>
+                        <FormItem showErrorTip={macTip} style={{ marginBottom: 8 }}>
+                            <InputGroup size="small" type="mac"
+                                inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
+                                onChange={value => this.onChange(value, 'mac')} />
+                            <ErrorTip>{macTip}</ErrorTip>
+                        </FormItem>
+                    </Modal>
+                </div>
+            </SubLayout>
         );
     }
 };
