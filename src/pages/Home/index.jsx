@@ -55,6 +55,7 @@ export default class Home extends React.Component {
             sunmiPercent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         },
         largestPercent: 0,
+        chatTotal: 0,
         wechatList: [{
             data: 0,
             time: '2018/01/01'
@@ -442,7 +443,7 @@ export default class Home extends React.Component {
         const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit, reList,
                 visible, successShow, upBand, downBand, failShow, me, wechatConfig,
                 normalClients, priorityClients, qosData, sunmiLength, priorityLength,
-                normalLength, totalList, wechatList, source, percent, largestPercent}  = this.state;
+                normalLength, totalList, wechatList, source, percent, largestPercent, chatTotal}  = this.state;
         return (
             <SubLayout className="home">
                 <div>
@@ -474,7 +475,7 @@ export default class Home extends React.Component {
                         <div className='grid'></div>
                         <li>
                             <Connection
-                                chatTotal={10}
+                                chatTotal={chatTotal}
                                 wechatList={wechatList}
                                 wechatConfig={wechatConfig}
                                 history={this.props.history}
