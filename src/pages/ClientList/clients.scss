@@ -284,6 +284,11 @@ i.dot{
     }
 }
 
+.editable-row-light {
+    @extend .editable-row;
+    background: #F8F9FB;
+}
+
 .net-setting {
     border-radius: 8px; 
     background-color : #fff;

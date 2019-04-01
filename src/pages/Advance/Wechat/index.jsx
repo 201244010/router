@@ -43,6 +43,8 @@ class Redirect extends React.Component {
 
     componentDidMount() {
         this.fetchConf();
+        const path = this.props.match.path;
+        this.props.history.push(`${path}/setup`);
     }
 
     componentWillUnmount() {

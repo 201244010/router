@@ -280,7 +280,7 @@ export default class Lan extends React.Component {
                     </section>
                 </Form>
                 <div className="save">
-                    <Button disabled={disabled} loading={loading} style={{ width: 320 }} onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
+                    <Button disabled={disabled} loading={loading} style={{ width: 200, height: 42 }} onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
                 </div>
         </div>
         );

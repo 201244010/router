@@ -106,7 +106,7 @@ export default class ChangePassword extends React.Component{
                     </div>
                 </Form>
                 <section className="save">
-                    <Button loading={loading} disabled={disabled} size='large' style={{ width: 320 }} type="primary" 
+                    <Button loading={loading} disabled={disabled} size='large' style={{ width: 200, height: 42 }} type="primary" 
                     onClick={this.submit}>{intl.get(MODULE, 11)/*_i18n:保存*/}</Button>
                 </section>
             </div>

@@ -11,9 +11,7 @@ const { FormItem } = Form;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => {
-        return total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已阻止{total}台设备*/ : intl.get(MODULE, 19, {total})
-    }
+ 
 };
 
 export default class Dosd extends React.Component {
@@ -105,7 +103,7 @@ export default class Dosd extends React.Component {
 
     render(){
         const { enable, udp, icmp, tcp_syn, loading, blockList } = this.state;
-
+        const total = blockList.length;
         const columns = [{
             title: intl.get(MODULE, 5)/*_i18n:IP地址*/,
             dataIndex: 'ip',
@@ -128,30 +126,31 @@ export default class Dosd extends React.Component {
 
         return (
         <SubLayout className="settings">
-        <div className="dosd-setting">
-            <section>
-                <Form>
-                    <PanelHeader title={intl.get(MODULE, 10)/*_i18n:DoS防护*/} checkable={true} checked={enable} onChange={value => this.onChange('enable')} />
-                    <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={icmp} disabled={!enable} onChange={() => this.onChange('icmp')}>{intl.get(MODULE, 11)/*_i18n:ICMP-FLOOD攻击防护*/}</Checkbox>
-                    </FormItem>
-                    <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={udp} disabled={!enable} onChange={() => this.onChange('udp')}>{intl.get(MODULE, 12)/*_i18n:UDP-FLOOD攻击防护*/}</Checkbox>
-                    </FormItem>
-                    <FormItem style={{ marginBottom: 0 }}>
-                        <Checkbox checked={tcp_syn} disabled={!enable} onChange={() => this.onChange('tcp_syn')}>{intl.get(MODULE, 13)/*_i18n:TCP-SYN-FLOOD攻击防护*/}</Checkbox>
-                    </FormItem>
-                    <Button loading={loading} onClick={this.submit} type='primary' style={{ width: 117, marginTop: 20, marginBottom:40 }}>{intl.get(MODULE, 14)/*_i18n:保存*/}</Button>
-                </Form>
-            </section>
-            <section>
-                <Form>
-                    <PanelHeader title={intl.get(MODULE, 15)/*_i18n:已阻止的DoS主机列表*/} />
-                    <Table style={{marginTop:16}} columns={columns} dataSource={blockList} rowKey={record => record.mac}
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 16)/*_i18n:暂无设备*/ }} />
-                </Form>
-            </section>
-        </div>
+            <div className="dosd-setting">
+                <section>
+                    <Form>
+                        <PanelHeader title={intl.get(MODULE, 10)/*_i18n:DoS防护*/} checkable={true} checked={enable} onChange={value => this.onChange('enable')} />
+                        <FormItem style={{ marginBottom: 0 }}>
+                            <Checkbox checked={icmp} disabled={!enable} onChange={() => this.onChange('icmp')}>{intl.get(MODULE, 11)/*_i18n:ICMP-FLOOD攻击防护*/}</Checkbox>
+                        </FormItem>
+                        <FormItem style={{ marginBottom: 0 }}>
+                            <Checkbox checked={udp} disabled={!enable} onChange={() => this.onChange('udp')}>{intl.get(MODULE, 12)/*_i18n:UDP-FLOOD攻击防护*/}</Checkbox>
+                        </FormItem>
+                        <FormItem style={{ marginBottom: 0 }}>
+                            <Checkbox checked={tcp_syn} disabled={!enable} onChange={() => this.onChange('tcp_syn')}>{intl.get(MODULE, 13)/*_i18n:TCP-SYN-FLOOD攻击防护*/}</Checkbox>
+                        </FormItem>
+                        <Button loading={loading} onClick={this.submit} type='primary' style={{ width: 200, height: 42, marginTop: 20, marginBottom:40 }}>{intl.get(MODULE, 14)/*_i18n:保存*/}</Button>
+                    </Form>
+                </section>
+                <section>
+                    <Form>
+                        <PanelHeader title={intl.get(MODULE, 15)/*_i18n:已阻止的DoS主机列表*/} />
+                        <p style={{fontSize:14, margin: '32px 0 32px 0'}}>{total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已阻止{total}台设备*/ : intl.get(MODULE, 19, {total})}</p>
+                        <Table style={{marginTop:16}} columns={columns} dataSource={blockList} rowKey={record => record.mac}
+                        bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 16)/*_i18n:暂无设备*/ }} />
+                    </Form>
+                </section>
+            </div>
         </SubLayout>
         );
     }

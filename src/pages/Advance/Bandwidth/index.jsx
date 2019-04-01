@@ -432,7 +432,7 @@ export default class Bandwidth extends React.PureComponent {
                     </section>
                 </Form>
                 <section className="save">
-                    <Button disabled={saveDisable} size='large' style={{ width: 320 }} type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)/*_i18n:保存*/}</Button>
+                    <Button disabled={saveDisable} size='large' style={{ width: 200, height: 42 }} type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)/*_i18n:保存*/}</Button>
                 </section>
                 {visible &&
                     <Progress
