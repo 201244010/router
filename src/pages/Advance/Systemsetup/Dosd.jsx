@@ -139,7 +139,7 @@ export default class Dosd extends React.Component {
                         <FormItem style={{ marginBottom: 0 }}>
                             <Checkbox checked={tcp_syn} disabled={!enable} onChange={() => this.onChange('tcp_syn')}>{intl.get(MODULE, 13)/*_i18n:TCP-SYN-FLOOD攻击防护*/}</Checkbox>
                         </FormItem>
-                        <Button loading={loading} onClick={this.submit} type='primary' style={{ width: 117, marginTop: 20, marginBottom:40 }}>{intl.get(MODULE, 14)/*_i18n:保存*/}</Button>
+                        <Button loading={loading} onClick={this.submit} type='primary' style={{ width: 200, height: 42, marginTop: 20, marginBottom:40 }}>{intl.get(MODULE, 14)/*_i18n:保存*/}</Button>
                     </Form>
                 </section>
                 <section>

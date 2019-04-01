@@ -771,7 +771,7 @@ export default class WIFI extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                        <Button type="primary" size="large" style={{ width: 320 }} disabled={saveDisabled} onClick={this.submit}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
+                        <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submit}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
                 <Modal
                     visible={true}

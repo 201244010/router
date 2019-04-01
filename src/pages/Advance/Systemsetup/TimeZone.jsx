@@ -189,7 +189,7 @@ export default class TimeZone extends React.Component {
                         </div>
                 }
                 <div className="btn">
-                    <Button type="primary" style={{width:116}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)/*_i18n:保存*/}</Button>
+                    <Button type="primary" style={{width:200, height: 42}} onClick={this.onSave} loading={loading}>{intl.get(MODULE, 5)/*_i18n:保存*/}</Button>
                 </div>
             </div>
             </SubLayout>
