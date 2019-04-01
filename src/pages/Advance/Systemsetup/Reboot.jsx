@@ -65,9 +65,8 @@ export default class Reboot extends React.Component{
             <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 8}}>
-                    <span style={{marginLeft:60}}>{intl.get(MODULE, 5)/*_i18n:说明：路由器系统将立即重新启动*/}</span>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
-                        <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
+                        <Button style={{width:200, height: 42}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
                     </section>
                 </div>
                 {loadingActive &&

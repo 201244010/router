@@ -572,7 +572,7 @@ export default class ClientList extends React.Component {
             };
         });
         return (
-            <SubLayout className="net-setting">
+            <SubLayout className="net-setting" style={{marginTop: 11}}>
                     <div className="net-title">
                         <p>
                             <span>上网设备</span>
@@ -587,7 +587,13 @@ export default class ClientList extends React.Component {
                             columns={columns}
                             dataSource={clients}
                             components={components}
-                            rowClassName={() => 'editable-row'}
+                            rowClassName={() => {
+                                let className = 'editable-row';
+                                if (index % 2 === 1) {
+                                    className = 'editable-row-light';
+                                }
+                                return className;
+                            }}
                             bordered={false}
                             rowKey={record => record.mac}
                             scroll={{ y: window.innerHeight - 267 }}

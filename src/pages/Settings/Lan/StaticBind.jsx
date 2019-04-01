@@ -4,6 +4,7 @@ import { Button, Table, Divider, Popconfirm, Modal, Checkbox, message} from 'ant
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 import Form from "~/components/Form";
+import PanelHeader from '~/components/PanelHeader';
 import { checkIp, checkMac, transIp } from '~/assets/common/check';
 
 const MODULE = 'staticbind';
@@ -12,10 +13,7 @@ const { FormItem, ErrorTip, Input: FormInput, InputGroup, Input } = Form;
 
 const pagination = {
     pageSize: 6,
-    hideOnSinglePage: false,
-    showTotal: total => {
-        return total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 41, {total})
-    }
+    hideOnSinglePage: false
 };
 
 const error = {
@@ -439,15 +437,22 @@ export default class StaticBind extends React.Component {
                 <Checkbox checked={checked} onChange={() => this.handleSelect(record.address.mac)}></Checkbox>
             )
         }];
-
+        const total = staticLists.length;
         return (
-            <div style={{margin:"20px 60px"}}>
-                <div style={{margin:"29px 20px 20px 0"}}>
-                    <Button onClick={this.selectAdd} style={{marginRight:20}}>{intl.get(MODULE, 27)/*_i18n:列表添加*/}</Button>
-                    <Button onClick={this.manualAdd}>{intl.get(MODULE, 28)/*_i18n:手动添加*/}</Button>
+            <div style={{margin:"20px 60px 48px 60px"}}>
+                <PanelHeader title='静态地址分配' />
+                <div style={{margin:"29px 0 20px 0", display: 'flex', justifyContent: 'space-between'}}>
+                    <p style={{fontSize: 14}}>
+                        {total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 41, {total})}
+                    </p>
+                    <div>
+                        <Button onClick={this.selectAdd} style={{marginRight:20}}>{intl.get(MODULE, 27)/*_i18n:列表添加*/}</Button>
+                        <Button onClick={this.manualAdd}>{intl.get(MODULE, 28)/*_i18n:手动添加*/}</Button>
+                    </div>
                 </div>
                 <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
-                    bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/}} />
+                    bordered={false}
+                    size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/}} />
                 <Modal
                     cancelText={intl.get(MODULE, 31)/*_i18n:取消*/}
                     okText={intl.get(MODULE, 32)/*_i18n:添加*/}
@@ -476,7 +481,8 @@ export default class StaticBind extends React.Component {
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
-                        bordered bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 33)/*_i18n:暂无设备*/ }} />
+                        bordered={false}
+                        size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 33)/*_i18n:暂无设备*/ }} />
                 </Modal>
                 <Modal title={editType === 'edit' ? intl.get(MODULE, 34)/*_i18n:编辑静态地址*/ : intl.get(MODULE, 35)/*_i18n:备注名称*/}
                     cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} okText={editType === 'edit' ? intl.get(MODULE, 40)/*_i18n:保存*/ : intl.get(MODULE, 32)/*_i18n:添加*/}

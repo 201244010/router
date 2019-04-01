@@ -71,9 +71,8 @@ export default class Recovery extends React.Component{
             <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 6}}>
-                    <span style={{marginLeft:60}}>{intl.get(MODULE, 5)/*_i18n:说明：恢复出厂设置后，需重新设置后才能正常上网，请注意备份配置信息*/}</span>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
-                        <Button style={{width:116}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即恢复*/}</Button>
+                        <Button style={{width:200 , height:42}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即恢复*/}</Button>
                     </section>
                 </div>
                 {loadingActive &&

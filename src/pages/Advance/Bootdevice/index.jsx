@@ -15,9 +15,6 @@ const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
     //showTotal: total => `已添加${total}台设备`,
-    showTotal: total => {
-        return total > 1 ? intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 37, {total})
-    }
 };
 
 export default class Bootdevice extends React.Component {
@@ -460,14 +457,19 @@ export default class Bootdevice extends React.Component {
                 <Checkbox checked={checked} onChange={() => this.handleSelect(record.mac)}></Checkbox>
             )
         }];
-
+        const total = whiteList.length;
         return (
             <SubLayout className="net-setting">
                 <div style={{ margin: "0 60px" }}>
                     <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
-                    <div style={{ margin: "20px 20px 20px 0" }}>
-                        <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>
-                        <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
+                    <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{fontSize: 14, color: '#333C4F'}}>
+                            {total > 1 ? intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 37, {total})}
+                        </p>
+                        <div>
+                            <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>
+                            <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
+                        </div>
                     </div>
                     <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
                         bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />

@@ -470,7 +470,7 @@ export default class NETWORK extends React.Component {
                 dialType, onlineStatus, infoGateway, infoMask, infoDns,
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
                 ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
-        return (
+        return [
             <SubLayout className="settings">
                 <div className="wifi-settings">
                     <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -565,11 +565,11 @@ export default class NETWORK extends React.Component {
                         </section>
                     </Form>
                     <section className="save">
-                        <Button type="primary" size='large' style={{ width: 320 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)/*_i18n:保存*/}</Button>
+                        <Button type="primary" size='large' style={{ width: 200, height: 42 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)/*_i18n:保存*/}</Button>
                     </section>
                 </div>
             </SubLayout>
-        );
+        ];
     }
 };
 
