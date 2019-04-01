@@ -2,9 +2,11 @@ import React from "react";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {message} from 'antd';
 import { get } from 'common/auth';
+import { getTitle } from 'common/title';
 import style from "styles/index.useable.scss";
 import PrimaryHeader from '~/components/PrimaryHeader';
 import PrimaryFooter from '~/components/PrimaryFooter';
+import PrimaryTitle from '~/components/PrimaryTitle';
 import CustomIcon from '~/components/Icon';
 import SubLayout from '~/components/SubLayout';
 
@@ -77,49 +79,52 @@ class PrimaryLayout extends React.Component {
         const { pathname, logined } = this.state;
 
         const routerSetting = {
-            'wechat': { main: 'bg', footer: '', header: true },
-            'blacklist': { main: 'bg', footer: '', header: true },
-            'bandwidth': { main: 'bg', footer: '', header: true },
-            'bootdevice': { main: 'bg', footer: '', header: true },
-            'systemsetup': { main: 'bg', footer: '', header: true },
-            'wifi': { main: 'bg', footer: '', header: true },
-            'network': { main: 'bg', footer: '', header: true },
-            'lan': { main: 'bg', footer: '', header: true },
-            'dosd': { main: 'bg', footer: '', header: true },
-            'changepassword': { main: 'bg', footer: '', header: true },
-            'upgrade': { main: 'bg', footer: '', header: true },
-            'backup': { main: 'bg', footer: '', header: true },
-            'reboot': { main: 'bg', footer: '', header: true },
-            'recovery': { main: 'bg', footer: '', header: true },
-            'timezone': { main: 'bg', footer: '', header: true },
+            'wechat': { main: 'bg', footer: '', header: true, title: true},
+            'blacklist': { main: 'bg', footer: '', header: true, title: true },
+            'bandwidth': { main: 'bg', footer: '', header: true, title: true },
+            'bootdevice': { main: 'bg', footer: '', header: true, title: true },
+            'systemsetup': { main: 'bg', footer: '', header: true, title: true },
+            'wifi': { main: 'bg', footer: '', header: true , title: true},
+            'network': { main: 'bg', footer: '', header: true, title: true },
+            'lan': { main: 'bg', footer: '', header: true, title: true },
+            'dosd': { main: 'bg', footer: '', header: true, title: true },
+            'changepassword': { main: 'bg', footer: '', header: true, title: true },
+            'upgrade': { main: 'bg', footer: '', header: true, title: true },
+            'backup': { main: 'bg', footer: '', header: true, title: true },
+            'reboot': { main: 'bg', footer: '', header: true, title: true },
+            'recovery': { main: 'bg', footer: '', header: true, title: true },
+            'timezone': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const conf = {
-            'guide': { main: 'guide-bg', footer: false, header: false },
-            'login': { main: 'index-bg', footer: '', header: false},
-            'clientlist': { main: 'bg', footer: '', header: true},
-            'settings': { main: 'bg', footer: '', header: true },
-            'routersetting': { main: 'bg', footer: '', header: true },
-            'welcome': { main: 'index-bg', footer: '', header: false },
-            'agreement': { main: '', footer: '', header: false },
-            'app': { main: 'bg', footer: '', header: true },
-            'home': { main: 'home-bg', footer: 'home-footer', header: true },
-            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true },
+            'guide': { main: 'guide-bg', footer: false, header: false, title: false },
+            'login': { main: 'index-bg', footer: '', header: false, title: false },
+            'clientlist': { main: 'bg', footer: '', header: true, title: false },
+            'settings': { main: 'bg', footer: '', header: true, title: false  },
+            'routersetting': { main: 'bg', footer: '', header: true, title: false },
+            'welcome': { main: 'index-bg', footer: '', header: false, title: false },
+            'agreement': { main: '', footer: '', header: false, title: false  },
+            'app': { main: 'bg', footer: '', header: true , title: false },
+            'home': { main: 'home-bg', footer: 'home-footer', header: true, title: false  },
+            'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true , title: false },
             ...routerSetting,
         };
 
-        let node = {main: '', footer: false, header: true};
+        let node = {main: '', footer: false, header: true, title: false };
+        let path;
         for (let url in conf) {
             if (pathname.indexOf(url) > -1){
                 node = conf[url];
+                path = url;
                 break;
             }
         }
-
+        console.log(node.header);
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
+                    {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
                     <div className="main">
                         <Switch>
                             <Route path="/login" component={Login} />

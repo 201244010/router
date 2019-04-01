@@ -3,6 +3,7 @@ import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
 import PanelHeader from '~/components/PanelHeader';
+import PrimaryTitle from '~/components/PrimaryTitle';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
 import Tips from '~/components/Tips';
@@ -579,17 +580,17 @@ export default class WIFI extends React.Component {
 
         let saveDisabled = this.checkDisabled(this.state);
 
-        return (
+        return [
         <SubLayout className="settings">
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一*/} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/>
-                        <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)/*_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启*/}</p>
+                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} />
+                        {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
+                        {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
                     </section>
                     {this.state.channelType ? (
                     <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange} />
                         <label className='ssidLabel'>{intl.get(MODULE, 31)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24}/>
@@ -622,7 +623,6 @@ export default class WIFI extends React.Component {
                     </section>
                     ):(
                     <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 38)/*_i18n:商户Wi-Fi*/} checkable={false} checked={false} /> 
                         <section className="wifi-setting-twocolumn">
                             <section>
                                 <PanelHeader title={intl.get(MODULE, 39)/*_i18n:2.4G信号*/} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
@@ -816,7 +816,7 @@ export default class WIFI extends React.Component {
                 </Modal>
             </div>
         </SubLayout>
-        );
+        ];
     }
 };
 

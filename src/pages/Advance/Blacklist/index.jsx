@@ -15,9 +15,6 @@ const { FormItem, ErrorTip, InputGroup, Input } = Form;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => {
-        return total > 1 ? intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 2, {total})
-    }
 };
 
 export default class Blacklist extends React.Component {
@@ -365,14 +362,19 @@ export default class Blacklist extends React.Component {
                 <Checkbox checked={checked} onChange={() => this.handleSelect(record.mac)}></Checkbox>
             )
         }];
-
+        const total = blockLists.length;
         return (
             <SubLayout className="net-setting">
                 <div style={{ margin: "0 60px" }}>
                     <PanelHeader title={intl.get(MODULE, 18)/*_i18n:添加黑名单设备*/} />
-                    <div style={{ margin: "20px 20px 20px 0" }}>
-                        <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 19)/*_i18n:列表添加*/}</Button>
-                        <Button onClick={this.manualAdd}>{intl.get(MODULE, 20)/*_i18n:手动添加*/}</Button>
+                    <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{fontSize: 14, color: '#333C4F'}}>
+                            {total > 1 ? intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 2, {total})}
+                        </p>
+                        <div>
+                            <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 19)/*_i18n:列表添加*/}</Button>
+                            <Button onClick={this.manualAdd}>{intl.get(MODULE, 20)/*_i18n:手动添加*/}</Button>
+                        </div>
                     </div>
                     <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}
                         bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/ }} />

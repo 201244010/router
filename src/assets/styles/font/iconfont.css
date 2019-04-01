@@ -567,3 +567,7 @@
   content: "\e6c3";
 }
 
+.ui-icon-back:before {
+  content: "\e6c4";
+}
+

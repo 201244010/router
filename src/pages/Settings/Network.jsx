@@ -470,7 +470,7 @@ export default class NETWORK extends React.Component {
                 dialType, onlineStatus, infoGateway, infoMask, infoDns,
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
                 ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
-        return (
+        return [
             <SubLayout className="settings">
                 <div className="wifi-settings">
                     <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
@@ -569,7 +569,7 @@ export default class NETWORK extends React.Component {
                     </section>
                 </div>
             </SubLayout>
-        );
+        ];
     }
 };
 

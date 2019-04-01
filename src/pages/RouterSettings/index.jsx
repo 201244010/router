@@ -19,6 +19,7 @@ export default class RouterSetting extends React.PureComponent {
         ];
 
         this.appList = [
+            {route: 'wechat', type: 'wechat',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/},
             {route: 'bandwidth', color: '#6D6BD8', type: 'Bandwidth', content: intl.get(MODULE, 0)/*_i18n:网速智能分配*/},
             {route: 'bootdevice', color: '#47D164', type: 'Bootdevice', content: intl.get(MODULE, 2)/*_i18n:优先设备*/},
             {route: 'blacklist', color: '#448BE9', type: 'blacklist', content: intl.get(MODULE, 3)/*_i18n:防蹭网*/},
@@ -67,7 +68,7 @@ export default class RouterSetting extends React.PureComponent {
             )}
         
         return (
-            <SubLayout className="advance-settings" style={{maxHeight: window.innerHeight - 144}}>
+            <SubLayout className="advance-settings" style={{maxHeight: window.innerHeight - 144, marginTop: 11}}>
                 <ul>
                     {listItems(this.netList, '网络设置')}
                     {listItems(this.appList, '应用工具')}
