@@ -215,9 +215,7 @@ class Selecting extends React.Component {
         if (0 === showList.length && searchFinish) {        //搜索完成，且设备列表为空
             return (
                 <React.Fragment>
-                    
-                        <CustomIcon size={200} color='#D7D8DC' type="noroute" style={{margin: '40px auto 12px'}}/>
-
+                    <CustomIcon size={200} color='#D7D8DC' type="noroute" style={{margin: '40px auto 12px'}}/>
                     <p className='noFindTip'>没有检测到其他路由器</p>
                     <div className='warning'>
                         <p className='warningTip' style={{marginBottom: 8}}><CustomIcon size={12} color='#FB8632' type="hint" style={{marginRight: 4}}/>请确认子路由已插上电源，并放置在距离主路由较近的位置</p>
@@ -375,9 +373,7 @@ class SettingResult extends React.Component {
                     <h3>已放弃添加子路由</h3>
                 </div>
                 <div className="body">
-                    
-                        <CustomIcon size={140} color='#D7D8DC' type="noroute"/>
-                    
+                    <CustomIcon size={140} color='#D7D8DC' type="noroute"/>  
                 </div>
                 <Button type="primary" className="settingButton" disabled={false} onClick={this.goHome}>去首页</Button>
             </React.Fragment>

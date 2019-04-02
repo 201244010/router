@@ -94,10 +94,10 @@ export default class Location extends React.Component {
             }
             let labelInfo = '';
             if('1' === item.role) {
-                labelInfo = <label>主路由（SN:{item.deviceId}）</label>;
+                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>主路由</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
                 
             } else {
-                labelInfo = <label>子路由{i}（SN:{item.deviceId}）</label>;
+                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>子路由{i}</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
                 i++;
             }
             routeShow.push(
@@ -123,7 +123,7 @@ export default class Location extends React.Component {
                 <h2>设置位置</h2> 
                 <p className="ui-tips guide-tip">位置将作为路由器的名称，有助于您今后识别和管理</p>
                 <div className="content">
-                <Form style={{margin : '24px auto',display: 'inline-block'}}>
+                <Form style={{margin : '24px auto',display: 'inline-block',textAlign: 'left'}}>
                     {routeShow}
                     <FormItem
                         label="#"
@@ -132,7 +132,7 @@ export default class Location extends React.Component {
                         <Button
                             disabled={disabled}
                             loading={loading}
-                            style={{ width: 260,height: 42,float: 'right'}}
+                            style={{ width: 260,height: 42,float: 'right',marginTop:8}}
                             onClick={this.setRouterLocation}
                             size="large"
                             type="primary">下一步</Button>

@@ -18,7 +18,7 @@ export default class Preparing extends React.Component {
                 <h2>子路由设置准备</h2> 
                 <p className="ui-tips guide-tip">将所有子路由放置在合适的位置，两个路由之间距离不要超过两个房间，然后接通电源，待子路由的信号灯呈XX色后点击「下一步」。</p>
                 <div className="content">
-                    <div className="image"></div>
+                    <img className='image' src={require('~/assets/images/guide-router.png')}/>
                     <Button type="primary" className="next" onClick={this.next}>下一步</Button>
                 </div>
             </div>
