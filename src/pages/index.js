@@ -97,6 +97,7 @@ class PrimaryLayout extends React.Component {
         }
 
         const conf = {
+            ...routerSetting,
             'guide': { main: 'guide-bg', footer: false, header: false, title: false },
             'login': { main: 'index-bg', footer: '', header: false, title: false },
             'clientlist': { main: 'bg', footer: '', header: true, title: false },
@@ -107,7 +108,6 @@ class PrimaryLayout extends React.Component {
             'app': { main: 'bg', footer: '', header: true , title: false },
             'home': { main: 'home-bg', footer: 'home-footer', header: true, title: false  },
             'diagnose': { main: 'dbg-bg', footer: 'dbg-footer', header: true , title: false },
-            ...routerSetting,
         };
 
         let node = {main: '', footer: false, header: true, title: false };

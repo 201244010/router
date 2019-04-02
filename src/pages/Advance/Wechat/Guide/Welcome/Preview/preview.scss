@@ -67,6 +67,11 @@
                     font-size: 14px;
                     border-radius: 8px;
                 }    
+                .ant-btn-primary {
+                    color: #FFFFFF;
+                    background-color: #FF8E2D;
+                    border: 1px solid #FF8E2D;
+                }
             }
             .agreement{
                 margin-top: 12px;
@@ -77,6 +82,10 @@
                         opacity: 0.8;
                     }
                 }
+                .ant-checkbox-inner {
+                    background-color: #FF8E2D;
+                    border: 1px solid #FF8E2D;
+                }
             }
         }
         .footer{
@@ -85,5 +94,6 @@
             opacity: 0.8;
             font-size: 12px;
         }
+        
     }
 }

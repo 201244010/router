@@ -4,63 +4,63 @@ let funcTitle = {};
 export const getTitle = () => {
     funcTitle = {
         'wechat': { 
-            "title" : '功能',
+            "title" : '微信连Wi-Fi',
             "titleTip": '这是功能说明'
         },
         'blacklist': { 
-            "title" : '功能',
+            "title" : '防蹭网',
             "titleTip": '这是功能说明'
             },
         'bandwidth': { 
-            "title" : '功能',
+            "title" : '网速智能分配',
             "titleTip": '这是功能说明'
             },
         'bootdevice': { 
-            "title" : '功能',
-            "titleTip": '这是功能说明'
-            },
-        'systemsetup': { 
-            "title" : '功能',
+            "title" : '优先设备',
             "titleTip": '这是功能说明'
             },
         'wifi': { 
-            "title" : '功能',
+            "title" : 'Wi-FI设置',
             "titleTip": '这是功能说明'
             },
         'network': { 
-            "title" : '功能',
+            "title" : '上网设置',
             "titleTip": '这是功能说明'
             },
         'lan': { 
-            "title" : '功能',
+            "title" : '局域网设置',
+            "titleTip": '这是功能说明'
+            },        
+        'router': { 
+            "title" : '子路由设置',
             "titleTip": '这是功能说明'
             },
         'dosd': { 
-            "title" : '功能',
+            "title" : '攻击防护',
             "titleTip": '这是功能说明'
             },
         'changepassword': { 
-            "title" : '功能',
+            "title" : '修改管理密码',
             "titleTip": '这是功能说明'
             },
         'upgrade': { 
-            "title" : '功能',
+            "title" : '系统升级',
             "titleTip": '这是功能说明'
             },
         'backup': { 
-            "title" : '功能',
+            "title" : '备份与恢复',
             "titleTip": '这是功能说明'
             },
         'reboot': { 
-            "title" : '功能',
+            "title" : '重启路由器',
             "titleTip": '这是功能说明'
             },
         'recovery': { 
-            "title" : '功能',
+            "title" : '恢复出厂设置',
             "titleTip": '这是功能说明'
             },
         'timezone': { 
-            "title" : '功能',
+            "title" : '时间设置',
             "titleTip": '这是功能说明'
             },
     };
