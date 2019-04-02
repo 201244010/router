@@ -123,7 +123,7 @@ export default class Location extends React.Component {
                 <h2>设置位置</h2> 
                 <p className="ui-tips guide-tip">位置将作为路由器的名称，有助于您今后识别和管理</p>
                 <div className="content">
-                <Form style={{margin : '24px auto'}}>
+                <Form style={{margin : '24px auto',display: 'inline-block'}}>
                     {routeShow}
                     <FormItem
                         label="#"
@@ -132,7 +132,7 @@ export default class Location extends React.Component {
                         <Button
                             disabled={disabled}
                             loading={loading}
-                            style={{ width: 260,height: 42}}
+                            style={{ width: 260,height: 42,float: 'right'}}
                             onClick={this.setRouterLocation}
                             size="large"
                             type="primary">下一步</Button>
