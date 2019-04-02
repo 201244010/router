@@ -224,10 +224,10 @@ export default class Allocation extends React.Component{
                     <span className='second-title'>
                         保障经营设备网速
                     </span>
-                    <span>最大网速占用</span>
-                    <span className='fourth-title'>
-                        {largestPercent}%
-                    </span>
+                    <p>
+                        <span>划分设备优先级</span>
+                        <span>按优先级分配网速</span>
+                    </p>
                 <Button onClick={this.goBandwidth} className="button">去开启</Button>
                 </div>
         )

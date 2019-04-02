@@ -265,7 +265,7 @@ export default class Status extends React.Component {
         }];
 
         return (
-            <SubLayout className="settings">
+            <SubLayout className="settings" style={{paddingTop: 32}}>
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
@@ -341,7 +341,7 @@ export default class Status extends React.Component {
                         locale={{ emptyText: "暂无设备" }}
                     />
                 </Modal>
-                <section className="save-area">
+                <section className="save">
                     <Button
                         size="large"
                         onClick={this.reSetup}

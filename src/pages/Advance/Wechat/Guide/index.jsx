@@ -59,7 +59,7 @@ export default class Guide extends React.Component {
     render() {
         const { match } = this.props;
         return (
-            <SubLayout className="settings">
+            <SubLayout className="settings" style={{paddingTop: 32}}>
             <div className='wechat-guide'>
                 <ul className='setup-list'>
                     {this.steps.map((item, index, steps) => {
