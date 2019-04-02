@@ -1,0 +1,21 @@
+.steps .guide-body .preparing .guide-tip {
+    margin-bottom: 48px;
+}
+.preparing {
+    .content {
+        text-align: center;
+        .image {
+            width: 480px;
+            height: 270px;
+            margin: 0 auto 28px;
+            border-radius: 8px;
+            background: #F6F7F9;
+            background-image: require('~/assets/images/guide-router.png');
+            background-size: 100% 100%;
+        }
+        .next {
+            width: 260px;
+            height: 42px;
+        }
+    }
+}

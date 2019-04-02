@@ -1,0 +1,36 @@
+.finish {
+    width: 100%;
+    padding: 57px 0;
+    text-align: center;
+    h4 {
+        font-family: 'PingFangSC-Medium';
+        font-size: 24px;
+        color: #333C4F;
+    }
+    p {
+        margin: 32px 0 12px;
+        font-family: 'PingFangSC-Regular';
+        font-size: 16px;
+        color: #333C4F;
+    }
+    .QR {
+        // width: 100px;
+        // height: 100px;
+        img{
+            height: 100px;
+            width: 100px;
+        }
+        p{
+            font-size: 14px;
+            color: #ADB1B9;
+            text-align: center;
+            margin: 8px 0 32px;
+        }
+    }
+    .footButtons {
+        .complete{
+            width:158px;
+            height: 42px;
+        }
+    }
+}

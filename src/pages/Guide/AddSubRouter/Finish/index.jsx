@@ -1,9 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 import CustomIcon from '~/components/Icon';
-import './success.scss';
-
-const MODULE = 'success';
+import './finish.scss';
 
 export default class Success extends React.Component {
     constructor(props) {
@@ -14,24 +12,19 @@ export default class Success extends React.Component {
         this.props.history.push('/home');
     }
 
-    addSubRouter = () => {
-        this.props.history.push('/guide/addsubrouter');
-    }
-
     render() {
         return (
             <React.Fragment>
-                <div className='success'>
+                <div className='finish'>
                     <CustomIcon size={72} color='#87D068' type='succeed' style={{marginBottom: 16}} />
-                    <h4>{intl.get(MODULE, 11)/*_i18n:设置完成*/}</h4>
-                    <p>{intl.get(MODULE, 0)/*_i18n:我们为您准备以下功能，开始体验吧*/}</p>
+                    <h4>组网完成</h4>
+                    <p>下载商米助手APP，体验更多功能！</p>
                     <div className='QR'>
                         <img src={require('~/assets/images/qr.png')} />
-                        <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
+                        <p>扫描二维码下载APP</p>
                     </div>
                     <div className="footButtons">
-                        <Button type="primary" className="complete" onClick={this.goHome}>{intl.get(MODULE, 1)}</Button>
-                        <Button type="primary" className="addMore" onClick={this.addSubRouter}>{intl.get(MODULE, 2)}</Button>
+                        <Button type="primary" className="complete" onClick={this.goHome}>配置完成</Button>
                     </div> 
                 </div>
             </React.Fragment>

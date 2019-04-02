@@ -1,0 +1,79 @@
+.subRouter {
+    width: 140px;
+    height: 140px;
+    padding: 10px 0 0 0;
+    text-align: center;
+    display: inline-block;
+    margin: 0 12px 24px;
+    .macInfo {
+        font-family: 'PingFangSC-Regular';
+        font-size: 12px;
+        color: #333C4F;
+        text-align: center;
+    }
+    .footer {
+        width: 100%;
+        height: 32px;
+        position: relative;
+        .ignoreTip {
+            position: absolute;
+            top: 36px;
+            font-family: 'PingFangSC-Regular';
+            font-size: 12px;
+            color: #3D76F6;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+    .checkbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .final {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        font-family: 'PingFangSC-Regular';
+        font-size: 12px;
+        color: #333C4F;
+        >div {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+.modalTitle {
+    height: 52px;
+    padding: 0 0 0 20px;
+    margin: 0;
+    text-align: left;
+}
+.modalContent {
+    height: 80px;
+    padding: 0 0 20px 0;
+    margin: 0;
+    text-align: left;
+    border-top: 1px solid #ECECEC;
+    border-bottom: 1px solid #ECECEC;
+}
+.modalFooter{
+    height: 72px;
+    padding: 0 20px 0 0;
+    text-align: right;
+}
+.modalTitle, .modalContent, .modalFooter{
+    font-family: 'PingFangSC-Regular';
+    font-size: 14px;
+    color: #333C4F;
+    vertical-align: middle;
+}
+.cancleButton {
+    background: rgb(206,212,218);
+    border: 1px solid rgba(125,143,183,0.2);  
+}
+.cancleButton, .OKButton{
+    width: 64px;
+    height: 34px;
+    border-radius: 8px;
+}
