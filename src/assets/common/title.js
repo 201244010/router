@@ -59,7 +59,7 @@ export const getTitle = () => {
             "title" : '恢复出厂设置',
             "titleTip": '这是功能说明'
             },
-        'timezone': { 
+        'timeset': { 
             "title" : '时间设置',
             "titleTip": '这是功能说明'
             },
