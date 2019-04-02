@@ -8,7 +8,6 @@ import PrimaryHeader from '~/components/PrimaryHeader';
 import PrimaryFooter from '~/components/PrimaryFooter';
 import PrimaryTitle from '~/components/PrimaryTitle';
 import CustomIcon from '~/components/Icon';
-import SubLayout from '~/components/SubLayout';
 
 import Login from './Login';
 import Guide from "./Guide";
@@ -93,7 +92,7 @@ class PrimaryLayout extends React.Component {
             'backup': { main: 'bg', footer: '', header: true, title: true },
             'reboot': { main: 'bg', footer: '', header: true, title: true },
             'recovery': { main: 'bg', footer: '', header: true, title: true },
-            'timezone': { main: 'bg', footer: '', header: true, title: true },
+            'timeset': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const conf = {
@@ -119,7 +118,6 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
-        console.log(node.header);
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
@@ -151,7 +149,7 @@ class PrimaryLayout extends React.Component {
                             <Route path="/backup" component={Backup} />
                             <Route path="/reboot" component={Reboot} />
                             <Route path="/recovery" component={Recovery} />
-                            <Route path="/timezone" component={TimeZone} />
+                            <Route path="/timeset" component={TimeZone} />
                             <Route path="/" component={Default} />
                         </Switch>
                         {false !== node.footer && <PrimaryFooter className={node.footer} />}
