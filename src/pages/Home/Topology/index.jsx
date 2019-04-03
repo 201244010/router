@@ -175,7 +175,7 @@ class Item extends React.Component {
                 data: { 
                     sonconnect: [{ 
                         mac, 
-                        name: editName,
+                        location: editName,
                         devid
                     }] 
                 },
