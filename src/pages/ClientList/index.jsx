@@ -212,10 +212,16 @@ export default class ClientList extends React.Component {
             title: '连接路由',
             dataIndex: 'routerName',
             filters: this.connectRouter,
-            onFilter: (value, record) => record.routerName.indexOf(value) === 0,
+            onFilter: (value, record) => {
+                if (typeof record.routerName === 'undefined') {
+                    return false;
+                } else {
+                    return record.routerName.indexOf(value) === 0
+                }
+            },
             render: (routerName, record) => (
                 <div className="routerName">
-                    {routerName}
+                    {routerName || '--'}
                 </div>
             ),
             width: 118
@@ -587,7 +593,7 @@ export default class ClientList extends React.Component {
                             columns={columns}
                             dataSource={clients}
                             components={components}
-                            rowClassName={() => {
+                            rowClassName={(index) => {
                                 let className = 'editable-row';
                                 if (index % 2 === 1) {
                                     className = 'editable-row-light';
