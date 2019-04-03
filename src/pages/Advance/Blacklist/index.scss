@@ -1,0 +1,17 @@
+.black-list {
+    padding-left: 60px;
+    text-align: left;
+    label {
+        width: 318px;
+        vertical-align: middle;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        display:-webkit-box; 
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2; 
+        word-wrap: break-word;
+        display: -moz-box;
+        -moz-line-clamp: 2;
+        -moz-box-orient: vertical;
+    }
+}

@@ -151,7 +151,7 @@ export default class SysUpgrade extends React.Component{
         const {releaseLog, loading, disable, version, currentVersion, latestVersion, manual} = this.state;
 
         return (
-            <SubLayout className="net-setting">
+            <SubLayout className="settings">
             <div style={{paddingLeft : 60}}>
                 <Form style={{width : '100%',marginTop : 0, paddingLeft : 0,paddingRight : 0}}>
                     <section className="online-update">

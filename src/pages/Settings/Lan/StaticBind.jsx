@@ -438,7 +438,7 @@ export default class StaticBind extends React.Component {
             )
         }];
         const total = staticLists.length;
-        return (
+        return [
             <div style={{margin:"20px 60px 48px 60px"}}>
                 <PanelHeader title='静态地址分配' />
                 <div style={{margin:"29px 0 20px 0", display: 'flex', justifyContent: 'space-between'}}>
@@ -450,9 +450,6 @@ export default class StaticBind extends React.Component {
                         <Button onClick={this.manualAdd}>{intl.get(MODULE, 28)/*_i18n:手动添加*/}</Button>
                     </div>
                 </div>
-                <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
-                    bordered={false}
-                    size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/}} />
                 <Modal
                     cancelText={intl.get(MODULE, 31)/*_i18n:取消*/}
                     okText={intl.get(MODULE, 32)/*_i18n:添加*/}
@@ -512,8 +509,20 @@ export default class StaticBind extends React.Component {
                         <ErrorTip>{editMacTip}</ErrorTip>
                     </FormItem>
                 </Modal>
-            </div>
-        );
+            </div>,
+            <div className="static-table">
+            <Table columns={columns} dataSource={staticLists} rowKey={record=>record.index} 
+            bordered={false}
+            rowClassName={(record, index) => {
+                let className = 'editable-row';
+                if (index % 2 === 1) {
+                    className = 'editable-row-light';
+                }
+                return className;
+            }}
+            size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 29)/*_i18n:暂无设备*/}} />
+        </div>
+        ];
     }
 };
 

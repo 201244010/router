@@ -7,6 +7,7 @@ import PanelHeader from '~/components/PanelHeader';
 import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 import SubLayout from '~/components/SubLayout';
+import './index.scss';
 
 const MODULE = 'blacklist';
 
@@ -307,28 +308,29 @@ export default class Blacklist extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: '',
+            title: '设备',
             dataIndex: 'mac',
-            width: 80,
+            width: 440,
             className: 'center',
             render: (mac, record) => (
-                <Logo mac={mac} size={32} />
+                <div className="black-list">
+                    <div style={{display: 'inline-block'}}>
+                        <Logo mac={mac} size={32} />
+                    </div>
+                    <label style={{display: 'inline-block'}}>{record.name}</label>
+                </div>
             )
         }, {
-            title: intl.get(MODULE, 9)/*_i18n:设备名称*/,
-            dataIndex: 'name',
-            width: 200
-        }, {
-            title: intl.get(MODULE, 10)/*_i18n:MAC地址*/,
+            title: 'IP/MAC地址'/*_i18n:MAC地址*/,
             dataIndex: 'mac',
-            width: 200
+            width: 240
         }, {
             title: intl.get(MODULE, 11)/*_i18n:拉黑时间*/,
             dataIndex: 'time',
-            width: 210
+            width: 240
         }, {
             title: intl.get(MODULE, 12)/*_i18n:操作*/,
-            width: 243,
+            width: 296,
             render: (text, record) => (
                 <span>
                     <Popconfirm title={intl.get(MODULE, 13)/*_i18n:确定恢复上网？*/} okText={intl.get(MODULE, 30)/*_i18n:确定*/} cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
@@ -364,7 +366,7 @@ export default class Blacklist extends React.Component {
         }];
         const total = blockLists.length;
         return (
-            <SubLayout className="net-setting">
+            <SubLayout className="settings">
                 <div style={{ margin: "0 60px" }}>
                     <PanelHeader title={intl.get(MODULE, 18)/*_i18n:添加黑名单设备*/} />
                     <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
@@ -376,8 +378,6 @@ export default class Blacklist extends React.Component {
                             <Button onClick={this.manualAdd}>{intl.get(MODULE, 20)/*_i18n:手动添加*/}</Button>
                         </div>
                     </div>
-                    <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}
-                        bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/ }} />
                     <Modal
                         cancelText={intl.get(MODULE, 23)/*_i18n:取消*/}
                         okText={intl.get(MODULE, 24)/*_i18n:添加*/}
@@ -429,6 +429,10 @@ export default class Blacklist extends React.Component {
                             <ErrorTip>{macTip}</ErrorTip>
                         </FormItem>
                     </Modal>
+                </div>
+                <div className="static-table">
+                        <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}
+                        bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/ }} />
                 </div>
             </SubLayout>
         );
