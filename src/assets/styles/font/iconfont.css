@@ -571,3 +571,7 @@
   content: "\e6c4";
 }
 
+.ui-icon-more:before {
+  content: "\e6c5";
+}
+

@@ -27,7 +27,7 @@ class PrimaryTitle extends React.Component {
 	}
 
     goBackPage = () => {
-        this.props.history.goBack();
+        this.props.history.push('/routersetting');
     }
 };
 
