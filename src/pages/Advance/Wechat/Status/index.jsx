@@ -265,7 +265,7 @@ export default class Status extends React.Component {
         }];
 
         return (
-            <SubLayout className="settings" style={{paddingTop: 32}}>
+            <SubLayout className="settings">
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
