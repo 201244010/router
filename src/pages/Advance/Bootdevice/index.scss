@@ -1,0 +1,23 @@
+.white-list {
+    padding:12px 0 12px 60px;
+    text-align: left;
+    .title-content {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 10px;
+        .content {
+            display: inline-block;
+            width: 280px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: pre;
+        }
+        .icon {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 5px;
+            border-radius: 50%;
+        }
+    }
+}
