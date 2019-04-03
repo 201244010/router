@@ -146,9 +146,11 @@ export default class Dosd extends React.Component {
                     <Form>
                         <PanelHeader title={intl.get(MODULE, 15)/*_i18n:已阻止的DoS主机列表*/} />
                         <p style={{fontSize:14, margin: '32px 0 32px 0'}}>{total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已阻止{total}台设备*/ : intl.get(MODULE, 19, {total})}</p>
-                        <Table style={{marginTop:16}} columns={columns} dataSource={blockList} rowKey={record => record.mac}
-                        bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 16)/*_i18n:暂无设备*/ }} />
                     </Form>
+                    <div className="static-table">
+                            <Table style={{marginTop:16}} columns={columns} dataSource={blockList} rowKey={record => record.mac}
+                            bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 16)/*_i18n:暂无设备*/ }} />
+                    </div>
                 </section>
             </div>
         </SubLayout>

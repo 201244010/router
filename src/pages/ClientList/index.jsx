@@ -588,12 +588,12 @@ export default class ClientList extends React.Component {
                         </p>
                         <Button className="net-refersh" onClick={this.updateClientsInfo}>刷新</Button>
                     </div>
-                    <div>
+                    <div className="table-background">
                         <Table
                             columns={columns}
                             dataSource={clients}
                             components={components}
-                            rowClassName={(index) => {
+                            rowClassName={(record, index) => {
                                 let className = 'editable-row';
                                 if (index % 2 === 1) {
                                     className = 'editable-row-light';

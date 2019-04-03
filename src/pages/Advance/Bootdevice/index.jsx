@@ -7,6 +7,7 @@ import { checkMac } from '~/assets/common/check';
 import Form from "~/components/Form";
 import SubLayout from '~/components/SubLayout';
 
+import './index.scss';
 const MODULE = 'bootdevice';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
@@ -287,6 +288,7 @@ export default class Bootdevice extends React.Component {
             { opcode: 'CLIENT_LIST_GET' },
             { opcode: 'QOS_AC_WHITELIST_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
+            { opcode: 'ROUTE_GET'},
         ]);
 
         let { errcode, data, message } = response;
@@ -298,8 +300,13 @@ export default class Bootdevice extends React.Component {
 
         let clients = data[0].result.data,
             whites = data[1].result.white_list,
-            alias = data[2].result.aliaslist;
+            alias = data[2].result.aliaslist,
+            reInfo = data[3].result.sonconnect.devices;
 
+        let routeList = {};
+        reInfo.map(item => {
+            routeList[item.mac.toUpperCase()] = item.location;
+        });
         // filter clients in dhcp static list
         let restClients = clients.filter(item => {
             // not show sunmi clients
@@ -332,7 +339,10 @@ export default class Bootdevice extends React.Component {
                     online: false,
                     ontime: 0,
                     ip: '0.0.0.0',
+                    routermac: ''
                 };
+
+                let routerMac = client.routermac.toUpperCase();
 
                 return {
                     index: item.index,
@@ -341,7 +351,7 @@ export default class Bootdevice extends React.Component {
                     ontime: this.formatTime(client.ontime),
                     ip: client.ip,
                     mac: mac,
-                    network: modeMap[client.wifi_mode] || '--',
+                    network: routeList[routerMac] || '--',
                 }
             }),
             onlineList: restClients.map(item => {
@@ -374,43 +384,30 @@ export default class Bootdevice extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: '',
+            title: '设备',
             dataIndex: 'mac',
-            width: 60,
+            width: 420,
             className: 'center',
             render: (mac, record) => (
-                <Logo mac={mac} size={32} />
-            )
-        }, {
-            // title: '设备名称',
-            title: intl.get(MODULE, 11)/*_i18n:设备名称*/, 
-            width: 300,
-            render: (text, record) => (
-                <div>
-                    <div style={{
-                        width:'280px',
-                        overflow: 'hidden',
-                        textOverflow:'ellipsis',
-                        whiteSpace: 'pre',
-                    }} title={record.name}>{record.name}</div>
-                    <i style={{
-                        display: 'inline-block',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: (record.online ? '#87D068' : '#ADB1B9' ),
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                    }}></i>
-                    {record.online?(
-                        <span><label>{intl.get(MODULE, 12)/*_i18n:在线时长：*/}</label><label>{record.ontime}</label></span>
-                    ) : (
-                        <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 13)/*_i18n:离线*/}</span>
-                    )}
+                <div className="white-list">
+                    <Logo mac={mac} size={40} />
+                    <div className="title-content">                    
+                        <div className="content" title={record.name}>{record.name}</div>
+                        <div>
+                            <i className="icon" style={{backgroundColor: (record.online ? '#87D068' : '#ADB1B9' )}}></i>
+                            {record.online?(
+                                <span><label>{intl.get(MODULE, 12)/*_i18n:在线时长：*/}</label><label>{record.ontime}</label></span>
+                            ) : (
+                                <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 13)/*_i18n:离线*/}</span>
+                            )}
+                        </div>
+                    </div>
+
                 </div>
             )
         }, {
             title: intl.get(MODULE, 14)/*_i18n:IP/MAC地址*/,
-            width: 220,
+            width: 240,
             render: (text, record) => (
                 <span>
                     {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
@@ -418,12 +415,12 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: intl.get(MODULE, 15)/*_i18n:接入方式*/,
+            title: '所属网络'/*_i18n:接入方式*/,
             dataIndex: 'network',
-            width: 210
+            width: 260
         }, {
             title: intl.get(MODULE, 16)/*_i18n:操作*/,
-            width: 143,
+            width: 296,
             render: (text, record) => (
                 <span>
                     <Popconfirm title={intl.get(MODULE, 17)/*_i18n:确定解除优先？*/} okText={intl.get(MODULE, 35)/*_i18n:确定*/} cancelText={intl.get(MODULE, 36)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
@@ -459,7 +456,7 @@ export default class Bootdevice extends React.Component {
         }];
         const total = whiteList.length;
         return (
-            <SubLayout className="net-setting">
+            <SubLayout className="settings">
                 <div style={{ margin: "0 60px" }}>
                     <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
                     <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
@@ -471,8 +468,6 @@ export default class Bootdevice extends React.Component {
                             <Button onClick={this.manualAdd}>{intl.get(MODULE, 24)/*_i18n:手动添加*/}</Button>
                         </div>
                     </div>
-                    <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
-                        bordered size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
                     <Modal
                         cancelText={intl.get(MODULE, 27)/*_i18n:取消*/}
                         okText={intl.get(MODULE, 28)/*_i18n:添加*/}
@@ -524,6 +519,10 @@ export default class Bootdevice extends React.Component {
                             <ErrorTip>{macTip}</ErrorTip>
                         </FormItem>
                     </Modal>
+                </div>
+                <div className="static-table">
+                        <Table columns={columns} dataSource={whiteList} rowKey={record => record.index}
+                        bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
                 </div>
             </SubLayout>
         );

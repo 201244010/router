@@ -23,3 +23,36 @@
     margin-left: 60px;
 }
 
+.static-table {
+    padding-bottom: 32px;
+    background: #FFFFFF;
+    tr {
+        th {
+            background: #FFFFFF;
+            font-size: 12px;
+            color: #ADB1B9;
+        }
+        th:first-child {
+            padding-left: 60px !important;
+        }
+        td:first-child {
+            padding-left: 60px !important;
+        }
+    }
+    .editable-row {
+        background: #F8F9FB
+    }
+    .editable-row-light {
+        background: #FFFFFF;   
+    }
+    .ant-table-thead>tr>th {
+        border-bottom: none;
+    }
+    .ant-table-tbody>tr>td {
+        border-bottom: none;
+    }
+    .ant-table-placeholder {
+        background: #F8F9FB;
+        border-bottom: none;
+    }
+}

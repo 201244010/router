@@ -6,7 +6,6 @@ import {Checkbox, Button, Modal, Radio, Upload, message} from 'antd';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 import { get } from '~/assets/common/auth';
-import { get as getCookie } from '~/assets/common/cookie';
 import {getLang} from '~/i18n/index';
 import SubLayout from '~/components/SubLayout';
 
@@ -401,8 +400,10 @@ export default class Backup extends React.Component{
             )
         });
 
+        const WECHAT = window.sessionStorage.getItem('_WECHAT');
+
         return (
-            <SubLayout className="net-setting">
+            <SubLayout className="settings">
             <div className="backup-restore">
                 <Form>
                     <section style={{marginTop:10}}>
@@ -410,12 +411,12 @@ export default class Backup extends React.Component{
                     </section>
                     <section>
                         {
-                            getCookie('_WECHAT') === 'IS_WECHAT' ? (<ul className='backup-list'>
+                            WECHAT === 'IS_WECHAT' ? (<ul className='backup-list'>
                                 <li><Checkbox checked={baseBackup} onChange={this.checkBasebackup}>{intl.get(MODULE, 25)/*_i18n:管理密码、Wi-Fi配置、上网配置、局域网配置、带宽设置、优先设备、防蹭网*/}</Checkbox></li>
                                 <li><Checkbox checked={authBackup} onChange={this.checkAuthbackup}>{intl.get(MODULE, 26)/*_i18n:微信连Wi-Fi配置*/}</Checkbox></li>
                             </ul>) : ''
                         }
-                        <div className={getLang() === 'zh-cn' ? 'func-btn' : 'func-btn-us'}>
+                        <div className="func-btn">
                             <Button onClick={this.postBackupLocal}>{intl.get(MODULE, 27)/*_i18n:备份到本地*/}</Button>
                             <Button onClick={this.cloudBackup}>{intl.get(MODULE, 28)/*_i18n:备份到云*/}</Button>
                         </div>

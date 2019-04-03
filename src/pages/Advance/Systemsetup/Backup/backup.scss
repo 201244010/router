@@ -1,22 +1,19 @@
 
 .backup-restore {
     .backup-list{
-        margin: 30px 0;
+        margin-top: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #ececec;
         li{
             margin: 10px 0;
         }
     }
     .func-btn{
-        border-top: 1px solid #ECECEC;
         padding-top: 30px;
         button{
             margin-right: 20px;
             // margin-top: 30px;
         }
-    }
-    .func-btn-us {
-        @extend .func-btn;
-        border-top: none;
     }
     .restore{
         margin-top: 40px;
