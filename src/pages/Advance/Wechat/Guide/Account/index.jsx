@@ -178,6 +178,7 @@ export default class Account extends React.Component {
                 </div>
                 <section className="save-area">
                     <Button
+                        type="primary"
                         size="large"
                         onClick={this.preStep}
                     >上一步</Button>
