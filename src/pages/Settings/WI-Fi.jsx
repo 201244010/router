@@ -24,8 +24,13 @@ const errorMessage = {
 
 
 export default class WIFI extends React.Component {
+    constructor(props) {
+        super(props);
+        // this.channel_list = {};
+    }
+
     state = {
-        channelType: true,
+        channelType: '',
         guestSsid : '',
         guestEncryption : '',
         guestStaticPassword : '',
@@ -153,6 +158,13 @@ export default class WIFI extends React.Component {
             channelType : type
         });
     }
+    
+    onBandSteering = e => {
+        this.setState({
+            channelType : e.target.value
+        });
+    }
+
     onPWDTypeChange = e =>{
         if(e.target.value === 'static'){
             let check ;
@@ -349,7 +361,7 @@ export default class WIFI extends React.Component {
         });
     }
 
-    submit = async ()=> {
+    submitMain = async ()=> {
         const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
 
         //商户Wi-Fi 2.4G和5G ssid不能相同
@@ -372,16 +384,6 @@ export default class WIFI extends React.Component {
             visibile: 'visible',
         });
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
-
-        
-        //guest
-        this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
-        this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
-        this.guestWireLess.password_type = this.state.PWDType;
-        this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
-        this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : Base64.encode(this.state.guestDynamicPassword);
 
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
@@ -408,9 +410,48 @@ export default class WIFI extends React.Component {
         let response = await common.fetchApi(
             [{
                 opcode: 'WIRELESS_SET',
-                data: { main : this.mainWireLess, guest : this.guestWireLess}
+                data: { main : this.mainWireLess, guest : this.initGuest}
             }]
         );
+
+        let { errcode } = response;
+        if(errcode === 0){
+            setTimeout(async() => {
+                this.setState({
+                    visibile: 'hidden',
+                    resVisibile: true,
+                    result: true,
+                });
+            }, 15000);
+        }else{
+            this.setState({
+                visibile: 'hidden',
+                resVisibile: true,
+                result: false,
+                err: errorMessage[errcode] || errcode,
+            });    
+        }   
+    }
+
+    submitGuest = async () => {
+        this.guestWireLess.ssid = this.state.guestSsid;
+        this.guestWireLess.static_password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
+        this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
+        this.guestWireLess.password_type = this.state.PWDType;
+        this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
+        this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
+        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : Base64.encode(this.state.guestDynamicPassword);
+    
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_SET',
+                data: { main : this.initMain, guest : this.guestWireLess}
+            }]
+        );
+
+        this.setState({
+            visibile: 'visible',
+        });
 
         let { errcode } = response;
         if(errcode === 0){
@@ -452,8 +493,10 @@ export default class WIFI extends React.Component {
             let { channel_list } = data[1].result;
             this.channel_list = channel_list;
             this.mainWireLess = main;
+            this.initMain = main;
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
+            this.initGuest = guest;
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
@@ -540,11 +583,10 @@ export default class WIFI extends React.Component {
         this.stop = true;
     }
 
-    checkDisabled = (state) =>{
-        let checkDisabled24, checkDisabled5, checkDisabled245, checkDisabledGuest;
+    checkDisabled = () =>{
+        let checkDisabled24, checkDisabled5, checkDisabled245;
         let { hostSsid24Tip, hostSsid24PasswordTip, hostSsid24, hostSsid24Password, hostSsid5Tip, hostSsid5PasswordTip,
-        hostSsid5, hostSsid5Password, channelType, host24Enable, host5Enable, guestEnable, guestSsidTip, guestStaticPasswordTip, guestSsid,
-        periodTip, guestStaticPassword, PWDType } = state;
+        hostSsid5, hostSsid5Password, channelType, host24Enable, host5Enable} = this.state;
         if(host24Enable === true){
             checkDisabled24 = ( hostSsid24Tip !== '' || hostSsid24PasswordTip !== '' || hostSsid24 === '' || 
             (hostSsid24Password.length !== 0 && hostSsid24Password.trim() === ''));
@@ -562,6 +604,13 @@ export default class WIFI extends React.Component {
         }else{
             checkDisabled245 = checkDisabled24 || checkDisabled5;
         }
+        
+        return checkDisabled245;
+    }
+
+    checkGuest = () => {
+        let checkDisabledGuest;
+        const {guestEnable, guestSsidTip, guestStaticPasswordTip, guestSsid, periodTip, guestStaticPassword, PWDType} = this.state;
         if(guestEnable === true){
             if(PWDType === 'static'){
                 checkDisabledGuest = ( guestSsidTip !== '' || guestStaticPasswordTip !== '' || guestSsid === '' ||
@@ -572,13 +621,15 @@ export default class WIFI extends React.Component {
         }else{
             checkDisabledGuest = false;
         }
-        return checkDisabled245 || checkDisabledGuest;
+
+        return checkDisabledGuest
     }
 
     render(){
         const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip, hostSsid5Tip, hostSsid5PasswordTip, visibile, resVisibile,result } = this.state;
 
-        let saveDisabled = this.checkDisabled(this.state);
+        let saveDisabled = this.checkDisabled();
+        let guestDisabled = this.checkGuest();
 
         return [
         <SubLayout className="settings">
@@ -586,10 +637,18 @@ export default class WIFI extends React.Component {
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
                         <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} />
+                        <div className="band-title">
+                            <label>{intl.get(MODULE, 28)}</label>
+                            <span>({intl.get(MODULE, 29)})</span>
+                        </div>
+                        <RadioGroup onChange={this.onBandSteering} value={channelType} disabled={disabledType2}>
+                            <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
+                            <Radio style={{display:'inline-block'}} value={false}>关闭</Radio>
+                        </RadioGroup>
                         {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
                         {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
                     </section>
-                    {this.state.channelType ? (
+                    {!this.state.channelType ? (
                     <section className="wifi-setting-item">
                         <label className='ssidLabel'>{intl.get(MODULE, 31)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>
@@ -728,6 +787,9 @@ export default class WIFI extends React.Component {
                         </section>
                     </section>
                     )}
+                    <section className="save">
+                        <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submitMain}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
+                    </section>
                     <section className="wifi-setting-item">
                         <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} />
                         <label className='ssidLabel'>{intl.get(MODULE, 66)/*_i18n:Wi-Fi名称*/}</label>
@@ -771,7 +833,7 @@ export default class WIFI extends React.Component {
                     </section>
                 </Form>
                 <section className="save">
-                        <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submit}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
+                        <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={guestDisabled} onClick={this.submitGuest}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
                 <Modal
                     visible={true}
@@ -786,7 +848,6 @@ export default class WIFI extends React.Component {
                         <Icon type="loading" style={{ fontSize: 80, color: "#FB8632", marginBottom: 20 }} spin />
                         <Tips size="16" top={5}>{intl.get(MODULE, 78)/*_i18n:正在等待Wi-Fi重启，请稍候...*/}</Tips>
                     </div>
-                        
                 </Modal>
                 <Modal 
                     closable={false}
