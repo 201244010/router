@@ -36,14 +36,12 @@ export default class Location extends React.Component {
             }
         }
 
+        routeList[index].tip = '';
         for (var i = 0; i < routeList.length; i++) {
-            if (routeList[index].location === routeList[i].location) {
+            if (index !== i && routeList[index].location === routeList[i].location) {
                 routeList[index].tip = '位置信息重复';
-            } else {
-                routeList[index].tip = '';
             }
         }
-
         this.setState({routeList: routeList});
     }
 
@@ -109,6 +107,7 @@ export default class Location extends React.Component {
                     inputStyle={{marginLeft: 12, width: 260}}
                     >
                     <Input
+                        type="text"
                         placeholder="如大堂、收银区等"
                         value={item.location === item.deviceId? '':item.location}
                         onChange = {value => this.onChange(value, `${item.deviceId}`)}

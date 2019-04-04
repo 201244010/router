@@ -19,7 +19,7 @@
     .noFindTip {
         font-family: 'PingFangSC-Regular';
         font-size: 16px;
-        color: #ADB1B9;
+        color:#333C4F;;
         text-align: center;
         margin-bottom: 20px;
     }
@@ -42,7 +42,9 @@
             margin: 0 8px 0 0;
         }
         .smallTitle {
-            display: inline-block;
+            font-family: 'PingFangSC-Regular';
+            font-size: 20px;
+            color: #333C4F;
         }
     }
     .haveFailed {

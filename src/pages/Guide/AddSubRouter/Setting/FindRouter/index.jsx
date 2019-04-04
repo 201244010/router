@@ -18,6 +18,14 @@ export default class FindRouter extends React.Component {
 
     stop = () => {}
 
+    next = () => {
+        this.props.history.push("/guide/addsubrouter/location");
+    }
+
+    goHome = () => {
+        this.props.history.push("/");
+    }
+
     onChange = (deviceId, checked) => {
         let devicesShow = this.state.devicesShow;
         for (var i = 0; i < devicesShow.length; i++) {
@@ -34,83 +42,105 @@ export default class FindRouter extends React.Component {
 
     reSearch = () => {
         this.setState({
-            condition: 'selecting'
+            condition: 'selecting',
+            searchFinish: false,
         });
         this.getSubRouters();
     }
 
     setSubRouter = async() => {
-        const {devicesShow} = this.state;
-        let sonconnect = {selected:[],blocked:[]};
+        let {devicesShow} = this.state;
+        let data = {sonconnect: {selected:[],blocked:[]}};
         devicesShow.map(item => {
             if (item.checked) {
-                sonconnect.selected.push(
+                data.sonconnect.selected.push(
                     {
                         mac: item.mac,
                         devid: item.deviceId,
-                        location: item.deviceId
+                        location: item.deviceId,
+                        bh2mac: item.bh2mac,
+                        bh5mac: item.bh5mac
                     }
                 );
             } else {
-                sonconnect.blocked.push(
+                data.sonconnect.blocked.push(
                     {
                         mac: item.mac,
-                        devid: item.deviceId
+                        devid: item.deviceId,
+                        bh2mac: item.bh2mac,
+                        bh5mac: item.bh5mac
                     }
                 );
             }
         });
+
+        this.setState({condition: 'setting'});
         let response = await common.fetchApi(
             [
                 {opcode: 'SWITCH_STOP'},
-                {opcode: 'ROUTE_SET', data: sonconnect}
+                {opcode: 'ROUTE_SET', data: data}
             ]
         );
+
         let {errcode} = response;
         if (0 === errcode) {
-            this.setState({
-                condition: 'setting',
-            });
+            for (var i = 0; i < devicesShow.length; i++) {
+                if (devicesShow[i].checked) {
+                    devicesShow[i].result = 'success';
+                }
+            }   
+        } else {
+            for (var i = 0; i < devicesShow.length; i++) {
+                if (devicesShow[i].checked) {
+                    devicesShow[i].result = 'failed';
+                }
+            }
         }
+        this.setState({
+            condition: 'settingResult',
+            devicesShow: devicesShow
+        });
     }
 
-    getSettingResult = async() => {
-        let response = await common.fetchApi(
-            {opcode: ''},
-            { method: 'POST' },
-            {
-                loop: true,
-                interval: 1000,
-                pending: resp => {resp.result.process === 'setting'}
-            }
-        );
-        let {errcode, data} = response;
-        if (0 === errcode && 'finish' === data[0].result.process) {
-            let devicesResult = data[0].result.state;
-            let {devicesShow} = this.state;
-            devicesResult.map(item => {
-                for (var i = 0; i < devicesShow.length; i++) {
-                    if (item.devid === devicesShow[i].deviceId) {
-                        devicesShow[i].result = item.state;
-                        break;
-                    }
-                }
-            });
-            this.setState({
-                condition: 'settingResult',
-                devicesShow: devicesShow
-            });
-        }
-    }
+    // getSettingResult = async() => {
+    //     let response = await common.fetchApi(
+    //         {opcode: ''},
+    //         { method: 'POST' },
+    //         {
+    //             loop: true,
+    //             interval: 1000,
+    //             pending: resp => {resp.result.process === 'setting'}
+    //         }
+    //     );
+    //     let {errcode, data} = response;
+    //     if (0 === errcode && 'finish' === data[0].result.process) {
+    //         let devicesResult = data[0].result.state;
+    //         let {devicesShow} = this.state;
+    //         devicesResult.map(item => {
+    //             for (var i = 0; i < devicesShow.length; i++) {
+    //                 if (item.devid === devicesShow[i].deviceId) {
+    //                     devicesShow[i].result = item.state;
+    //                     break;
+    //                 }
+    //             }
+    //         });
+    //         this.setState({
+    //             condition: 'settingResult',
+    //             devicesShow: devicesShow
+    //         });
+    //     }
+    // }
 
     getSubRouters = async() => {
         let response = await common.fetchApi({opcode: 'SWITCH_START'});
-        let { errcode, data } = response;
-        let duration = data[0].result.sonconnect.duration;  //请求持续时间（单位秒）
-        let times = duration / 5;
-        let i = 0;
-
+        const { errcode, data } = response;
+        let duration = data[0].result.sonconnect.duration || 0;  //请求持续时间（单位秒）
+        let flag = 0;
         if (0 === errcode) {
+            setTimeout(() => {
+                common.fetchApi({opcode: 'SWITCH_STOP'});
+                flag = 1;
+            }, duration*1000);
             let resp = await common.fetchApi(
                 {opcode: 'ROUTE_QUERY'},
                 { method: 'POST' },
@@ -118,14 +148,49 @@ export default class FindRouter extends React.Component {
                     loop: true,            //请求次数
                     interval: 5000,         //请求间隔时间（单位毫秒）
                     stop : () => this.stop,
-                    pending: res => {return i++ < times;}
+                    pending: resp => {
+                        let {errcode, data} = resp;
+                        let devicesShow = this.state.devicesShow;
+                        if (0 === errcode && 0 === flag) {
+                            let devicesGet = data[0].result.sonconnect.devices || [];
+                            devicesGet.map(item => {
+                                let need = true;
+                                for (var i = 0; i < devicesShow.length; i++) {
+                                    if (item.devid === devicesShow[i].deviceId) {
+                                        need = false;
+                                        break;
+                                    }
+                                }
+                                if(need) {
+                                    devicesShow.push({
+                                        deviceId: item.devid,
+                                        mac: item.mac,
+                                        checked: true,
+                                        result: 'failed',
+                                        giveUp: false,
+                                        bh2mac: item.bh2mac,
+                                        bh5mac: item.bh5mac,
+                                    });
+                                }
+
+                            });
+                            this.setState({
+                                devicesShow: devicesShow,
+                            });
+                        } else {
+                            this.setState({
+                                searchFinish: true,
+                                devicesShow: devicesShow,
+                            });
+                        }
+                        return 0 === errcode && 0 === flag;
+                    }
                 }
             );
             let {errcode, data} = resp;
-            if (0 === errcode) {
+            let devicesShow = this.state.devicesShow;
+            if (0 === errcode && 0 === flag) {
                 let devicesGet = data[0].result.sonconnect.devices || [];
-                let devicesShow = this.state.devicesShow;
-
                 devicesGet.map(item => {
                     let need = true;
                     for (var i = 0; i < devicesShow.length; i++) {
@@ -135,20 +200,26 @@ export default class FindRouter extends React.Component {
                         }
                     }
                     if(need) {
-                        devicesShow.push({"deviceId":item.devid, "mac":item.mac, "checked":true, result: 'failed', giveUp: false});
+                        devicesShow.push({
+                            deviceId: item.devid || '',
+                            mac: item.mac || '',
+                            checked: true,
+                            result: 'failed',
+                            giveUp: false,
+                            bh2mac: item.bh2mac || '',
+                            bh5mac: item.bh5mac || '',
+                        });
                     }
 
                 });
-                if (i >= times) {
-                    this.setState({
-                        searchFinish: true,
-                        devicesShow: devicesShow,
-                    });
-                } else {
-                    this.setState({
-                        devicesShow: devicesShow,
-                    });
-                }   
+                this.setState({
+                    devicesShow: devicesShow,
+                });
+            } else {
+                this.setState({
+                    searchFinish: true,
+                    devicesShow: devicesShow,
+                });
             }  
         }
     }
@@ -173,6 +244,7 @@ export default class FindRouter extends React.Component {
                         searchFinish={searchFinish}
                         reSearch={this.reSearch}
                         setSubRouter={this.setSubRouter}
+                        onChange={this.onChange} 
                         />;
         }
 
@@ -181,7 +253,7 @@ export default class FindRouter extends React.Component {
         }
 
         if ('settingResult' === condition) {
-            return <SettingResult devicesShow={devicesShow}/>
+            return <SettingResult devicesShow={devicesShow} next={this.next} goHome={this.goHome}/>
         }
     }
 }
@@ -194,12 +266,16 @@ class Selecting extends React.Component {
     render() {
         const { devicesShow, searchFinish } = this.props;
         let showList =[];
-        devicesShow.map(item => {  
+        let disabled = true;
+        devicesShow.map(item => {
+            if (item.checked) {
+                disabled = false;
+            } 
             showList.push(<SubRouter
                             state='checkbox'
                             key={item.deviceId}
                             checked={item.checked}
-                            onChange={checked => this.onChange(item.deviceId,checked)}
+                            onChange={checked => this.props.onChange(item.deviceId,checked)}
                             deviceId={item.deviceId}/>
             );
         });
@@ -212,6 +288,7 @@ class Selecting extends React.Component {
                 </React.Fragment>
             );
         }
+
         if (0 === showList.length && searchFinish) {        //搜索完成，且设备列表为空
             return (
                 <React.Fragment>
@@ -225,31 +302,33 @@ class Selecting extends React.Component {
                 </React.Fragment>
             );
         }
+
         if (0 !== showList.length && !searchFinish) {       //搜索进行中，设备列表不为空
             return (
                 <React.Fragment>
                     <div className="header">
                         <Icon key="progress-icon" type="loading" className="smallLoading"  spin />
-                        <h3 className='smallTitle'>正在检测子路由……</h3>
+                        <span className='smallTitle'>正在检测子路由……</span>
                     </div>
                     <div className="body">
                     {showList}
                     </div>
-                    <Button type="primary" className="settingButton" onClick={this.props.setSubRouter}>设置</Button>
+                    <Button type="primary" className="settingButton" disabled={disabled} onClick={this.props.setSubRouter}>设置</Button>
                 </React.Fragment>
             );
         }
+
         if (0 !== showList.length && searchFinish) {       //搜索完成，且设备列表不为空
             return (
                 <React.Fragment>
                     <div className="header">
-                        <CustomIcon size={24} color='#4EC53F' type="succeed" />
-                        <h3 className='smallTitle'>检测完成，请选择您要添加的子路由</h3>
+                        <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
+                        <span className='smallTitle' style={{verticalAlign: 'middle'}}>检测完成，请选择您要添加的子路由</span>
                     </div>
                     <div className="body">
                     {showList}
                     </div>
-                    <Button type="primary" className="settingButton" onClick={this.props.setSubRouter}>设置</Button>
+                    <Button type="primary" className="settingButton" disabled={disabled} onClick={this.props.setSubRouter}>设置</Button>
                     <p className="research" onClick={this.props.reSearch}>重新检测</p>
                 </React.Fragment>
             );
@@ -294,14 +373,6 @@ class SettingResult extends React.Component {
         super(props);
     }
 
-    next = () => {
-        this.props.history.push('/guide/addsubrouter/location');
-    }
-
-    goHome = () => {
-        this.props.history.push('/');
-    }
-
     render() {
         const { devicesShow } = this.props;
         let showList =[];
@@ -329,13 +400,13 @@ class SettingResult extends React.Component {
             return (
                 <React.Fragment>
                 <div className="header">
-                    <CustomIcon size={24} color='#4EC53F' type="succeed" />
-                    <h3>设置完成</h3>
+                    <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
+                    <span className='smallTitle' style={{verticalAlign: 'middle'}}>设置完成</span>
                 </div>
                 <div className="body">
                 {showList}
                 </div>
-                <Button type="primary" className="settingButton" disabled={false} onClick={this.next}>下一步</Button>
+                <Button type="primary" className="settingButton" disabled={false} onClick={this.props.next}>下一步</Button>
             </React.Fragment>
             );
         }
@@ -346,7 +417,7 @@ class SettingResult extends React.Component {
                 <div className="body" style={{marginTop: 58}}>
                 {showList}
                 </div>
-                <Button type="primary" className="settingButton" disabled={false} onClick={this.next}>下一步</Button>
+                <Button type="primary" className="settingButton" disabled={false} onClick={this.props.next}>下一步</Button>
             </React.Fragment>
             );
         }
@@ -360,7 +431,7 @@ class SettingResult extends React.Component {
                 <div className="body">
                 {showList}
                 </div>
-                <Button type="primary" className="settingButton" disabled={true} onClick={this.next}>下一步</Button>
+                <Button type="primary" className="settingButton" disabled={true} onClick={this.props.next}>下一步</Button>
             </React.Fragment>
             );
         }
@@ -369,13 +440,13 @@ class SettingResult extends React.Component {
             return (
                 <React.Fragment>
                 <div className="header">
-                    <CustomIcon size={14} color='#FB8632' type="hint" />
-                    <h3>已放弃添加子路由</h3>
+                    <CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 8}}/>
+                    <span className='smallTitle' style={{verticalAlign: 'middle'}}>已放弃添加子路由</span>
                 </div>
                 <div className="body">
                     <CustomIcon size={140} color='#D7D8DC' type="noroute"/>  
                 </div>
-                <Button type="primary" className="settingButton" disabled={false} onClick={this.goHome}>去首页</Button>
+                <Button type="primary" className="settingButton" disabled={false} onClick={this.props.goHome}>去首页</Button>
             </React.Fragment>
             );
         } 

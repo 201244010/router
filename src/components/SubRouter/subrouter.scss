@@ -43,6 +43,9 @@
         }
     }
 }
+.ant-modal-content .ant-modal-body {
+    padding: 0;
+}
 .modalTitle {
     height: 52px;
     padding: 0 0 0 20px;
@@ -51,7 +54,7 @@
 }
 .modalContent {
     height: 80px;
-    padding: 0 0 20px 0;
+    padding: 0 0 0 20px;
     margin: 0;
     text-align: left;
     border-top: 1px solid #ECECEC;
@@ -59,18 +62,24 @@
 }
 .modalFooter{
     height: 72px;
-    padding: 0 20px 0 0;
+    padding: 0;
     text-align: right;
+    justify-content: flex-end;
 }
 .modalTitle, .modalContent, .modalFooter{
     font-family: 'PingFangSC-Regular';
     font-size: 14px;
     color: #333C4F;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
 }
 .cancleButton {
-    background: rgb(206,212,218);
-    border: 1px solid rgba(125,143,183,0.2);  
+    background: rgba(206,212,218,0);;
+    border: 1px solid rgba(125,143,183,0.2);
+    margin-right: 16px;
+}
+.OKButton {
+    margin-right: 20px;
 }
 .cancleButton, .OKButton{
     width: 64px;
