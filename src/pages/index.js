@@ -99,7 +99,7 @@ class PrimaryLayout extends React.Component {
 
         const conf = {
             ...routerSetting,
-            'guide': { main: 'guide-bg', footer: false, header: false, title: false },
+            'guide': { main: 'guide-bg', footer: 'home-footer', header: false, title: false },
             'login': { main: 'index-bg', footer: '', header: false, title: false },
             'clientlist': { main: 'bg', footer: '', header: true, title: false },
             'settings': { main: 'bg', footer: '', header: true, title: false  },

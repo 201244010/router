@@ -136,6 +136,15 @@ export const DIRECTIVE = {
     //开启Telnet、upgrade升级
     START_TELNET: '5',
     MANUAL_UPGRADE: '4',
+
+    //添加子路由
+    SWITCH_START: '0x2112',
+    SWITCH_STOP: '0x2113',
+    ROUTE_QUERY: '0x2114',
+    ROUTE_SET: '0x2115',
+    ROUTE_GET: '0x2116',
+    ROUTE_RESET: '0x2117',
+    ROUTENAME_SET: '0x2118',
 };
 
 /**

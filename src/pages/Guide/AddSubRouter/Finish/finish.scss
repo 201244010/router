@@ -1,4 +1,4 @@
-.success {
+.finish {
     width: 100%;
     padding: 57px 0;
     text-align: center;
@@ -28,15 +28,9 @@
         }
     }
     .footButtons {
-        .complete, .addMore {
+        .complete{
             width:158px;
             height: 42px;
-        }
-        .addMore {
-            background: #FFF;
-            border: 1px solid rgba(125,143,183, 0.2);
-            color: #61739D;
-            margin-left: 20px;
         }
     }
 }
