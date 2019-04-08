@@ -787,10 +787,12 @@ export default class WIFI extends React.Component {
                         </section>
                     </section>
                     )}
-                    <section className="save">
+                </Form>
+                <section className="save">
                         <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submitMain}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
-                    </section>
-                    <section className="wifi-setting-item">
+                </section>
+                <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
+                    <section className="wifi-setting-item" style={{marginTop: 48}}>
                         <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip=" 建议开放给顾客使用"/>
                         <label className='ssidLabel'>{intl.get(MODULE, 66)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>

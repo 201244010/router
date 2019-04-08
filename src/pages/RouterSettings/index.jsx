@@ -1,7 +1,5 @@
 import React from 'react';
 import SubLayout from '~/components/SubLayout';
-
-import {Switch, Route, Redirect, NavLink} from "react-router-dom";
 import CustomIcon from '../../components/Icon';
 
 import './index.scss';
@@ -12,10 +10,10 @@ export default class RouterSetting extends React.PureComponent {
         super(props);
 
         this.netList = [
-            {route: 'wifi', type: 'WiFi', color: '#6D6BD8', content: 'Wi-Fi设置' /*_i18n:网速智能分配*/},
+            {route: 'wifiset', type: 'WiFi', color: '#6D6BD8', content: 'Wi-Fi设置' /*_i18n:网速智能分配*/},
             {route: 'network', type: 'Internet',color: '#47D164', content: '上网设置'/*_i18n:网速智能分配*/},
             {route: 'lan', type: 'lan',color: '#448BE9', content: '局域网设置'/*_i18n:网速智能分配*/},
-            {route: 'lan', type: 'childroute', color: '#3CA8E7', content: '子路由设置'/*_i18n:网速智能分配*/},
+            {route: 'routermanage', type: 'childroute', color: '#3CA8E7', content: '子路由设置'/*_i18n:网速智能分配*/},
         ];
 
         this.appList = [

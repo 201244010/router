@@ -13,6 +13,8 @@
         button{
             margin-right: 20px;
             // margin-top: 30px;
+            height: 42px;
+            border-radius: 8px;
         }
     }
     .restore{
@@ -21,7 +23,7 @@
             margin-top: 36px;
             .cloud-restore{
                 position: relative;
-                top: -32px;
+                top: -42px;
                 left: 120px;
             }
             .cloud-restore-us {
@@ -30,6 +32,10 @@
             }
             .ant-upload-list-item{
                 display: none;
+            }
+            button {
+                height: 42px;
+                border-radius: 8px;
             }
         }
     }
