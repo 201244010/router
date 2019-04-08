@@ -9,6 +9,7 @@ import SetWan from './SetWan';
 // import Speed from './Speed';
 import SetWifi from './SetWifi';
 import Success from './Success';
+import AddSubRouter from './AddSubRouter';
 // import Finish from './Finish';
 import Icon from '~/components/Icon';
 import {getQuickStartVersion} from '~/utils';
@@ -110,6 +111,7 @@ export default class Guide extends React.Component {
                             })
                         }
                         <Route path={`${path}/success`} component={Success} />
+                        <Route path={`${path}/addsubrouter`} component={AddSubRouter} />
                         <Redirect from={path} to={`${path}/${current_steps[0].route}`}></Redirect>
                     </Switch>
                 </div>

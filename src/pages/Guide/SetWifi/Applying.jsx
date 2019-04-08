@@ -13,7 +13,8 @@ export default class Applying extends React.Component {
         hostWifiName: '',
         hostWifiPsw: '',
         guestWifiName: '',
-        guestWifiPsw: ''
+        guestWifiPsw: '',
+        setTip: false,
     }
     
     getWireless = async()=>{
@@ -34,13 +35,14 @@ export default class Applying extends React.Component {
     componentDidMount() {
         const params = this.props.match.params;
         const data = JSON.parse(decodeURIComponent(params.param));
-        const { hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = data;
+        const { hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw, setTip } = data;
 
         this.setState({
             hostWifiName: hostWifiName,
             hostWifiPsw: hostWifiPsw,
             guestWifiName: guestWifiName,
             guestWifiPsw: guestWifiPsw,
+            setTip: setTip,
         });
 
         let timeout = 10;
@@ -60,7 +62,7 @@ export default class Applying extends React.Component {
     }
 
     render() {
-        const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw } = this.state;
+        const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw, setTip } = this.state;
 
         return (
             <div className='create-wifi'>
@@ -80,14 +82,14 @@ export default class Applying extends React.Component {
                         <p>{intl.get(MODULE, 4, {hostWifiName})/*_i18n:名称：{hostWifiName}*/}</p>
                         <p>{'' === hostWifiPsw ? intl.get(MODULE, 5)/*_i18n:无密码*/ : intl.get(MODULE, 6, {hostWifiPsw})/*_i18n:密码：{hostWifiPsw}*/}</p>
                     </li>
-                    <li>
+                    {setTip && <li>
                         <div className='title'>
                             <CustomIcon size={24} color='#4EC53F' type="customer" />
                             <label>{intl.get(MODULE, 7)/*_i18n:客用Wi-Fi*/}</label>
                         </div>
                         <p>{intl.get(MODULE, 8, {guestWifiName})/*_i18n:名称：{guestWifiName}*/}</p>
                         <p>{'' === guestWifiPsw ? intl.get(MODULE, 9)/*_i18n:无密码*/ : intl.get(MODULE, 10, {guestWifiPsw})/*_i18n:密码：{guestWifiPsw}*/}</p>
-                    </li>
+                    </li>}
                 </ul>
             </div>
         );

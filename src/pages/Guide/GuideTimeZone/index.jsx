@@ -10,6 +10,7 @@ const Option = Select.Option;
 export default class TimeZone extends React.Component {
     constructor(props) {
         super(props);
+        this.jump = false;
         this.children = getTimezones().map(item => {
             return <Option value={item[0]}>{item[1]}</Option>
         });
@@ -44,7 +45,11 @@ export default class TimeZone extends React.Component {
         const {errcode} = response;
         if (0 === errcode) {
             const {match} = this.props;
-            this.props.history.push("/guide/setwan");
+            if(this.jump) {
+                this.props.history.push('/guide/setwifi');
+            } else {
+                this.props.history.push('/guide/setwan');
+            }
         }
     }
 
@@ -90,7 +95,89 @@ export default class TimeZone extends React.Component {
         });
     }
 
+    dialDetect = async () => {
+        // this.setState({ detect: true });
+        common.fetchApi(
+            [
+                {opcode: 'WANWIDGET_WAN_LINKSTATE_GET'}
+            ],
+        ).then((resp) => {
+            const { errcode,data } = resp;
+            if(errcode == 0){
+                // this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
+                if(data[0].result.wan_linkstate.linkstate){
+                    common.fetchApi(
+                        [
+                            {opcode: 'WANWIDGET_DIALDETECT_START'}
+                        ],
+                    ).then(()=>{
+                        common.fetchApi(
+                            [
+                                {opcode: 'WANWIDGET_DIALDETECT_GET'}
+                            ],
+                            {},
+                            {
+                                loop : true,
+                                interval : 2000,
+                                pending : res => res.data[0].result.dialdetect.status === 'detecting',
+                                stop : () => this.stop
+                            }
+                        ).then(async(response) => {
+                            const { errcode, data } = response;
+                            if(errcode == 0){
+                                let { dialdetect } = data[0].result;
+                                let { dial_type } = dialdetect;
+                                dial_type  = dial_type === 'none' ? 'dhcp' : dial_type;
+                                if ('dhcp' === dial_type) {
+                                    let result = await common.fetchApi(
+                                        [
+                                            {
+                                                opcode: 'NETWORK_WAN_IPV4_SET',
+                                                data: {wan: {dial_type: "dhcp", dns_type: "auto"}}
+                                            }
+                                        ]
+                                    );
+                                    let { errcode } = result;
+                                    if(errcode == 0){
+                                        // 触发检测联网状态
+                                        common.fetchApi(
+                                            [
+                                                {opcode: 'WANWIDGET_ONLINETEST_START'}
+                                            ]
+                                        ).then( async() =>{
+                                            // 获取联网状态
+                                            let connectStatus = await common.fetchApi(
+                                                [
+                                                    {opcode: 'WANWIDGET_ONLINETEST_GET'}
+                                                ],
+                                                {},
+                                                {
+                                                    loop : true,
+                                                    interval : 3000,
+                                                    stop : ()=> this.stop,
+                                                    pending : resp => resp.data[0].result.onlinetest.status !== 'ok'
+                                                }
+                                            );
+                                            let { errcode, data } = connectStatus;
+                                            if(errcode == 0){
+                                                let online = data[0].result.onlinetest.online;
+                                                if(online){
+                                                    this.jump = true;
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    });
+                }
+            }
+        });
+    }
+
     componentDidMount() {
+        this.dialDetect();
         this.getTimezone();
     }
 
