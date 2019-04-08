@@ -29,6 +29,7 @@ import Systemsetup from './Advance/Systemsetup';
 
 import Wifi from './Settings/WI-Fi';
 import Lan from './Settings/Lan';
+import RouterList from './Settings/Router';
 import Network from './Settings/Network';
 
 import Dosd from './Advance/Systemsetup/Dosd';
@@ -83,9 +84,10 @@ class PrimaryLayout extends React.Component {
             'bandwidth': { main: 'bg', footer: '', header: true, title: true },
             'bootdevice': { main: 'bg', footer: '', header: true, title: true },
             'systemsetup': { main: 'bg', footer: '', header: true, title: true },
-            'wifi': { main: 'bg', footer: '', header: true , title: true},
+            'wifiset': { main: 'bg', footer: '', header: true , title: true},
             'network': { main: 'bg', footer: '', header: true, title: true },
             'lan': { main: 'bg', footer: '', header: true, title: true },
+            'routermanage': { main: 'bg', footer: '', header: true, title: true },
             'dosd': { main: 'bg', footer: '', header: true, title: true },
             'changepassword': { main: 'bg', footer: '', header: true, title: true },
             'upgrade': { main: 'bg', footer: '', header: true, title: true },
@@ -140,9 +142,10 @@ class PrimaryLayout extends React.Component {
                             <Route path="/blacklist" component={Blacklist} />
                             <Route path="/bootdevice" component={Bootdevice} />
                             <Route path="/systemsetup" component={Systemsetup} />
-                            <Route path="/wifi" component={Wifi} />
+                            <Route path="/wifiset" component={Wifi} />
                             <Route path="/network" component={Network} />
                             <Route path="/lan" component={Lan} />
+                            <Route path="/routermanage" component={RouterList} />
                             <Route path="/dosd" component={Dosd} />
                             <Route path="/changepassword" component={ChangePassword} />
                             <Route path="/upgrade" component={SysUpgrade} />

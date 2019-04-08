@@ -44,9 +44,9 @@ export default class Allocation extends React.Component{
                     label: {
                         backgroundColor: '#6a7985'
                     },
+                    snap: true
                 },
                 padding: [12,32,12,13],
-                alwaysShowContent: true,
             },
             xAxis: {
                 type: 'category',
