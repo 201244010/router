@@ -19,7 +19,7 @@ export const getTitle = () => {
             "title" : '优先设备',
             "titleTip": '优先设备具有更高的带宽使用优先级，你可以将重要设备加入到优先设备列表'
             },
-        'wifi': { 
+        'wifiset': { 
             "title" : 'Wi-FI设置',
             "titleTip": '优先设备具有更高的带宽使用优先级，你可以将重要设备加入到优先设备列表'
             },
@@ -31,7 +31,7 @@ export const getTitle = () => {
             "title" : '局域网设置',
             "titleTip": '修改局域网网段，设置DHCP相关服务'
             },        
-        'router': { 
+        'routermanage': { 
             "title" : '子路由设置',
             "titleTip": '查看当前子路由状态，并管理子路由'
             },

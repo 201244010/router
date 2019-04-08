@@ -439,7 +439,7 @@ export default class StaticBind extends React.Component {
         }];
         const total = staticLists.length;
         return [
-            <div style={{margin:"20px 60px 48px 60px"}}>
+            <div style={{margin:"48px 60px 20px 60px"}}>
                 <PanelHeader title='静态地址分配' />
                 <div style={{margin:"29px 0 20px 0", display: 'flex', justifyContent: 'space-between'}}>
                     <p style={{fontSize: 14}}>
