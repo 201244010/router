@@ -82,6 +82,7 @@ export default class SubRouter extends React.Component {
                 centered={true}
                 closable={false}
                 footer={null}
+                className='subRouterModal'
                 >
                 <div className='modalTitle'>
                     <CustomIcon size={14} color='#333C4F' type="hint" style={{marginRight: 8}}/>提示

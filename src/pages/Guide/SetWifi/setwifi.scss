@@ -15,7 +15,9 @@
     .body{
         width: 1012px;
         margin: auto;
+        text-align: center;
         li{
+            text-align: left;
             display: inline-block;
             width: 486px;
             min-height: 202px;
@@ -49,36 +51,26 @@
     }
 }
 .wifi-box {
-    margin-bottom: 20px;
-    .leftContent {
-        width: 468px;
-        .ui-icon-business:before {
-            vertical-align: middle;
-        }
+    text-align: right;
+    .title {
+        font-size: 16px;
+        font-weight: bold;
     }
-    .rightContent {
-        width: 458px;
-        .ui-icon-customer:before {
-            vertical-align: middle;
-        }
+    .titleTip {
+        font-size: 14px;
+        font-weight: normal;
+        color: #ADB1B9;
     }
-    .leftContent, .rightContent {
+}
+.footer {
+    margin: auto;
+    text-align: left;
+    width: 260px;
+    .setTip {
+        font-family: 'PingFangSC-Regular';
+        font-size: 12px;
+        color: #6174F1;
+        cursor: pointer;
         display: inline-block;
-        vertical-align: top;
-        form {
-            margin-left: 0;
-            margin-right: 0;
-            display: inline-block;
-            .ui-form-item {
-                text-align: right;
-            }
-        }
-    }
-    .border {
-        height: 160px;
-        width: 1px;
-        background: rgba(51,60,79,0.20);
-        display: inline-block;
-        margin: 0 82px 0 80px;
     }
 }
