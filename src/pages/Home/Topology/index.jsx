@@ -293,7 +293,7 @@ class Item extends React.Component {
                     <div className='sate-router'>
                         <CustomIcon size={60} color='#fff' type="router" />
                         <label>
-                            <CustomIcon size={8} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
+                            <CustomIcon size={14} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
                             <span title={reList.name}>{reList.name}</span>
                         </label>
                     </div>
