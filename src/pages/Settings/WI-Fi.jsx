@@ -641,9 +641,9 @@ export default class WIFI extends React.Component {
                             <label>{intl.get(MODULE, 28)}</label>
                             <span>({intl.get(MODULE, 29)})</span>
                         </div>
-                        <RadioGroup onChange={this.onBandSteering} value={channelType} disabled={disabledType2}>
-                            <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
-                            <Radio style={{display:'inline-block'}} value={false}>关闭</Radio>
+                        <RadioGroup onChange={this.onBandSteering} value={channelType}>
+                            <Radio style={{display:'inline-block'}} value={false}>开启</Radio>
+                            <Radio style={{display:'inline-block'}} value={true}>关闭</Radio>
                         </RadioGroup>
                         {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
                         {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
