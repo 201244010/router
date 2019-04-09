@@ -292,7 +292,7 @@ export default class Home extends React.Component {
         let tx = formatSpeed(wan.cur_tx_bytes);
         let rx = formatSpeed(wan.cur_rx_bytes);
 
-        const {percent:{normalPercent, priorityPercent, sunmiPercent}, largestPercent} = this.state;
+        const {percent:{normalPercent, priorityPercent, sunmiPercent}} = this.state;
         
         let total = this.state.totalBand;
         const normal = parseInt((band['normal'] / total * 100).toFixed(0));
@@ -346,21 +346,21 @@ export default class Home extends React.Component {
             percent: {
                 normalPercent: (() => {
                     normalPercent.shift();
-                    normalPercent.push(normal || 2 );
+                    normalPercent.push(normal);
                     return normalPercent;
                 })(),
                 priorityPercent: (() => {
                     priorityPercent.shift();
-                    priorityPercent.push(whitelist || 1.5);
+                    priorityPercent.push(whitelist);
                     return priorityPercent;
                 })(),
                 sunmiPercent: (() => {
                     sunmiPercent.shift();
-                    sunmiPercent.push(sunmi || 1.5);
+                    sunmiPercent.push(sunmi);
                     return sunmiPercent;
                 })(),
             },
-            largestPercent: totalPercent > largestPercent ? totalPercent : largestPercent
+            largestPercent: totalPercent
         });
     }
 

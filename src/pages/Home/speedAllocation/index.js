@@ -18,12 +18,13 @@ export default class Allocation extends React.Component{
     }
 
     renderChart = () => {
+        const data = this.props.percent;
         this.myChart.setOption({
             title: {
                 text: ''
             },
             grid:{
-                left: 0,
+                left: -10,
                 right: 0,
                 top: '1',
                 height: 80,
@@ -33,9 +34,12 @@ export default class Allocation extends React.Component{
                 trigger: 'axis',
                 backgroundColor: 'rgba(255,255,255,0.90)',
                 extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
-                formatter:  '<span style="display: inline-block;border-radius:100%;background:#FB8632;height:6px;width:6px;margin-right:8px"></span>{a0} : {c0}%<br>' +
-                '<span style="display: inline-block;border-radius:100%;background:#87D068;height:6px;width:6px;margin-right:8px"></span>{a1} : {c1}%<br>' +
-                '<span style="display: inline-block;border-radius:100%;background:#446CE6;height:6px;width:6px;margin-right:8px"></span>{a2} : {c2}%',
+                formatter:  function(params) {
+                    const index = params[0].dataIndex;
+                    return `<span style="display: inline-block;border-radius:100%;background:#FB8632;height:6px;width:6px;margin-right:8px"></span>${params[2].seriesName} : ${data['sunmiPercent'][index]}%<br>` + 
+                    `<span style="display: inline-block;border-radius:100%;background:#87D068;height:6px;width:6px;margin-right:8px"></span>${params[1].seriesName} : ${data['priorityPercent'][index]}%<br>` +
+                    `<span style="display: inline-block;border-radius:100%;background:#446CE6;height:6px;width:6px;margin-right:8px"></span>${params[0].seriesName} : ${data['normalPercent'][index]}%`
+            },
                 textStyle: {
                     color: 'black'
                 },
@@ -44,7 +48,6 @@ export default class Allocation extends React.Component{
                     label: {
                         backgroundColor: '#6a7985'
                     },
-                    snap: true
                 },
                 padding: [12,32,12,13],
             },
@@ -106,7 +109,12 @@ export default class Allocation extends React.Component{
                             }
                         }
                     },
-                    data: this.props.percent['normalPercent']
+                    data: function(data) {
+                        const priority =  data.map(function(item){
+                            return item + 2
+                        })
+                        return priority
+                    } (this.props.percent['normalPercent'])
                 },
                 {
                     name: '优先',
@@ -141,7 +149,12 @@ export default class Allocation extends React.Component{
                             }
                         }
                     },
-                    data: this.props.percent['priorityPercent']
+                    data: function(data) {
+                        const priority =  data.map(function(item){
+                            return item + 1.5
+                        })
+                        return priority
+                    } (this.props.percent['priorityPercent'])
                 },
                 {
                     name: '商米',
@@ -177,7 +190,12 @@ export default class Allocation extends React.Component{
                             }
                         }
                     },
-                    data: this.props.percent['sunmiPercent']
+                    data: function(data) {
+                        const priority =  data.map(function(item){
+                            return item + 1.5
+                        })
+                        return priority
+                    } (this.props.percent['sunmiPercent'])
                 }
             ],
         })
