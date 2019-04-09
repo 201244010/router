@@ -128,7 +128,7 @@ export default class SetWifi extends React.Component {
     submit = async ()=> {
         const {hostWifiPsw, guestWifiPsw, setTip} = this.state;
         this.setState({ loading : true });
-        if(hostWifiPsw.length === 0 || guestWifiPsw.length === 0){
+        if(hostWifiPsw.length === 0 || setTip){
             confirm({
                 title: intl.get(MODULE, 10)/*_i18n:提示：*/,
                 content: (hostWifiPsw.length === 0 ?intl.get(MODULE, 11)/*_i18n:商户Wi-Fi*/ : '') + 
