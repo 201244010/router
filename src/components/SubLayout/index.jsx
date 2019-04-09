@@ -20,7 +20,7 @@ export default function SubLayout(props){
     const {children, className, ...rest} = props;
     const names = classNames([className, 'ui-container']);
     return (
-        <div className={names} style={{maxHeight: style === 'none' ? style : window.innerHeight - 210}} {...rest}> {props.children} </div>
+        <div className={names} style={{maxHeight: style === 'none' ? style : window.innerHeight - 224}} {...rest}> {props.children} </div>
     )
 }
 
