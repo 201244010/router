@@ -248,52 +248,10 @@ i.dot{
     }
 }
 
-.editable-row{
-    background: #FFFFFF;
-    .logo-cell{
-        position: relative;
-        text-align: right;
-        padding-right: 26px;
-        img{
-            position: absolute;
-            right: 0;
-            top: -22px;
-            width: 32px;
-        }
-    }
-    input.ant-input:focus {
-        border-color: #749DF7;
-        box-shadow: none;
-    }
-
-    &:hover .editable-cell-value-wrap {
-        .hostname {
-            border-color: #d9d9d9;
-        }
-    }
-    .routerName {
-        max-width: 78px;
-        overflow:hidden; 
-        text-overflow:ellipsis;
-        display:-webkit-box; 
-        -webkit-box-orient:vertical;
-        -webkit-line-clamp:2; 
-        word-wrap: break-word;
-        display: -moz-box;
-        -moz-line-clamp: 2;
-        -moz-box-orient: vertical;
-    }
-}
-
-.editable-row-light {
-    @extend .editable-row;
-    background: #F7F7FA;;
-}
-
 .net-setting {
     border-radius: 8px; 
     // background-color : #fff;
-    background: #F7F7FA;
+    background: #FFFFFF;
     padding: 30px 0px 30px 0px;
     .net-title {
         padding-left: 54px;
@@ -332,5 +290,62 @@ i.dot{
     }
 }
 .table-background {
-    background: #F7F7FA;
+    .logo-cell{
+        position: relative;
+        text-align: right;
+        padding-right: 26px;
+        img{
+            position: absolute;
+            right: 0;
+            top: -22px;
+            width: 32px;
+        }
+    }
+    input.ant-input:focus {
+        border-color: #749DF7;
+        box-shadow: none;
+    }
+
+    &:hover .editable-cell-value-wrap {
+        .hostname {
+            border-color: #d9d9d9;
+        }
+    }
+    .routerName {
+        max-width: 78px;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        display:-webkit-box; 
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2; 
+        word-wrap: break-word;
+        display: -moz-box;
+        -moz-line-clamp: 2;
+        -moz-box-orient: vertical;
+    }
+    .editable-row{
+        background: #F8F9FB;
+    }
+
+    tr {
+        th {
+            background: #FFFFFF;
+            font-size: 12px;
+            color: #ADB1B9;
+        }
+    }
+
+    .editable-row-light {
+        background: #FFFFFF;   
+    }
+    .ant-table-thead>tr>th {
+        border-bottom: none;
+    }
+    .ant-table-tbody>tr>td {
+        border-bottom: none;
+    }
+    .ant-table-placeholder {
+        background: #F8F9FB;
+        border-bottom: none;
+    }
 }

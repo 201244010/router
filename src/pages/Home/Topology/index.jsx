@@ -203,6 +203,7 @@ class Item extends React.Component {
         const role = parseInt(reList.role);
         const color = reList.rssi > 20 ? '#60CC13' : '#DD726D';
         const rssi = reList.rssi > 20 ? '信号较好' : '信号较差';
+        const online = type === 0 ? '异常' : '正常';
         const Title = (editing, value, mac, devid) => {
             if (!editing) {
                 return (
@@ -233,7 +234,7 @@ class Item extends React.Component {
                     <div className='satelite-info'>
                         {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                         <ul>
-                            <li><label>联网状态：</label><span style={{color: color}}>{rssi}</span></li>
+                            <li><label>联网状态：</label><span style={{color: type === 0 ? '#DD726D' : '#60CC13'}}>{online}</span></li>
                             <li><label>IP：</label><span>{reList.ip}</span></li>
                             <li><label>MAC：</label><span>{reList.mac}</span></li>
                         </ul>
@@ -292,7 +293,7 @@ class Item extends React.Component {
                     <div className='sate-router'>
                         <CustomIcon size={60} color='#fff' type="router" />
                         <label>
-                            <CustomIcon size={8} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
+                            <CustomIcon size={14} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
                             <span title={reList.name}>{reList.name}</span>
                         </label>
                     </div>
