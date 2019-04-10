@@ -396,8 +396,6 @@ export default class WIFI extends React.Component {
 
         //5G
         if( this.state.channelType ){
-            this.hostWireLess.band_5g = this.hostWireLess.band_5g;
-        }else{
             this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
             this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
             this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
@@ -517,7 +515,6 @@ export default class WIFI extends React.Component {
                 channelList24: channelList24,
                 channelList5: channelList5
             });
-            
             this.setState({
                 //host
                 channelType : this.hostWireLess.band_division == '0'? true : false,

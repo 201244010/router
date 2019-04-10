@@ -23,7 +23,8 @@ export default class PrimaryFooter extends React.PureComponent {
         await common.fetchApi(
             [
                 {opcode : 'FIRMWARE_GET'},
-                {opcode :'NETWORK_WAN_IPV4_GET' }
+                {opcode :'NETWORK_WAN_IPV4_GET' },
+                {opcode : 'ROUTER_GET'},
             ]
         ).then(result => {
             let {errcode, data} = result;

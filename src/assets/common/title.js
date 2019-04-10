@@ -21,7 +21,7 @@ export const getTitle = () => {
             },
         'wifiset': { 
             "title" : 'Wi-FI设置',
-            "titleTip": '优先设备具有更高的带宽使用优先级，你可以将重要设备加入到优先设备列表'
+            "titleTip": '快速设置或修改商户Wi-Fi和客用Wi-Fi的相关配置'
             },
         'network': { 
             "title" : '上网设置',
