@@ -120,12 +120,13 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
+        console.log(pathname);
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
+                    <div className="main" style={{minHeight: pathname === '/home' ? 'calc(100% - 140px)' :  'calc(100% - 148px)'}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
-                    <div className="main">
                         <Switch>
                             <Route path="/login" component={Login} />
                             <Route path='/welcome' component={Welcome} />
@@ -155,9 +156,9 @@ class PrimaryLayout extends React.Component {
                             <Route path="/timeset" component={TimeZone} />
                             <Route path="/" component={Default} />
                         </Switch>
-                        {false !== node.footer && <PrimaryFooter className={node.footer} />}
-                        {logined && <UpdateDetect />}
                     </div>
+                    {false !== node.footer && <PrimaryFooter className={node.footer} />}
+                    {logined && <UpdateDetect />}
                 </div>
                 <Background image={require('~/assets/images/noise.png')} />
             </div>
