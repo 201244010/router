@@ -140,7 +140,7 @@ export default class Topology extends React.Component{
     }
 
     addRouter = () => {
-        console.log('aaa');
+        this.props.history.push('/guide/addsubrouter')
     }
 }
 
