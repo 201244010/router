@@ -1,0 +1,75 @@
+.inputGroup-name {
+    font-family: 'PingFangSC-Regular';
+    font-size: 0.3733rem;
+    color: #333333;
+    margin-bottom: 0.1067rem;
+    display: inline-block;
+}
+.ui-input-outline {
+    position: relative;
+    .ui-icon {
+        position: absolute;
+        right: 0.1333rem;
+        top: 0;
+        cursor: pointer;
+    }
+}
+.ui-input-group {
+    background-color: #FFF;
+    border-radius: 0.1067rem;
+    border : 1px solid rgba(0,0,0,0.4);
+    padding : 0 0.2667rem;
+    margin-bottom: 0.5333rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    &.focus {
+        border-color : #6174F1;
+        // box-shadow: 0 10px 10px 0 rgba(251,134,50,0.09);
+
+    }
+    // &.small {
+    //     line-height: 32px;
+    //     .ui-input-group-item {
+    //         height: 32px;
+    //     }
+    //     .dot{
+    //         line-height:32px;
+    //     }
+    // }
+    .ui-input-group-item {
+        flex : 1 1 auto;
+        border : none;
+        // width : 0;
+        width: 1.52rem;
+        height: 1.0667rem;
+        outline: none;
+        text-align: center;
+    }
+    span.dot {
+        flex : none;
+        width : 0.0533rem;
+        height : 100%;
+        border-radius: 100%;
+        color : #333C4F;
+        margin : 0 0.2667rem;
+        line-height: 100%;
+    }
+}
+.sm-form-tip{
+    margin-top: 0.1867rem;
+    margin-bottom: 0.5333rem;
+    text-align: left;
+    font-family: 'PingFangSC-Light';
+    font-size: 0.32rem;
+    color: #999;
+    line-height: 0.48rem;
+}
+.ui-input-haveTip {
+    margin-bottom: 0;
+}
+.ui-input-disabled{
+    input {
+        color: rgba(50, 60, 79, 0.3);
+    }
+}

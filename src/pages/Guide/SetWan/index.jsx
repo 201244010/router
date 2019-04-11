@@ -527,7 +527,7 @@ const StaticIp = props => {
             showErrorTip={props.ipTip}
             >
             <InputGroup
-                inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]} 
+                inputs={[{value : props.ip[0], maxLength : 3}, {value : props.ip[1], maxLength : 3}, {value : props.ip[2], maxLength : 3}, {value : props.ip[3], maxLength : 3}]}
                 onChange={value => props.onChange(value, 'ip')} />
                 <ErrorTip>{props.ipTip}</ErrorTip>
         </FormItem>,

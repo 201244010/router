@@ -16,38 +16,12 @@ import './guide.scss';
 export default class Guide extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            icon: 'lock'
-        };
     }
 
-    static getDerivedStateFromProps(nextProps){
-        let { match } = nextProps, path = match.path, pathname = location.pathname;
-        let route = pathname.replace(path + '/', '').replace(/\/.*/gi, '');
-        console.log(route);
-        const iconMap = {
-            setpwd: 'lock',
-            setwan: 'browser',
-            detect: 'browser',
-            pppoe: 'browser',
-            static: 'browser',
-            setwifi: 'wifi',
-            guest: 'wifi',
-            finish: 'succeed',
-        };
-        return {
-            icon: iconMap[route]
-        };
-    }   
-
     render(){
-        const { match } = this.props, icon = this.state.icon;
+        const { match } = this.props;
         return (
             <div className='guide-container'>
-                <div className="header">
-                    <Icon type='logo' size={'1.3333rem'} color="#fff" />
-                    <div className='step-icon'><Icon type={icon} size={'4rem'} color="#4F75E7" /></div>
-                </div>
                 <div className="guide-body">
                     <Switch>
                         <Route path={`${match.path}/setpwd`} component={SetPwd} />

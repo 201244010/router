@@ -1,0 +1,25 @@
+.h5setwan-icon {
+    .icon{
+        text-align: center;
+        margin: 3.84rem auto 0.4267rem;
+        .img{
+
+            display: inline-block;
+            margin: auto;
+            width: 0.64rem;
+            height: 0.64rem;
+            background-image: url('./loading.png');
+            background-size: 100% 100%;
+            &.spin{
+                animation: icon-spin 1s infinite linear;
+            }
+        }
+    }
+    .content{
+        margin-bottom: 0.8rem;
+        font-size: 0.3733rem;
+        font-family: 'PingFangSC-Light';
+        text-align: center;
+        color: #666666;
+    }
+}

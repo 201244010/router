@@ -1,22 +1,27 @@
 .welcome{
-    color: #FFF;
+    color: #333333;
     text-align: center;
+    .welcomeImg {
+        width: 6.8rem;
+        height: 6.8rem;
+        background: grey;
+        margin:1.6rem auto 0.64rem;
+    }
     h2{
-        color: #FFF;
-        margin: 2.6667rem auto 0.16rem;
-        font-size: 0.8533rem;
-        font-weight: bold;
+        margin: 0 auto 0.2133rem;
+        font-family: 'PingFangSC-Regular';
+        font-size: 0.8533rem; 
     }
     p{
-        font-size: 0.3733rem;
-        opacity: 0.6;
+        font-family: 'PingFangSC-Light';
+        font-size: 0.4267rem;
     }
     .start-setup{
-        margin: 2.4rem auto 0.3467rem;
+        margin: 0.4267rem auto 0.5333rem;
     }
     .policy{
-        font-size: 0.32rem;
-        margin-top: 0.32rem;
+        font-size: 0.2667rem;
+        margin-top: 2.5333rem;
         .agreement{
             margin-left: 0.1067rem;
             opacity: 0.6;
@@ -36,7 +41,14 @@
 }
 
 .checkbox {
+    color: #999999;
+    font-family: PingFangSC-Light;
+    font-size: 10px;
+    color: #999999;
+    text-align: center;
+    line-height: 14px;
     .sm-link {
+        color: #333333;
         border-bottom: 1px solid #fafafa;
         text-decoration: none;
     }

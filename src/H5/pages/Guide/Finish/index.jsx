@@ -1,6 +1,6 @@
 import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 
 import { Base64 } from 'js-base64';

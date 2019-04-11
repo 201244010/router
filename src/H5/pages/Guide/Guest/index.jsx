@@ -1,6 +1,6 @@
 import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
@@ -156,14 +156,14 @@ export default class Guest extends React.Component {
                 <GuideHeader title={intl.get(MODULE, 6)/*_i18n:设置客用Wi-Fi*/} tips={intl.get(MODULE, 7)/*_i18n:请设置为顾客或客人开放的公共Wi-Fi名称与密码*/} />
                 <Loading visible={loading} content={intl.get(MODULE, 8)/*_i18n:正在保存Wi-Fi设置，请稍候...*/} />
                 <form>
-                    <Form
+                    <Input
                         value={ssid}
                         placeholder={intl.get(MODULE, 9)/*_i18n:请设置Wi-Fi名称*/}
                         maxLength={32}
                         tip={ssidTip}
                         onChange={value => this.onChange('ssid', value)}
                     />
-                    <Form
+                    <Input
                         value={password}
                         type='password'
                         placeholder={intl.get(MODULE, 10)/*_i18n:请设置Wi-Fi密码*/}
