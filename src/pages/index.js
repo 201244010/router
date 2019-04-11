@@ -97,6 +97,12 @@ class PrimaryLayout extends React.Component {
             'timeset': { main: 'bg', footer: '', header: true, title: true },
         }
 
+        const height = {
+            'routersetting': 'calc(100% - 148px)',
+            'clientlist': 'calc(100% - 148px)',
+            'guide': 'calc(100% - 76px)'
+        }
+
         const conf = {
             ...routerSetting,
             'guide': { main: 'guide-bg', footer: '', header: false, title: false },
@@ -125,7 +131,7 @@ class PrimaryLayout extends React.Component {
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
-                    <div className="main" style={{minHeight: pathname === '/home' ? 'calc(100% - 140px)' :  'calc(100% - 148px)'}}>
+                    <div className="main" style={{height: height[pathname.split('/')[1]] || 'calc(100% - 141px)'}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
                         <Switch>
                             <Route path="/login" component={Login} />
