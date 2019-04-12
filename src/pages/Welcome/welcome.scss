@@ -57,7 +57,11 @@
             }
         }
     }
-
+    button.ant-btn {
+        span {
+            color: #fff;
+        }
+    }
     button.ant-btn-primary {
         background-color: #92A0FF;
     }

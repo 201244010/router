@@ -34,12 +34,17 @@
         font-size: 12px;
         line-height: 17px;
         &:hover {
-            color: #FB9E5B;
-            border: 1px solid #FB9E5B;
+            color: #A7B3FF;
+            border: 1px solid #A7B3FF;
         }
         &:active {
-            color: #C86B28;
-            border: 1px solid #C86B28;
+            color: #7480CC;
+            border: 1px solid #7480CC;
+        }
+    }
+    button.ant-btn {
+        span {
+            color: #fff;
         }
     }
     button.ant-btn-primary {

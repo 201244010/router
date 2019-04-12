@@ -346,7 +346,9 @@ export default class Status extends React.Component {
                         size="large"
                         onClick={this.reSetup}
                         style={{
-                            background: '#F7F7F7'
+                            background: '#F7F7F7',
+                            height: 42,
+                            width: 150,
                         }}
                     >重新设置</Button>
                 </section>
