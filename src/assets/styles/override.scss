@@ -103,6 +103,12 @@ button.ant-btn-primary.ant-btn-loading {
     background : #3D76F6;
 }
 
+.ant-btn-primary[disabled] {
+    span {
+        color: #C6C8CC
+    }
+}
+
 .ant-switch-checked {
     background-color : #4D5CC0!important;
 }

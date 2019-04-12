@@ -57,4 +57,21 @@
             }
         }
     }
+
+    button.ant-btn-primary {
+        background-color: #92A0FF;
+    }
+
+    button.ant-btn-primary:hover {
+        background-color:#A7B3FF;
+    }
+
+    button.ant-btn-primary:focus {
+        background-color:#7480CC;
+    }
+    
+    .ant-checkbox.ant-checkbox-checked .ant-checkbox-inner{
+        background-color: #92A0FF;
+        border: 1px solid #d9d9d9;
+    }
 }

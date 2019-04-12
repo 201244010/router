@@ -42,4 +42,15 @@
             border: 1px solid #C86B28;
         }
     }
+    button.ant-btn-primary {
+        background-color: #92A0FF;
+    }
+
+    button.ant-btn-primary:hover {
+        background-color:#A7B3FF;
+    }
+
+    button.ant-btn-primary:focus {
+        background-color:#7480CC;
+    }
 }
