@@ -75,7 +75,7 @@ export default class Guide extends React.Component {
         }
 
         return (
-            <SubLayout className="steps ui-relative">
+            <SubLayout className="steps ui-relative" style={{height: window.innerHeight - 148}}>
                 <div className="guide-header">
                     <ul>
                         <li>

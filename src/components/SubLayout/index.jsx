@@ -8,7 +8,8 @@ export default function SubLayout(props){
         'guide': 'none',
         'login': 'none',
         'agreement': 'none',
-        'home':'none'
+        'home':'none',
+        'routersetting': 'none'
     };
     let style = '';
     for (let url in conf) {
@@ -19,8 +20,9 @@ export default function SubLayout(props){
     }
     const {children, className, ...rest} = props;
     const names = classNames([className, 'ui-container']);
+    const height = style === 'none' ? '100%' : window.innerHeight - 224;
     return (
-        <div className={names} style={{maxHeight: style === 'none' ? style : window.innerHeight - 224}} {...rest}> {props.children} </div>
+        <div className={names} style={{maxHeight: height, height: height}} {...rest}> {props.children} </div>
     )
 }
 

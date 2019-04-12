@@ -97,6 +97,12 @@ class PrimaryLayout extends React.Component {
             'timeset': { main: 'bg', footer: '', header: true, title: true },
         }
 
+        const height = {
+            'routersetting': 'calc(100% - 148px)',
+            'clientlist': 'calc(100% - 148px)',
+            'guide': 'calc(100% - 76px)'
+        }
+
         const conf = {
             ...routerSetting,
             'guide': { main: 'guide-bg', footer: '', header: false, title: false },
@@ -120,12 +126,13 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
+        console.log(pathname);
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
+                    <div className="main" style={{height: height[pathname.split('/')[1]] || 'calc(100% - 141px)'}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
-                    <div className="main">
                         <Switch>
                             <Route path="/login" component={Login} />
                             <Route path='/welcome' component={Welcome} />
@@ -155,9 +162,9 @@ class PrimaryLayout extends React.Component {
                             <Route path="/timeset" component={TimeZone} />
                             <Route path="/" component={Default} />
                         </Switch>
-                        {false !== node.footer && <PrimaryFooter className={node.footer} />}
-                        {logined && <UpdateDetect />}
                     </div>
+                    {false !== node.footer && <PrimaryFooter className={node.footer} />}
+                    {logined && <UpdateDetect />}
                 </div>
                 <Background image={require('~/assets/images/noise.png')} />
             </div>
