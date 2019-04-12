@@ -94,7 +94,7 @@ export default class Topology extends React.Component{
                     <ul className="func-label">
                         <label>互联网</label>
                         <label>网络连接</label>
-                        <label>上网设置 </label>  
+                        <label>上网设备</label>  
                     </ul>
                     <div className="strateline">
                         <div className="line"></div>
@@ -140,7 +140,7 @@ export default class Topology extends React.Component{
     }
 
     addRouter = () => {
-        console.log('aaa');
+        this.props.history.push('/guide/addsubrouter')
     }
 }
 

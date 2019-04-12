@@ -59,6 +59,22 @@ button.ant-btn-primary.ant-btn-loading {
     }
 }
 
+.ant-table-column-sorter-up.on .anticon-caret-up {
+    color: #4D5CC0!important;
+}
+
+.ant-table-column-sorter-down.on .anticon-caret-down {
+    color: #4D5CC0!important;
+}
+
+.ant-table-filter-selected.anticon-filter {
+    color: #4D5CC0!important;
+}
+
+.ant-dropdown-menu-item-selected {
+    color: #4D5CC0!important;
+}
+
 .ant-progress-circle-path {
     stroke : #4D5CC0!important;
 }
@@ -71,8 +87,20 @@ button.ant-btn-primary.ant-btn-loading {
     color: #3D76F6;
 }
 
-.ant-progress-success-bg, .ant-progress-bg {
-    background-color : #4D5CC0!important;
+.ant-table-column-sort {
+    background: #ffffff!important;
+}
+
+// .ant-table-column-sorter-up:hover {
+//     color: #4D5CC0!important;
+// }
+
+.ant-progress-success-bg{
+    background-color : #60CC13!important;
+}
+
+.ant-progress-bg {
+    background : #3D76F6;
 }
 
 .ant-switch-checked {

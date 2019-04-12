@@ -28,6 +28,15 @@ const error = {
 }
 
 export default class Backup extends React.Component{
+    constructor(props) {
+        super(props);
+        this.err = {
+            '-1500' : intl.get(MODULE, 0)/*_i18n:未绑定商米账号，请先下载商米助手APP进行绑定*/,
+            '-1501' : intl.get(MODULE, 1)/*_i18n:响应超时，请检查网络连接并重试*/,
+            '-1502' : intl.get(MODULE, 2)/*_i18n:响应超时，请检查网络连接并重试*/,
+            '-1503' : intl.get(MODULE, 3)/*_i18n:抱歉，服务暂时不可用，请稍后再试*/,
+        }
+    }
     state = {
         backupCloud : false,//备份到云弹窗
         backupFail : false,//备份失败，恢复失败
@@ -90,7 +99,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 6, {error: error[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
+            message.error(intl.get(MODULE, 6, {error: this.err[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
         }
     }
 
@@ -120,7 +129,7 @@ export default class Backup extends React.Component{
             return;
         }else{
             // message.error(`获取备份列表失败[${error[errcode]}]`);
-            message.error(intl.get(MODULE, 7, {error: error[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
+            message.error(intl.get(MODULE, 7, {error: this.err[errcode]})/*_i18n:获取备份列表失败[{error}]*/);
         }
     }
 
@@ -184,7 +193,6 @@ export default class Backup extends React.Component{
             basebackup: baseBackup ? 1 : 0,
             authbackup: authBackup ? 1 : 0,
         };
-        console.log('backup',backup);
         await common.fetchApi(
             {
                 opcode : 'SYSTEMTOOLS_CLOUD_BACKUP',
@@ -229,7 +237,7 @@ export default class Backup extends React.Component{
                             }
                         }else{
                             // message.error(`获取备份进度失败${error[errcode]}`);
-                            message.error(intl.get(MODULE, 11, {error: error[errcode]})/*_i18n:获取备份进度失败[{error}]*/);
+                            message.error(intl.get(MODULE, 11, {error: this.err[errcode]})/*_i18n:获取备份进度失败[{error}]*/);
                         }
                     })
             }else{
@@ -241,7 +249,7 @@ export default class Backup extends React.Component{
                     })
                 }else{
                     // message.error(`无法完成操作${error[errcode]}`);
-                    message.error(intl.get(MODULE, 13, {error: error[errcode]})/*_i18n:无法完成操作[{error}]*/);
+                    message.error(intl.get(MODULE, 13, {error: this.err[errcode]})/*_i18n:无法完成操作[{error}]*/);
                 }
             }
         })
@@ -249,6 +257,9 @@ export default class Backup extends React.Component{
 
     //从本地恢复
     postRecoverLocal = (info) => {
+        this.setState({
+            loadingActive: true,
+        });
         if(info.file.status === 'done'){
             if(info.file.response.data[0].errcode == 0){
                 common.fetchApi({opcode : 'SYSTEMTOOLS_RESTART'}).then(res => {
@@ -295,9 +306,12 @@ export default class Backup extends React.Component{
                 location.href = '/login';
                 return;
             }
-
+            this.setState({
+                loadingActive: false,
+            });
             // message.error('上传失败');
             message.error(intl.get(MODULE, 17)/*_i18n:上传失败*/);
+
         }
     }
 
@@ -382,7 +396,7 @@ export default class Backup extends React.Component{
                 })
             }else{
                 // message.error(`无法完成操作${error[errcode]}`);
-                message.error(intl.get(MODULE, 23, {error: error[errcode]})/*_i18n:无法完成操作[{error}]*/);
+                message.error(intl.get(MODULE, 23, {error: this.err[errcode]})/*_i18n:无法完成操作[{error}]*/);
             }
         })
     }

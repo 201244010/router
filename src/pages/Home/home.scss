@@ -1,5 +1,5 @@
 .home-bg {
-    background-image : linear-gradient(180deg, #5F6FDE 400px, #f2f3f7 399px);
+    background-image : linear-gradient(180deg, #5F6FDE 400px, #F4F7FE 399px);
     .main{
         .home{
             height : auto;
@@ -215,14 +215,14 @@
                 }
             }
         }
-        .home-footer{
-            position: static;
-            opacity: 0.4;
+    }
+    .home-footer{
+        // position: static;
+        opacity: 0.4;
+        color:#ADB1B9;
+        // margin-top: 13px;
+        a {
             color: #ADB1B9;
-            margin-top: 13px;
-            a {
-                color: #ADB1B9;
-            }
         }
     }
 }
