@@ -1,18 +1,57 @@
+button.ant-btn {
+    border: 1px solid rgba(125,143,183,0.20);
+    span {
+        color: #61739D;
+    }
+}
+button.ant-btn:hover {
+    border: 1px solid #6174F1;
+    span {
+        color: #6174F1;
+    }
+}
+button.ant-btn:focus {
+    border: 1px solid #4D5CC0;
+    span {
+        color: #4D5CC0;
+    }
+}
+button.ant-btn:disabled {
+    border: 1px solid rgba(125,143,183,0.20);
+    span {
+        color: #C6C8CC;
+    }
+}
 button.ant-btn-primary {
     color: #FFFFFF;
     background-color : $button-bg-color;
     border : 1px solid $button-bg-color;
     border-radius: 8px;
+    span {
+        color: #FFFFFF;
+    }
 }
 button.ant-btn-primary:hover {
+    background: rgba(255,255,255,0.20);
     background-color : #808FF3;
     border : 1px solid #808FF3;
+    span{
+        color: #FFFFFF;
+    }
 }
 button.ant-btn-primary:focus {
+    background: #4D5CC0;
     background-color : #4D5CC0;
     border : 1px solid #4D5CC0;
+    span{
+        color: #FFFFFF;
+    }
 }
-
+button.ant-btn-primary[disabled] {
+    span {
+        color: #C6C8CC
+    }
+}
 button.ant-btn-primary.ant-btn-loading {
     border-color : rgba(147, 147, 147, 1);
 }
@@ -101,12 +140,6 @@ button.ant-btn-primary.ant-btn-loading {
 
 .ant-progress-bg {
     background : #3D76F6;
-}
-
-.ant-btn-primary[disabled] {
-    span {
-        color: #C6C8CC
-    }
 }
 
 .ant-switch-checked {

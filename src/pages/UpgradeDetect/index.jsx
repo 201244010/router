@@ -57,9 +57,10 @@ export default class UpdateDetect extends React.Component {
     }
 
     getInfo = async () => {
-        let response = await common.fetchApi({
-            opcode: 'FIRMWARE_GET'
-        });
+        let response = await common.fetchApi(
+            {opcode: 'FIRMWARE_GET'},
+            {opcode: 'ROUTE_GET'},
+        );
 
         // 防止 Default组件重定向到 guide 显示升级弹窗提示
         if (this.state.guide) {
@@ -68,9 +69,22 @@ export default class UpdateDetect extends React.Component {
 
         let { data, errcode } = response;
         if (0 === errcode) {
-            let { newest_version, release_log } = data[0].result.upgrade;
+            let devId = '';
+            data[1].result.sonconnect.devices.map(item => {
+                if (item.role === '1') {
+                    devId = item.devid;
+                }
+            });
+
+            let version = '';
+            data[0].result.upgrade.map(item => {
+                if (item.devid === devId) {
+                    version = item.current_version;
+                }
+            })
+
             this.setState({
-                update: newest_version !== '',
+                update: version !== '',
                 releaseLog: release_log,
             });
         }

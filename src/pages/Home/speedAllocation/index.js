@@ -36,8 +36,8 @@ export default class Allocation extends React.Component{
                 extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
                 formatter:  function(params) {
                     const index = params[0].dataIndex;
-                    return `<span style="display: inline-block;border-radius:100%;background:#FB8632;height:6px;width:6px;margin-right:8px"></span>${params[2].seriesName} : ${data['sunmiPercent'][index]}%<br>` + 
-                    `<span style="display: inline-block;border-radius:100%;background:#87D068;height:6px;width:6px;margin-right:8px"></span>${params[1].seriesName} : ${data['priorityPercent'][index]}%<br>` +
+                    return `<span style="display: inline-block;border-radius:100%;background:#FF6900;height:6px;width:6px;margin-right:8px"></span>${params[2].seriesName} : ${data['sunmiPercent'][index]}%<br>` + 
+                    `<span style="display: inline-block;border-radius:100%;background:#60CC13;height:6px;width:6px;margin-right:8px"></span>${params[1].seriesName} : ${data['priorityPercent'][index]}%<br>` +
                     `<span style="display: inline-block;border-radius:100%;background:#446CE6;height:6px;width:6px;margin-right:8px"></span>${params[0].seriesName} : ${data['normalPercent'][index]}%`
             },
                 textStyle: {
