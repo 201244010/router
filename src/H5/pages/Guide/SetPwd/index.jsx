@@ -96,8 +96,8 @@ export default class SetPwd extends React.Component {
         const { pwd, pwdTip, loading }  = this.state;
         const disabled = '' !== pwdTip || pwd === '';
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips={intl.get(MODULE, 8)/*_i18n:管理员密码是进入路由器管理页面的凭证*/} />
                 <form>
                     <Input
@@ -117,9 +117,10 @@ export default class SetPwd extends React.Component {
                         tip={surePwdTip}
                         onChange={value => this.onChange('surePwd', value)}
                     /> */}
-                    <Button type='primary' loading={loading} style={{marginTop: '8.52rem'}} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
+                    
                 </form>
-            </div>
-        )
+            </div>,
+            <Button type='primary' loading={loading} style={{marginTop: '8.52rem'}} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
+        ])
     }
 }

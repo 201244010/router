@@ -14,7 +14,7 @@ body{
         }
     }
     .guide-body{
-        padding: 0.64rem 0.8rem 0.5333rem;
+        padding: 0.64rem 0.5333rem 0.5333rem;
         // position: absolute;
         // top: 2.1333rem;
         // bottom: 0.4267rem;
@@ -25,12 +25,15 @@ body{
         // border-radius: 0.2133rem;
         background: #FFF;
         overflow: auto;
-        form{
-            margin-top: 1.0667rem;
+        .guide-upper {
+            padding: 0 0.2667rem;
+            form{
+                margin-top: 1.0667rem;
+            }
+            // .sm-form{
+            //     margin-top: 0.6933rem;
+            // }   
         }
-        // .sm-form{
-        //     margin-top: 0.6933rem;
-        // }
         .sm-btn{
             margin-top: 0.8533rem;
             font-size: 0.3733rem;
@@ -42,7 +45,7 @@ body{
         }
         .sm-link{
             font-size: 0.32rem;
-            color: #ADB1B9;
+            color: #333;
         }
     }
 }

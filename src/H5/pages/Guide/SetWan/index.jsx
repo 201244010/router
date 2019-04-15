@@ -184,8 +184,8 @@ export default class SetWan extends React.Component {
     render() {
         const { wanType, checkType, loading, visible, content } = this.state;
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 15)/*_i18n:确认上网方式*/} tips={intl.get(MODULE, 16)/*_i18n:请选择正确的上网方式*/} />
                 <Loading visible={visible} content='正在联网...' />
                 {checkType?
@@ -196,13 +196,12 @@ export default class SetWan extends React.Component {
                         <p className='content'>{content}</p>
                     </div>
                     :
-                    <form style={{marginTop:'0.6267rem'}}>
+                    <form style={{marginTop:'1.0667rem'}}>
                         <Select options={this.options} value={wanType} onChange={this.onTypeChange} />
-                        <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
                     </form>
-                }
-                
-            </div>
-        );
+                }   
+            </div>,
+            !checkType && <Button type='primary' style={{marginTop: '5.3867rem'}} loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
+        ]);
     }
 }

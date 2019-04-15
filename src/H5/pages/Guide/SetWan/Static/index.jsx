@@ -192,8 +192,8 @@ export default class Static extends React.Component {
             dnsbackupTip, loading } = this.state;
         const disabled = this.checkDisabled(this.state);
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 13)/*_i18n:手动输入IP（静态IP）*/} tips={intl.get(MODULE, 14)/*_i18n:请输入运营商提供的IP地址、子网掩码、网关、DNS服务器地址*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 15)/*_i18n:正在连网，请稍候...*/} />
                 <div style={{marginTop: '0.5867rem'}}>
@@ -227,12 +227,12 @@ export default class Static extends React.Component {
                         inputs={[{value : dnsbackup[0], maxLength : 3}, {value : dnsbackup[1], maxLength : 3}, {value : dnsbackup[2], maxLength : 3}, {value : dnsbackup[3], maxLength : 3}]}
                         onChange={value => this.onChange('dnsbackup', value)}
                     />
-                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>
-                    <div className='bottom-link'>
-                        <Link onClick={this.changeType}>{intl.get(MODULE, 22)/*_i18n:切换上网方式*/}</Link>
-                    </div>
                 </div>
+            </div>,
+            <Button type='primary' style={{marginTop: '1.28rem'}} loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>,
+            <div className='bottom-link'>
+                <Link onClick={this.changeType}>{intl.get(MODULE, 22)/*_i18n:切换上网方式*/}</Link>
             </div>
-        );
+        ]);
     }
 }

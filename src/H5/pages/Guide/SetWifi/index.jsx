@@ -124,9 +124,9 @@ export default class SetWifi extends React.Component {
 
         if(hostPassword.length === 0 || ('block' === guestDisplay && guestPassword.length === 0)){
             confirm({
-                content: (hostWifiPsw.length === 0 ? '商户Wi-Fi' : '') + 
-                (hostWifiPsw.length === 0 && guestWifiPsw.length === 0 && setTip? '、' : '')+
-                (guestWifiPsw.length === 0 && setTip? '顾客Wi-Fi' : '') + '密码未设置，确定继续?',
+                content: (hostPassword.length === 0 ? '商户Wi-Fi' : '') + 
+                (hostPassword.length === 0 && guestPassword.length === 0 && 'block' === guestDisplay? '、' : '')+
+                (guestPassword.length === 0 && 'block' === guestDisplay? '顾客Wi-Fi' : '') + '密码未设置，确定继续?',
                 onOk: this.dataSet,
             });
             this.setState({ loading : false }); 
@@ -166,12 +166,14 @@ export default class SetWifi extends React.Component {
             guestPasswordTip = '';
         }
 
-        let disabled = [hostSsidTip, hostPasswordTip, guestSsidTip, guestPasswordTip].some(tip => {
+        let tipCheck = [hostSsidTip, hostPasswordTip, guestSsidTip, guestPasswordTip].some(tip => {
             return ('' !== tip);
         });
 
-        return (
-            <div>
+        let disabled = tipCheck || '' === hostSsid || ('' === guestSsid && 'block' === guestDisplay);
+
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips={intl.get(MODULE, 5)/*_i18n:请设置您为自己或店员开放的个人Wi-Fi名称与密码*/} />
                 <form className='h5setwifi'>
                     <Input
@@ -202,6 +204,7 @@ export default class SetWifi extends React.Component {
                     />
                     <Input
                         value={guestPassword}
+                        type='password'
                         placeholder='设置顾客WiFi密码'
                         maxLength={32}
                         tip={guestPasswordTip}
@@ -209,9 +212,9 @@ export default class SetWifi extends React.Component {
                         style={{marginBottom: '0.4267rem',display: guestDisplay}}
                     />
                     <p className='setGuest' onClick={this.setGuest}>{setMessage}</p>
-                    <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
                 </form>
-            </div>
-        )
+            </div>,
+            <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
+        ]);
     }
 }

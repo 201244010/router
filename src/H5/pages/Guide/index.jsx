@@ -9,6 +9,7 @@ import Static from './SetWan/Static';
 import SetWifi from './SetWifi';
 import Guest from './Guest';
 import Finish from './Finish';
+import AddSubRouter from './AddSubRouter';
 import Icon from '~/components/Icon';
 
 import './guide.scss';
@@ -29,6 +30,7 @@ export default class Guide extends React.Component {
                         <Route path={`${match.path}/pppoe`} component={PPPoE} />
                         <Route path={`${match.path}/static`} component={Static} />
                         <Route path={`${match.path}/setwifi`} component={SetWifi} />
+                        <Route path={`${match.path}/addsubrouter`} component={AddSubRouter} />
 
                         {/**
                          * 商户WiFi设置界面不保存配置（保存的话会导致手机WiFi断开），传递到客用WiFi界面在保存

@@ -128,8 +128,8 @@ export default class PPPoE extends React.Component {
         const disabled = [ account, pwd ].some(item => {return item === '' }) ||
                          [ accountTip, pwdTip ].some(item => { return item !== ''});
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:宽带拨号上网（PPPoE）*/} tips={intl.get(MODULE, 8)/*_i18n:请输入运营商提供的宽带账号和密码*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在连网，请稍候...*/} />
                 <div style={{marginTop: '1.28rem'}}>
@@ -150,12 +150,12 @@ export default class PPPoE extends React.Component {
                         placeholder={intl.get(MODULE, 11)/*_i18n:请输入密码*/}
                         maxLength={32}
                     />
-                    <Button type='primary' style={{marginTop: '4.16rem'}} loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
-                    <div className='bottom-link'>
-                        <Link onClick={this.changeType}>{intl.get(MODULE, 13)/*_i18n:切换上网方式*/}</Link>
-                    </div>
                 </div>
+            </div>,
+            <Button type='primary' style={{marginTop: '4.16rem'}} loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>,
+            <div className='bottom-link'>
+                <Link onClick={this.changeType}>{intl.get(MODULE, 13)/*_i18n:切换上网方式*/}</Link>
             </div>
-        );
+        ]);
     }
 }

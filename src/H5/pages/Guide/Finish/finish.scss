@@ -1,61 +1,104 @@
-.finish-wrap{
-    .tip-reconnect{
-        font-size: 0.32rem;
-        color: #ADB1B9;
-        text-align: center;
-        margin-top: 1.0133rem;
+.h5finish {
+    height: 13.7333rem;
+    .icon-success {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin:0 auto 0.32rem;
+        background: #14CC67;
     }
-    .sm-btn{
-        margin-top: 0.2667rem !important;
+    .finish-tip {
+        font-family: 'PingFangSC-Regular';
+        font-size: 0.5333rem;
+        color: #333;
+        text-align: center;
+        margin-bottom: 0.8533rem;
+    }
+    .deviceInfo {
+        display: flex;
+        width: 100%;
+        padding: 0.32rem 0.4267rem;
+        border-radius: 0.2133rem;
+        border: 0.5px solid rgba(0,0,0,0.20);
+        .left {
+            display: flex;
+            align-items: center;
+            .deviceImg {
+                width: 0.96rem;
+                height: 0.96rem;
+                display: inline-block;
+                margin-right: 0.32rem;
+                background: url();
+                border: 1px solid grey;
+            }
+            .title-left {
+                font-family: 'PingFangSC-Regular';
+                font-size: 0.4267rem;
+                color: #333;
+            }
+        }
+        .right {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            .title-right {
+                flex: 1;
+                font-family: 'PingFangSC-Light';
+                font-size: 0.3733rem;
+                color: #666;
+                text-align: right;
+            }
+        }   
+    }
+    .wifi-title {
+        font-family: 'PingFangSC-Regular';
+        font-size: 0.3733rem;
+        color: #999;
+        line-height: 0.48rem;
+        margin-top: 0.5333rem;
+        margin-bottom: 0.1067rem;
+    }
+    .wifi-content {
+        width: 100%;
+        background: #FCFCFC;
+        border: 0.5px solid rgba(0,0,0,0.20);
+        border-radius: 0.2133rem;
+        .wifi-ssid {
+            height: 1.28rem;
+            border-bottom: 0.5px solid rgba(0,0,0,0.20);
+            display: flex;
+            padding: 0 0.4rem;
+            align-items: center;
+        }
+        .wifi-pwd {
+            height: 1.28rem;
+            display: flex;
+            padding: 0 0.4rem;
+            align-items: center;
+        }
+        .wifi-ssid .wifi-left,.wifi-pwd .wifi-left {
+            font-family: 'PingFangSC-Regular';
+            font-size: 0.4267rem;
+            color: #333;
+        }
+        .wifi-ssid .wifi-right,.wifi-pwd .wifi-right {
+            flex: 1;
+            font-family: 'PingFangSC-Light';
+            font-size: 0.3733rem;
+            color: #666;
+            text-align: right;
+        }
     }
 }
 
-.sm-wifi-info-wrap{
-    background: #FFF;
-    border: 1px solid rgba(0,0,0,0.10);
-    border-radius: 0.16rem;
-    padding: 0.32rem 0.32rem 0.4267rem;
-    margin-bottom: 0.2133rem;
-    .info-header{
-        margin-bottom: 0.3733rem;
-        .circle{
-            display: inline-block;
-            border-radius: 50%;
-            vertical-align: middle;
-            &.outer{
-                width: 0.4267rem;
-                height: 0.4267rem;
-                text-align: center;
-                .inner{
-                    width: 0.2133rem;
-                    height: 0.2133rem;
-                }
-            }
-        }
-        .title{
-            font-size: 0.3733rem;
-            margin-left: 0.16rem;
-            color: rgba(51,60,79,0.60);
-            display: inline-block;
-            vertical-align: middle;
-        }
-    }
-    .info-list{
-        li{
-            display: flex;
-            align-items: flex-start;
-            font-weight: bold;
-            font-size: 0.4267rem;
-            color: #333C4F;
-            margin-bottom: 0.2133rem;
-            span{
-                flex: 1;
-                word-break: break-all;
-                margin-left: 0.08rem;
-            }
-            &:last-child{
-                margin-bottom: 0;
-            }
-        }
+.guide-container .guide-body .foot .sm-btn {
+    width: 4.2667rem;
+}
+.foot {
+    display: flex;
+    justify-content: space-between;
+    .addMore {
+        background: #FFF;
+        border: 1px solid #FF6000;
+        color: #FF6000;
     }
 }

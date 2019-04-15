@@ -14,75 +14,74 @@ export default class Finish extends React.PureComponent {
         super(props);
     }
 
-    nextStep = () => {
+    goHome = () => {
         this.props.history.push('/home');
     };
 
     render() {
-        let host = { ssid: '', password: ''};
-        let guest = { enable: '0', ssid: '', static_password: ''};
+        let data = { hostSsid: '', guestSsid: '', hostPassword: '', guestPassword: '', guestDisplay: 'none' };
+        // let host = { ssid: '', password: ''};
+        // let guest = { enable: '0', ssid: '', static_password: ''};
 
 
         const params = this.props.match.params;
+        console.log(params);
         if (params && params.wifi) {
             const wifi = JSON.parse(decodeURIComponent(params.wifi));
 
-            const band2 = wifi.main.host.band_2g;
-            host = {
-                ssid: band2.ssid,
-                password: Base64.decode(band2.password),
-            };
-
-            guest = {
-                enable: wifi.guest.enable,
-                ssid: wifi.guest.ssid,
-                password: Base64.decode(wifi.guest.static_password),
+            data = {
+                hostSsid: wifi.hostSsid,
+                guestSsid: wifi.guestSsid,
+                hostPassword: wifi.hostPassword,
+                guestPassword: wifi.guestPassword,
+                guestDisplay: wifi.guestDisplay,
             };
         }
 
-        return (
-            <div className='finish-wrap'>
-                <GuideHeader title={intl.get(MODULE, 0)/*_i18n:设置完成*/} />
-                <form>
-                    <WifiInfo
-                        title={intl.get(MODULE, 1)/*_i18n:商户Wi-Fi*/}
-                        ssid={host.ssid}
-                        password={host.password}
-                        color='rgba(255,96,0,0.60)'
-                    />
-                    { ('1' === guest.enable) &&
-                    <WifiInfo
-                        title={intl.get(MODULE, 2)/*_i18n:客用Wi-Fi*/}
-                        ssid={guest.ssid}
-                        password={guest.password}
-                        color='rgba(45,187,26,0.60)'
-                    />
-                    }
-                    <p className='tip-reconnect'>{intl.get(MODULE, 3)/*_i18n:Wi-Fi可能会断开，如有需要请重新连接*/}</p>
-                    <Button type='primary' onClick={this.nextStep}>{intl.get(MODULE, 4)/*_i18n:完成*/}</Button>
-                </form>
+        return ([
+            <div className='h5finish'>
+                <div className='icon-success'></div>
+                <p className='finish-tip'>路由器设置成功</p>
+                <div className='deviceInfo'>
+                    <div className='left'>
+                        <div className='deviceImg'></div>
+                        <span className='title-left'>{data.hostSsid}</span>
+                    </div>
+                    <div className='right'>
+                        <span className='title-right'>备注位置</span>    
+                    </div>
+                </div>
+                <div>
+                    <p className='wifi-title'>商户Wi-Fi</p>
+                    <div className='wifi-content'>
+                        <div className='wifi-ssid'>
+                            <span className='wifi-left'>商户Wi-iFi名称</span>
+                            <span className='wifi-right'>{data.hostSsid}</span>
+                        </div>
+                        <div className='wifi-pwd'>
+                            <span className='wifi-left'>商户Wi-Fi密码</span>
+                            <span className='wifi-right'>{data.hostPassword}</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p className='wifi-title'>客用Wi-Fi</p>
+                    <div className='wifi-content'>
+                        <div className='wifi-ssid'>
+                            <span className='wifi-left'>顾客Wi-iFi名称</span>
+                            <span className='wifi-right'>{data.guestSsid}</span>
+                        </div>
+                        <div className='wifi-pwd'>
+                            <span className='wifi-left'>顾客Wi-Fi密码</span>
+                            <span className='wifi-right'>{data.guestPassword}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>,
+            <div className='foot'>
+                <Button type='primary' className='goHome' onClick={this.goHome} >完成</Button>
+                <Button type='primary' className='addMore' onClick={this.addMore} >添加更多路由器</Button>
             </div>
-        )
+        ]);
     }
-}
-
-const WifiInfo = function(props) {
-    const { title, ssid, password, color } = props;
-    return (
-        <div className='sm-wifi-info-wrap'>
-            <div className='info-header'>
-                <i className='circle outer' style={{background: color}}>
-                    <i className='circle inner' style={{background: color}}></i>
-                </i>
-                <h4 className='title'>{title}</h4>
-            </div>
-            <ul className='info-list'>
-                <li><label>{intl.get(MODULE, 5)/*_i18n:名称：*/}</label><span>{ssid}</span></li>
-                <li>{(password && password.length > 0) ?
-                    [<label>{intl.get(MODULE, 6)/*_i18n:密码：*/}</label>,<span>{password}</span>] :
-                    <label>{intl.get(MODULE, 7)/*_i18n:无密码*/}</label>
-                }</li>
-            </ul>
-        </div>
-    );
 }
