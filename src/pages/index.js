@@ -126,7 +126,6 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
-        console.log(pathname);
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
