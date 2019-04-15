@@ -18,8 +18,11 @@ export default class SysUpgrade extends React.Component{
             detectTip: '重新检测',
             duration: 150,
             update: false,
-            devList: {}
-        }
+            devList: {},
+            codeList: {}
+        };
+        this.devList = {};
+        this.codeList = {};
         this.columns = [{
             title: '设备名称'/*_i18n:设备名称*/,
             dataIndex: 'name',
@@ -37,16 +40,14 @@ export default class SysUpgrade extends React.Component{
             dataIndex: 'status',
             width: 336,
             render: (value, record) => {
-                const {detecting, update, duration, devList} = this.state;
-                console.log('duration', duration);
-                console.log('devList', devList);
+                const {detecting, update, duration, devList, codeList} = this.state;
                 const online = record.online;
                 if (update) {
-                    return <ProgressStatus duration={duration} status={devList[record.name]} />
+                    return <ProgressStatus duration={duration} status={devList[record.name]} failTip={codeList[record.name]} />
                 } else if (detecting && online) {
                     return (
                         <div>
-                            <CustomIcon type="refresh" color='#779FF8' size={14} spin/>
+                            <CustomIcon type="loading_ring" color='#779FF8' size={14} spin/>
                             <span style={{marginLeft: 4}}>检测中...</span>
                         </div>
                     )
@@ -64,16 +65,7 @@ export default class SysUpgrade extends React.Component{
     }
 
     render(){
-        const {detecting, routerList, detectTip} = this.state;
-        // const routerList = [{
-        //     name: '1',
-        // },{
-        //     name: '2',
-        // },{
-        //     name: '3',
-        // },{
-        //     name: '0',
-        // },]
+        const {detecting, routerList, detectTip, update} = this.state;
         return (
             <SubLayout className="settings">
                 <div className='sys-upgrade'>
@@ -81,8 +73,8 @@ export default class SysUpgrade extends React.Component{
                         检测是否有适用的新固件
                     </p>
                     <div>
-                        <Button onClick={this.reDetect} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
-                        <Button type="primary" disabled={detecting} onClick={this.startUpgrade}>全部升级</Button>
+                        <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
+                        <Button type="primary" disabled={detecting || update} onClick={this.startUpgrade}>全部升级</Button>
                     </div>
                 </div>
                 <div className="static-table">
@@ -127,27 +119,25 @@ export default class SysUpgrade extends React.Component{
                     interval : 1000,
                     stop : () => this.stop,
                     pending : res => {
-                        console.log('res', res);
                         const result = res.data[0].result.upgrade;
-                        console.log('result', result);
                         let state = false;
-                        result.map(item => {
-                            const progress = item.progress;
-                            console.log('progress', progress);
-                            state = progress === 'init' || progress === 'start downloading!' || progress === 'start checking!' || progress === 'download success!';
+                        result.some(item => {
+                                const progress = item.progress;
+                                return state = progress === 'wait to start!' || progress === 'start downloading!' || progress === 'start checking!' || progress === 'download success!';
                         })
-                        console.log(state);
                         return state;
                     }
                 }
             ).then((resp)=>{
                 const result = resp.data[0].result.upgrade;
                 result.map(item => {
-                    this.setState({
-                        devList: Object.assign({}, ...this.state.devList, {[item.devid]: item.progress})
-                    })
+                    Object.assign(this.devList, {[item.devid]: item.progress});
+                    Object.assign(this.codeList, {[item.devid]: intl.get(MODULE, 5, {error: item.code})});
                 });
-                console.log('statedevList', this.state.devList);
+                this.setState({
+                    devList: this.devList,
+                    codeList: this.codeList
+                });
             }) 
         }else{
             Modal.error({title : intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
@@ -167,7 +157,6 @@ export default class SysUpgrade extends React.Component{
             { opcode: 'ROUTE_GET' }
         ], { ignoreErr: true });
         const {errcode, data} = resp;
-        console.log(resp);
         if (errcode !== 0) {
             message.warning('获取信息失败！')
         }
@@ -176,7 +165,7 @@ export default class SysUpgrade extends React.Component{
             const current = item.current_version;
             const newVersion = item.newest_version;
             let versiontTip = '';
-            if (current === newVersion) {
+            if (newVersion === '') {
                 versiontTip = '当前已是最新版本';
             } else {
                 versiontTip = '发现新版本：' + newVersion
@@ -239,19 +228,18 @@ class ProgressStatus extends React.Component {
 
     render() {
         const percent = this.state.percent;
-        const {status, failTip='错误码：未知'} = this.props;
-        console.log('status',status);
+        const {status, failTip} = this.props;
         const Info = () => {
             switch(status) {
                 case 'download failed!': 
                     return  <p style={{color: '#D0021B', fontSize: 14}}>
-                        {`升级失败(${failTip})`}
+                        {`升级失败(下载文件失败，${failTip || '错误码：未知'})`}
                     </p>
                 case 'check failed!':
                     return  <p style={{color: '#D0021B', fontSize: 14}}>
-                        {`升级失败(${failTip})`}
+                        {`升级失败(校验文件失败，${failTip || '错误码：未知'})`}
                     </p>
-                case 'check success!': 
+                case 'start upgrading!': 
                     return <div>
                     <Progress percent={percent} strokeWidth={8} />
                 </div>

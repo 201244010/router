@@ -1,18 +1,61 @@
+button.ant-btn {
+    border: 1px solid rgba(125,143,183,0.20);
+    line-height: 1;
+    span {
+        color: #61739D;
+    }
+}
+button.ant-btn-sm {
+    border-radius: 8px;
+}
+button.ant-btn:hover {
+    border: 1px solid #6174F1;
+    span {
+        color: #6174F1;
+    }
+}
+button.ant-btn:focus {
+    border: 1px solid #4D5CC0;
+    span {
+        color: #4D5CC0;
+    }
+}
+button.ant-btn:disabled {
+    border: 1px solid rgba(125,143,183,0.20);
+    span {
+        color: #C6C8CC;
+    }
+}
 button.ant-btn-primary {
     color: #FFFFFF;
     background-color : $button-bg-color;
     border : 1px solid $button-bg-color;
     border-radius: 8px;
+    span {
+        color: #FFFFFF;
+    }
 }
 button.ant-btn-primary:hover {
+    background: rgba(255,255,255,0.20);
     background-color : #808FF3;
     border : 1px solid #808FF3;
+    span{
+        color: #FFFFFF;
+    }
 }
 button.ant-btn-primary:focus {
+    background: #4D5CC0;
     background-color : #4D5CC0;
     border : 1px solid #4D5CC0;
+    span{
+        color: #FFFFFF;
+    }
 }
-
+button.ant-btn-primary[disabled] {
+    span {
+        color: #C6C8CC
+    }
+}
 button.ant-btn-primary.ant-btn-loading {
     border-color : rgba(147, 147, 147, 1);
 }
@@ -67,10 +110,16 @@ button.ant-btn-primary.ant-btn-loading {
     color: #4D5CC0!important;
 }
 
-.ant-table-filter-selected.anticon-filter {
-    color: #4D5CC0!important;
+.ant-table-thead > tr > th .ant-table-filter-selected.anticon-filter {
+    opacity: 0.34;
+    background: #ADB1B9;
+    color: #8A8D94; 
 }
-
+.anticon-filter:hover {
+    opacity: 0.34;
+    background: #ADB1B9;
+    color: #8A8D94; 
+}
 .ant-dropdown-menu-item-selected {
     color: #4D5CC0!important;
 }
@@ -84,7 +133,15 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-table-filter-dropdown-link {
-    color: #3D76F6;
+    color: #6174F1;
+}
+
+.ant-table-filter-dropdown-link:hover {
+    color: #808FF3;
+}
+
+.ant-table-filter-dropdown-link:focus {
+    color: #4D5CC0
 }
 
 .ant-table-column-sort {
@@ -165,6 +222,14 @@ button.ant-btn-primary.ant-btn-loading {
         height:3px !important;
         background-color: #4D5CC0 !important;
     }
+}
+
+.ant-table-column-sorter-up:hover .anticon {
+   color: #808FF3;
+}
+
+.ant-table-column-sorter-down:hover .anticon {
+   color: #808FF3;
 }
 
 .ant-checkbox{

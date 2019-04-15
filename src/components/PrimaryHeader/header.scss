@@ -90,6 +90,23 @@
             span { margin : 0 15px; }
         }
     }
+    button.ant-btn {
+        span {
+            color: #fff;
+        }
+    }
+    button.ant-btn:hover {
+        border: unset;
+        span {
+            color: #fff;;
+        }
+    }
+    button.ant-btn:focus {
+        border: unset;
+        span {
+            color: #fff;;
+        }
+    }
 }
 
 
