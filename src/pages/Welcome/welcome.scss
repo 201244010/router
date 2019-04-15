@@ -11,13 +11,17 @@
         vertical-align: middle;
         font-size: 12px;
         line-height: 17px;
+        border: 1px solid #FFF;
         &:hover {
-            color: #FB9E5B;
-            border: 1px solid #FB9E5B;
+            color: #A7B3FF;
+            border: 1px solid #A7B3FF;
         }
         &:active {
-            color: #C86B28;
-            border: 1px solid #C86B28;
+            color: #7480CC;
+            border: 1px solid #7480CC;
+        }
+        span {
+            color: #fff;
         }
     }
 
@@ -55,11 +59,6 @@
                 border-bottom: 1px solid #fafafa;
                 text-decoration: none;
             }
-        }
-    }
-    button.ant-btn {
-        span {
-            color: #fff;
         }
     }
     button.ant-btn-primary {

@@ -575,3 +575,19 @@
   content: "\e6c5";
 }
 
+.ui-icon-loading_bg:before {
+  content: "\e6c6";
+}
+
+.ui-icon-loading_ring:before {
+  content: "\e6c7";
+}
+
+.ui-icon-ppro:before {
+  content: "\e6c8";
+}
+
+.ui-icon-h:before {
+  content: "\e6c9";
+}
+
