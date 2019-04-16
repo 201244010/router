@@ -42,12 +42,12 @@ export default class SysUpgrade extends React.Component{
             render: (value, record) => {
                 const {detecting, update, duration, devList, codeList} = this.state;
                 const online = record.online;
-                if (update) {
+                if (update && online) {
                     return <ProgressStatus duration={duration} status={devList[record.name]} failTip={codeList[record.name]} />
                 } else if (detecting && online) {
                     return (
                         <div>
-                            <CustomIcon type="loading_ring" color='#779FF8' size={14} spin/>
+                            <CustomIcon type="loading_ring" color='#6174F1' size={14} spin/>
                             <span style={{marginLeft: 4}}>检测中...</span>
                         </div>
                     )
@@ -149,6 +149,9 @@ export default class SysUpgrade extends React.Component{
             detecting: true,
             detectTip: '检测中...'
         });
+        setTimeout(() => this.fetchRouter(), 3000);
+        // this.fetchRouter();
+
     }
 
     fetchRouter = async () => {
@@ -192,7 +195,9 @@ export default class SysUpgrade extends React.Component{
         })
 
         this.setState({
-            routerList: routerList
+            routerList: routerList,
+            detecting: false,
+            detectTip: '重新检测'
         })
     }
 
