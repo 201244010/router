@@ -27,6 +27,14 @@ export default class SysUpgrade extends React.Component{
             title: '设备名称'/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 400,
+            render: (name, record) => {
+                return <div className="sub-router-set">
+                    <div>
+                        <img  src={require('~/assets/images/router.png')}/>
+                        <label style={{marginLeft: 12}}>{record.devid} ({name})</label>
+                    </div>
+                </div>
+            }
         },  {
             title: '型号名称'/*_i18n:接入方式*/,
             dataIndex: 'model',
@@ -105,14 +113,14 @@ export default class SysUpgrade extends React.Component{
             update: true
         });
         common.fetchApi({
-            opcode : 'UPGRADE_START',
+            opcode : 'MESH_UPGRADE_START',
         }).then((resp)=>{
             if(resp.errcode == 0){
                 this.setState({
                     duration : resp.data[0].result.upgrade.restart_duration,
                 });
             common.fetchApi(
-                {opcode : 'UPGRADE_STATE'},
+                {opcode : 'MESH_UPGRADE_STATE'},
                 {},
                 {
                     loop : true,
@@ -156,8 +164,7 @@ export default class SysUpgrade extends React.Component{
 
     fetchRouter = async () => {
         const resp = await common.fetchApi([
-            { opcode:'FIRMWARE_GET' },
-            { opcode: 'ROUTE_GET' }
+            { opcode:'MESH_FIRMWARE_GET' }
         ], { ignoreErr: true });
         const {errcode, data} = resp;
         if (errcode !== 0) {
@@ -167,6 +174,7 @@ export default class SysUpgrade extends React.Component{
         const routerList = data[0].result.upgrade.map(item => {
             const current = item.current_version;
             const newVersion = item.newest_version;
+            const online = parseInt(item.online);
             let versiontTip = '';
             if (newVersion === '') {
                 versiontTip = '当前已是最新版本';
@@ -174,26 +182,15 @@ export default class SysUpgrade extends React.Component{
                 versiontTip = '发现新版本：' + newVersion
             }
             return {
-                name: item.devid,
-                model: 'W1',
+                devid: item.devid,
+                name: item.location,
+                model: item.model,
                 version: current,
-                status: versiontTip,
-                online: 1
+                status: online ? versiontTip : '--',
+                releaseLog: item.release_log,
+                online: online
             }
         });
-
-        data[1].result.sonconnect.devices.map(item => {
-            if (item.online === '0') {
-                routerList.push({
-                    name: item.devid,
-                    model: 'W1',
-                    version: '--',
-                    status: '设备已离线',
-                    online: 0
-                })
-            }
-        })
-
         this.setState({
             routerList: routerList,
             detecting: false,
