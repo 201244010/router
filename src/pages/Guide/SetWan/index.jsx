@@ -455,7 +455,7 @@ export default class SetWan extends React.PureComponent {
 };
 const LinkState = props =>{
     return(
-        <div style={{width:260,textAlign:'center',marginTop:-15}}>
+        <div style={{width:260,textAlign:'center',margin:'-15px auto 0'}}>
             <CustomIcon type="hint" size="large" color="#FF5500"/>
             <h3 style={{marginBottom:25,marginTop:17}}>{intl.get(MODULE, 23)/*_i18n:请检查您的网线是否插好*/}</h3>
             <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>{intl.get(MODULE, 24)/*_i18n:已经插好网线，再试一次*/}</Button>
