@@ -639,13 +639,13 @@ export default class WIFI extends React.Component {
                             <span>({intl.get(MODULE, 29)})</span>
                         </div>
                         <RadioGroup onChange={this.onBandSteering} value={channelType}>
-                            <Radio style={{display:'inline-block'}} value={false}>开启</Radio>
-                            <Radio style={{display:'inline-block'}} value={true}>关闭</Radio>
+                            <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
+                            <Radio style={{display:'inline-block'}} value={false}>关闭</Radio>
                         </RadioGroup>
                         {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
                         {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
                     </section>
-                    {!this.state.channelType ? (
+                    {this.state.channelType ? (
                     <section className="wifi-setting-item">
                         <label className='ssidLabel'>{intl.get(MODULE, 31)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>

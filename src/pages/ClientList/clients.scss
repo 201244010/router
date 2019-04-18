@@ -195,6 +195,9 @@ i.dot{
     &.warning{
         background-color:#FF5500;
     }
+    &.offline{
+        background: #ADB1B9;
+    }
 }
 
 .editable-cell-client {
