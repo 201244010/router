@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, message} from 'antd';
 import SubLayout from '~/components/SubLayout';
-
+import {formatTime} from '~/assets/common/utils';
 
 const MODULE = 'clientlist';
 
@@ -12,30 +12,97 @@ export default class Router extends React.Component {
             title: '设备名称'/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 330,
+            render: (name, record) => {
+                return <div className="sub-router-set">
+                    <div>
+                        <img  src={require('~/assets/images/router.png')}/>
+                    <ul>
+                        <li>{name}</li>
+                        <li>{record.uptime}</li>
+                    </ul>
+                    </div>
+                </div>
+            }
         },  {
             title: 'IP地址'/*_i18n:接入方式*/,
             dataIndex: 'ip',
-            width: 140
+            width: 140,
+            render: (value) => {
+                return <span style={{fontSize: 12, color: '#333C4F'}}>{value}</span>
+            }
         }, {
             title: 'MAC地址'/*_i18n:接入方式*/,
             dataIndex: 'mac',
-            width: 180
+            width: 180,
+            render: (value) => {
+                return <span style={{fontSize: 12, color: '#333C4F'}}>{value}</span>
+            }
         }, {
             title: '上级路由'/*_i18n:接入方式*/,
             dataIndex: 'router',
-            width: 190
+            width: 190,
+            render: (router, record) => {
+                return record.online ? <ul className='parent-router'>
+                    <li>{router}</li>
+                    <li>{record.routermac}</li>
+                </ul> : '--'
+            }
         }, {
             title: '连接方式',
             dataIndex: 'mode',
-            width: 120
+            width: 120,
+            render: (value) => {
+                return <span style={{fontSize: 12, color: '#333C4F'}}>{value}</span>
+            }
         }, {
             title: '信号质量'/*_i18n:信号*/,
             dataIndex: 'rssi',
-            width: 120
+            width: 120,
+            render: (rssi, record) => {
+                if (record.online) {
+                    return <div>
+                        <i className={'dot ' + ('较差' == rssi ? 'warning' : '')}></i>
+                        <span style={{fontSize: 12}}>{rssi}</span>
+                    </div>
+                } else {
+                    return <div>
+                            <i className='dot offline'></i>
+                            <span style={{fontSize: 12, color: '#ADB1B9'}}>已离线</span>
+                    </div>
+                }
+            }
         }, {
             title: '操作'/*_i18n:流量消耗*/,
             width: 136,
+            render: (record) => {
+                return <span onClick={() => this.deleteRouter(record)} style={{fontSize: 14, color: '#6174F1'}}>移除</span>
+            }
         }];
+    }
+
+    state = {
+        routerList: []
+    }
+
+    deleteRouter = async (rowdetail) => {
+        const resp = await common.fetchApi(
+            { 
+                opcode: 'ROUTE_RESET',
+                data: {
+                    sonconnect: [{
+                        devid: rowdetail.devid,
+                        mac: rowdetail.mac
+                    }]
+                }
+            }
+        )
+        const {errcode} = resp;
+        if (0 !== errcode) {
+            message.warning('删除失败');
+            return;
+        }
+        message.success('移除成功');
+        this.fetchRouter();
     }
 
     fetchRouter = async () => {
@@ -49,47 +116,68 @@ export default class Router extends React.Component {
         }
 
         let router = data[0].result.sonconnect.devices;
+        const parentList = {};
+        router.map(item => {
+            parentList[item.mac.toUpperCase()] = item.location;
+        });
 
-        let routerList = router.map(router => {
+        let routerList = router.filter((router) => router.role === '0').map(router => {
+            if (router.role === '0' ) {
+                let rssi;
+                const connMode = router.conn_mode;
+                if (connMode.wired === 1) {
+                    rssi = '较好';
+                } else {
+                    rssi = router.rssi >= 20 ? '较好' : '较差';
+                }
+                let mode = '';
+                connMode.w_2g && (mode = mode + '/2.4G');
+                connMode.w_5g && (mode = mode + '/5G');
+                connMode.wired && (mode = mode + '/有线');
+                mode[0] === '/' && (mode = mode.substr(1));
 
-            return {
-                name: '',
-                ip: '',
-                mac: '',
-                router: '',
-                mode: '',
-                rssi: ''
+                const online = parseInt(router.online);
+                const routermac = router.routermac;
+                const uptime = formatTime(router.uptime);
+
+                return {
+                    devid: router.devid,
+                    name: router.location,
+                    ip: online ? router.ip : '--',
+                    mac: router.mac,
+                    router: online ? parentList[routermac.toUpperCase()] : '--',
+                    routermac: routermac.toUpperCase(),
+                    uptime: uptime,
+                    mode: online ? mode : '--',
+                    rssi: rssi,
+                    online: online
+                }
             }
         })
-    }
 
-    deleteRouter = async () => {
-        const resp = await common.fetchApi({
-            opcode: 'ROUTE_RESET',
-            data: {
-                sonconnect: [{devid: devid, mac: mac}]
-            }
+        this.setState({
+            routerList: routerList
         })
-        const { errcode } = resp;
-        if (errcode !== 0) {
-            message.warning('设置失败');            
-        }
     }
 
     componentDidMount() {
-        //this.fetchRouter();
+        this.fetchRouter();
     }
 
     render() {
-        const routerList = [{
-            mac: 'mac',
-            name: 'name',
-            ip: 'ip',
-            router: 'adad',
-            mode: 'dd',
-            rssi: 'adada',
-        }]
-
+        // const routerList = [{
+        //     mac: 'mac',
+        //     name: 'name',
+        //     ip: 'ip',
+        //     router: 'adad',
+        //     mode: 'dd',
+        //     rssi: '较好',
+        //     online: 0,
+        //     routermac: 'adada',
+        //     uptime: '1231414131'
+        // }]
+        const {routerList} = this.state;
+        // console.log('152',routerList);
         return (
             <SubLayout className="settings">
                 <div className="static-table" style={{marginTop:24}}>

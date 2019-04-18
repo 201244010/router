@@ -314,13 +314,12 @@ export default class Home extends React.Component {
 
         let reList = reInfo.map((re) => {
             
-            let rssi = wifiInfo[re.mac.toLowerCase()] || {rssi:0};
             return {
                 mac: re.mac.toUpperCase(),
                 online: re.online,
                 name: re.location,
                 role: re.role,
-                rssi: rssi,
+                rssi: re.rssi,
                 ip: re.ip,
                 devid: re.devid,
                 parent: routeList[re.routermac.toUpperCase()]
