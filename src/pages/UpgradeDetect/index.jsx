@@ -58,7 +58,7 @@ export default class UpdateDetect extends React.Component {
 
     getInfo = async () => {
         let response = await common.fetchApi(
-            {opcode: 'FIRMWARE_GET'},
+            {opcode: 'MESH_FIRMWARE_GET'},
             {opcode: 'ROUTE_GET'},
         );
 
