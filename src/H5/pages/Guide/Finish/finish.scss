@@ -4,7 +4,8 @@
         width: 1.6rem;
         height: 1.6rem;
         margin:0 auto 0.32rem;
-        background: #14CC67;
+        background: url('./success.png');
+        background-size: 100% 100%;
     }
     .finish-tip {
         font-family: 'PingFangSC-Regular';
@@ -27,8 +28,8 @@
                 height: 0.96rem;
                 display: inline-block;
                 margin-right: 0.32rem;
-                background: url();
-                border: 1px solid grey;
+                background: url('./ApImg.png');
+                background-size: 100% 100%;
             }
             .title-left {
                 font-family: 'PingFangSC-Regular';
@@ -42,10 +43,18 @@
             align-items: center;
             .title-right {
                 flex: 1;
+                display: flex;
+                justify-content: flex-end;
                 font-family: 'PingFangSC-Light';
                 font-size: 0.3733rem;
                 color: #666;
-                text-align: right;
+                .addApLocation {
+                    width: 0.4267rem;
+                    height: 0.4267rem;
+                    display: inline-block;
+                    background: url('./addlocation.png');
+                    background-size: 100% 100%;
+                }
             }
         }   
     }
@@ -100,5 +109,57 @@
         background: #FFF;
         border: 1px solid #FF6000;
         color: #FF6000;
+    }
+}
+.locationModal {
+    .ant-modal-content .ant-modal-body{
+        width: 7.2rem;
+        padding: 0;
+        margin: 0;
+        border-radius: 0.2133rem;
+    }
+    .Content {
+        width: 5.92rem;
+        margin: auto;
+        padding: 0;
+        text-align: center;
+        .Title {
+            margin: 0.64rem auto 0.4267rem;
+            font-family: 'PingFangSC-Medium';
+            font-size: 0.48rem;
+            color: #333;
+            line-height: 0.64rem;
+        }
+        .input {
+            margin-bottom: 0.64rem;
+            width: 5.8667rem;
+            height: 1.1733rem;
+            padding-left: 0.4267rem;
+            border-radius: 0.1067rem;
+            border: 1px solid rgba(51,60,79,0.4);
+        }
+    }
+    .Footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F5F5F5;
+        border-top: 0.5px solid rgba(0,0,0,0.1);
+        .footerButton {
+            width: 50%;
+            height: 1.1733rem;
+            font-family: 'PingFangSC-Regular';
+            font-size: 0.3733rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cancel {
+            color: #333;
+            border-right: 0.5px solid rgba(0,0,0,0.1);
+        }
+        .sure {
+            color: #FF6000;
+        }
     }
 }

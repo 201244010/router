@@ -86,14 +86,6 @@ export default class Home extends React.Component {
                     <Privacy />
                 </Modal>
                 <div className='copyright'>{intl.get(MODULE, 12)}</div>
-                <Icon type='earth' size={'10.6667rem'} style={{
-                    color: '#FFF',
-                    opacity: 0.06,
-                    position: 'fixed',
-                    bottom: '-1.7333rem',
-                    right: '-4rem',
-                    zIndex: '-1'
-                }} />
             </div>
         );
     }

@@ -178,6 +178,9 @@ export default class SetWan extends React.Component {
     componentDidMount() {
         if ('detect' === this.state.wanType) {  // 检测上网方式
             this.dialDetect();
+        } else {
+            this.setState({checkType: false});
+            this.props.history.push('/guide/setwan/' + this.state.wanType);
         }
     }
 
@@ -201,7 +204,7 @@ export default class SetWan extends React.Component {
                     </form>
                 }   
             </div>,
-            !checkType && <Button type='primary' style={{marginTop: '5.3867rem'}} loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
+            !checkType && <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
         ]);
     }
 }

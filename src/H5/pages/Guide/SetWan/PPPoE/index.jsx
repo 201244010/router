@@ -99,10 +99,6 @@ export default class PPPoE extends React.Component {
         toast({tip: intl.get(MODULE, 6, {error: errcode})/*_i18n:参数非法[{error}]*/});
     }
 
-    changeType = () => {
-        this.props.history.push('/guide/setwan/pppoe');
-    }
-
     getNetInfo = async () => {
         let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
@@ -152,10 +148,7 @@ export default class PPPoE extends React.Component {
                     />
                 </div>
             </div>,
-            <Button type='primary' style={{marginTop: '4.16rem'}} loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>,
-            <div className='bottom-link'>
-                <Link onClick={this.changeType}>{intl.get(MODULE, 13)/*_i18n:切换上网方式*/}</Link>
-            </div>
+            <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
         ]);
     }
 }

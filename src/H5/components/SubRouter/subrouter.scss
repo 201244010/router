@@ -1,0 +1,125 @@
+.router-outline {
+    height: 1.92rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgba(0,0,0,0.1);
+    .left {
+        display: inline-flex;
+        align-items: center;
+        .routerImg {
+            width: 1.28rem;
+            height: 1.28rem;
+            display: inline-block;
+            background: url('./subrouter.png');
+            background-size: 100% 100%;
+            margin-right: 0.56rem;
+            position: relative;
+            .successImg, .failedImg, .loadingImg {
+                position: absolute;
+                left: 0.96rem;
+                bottom: 0.7467rem;
+                width: 0.3733rem;
+                height: 0.3733rem;
+            }
+            .successImg {
+                background: url('./success.png');
+                background-size: 100% 100%;
+            }
+            .failedImg {
+                background: url('./failed.png');
+                background-size: 100% 100%;
+            }
+            .loadingImg {
+                background: url('./loading.png');
+                background-size: 100% 100%;
+            }
+        }
+        .deviceId {
+            font-family: 'PingFangSC-Regular';
+            font-size: 0.4267rem;
+            line-height: 0.5867rem;
+            color: #333;
+            .description {
+                font-family: 'PingFangSC-Light';
+                font-size: 0.3733rem;
+                line-height: 0.5333rem;
+                color: #999;
+                margin-top: 0.0533rem;
+            }
+        }
+    }
+    .checkbox {
+        display: inline-block;
+    }
+    .addLocation {
+        display: flex;
+        align-items: center;
+        font-family: 'PingFangSC-Light';
+        font-size: 0.3733rem;
+        line-height: 0.5333rem;
+        color: #666;
+        .addLocationImg {
+            width: 0.4267rem;
+            height: 0.4267rem;
+            display: inline-block;
+            background: url('./addlocation.png');
+            background-size: 100% 100%;
+        }
+    }  
+}
+.not-checkbox {
+    height: 2.24rem;
+}
+.locationModal {
+    .ant-modal-content .ant-modal-body{
+        width: 7.2rem;
+        padding: 0;
+        margin: 0;
+        border-radius: 0.2133rem;
+    }
+    .Content {
+        width: 5.92rem;
+        margin: auto;
+        padding: 0;
+        text-align: center;
+        .Title {
+            margin: 0.64rem auto 0.4267rem;
+            font-family: 'PingFangSC-Medium';
+            font-size: 0.48rem;
+            color: #333;
+            line-height: 0.64rem;
+        }
+        .input {
+            margin-bottom: 0.64rem;
+            width: 5.8667rem;
+            height: 1.1733rem;
+            padding-left: 0.4267rem;
+            border-radius: 0.1067rem;
+            border: 1px solid rgba(51,60,79,0.4);
+        }
+    }
+    .Footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F5F5F5;
+        border-top: 0.5px solid rgba(0,0,0,0.1);
+        .footerButton {
+            width: 50%;
+            height: 1.1733rem;
+            font-family: 'PingFangSC-Regular';
+            font-size: 0.3733rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cancel {
+            color: #333;
+            border-right: 0.5px solid rgba(0,0,0,0.1);
+        }
+        .sure {
+            color: #FF6000;
+        }
+    }
+}

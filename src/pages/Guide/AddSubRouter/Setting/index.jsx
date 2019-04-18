@@ -245,7 +245,7 @@ export default class Setting extends React.Component {
                             searchFinish={searchFinish}
                             reSearch={this.reSearch}
                             setSubRouter={this.setSubRouter}
-                            onChange={this.onChange} 
+                            onChange={this.onChange}
                         />;
         }
 

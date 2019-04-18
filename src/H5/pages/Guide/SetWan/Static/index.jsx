@@ -156,10 +156,6 @@ export default class Static extends React.Component {
         return disabled || state.dnsbackupTip !== '';
     }
 
-    changeType = () => {
-        this.props.history.push('/guide/setwan/static');
-    }
-
     getNetInfo = async ()=>{
         let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
@@ -229,10 +225,7 @@ export default class Static extends React.Component {
                     />
                 </div>
             </div>,
-            <Button type='primary' style={{marginTop: '1.28rem'}} loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>,
-            <div className='bottom-link'>
-                <Link onClick={this.changeType}>{intl.get(MODULE, 22)/*_i18n:切换上网方式*/}</Link>
-            </div>
+            <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>
         ]);
     }
 }

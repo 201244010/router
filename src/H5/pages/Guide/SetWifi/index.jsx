@@ -174,7 +174,7 @@ export default class SetWifi extends React.Component {
 
         return ([
             <div className='guide-upper'>
-                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips={intl.get(MODULE, 5)/*_i18n:请设置您为自己或店员开放的个人Wi-Fi名称与密码*/} />
+                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips='' />
                 <form className='h5setwifi'>
                     <Input
                         inputName='商户WiFi（建议店内设备及员工使用）'

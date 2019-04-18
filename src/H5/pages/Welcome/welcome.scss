@@ -1,11 +1,15 @@
 .welcome{
+    height: 100%;
     color: #333333;
+    background: #FFF;
     text-align: center;
+    padding-top: 1.6rem;
     .welcomeImg {
         width: 6.8rem;
         height: 6.8rem;
-        background: grey;
-        margin:1.6rem auto 0.64rem;
+        background: url('./welcome-router.png');
+        background-size: 100% 100%;
+        margin:0 auto 0.64rem;
     }
     h2{
         margin: 0 auto 0.2133rem;
