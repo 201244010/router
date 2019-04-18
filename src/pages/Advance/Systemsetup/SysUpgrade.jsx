@@ -1,10 +1,8 @@
 
 import React from 'react';
 import {Button, Table, message, Progress} from 'antd';
-import Upgrade from '../../UpgradeDetect/Upgrade';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
-import { SIGHUP } from 'constants';
 
 const MODULE = 'upgrade';
 
@@ -158,8 +156,6 @@ export default class SysUpgrade extends React.Component{
             detectTip: '检测中...'
         });
         setTimeout(() => this.fetchRouter(), 3000);
-        // this.fetchRouter();
-
     }
 
     fetchRouter = async () => {

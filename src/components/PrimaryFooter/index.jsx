@@ -22,13 +22,27 @@ export default class PrimaryFooter extends React.PureComponent {
     fetchFooterInfo = async () => {
         await common.fetchApi(
             [
-                {opcode : 'FIRMWARE_GET'},
+                {opcode : 'MESH_FIRMWARE_GET'},
                 {opcode :'NETWORK_WAN_IPV4_GET' },
+                {opcode : 'ROUTE_GET'},
             ]
         ).then(result => {
             let {errcode, data} = result
             if(errcode === 0){
-                const version = data[0].result.upgrade.current_version;
+                let devId = '';
+                data[2].result.sonconnect.devices.map(item => {
+                    if (item.role === '1') {
+                        devId = item.devid;
+                    }
+                });
+
+                let version = '';
+                data[0].result.upgrade.map(item => {
+                    if (item.devid === devId) {
+                        version = item.current_version;
+                    }
+                })
+
                 this.setState({
                     version : version,
                     mac : data[1].result.wan.info.mac
