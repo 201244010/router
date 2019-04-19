@@ -1,9 +1,6 @@
 import React from 'react';
-import GuideHeader from 'h5/components/GuideHeader';
-import Form from 'h5/components/Form';
 import Button from 'h5/components/Button';
-
-import { Base64 } from 'js-base64';
+import CustomModal from 'h5/components/Modal';
 
 import './finish.scss';
 
@@ -14,75 +11,164 @@ export default class Finish extends React.PureComponent {
         super(props);
     }
 
-    nextStep = () => {
+    state = {
+        devid: '',
+        mac: '',
+        location: '',
+        visible: false,
+    }
+
+    goHome = () => {
         this.props.history.push('/home');
     };
 
-    render() {
-        let host = { ssid: '', password: ''};
-        let guest = { enable: '0', ssid: '', static_password: ''};
+    addMore = () => {
+        this.props.history.push('/guide/addsubrouter');
+    }
 
+    getApInfo = async() => {
+        let response = await common.fetchApi({opcode: 'ROUTE_GET'});
+        const {errcode, data } = response;
+        if (0 === errcode) {
+            let devices = data[0].result.sonconnect.devices || [];
+            let ap = {devid: '', mac: '', location: ''};
+            devices.map(item => {
+                if('1' === item.role) {
+                    ap.devid = item.devid;
+                    ap.mac = item.mac;
+                    ap.location = item.location;
+                }
+            });
+            
+            this.setState({
+                devid: ap.devid,
+                mac: ap.mac,
+                location: ap.location,
+            });
+        }
+    }
+
+    addLocation = () => {
+        this.setState({
+            visible: true,
+        });
+    }
+
+    inputOnChange = (e) => {
+        this.setState({location: e.target.value});
+    }
+
+    cancel = () => {
+        this.setState({
+            visible: false,
+        });
+    }
+
+    sure = async() => {
+        let { mac, devid, location } = this.state;
+        
+        if ('' === location) {
+            location = devid;
+        }
+        let data = {sonconnect:[]};
+        data.sonconnect.push({devid: devid, mac: mac, location: location});
+
+        let response = await common.fetchApi(
+            {
+                opcode: 'ROUTENAME_SET',
+                data: data
+            }
+        );
+
+        let {errcode} = response;
+        if (0 === errcode) {
+            this.setState({
+                visible: false,
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.getApInfo();
+    }
+
+    render() {
+        const { devid, location,visible } = this.state;
+        let data = { hostSsid: '', guestSsid: '', hostPassword: '', guestPassword: '', guestDisplay: 'none' };
 
         const params = this.props.match.params;
         if (params && params.wifi) {
             const wifi = JSON.parse(decodeURIComponent(params.wifi));
 
-            const band2 = wifi.main.host.band_2g;
-            host = {
-                ssid: band2.ssid,
-                password: Base64.decode(band2.password),
-            };
-
-            guest = {
-                enable: wifi.guest.enable,
-                ssid: wifi.guest.ssid,
-                password: Base64.decode(wifi.guest.static_password),
+            data = {
+                hostSsid: wifi.hostSsid,
+                guestSsid: wifi.guestSsid,
+                hostPassword: wifi.hostPassword,
+                guestPassword: wifi.guestPassword,
+                guestDisplay: wifi.guestDisplay,
             };
         }
 
-        return (
-            <div className='finish-wrap'>
-                <GuideHeader title={intl.get(MODULE, 0)/*_i18n:设置完成*/} />
-                <form>
-                    <WifiInfo
-                        title={intl.get(MODULE, 1)/*_i18n:商户Wi-Fi*/}
-                        ssid={host.ssid}
-                        password={host.password}
-                        color='rgba(255,96,0,0.60)'
-                    />
-                    { ('1' === guest.enable) &&
-                    <WifiInfo
-                        title={intl.get(MODULE, 2)/*_i18n:客用Wi-Fi*/}
-                        ssid={guest.ssid}
-                        password={guest.password}
-                        color='rgba(45,187,26,0.60)'
-                    />
-                    }
-                    <p className='tip-reconnect'>{intl.get(MODULE, 3)/*_i18n:Wi-Fi可能会断开，如有需要请重新连接*/}</p>
-                    <Button type='primary' onClick={this.nextStep}>{intl.get(MODULE, 4)/*_i18n:完成*/}</Button>
-                </form>
-            </div>
-        )
+        return ([
+            <div className='h5finish'>
+                <div className='icon-success'></div>
+                <p className='finish-tip'>路由器设置成功</p>
+                <div className='deviceInfo'>
+                    <div className='left'>
+                        <div className='deviceImg'></div>
+                        <span className='title-left'>{devid}</span>
+                    </div>
+                    <div className='right'>
+                        <span className='title-right'>备注位置<div className='addApLocation' onClick={this.addLocation}></div></span>    
+                    </div>
+                </div>
+                <div>
+                    <p className='wifi-title'>商户Wi-Fi</p>
+                    <div className='wifi-content'>
+                        <div className='wifi-ssid'>
+                            <span className='wifi-left'>商户Wi-iFi名称</span>
+                            <span className='wifi-right'>{data.hostSsid}</span>
+                        </div>
+                        <div className='wifi-pwd'>
+                            <span className='wifi-left'>商户Wi-Fi密码</span>
+                            <span className='wifi-right'>{data.hostPassword}</span>
+                        </div>
+                    </div>
+                </div>
+                {'block' === data.guestDisplay &&
+                <div>
+                    <p className='wifi-title'>客用Wi-Fi</p>
+                    <div className='wifi-content'>
+                        <div className='wifi-ssid'>
+                            <span className='wifi-left'>顾客Wi-iFi名称</span>
+                            <span className='wifi-right'>{data.guestSsid}</span>
+                        </div>
+                        <div className='wifi-pwd'>
+                            <span className='wifi-left'>顾客Wi-Fi密码</span>
+                            <span className='wifi-right'>{data.guestPassword}</span>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>,
+            <div className='foot'>
+                <Button type='primary' className='goHome' onClick={this.goHome} >完成</Button>
+                <Button type='primary' className='addMore' onClick={this.addMore} >添加更多路由器</Button>
+            </div>,
+            <CustomModal
+                className='locationModal'
+                visible={visible}
+                footer={null}
+                >
+                <div className='Content'>
+                    <div className='Title'>备注信息</div>
+                    <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location} />
+                </div>
+                <div className='Footer'>
+                    <div className='footerButton cancel' onClick={this.cancel}>取消</div>
+                    <div className='footerButton sure' onClick={this.sure}>确定</div>
+                </div>
+            </CustomModal>
+        ]);
     }
-}
-
-const WifiInfo = function(props) {
-    const { title, ssid, password, color } = props;
-    return (
-        <div className='sm-wifi-info-wrap'>
-            <div className='info-header'>
-                <i className='circle outer' style={{background: color}}>
-                    <i className='circle inner' style={{background: color}}></i>
-                </i>
-                <h4 className='title'>{title}</h4>
-            </div>
-            <ul className='info-list'>
-                <li><label>{intl.get(MODULE, 5)/*_i18n:名称：*/}</label><span>{ssid}</span></li>
-                <li>{(password && password.length > 0) ?
-                    [<label>{intl.get(MODULE, 6)/*_i18n:密码：*/}</label>,<span>{password}</span>] :
-                    <label>{intl.get(MODULE, 7)/*_i18n:无密码*/}</label>
-                }</li>
-            </ul>
-        </div>
-    );
 }

@@ -15,9 +15,6 @@ export default class Location extends React.Component {
         routeList: [],
         disabled: false,
         loading: false,
-        // mainRouteDeviceId: '',
-        // mainRouteLocation: '',
-        // mainRouteTip: '',
     }
 
     onChange = (value, deviceId) => {

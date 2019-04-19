@@ -121,11 +121,6 @@ export const DIRECTIVE = {
     SYSTEMTOOLS_CLOUD_BACKUP_PROGRESS : '0x209d',
     SYSTEMTOOLS_CLOUD_RESTORE_PROGRESS : '0x209e',
 
-    //自组网
-    ROUTE_GET : '0x2116',
-    ROUTE_SET : '0x2114',
-    ROUTENAME_SET : '0x2118',
-
     //时区/时间
     TIME_GET: '0x2030',
     TIME_SET: '0x2031',

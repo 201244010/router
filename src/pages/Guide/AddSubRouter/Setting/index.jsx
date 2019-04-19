@@ -102,35 +102,6 @@ export default class Setting extends React.Component {
         });
     }
 
-    // getSettingResult = async() => {
-    //     let response = await common.fetchApi(
-    //         {opcode: ''},
-    //         { method: 'POST' },
-    //         {
-    //             loop: true,
-    //             interval: 1000,
-    //             pending: resp => {resp.result.process === 'setting'}
-    //         }
-    //     );
-    //     let {errcode, data} = response;
-    //     if (0 === errcode && 'finish' === data[0].result.process) {
-    //         let devicesResult = data[0].result.state;
-    //         let {devicesShow} = this.state;
-    //         devicesResult.map(item => {
-    //             for (var i = 0; i < devicesShow.length; i++) {
-    //                 if (item.devid === devicesShow[i].deviceId) {
-    //                     devicesShow[i].result = item.state;
-    //                     break;
-    //                 }
-    //             }
-    //         });
-    //         this.setState({
-    //             condition: 'settingResult',
-    //             devicesShow: devicesShow
-    //         });
-    //     }
-    // }
-
     getSubRouters = async() => {
         let response = await common.fetchApi({opcode: 'SWITCH_START'});
         const { errcode, data } = response;
@@ -245,7 +216,7 @@ export default class Setting extends React.Component {
                             searchFinish={searchFinish}
                             reSearch={this.reSearch}
                             setSubRouter={this.setSubRouter}
-                            onChange={this.onChange} 
+                            onChange={this.onChange}
                         />;
         }
 
@@ -316,7 +287,7 @@ class Selecting extends React.Component {
         if (0 !== showList.length && !searchFinish) {       //搜索进行中，设备列表不为空
             return (
                 <React.Fragment>
-                    <div className="header">
+                    <div className="settingHeader">
                         <Icon key="progress-icon" type="loading" className="smallLoading"  spin />
                         <span className='smallTitle'>正在检测子路由……</span>
                     </div>
@@ -331,7 +302,7 @@ class Selecting extends React.Component {
         if (0 !== showList.length && searchFinish) {       //搜索完成，且设备列表不为空
             return (
                 <React.Fragment>
-                    <div className="header">
+                    <div className="settingHeader">
                         <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
                         <span className='smallTitle' style={{verticalAlign: 'middle'}}>检测完成，请选择您要添加的子路由</span>
                     </div>
@@ -366,7 +337,7 @@ class SettingRouter extends React.Component {
 
         return (
             <React.Fragment>
-                <div className="header">
+                <div className="settingHeader">
                     <Icon key="progress-icon" type="loading" className="loading"  spin />
                     <h3>正在设置子路由，请稍后……</h3>
                 </div>
@@ -409,7 +380,7 @@ class SettingResult extends React.Component {
         if ('allOK' === statement && 0 < showList.length && !haveGiveUp) {      //设置都成功的情况
             return (
                 <React.Fragment>
-                <div className="header">
+                <div className="settingHeader">
                     <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
                     <span className='smallTitle' style={{verticalAlign: 'middle'}}>设置完成</span>
                 </div>
@@ -449,7 +420,7 @@ class SettingResult extends React.Component {
         if (haveGiveUp && 0 === showList.length) {  //失败设备都忽略后，没有设备的情况（原本设置都失败）
             return (
                 <React.Fragment>
-                <div className="header">
+                <div className="settingHeader">
                     <CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 8}}/>
                     <span className='smallTitle' style={{verticalAlign: 'middle'}}>已放弃添加子路由</span>
                 </div>

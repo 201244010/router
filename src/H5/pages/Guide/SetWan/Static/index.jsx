@@ -1,6 +1,6 @@
 import React from 'react';
 import toast from 'h5/components/toast';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 import GuideHeader from 'h5/components/GuideHeader';
 import Link from 'h5/components/Link';
@@ -8,6 +8,7 @@ import Loading from 'h5/components/Loading';
 import confirm from 'h5/components/confirm';
 import { checkIp, checkMask, checkSameNet } from '~/assets/common/check';
 import { detect } from '../wan';
+import InputGroup from 'h5/components/InputGroup';
 
 const MODULE = 'h5static';
 
@@ -18,15 +19,15 @@ export default class Static extends React.Component {
 
     state = {
         visible: false,
-        ip: '',
+        ip: ['','','',''],
         ipTip: '',
-        subnetmask: '',
+        subnetmask: ['','','',''],
         subnetmaskTip: '',
-        gateway: '',
+        gateway: ['','','',''],
         gatewayTip: '', 
-        dns: '',
+        dns: ['','','',''],
         dnsTip: '',
-        dnsbackup: '',
+        dnsbackup: ['','','',''],
         dnsbackupTip: '',
         loading: false,
     }
@@ -51,7 +52,7 @@ export default class Static extends React.Component {
             },
             dnsbackup:{
                 func: (value) => {
-                    if('' === value.join('.')){
+                    if('...' === value.join('.')){
                         return '';
                     }else {
                         return checkIp(value, { who: intl.get(MODULE, 4)/*_i18n:备选DNS*/ });
@@ -60,12 +61,11 @@ export default class Static extends React.Component {
                 who: intl.get(MODULE, 5)/*_i18n:备选DNS*/,
             },
         }
-
-        let val = value.split('.').map(item => { return item.replace(/\D*/g, ''); });
-        let tip = valid[name].func(val, { who: valid[name].who });
+        let tip = valid[name].func(value, { who: valid[name].who });
 
         this.setState({
-            [name]: val.join('.'),
+            // [name]: val.join('.'),
+            [name]: value,
             [name + 'Tip']: tip
         });
     }
@@ -81,17 +81,23 @@ export default class Static extends React.Component {
             loading: true
         });
 
-        if(ip === gateway){
+        if(ip.join('.') === gateway.join('.')){
             toast({tip: intl.get(MODULE, 6)/*_i18n:IP地址与默认网关不能相同*/});
             this.setState({ loading: false });
             return ;
         }
 
-        if(!checkSameNet(ip.split('.'), gateway.split('.'), subnetmask.split('.'))){
+        if(!checkSameNet(ip, gateway, subnetmask)){
             toast({tip: intl.get(MODULE, 7)/*_i18n:IP地址与默认网关需在同一网段*/});
             this.setState({ loading: false });
             return ;
         }
+        
+        let ipv4 = ip.join('.');
+        let mask = subnetmask.join('.');
+        let gate = gateway.join('.');
+        let dns1 = dns.join('.');
+        let dns2 = dnsbackup.join('.');
 
         let response = await common.fetchApi(
             {
@@ -100,11 +106,11 @@ export default class Static extends React.Component {
                     wan:{
                         dial_type: 'static',
                         info: {
-                            ipv4 : ip,
-                            mask : subnetmask,
-                            gateway : gateway,
-                            dns1 : dns,
-                            dns2 : dnsbackup
+                            ipv4 : ipv4,
+                            mask : mask,
+                            gateway : gate,
+                            dns1 : dns1,
+                            dns2 : dns2
                         }
                     }
                 }
@@ -144,13 +150,10 @@ export default class Static extends React.Component {
 
     checkDisabled(state){
         const disabled = [ 'ip', 'subnetmask', 'gateway', 'dns' ].some(item => {
-            return ('' === state[item] || '' !== state[item + 'Tip']);
+            let block = state[item].every(item => {return '' === item});
+            return ( block || '' !== state[item + 'Tip']);
         });
         return disabled || state.dnsbackupTip !== '';
-    }
-
-    changeType = () => {
-        this.props.history.push('/guide/setwan/static');
     }
 
     getNetInfo = async ()=>{
@@ -158,7 +161,13 @@ export default class Static extends React.Component {
         let { data, errcode } = response;
         if(errcode == 0){
             this.static = data[0].result.wan.static;
-            const { ipv4, mask, gateway, dns1, dns2 } = this.static;
+            let { ipv4, mask, gateway, dns1, dns2 } = this.static;
+            ipv4 = ipv4.split('.');
+            mask = mask.split('.');
+            gateway = gateway.split('.');
+            dns1 = dns1.split('.');
+            dns2 = dns2.split('.');
+
             this.setState({
                 ip: ipv4,
                 subnetmask: mask,
@@ -179,52 +188,44 @@ export default class Static extends React.Component {
             dnsbackupTip, loading } = this.state;
         const disabled = this.checkDisabled(this.state);
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 13)/*_i18n:手动输入IP（静态IP）*/} tips={intl.get(MODULE, 14)/*_i18n:请输入运营商提供的IP地址、子网掩码、网关、DNS服务器地址*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 15)/*_i18n:正在连网，请稍候...*/} />
-                <form>
-                    <Form
-                        value={ip}
-                        onChange={value => this.onChange('ip', value)}
+                <div style={{marginTop: '0.5867rem'}}>
+                    <InputGroup
+                        inputGroupName='IP'
                         tip={ipTip}
-                        placeholder={intl.get(MODULE, 16)/*_i18n:请输入IP地址*/}
-                        maxLength={15}
+                        inputs={[{value : ip[0], maxLength : 3}, {value : ip[1], maxLength : 3}, {value : ip[2], maxLength : 3}, {value : ip[3], maxLength : 3}]}
+                        onChange={value => this.onChange('ip', value)}
                     />
-                    <Form
-                        value={subnetmask}
-                        onChange={value => this.onChange('subnetmask', value)}
+                    <InputGroup
+                        inputGroupName='子网掩码'
                         tip={subnetmaskTip}
-                        placeholder={intl.get(MODULE, 17)/*_i18n:请输入子网掩码*/}
-                        maxLength={15}
+                        inputs={[{value : subnetmask[0], maxLength : 3}, {value : subnetmask[1], maxLength : 3}, {value : subnetmask[2], maxLength : 3}, {value : subnetmask[3], maxLength : 3}]}
+                        onChange={value => this.onChange('subnetmask', value)}
                     />
-                    <Form
-                        value={gateway}
-                        onChange={value => this.onChange('gateway', value)}
+                    <InputGroup
+                        inputGroupName='默认网关'
                         tip={gatewayTip}
-                        placeholder={intl.get(MODULE, 18)/*_i18n:请输入默认网关*/}
-                        maxLength={15}
+                        inputs={[{value : gateway[0], maxLength : 3}, {value : gateway[1], maxLength : 3}, {value : gateway[2], maxLength : 3}, {value : gateway[3], maxLength : 3}]}
+                        onChange={value => this.onChange('gateway', value)}
                     />
-                    <Form
-                        value={dns}
-                        onChange={value => this.onChange('dns', value)}
+                    <InputGroup
+                        inputGroupName='首选DNS'
                         tip={dnsTip}
-                        placeholder={intl.get(MODULE, 19)/*_i18n:请输入首选DNS服务器*/}
-                        maxLength={15}
+                        inputs={[{value : dns[0], maxLength : 3}, {value : dns[1], maxLength : 3}, {value : dns[2], maxLength : 3}, {value : dns[3], maxLength : 3}]}
+                        onChange={value => this.onChange('dns', value)}
                     />
-                    <Form
-                        value={dnsbackup}
-                        onChange={value => this.onChange('dnsbackup', value)}
+                    <InputGroup
+                        inputGroupName='备选DNS（可选）'
                         tip={dnsbackupTip}
-                        placeholder={intl.get(MODULE, 20)/*_i18n:备选DNS服务器（可选）*/}
-                        maxLength={15}
+                        inputs={[{value : dnsbackup[0], maxLength : 3}, {value : dnsbackup[1], maxLength : 3}, {value : dnsbackup[2], maxLength : 3}, {value : dnsbackup[3], maxLength : 3}]}
+                        onChange={value => this.onChange('dnsbackup', value)}
                     />
-                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>
-                    <div className='bottom-link'>
-                        <Link onClick={this.changeType}>{intl.get(MODULE, 22)/*_i18n:切换上网方式*/}</Link>
-                    </div>
-                </form>
-            </div>
-        );
+                </div>
+            </div>,
+            <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>
+        ]);
     }
 }

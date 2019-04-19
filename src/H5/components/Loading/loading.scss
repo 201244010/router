@@ -3,17 +3,17 @@
 }
 .sm-loading-wrap .ant-modal-content{
     .ant-modal-body{
-        width: 7.2rem;
-        padding: 0.2667rem;
+        min-width: 3.2rem;
+        padding: 0 0.64rem 0;
         .icon{
             text-align: center;
-            margin: 0.8133rem auto 0.2667rem;
+            margin: 0.7733rem auto 0.24rem;
             .img{
 
                 display: inline-block;
                 margin: auto;
-                width: 1.3333rem;
-                height: 1.3333rem;
+                width: 0.64rem;
+                height: 0.64rem;
                 background-image: url('./loading.png');
                 background-size: 100% 100%;
                 &.spin{
@@ -22,10 +22,11 @@
             }
         }
         .content{
-            font-size: 0.4267rem;
-            color: rgba(51,60,79,0.60);
+            margin-bottom: 0.6933rem;
+            color: #666;
+            font-size: 0.3733rem;
             text-align: center;
-            margin-bottom: 0.8rem;
+            font-family: 'PingFangSC-Light';
         }
     }
 }

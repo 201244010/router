@@ -89,11 +89,6 @@ export default class SetWifi extends React.Component {
             this.guestWireLess.static_password = Base64.encode(guestWifiPsw);
             this.guestWireLess.enable = '1';
             this.guestWireLess.encryption = guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
-        } else {
-            this.guestWireLess.ssid = this.guestWireLess.ssid;
-            this.guestWireLess.static_password = this.guestWireLess.static_password;
-            this.guestWireLess.enable = this.guestWireLess.enable;
-            this.guestWireLess.encryption = this.guestWireLess.encryption;
         }
         
         this.mainWireLess.host.band_2g.ssid = hostWifiName;
@@ -128,7 +123,7 @@ export default class SetWifi extends React.Component {
     submit = async ()=> {
         const {hostWifiPsw, guestWifiPsw, setTip} = this.state;
         this.setState({ loading : true });
-        if(hostWifiPsw.length === 0 || guestWifiPsw.length === 0){
+        if(hostWifiPsw.length === 0 || (setTip && guestWifiPsw.length === 0)){
             confirm({
                 title: intl.get(MODULE, 10)/*_i18n:提示：*/,
                 content: (hostWifiPsw.length === 0 ?intl.get(MODULE, 11)/*_i18n:商户Wi-Fi*/ : '') + 
@@ -145,7 +140,7 @@ export default class SetWifi extends React.Component {
             this.setState({ loading : false }); 
         }else{
             this.dataSet();
-        }       
+        }
     }
 
     format = ()=>{

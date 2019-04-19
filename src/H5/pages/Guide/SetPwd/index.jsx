@@ -1,7 +1,7 @@
 import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
 import Button from 'h5/components/Button';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import confirm from 'h5/components/confirm';
 import {checkStr} from '~/assets/common/check';
 import { init } from '~/assets/common/auth';
@@ -16,8 +16,8 @@ export default class SetPwd extends React.Component {
     state = {
         pwd: '',
         pwdTip: '',
-        surePwd: '',
-        surePwdTip: '',
+        // surePwd: '',
+        // surePwdTip: '',
         loading: false
     };
 
@@ -27,21 +27,21 @@ export default class SetPwd extends React.Component {
 
     // 表单提交
     post = async () => {
-        const {pwd, surePwd} = this.state;
+        const {pwd} = this.state;
 
-        if (pwd !== surePwd && surePwd !== '') {
-            this.setState({
-                surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/
-            });
-            return;
-        }
+        // if (pwd !== surePwd && surePwd !== '') {
+        //     this.setState({
+        //         surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/
+        //     });
+        //     return;
+        // }
 
-        if (pwd !== surePwd && surePwd === '') {
-            this.setState({
-                surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/
-            });
-            return;
-        }
+        // if (pwd !== surePwd && surePwd === '') {
+        //     this.setState({
+        //         surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/
+        //     });
+        //     return;
+        // }
 
         this.setState({ loading: true });
         const response = await common.fetchApi({
@@ -77,14 +77,14 @@ export default class SetPwd extends React.Component {
                 func: checkStr,
                 agr: { who: intl.get(MODULE, 6)/*_i18n:密码*/, min: 6, max: 32, type: 'english' }
             },
-            surePwd: {
-                func: () => {
-                    return '';
-                }
-            }
+            // surePwd: {
+            //     func: () => {
+            //         return '';
+            //     }
+            // }
         }
 
-        this.setState({surePwdTip : ''});  //surePwdTip清空
+        // this.setState({surePwdTip : ''});  //surePwdTip清空
         let tip = type[name].func(value,type[name].agr);
         this.setState({
             [name]: value,
@@ -93,31 +93,26 @@ export default class SetPwd extends React.Component {
     }
 
     render() {
-        const { pwd, pwdTip, surePwd, surePwdTip, loading }  = this.state;
-        const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
+        const { pwd, pwdTip, loading }  = this.state;
+        const disabled = '' !== pwdTip || pwd === '';
 
-        return (
-            <div>
-                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips={intl.get(MODULE, 8)/*_i18n:管理员密码是进入路由器管理页面的凭证*/} />
+        return ([
+            <div className='guide-upper'>
+                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips='管理密码用于绑定及登录路由器管理' />
                 <form>
-                    <Form
+                    <Input
+                        inputName="密码"
                         value={pwd}
                         type='password'
-                        placeholder={intl.get(MODULE, 9)/*_i18n:密码长度6～32位*/}
+                        placeholder='设置管理密码'
                         maxLength={32}
                         tip={pwdTip}
                         onChange={value => this.onChange('pwd', value)}
+                        style={{marginTop: '1.28rem'}}
                     />
-                    <Form
-                        value={surePwd}
-                        type='password'
-                        placeholder={intl.get(MODULE, 10)/*_i18n:请再次输入密码*/}
-                        tip={surePwdTip}
-                        onChange={value => this.onChange('surePwd', value)}
-                    />
-                    <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
                 </form>
-            </div>
-        )
+            </div>,
+            <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
+        ])
     }
 }

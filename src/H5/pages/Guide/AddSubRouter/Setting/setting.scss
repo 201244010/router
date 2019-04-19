@@ -1,0 +1,86 @@
+.guide-upper {
+    height: 13.7333rem;
+    .routerList {
+        margin-top: 1.6rem;  
+    }
+    .haveLine {
+        border-top: 0.5px solid rgba(0,0,0,0.1);
+    }
+    .routerList-result {
+        margin-top: 2.3467rem;
+        border-top: 0.5px solid rgba(0,0,0,0.1);
+    }
+    .h5addsubrouter-icon {
+        margin-top: 0.64rem;
+        .refresh {
+            width: 2.1333rem;
+            height: 0.8533rem;
+            border-radius: 0.5867rem;
+            border: 0.5px solid rgba(0,0,0,0.4);
+            margin: auto;
+            font-family: 'PingFangSC-Regular';
+            font-size: 0.3733rem;
+            color: #333;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            .refreshImg {
+                width: 0.48rem;
+                height: 0.48rem;
+                margin-right: 0.08rem;
+                background: url('./refresh.png');
+                background-size: 100% 100%;
+            }
+        }
+        .icon{
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 0.4267rem;
+            .img{
+                display: inline-block;
+                width: 0.4267rem;
+                height: 0.4267rem;
+                background-image: url('../../SetWan/loading.png');
+                background-size: 100% 100%;
+                &.spin{
+                    animation: icon-spin 1s infinite linear;
+                }
+            }
+        }
+        .content{
+            margin-left: 0.1067rem;
+            font-size: 0.3733rem;
+            line-height: 0.5333rem;
+            font-family: 'PingFangSC-Light';
+            color: #666666;
+        }
+    }  
+}
+.result {
+    height: 12.24rem;
+}
+.noRouter {
+    text-align: center;
+    .no-router {
+        width: 4.8rem;
+        height: 4.8rem;
+        margin: 1.4933rem auto 0.4267rem;
+        background: url('./no-router.png');
+        background-size: 100% 100%;
+    }
+    .noRouterTitle {
+        font-family: 'PingFangSC-Regular';
+        font-size: 0.5333rem;
+        color: #333;
+        text-align: center;
+    }
+    .noRouterDescription {
+        font-family: 'PingFangSC-Light';
+        font-size: 0.32rem;
+        color: #666;
+        text-align: center;
+        margin: 0.2133rem auto 1.0667rem;
+    }
+}

@@ -1,11 +1,13 @@
 import React from 'react';
 import GuideHeader from 'h5/components/GuideHeader';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 import confirm from 'h5/components/confirm';
 
 import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
+
+import './h5setwifi.scss';
 
 const MODULE = 'h5setwifi';
 
@@ -17,19 +19,41 @@ export default class SetWifi extends React.Component {
     main = {};      // 商户WiFi配置
 
     state = {
-        ssid: '',
-        ssidTip: '',
-        password: '',
-        passwordTip: '',
+        hostSsid: '',
+        hostSsidTip: '',
+        hostPassword: '',
+        hostPasswordTip: '',
+        guestSsid: '',
+        guestSsidTip: '',
+        guestPassword: '',
+        guestPasswordTip: '',
+        guestDisplay: 'none',
+        setMessage: '设置客用Wi-Fi',
     }
 
     onChange = (key, value) => {
         const checkMap = {
-            ssid: {
+            hostSsid: {
                 func: checkStr,
                 args: { who: intl.get(MODULE, 0)/*_i18n:Wi-Fi名称*/, min: 1, max: 32, type: 'all', byte: true },
             },
-            password: {
+            hostPassword: {
+                func: (value) => {
+                    if ('' == value) {
+                        // Wi-Fi密码可以为空
+                        return '';
+                    } else if ('' == value.trim()) {
+                        return intl.get(MODULE, 1)/*_i18n:Wi-Fi密码不能全为空格*/;
+                    } else {
+                        return checkStr(value, { who: intl.get(MODULE, 2)/*_i18n:Wi-Fi密码*/, min: 8, max: 32, type: 'english', byte: true });
+                    }
+                },
+            },
+            guestSsid: {
+                func: checkStr,
+                args: { who: intl.get(MODULE, 0)/*_i18n:Wi-Fi名称*/, min: 1, max: 32, type: 'all', byte: true },
+            },
+            guestPassword: {
                 func: (value) => {
                     if ('' == value) {
                         // Wi-Fi密码可以为空
@@ -49,46 +73,65 @@ export default class SetWifi extends React.Component {
         });
     }
 
-    nextStep = () => {
-        const { ssid, password } = this.state;
-        let encryption = ('' === password) ? 'none' : 'psk-mixed/ccmp+tkip';
-        let pwdBase64 = Base64.encode(password);
+    setGuest = () => {
+        let {guestDisplay} = this.state;
+        this.setState({
+            guestDisplay: 'none' === guestDisplay ? 'block' : 'none',
+            setMessage: 'none' === guestDisplay ? '暂不设置客户Wi-Fi' : '设置客用Wi-Fi'
+        });
+    }
 
-        let next = () => {
-            let band2 = Object.assign(
-                this.main.host.band_2g,
-                {
-                    enable: '1',
-                    ssid,
-                    encryption,
-                    password: pwdBase64,
-                }
-            );
-            this.main.host.band_2g = band2;
+    dataSet = async() =>{
+        let { hostSsid, guestSsid, hostPassword, guestPassword, guestDisplay } = this.state;
+        if ('block' === guestDisplay) {
+            this.guestWireLess.ssid = guestSsid;
+            this.guestWireLess.static_password = Base64.encode(guestPassword);
+            this.guestWireLess.enable = '1';
+            this.guestWireLess.encryption = guestPassword.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
+        }
+        
+        this.mainWireLess.host.band_2g.ssid = hostSsid;
+        this.mainWireLess.host.band_2g.password = Base64.encode(hostPassword);
+        this.mainWireLess.host.band_5g.ssid = hostSsid.substring(0,29) + '_5G';
+        this.mainWireLess.host.band_5g.password = Base64.encode(hostPassword);
+        this.mainWireLess.host.band_2g.encryption = hostPassword.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.mainWireLess.host.band_5g.encryption = hostPassword.length === 0 ?'none':'psk-mixed/ccmp+tkip';
+        this.mainWireLess.host.band_2g.enable = "1";
 
-            let band5 = Object.assign(
-                this.main.host.band_5g,
-                {
-                    ssid: ssid.substring(0,29) + "_5G",
-                    encryption,
-                    password: pwdBase64,
-                }
-            );
-            this.main.host.band_5g = band5;
+        let data = { hostSsid, guestSsid, hostPassword, guestPassword, guestDisplay };
+        let param = JSON.stringify(data);
 
-            console.log('wifi main config: ', this.main);
-            const param = JSON.stringify(this.main);
-            this.props.history.push('/guide/guest/' + encodeURIComponent(param));
-        };
-
-        if ('' === password) {
-            confirm({
-                //title: '提示',
-                content: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi未设置密码，存在安全风险，确定不设置？*/,
-                onOk: next,
-            });
+        let response = await common.fetchApi(
+            [{
+                opcode: 'WIRELESS_SET',
+                data: { main : this.mainWireLess, guest : this.guestWireLess}
+            }]
+        );
+        this.setState({ loading : false});
+        
+        let {errcode} = response;
+        if(errcode === 0){
+            this.props.history.push('/guide/finish/' + encodeURIComponent(param));
         } else {
-            next();
+            // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
+            message.error(intl.get(MODULE, 9, {error: errorMessage[errcode] || errcode})/*_i18n:Wi-Fi设置失败[{error}]*/);
+        }
+        
+    }
+    
+    nextStep = () => {
+        const {hostPassword, guestPassword, guestDisplay } = this.state;
+
+        if(hostPassword.length === 0 || ('block' === guestDisplay && guestPassword.length === 0)){
+            confirm({
+                content: (hostPassword.length === 0 ? '商户Wi-Fi' : '') + 
+                (hostPassword.length === 0 && guestPassword.length === 0 && 'block' === guestDisplay? '、' : '')+
+                (guestPassword.length === 0 && 'block' === guestDisplay? '顾客Wi-Fi' : '') + '密码未设置，确定继续?',
+                onOk: this.dataSet,
+            });
+            this.setState({ loading : false }); 
+        }else{
+            this.dataSet();
         }
     };
 
@@ -96,14 +139,19 @@ export default class SetWifi extends React.Component {
         let response = await common.fetchApi({ opcode: 'WIRELESS_GET' });
         let { errcode, data } = response;
         if(errcode == 0){
-            let { ssid, password } = data[0].result.main.host.band_2g;
+            let { main, guest } = data[0].result;
+            this.mainWireLess = main;
+            this.hostWireLess = main.host.band_2g;
+            this.guestWireLess = guest;
             this.setState({
-                ssid,
-                password,
+                hostSsid : this.hostWireLess.ssid,
+                hostPassword : Base64.decode(this.hostWireLess.password),
+                guestSsid : this.guestWireLess.ssid,
+                guestPassword : Base64.decode(guest.static_password)   
             });
-
-            this.main = data[0].result.main;
+            return;
         }
+        message.error('Wi-Fi信息获取失败');
     }
 
     componentDidMount() {
@@ -111,34 +159,62 @@ export default class SetWifi extends React.Component {
     }
 
     render() {
-        const { ssid, ssidTip, password, passwordTip } = this.state;
+        let { hostSsid, hostSsidTip, hostPassword, hostPasswordTip, guestSsid, guestSsidTip, guestPassword, guestPasswordTip, guestDisplay, setMessage } = this.state;
 
-        let disabled = [ssidTip, passwordTip].some(tip => {
-            return (tip.length > 0);
+        if ('none' === guestDisplay) {
+            guestSsidTip = '';
+            guestPasswordTip = '';
+        }
+
+        let tipCheck = [hostSsidTip, hostPasswordTip, guestSsidTip, guestPasswordTip].some(tip => {
+            return ('' !== tip);
         });
 
-        return (
-            <div>
-                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips={intl.get(MODULE, 5)/*_i18n:请设置您为自己或店员开放的个人Wi-Fi名称与密码*/} />
-                <form>
-                    <Form
-                        value={ssid}
-                        placeholder={intl.get(MODULE, 6)/*_i18n:请设置Wi-Fi名称*/}
+        let disabled = tipCheck || '' === hostSsid || ('' === guestSsid && 'block' === guestDisplay);
+
+        return ([
+            <div className='guide-upper'>
+                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips='' />
+                <form className='h5setwifi'>
+                    <Input
+                        inputName='商户WiFi（建议店内设备及员工使用）'
+                        value={hostSsid}
+                        placeholder='设置商户WiFi名称'
                         maxLength={32}
-                        tip={ssidTip}
-                        onChange={value => this.onChange('ssid', value)}
+                        tip={hostSsidTip}
+                        onChange={value => this.onChange('hostSsid', value)}
+                        style={{marginBottom: '0.4267rem'}}
                     />
-                    <Form
-                        value={password}
+                    <Input
+                        value={hostPassword}
                         type='password'
-                        placeholder={intl.get(MODULE, 7)/*_i18n:请设置Wi-Fi密码*/}
+                        placeholder='设置商户WiFi密码'
                         maxLength={32}
-                        tip={passwordTip}
-                        onChange={value => this.onChange('password', value)}
+                        tip={hostPasswordTip}
+                        onChange={value => this.onChange('hostPassword', value)}
                     />
-                    <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
+                    <Input
+                        inputName='客户WiFi（建议开放给来电客户使用）'
+                        value={guestSsid}
+                        placeholder='设置顾客WiFi名称'
+                        maxLength={32}
+                        tip={guestSsidTip}
+                        onChange={value => this.onChange('guestSsid', value)}
+                        style={{marginBottom: '0.4267rem',display: guestDisplay}}
+                    />
+                    <Input
+                        value={guestPassword}
+                        type='password'
+                        placeholder='设置顾客WiFi密码'
+                        maxLength={32}
+                        tip={guestPasswordTip}
+                        onChange={value => this.onChange('guestPassword', value)}
+                        style={{marginBottom: '0.4267rem',display: guestDisplay}}
+                    />
+                    <p className='setGuest' onClick={this.setGuest}>{setMessage}</p>
                 </form>
-            </div>
-        )
+            </div>,
+            <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
+        ]);
     }
 }
