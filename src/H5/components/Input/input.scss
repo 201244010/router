@@ -1,0 +1,51 @@
+.sm-form{
+    margin: 0 auto 1.12rem;
+    .input-name {
+        font-family: 'PingFangSC-Regular';
+        font-size: 0.3733rem;
+        color: #333333;
+        line-height: 0.48rem;
+    }
+    .sm-input-outline{
+        color: #333C4F;
+        background: #FFF;
+        position: relative;
+        .ui-icon {
+            position: absolute;
+            right: 0.1333rem;
+            top: 0.6133rem;
+            cursor: pointer;
+        }
+        .sm-input-content{
+            // padding-top: 0.1333rem; // 使输入框文字垂直居中
+            font-size: 0.3733rem;
+            width: 100%;
+            height: 1.4933rem;
+            line-height: normal;
+            border: 0;
+            border-bottom:1px rgba(0, 0, 0, .4) solid;
+            // border-radius: 0.2133rem;
+            // padding-left: 20.0025px;
+            outline:none;
+            &:focus{
+                border-color: #FB8632;
+            }
+            &.has-error {
+                border-color: #D33419;
+            }
+            &::-webkit-input-placeholder{
+                color: #333C4F;
+                opacity: 0.3;
+                top: 0; // 使输入框提示文字垂直居中
+            }
+        }
+    }
+    .sm-form-tip{
+        margin-top: 0.1867rem;
+        text-align: left;
+        font-family: 'PingFangSC-Light';
+        font-size: 0.32rem;
+        color: #999;
+        line-height: 0.48rem;
+    }
+}

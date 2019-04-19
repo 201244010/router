@@ -2,7 +2,7 @@ import React from 'react';
 import { Base64 } from 'js-base64';
 import toast from 'h5/components/toast';
 import GuideHeader from 'h5/components/GuideHeader';
-import Form from 'h5/components/Form';
+import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 import Link from 'h5/components/Link';
 import Loading from 'h5/components/Loading';
@@ -99,10 +99,6 @@ export default class PPPoE extends React.Component {
         toast({tip: intl.get(MODULE, 6, {error: errcode})/*_i18n:参数非法[{error}]*/});
     }
 
-    changeType = () => {
-        this.props.history.push('/guide/setwan/pppoe');
-    }
-
     getNetInfo = async () => {
         let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET' });
         let { data, errcode } = response;
@@ -128,19 +124,21 @@ export default class PPPoE extends React.Component {
         const disabled = [ account, pwd ].some(item => {return item === '' }) ||
                          [ accountTip, pwdTip ].some(item => { return item !== ''});
 
-        return (
-            <div>
+        return ([
+            <div className='guide-upper'>
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:宽带拨号上网（PPPoE）*/} tips={intl.get(MODULE, 8)/*_i18n:请输入运营商提供的宽带账号和密码*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在连网，请稍候...*/} />
-                <form>
-                    <Form
+                <div style={{marginTop: '1.28rem'}}>
+                    <Input
+                        inputName='账号'
                         value={account}
                         onChange={value => this.onChange('account', value)}
                         tip={accountTip}
                         placeholder={intl.get(MODULE, 10)/*_i18n:请输入账号*/}
                         maxLength={64}
                     />
-                    <Form
+                    <Input
+                        inputName='密码'
                         type='password'
                         value={pwd}
                         onChange={value => this.onChange('pwd', value)}
@@ -148,12 +146,9 @@ export default class PPPoE extends React.Component {
                         placeholder={intl.get(MODULE, 11)/*_i18n:请输入密码*/}
                         maxLength={32}
                     />
-                    <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
-                    <div className='bottom-link'>
-                        <Link onClick={this.changeType}>{intl.get(MODULE, 13)/*_i18n:切换上网方式*/}</Link>
-                    </div>
-                </form>
-            </div>
-        );
+                </div>
+            </div>,
+            <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
+        ]);
     }
 }

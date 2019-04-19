@@ -1,0 +1,11 @@
+.pictures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.6rem;
+    .picture {
+        width: 3.84rem;
+        height: 3.84rem;
+        background: url('./prepare-router.png');
+        background-size: 100% 100%;
+    }
+}

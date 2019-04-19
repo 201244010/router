@@ -49,7 +49,7 @@ export default class SysUpgrade extends React.Component{
                 const {detecting, update, duration, devList, codeList} = this.state;
                 const online = record.online;
                 if (update && online) {
-                    return <ProgressStatus duration={duration} status={devList[record.name]} failTip={codeList[record.name]} />
+                    return <ProgressStatus duration={duration} status={devList[record.devid]} failTip={codeList[record.devid]} />
                 } else if (detecting && online) {
                     return (
                         <div>
@@ -126,6 +126,14 @@ export default class SysUpgrade extends React.Component{
                     stop : () => this.stop,
                     pending : res => {
                         const result = res.data[0].result.upgrade;
+                        result.map(item => {
+                            Object.assign(this.devList, {[item.devid]: item.progress});
+                            Object.assign(this.codeList, {[item.devid]: intl.get(MODULE, 5, {error: item.code})});
+                        });
+                        this.setState({
+                            devList: this.devList,
+                            codeList: this.codeList
+                        });
                         let state = false;
                         result.some(item => {
                                 const progress = item.progress;
@@ -135,15 +143,7 @@ export default class SysUpgrade extends React.Component{
                     }
                 }
             ).then((resp)=>{
-                const result = resp.data[0].result.upgrade;
-                result.map(item => {
-                    Object.assign(this.devList, {[item.devid]: item.progress});
-                    Object.assign(this.codeList, {[item.devid]: intl.get(MODULE, 5, {error: item.code})});
-                });
-                this.setState({
-                    devList: this.devList,
-                    codeList: this.codeList
-                });
+                
             }) 
         }else{
             Modal.error({title : intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
@@ -199,14 +199,16 @@ export default class SysUpgrade extends React.Component{
 class ProgressStatus extends React.Component {
     constructor(props) {
         super(props);
+        this.once = false;
     }
 
     state = {
         percent: 0
     }
 
-    componentDidMount() {
+    startProgress = () => {
         this.timer = setInterval(() => {
+            this.once = true;
             const max = this.props.max || 100;
             let percent = this.state.percent + 1;
             if (percent <= max) {
@@ -237,14 +239,27 @@ class ProgressStatus extends React.Component {
                     return  <p style={{color: '#D0021B', fontSize: 14}}>
                         {`升级失败(校验文件失败，${failTip || '错误码：未知'})`}
                     </p>
-                case 'start upgrading!': 
+                case 'start upgrading!':
+                    !this.once && this.startProgress();
                     return <div>
                     <Progress percent={percent} strokeWidth={8} />
+                </div>
+                case 'start downloading!':
+                    return <div>
+                        {
+                            percent === 0 ? '正在下载' : <Progress percent={percent} strokeWidth={8} />
+                        }
+                    </div>
+                case 'start checking!':
+                    return <div>
+                    {
+                        percent === 0 ? '正在校验' : <Progress percent={percent} strokeWidth={8} />
+                    }
                 </div>
                 default:
-                    return <div>
-                    <Progress percent={percent} strokeWidth={8} />
-                </div>
+                return <div>
+                        正在下载
+                    </div>
             }
         }
         return (
