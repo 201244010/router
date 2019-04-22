@@ -1,8 +1,9 @@
 import React from 'react';
 import './index.scss'
 import { Button } from 'antd';
-// import echarts from 'echarts/lib/echarts';
-// import 'echarts/lib/chart/line';
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/line';
+import 'echarts/lib/component/tooltip' 
 // import 'echarts/lib/component/legend';
 
 export default class Allocation extends React.Component{
@@ -12,7 +13,7 @@ export default class Allocation extends React.Component{
     }
 
     initChart = () => {
-        const echarts = require('echarts');
+        // const echarts = require('echarts');
         this.myChart = echarts.init(this.refs['dom']);
         this.renderChart();
     }
