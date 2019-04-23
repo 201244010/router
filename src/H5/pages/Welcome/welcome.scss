@@ -1,4 +1,4 @@
-.welcome{
+.h5welcome{
     height: 100%;
     color: #333333;
     background: #FFF;
@@ -26,10 +26,18 @@
     .policy{
         font-size: 0.2667rem;
         margin-top: 2.5333rem;
-        .agreement{
-            margin-left: 0.1067rem;
-            opacity: 0.6;
-            font-size: 0.32rem;
+        .h5checkbox {
+            color: #999999;
+            font-family: PingFangSC-Light;
+            font-size: 10px;
+            color: #999999;
+            text-align: center;
+            line-height: 14px;
+            .sm-link {
+                color: #333333;
+                border-bottom: 1px solid #fafafa;
+                text-decoration: none;
+            }
         }
     }
     .copyright{
@@ -41,19 +49,5 @@
         right: 0;
         font-size: 0.32rem;
         color: rgba(247,247,247,0.40);
-    }
-}
-
-.checkbox {
-    color: #999999;
-    font-family: PingFangSC-Light;
-    font-size: 10px;
-    color: #999999;
-    text-align: center;
-    line-height: 14px;
-    .sm-link {
-        color: #333333;
-        border-bottom: 1px solid #fafafa;
-        text-decoration: none;
     }
 }
