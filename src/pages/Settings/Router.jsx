@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, message} from 'antd';
+import {Table, message, Popconfirm} from 'antd';
 import SubLayout from '~/components/SubLayout';
 import {formatTime} from '~/assets/common/utils';
 
@@ -75,8 +75,20 @@ export default class Router extends React.Component {
             title: '操作'/*_i18n:流量消耗*/,
             width: 136,
             render: (record) => {
-                return <span onClick={() => this.deleteRouter(record)} style={{fontSize: 14, color: '#6174F1'}}>移除</span>
-            }
+                return  <Popconfirm
+                            title= {
+                                <div className="pop-content">
+                                    <label>你确定要将此设备从网络中移除？</label>
+                                    <p>移除之后，子路由将自动重置为出厂状态，耗时约2分钟，期间请勿断电</p>
+                                </div>
+                            }
+                            okText={intl.get(MODULE, 15)/*_i18n:确定*/}
+                            cancelText={intl.get(MODULE, 16)/*_i18n:取消*/}
+                            placement="topRight"
+                            onConfirm={() => this.deleteRouter(record)}>
+                            <span style={{fontSize: 14, color: '#6174F1'}}>移除</span>
+                        </Popconfirm>
+                }
         }];
     }
 
