@@ -73,7 +73,7 @@ export default class Topology extends React.Component{
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <Button onClick={this.startDiagnose} className="diagnose">诊断故障</Button>
+                                    <Button onClick={this.startDiagnose} className="diagnose"><span>诊断故障</span></Button>
                                 </div>
                             }
                             
