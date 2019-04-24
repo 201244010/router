@@ -1,5 +1,6 @@
 import { Modal } from 'antd';
 import CustomIcon from '~/components/Icon';
+import { withRouter } from "react-router-dom";
 import React from "react";
 import Upgrade from './Upgrade';
 
@@ -7,7 +8,7 @@ const MODULE = 'upgradedetect';
 
 const UPGRADE_SHOW = 'UPGRADE_SHOW';
 
-export default class UpdateDetect extends React.Component {
+class UpdateDetect extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -40,7 +41,7 @@ export default class UpdateDetect extends React.Component {
         this.setState({
             update: false
         });
-        this.refs.Upgrade.startUpgrade();
+        this.props.history.push('/upgrade');
     }
 
     componentDidMount() {
@@ -58,15 +59,17 @@ export default class UpdateDetect extends React.Component {
 
     getInfo = async () => {
         let response = await common.fetchApi(
-            {opcode: 'MESH_FIRMWARE_GET'},
-            {opcode: 'ROUTE_GET'},
+            [
+                {opcode: 'MESH_FIRMWARE_GET'},
+                {opcode: 'ROUTE_GET'},
+            ]
         );
 
         // 防止 Default组件重定向到 guide 显示升级弹窗提示
         if (this.state.guide) {
             return;
         }
-
+        console.log(response);
         let { data, errcode } = response;
         if (0 === errcode) {
             let devId = '';
@@ -76,16 +79,17 @@ export default class UpdateDetect extends React.Component {
                 }
             });
 
-            let version = '';
+            let version = '', releaseLog = '';
             data[0].result.upgrade.map(item => {
                 if (item.devid === devId) {
                     version = item.current_version;
+                    releaseLog = item.release_log
                 }
             })
 
             this.setState({
                 update: version !== '',
-                releaseLog: release_log,
+                releaseLog: releaseLog,
             });
         }
     }
@@ -105,3 +109,5 @@ export default class UpdateDetect extends React.Component {
         )
     }
 }
+
+export default withRouter(UpdateDetect);

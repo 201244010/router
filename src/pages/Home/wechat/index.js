@@ -1,5 +1,8 @@
 import React from 'react';
 import {Button} from 'antd';
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/tooltip' 
 import './index.scss';
 
 export default class Connection extends React.Component {
@@ -9,7 +12,7 @@ export default class Connection extends React.Component {
     }
     
     initChart = () => {
-        const echarts = require('echarts');
+        // const echarts = require('echarts');
         this.myChart = echarts.init(this.refs['dom']);
         this.renderChart();
     }
