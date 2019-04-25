@@ -115,21 +115,21 @@ export default class Topology extends React.Component{
                     <ul>
                         <li>
                             <div>
-                                <label>上传速度</label>
-                                <CustomIcon color="#fff" type="upload" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
+                                <label className="up-speed">上传速度</label>
+                                <CustomIcon color="#fff" type="upload" style={{marginBottom: 1, marginLeft: 3, opacity: 0.6}} size={12}/>
                             </div>
-                            <div>
-                                <label className="speed-value">{upSpeed}</label>
+                            <div className="speed-content">
+                                <label>{upSpeed}</label>
                                 <span>{upUnit}</span>
                             </div>
                         </li>
                         <li>
                             <div>
-                                <label>下载速度</label>
-                                <CustomIcon color="#fff" type="download" style={{marginBottom: 1, marginLeft: 3}} size={12}/>
+                                <label className="up-speed">下载速度</label>
+                                <CustomIcon color="#fff" type="download" style={{marginBottom: 1, marginLeft: 3, opacity: 0.6}} size={12}/>
                             </div>
-                            <div>
-                                <label className="speed-value">{downSpeed}</label>
+                            <div className="speed-content">
+                                <label>{downSpeed}</label>
                                 <span>{downUnit}</span>
                             </div>
                         </li>

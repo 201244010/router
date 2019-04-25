@@ -120,6 +120,7 @@
                     vertical-align: middle;
                     .add-router {
                         margin: 25px 40px 12px 40px;
+                        opacity: 0.6;
                     }
                     .sate-router {
                         // margin: 5px 30px 18px 30px;
@@ -129,20 +130,9 @@
                             text-overflow:ellipsis;
                             display:-webkit-box; 
                             -webkit-box-orient:vertical;
-                            -webkit-line-clamp:2; 
                             word-wrap: break-word;
                             display: -moz-box;
-                            -moz-line-clamp: 2;
                             -moz-box-orient: vertical;
-                        }
-
-                        label::after {
-                            background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-                            bottom: 0;
-                            content: "...";
-                            padding: 0 5px 1px 30px;
-                            position: absolute;
-                            right: 0;
                         }
                     }
                 }
@@ -154,6 +144,7 @@
                 li:last-child {
                     label {
                         font-size: 12px;
+                        opacity: 0.6;
                     }
                 }
             }
@@ -170,16 +161,16 @@
                 color:#fff;
                 margin-left: 52px;
                 margin-top: 32px;
-                :first-child {
-                    label {
-                        line-height: 24px;
-                        font-size: 12px;
-                    }
+                .up-speed {
+                    line-height: 24px;
+                    font-size: 12px;
+                    opacity: 0.6;
                 }
-                :last-child {
+                .speed-content {
+                    font-family: Helvetica;
                     label {
-                        font-family: Archive;
                         font-size: 28px;
+                        margin-right: 4px;
                     }
                     span {
                         font-size: 14px;
