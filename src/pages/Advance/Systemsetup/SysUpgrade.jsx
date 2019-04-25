@@ -16,6 +16,7 @@ export default class SysUpgrade extends React.Component{
             detectTip: '重新检测',
             duration: 150,
             update: false,
+            hasNewversion: true,
             devList: {},
             codeList: {}
         };
@@ -71,7 +72,7 @@ export default class SysUpgrade extends React.Component{
     }
 
     render(){
-        const {detecting, routerList, detectTip, update} = this.state;
+        const {detecting, routerList, detectTip, update, hasNewversion} = this.state;
         return (
             <SubLayout className="settings">
                 <div className='sys-upgrade'>
@@ -80,7 +81,7 @@ export default class SysUpgrade extends React.Component{
                     </p>
                     <div>
                         <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
-                        <Button type="primary" disabled={detecting || update} onClick={this.startUpgrade}>全部升级</Button>
+                        <Button type="primary" disabled={detecting || update || hasNewversion} onClick={this.startUpgrade}>全部升级</Button>
                     </div>
                 </div>
                 <div className="static-table">
@@ -167,6 +168,8 @@ export default class SysUpgrade extends React.Component{
             message.warning('获取信息失败！')
         }
 
+        let hasNewversion = true;
+
         const routerList = data[0].result.upgrade.map(item => {
             const current = item.current_version;
             const newVersion = item.newest_version;
@@ -175,22 +178,25 @@ export default class SysUpgrade extends React.Component{
             if (newVersion === '') {
                 versiontTip = '当前已是最新版本';
             } else {
-                versiontTip = '发现新版本：' + newVersion
+                versiontTip = '发现新版本：' + newVersion;
+                hasNewversion = false;
             }
             return {
                 devid: item.devid,
                 name: item.location,
-                model: item.model,
-                version: current,
-                status: online ? versiontTip : '--',
+                model: item.model || '--',
+                version: current || '--',
+                status: online ? versiontTip : '设备已离线',
                 releaseLog: item.release_log,
-                online: online
+                online: online,
+                newVersion: newVersion
             }
         });
         this.setState({
             routerList: routerList,
             detecting: false,
-            detectTip: '重新检测'
+            detectTip: '重新检测',
+            hasNewversion: hasNewversion
         })
     }
 
