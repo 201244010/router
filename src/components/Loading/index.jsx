@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Icon } from 'antd';
+import CustomIcon from '~/components/Icon';
 
 import './loading.scss';
 
@@ -37,7 +38,7 @@ class Loading extends React.PureComponent {
 		return (
 			<div className={'sm-loading-wrap ' + className} style={{visibility: this.state.visible}}>
 				<div className='sm-loading-content'>
-					<Icon type={icon} style={{ fontSize: 36, color: "#FB8632" }} spin />
+					<CustomIcon size={36} color="#6174F1" type="loading_ring" spin />
 				</div>
 			</div>
 		)
