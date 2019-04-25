@@ -264,7 +264,10 @@ class Selecting extends React.Component {
         if (0 === showList.length && !searchFinish) {       //搜索进行中，且设备列表为空
             return (
                 <React.Fragment>
-                    <Icon key="progress-icon" type="loading" className="bigLoading"  spin />
+                    <div className="bigLoading">
+                        <CustomIcon size={80} color="#6174F1" type="loading_ring" spin />
+                    </div>
+                    {/* <Icon key="progress-icon" type="loading_ring" className="bigLoading"  spin /> */}
                     <h3 className='bigTitle'>正在检测子路由……</h3>
                 </React.Fragment>
             );
