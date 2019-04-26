@@ -291,7 +291,9 @@ class Selecting extends React.Component {
             return (
                 <React.Fragment>
                     <div className="settingHeader">
-                        <Icon key="progress-icon" type="loading" className="smallLoading"  spin />
+                        <div className="smallLoading">
+                            <CustomIcon size={24} color="#6174F1" type="loading_ring" spin />
+                        </div>
                         <span className='smallTitle'>正在检测子路由……</span>
                     </div>
                     <div className="body">
@@ -341,8 +343,10 @@ class SettingRouter extends React.Component {
         return (
             <React.Fragment>
                 <div className="settingHeader">
-                    <Icon key="progress-icon" type="loading" className="loading"  spin />
-                    <h3>正在设置子路由，请稍后……</h3>
+                    <div className="smallLoading">
+                        <CustomIcon size={24} color="#6174F1" type="loading_ring" spin />
+                    </div>
+                    <span className='smallTitle'>正在设置子路由，请稍后……</span>
                 </div>
                 <div className="body">
                 {showList}
