@@ -16,7 +16,7 @@ export default class SysUpgrade extends React.Component{
             detectTip: '重新检测',
             duration: 150,
             update: false,
-            hasNewversion: true,
+            hasVersion: true,
             devList: {},
             codeList: {}
         };
@@ -72,7 +72,7 @@ export default class SysUpgrade extends React.Component{
     }
 
     render(){
-        const {detecting, routerList, detectTip, update, hasNewversion} = this.state;
+        const {detecting, routerList, detectTip, update, hasVersion} = this.state;
         return (
             <SubLayout className="settings">
                 <div className='sys-upgrade'>
@@ -81,7 +81,7 @@ export default class SysUpgrade extends React.Component{
                     </p>
                     <div>
                         <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
-                        <Button type="primary" disabled={detecting || update || hasNewversion} onClick={this.startUpgrade}>全部升级</Button>
+                        <Button type="primary" disabled={detecting || update || hasVersion} onClick={this.startUpgrade}>全部升级</Button>
                     </div>
                 </div>
                 <div className="static-table">
@@ -168,7 +168,7 @@ export default class SysUpgrade extends React.Component{
             message.warning('获取信息失败！')
         }
 
-        let hasNewversion = true;
+        let hasVersion = true;
 
         const routerList = data[0].result.upgrade.map(item => {
             const current = item.current_version;
@@ -179,7 +179,7 @@ export default class SysUpgrade extends React.Component{
                 versiontTip = '当前已是最新版本';
             } else {
                 versiontTip = '发现新版本：' + newVersion;
-                hasNewversion = false;
+                hasVersion = false;
             }
             return {
                 devid: item.devid,
@@ -196,7 +196,7 @@ export default class SysUpgrade extends React.Component{
             routerList: routerList,
             detecting: false,
             detectTip: '重新检测',
-            hasNewversion: hasNewversion
+            hasVersion: hasVersion
         })
     }
 
