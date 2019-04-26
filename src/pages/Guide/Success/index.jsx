@@ -30,8 +30,8 @@ export default class Success extends React.Component {
                         <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
                     </div>
                     <div className="footButtons">
-                        <Button type="primary" className="complete" onClick={this.goHome}>{intl.get(MODULE, 1)}</Button>
-                        <Button type="primary" className="addMore" onClick={this.addSubRouter}>{intl.get(MODULE, 2)}</Button>
+                        <Button type="primary" onClick={this.goHome}>{intl.get(MODULE, 1)}</Button>
+                        <Button onClick={this.addSubRouter}>{intl.get(MODULE, 2)}</Button>
                     </div> 
                 </div>
             </React.Fragment>

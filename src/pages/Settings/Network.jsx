@@ -481,7 +481,7 @@ export default class NETWORK extends React.Component {
             <SubLayout className="settings">
                 <div className="wifi-settings">
                     <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
-                        <section className="wifi-setting-item" style={{marginBottom : 0}}>
+                        <section className="wifi-setting-item" style={{marginBottom : 48}}>
                             <PanelHeader title={intl.get(MODULE, 21)/*_i18n:当前上网信息*/} checkable={false} checked={true} />
                             <div className='network-info'>
                                 <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>

@@ -1,9 +1,8 @@
 import React from 'react';
 import './index.scss';
 import CustomIcon from '~/components/Icon';
-import { Button, Divider, Popover, Modal, Table, message, Popconfirm, Input, Form } from 'antd';
+import { Button, Modal, Table, message, Popconfirm, Input, Form } from 'antd';
 import Loading from '~/components/Loading';
-import classnames from 'classnames';
 import { formatTime, formatSpeed } from '~/assets/common/utils';
 import Logo from '~/components/Logo';
 
@@ -455,19 +454,21 @@ export default class Device extends React.Component {
                         }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
                     </div>
                     <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
-                    <Table
-                        columns={columns}
-                        dataSource={totalList}
-                        components={components}
-                        rowClassName={() => 'editable-row-device'}
-                        bordered
-                        rowKey={record => record.mac}
-                        scroll={{ y: 336 }}
-                        style={{ minHeight: 360 }}
-                        size="middle"
-                        pagination={false}
-                        locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
-                    />
+                    <div className="device-table">
+                        <Table
+                            columns={columns}
+                            dataSource={totalList}
+                            components={components}
+                            rowClassName={() => 'editable-row-device'}
+                            bordered
+                            rowKey={record => record.mac}
+                            scroll={{ y: 336 }}
+                            style={{ minHeight: 360 }}
+                            size="middle"
+                            pagination={false}
+                            locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
+                        />
+                    </div>
                 </Modal>
             </div>
         )

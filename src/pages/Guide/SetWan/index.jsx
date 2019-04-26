@@ -377,7 +377,9 @@ export default class SetWan extends React.PureComponent {
                 <p className="ui-tips guide-tip">{intl.get(MODULE, 16)/*_i18n:上网参数设置完成后，即可连接网络*/}</p>
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
-                    <Icon key="progress-icon" type="loading" className="loading"  spin />
+                    <div className="bigLoading">
+                        <CustomIcon size={80} color="#6174F1" type="loading_ring" spin />
+                    </div>
                     <h3 key="active-h3" style={{textAlign: "center"}}>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
                 </div>
                 {/* 显示网络连接状态 */}

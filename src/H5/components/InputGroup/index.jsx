@@ -146,31 +146,33 @@ class InputGroup extends React.Component {
         }
         return (
             <React.Fragment>
-                {inputGroupName && <label className='inputGroup-name'>{inputGroupName}</label>}
-                <div className={classnames(classes)}>
-                    {
-                        inputs.map( (item, i) => {
-                            const It = <input key={'input-' + i}
-                                            maxLength={item.maxLength}
-                                            // defaultValue={item.value} 
-                                            value={item.value}
-                                            className="ui-input-group-item"
-                                            onBlur={ e => this.onInputBlur(e, i, item) }
-                                            onFocus={ e => this.onInputFocus(e, i, item)}
-                                            onChange={ e => this.onInputChange(e, i, item)} 
-                                            //onKeyPress={ this.handleKeyPress }
-                                            onKeyDown={ this.handleKeyDown }
-                                            type='text'
-                                            disabled={this.props.disabled}
-                                        />;
-                            if(i !== inputs.length - 1){
-                                return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
-                            }
-                            return It;
-                        })
-                    }
+                <div className='sm-inputgroup'>
+                    {inputGroupName && <label className='inputGroup-name'>{inputGroupName}</label>}
+                    <div className={classnames(classes)}>
+                        {
+                            inputs.map( (item, i) => {
+                                const It = <input key={'input-' + i}
+                                                maxLength={item.maxLength}
+                                                // defaultValue={item.value} 
+                                                value={item.value}
+                                                className="ui-input-group-item"
+                                                onBlur={ e => this.onInputBlur(e, i, item) }
+                                                onFocus={ e => this.onInputFocus(e, i, item)}
+                                                onChange={ e => this.onInputChange(e, i, item)} 
+                                                //onKeyPress={ this.handleKeyPress }
+                                                onKeyDown={ this.handleKeyDown }
+                                                type='text'
+                                                disabled={this.props.disabled}
+                                            />;
+                                if(i !== inputs.length - 1){
+                                    return [It, <span className="dot" key={'span-' + i}>{type === 'mac' ? ":" : '.'}</span>];
+                                }
+                                return It;
+                            })
+                        }
+                    </div>
+                    <ErrorTip value={tip} />
                 </div>
-                <ErrorTip value={tip} />
             </React.Fragment>
         );
     }
