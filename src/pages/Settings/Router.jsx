@@ -18,7 +18,7 @@ export default class Router extends React.Component {
                         <img  src={require('~/assets/images/router.png')}/>
                     <ul>
                         <li>{name}</li>
-                        <li>{record.uptime}</li>
+                        <li>运行时长：{record.online ? record.uptime : '--'} </li>
                     </ul>
                     </div>
                 </div>
