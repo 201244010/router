@@ -16,7 +16,7 @@ export default class Preparing extends React.Component {
     render () {
         return ([
             <div className='guide-upper'>
-                <GuideHeader title='添加更多路由器' tips='将要添加的路由放置在合适的位置，然后接通电源，待信号灯呈白色后点击「开始添加」' />
+                <GuideHeader title='添加更多路由器' tips='将要添加的路由放置在合适的位置，然后接通电源，待系统信号指示灯停止闪烁后点击「开始添加」' />
                 <div className='pictures'>
                     <div className='picture'></div>
                     <div className='picture'></div>
