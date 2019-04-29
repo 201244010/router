@@ -46,14 +46,17 @@ button.ant-btn-primary:hover {
         color: #FFFFFF;
     }
 }
-button.ant-btn-primary:focus {
-    background:  #6174F1;
-    background-color :  #6174F1;
-    border : 1px solid  #6174F1;
-    span{
-        color: #FFFFFF;
+button.ant-btn-primary{
+    &:focus, &:active {
+        background:  #6174F1;
+        background-color :  #6174F1;
+        border : 1px solid  #6174F1;
+        span{
+            color: #FFFFFF;
+        }
     }
 }
+
 button.ant-btn-primary[disabled] {
     span {
         color: #C6C8CC
