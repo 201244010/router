@@ -189,7 +189,7 @@ export default class Static extends React.Component {
         const disabled = this.checkDisabled(this.state);
 
         return ([
-            <div className='guide-upper'>
+            <div style={{height: "14.5866rem",padding: "0 0.25rem",marginBottom: 0,overflow: "auto"}}>
                 <GuideHeader title={intl.get(MODULE, 13)/*_i18n:手动输入IP（静态IP）*/} tips={intl.get(MODULE, 14)/*_i18n:请输入运营商提供的IP地址、子网掩码、网关、DNS服务器地址*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 15)/*_i18n:正在连网，请稍候...*/} />
                 <div style={{marginTop: '0.5867rem'}}>

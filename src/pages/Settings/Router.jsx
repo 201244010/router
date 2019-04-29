@@ -93,7 +93,18 @@ export default class Router extends React.Component {
     }
 
     state = {
-        routerList: []
+        routerList: [],
+        // routerList: [{
+        //         mac: 'mac',
+        //         name: 'name',
+        //         ip: 'ip',
+        //         router: 'adad',
+        //         mode: 'dd',
+        //         rssi: '较好',
+        //         online: 0,
+        //         routermac: 'adada',
+        //         uptime: '1231414131'
+        // }]
     }
 
     deleteRouter = async (rowdetail) => {
@@ -177,19 +188,7 @@ export default class Router extends React.Component {
     }
 
     render() {
-        // const routerList = [{
-        //     mac: 'mac',
-        //     name: 'name',
-        //     ip: 'ip',
-        //     router: 'adad',
-        //     mode: 'dd',
-        //     rssi: '较好',
-        //     online: 0,
-        //     routermac: 'adada',
-        //     uptime: '1231414131'
-        // }]
         const {routerList} = this.state;
-        // console.log('152',routerList);
         return (
             <SubLayout className="settings">
                 <div className="static-table" style={{marginTop:24}}>
@@ -205,7 +204,6 @@ export default class Router extends React.Component {
                         }}
                         bordered={false}
                         rowKey={record => record.mac}
-                        // scroll={{ y: window.innerHeight - 267 }}
                         style={{ minHeight: 360 }}
                         pagination={false}
                         locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}

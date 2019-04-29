@@ -201,26 +201,26 @@ i.dot{
 }
 
 .editable-cell-client {
+    color: #333C4F;
     vertical-align: top;
     position: relative;
     .editable-cell-value-wrap {
         width: 196px;
         cursor: pointer;
         .device {
+            font-family: PingFangSC-Regular;
             max-width: 140px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 12px;
-            margin: 4px 10px;
+            color: rgba(51,60,79,0.60);
         }
         .hostname {
             display: inline-block;
-            border-width: 1px;
-            border-style: solid;
-            border-color: transparent;
-            border-radius: 4px;
             font-size: 14px;
+            color: #333C4F;
+            margin-right: 8px;
         }
         .logo {
             width: 40px;
@@ -264,7 +264,7 @@ i.dot{
             font-size: 16px;
             line-height: 22px;
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.85);
+            color: #333C4F;
             display: inline-block;
             margin-right: 10px;
             span {
@@ -326,6 +326,12 @@ i.dot{
         -moz-line-clamp: 2;
         -moz-box-orient: vertical;
     }
+    .macAddress {
+        font-size: 12px;
+        label {
+            margin-right: 3px;
+        }
+    }
     .editable-row{
         background: #F8F9FB;
     }
@@ -335,6 +341,14 @@ i.dot{
             font-size: 14px;
             color: #333C4F;
             height: 60px;
+        }
+        &:hover {
+            .hostname {
+                border-width: 1px;
+                border-style: solid;
+                border-color: transparent;
+                border-radius: 4px;
+            }
         }
     }
 
@@ -346,6 +360,7 @@ i.dot{
     }
     .ant-table-tbody>tr>td {
         border-bottom: none;
+        
     }
     .ant-table-placeholder {
         background: #F8F9FB;

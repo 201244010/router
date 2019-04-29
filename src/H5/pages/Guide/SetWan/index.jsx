@@ -48,7 +48,7 @@ export default class SetWan extends React.Component {
     }
 
     defaultSet = () => {
-        this.props.history.push('/guide/setwan/dhcp');
+        window.location.href = '/guide/setwan/dhcp';
     }
 
     setDHCP = async() => {
