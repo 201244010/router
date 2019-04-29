@@ -93,7 +93,7 @@ export default class Mesh extends React.Component{
     render() {
         const { visible, state, title, showBtn, btnStr, devices }  = this.state;
         const num = devices.length;
-        const icon = <Icon type="loading" style={{ fontSize: 20, color: '#FB8632' }} spin />;
+        const icon = <CustomIcon color="#6174F1" type="loading_ring" size={20} spin/>
         let Title = [
             'running' === state && <Spin className='spin' indicator={icon} />,
             <span dangerouslySetInnerHTML={{ __html: title }} className='title' />

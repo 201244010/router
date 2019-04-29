@@ -120,6 +120,7 @@
                     vertical-align: middle;
                     .add-router {
                         margin: 25px 40px 12px 40px;
+                        cursor: pointer;
                         opacity: 0.6;
                     }
                     .sate-router {
@@ -142,7 +143,7 @@
                 li:last-child {
                     label {
                         font-size: 12px;
-                        opacity: 0.6;
+                        opacity: 0.8;
                     }
                 }
             }
@@ -162,7 +163,6 @@
                 .up-speed {
                     line-height: 24px;
                     font-size: 12px;
-                    opacity: 0.6;
                 }
                 .speed-content {
                     font-family: Helvetica;

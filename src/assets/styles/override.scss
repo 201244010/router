@@ -13,6 +13,7 @@ button.ant-btn-sm {
 }
 button.ant-btn:hover {
     border: 1px solid #6174F1;
+    background: none;
     span {
         color: #6174F1;
     }
@@ -177,7 +178,6 @@ button.ant-btn-primary.ant-btn-loading {
 
 .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
     border-color :  #6174F1;
-    box-shadow: 0 0 0 2px rgba(251, 134, 50, 0.2)!important;
 }
 
 .ant-select-selection:hover {
