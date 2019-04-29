@@ -151,7 +151,7 @@
 
 .radio-choice{
     display:inline-block;
-    margin: 8px 0 24px;
+    margin: 8px 0 0px;
 }
 
 .network-info{
@@ -182,8 +182,12 @@
         vertical-align: middle;
         margin-left: 12px;
         li:nth-child(1){
+            max-width: 200px;
             font-size: 14px;
             color: #333C4F;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow:hidden; 
         }
         li:nth-child(2){
             font-size: 12px;
