@@ -335,12 +335,23 @@ i.dot{
     .editable-row{
         background: #F8F9FB;
     }
+    .ant-table-thead > tr > th .anticon-filter {
+        height: 60px;
+        padding-top: 22px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+    .ant-table-middle>.ant-table-content>.ant-table-scroll {
+        .ant-table-body>table>.ant-table-tbody>tr>td {
+            padding: 17px 8px;
+        }
+    }
     tr {
         th {
             background: #FFFFFF;
             font-size: 14px;
             color: #333C4F;
-            height: 60px;
+            // height: 60px;
         }
         &:hover {
             .hostname {

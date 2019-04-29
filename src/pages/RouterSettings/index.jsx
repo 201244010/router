@@ -40,7 +40,7 @@ export default class RouterSetting extends React.PureComponent {
     }
 
     goPage = (route) => {
-        this.props.history.push('/' + route)
+        this.props.history.push('/routersetting/' + route)
     }
 
     render(){

@@ -123,13 +123,6 @@ button.ant-btn-primary.ant-btn-loading {
     color: #8A8D94; 
 }
 
-.ant-table-thead > tr > th .anticon-filter {
-    height: 60px;
-    padding-top: 22px;
-    margin-left: 8px;
-    vertical-align: middle;
-}
-
 .anticon-filter:hover {
     // opacity: 0.34;
     background: #ADB1B9;
@@ -195,6 +188,7 @@ button.ant-btn-primary.ant-btn-loading {
 .ant-table {
     font-size: 12px;
     color: #333C4F;
+    font-family: PingFangSC-Regular;
 }
 
 .ant-table-pagination.ant-pagination {
@@ -218,13 +212,20 @@ button.ant-btn-primary.ant-btn-loading {
     text-align: center;
 }
 
+.ant-pagination-item-active a {
+    color:  #6174F1 !important;
+}
+
+.ant-pagination-item-active {
+    border-color: #6174F1 !important;
+}
+
 .ant-table-middle>.ant-table-content>.ant-table-scroll {
     .ant-table-header>table>.ant-table-thead>tr>th {
-        // padding: 8px 8px;
-        padding: unset;
+        padding: 8px 8px;
     }
     .ant-table-body>table>.ant-table-tbody>tr>td {
-        padding: 17px 8px;
+        padding: 8px 8px;
     }
 }
 
