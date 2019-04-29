@@ -9,7 +9,7 @@ class PrimaryTitle extends React.Component {
 	constructor(props) {
         super(props);
     }
-
+    
 	render() {
         const {title, titleTip} = this.props;
 

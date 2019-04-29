@@ -142,26 +142,11 @@ class PrimaryLayout extends React.Component {
                             <Route path="/home" component={Home} />
                             <Route path="/clientlist" component={ClientList} />
                             <Route path="/settings" component={Settings} />
-                            <Route path="/routersetting" component={RouterSettings} />
+                            <Route path="/routersetting" component={RouterSetting}/>
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
                             <Route path="/bandwidth" component={Bandwidth} />
-                            <Route path="/wechat" component={Wechat} />
-                            <Route path="/blacklist" component={Blacklist} />
-                            <Route path="/bootdevice" component={Bootdevice} />
-                            <Route path="/systemsetup" component={Systemsetup} />
-                            <Route path="/wifiset" component={Wifi} />
-                            <Route path="/network" component={Network} />
-                            <Route path="/lan" component={Lan} />
-                            <Route path="/routermanage" component={RouterList} />
-                            <Route path="/dosd" component={Dosd} />
-                            <Route path="/changepassword" component={ChangePassword} />
-                            <Route path="/upgrade" component={SysUpgrade} />
-                            <Route path="/backup" component={Backup} />
-                            <Route path="/reboot" component={Reboot} />
-                            <Route path="/recovery" component={Recovery} />
-                            <Route path="/timeset" component={TimeZone} />
-                            <Route path="/" component={Default} />
+                            <Route path="/" exact component={Default} />
                         </Switch>
                     </div>
                     {false !== node.footer && <PrimaryFooter className={node.footer} />}
@@ -170,6 +155,33 @@ class PrimaryLayout extends React.Component {
                 <Background image={require('~/assets/images/noise.png')} />
             </div>
         );
+    }
+}
+
+class RouterSetting extends React.Component {
+    
+    render() {
+        return (
+                <Switch>
+                    <Route path="/routersetting" exact component={RouterSettings}/>
+                    <Route path="/routersetting/wifiset" component={Wifi} />
+                    <Route path="/routersetting/bandwidth" component={Bandwidth} />
+                    <Route path="/routersetting/wechat" component={Wechat} />
+                    <Route path="/routersetting/blacklist" component={Blacklist} />
+                    <Route path="/routersetting/bootdevice" component={Bootdevice} />
+                    <Route path="/routersetting/systemsetup" component={Systemsetup} />
+                    <Route path="/routersetting/network" component={Network} />
+                    <Route path="/routersetting/lan" component={Lan} />
+                    <Route path="/routersetting/routermanage" component={RouterList} />
+                    <Route path="/routersetting/dosd" component={Dosd} />
+                    <Route path="/routersetting/changepassword" component={ChangePassword} />
+                    <Route path="/routersetting/upgrade" component={SysUpgrade} />
+                    <Route path="/routersetting/backup" component={Backup} />
+                    <Route path="/routersetting/reboot" component={Reboot} />
+                    <Route path="/routersetting/recovery" component={Recovery} />
+                    <Route path="/routersetting/timeset" component={TimeZone} />
+                </Switch>
+        )
     }
 }
 
