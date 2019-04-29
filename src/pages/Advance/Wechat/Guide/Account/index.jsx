@@ -77,7 +77,7 @@ export default class Account extends React.Component {
 
         window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
 
-        this.props.history.push('/wechat/setup/welcome');
+        this.props.history.push('/routersetting/wechat/setup/welcome');
     }
 
     nextStep = () => {
@@ -93,7 +93,7 @@ export default class Account extends React.Component {
         window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
 
         // this.props.history.push(`${parent}/wifi/` + encodeURIComponent(JSON.stringify(param)));
-        this.props.history.push(`/wechat/setup/wifi/` + encodeURIComponent(JSON.stringify(param)));
+        this.props.history.push(`/routersetting/wechat/setup/wifi/` + encodeURIComponent(JSON.stringify(param)));
     }
 
     async fetchConf() {

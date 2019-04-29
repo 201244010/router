@@ -131,6 +131,6 @@ export default class Connection extends React.Component {
     }
 
     goWechat = () => {
-        this.props.history.push('/wechat')
+        this.props.history.push('/routersetting/wechat')
     }
 }

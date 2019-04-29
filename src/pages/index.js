@@ -128,11 +128,12 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
+        const splitResult = pathname.split('/');
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
-                    <div className="main" style={{height: height[pathname.split('/')[1]] || 'calc(100% - 141px)'}}>
+                    <div className="main" style={{height:splitResult.length > 2 && splitResult[1] === 'routersetting' ? 'calc(100% - 140px)' : height[pathname.split('/')[1]]}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
                         <Switch>
                             <Route path="/login" component={Login} />
@@ -142,26 +143,10 @@ class PrimaryLayout extends React.Component {
                             <Route path="/home" component={Home} />
                             <Route path="/clientlist" component={ClientList} />
                             <Route path="/settings" component={Settings} />
-                            <Route path="/routersetting" component={RouterSettings} />
+                            <Route path="/routersetting" component={RouterSetting}/>
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
-                            <Route path="/bandwidth" component={Bandwidth} />
-                            <Route path="/wechat" component={Wechat} />
-                            <Route path="/blacklist" component={Blacklist} />
-                            <Route path="/bootdevice" component={Bootdevice} />
-                            <Route path="/systemsetup" component={Systemsetup} />
-                            <Route path="/wifiset" component={Wifi} />
-                            <Route path="/network" component={Network} />
-                            <Route path="/lan" component={Lan} />
-                            <Route path="/routermanage" component={RouterList} />
-                            <Route path="/dosd" component={Dosd} />
-                            <Route path="/changepassword" component={ChangePassword} />
-                            <Route path="/upgrade" component={SysUpgrade} />
-                            <Route path="/backup" component={Backup} />
-                            <Route path="/reboot" component={Reboot} />
-                            <Route path="/recovery" component={Recovery} />
-                            <Route path="/timeset" component={TimeZone} />
-                            <Route path="/" component={Default} />
+                            <Route path="/" exact component={Default} />
                         </Switch>
                     </div>
                     {false !== node.footer && <PrimaryFooter className={node.footer} />}
@@ -170,6 +155,33 @@ class PrimaryLayout extends React.Component {
                 <Background image={require('~/assets/images/noise.png')} />
             </div>
         );
+    }
+}
+
+class RouterSetting extends React.Component {
+    
+    render() {
+        return (
+                <Switch>
+                    <Route path="/routersetting" exact component={RouterSettings}/>
+                    <Route path="/routersetting/wifiset" component={Wifi} />
+                    <Route path="/routersetting/bandwidth" component={Bandwidth} />
+                    <Route path="/routersetting/wechat" component={Wechat} />
+                    <Route path="/routersetting/blacklist" component={Blacklist} />
+                    <Route path="/routersetting/bootdevice" component={Bootdevice} />
+                    <Route path="/routersetting/systemsetup" component={Systemsetup} />
+                    <Route path="/routersetting/network" component={Network} />
+                    <Route path="/routersetting/lan" component={Lan} />
+                    <Route path="/routersetting/routermanage" component={RouterList} />
+                    <Route path="/routersetting/dosd" component={Dosd} />
+                    <Route path="/routersetting/changepassword" component={ChangePassword} />
+                    <Route path="/routersetting/upgrade" component={SysUpgrade} />
+                    <Route path="/routersetting/backup" component={Backup} />
+                    <Route path="/routersetting/reboot" component={Reboot} />
+                    <Route path="/routersetting/recovery" component={Recovery} />
+                    <Route path="/routersetting/timeset" component={TimeZone} />
+                </Switch>
+        )
     }
 }
 

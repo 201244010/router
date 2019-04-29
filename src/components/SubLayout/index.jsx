@@ -4,12 +4,13 @@ import classNames from 'classnames';
 
 export default function SubLayout(props){
     const pathname = location.pathname;
+    console.log(pathname);
     const conf = {
         'guide': 'none',
         'login': 'none',
         'agreement': 'none',
         'home':'none',
-        'routersetting': 'none'
+        // 'routersetting': 'none'
     };
     let style = '';
     for (let url in conf) {
