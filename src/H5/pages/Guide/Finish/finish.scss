@@ -96,6 +96,8 @@
             font-size: 0.3733rem;
             color: #666;
             text-align: right;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     }
 }
