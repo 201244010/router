@@ -187,7 +187,7 @@ export default class ClientList extends React.Component {
                     return 186;
                 })();
                 return ([
-                    <div style={{display: 'inline-flex', alignItems: 'center'}}>
+                    <div style={{display: 'inline-flex', alignItems: 'center', height: 20}}>
                         <label className='device hostname' style={{maxWidth: maxWidth}} title={hostname}>
                             {hostname}
                         </label>
@@ -195,7 +195,7 @@ export default class ClientList extends React.Component {
                         <span className={`logo ${type}`}>{this.logoType[type]}</span>
                     </div>,
                     <div className='device' title={ontime}>
-                        <label style={{ marginRight: 3 }}>{intl.get(MODULE, 5)/*_i18n:在线时长:*/}</label><label>{ontime}</label>
+                        <label style={{ marginRight: 6 }}>{intl.get(MODULE, 5)/*_i18n:在线时长:*/}</label><label>{ontime}</label>
                     </div>
                 ])
             }
@@ -203,10 +203,10 @@ export default class ClientList extends React.Component {
             title: intl.get(MODULE, 6)/*_i18n:IP/MAC地址*/,
             width: 170,
             render: (text, record) => (
-                <div>
-                    <div style={{lineHeight: '31px', verticalAlign: 'middle', fontSize: 12}}><label style={{ marginRight: 3 ,fontSize: 12}}>IP:</label><label>{record.ip}</label></div>
-                    <div><label style={{ marginRight: 3 ,fontSize: 12}}>MAC:</label><label style={{fontSize: 12}}>{record.mac}</label></div>
-                </div>
+                <ul className="macAddress">
+                    <li><label>IP:</label><span>{record.ip}</span></li>
+                    <li><label>MAC:</label><span>{record.mac}</span></li>
+                </ul>
             )
         }, {
             title: '连接路由',
@@ -310,35 +310,35 @@ export default class ClientList extends React.Component {
         totalBand: 8 * 1024 * 1024,
         me: '',
         clients: [
-            // {
-            //     "icon": "computer",
-            //     "routerName": 'dasdasdasd',
-            //     "name": "PC-2OR",
-            //     "ip": "192.168.100.181",
-            //     "mac": "0C:25:76:EC:24:69",
-            //     "type": "sunmi",
-            //     "mode": "0",
-            //     "ontime": "17时23分8秒",
-            //     "rssi": "--",
-            //     "tx": "445B/s",
-            //     "rx": "88.54MB/s",
-            //     "flux": "10.90MB"
-            // },
-            // {
-            //     "me": '1',
-            //     "icon": "computer",
-            //     "routerName": "locationssdada",
-            //     "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
-            //     "ip": "192.168.100.140",
-            //     "mac": "68:F7:28:F1:10:D4",
-            //     "type": "whitelist",
-            //     "mode": "1",
-            //     "ontime": "43分26秒",
-            //     "rssi": "--",
-            //     "tx": "830B/s",
-            //     "rx": "5KB/s",
-            //     "flux": "771MB"
-            // }    
+            {
+                "icon": "computer",
+                "routerName": 'dasdasdasd',
+                "name": "PC-2OR",
+                "ip": "192.168.100.181",
+                "mac": "0C:25:76:EC:24:69",
+                "type": "sunmi",
+                "mode": "0",
+                "ontime": "17时23分8秒",
+                "rssi": "--",
+                "tx": "445B/s",
+                "rx": "88.54MB/s",
+                "flux": "10.90MB"
+            },
+            {
+                "me": '1',
+                "icon": "computer",
+                "routerName": "locationssdada",
+                "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
+                "ip": "192.168.100.140",
+                "mac": "68:F7:28:F1:10:D4",
+                "type": "whitelist",
+                "mode": "1",
+                "ontime": "43分26秒",
+                "rssi": "--",
+                "tx": "830B/s",
+                "rx": "5KB/s",
+                "flux": "771MB"
+            }    
         ]
     }
 
