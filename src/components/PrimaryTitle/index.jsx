@@ -9,7 +9,7 @@ class PrimaryTitle extends React.Component {
 	constructor(props) {
         super(props);
     }
-    
+
 	render() {
         const {title, titleTip} = this.props;
 
@@ -27,7 +27,7 @@ class PrimaryTitle extends React.Component {
 	}
 
     goBackPage = () => {
-        this.props.history.goBack();
+        this.props.history.push('/routersetting');
     }
 };
 

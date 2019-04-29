@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 export default function SubLayout(props){
     const pathname = location.pathname;
+    console.log(pathname);
     const conf = {
         'guide': 'none',
         'login': 'none',

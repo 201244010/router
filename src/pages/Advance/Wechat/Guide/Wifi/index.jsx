@@ -47,7 +47,7 @@ export default class Wifi extends React.Component {
 
         window.sessionStorage.setItem('wechat.wifi', JSON.stringify(data));
 
-        this.props.history.push(`/wechat/setup/account/` + encodeURIComponent(params.param));
+        this.props.history.push(`/routersetting/wechat/setup/account/` + encodeURIComponent(params.param));
     }
 
     submit = async () => {
@@ -103,7 +103,7 @@ export default class Wifi extends React.Component {
         this.setState({
             visible: false,
         });
-        this.props.history.push('/wechat/status');    //跳转到status页面
+        this.props.history.push('/routersetting/wechat/status');    //跳转到status页面
     }
 
     async fetchConf() {

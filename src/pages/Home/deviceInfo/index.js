@@ -353,7 +353,7 @@ export default class Device extends React.Component {
     }
 
     goWhiteList = () => {
-        this.props.history.push('/advance/whitelist');
+        this.props.history.push('/routersetting/whitelist');
     }
 
 

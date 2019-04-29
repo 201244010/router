@@ -128,11 +128,12 @@ class PrimaryLayout extends React.Component {
                 break;
             }
         }
+        const splitResult = pathname.split('/');
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
-                    <div className="main" style={{height: height[pathname.split('/')[1]] || 'calc(100% - 141px)'}}>
+                    <div className="main" style={{height:splitResult.length > 2 && splitResult[1] === 'routersetting' ? 'calc(100% - 140px)' : height[pathname.split('/')[1]]}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
                         <Switch>
                             <Route path="/login" component={Login} />
@@ -145,7 +146,6 @@ class PrimaryLayout extends React.Component {
                             <Route path="/routersetting" component={RouterSetting}/>
                             <Route path='/app' component={DownloadPage} />
                             <Route path='/diagnose' component={Diagnose} />
-                            <Route path="/bandwidth" component={Bandwidth} />
                             <Route path="/" exact component={Default} />
                         </Switch>
                     </div>

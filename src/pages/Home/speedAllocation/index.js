@@ -253,6 +253,6 @@ export default class Allocation extends React.Component{
     }
 
     goBandwidth = () => {
-        this.props.history.push('/bandwidth');
+        this.props.history.push('/routersetting/bandwidth');
     }
 }
