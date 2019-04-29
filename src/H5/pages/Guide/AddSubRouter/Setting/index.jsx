@@ -13,7 +13,7 @@ export default class Setting extends React.Component {
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: 'selecting'  //'selecting'、'setting'、'settingResult',检测搜索、正在设置、设置完成
+        condition: 'selecting'  //'selecting'、'settingResult',检测搜索、设置完成
     }
 
     onChange = (deviceId, checked) => {
@@ -153,7 +153,6 @@ export default class Setting extends React.Component {
             }
         });
 
-        this.setState({condition: 'setting'});
         let response = await common.fetchApi(
             [
                 {opcode: 'SWITCH_STOP'},

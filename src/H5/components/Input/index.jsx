@@ -32,6 +32,7 @@ class Input extends React.Component {
     render() {
         let {hidden} = this.state;
         const { className, value, maxLength, disabled, name, placeholder, style, inputName, tip } = this.props;
+        const classes = this.props.tip !== ''? "has-error" : '';
 
         return (
             <div style={style} className='sm-form'>
@@ -50,7 +51,7 @@ class Input extends React.Component {
                         ] : ""
                     }
                     <input
-                        className={ `sm-input-content ${className}`}
+                        className={ `sm-input-content ${className} ${classes}`}
                         type={this.state.type}
                         value={value}
                         maxLength={maxLength}
@@ -66,57 +67,5 @@ class Input extends React.Component {
         );
     }   
 }
-
-class Form extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
-    static propTypes = {
-        type: PropTypes.string,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        maxLength: PropTypes.number,
-        onChange: PropTypes.func,
-        name: PropTypes.string,
-        placeholder: PropTypes.string,
-        tip: PropTypes.string,
-    };
-
-    state = {
-        hidden: true,
-        type: this.props.type,
-    }
-
-    
-
-    onChange = e => {
-        this.props.onChange(e.target.value);
-    };
-
-    render() {
-        const {hidden, type} = this.state;
-        const { style, value, maxLength, disabled, name, placeholder, tip, inputName,eye } = this.props;
-        const classes = this.props.tip !== ''? "has-error" : '';
-        return (
-            <div style={style} className='sm-form'>
-                {inputName && <label className='input-name'>{inputName}</label>}
-                <Input
-                    className={classes}
-                    hidden={hidden}
-                    type={type}
-                    value={value}
-                    maxLength={maxLength}
-                    onChange={this.onChange}
-                    disabled={disabled}
-                    name={name}
-                    placeholder={placeholder}
-                    HandleVisibilityChange={this.HandleVisibilityChange}
-                />
-                <ErrorTip value={tip} />
-            </div> 
-        );
-    }
-    
-};
 
 export default Input;

@@ -1,10 +1,11 @@
 .h5finish {
     height: 13.7333rem;
+    margin-bottom: 0.8533rem;
     .icon-success {
         width: 1.6rem;
         height: 1.6rem;
         margin:0 auto 0.32rem;
-        background: url('./success.png');
+        background: url('./h5success.png');
         background-size: 100% 100%;
     }
     .finish-tip {
@@ -95,6 +96,8 @@
             font-size: 0.3733rem;
             color: #666;
             text-align: right;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     }
 }
