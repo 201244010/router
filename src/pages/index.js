@@ -100,7 +100,9 @@ class PrimaryLayout extends React.Component {
         const height = {
             'routersetting': 'calc(100% - 148px)',
             'clientlist': 'calc(100% - 148px)',
-            'guide': 'calc(100% - 76px)'
+            'guide': 'calc(100% - 76px)',
+            'welcome': 'calc(100% - 76px)',
+            'login': 'calc(100% - 76px)',
         }
 
         const conf = {
