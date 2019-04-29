@@ -15,18 +15,16 @@ const {FormItem, ErrorTip, Input} = Form;
 const Option = Select.Option;
 const RadioGroup=Radio.Group;
 
-const errorMessage = {
-    '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
-    '-1002': intl.get(MODULE, 1)/*_i18n:参数取值非法*/,
-    '-1100': intl.get(MODULE, 2)/*_i18n:Wi-Fi名称非法*/,
-    '-1101': intl.get(MODULE, 3)/*_i18n:Wi-Fi密码非法*/
-};
-
-
 export default class WIFI extends React.Component {
     constructor(props) {
         super(props);
         // this.channel_list = {};
+        this.err = {
+            '-1001': intl.get(MODULE, 0)/*_i18n:参数格式错误*/,
+            '-1002': intl.get(MODULE, 1)/*_i18n:参数取值非法*/,
+            '-1100': intl.get(MODULE, 2)/*_i18n:Wi-Fi名称非法*/,
+            '-1101': intl.get(MODULE, 3)/*_i18n:Wi-Fi密码非法*/
+        }
     }
 
     state = {
@@ -426,7 +424,7 @@ export default class WIFI extends React.Component {
                 visibile: 'hidden',
                 resVisibile: true,
                 result: false,
-                err: errorMessage[errcode] || errcode,
+                err: this.err[errcode] || errcode,
             });    
         }   
     }
@@ -465,7 +463,7 @@ export default class WIFI extends React.Component {
                 visibile: 'hidden',
                 resVisibile: true,
                 result: false,
-                err: errorMessage[errcode] || errcode,
+                err: this.err[errcode] || errcode,
             });    
         }   
     }
@@ -623,7 +621,14 @@ export default class WIFI extends React.Component {
     }
 
     render(){
-        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType, guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip, hostSsid5Tip, hostSsid5PasswordTip, visibile, resVisibile,result } = this.state;
+        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType,
+             guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,
+             hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24,
+              current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5,
+               hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5,
+                moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5,
+                 guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip, hostSsid5Tip, hostSsid5PasswordTip,
+                  visibile, resVisibile,result } = this.state;
 
         let saveDisabled = this.checkDisabled();
         let guestDisabled = this.checkGuest();
@@ -636,7 +641,7 @@ export default class WIFI extends React.Component {
                         <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} tip="建议自己店内业务使用"/>
                         <div className="band-title">
                             <label>{intl.get(MODULE, 28)}</label>
-                            <span>({intl.get(MODULE, 29)})</span>
+                            <span>（{intl.get(MODULE, 29)}）</span>
                         </div>
                         <RadioGroup onChange={this.onBandSteering} value={channelType}>
                             <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
@@ -699,7 +704,7 @@ export default class WIFI extends React.Component {
                                 {intl.get(MODULE, 43)/*_i18n:更多设置*/} <CustomIcon type={moreSettingType24} size={14} />
                                 </div>
                                 <div style={{display:moreDisplaydHost24}}>
-                                    <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
+                                    <ul className="ui-tiled compact" style={{ margin: '8px 0 24px' }}>
                                         <li><Checkbox checked={hide_ssid24} onChange={this.onHide_ssid24Change} disabled={disabledType24}>{intl.get(MODULE, 44)/*_i18n:隐藏网络不被发现*/}</Checkbox></li>
                                     </ul>
                                     {!(encryption24 =='none')?
@@ -749,7 +754,7 @@ export default class WIFI extends React.Component {
                                     {intl.get(MODULE, 57)/*_i18n:更多设置*/} <CustomIcon type={moreSettingType5} size={14}/>
                                     </div>
                                     <div style={{display:moreDisplaydHost5}}>
-                                        <ul className="ui-tiled compact" style={{ margin: '8px 0 16px' }}>
+                                        <ul className="ui-tiled compact" style={{ margin: '8px 0 24px' }}>
                                             <li><Checkbox checked={hide_ssid5} onChange={this.onHide_ssid5Change} disabled={disabledType5}>{intl.get(MODULE, 58)/*_i18n:隐藏网络不被发现*/}</Checkbox></li>
                                         </ul>
                                         {!(encryption5 =='none')?
@@ -785,7 +790,7 @@ export default class WIFI extends React.Component {
                     </section>
                     )}
                 </Form>
-                <section className="save">
+                <section className="save" style={{marginTop: moreSettingType5 === 'pullup' || moreSettingType24 === 'pullup' ? 16 : 32}}>
                         <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submitMain}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>

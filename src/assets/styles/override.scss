@@ -289,7 +289,13 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-radio-wrapper:hover .ant-radio .ant-radio-inner {
-    border-color:  #6174F1!important;
+    border-color:  #6174F1;
+}
+
+input[type="radio"][disabled] {
+    &:hover{
+        background-color:  none;
+    }
 }
 
 .ant-radio-checked{

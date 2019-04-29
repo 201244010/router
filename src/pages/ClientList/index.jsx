@@ -310,35 +310,35 @@ export default class ClientList extends React.Component {
         totalBand: 8 * 1024 * 1024,
         me: '',
         clients: [
-            {
-                "icon": "computer",
-                "routerName": 'dasdasdasd',
-                "name": "PC-2OR",
-                "ip": "192.168.100.181",
-                "mac": "0C:25:76:EC:24:69",
-                "type": "sunmi",
-                "mode": "0",
-                "ontime": "17时23分8秒",
-                "rssi": "--",
-                "tx": "445B/s",
-                "rx": "88.54MB/s",
-                "flux": "10.90MB"
-            },
-            {
-                "me": '1',
-                "icon": "computer",
-                "routerName": "locationssdada",
-                "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
-                "ip": "192.168.100.140",
-                "mac": "68:F7:28:F1:10:D4",
-                "type": "whitelist",
-                "mode": "1",
-                "ontime": "43分26秒",
-                "rssi": "--",
-                "tx": "830B/s",
-                "rx": "5KB/s",
-                "flux": "771MB"
-            }    
+            // {
+            //     "icon": "computer",
+            //     "routerName": 'dasdasdasd',
+            //     "name": "PC-2OR",
+            //     "ip": "192.168.100.181",
+            //     "mac": "0C:25:76:EC:24:69",
+            //     "type": "sunmi",
+            //     "mode": "0",
+            //     "ontime": "17时23分8秒",
+            //     "rssi": "--",
+            //     "tx": "445B/s",
+            //     "rx": "88.54MB/s",
+            //     "flux": "10.90MB"
+            // },
+            // {
+            //     "me": '1',
+            //     "icon": "computer",
+            //     "routerName": "locationssdada",
+            //     "name": "WIN-NTSFVIF9B7ADADADASDADADADADAD",
+            //     "ip": "192.168.100.140",
+            //     "mac": "68:F7:28:F1:10:D4",
+            //     "type": "whitelist",
+            //     "mode": "1",
+            //     "ontime": "43分26秒",
+            //     "rssi": "--",
+            //     "tx": "830B/s",
+            //     "rx": "5KB/s",
+            //     "flux": "771MB"
+            // }    
         ]
     }
 
