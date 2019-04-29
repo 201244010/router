@@ -194,7 +194,7 @@ export default class SetWifi extends React.Component {
                         onChange={value => this.onChange('hostPassword', value)}
                     />
                     <Input
-                        inputName='客户WiFi（建议开放给来电客户使用）'
+                        inputName='客户WiFi（建议开放给来店客户使用）'
                         value={guestSsid}
                         placeholder='设置顾客WiFi名称'
                         maxLength={32}
