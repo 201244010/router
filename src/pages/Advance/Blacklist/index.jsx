@@ -270,7 +270,7 @@ export default class Blacklist extends React.Component {
             me: me,
             blockLists: black_list.map(item => {
                 let mac = item.mac.toUpperCase();
-                let name = alias[mac] && alias[mac].alias || 'unknown';
+                let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
 
                 return {
                     name: name,
