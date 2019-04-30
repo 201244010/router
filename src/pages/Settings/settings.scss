@@ -177,6 +177,14 @@
         width: 40px;
         height: 40px;
     }
+    label {
+        max-width: 250px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow:hidden; 
+        vertical-align: middle;
+        display: inline-block;
+    }
     ul {
         display: inline-block;
         vertical-align: middle;

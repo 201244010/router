@@ -27,7 +27,11 @@ class PrimaryTitle extends React.Component {
 	}
 
     goBackPage = () => {
-        this.props.history.push('/routersetting');
+        if(location.pathname.indexOf('wechat') > -1) {
+            this.props.history.go(-2);
+        } else {
+            this.props.history.goBack();
+        }
     }
 };
 
