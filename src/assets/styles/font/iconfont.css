@@ -167,59 +167,55 @@
   content: "\e65d";
 }
 
-.ui-icon-m:before {
-  content: "\e65e";
-}
-
-.ui-icon-ds:before {
+.ui-icon-d1_s:before {
   content: "\e65f";
 }
 
-.ui-icon-k:before {
+.ui-icon-k1:before {
   content: "\e660";
 }
 
-.ui-icon-l:before {
+.ui-icon-l2:before {
   content: "\e661";
 }
 
-.ui-icon-d:before {
+.ui-icon-d1:before {
   content: "\e662";
 }
 
-.ui-icon-d1:before {
+.ui-icon-d2:before {
   content: "\e663";
 }
 
-.ui-icon-p:before {
+.ui-icon-p1:before {
   content: "\e664";
 }
 
-.ui-icon-plite:before {
+.ui-icon-p2_lite:before {
   content: "\e665";
 }
 
-.ui-icon-tmini:before {
+.ui-icon-t2_mini:before {
   content: "\e666";
 }
 
-.ui-icon-s:before {
+.ui-icon-s2:before {
   content: "\e667";
 }
 
-.ui-icon-tlite:before {
+.ui-icon-t2_lite:before {
   content: "\e668";
 }
 
-.ui-icon-vs:before {
+.ui-icon-v1_s:before {
   content: "\e669";
 }
 
-.ui-icon-t:before {
+.ui-icon-t2:before {
   content: "\e66a";
 }
 
-.ui-icon-vpro:before {
+.ui-icon-v2_pro:before {
   content: "\e66b";
 }
 
@@ -583,11 +579,11 @@
   content: "\e6c7";
 }
 
-.ui-icon-ppro:before {
+.ui-icon-p2_pro:before {
   content: "\e6c8";
 }
 
-.ui-icon-h:before {
+.ui-icon-h1:before {
   content: "\e6c9";
 }
 

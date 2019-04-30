@@ -1,23 +1,23 @@
 export default {
-    "v2pro": {
+    "v2_pro": {
         "color": "#333C4F",
-        "brand": "vpro"
+        "brand": "v2_pro"
     },
     "m2": {
         "color": "#333C4F",
-        "brand": "m"
+        "brand": "m2"
     },
-    "v1s": {
+    "v1_s": {
         "color": "#333C4F",
-        "brand": "vs"
+        "brand": "v1_s"
     },
     "l2": {
         "color": "#333C4F",
-        "brand": "l"
+        "brand": "l2"
     },
     "v1": {
         "color": "#333C4F",
-        "brand": "vs"
+        "brand": "v1_s"
     },
     "m1": {
         "color": "#333C4F",
@@ -25,46 +25,54 @@ export default {
     },
     "p1": {
         "color": "#333C4F",
-        "brand": "p"
+        "brand": "p1"
     },
-    "p2lite": {
+    "p2_lite": {
         "color": "#333C4F",
-        "brand": "plite"
+        "brand": "p2_lite"
     },
     "s2": {
         "color": "#333C4F",
-        "brand": "s"
+        "brand": "s2"
     },
     "t2": {
         "color": "#333C4F",
-        "brand": "t"
+        "brand": "t2"
     },
     "k1": {
         "color": "#333C4F",
-        "brand": "k"
+        "brand": "k1"
     },
-    "t2lite": {
+    "t2_lite": {
         "color": "#333C4F",
-        "brand": "tlite"
+        "brand": "t2_lite"
     },
-    "t2mini": {
+    "t2_mini": {
         "color": "#333C4F",
-        "brand": "tmini"
+        "brand": "t2_mini"
     },
     "t1": {
         "color": "#333C4F",
-        "brand": "t"
+        "brand": "t1"
     },
     "d2": {
         "color": "#333C4F",
-        "brand": "d1"
+        "brand": "d2"
     },
-    "d1s": {
+    "d1_s": {
         "color": "#333C4F",
-        "brand": "ds"
+        "brand": "d1_s"
     },
     "d1": {
         "color": "#333C4F",
-        "brand": "d"
+        "brand": "d1"
+    },
+    "h1": {
+        "color": "#333C4F",
+        "brand": "h1"
+    },
+    "p2_pro": {
+        "color": "#333C4F",
+        "brand": "p2_pro"
     }
 }
