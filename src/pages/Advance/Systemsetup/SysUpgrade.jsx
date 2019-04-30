@@ -53,7 +53,7 @@ export default class SysUpgrade extends React.Component{
                     return <ProgressStatus duration={duration} status={devList[record.devid]} failTip={codeList[record.devid]} />
                 } else if (detecting && online) {
                     return (
-                        <div>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
                             <CustomIcon type="loading_ring" color='#6174F1' size={14} spin/>
                             <span style={{marginLeft: 4}}>检测中...</span>
                         </div>
