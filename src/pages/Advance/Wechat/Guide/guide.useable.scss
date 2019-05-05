@@ -81,6 +81,10 @@ $lineWidth: 320px;
                     color: #ADB1B9;
                     margin: 4px 0 11px;
                 }
+                button.ant-btn span {
+                    color: rgba(0,0,0,.65);
+                }
+
             }
             .separate-line{
                 position: absolute;

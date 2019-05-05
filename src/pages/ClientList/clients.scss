@@ -336,12 +336,14 @@ i.dot{
         background: #F8F9FB;
     }
     .ant-table-thead > tr > th .anticon-filter {
-        height: 60px;
-        padding-top: 22px;
-        margin-left: 8px;
+        margin-left: 4px;
         vertical-align: middle;
+        padding-bottom: 3px;
     }
     .ant-table-middle>.ant-table-content>.ant-table-scroll {
+        .ant-table-header>table>.ant-table-thead>tr>th {
+            padding: 19px 8px;
+        }
         .ant-table-body>table>.ant-table-tbody>tr>td {
             padding: 17px 8px;
         }
