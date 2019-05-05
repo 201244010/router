@@ -318,23 +318,29 @@ button.ant-btn-primary.ant-btn-loading {
     border-color:  #6174F1;
 }
 
-input[type="radio"][disabled] {
-    &:hover{
-        background-color:  none;
+.ant-radio-checked{
+    .ant-radio-inner{
+        border-color:  #6174F1;
+        &:hover{
+            background-color:  #6174F1;
+        }
+        &:after{
+            background-color:  #6174F1;
+        }
     }
 }
 
-.ant-radio-checked{
-    .ant-radio-inner{
-        border-color:  #6174F1!important;
-        &:hover{
-            background-color:  #6174F1!important;
-        }
-        &:after{
-            background-color:  #6174F1!important;
-        }
+.ant-radio-disabled .ant-radio-inner::after {
+    background-color: #ccc!important;
+}
+
+input[type="radio"][disabled] {
+    &:hover{
+        background-color: none;
     }
 }
+
+
 
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
