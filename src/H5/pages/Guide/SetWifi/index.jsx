@@ -77,7 +77,7 @@ export default class SetWifi extends React.Component {
         let {guestDisplay} = this.state;
         this.setState({
             guestDisplay: 'none' === guestDisplay ? 'block' : 'none',
-            setMessage: 'none' === guestDisplay ? '暂不设置客户Wi-Fi' : '设置客用Wi-Fi'
+            setMessage: 'none' === guestDisplay ? '暂不设置客用Wi-Fi' : '设置客用Wi-Fi'
         });
     }
 
