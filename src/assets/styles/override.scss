@@ -54,15 +54,14 @@ button.ant-btn-primary:hover {
 }
 button.ant-btn-primary{
     &:focus, &:active {
-        background:  #6174F1;
-        background-color :  #6174F1;
-        border : 1px solid  #6174F1;
+        background:  #4D5CC0;
+        background-color :  #4D5CC0;
+        border : 1px solid  #4D5CC0;
         span{
             color: #FFFFFF;
         }
     }
 }
-
 button.ant-btn-primary[disabled] {
     span {
         color: #C6C8CC
@@ -135,10 +134,33 @@ button.ant-btn-primary.ant-btn-loading {
 .anticon-filter:hover {
     color: #8A8D94; 
 }
+.ant-select-selection {
+    border-radius: 8px;
+    box-shadow: none;
+    &:focus, &:hover, &:active {
+        box-shadow: none;   
+    }
+}
+.ant-select-dropdown {
+    border-radius: 8px;
+}
 .ant-dropdown-menu-item-selected {
     color:  #6174F1!important;
 }
-
+.ant-select-dropdown-menu-item-selected {
+    background-color: #F5F5F6;
+}
+.ant-select-open .ant-select-selection{
+    border-color: #6174F1;
+}
+.ant-select-dropdown-menu-item {
+    &:hover {
+        background-color: #EFF1FD;
+    }
+    &:focus {
+        background-color: #F5F5F6;
+    }
+}
 .ant-progress-circle-path {
     stroke :  #6174F1!important;
 }
@@ -182,7 +204,6 @@ button.ant-btn-primary.ant-btn-loading {
 .ant-click-animating-node {
     border-color :  #6174F1!important;
 }
-
 
 .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
     border-color :  #6174F1;
