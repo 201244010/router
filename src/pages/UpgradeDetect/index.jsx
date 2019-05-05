@@ -41,7 +41,7 @@ class UpdateDetect extends React.Component {
         this.setState({
             update: false
         });
-        this.props.history.push('/upgrade');
+        this.props.history.push('/routersetting/upgrade');
     }
 
     componentDidMount() {
