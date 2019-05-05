@@ -24,6 +24,7 @@ button.ant-btn:hover {
 }
 button.ant-btn:focus {
     border: 1px solid  #6174F1;
+    background: none;
     span {
         color:  #6174F1;
     }
