@@ -82,7 +82,7 @@ class UpdateDetect extends React.Component {
             let version = '', releaseLog = '';
             data[0].result.upgrade.map(item => {
                 if (item.devid === devId) {
-                    version = item.current_version;
+                    version = item.newest_version;
                     releaseLog = item.release_log
                 }
             })
