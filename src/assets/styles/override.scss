@@ -1,3 +1,6 @@
+.ant-btn:hover, .ant-btn:focus{
+    color: #6174F1;
+}
 button.ant-btn {
     background: none;
     border: 1px solid rgba(125,143,183,0.20);
@@ -12,6 +15,7 @@ button.ant-btn-sm {
     border-radius: 4px!important;
 }
 button.ant-btn:hover {
+    color: #6174F1;
     border: 1px solid #6174F1;
     background: none;
     span {
@@ -118,14 +122,15 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-table-thead > tr > th .ant-table-filter-selected.anticon-filter {
-    // opacity: 0.34;
-    background: #ADB1B9;
-    color: #8A8D94; 
+    color: #6174F1; 
+}
+
+.ant-table-thead>tr>th .anticon-filter {
+    color: rgba(173,177,185,0.60);
+    padding-bottom: 1px;
 }
 
 .anticon-filter:hover {
-    // opacity: 0.34;
-    background: #ADB1B9;
     color: #8A8D94; 
 }
 .ant-dropdown-menu-item-selected {
@@ -221,9 +226,6 @@ button.ant-btn-primary.ant-btn-loading {
 }
 
 .ant-table-middle>.ant-table-content>.ant-table-scroll {
-    .ant-table-header>table>.ant-table-thead>tr>th {
-        padding: 8px 8px;
-    }
     .ant-table-body>table>.ant-table-tbody>tr>td {
         padding: 8px 8px;
     }
