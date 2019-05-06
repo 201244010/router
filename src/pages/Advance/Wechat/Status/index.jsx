@@ -28,12 +28,16 @@ export default class Status extends React.Component {
         refresh: false,
         clients: [],
         ssid: '',
+        disabled: false
     };
 
     switchChange = async () => {
         let enable = !this.state.enable;
 
-        this.setState({ enable });
+        this.setState({ 
+            enable,
+            disabled: true
+         });
 
         //Loading.show({ duration: 2 });
         this.weixin.enable = enable ? '1' : '0';
@@ -55,6 +59,9 @@ export default class Status extends React.Component {
             this.setState({ enable: !enable });
             message.error(`配置失败[${errcode}]`);
         }
+        this.setState({ 
+            disabled: false 
+        });
     }
 
     async fetchConf() {
@@ -198,7 +205,7 @@ export default class Status extends React.Component {
     }
 
     render() {
-        const { enable, visible, refresh, clients, ssid } = this.state;
+        const { enable, visible, refresh, clients, ssid, disabled} = this.state;
 
         const columns = [{
             title: '',
@@ -272,6 +279,7 @@ export default class Status extends React.Component {
                         title="微信连Wi-Fi"
                         checkable={true}
                         checked={enable}
+                        disabled={disabled}
                         onChange={this.switchChange}
                     />
                     <p className='connect-status'>
