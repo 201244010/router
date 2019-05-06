@@ -54,7 +54,7 @@ export default class SysUpgrade extends React.Component{
                 } else if (detecting && online) {
                     return (
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                            <CustomIcon type="loading_ring" color='#6174F1' size={14} spin/>
+                            <CustomIcon type="loading" color='#6174F1' size={14} spin/>
                             <span style={{marginLeft: 4}}>检测中...</span>
                         </div>
                     )
