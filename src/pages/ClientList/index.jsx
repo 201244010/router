@@ -379,7 +379,7 @@ export default class ClientList extends React.Component {
 
             // 后台生效需要1秒左右，延迟2秒刷新数据，
             setTimeout(() => {
-                this.props.startRefresh(true);
+                this.fetchStatus();
             }, 2000);
             return;
         }

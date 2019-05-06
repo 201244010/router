@@ -902,7 +902,7 @@
 		"clientlist17": "禁止上网",
 		"clientlist18": "操作失败[{error}]",
 		"clientlist19": "不能禁止本机上网",
-		"clientlist20": "配置生效！如需恢复，可在高级设置-防蹭网中恢复上网",
+		"clientlist20": "配置生效！如需恢复，可在路由设置-防蹭网中恢复上网",
 		"clientlist21": "操作失败[{error}]",
 		"clientlist22": "保存失败，设备名称过长",
 		"clientlist23": "普通设备",
