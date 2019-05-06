@@ -78,6 +78,7 @@ button.ant-btn-lg span {
 input.ant-input:focus,
 input.ant-input:hover {
     border-color: $button-bg-color;
+    box-shadow: none;
 }
 
 button.ant-btn-primary.ant-btn-loading {

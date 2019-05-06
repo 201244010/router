@@ -31,7 +31,7 @@ export default class Welcome extends React.Component {
         const {match} = this.props;
         console.log(match);
         return (
-            <div className="ui-center ui-fullscreen web-welcome">
+            <div className="ui-center ui-fullscreen web-welcome" style={{height: window.innerHeight - 76}}>
                 <SwitchLang className='welcome-lang'/>
                 <div className='sunmi-logo'>
                     <Icon type="logo" size={40} color="#fff" />

@@ -133,7 +133,7 @@ class PrimaryLayout extends React.Component {
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
                     {node.header && <PrimaryHeader /> }
-                    <div className="main" style={{height:splitResult.length > 2 && splitResult[1] === 'routersetting' ? 'calc(100% - 140px)' : height[pathname.split('/')[1]]}}>
+                    <div className="main" style={{minHeight:splitResult.length > 2 && splitResult[1] === 'routersetting' ? 'calc(100% - 140px)' : height[pathname.split('/')[1]]}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
                         <Switch>
                             <Route path="/login" component={Login} />
