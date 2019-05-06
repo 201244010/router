@@ -20,7 +20,7 @@ export default class PanelHeader extends React.PureComponent {
 
     render(){
         const id = `__panel-${new Date().getTime()}`;
-        const { title, checkable, checked, className, tip} = this.props;
+        const { title, checkable, checked, className, tip, disabled} = this.props;
         return (
             <ul className={classnames(['panel-hd ui-tiled', className])} id={id}>
                 <li>
@@ -40,7 +40,7 @@ export default class PanelHeader extends React.PureComponent {
                     }
                 </li>
                 {
-                    checkable ? <li><Switch checked={checked} onChange={this.onChange} /></li> : ''
+                    checkable ? <li><Switch checked={checked} disabled={disabled} onChange={this.onChange} /></li> : ''
                 }
             </ul>
         );
