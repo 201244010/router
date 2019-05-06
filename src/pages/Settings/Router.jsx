@@ -86,7 +86,7 @@ export default class Router extends React.Component {
                             cancelText={intl.get(MODULE, 16)/*_i18n:取消*/}
                             placement="topRight"
                             onConfirm={() => this.deleteRouter(record)}>
-                            <span style={{fontSize: 14, color: '#6174F1'}}>移除</span>
+                            <span style={{fontSize: 14, color: '#6174F1', cursor: 'pointer'}}>移除</span>
                         </Popconfirm>
                 }
         }];

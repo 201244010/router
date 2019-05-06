@@ -6,7 +6,7 @@ const MODULE = 'downloadpage';
 
 export default function DownloadPage() {
     return (
-        <div className='app-download ui-container'>
+        <div className='app-download ui-container' style={{marginTop: 8}}>
             <div className='app-header'>
                 <div className='title'>
                     <h1>{intl.get(MODULE, 0)/*_i18n:商米助手APP*/}</h1>
