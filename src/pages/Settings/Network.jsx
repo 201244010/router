@@ -607,7 +607,7 @@ const Dhcp = props => {
     return [
         <div key="dhcp" className="wifi-settings">
             <label>{intl.get(MODULE, 40)/*_i18n:配置*/}</label>
-            <RadioGroup key="dhcpdns" className='radio-choice-network' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
+            <RadioGroup key="dhcpdns" className='radio-choice' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
                 <Radio style={{display:'inline-block'}} className="label-in" value='auto'>{intl.get(MODULE, 41)/*_i18n:自动设置*/}</Radio>
                 <Radio style={{display:'inline-block'}} className="label-in" value='manual'>{intl.get(MODULE, 42)/*_i18n:手动设置*/}</Radio>
             </RadioGroup>
