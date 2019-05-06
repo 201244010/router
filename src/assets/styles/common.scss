@@ -103,7 +103,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
     .main {
         // height: 100%;
-        height : calc(100% - 148px);
+        min-height : calc(100% - 184px);
         min-width: 1216px;
     }
 
