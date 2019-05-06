@@ -139,7 +139,6 @@ export default class ClientList extends React.Component {
             'normal': '普通设备'
         };
         this.connectRouter = JSON.parse(window.sessionStorage.getItem('_ROUTER_LIST')) || [];
-        console.log(this.connectRouter, typeof this.connectRouter);
         this.columns = [{
             title: '设备'/*_i18n:设备名称*/,
             dataIndex: 'mac',

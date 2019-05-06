@@ -201,7 +201,7 @@ class Item extends React.Component {
         const reList = this.props.reList;
         const type = parseInt(reList.online);
         const role = parseInt(reList.role);
-        const color = reList.rssi >= 20 ? '#60CC13' : '#DD726D';
+        const color = reList.rssi >= 20 ? '#97E063' : '#FFCEBD';
         const rssi = reList.rssi >= 20 ? '信号较好' : '信号较差';
         const online = type === 0 ? '异常' : '正常';
         const Title = (editing, value, mac, devid) => {
