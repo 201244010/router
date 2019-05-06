@@ -512,7 +512,7 @@ export default class NETWORK extends React.Component {
                             <PanelHeader title={intl.get(MODULE, 27)/*_i18n:上网设置*/} checkable={false} checked={true} />
                             <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
                                 <label>{intl.get(MODULE, 28)/*_i18n:上网方式*/}</label>
-                                <Select value={type} style={{ width: 320, marginBottom: 32}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
+                                <Select value={type} style={{ width: 320, marginBottom: 24}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
                                     <Option value='pppoe'>{intl.get(MODULE, 29)/*_i18n:宽带拨号上网（PPPoE）*/}</Option>
                                     <Option value='dhcp'>{intl.get(MODULE, 30)/*_i18n:自动获取IP（DHCP）*/}</Option>
                                     <Option value='static'>{intl.get(MODULE, 31)/*_i18n:手动输入IP（静态IP）*/}</Option>
@@ -607,7 +607,7 @@ const Dhcp = props => {
     return [
         <div key="dhcp" className="wifi-settings">
             <label>{intl.get(MODULE, 40)/*_i18n:配置*/}</label>
-            <RadioGroup key="dhcpdns" className='radio-choice' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
+            <RadioGroup key="dhcpdns" className='radio-choice-network' onChange={props.onDhcpRadioChange} value={props.dhcpType}>
                 <Radio style={{display:'inline-block'}} className="label-in" value='auto'>{intl.get(MODULE, 41)/*_i18n:自动设置*/}</Radio>
                 <Radio style={{display:'inline-block'}} className="label-in" value='manual'>{intl.get(MODULE, 42)/*_i18n:手动设置*/}</Radio>
             </RadioGroup>

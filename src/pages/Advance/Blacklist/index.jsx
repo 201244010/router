@@ -317,7 +317,7 @@ export default class Blacklist extends React.Component {
                     <div style={{display: 'inline-block'}}>
                         <Logo mac={mac} size={32} />
                     </div>
-                    <label style={{display: 'inline-block'}}>{record.name}</label>
+                    <label>{record.name}</label>
                 </div>
             )
         }, {
@@ -431,7 +431,15 @@ export default class Blacklist extends React.Component {
                     </Modal>
                 </div>
                 <div className="static-table">
-                        <Table columns={columns} dataSource={blockLists} rowKey={record => record.index}
+                        <Table columns={columns} dataSource={blockLists} 
+                        rowKey={record => record.index}
+                        rowClassName={(record, index) => {
+                            let className = 'editable-row';
+                            if (index % 2 === 1) {
+                                className = 'editable-row-light';
+                            }
+                            return className;
+                        }}
                         bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/ }} />
                 </div>
             </SubLayout>
