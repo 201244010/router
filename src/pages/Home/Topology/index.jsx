@@ -202,6 +202,7 @@ class Item extends React.Component {
         const type = parseInt(reList.online);
         const role = parseInt(reList.role);
         const color = reList.rssi >= 20 ? '#97E063' : '#FFCEBD';
+        const colorDetail = reList.rssi >= 20 ? '#60CC13' : '#D0021B';
         const rssi = reList.rssi >= 20 ? '信号较好' : '信号较差';
         const online = type === 0 ? '异常' : '正常';
         const Title = (editing, value, mac, devid) => {
@@ -247,7 +248,7 @@ class Item extends React.Component {
                             <div className='satelite-info'>
                                 {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                                 <ul>
-                                    <li><label>信号强度：</label><span style={{color: color}}>{rssi}</span></li>
+                                    <li><label>信号强度：</label><span style={{color: colorDetail}}>{rssi}</span></li>
                                     <li><label>IP：</label><span>{reList.ip}</span></li>
                                     <li><label>MAC：</label><span>{reList.mac}</span></li>
                                     <li><label>上级路由：</label><span>{reList.parent}</span></li>
@@ -276,7 +277,7 @@ class Item extends React.Component {
                                     <CustomIcon size={8} style={{marginTop: -30}} type="Rename" />
                                 </p>
                                 <ul>
-                                    <li><label>信号强度：</label><span style={{color: color}}>较差</span></li>
+                                    <li><label>信号强度：</label><span style={{color: colorDetail}}>较差</span></li>
                                     <li><label>IP：</label><span>192.168.2.1</span></li>
                                     <li><label>MAC：</label><span>00.00.00.00.00.00</span></li>
                                     <li><label>上级路由：</label><span>SUNIM_XX(位置)</span></li>

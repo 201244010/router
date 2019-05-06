@@ -378,7 +378,7 @@ export default class SetWan extends React.PureComponent {
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
                     <div className="bigLoading">
-                        <CustomIcon size={80} color="#6174F1" type="loading_ring" spin />
+                        <CustomIcon size={80} color="#6174F1" type="loading" spin />
                     </div>
                     <h3 key="active-h3" style={{textAlign: "center"}}>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
                 </div>

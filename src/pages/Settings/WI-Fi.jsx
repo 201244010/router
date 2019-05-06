@@ -849,7 +849,7 @@ export default class WIFI extends React.Component {
                     footer={null}
                 >
                     <div className="progress">
-                        <CustomIcon color="#6174f1" type="loading_ring" size={80} spin/>
+                        <CustomIcon color="#6174f1" type="loading" size={80} spin/>
                         <Tips size="16" top={19}>{intl.get(MODULE, 78)/*_i18n:正在等待Wi-Fi重启，请稍候...*/}</Tips>
                     </div>
                 </Modal>
