@@ -375,7 +375,17 @@ export default class StaticBind extends React.Component {
         const columns = [{
             title: intl.get(MODULE, 14)/*_i18n:设备名称*/,
             dataIndex: 'hostname',
-            width:260
+            width:260,
+            render: (address, record) => {
+                return (
+                    <div className="static-list">
+                        <div style={{display: 'inline-block'}}>
+                            <Logo mac={record.mac} size={40} />
+                        </div>
+                        <label>{record.hostname}</label>
+                    </div>
+                )
+            }
         }, {
             title: intl.get(MODULE, 15)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
@@ -478,7 +488,7 @@ export default class StaticBind extends React.Component {
                     <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.address.mac}
                         scroll={{ y: 336 }}
                         style={{ minHeight: 360 }}
-                        bordered={false}
+                        bordered
                         size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 33)/*_i18n:暂无设备*/ }} />
                 </Modal>
                 <Modal title={editType === 'edit' ? intl.get(MODULE, 34)/*_i18n:编辑静态地址*/ : intl.get(MODULE, 35)/*_i18n:备注名称*/}

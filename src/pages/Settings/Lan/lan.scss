@@ -59,3 +59,23 @@
         border-bottom: none;
     }
 }
+
+.static-list {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    label {
+        margin-left: 12px;
+        width: 306px;
+        vertical-align: middle;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        display:-webkit-box; 
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2; 
+        word-wrap: break-word;
+        display: -moz-box;
+        -moz-line-clamp: 2;
+        -moz-box-orient: vertical;
+    }
+}

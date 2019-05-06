@@ -1,8 +1,12 @@
 .black-list {
     padding-left: 60px;
     text-align: left;
+    height: 60px;
+    display: flex;
+    align-items: center;
     label {
-        width: 318px;
+        margin-left: 12px;
+        width: 306px;
         vertical-align: middle;
         overflow:hidden; 
         text-overflow:ellipsis;
