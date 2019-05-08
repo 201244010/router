@@ -273,7 +273,7 @@ export default class Home extends React.Component {
         });
 
         let priorityClients = totalList.filter(item => {
-            return (item.type === TYPE_SUNMI || item.type === TYPE_WHITE);
+            return (item.type === TYPE_WHITE);
         }).sort((a, b) => {
             if (a.type === b.type) {
                 return (a.ontime - b.ontime);
