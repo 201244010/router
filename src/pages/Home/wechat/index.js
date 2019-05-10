@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 import echarts from 'echarts/lib/echarts';
+import {transformTime} from '~/assets/common/utils';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip' 
 import './index.scss';
@@ -61,7 +62,7 @@ export default class Connection extends React.Component {
                 data: (function(e){
                     var res = [];
                     e.map(function(item) {
-                        res.push(item.time)
+                        res.push(transformTime(parseInt(item.time)))
                     });
                     return res;
                 })(this.props.wechatList),
@@ -80,7 +81,7 @@ export default class Connection extends React.Component {
                 data: (function(e){
                     var res = [];
                     e.map(function(item) {
-                        res.push(item.data)
+                        res.push(item.count)
                     });
                     return res;
                 })(this.props.wechatList),
