@@ -154,7 +154,6 @@ export default class Home extends React.Component {
             reInfo = data[6].result.sonconnect.devices;
         //时间戳转时间，获取每天微信接入的数量
         const wechatList = wechats.access_report;
-        console.log(wechats);
         let band = {
             sunmi: 0.2,
             whitelist: 0.1,

@@ -62,7 +62,7 @@ export default class Connection extends React.Component {
                 data: (function(e){
                     var res = [];
                     e.map(function(item) {
-                        res.push(transformTime(parseInt(item.time)))
+                        res.push(transformTime(parseInt(item.time) * 1000))
                     });
                     return res;
                 })(this.props.wechatList),
