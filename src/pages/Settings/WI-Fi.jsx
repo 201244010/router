@@ -801,11 +801,13 @@ export default class WIFI extends React.Component {
                             <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
                             <ErrorTip>{guestSsidTip}</ErrorTip>
                         </FormItem>
-                        <label className='ui-tiled compact'>{intl.get(MODULE, 67)/*_i18n:密码方式*/}</label>
-                        <RadioGroup className='radio-choice' onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
-                            <Radio style={{display:'inline-block'}} value={'static'}>{intl.get(MODULE, 68)/*_i18n:静态密码*/}</Radio>
-                            <Radio style={{display:'inline-block'}} value={'dynamic'}>{intl.get(MODULE, 69)/*_i18n:动态密码*/}</Radio>
-                        </RadioGroup>
+                        <div className="wifi-settings">
+                            <label className='ui-tiled compact'>{intl.get(MODULE, 67)/*_i18n:密码方式*/}</label>
+                            <RadioGroup className='radio-choice' onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
+                                <Radio style={{display:'inline-block'}} value={'static'}>{intl.get(MODULE, 68)/*_i18n:静态密码*/}</Radio>
+                                <Radio style={{display:'inline-block'}} value={'dynamic'}>{intl.get(MODULE, 69)/*_i18n:动态密码*/}</Radio>
+                            </RadioGroup>
+                        </div>
                         <section style={{display:displayType}}>
                             <label>{intl.get(MODULE, 70)/*_i18n:动态变更周期*/}</label>
                             <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>

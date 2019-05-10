@@ -400,9 +400,9 @@ export default class Device extends React.Component {
                         <span className='left-border'>
                             商米设备
                         </span>
-                        <span className={sunmiLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                        <div className={sunmiLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {sunmiLength}
-                        </span>
+                        </div>
                     </div>
                     <div className='device-grid'>
                     
@@ -414,9 +414,9 @@ export default class Device extends React.Component {
                         <span className='left-border'>
                             优先设备
                         </span>
-                        <span className={priorityLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                        <div className={priorityLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {priorityLength}
-                        </span>
+                        </div>
                     </div>
                     <div className='device-grid'>
                     
@@ -428,9 +428,9 @@ export default class Device extends React.Component {
                         <span className='left-border'>
                             普通设备
                         </span>
-                        <span className={normalLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
+                        <div className={normalLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {normalLength}
-                        </span>
+                        </div>
                     </div>
                 </div>
                 <Button onClick={this.viewDevice} className="button">查看设备</Button>
