@@ -1,47 +1,42 @@
 .third-div{
   margin-top: 20px;
   .device-number {
-    float: left;
+    display: inline-block;
     width: 82px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #ADB1B9;
-
     .yellow {
       width: 2px;
       height: 12px;
       background: #FF6900;
-      display: block;
+      display: inline-block;
       margin-right: 4px;
-      float: left;
-      margin-top: 4px;
+      margin-bottom: -1px;
     }
     .green {
       width: 2px;
       height: 12px;
       background: #60CC13;
-      display: block;
+      display: inline-block;
       margin-right: 4px;
-      float: left;
-      margin-top: 4px;
+      margin-bottom: -1px;      
     }
     .blue {
       width: 2px;
       height: 12px;
       background: #446CE6;;
-      display: block;
+      display: inline-block;
       margin-right: 4px;
-      float: left;
-      margin-top: 4px;
+      margin-bottom: -1px;
     }
     .left-border {
-      float: left;
       margin-bottom: 3px;
     }
   }
   .device-grid {
+    display: inline-block;
     margin: 9px 11.5px 0 0 ;
-    float: left;
     background: rgba(51,60,79,0.06);
     height: 40px;
     width: 1px;

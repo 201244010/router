@@ -49,7 +49,7 @@ export default class SysUpgrade extends React.Component{
             render: (value, record) => {
                 const {detecting, update, duration, devList, codeList} = this.state;
                 const online = record.online;
-                if (update && online) {
+                if (update && online && record.devid in devList) {
                     return <ProgressStatus duration={duration} status={devList[record.devid]} failTip={codeList[record.devid]} />
                 } else if (detecting && online) {
                     return (
@@ -235,7 +235,7 @@ class ProgressStatus extends React.Component {
     render() {
         const percent = this.state.percent;
         const {status, failTip} = this.props;
-        const Info = () => {
+        const Update = () => {
             switch(status) {
                 case 'download failed!': 
                     return  <p style={{color: '#D0021B', fontSize: 14}}>
@@ -268,8 +268,9 @@ class ProgressStatus extends React.Component {
                     </div>
             }
         }
+
         return (
-            <Info />
+            <Update />
         )
     }
 }

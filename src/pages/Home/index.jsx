@@ -56,49 +56,7 @@ export default class Home extends React.Component {
         },
         largestPercent: 0,
         chatTotal: 0,
-        wechatList: [{
-            data: 0,
-            time: '2018/01/01'
-        },{
-            data: 0,
-            time: '2018/01/01'
-        },{
-            data: 0,
-            time: '2018/01/04'
-        },{
-            data: 0,
-            time: '2018/01/05'
-        },{
-            data: 0,
-            time: '2018/01/06'
-        },{
-            data: 0,
-            time: '2018/01/07'
-        },{
-            data: 0,
-            time: '2018/01/08'
-        },{
-            data: 0,
-            time: '2018/01/09'
-        },{
-            data: 0,
-            time: '2018/01/10'
-        },{
-            data: 0,
-            time: '2018/01/11'
-        },{
-            data: 0,
-            time: '2018/01/12'
-        },{
-            data: 0,
-            time: '2018/01/13'
-        },{
-            data: 0,
-            time: '2018/01/14'
-        },{
-            data: 0,
-            time: '2018/01/15'
-        }],
+        wechatList: [],
         totalList: [],
         reList: [],
         normalClients: [],
@@ -177,7 +135,7 @@ export default class Home extends React.Component {
             { opcode: 'WIRELESS_LIST_GET' },
             { opcode: 'NETWORK_WAN_IPV4_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
-            { opcode: 'AUTH_CLIENT_LIST'},
+            { opcode: 'AUTH_CHAT_TOTAL_LIST'},
             { opcode: 'ROUTE_GET'},
         ], { ignoreErr: true });
 
@@ -192,27 +150,10 @@ export default class Home extends React.Component {
             alias = data[4].result.aliaslist,
             traffics = data[1].result.traffic_stats.hosts,
             wifiInfo = data[2].result.rssilist || {},
-            wechats = data[5].result.auth.clientlist,
+            wechats = data[5].result,
             reInfo = data[6].result.sonconnect.devices;
         //时间戳转时间，获取每天微信接入的数量
-        const timeData = {}, wechatList = this.state.wechatList;
-
-        wechats.map(item => {
-            if (!timeData[transformTime(item.access_time)]) {
-                timeData[transformTime(item.access_time)] = 1;
-            } else {
-                timeData[transformTime(item.access_time)] += 1;
-            }
-        })
-
-        Object.keys(timeData).forEach(function(key){
-            wechatList.unshift({
-                data: timeData[key],
-                time: key
-            });
-            wechatList.pop();
-        });
-
+        const wechatList = wechats.access_report;
         let band = {
             sunmi: 0.2,
             whitelist: 0.1,
@@ -273,7 +214,7 @@ export default class Home extends React.Component {
         });
 
         let priorityClients = totalList.filter(item => {
-            return (item.type === TYPE_SUNMI || item.type === TYPE_WHITE);
+            return (item.type === TYPE_WHITE);
         }).sort((a, b) => {
             if (a.type === b.type) {
                 return (a.ontime - b.ontime);
@@ -341,6 +282,7 @@ export default class Home extends React.Component {
             priorityClients: priorityClients,
             normalClients: normalClients,
             wechatList: wechatList,
+            chatTotal: wechats.access_total,
             reList: reList,
             percent: {
                 normalPercent: (() => {
