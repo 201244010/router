@@ -48,6 +48,7 @@ export default class SetPassword extends React.Component {
         switch (errcode) {
             case 0:
                 init(data[0].result.account.token);
+                window.sessionStorage.setItem('_FACTORY', 'redirect');
                 const quickStartVersion = getQuickStartVersion();
 
                 if ('domestic' === quickStartVersion) { //国内版，跳转到设置上网参数
