@@ -15,6 +15,7 @@ export default class Reboot extends React.Component{
         duration: 120,
         loadingActive: false,
         succeedActive: false,
+        disabled: disabled
     }
 
     reboot = async() =>{
@@ -52,6 +53,11 @@ export default class Reboot extends React.Component{
             okText: intl.get(MODULE, 3)/*_i18n:立即重启*/,
             cancelText: intl.get(MODULE, 4)/*_i18n:取消*/,
             onOk: this.reboot,
+            onCancel: () => {
+                this.setState({
+                    disabled: false
+                })
+            }
         });
     }
 
@@ -60,13 +66,13 @@ export default class Reboot extends React.Component{
     }
 
     render(){
-        const { duration, loadingActive, succeedActive } = this.state;
+        const { duration, loadingActive, succeedActive, disabled } = this.state;
         return (
             <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 8}}>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
-                        <Button style={{width:200, height: 42}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
+                        <Button style={{width:200, height: 42}} disabled={disabled} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
                     </section>
                 </div>
                 {loadingActive &&
