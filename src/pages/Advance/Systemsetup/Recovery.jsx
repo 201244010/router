@@ -17,6 +17,7 @@ export default class Recovery extends React.Component{
         duration: 120,
         loadingActive: false,
         succeedActive: false,
+        disabled: false
     }
 
     reset = async () =>{
@@ -42,6 +43,9 @@ export default class Recovery extends React.Component{
     }
 
     showModal = () => {
+        this.setState({
+            disabled: true
+        });
         Modal.confirm({
             centered: true,
             // title: '警告',
@@ -53,6 +57,11 @@ export default class Recovery extends React.Component{
             okText: intl.get(MODULE, 3)/*_i18n:立即恢复*/,
             cancelText: intl.get(MODULE, 4)/*_i18n:取消*/,
             onOk: this.reset,
+            onCancel: () => {
+                this.setState({
+                    disabled: false
+                });
+            }
         });
     }
 
@@ -66,13 +75,13 @@ export default class Recovery extends React.Component{
     }
 
     render(){
-        const { duration, loadingActive, succeedActive } = this.state;
+        const { duration, loadingActive, succeedActive, disabled} = this.state;
         return (
             <SubLayout className="settings">
             <div>
                 <div style={{marginTop : 6}}>
                     <section style={{borderTop:0,marginTop:8}} className="system-save">
-                        <Button style={{width:200 , height:42}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即恢复*/}</Button>
+                        <Button disabled={disabled} style={{width:200 , height:42}} className="system-button" type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即恢复*/}</Button>
                     </section>
                 </div>
                 {loadingActive &&
