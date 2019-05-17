@@ -15,7 +15,7 @@ export default class Reboot extends React.Component{
         duration: 120,
         loadingActive: false,
         succeedActive: false,
-        disabled: disabled
+        disabled: false
     }
 
     reboot = async() =>{
@@ -42,6 +42,9 @@ export default class Reboot extends React.Component{
     }
 
     showModal = () => {
+        this.setState({
+            disabled: true
+        })
         Modal.confirm({
             centered: true,
             // title: '提示',
