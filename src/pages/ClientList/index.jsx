@@ -125,8 +125,8 @@ export default class ClientList extends React.Component {
         this.RSSI_GOOD = intl.get(MODULE, 0)/*_i18n:较好*/;
         this.RSSI_BAD = intl.get(MODULE, 1)/*_i18n:较差*/;
         this.modeMap = {
-            '0': '2.4G',
-            '1': '5G',
+            '0': '5G',
+            '1': '2.4G',
             '2': intl.get(MODULE, 2)/*_i18n:有线*/,
         };
         this.logoType = {
