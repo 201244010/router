@@ -119,7 +119,7 @@ export default class Finish extends React.PureComponent {
                         <span className='title-left'>{devid}</span>
                     </div>
                     <div className='right'>
-                        <span className='title-right'>备注位置<div className='addApLocation' onClick={this.addLocation}></div></span>    
+                        <span className='title-right'>备注<div className='addApLocation' onClick={this.addLocation}></div></span>    
                     </div>
                 </div>
                 <div>
@@ -140,11 +140,11 @@ export default class Finish extends React.PureComponent {
                     <p className='wifi-title'>客用Wi-Fi</p>
                     <div className='wifi-content'>
                         <div className='wifi-ssid'>
-                            <span className='wifi-left'>顾客Wi-iFi名称</span>
+                            <span className='wifi-left'>客用Wi-Fi名称</span>
                             <span className='wifi-right'>{data.guestSsid}</span>
                         </div>
                         <div className='wifi-pwd'>
-                            <span className='wifi-left'>顾客Wi-Fi密码</span>
+                            <span className='wifi-left'>客用Wi-Fi密码</span>
                             <span className='wifi-right'>{data.guestPassword}</span>
                         </div>
                     </div>
@@ -161,7 +161,7 @@ export default class Finish extends React.PureComponent {
                 footer={null}
                 >
                 <div className='Content'>
-                    <div className='Title'>备注信息</div>
+                    <div className='Title'>备注</div>
                     <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location} />
                 </div>
                 <div className='Footer'>

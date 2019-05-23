@@ -77,7 +77,7 @@ export default class SetWifi extends React.Component {
         let {guestDisplay} = this.state;
         this.setState({
             guestDisplay: 'none' === guestDisplay ? 'block' : 'none',
-            setMessage: 'none' === guestDisplay ? '暂不设置客户Wi-Fi' : '设置客用Wi-Fi'
+            setMessage: 'none' === guestDisplay ? '暂不设置客用Wi-Fi' : '设置客用Wi-Fi'
         });
     }
 
@@ -126,7 +126,7 @@ export default class SetWifi extends React.Component {
             confirm({
                 content: (hostPassword.length === 0 ? '商户Wi-Fi' : '') + 
                 (hostPassword.length === 0 && guestPassword.length === 0 && 'block' === guestDisplay? '、' : '')+
-                (guestPassword.length === 0 && 'block' === guestDisplay? '顾客Wi-Fi' : '') + '密码未设置，确定继续?',
+                (guestPassword.length === 0 && 'block' === guestDisplay? '客用Wi-Fi' : '') + '密码未设置，确定继续?',
                 onOk: this.dataSet,
             });
             this.setState({ loading : false }); 
@@ -194,9 +194,9 @@ export default class SetWifi extends React.Component {
                         onChange={value => this.onChange('hostPassword', value)}
                     />
                     <Input
-                        inputName='客户WiFi（建议开放给来电客户使用）'
+                        inputName='客用WiFi（建议开放给来店客户使用）'
                         value={guestSsid}
-                        placeholder='设置顾客WiFi名称'
+                        placeholder='设置客用WiFi名称'
                         maxLength={32}
                         tip={guestSsidTip}
                         onChange={value => this.onChange('guestSsid', value)}
@@ -205,7 +205,7 @@ export default class SetWifi extends React.Component {
                     <Input
                         value={guestPassword}
                         type='password'
-                        placeholder='设置顾客WiFi密码'
+                        placeholder='设置客用WiFi密码'
                         maxLength={32}
                         tip={guestPasswordTip}
                         onChange={value => this.onChange('guestPassword', value)}

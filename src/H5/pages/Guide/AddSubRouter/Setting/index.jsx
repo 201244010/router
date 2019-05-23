@@ -8,12 +8,13 @@ import './setting.scss';
 export default class Setting extends React.Component {
     constructor (props) {
         super (props);
+        this.flag = 0;
     }
 
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: 'selecting'  //'selecting'、'setting'、'settingResult',检测搜索、正在设置、设置完成
+        condition: 'selecting'  //'selecting'、'settingResult',检测搜索、设置完成
     }
 
     onChange = (deviceId, checked) => {
@@ -38,11 +39,11 @@ export default class Setting extends React.Component {
         let response = await common.fetchApi({opcode: 'SWITCH_START'});
         const { errcode, data } = response;
         let duration = data[0].result.sonconnect.duration || 0;  //请求持续时间（单位秒）
-        let flag = 0;
+
         if (0 === errcode) {
             setTimeout(() => {
                 common.fetchApi({opcode: 'SWITCH_STOP'});
-                flag = 1;
+                this.flag = 1;
             }, duration*1000);
             let resp = await common.fetchApi(
                 {opcode: 'ROUTE_QUERY'},
@@ -54,7 +55,7 @@ export default class Setting extends React.Component {
                     pending: resp => {
                         let {errcode, data} = resp;
                         let devicesShow = this.state.devicesShow;
-                        if (0 === errcode && 0 === flag) {
+                        if (0 === errcode && 0 === this.flag) {
                             let devicesGet = data[0].result.sonconnect.devices || [];
                             devicesGet.map(item => {
                                 let need = true;
@@ -86,13 +87,13 @@ export default class Setting extends React.Component {
                                 devicesShow: devicesShow,
                             });
                         }
-                        return 0 === errcode && 0 === flag;
+                        return 0 === errcode && 0 === this.flag;
                     }
                 }
             );
             let {errcode, data} = resp;
             let devicesShow = this.state.devicesShow;
-            if (0 === errcode && 0 === flag) {
+            if (0 === errcode && 0 === this.flag) {
                 let devicesGet = data[0].result.sonconnect.devices || [];
                 devicesGet.map(item => {
                     let need = true;
@@ -129,10 +130,10 @@ export default class Setting extends React.Component {
 
     setSubRouter = async() => {
         let {devicesShow} = this.state;
-        let data = {sonconnect: {selected:[],blocked:[]}};
+        let sonconnect = {selected:[],blocked:[]};
         devicesShow.map(item => {
             if (item.checked) {
-                data.sonconnect.selected.push(
+                sonconnect.selected.push(
                     {
                         mac: item.mac,
                         devid: item.deviceId,
@@ -142,7 +143,7 @@ export default class Setting extends React.Component {
                     }
                 );
             } else {
-                data.sonconnect.blocked.push(
+                sonconnect.blocked.push(
                     {
                         mac: item.mac,
                         devid: item.deviceId,
@@ -153,11 +154,18 @@ export default class Setting extends React.Component {
             }
         });
 
-        this.setState({condition: 'setting'});
+        let res = await common.fetchApi(
+            [
+                {opcode: 'SWITCH_STOP'}
+            ]
+        );
+        if(0 === res.errcode) {
+            this.flag = 1;
+        }
+    
         let response = await common.fetchApi(
             [
-                {opcode: 'SWITCH_STOP'},
-                {opcode: 'ROUTE_SET', data: data}
+                {opcode: 'ROUTE_SET', data: {sonconnect: sonconnect}}
             ]
         );
 
@@ -182,6 +190,7 @@ export default class Setting extends React.Component {
     }
 
     refresh = () => {
+        this.flag = 0;
         this.setState({
             condition: 'selecting',
             searchFinish: false,
@@ -312,7 +321,9 @@ class SettingResult extends React.Component {
                     {showList}
                 </div>
             </div>,
-            {footer}
+            <div>
+                {footer}
+            </div>
         ]);
     }
 }

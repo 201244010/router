@@ -84,7 +84,7 @@ export default class SubRouter extends React.Component {
                                     <p className='description'>设置同步成功</p>
                                 </div>
                             </div>
-                            <div className='addLocation'>备注位置<div className='addLocationImg' onClick={this.addLocation}></div></div>
+                            <div className='addLocation'>备注<div className='addLocationImg' onClick={this.addLocation}></div></div>
                         </div>;
                 break;
             case 'failed':
@@ -119,7 +119,7 @@ export default class SubRouter extends React.Component {
                     footer={null}
                     >
                     <div className='Content'>
-                        <div className='Title'>备注信息</div>
+                        <div className='Title'>备注</div>
                         <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location} />
                     </div>
                     <div className='Footer'>
