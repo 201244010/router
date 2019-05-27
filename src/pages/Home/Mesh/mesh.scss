@@ -6,12 +6,19 @@
         vertical-align: middle;
         span{
             margin: 0 5px;
-            color: #FB8632;
+            color: #6174F1;
         }
     }
     .ant-modal-body{
-        height: 240px;
-        .mesh-list{
+        padding: 21px;
+        height: 242px;
+        .ant-checkbox-inner {
+            border-radius: 50%;
+        }
+        .ant-checkbox:hover {
+            background-color: unset;
+        }
+        .mesh-list-center{
             display: flex;
             flex-wrap:wrap;
             justify-content:center;
@@ -23,9 +30,10 @@
                 flex: 0 1 auto;
                 text-align: center;
                 div{
-                    margin: 10px auto 5px;
+                    margin:5px auto 0;
                 }
                 p{
+                    font-family: PingFangSC-Regular;
                     font-size: 12px;
                     color: #ADB1B9;
                     width: 100%;
@@ -36,6 +44,11 @@
                     margin: 0;
                 }
             }
+        }
+        .mesh-list-left{
+            @extend .mesh-list-center;
+            justify-content: left;
+            overflow: auto;
         }
         .status-icon{
             text-align: center;
@@ -48,7 +61,7 @@
             text-align: center;
             margin-bottom: 44px;
             span{
-                color: #FB8632;
+                color: #6174F1;
                 margin: 0 5px;
             }
         }

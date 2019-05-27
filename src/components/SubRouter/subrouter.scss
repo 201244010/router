@@ -29,6 +29,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        .ant-checkbox-inner {
+            border-radius: 50%;
+        }
+        .ant-checkbox:hover {
+            background-color: unset;
+        }
     }
     .final {
         display: flex;
