@@ -103,15 +103,38 @@
     margin-left: 60px;
 }
 
-.system-save{
-    height: 98px;
-    border-top: 1px solid #d8d8d8;
-    left:-60px;
-    .system-button{
-        width: 320px;
-        height: 34px;
-        left: 60px;
-        top: 24px;
+.system-reboot {
+    padding: 29px 60px 29px 60px;
+    display: flex;
+    justify-content: space-between;
+    .reboot-title {
+        font-size: 16px;
+        color: #333C4F;
+    }
+}
+.reboot-modal {
+    .ant-modal-body {
+        padding: 30px;
+    }
+    .reboot-modal-title {
+        display: flex;
+        align-items: center;
+        label {
+            color: #D0021B;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+    }
+    .reboot-modal-content {
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #333C4F;
+    }
+    .reboot-confirm {
+        background: #D0021B;
+        span {
+            color: #FFFFFF;
+        }
     }
 }
 

@@ -39,18 +39,51 @@ import Backup from './Advance/Systemsetup/Backup';
 import TimeZone from './Advance/Systemsetup/TimeZone';
 import Reboot from './Advance/Systemsetup/Reboot';
 import Recovery from './Advance/Systemsetup/Recovery';
+import { UpgradeContext, RebootContext, RecoveryContext, UserInfoContext } from '~/context';
 
 const MODULE = 'page';
+
+const ContextRoute = ({ contextComponent, component, value, ...rest }) => {
+    const { Provider } = contextComponent;
+    const Component = component;
+  
+    return (
+      <Route {...rest}>
+        <Provider value={value}>
+          <Component />
+        </Provider>
+      </Route>
+    );
+};
 
 class PrimaryLayout extends React.Component {
     constructor(props) {
         super(props);
+        this.timer = {};
     }
 
     state = {
         pathname: '/',
-        logined: true
+        logined: true,
+        reboot: {},
+        recovery: {}
     };
+
+    setProgress = (type, record, duration) => {
+        this.setState({
+            reboot: Object.assign({}, this.state[type], {[record.devid]: 1})
+        });
+        this.timer[type] = Object.assign({}, this.timer[type]);
+        this.timer[type][record.devid] = setInterval(() => {
+            if (this.state[type][record.devid] > 100) {
+                clearInterval(this.timer[type][record.devid]);
+            } else {
+                this.setState({
+                    reboot: Object.assign({}, this.state[type], {[record.devid]: ++this.state[type][record.devid] || 1})
+                });
+            }
+        }, duration * 10);
+    }
 
     static getDerivedStateFromProps() {
         const pathname = location.pathname;
@@ -76,8 +109,12 @@ class PrimaryLayout extends React.Component {
     }
 
     render() {
-        const { pathname, logined } = this.state;
-
+        const { pathname, logined , reboot, recovery} = this.state;
+        const val = {
+            reboot: reboot,
+            recovery: recovery,
+            setProgress: this.setProgress
+        }
         const routerSetting = {
             'wechat': { main: 'bg', footer: '', header: true, title: true},
             'blacklist': { main: 'bg', footer: '', header: true, title: true },
@@ -135,19 +172,22 @@ class PrimaryLayout extends React.Component {
                     {node.header && <PrimaryHeader /> }
                     <div className="main" style={{minHeight:splitResult.length > 2 && splitResult[1] === 'routersetting' ? 'calc(100% - 140px)' : height[pathname.split('/')[1]]}}>
                     {node.title && <PrimaryTitle title={getTitle()[path].title} titleTip={getTitle()[path].titleTip} /> }
-                        <Switch>
-                            <Route path="/login" component={Login} />
-                            <Route path='/welcome' component={Welcome} />
-                            <Route path='/agreement' component={UserAgreement} />
-                            <Route path="/guide" component={Guide} />
-                            <Route path="/home" component={Home} />
-                            <Route path="/clientlist" component={ClientList} />
-                            <Route path="/settings" component={Settings} />
-                            <Route path="/routersetting" component={RouterSetting}/>
-                            <Route path='/app' component={DownloadPage} />
-                            <Route path='/diagnose' component={Diagnose} />
-                            <Route path="/" exact component={Default} />
-                        </Switch>
+                    <Switch>
+                        <Route path="/login" component={Login} />
+                        <Route path='/welcome' component={Welcome} />
+                        <Route path='/agreement' component={UserAgreement} />
+                        <Route path="/guide" component={Guide} />
+                        <Route path="/home" component={Home} />
+                        <Route path="/clientlist" component={ClientList} />
+                        <Route path="/settings" component={Settings} />
+                        {/* <ContextRoute exact path="/routersetting" contextComponent={UserInfoContext} component={RouterSetting} /> */}
+                        <Route path="/routersetting">
+                            <RouterSetting value={val}/>
+                        </Route>
+                        <Route path='/app' component={DownloadPage} />
+                        <Route path='/diagnose' component={Diagnose} />
+                        <Route path="/" exact component={Default} />
+                    </Switch>
                     </div>
                     {false !== node.footer && <PrimaryFooter className={node.footer} />}
                     {logined && <UpdateDetect />}
@@ -177,8 +217,9 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/changepassword" component={ChangePassword} />
                     <Route path="/routersetting/upgrade" component={SysUpgrade} />
                     <Route path="/routersetting/backup" component={Backup} />
-                    <Route path="/routersetting/reboot" component={Reboot} />
-                    <Route path="/routersetting/recovery" component={Recovery} />
+                    <ContextRoute exact path="/routersetting/systemsetup" value={this.props.value} contextComponent={UpgradeContext} component={Systemsetup} />
+                    <ContextRoute exact path="/routersetting/reboot" value={this.props.value} contextComponent={RebootContext} component={Reboot} />
+                    <ContextRoute exact path="/routersetting/recovery" value={this.props.value} contextComponent={RecoveryContext} component={Recovery} />
                     <Route path="/routersetting/timeset" component={TimeZone} />
                 </Switch>
         )

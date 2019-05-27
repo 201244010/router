@@ -39,7 +39,7 @@ export default class CustomProgress extends Component {
         return (
             <Modal className='sm-progress-modal' closable={false} footer={null} visible={true} centered={true}>
                 <h4>{title}</h4>
-                <Progress percent={percent} strokeColor='linear-gradient(to right, #FAD961, #FB8632)' showInfo={false} />
+                <Progress percent={percent} strokeColor='#3D76F6' showInfo={false} />
                 { showPercent && 
                     <p>{`${percent}%`}</p>
                 }
