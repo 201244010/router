@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Spin, Icon } from 'antd';
+import { Button, Modal, Spin, Icon, Checkbox, message } from 'antd';
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 
@@ -13,20 +13,20 @@ export default class Mesh extends React.Component{
 
     state = {
         visible: false,
-        showBtn: false,
-        btnStr: '',
+        // showBtn: false,
+        // btnStr: '',
         state: 'running',  // running/done
         title: '',
         devices: [
-            /*{ model: 'v2pro', mac: '00:11:22:33:44:55' },
-            { model: 'T2 mini', mac: '00:11:22:33:44:56' },
-            { model: 'V1s', mac: '00:11:22:33:44:58' },
-            { model: 'V2 PRO', mac: '00:11:22:33:44:00' },
-            { model: 'T2 mini', mac: '00:11:22:33:44:99' },
-            { model: 'v1s', mac: '00:11:22:33:44:53' },
-            { model: 'V2 PRO', mac: '00:11:22:33:44:45' },
-            { model: 'T2 mini', mac: '00:11:22:33:44:22' },
-            { model: 'd1s', mac: '00:11:22:33:44:76' },*/
+            // { model: 'v2pro', mac: '00:11:22:33:44:55', checked: 1 },
+            // { model: 'T2 mini', mac: '00:11:22:33:44:56', checked: 0 },
+            // { model: 'V1s', mac: '00:11:22:33:44:58', checked: 1 },
+            // { model: 'V2 PRO', mac: '00:11:22:33:44:00', checked: 0 },
+            // { model: 'T2 mini', mac: '00:11:22:33:44:99', checked: 1 },
+            // { model: 'v1s', mac: '00:11:22:33:44:53', checked: 0 },
+            // { model: 'V2 PRO', mac: '00:11:22:33:44:45', checked: 1},
+            // { model: 'T2 mini', mac: '00:11:22:33:44:22', checked: 0 },
+            // { model: 'd1s', mac: '00:11:22:33:44:76', checked: 1 },
         ],
     }
 
@@ -36,8 +36,7 @@ export default class Mesh extends React.Component{
             if ((currentTime - this.startTime) > duration * 1000){
                 clearInterval(this.timer);
                 this.setState({
-                    title: intl.get(MODULE, 0)/*_i18n:搜寻设备*/,
-                    showBtn: true,
+                    // showBtn: true,
                     btnStr: intl.get(MODULE, 1)/*_i18n:我知道了*/,
                     state: 'done',
                 });
@@ -50,11 +49,11 @@ export default class Mesh extends React.Component{
                 if (errcode == 0) {
                     let { devices } = data[0].result.sunmimesh;
                     let num = devices.length;
-                    let title = (num > 0) ? intl.get(MODULE, 2, {num})/*_i18n:搜寻到{num}台商米设备，已自动接入商米网络*/ : intl.get(MODULE, 4)/*_i18n:正在搜寻商米设备...*/;
+                    let title = (num > 0) ? `搜寻到附近<span>${num}</span>台商米设备` /*_i18n:搜寻到{num}台商米设备，已自动接入商米网络*/ : intl.get(MODULE, 4)/*_i18n:正在搜寻商米设备...*/;
                     this.setState({
-                        devices: devices.map(item => Object.assign({}, item)),
+                        devices: devices.map(item => Object.assign({}, item, {checked: 1})),
                         title: title,
-                        showBtn: (num > 0),
+                        // showBtn: (num > 0),
                     });
                 } else {
                     clearInterval(this.timer);
@@ -68,11 +67,11 @@ export default class Mesh extends React.Component{
         this.startTime = new Date().getTime();
         this.setState({
             visible: true,
-            showBtn: false,
+            // showBtn: false,
             state: 'running',
             title: intl.get(MODULE, 6)/*_i18n:正在搜寻商米设备...*/,
-            btnStr: intl.get(MODULE, 7)/*_i18n:已找到全部商米设备*/,
-            devices: [],
+            // btnStr: intl.get(MODULE, 7)/*_i18n:已找到全部商米设备*/,
+            devices: [],     
         });
 
         let start = common.fetchApi({ opcode: 'SUNMIMESH_START' });
@@ -80,18 +79,82 @@ export default class Mesh extends React.Component{
         start.then((resp) => this.refreshMeshInfo(resp.data[0].result.sunmimesh.duration));
     }
 
-    stopSunmiMesh = () => {
+    stopSunmiMesh = async () => {
+        const {devices} = this.state;
         this.setState({
             visible: false,
         })
 
         // stop sunmi mesh
         clearInterval(this.timer);
-        common.fetchApi({ opcode: 'SUNMIMESH_STOP' });
+        const blockList = [];
+        devices.map(item => {
+            blockList.push({
+                mac: item.mac
+            })
+        });
+        await common.fetchApi({ 
+            opcode: 'SUNMIMESH_BLOCK', 
+            data: {
+                sunmimesh: {
+                    devices: blockList
+                }
+            } 
+        }).then(response => {
+            let { errcode } = response;
+            if (errcode === 0) {
+                // message.success(`${devices.length - blockList.length}台商米设备添加成功`);
+            } else {
+                message.error('商米设备添加失败');
+            }
+        });
+        await common.fetchApi({ opcode: 'SUNMIMESH_STOP' });        
+    }
+
+    addSunmiMesh = async () => {
+        const {devices} = this.state;
+        this.setState({
+            visible: false,
+        })
+        clearInterval(this.timer);
+        const blockList = [];
+        devices.map(item => {
+            if (item.checked == 0) {
+                blockList.push({
+                    mac: item.mac
+                })
+            }
+        });
+        await common.fetchApi({ 
+            opcode: 'SUNMIMESH_BLOCK', 
+            data: {
+                sunmimesh: {
+                    devices: blockList
+                }
+            } 
+        }).then(response => {
+            let { errcode } = response;
+            if (errcode === 0) {
+                message.success(`${devices.length - blockList.length}台商米设备添加成功`);
+            } else {
+                message.error('商米设备添加失败');
+            }
+        });
+    }
+
+    changeCheck = (e, mac) => {
+        this.setState({
+            devices: this.state.devices.map(item => {
+                if (item.mac === mac) {
+                    item.checked = e.target.checked
+                }
+                return item;
+            })
+        })
     }
 
     render() {
-        const { visible, state, title, showBtn, btnStr, devices }  = this.state;
+        const { visible, state, title, devices }  = this.state;
         const num = devices.length;
         const icon = <CustomIcon color="#6174F1" type="loading" size={20} spin/>
         let Title = [
@@ -102,24 +165,24 @@ export default class Mesh extends React.Component{
         const meshList = devices.map(item => {
             return (
                 <li key={item.mac} className='mesh-device'>
-                    <div><Logo model={item.model} size={34} /></div>
+                    <div><Logo model={item.model} size={36} /></div>
                     <p>{item.model}</p>
+                    <Checkbox checked={item.checked} onChange={(e) => this.changeCheck(e, item.mac)}></Checkbox>
                 </li>
             );
         });
 
+        const selectLength = devices.filter(item => item.checked == 1).length;
+
         return (
         <Modal className='sunmi-mesh-modal' title={Title} maskClosable={false} width={560} visible={visible}
             onCancel={this.stopSunmiMesh} centered={true}
-            footer={showBtn && <Button type="primary" onClick={this.stopSunmiMesh}>{btnStr}</Button>}>
+            footer={<Button type="primary" disabled={selectLength === 0} onClick={this.addSunmiMesh}>添加商米设备</Button>}>
             {'running' === state &&
-            <ul className='mesh-list'>{meshList}</ul>
+            <ul className={meshList.length > 5 ? 'mesh-list-left' : 'mesh-list-center'}>{meshList}</ul>
             }
             {'done' === state && num > 0 &&
-            <div>
-                <div className='status-icon'><CustomIcon color="#87D068" type="succeed" size={64} /></div>
-                <h4 dangerouslySetInnerHTML={{ __html: intl.getHTML(MODULE, 9, {num})}} />
-            </div>
+                <ul className={meshList.length > 5 ? 'mesh-list-left' : 'mesh-list-center'}>{meshList}</ul>
             }
             {'done' === state && num == 0 &&
             <div>
