@@ -51,7 +51,10 @@ export default class Mesh extends React.Component{
                     let num = devices.length;
                     let title = (num > 0) ? `搜寻到附近<span>${num}</span>台商米设备` /*_i18n:搜寻到{num}台商米设备，已自动接入商米网络*/ : intl.get(MODULE, 4)/*_i18n:正在搜寻商米设备...*/;
                     this.setState({
-                        devices: devices.map(item => Object.assign({}, item, {checked: 1})),
+                        devices: devices.map(item => {
+                            const result = this.state.devices.find(items => items.mac === item.mac);
+                            return Object.assign({}, item, {checked: 1}, result || {});
+                        }),
                         title: title,
                         // showBtn: (num > 0),
                     });
