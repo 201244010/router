@@ -180,7 +180,6 @@ class PrimaryLayout extends React.Component {
                         <Route path="/home" component={Home} />
                         <Route path="/clientlist" component={ClientList} />
                         <Route path="/settings" component={Settings} />
-                        {/* <ContextRoute exact path="/routersetting" contextComponent={UserInfoContext} component={RouterSetting} /> */}
                         <Route path="/routersetting">
                             <RouterSetting value={val}/>
                         </Route>

@@ -8,9 +8,8 @@ import {RebootContext} from '~/context';
 const MODULE = 'reboot';
 
 class Reboot extends React.Component{
-    constructor(props,context){
+    constructor(props){
         super(props);
-        this.timer = {};
         this.onlineDev = [];
         this.columns = [{
             title: '设备名称'/*_i18n:设备名称*/,
@@ -94,12 +93,6 @@ class Reboot extends React.Component{
         const role = parseInt(record.role);
         !role && value.setProgress('reboot', record, duration);
         this.reboot([record.devid], role);
-    }
-
-    changeProgress = (record) => {
-        this.setState({
-            recordList: Object.assign({},{[record.devid]: 1})
-        })
     }
 
     reboot = async (devid, role) =>{
@@ -186,7 +179,6 @@ class Reboot extends React.Component{
             <RebootContext.Consumer>
                 {
                     value => <SubLayout className="settings">
-                    <div onClick={value.setNumber}>{value.number}</div>
                     <div className="system-reboot">
                         <label className="reboot-title">重启路由器</label>
                         <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
