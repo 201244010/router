@@ -162,7 +162,6 @@ class Reboot extends React.Component{
         this.setState({
             routerList: routerList
         });
-
     }
 
     login = () =>{

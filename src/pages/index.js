@@ -39,7 +39,7 @@ import Backup from './Advance/Systemsetup/Backup';
 import TimeZone from './Advance/Systemsetup/TimeZone';
 import Reboot from './Advance/Systemsetup/Reboot';
 import Recovery from './Advance/Systemsetup/Recovery';
-import { UpgradeContext, RebootContext, RecoveryContext, UserInfoContext } from '~/context';
+import { UpgradeContext, RebootContext, RecoveryContext } from '~/context';
 
 const MODULE = 'page';
 
@@ -71,7 +71,7 @@ class PrimaryLayout extends React.Component {
 
     setProgress = (type, record, duration) => {
         this.setState({
-            reboot: Object.assign({}, this.state[type], {[record.devid]: 1})
+            [type]: Object.assign({}, this.state[type], {[record.devid]: 1})
         });
         this.timer[type] = Object.assign({}, this.timer[type]);
         this.timer[type][record.devid] = setInterval(() => {
@@ -79,7 +79,7 @@ class PrimaryLayout extends React.Component {
                 clearInterval(this.timer[type][record.devid]);
             } else {
                 this.setState({
-                    reboot: Object.assign({}, this.state[type], {[record.devid]: ++this.state[type][record.devid] || 1})
+                    [type]: Object.assign({}, this.state[type], {[record.devid]: ++this.state[type][record.devid] || 1})
                 });
             }
         }, duration * 10);
@@ -109,7 +109,7 @@ class PrimaryLayout extends React.Component {
     }
 
     render() {
-        const { pathname, logined , reboot, recovery} = this.state;
+        const { pathname, logined, reboot, recovery} = this.state;
         const val = {
             reboot: reboot,
             recovery: recovery,
