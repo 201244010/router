@@ -173,7 +173,7 @@ export default class Diagnose extends React.Component {
     }
 
     setWan = () => {
-        this.props.history.push('/settings/network');
+        this.props.history.push('/routersetting/network');
     }
 
     setTheme = (theme) => {
