@@ -52,7 +52,7 @@ class Reboot extends React.Component{
                         }
                         cancelText='取消'
                         placement="topRight"
-                        onConfirm={() => this.rebootRouter(record, value)}>
+                        onConfirm={() => this.reboot([record.devid], record.role, record, value)}>
                         <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>立即重启</span>
                         </Popconfirm> 
                     }
@@ -88,19 +88,12 @@ class Reboot extends React.Component{
         recordList: {}
     }
 
-    rebootRouter = (record, value) => {
-        const {duration} = this.state;
-        const role = parseInt(record.role);
-        !role && value.setProgress('reboot', record, duration);
-        this.reboot([record.devid], role);
-    }
-
-    reboot = async (devid, role) =>{
-        let resp = await common.fetchApi({ opcode: 'SYSTEMTOOLS_RESTART',data: {devs: devid} });
+    reboot = async (devid, role, record={}, value={}) =>{
+        let resp = await common.fetchApi({ opcode: 'SYSTEMTOOLS_RESTART',data: {devs: [...devid]} });
         const { errcode, data } = resp;
         const duration = parseInt(data[0].result.restart_duration);
         if (0 === errcode) {
-            if (role) {
+            if (parseInt(role)) {
                 clear();
                 this.setState({
                     loadingActive: true,
@@ -114,6 +107,8 @@ class Reboot extends React.Component{
                         succeedActive: true,
                     });
                 }, duration * 1000);
+            } else {
+                value.setProgress('reboot', record, duration);
             }
         } else {
             message.error(intl.get(MODULE, 0, {error: errcode})/*_i18n:路由器重启失败[{error}]*/);    
@@ -175,9 +170,7 @@ class Reboot extends React.Component{
     render(){
         const { duration, loadingActive, succeedActive, disabled, routerList, rebootModal } = this.state;
         return (
-            <RebootContext.Consumer>
-                {
-                    value => <SubLayout className="settings">
+             <SubLayout className="settings">
                     <div className="system-reboot">
                         <label className="reboot-title">重启路由器</label>
                         <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
@@ -197,7 +190,7 @@ class Reboot extends React.Component{
                             rowKey={record => record.mac}
                             style={{ minHeight: 360 }}
                             pagination={false}
-                            locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
+                            locale={{ emptyText: '暂无设备'/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
                             />
                     </div>
                     {loadingActive &&
@@ -236,9 +229,7 @@ class Reboot extends React.Component{
                     >
                         <span className="reboot-modal-content">{`路由器重启需要等待${duration}秒左右，确定要重启全部路由器？`}</span>
                     </Modal>
-                </SubLayout>
-                }
-            </RebootContext.Consumer>
+            </SubLayout>
         );
     }
 }

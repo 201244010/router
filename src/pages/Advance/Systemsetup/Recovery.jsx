@@ -55,7 +55,7 @@ export default class Recovery extends React.Component{
                         className="recovery-popconfirm"
                         cancelText='取消'
                         placement="topRight"
-                        onConfirm={() => this.recoveryRouter(record, value)}>
+                        onConfirm={() => this.reset([record.devid], record.role, record, value)}>
                         <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>立即恢复</span>
                         </Popconfirm> 
                     }
@@ -98,12 +98,12 @@ export default class Recovery extends React.Component{
         this.reset([record.devid], role);
     }
 
-    reset = async (devid, role) =>{
+    reset = async (devid, role, record={}, value={}) =>{
         let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET', data: {devs: devid}});
         const { errcode, data } = resp;
         const duration = parseInt(data[0].result.restart_duration);
         if (0 === errcode) {
-            if (role) {
+            if (parseInt(role)) {
                 this.setState({
                     loadingActive: true,
                     duration: duration,
@@ -116,6 +116,8 @@ export default class Recovery extends React.Component{
                         succeedActive: true,
                     });
                 }, duration * 1000);
+            } else {
+                value.setProgress('recovery', record, duration);
             }
         } else {
             // message.error(`恢复出厂失败[${errcode}]`);
@@ -183,9 +185,7 @@ export default class Recovery extends React.Component{
     render(){
         const { duration, loadingActive, succeedActive, disabled, routerList, recoveryModal} = this.state;
         return (
-            <RecoveryContext.Consumer>
-                {
-                    value => <SubLayout className="settings">
+             <SubLayout className="settings">
                         <div className="system-recovery">
                             <label className="recovery-title">恢复出厂设置</label>
                             <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>全部恢复</Button>
@@ -194,7 +194,7 @@ export default class Recovery extends React.Component{
                             <Table
                                 columns={this.columns}
                                 dataSource={routerList}
-                                rowClassName={(record, index) => {
+                                rowClassName={(_, index) => {
                                     let className = 'editable-row';
                                     if (index % 2 === 1) {
                                         className = 'editable-row-light';
@@ -205,7 +205,7 @@ export default class Recovery extends React.Component{
                                 rowKey={record => record.mac}
                                 style={{ minHeight: 360 }}
                                 pagination={false}
-                                locale={{ emptyText: intl.get(MODULE, 28)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
+                                locale={{ emptyText: '暂无设备'/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
                                 />
                         </div>
                         {loadingActive &&
@@ -245,10 +245,7 @@ export default class Recovery extends React.Component{
                         >
                             <span className="reboot-modal-content">{`路由器恢复出厂设置需要等待${duration}秒左右，确定要重启全部恢复出厂设置？`}</span>
                         </Modal>
-                    </SubLayout>
-                }
-            </RecoveryContext.Consumer>
-            
+                </SubLayout>
         );
     }
 }
