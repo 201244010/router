@@ -322,3 +322,16 @@
     height: 200px;
     background: rgba(173,177,185,0.20);
 }
+
+.home-modal {
+    .home-ap-title {
+        display: flex;
+        align-items: center;
+        label {
+            margin-left: 8px;
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #333C4F;
+        }
+    }
+}

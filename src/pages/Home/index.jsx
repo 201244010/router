@@ -10,6 +10,7 @@ import Topology from './Topology';
 import Device from './deviceInfo';
 import Allocation from './speedAllocation';
 import Connection from './wechat';
+import CustomIcon from '~/components/Icon';
 import Mesh from './Mesh';
 import { set, clear } from '~/assets/common/cookie';
 
@@ -45,6 +46,7 @@ export default class Home extends React.Component {
         totalBand: 8 * 1024 * 1024,
         source: 'defaul',
         me: '',
+        apModal: false,
         wechatConfig: false,
         normalLength: 0,
         priorityLength: 0,
@@ -137,6 +139,7 @@ export default class Home extends React.Component {
             { opcode: 'CLIENT_ALIAS_GET' },
             { opcode: 'AUTH_CHAT_TOTAL_LIST'},
             { opcode: 'ROUTE_GET'},
+            { opcode: 'SUNMIMESH_ROLE_GET'},
         ], { ignoreErr: true });
 
         const ME = this.state.me;
@@ -151,7 +154,8 @@ export default class Home extends React.Component {
             traffics = data[1].result.traffic_stats.hosts,
             wifiInfo = data[2].result.rssilist || {},
             wechats = data[5].result,
-            reInfo = data[6].result.sonconnect.devices;
+            reInfo = data[6].result.sonconnect.devices,
+            role = data[7].result.sunmimesh.role;
         //时间戳转时间，获取每天微信接入的数量
         const wechatList = wechats.access_report;
         let band = {
@@ -301,7 +305,8 @@ export default class Home extends React.Component {
                     return sunmiPercent;
                 })(),
             },
-            largestPercent: totalPercent
+            largestPercent: totalPercent,
+            apModal: role === 'TAP' && online
         });
     }
 
@@ -368,6 +373,16 @@ export default class Home extends React.Component {
         this.refs.sunmiMesh.startSunmiMesh();
     }
 
+    confirmAp = async () => {
+        let resp = await common.fetchApi({ opcode: 'SUNMIMESH_ROLE_SET' });
+        const { errcode } = resp;
+        if (0 === errcode) {
+            this.setState({
+                apModal: false
+            })
+        }
+    }
+
     componentDidMount(){
         this.stop = false;
         this.fetchBasic();
@@ -383,7 +398,7 @@ export default class Home extends React.Component {
     render(){
         const { online, qosEnable, upSpeed, upUnit, downSpeed, downUnit, reList,
                 visible, successShow, upBand, downBand, failShow, me, wechatConfig,
-                normalClients, priorityClients, qosData, sunmiLength, priorityLength,
+                normalClients, priorityClients, qosData, sunmiLength, priorityLength, apModal,
                 normalLength, totalList, wechatList, source, percent, largestPercent, chatTotal}  = this.state;
         return (
             <SubLayout className="home">
@@ -437,6 +452,25 @@ export default class Home extends React.Component {
                         </li>
                     </ul>
                 </div>
+                <Modal
+                        visible={apModal}
+                        width={560}
+                        className='home-modal'
+                        closable={false}
+                        centered={true}
+                        title={<div className="home-ap-title">
+                                <CustomIcon type="hint" size={14}></CustomIcon>
+                                <label>提示</label>
+                            </div>
+                        }
+                        footer={
+                            [
+                                <Button type='primary' onClick={this.confirmAp}>我知道了</Button>
+                            ]
+                        }
+                    >
+                        <span className="reboot-modal-content">检测到当前网络没有主路由，为了保障更好的体验，已将当前设备设置为主路由</span>
+                    </Modal>
             </SubLayout>
         );
     }
