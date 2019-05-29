@@ -145,6 +145,10 @@ export const DIRECTIVE = {
     ROUTE_GET: '0x2116',
     ROUTE_RESET: '0x2117',
     ROUTENAME_SET: '0x2118',
+
+    //tap->ap
+    SUNMIMESH_ROLE_GET: '0x20a0',
+    SUNMIMESH_ROLE_SET: '0x20a1'
 };
 
 /**
