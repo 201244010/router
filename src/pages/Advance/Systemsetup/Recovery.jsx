@@ -98,7 +98,7 @@ export default class Recovery extends React.Component{
         this.reset([record.devid], role);
     }
 
-    reset = async (devid, role, record={}, value={}) =>{
+    reset = async (devid, role, record = {}, value = {}) =>{
         let resp = await common.fetchApi({opcode: 'SYSTEMTOOLS_RESET', data: {devs: devid}});
         const { errcode, data } = resp;
         const duration = parseInt(data[0].result.restart_duration);

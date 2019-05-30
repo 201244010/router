@@ -8,7 +8,9 @@ const MODULE = 'upgrade';
 
 export default class Upgrade extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
+        this.devList = {};
+        this.codeList = {};
     }
     
     state = {
@@ -21,71 +23,90 @@ export default class Upgrade extends React.Component{
         downloadTip : intl.get(MODULE, 0)/*_i18n:正在下载软件，请耐心等待*/,
         warningTip : intl.get(MODULE, 1)/*_i18n:下载过程中请勿断电！！！*/,
         downloadFailtip : intl.get(MODULE, 2)/*_i18n:升级文件下载失败，请重试*/,
-        failReason : ''
+        failReason : '',
+        devList: {},
+        codeList: {}
     }
 
     startUpgrade = async () => {
         this.setState({
-            download : true,
-            update : false,
-        })
+            download: true
+        });
         common.fetchApi({
-            opcode : 'UPGRADE_START',
+            opcode : 'MESH_UPGRADE_START',
         }).then((resp)=>{
             if(resp.errcode == 0){
                 this.setState({
                     duration : resp.data[0].result.upgrade.restart_duration,
                 });
             common.fetchApi(
-                {opcode : 'UPGRADE_STATE'},
+                {opcode : 'MESH_UPGRADE_STATE'},
                 {},
                 {
                     loop : true,
                     interval : 1000,
                     stop : () => this.stop,
-                    pending : res => res.data[0].result.upgrade.progress === 'start downloading!' ||  res.data[0].result.upgrade.progress === 'start checking!' || res.data[0].result.upgrade.progress === 'download success!'
+                    pending : res => {
+                        const result = res.data[0].result.upgrade;
+                        result.map(item => {
+                            Object.assign(this.devList, {[item.devid]: item.progress});
+                            Object.assign(this.codeList, {[item.devid]: item.code});
+                        });
+                        this.setState({
+                            devList: this.devList,
+                            codeList: this.codeList
+                        });
+                        let state = false;
+                        result.some(item => {
+                                const progress = item.progress;
+                                return state = progress === 'download failed!' || progress === 'check failed!' || progress === 'start upgrading!';
+                        })
+                        return !state;
+                    }
                 }
-            ).then((resp)=>{
-                const result = resp.data[0].result.upgrade.progress;
-                const errcode = resp.data[0].result.upgrade.code;
-                switch(result){
-                    case 'download failed!':
+            ).then(() => {
+                const {devList, codeList} = this.state;
+                
+                Object.keys(devList).forEach((key) => {
+                    const errcode = codeList[key];
+                    switch(devList[key]) {
+                        case 'download failed!':
                         this.setState({
                             downloadFail : true,
                             download : false,
                             failReason : intl.get(MODULE, 3, {error: errcode})/*_i18n:错误码：*/
                         });
                         return;
-                    case 'check failed!':
-                        this.setState({
-                            download : false,
-                            downloadFail : true,
-                            downloadFailtip : intl.get(MODULE, 4)/*_i18n:文件校验失败，请重试*/,
-                            failReason : intl.get(MODULE, 5, {error: errcode})/*_i18n:错误码：*/
-                        })
-                        return;
-                    case 'check success!':
-                        this.setState({
-                            download : false,
-                            downloadFail : false,
-                            visible: true,
-                        });
-                        setTimeout(() => {
-                                this.setState({
-                                downloadSuccess : true,
-                                visible: false,
+                        case 'check failed!':
+                            this.setState({
+                                download : false,
+                                downloadFail : true,
+                                downloadFailtip : intl.get(MODULE, 4)/*_i18n:文件校验失败，请重试*/,
+                                failReason : intl.get(MODULE, 5, {error: errcode})/*_i18n:错误码：*/
+                            })
+                            return;
+                        case 'start upgrading!':
+                            this.setState({
+                                download : false,
+                                downloadFail : false,
+                                visible: true,
                             });
-                        },this.state.duration*1000);
-                        return;
-                    default:
-                        break;
-                }
+                            setTimeout(() => {
+                                    this.setState({
+                                    downloadSuccess : true,
+                                    visible: false,
+                                });
+                            },this.state.duration*1000);
+                            return;
+                        default:
+                            break;
+                    }
+                })
             }) 
         }else{
             Modal.error({title : intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
         }});
     }
-
 
     updateFail = () => {
         this.setState({
@@ -107,7 +128,7 @@ export default class Upgrade extends React.Component{
             <div>
                 <Modal closable={false} maskClosable={false} visible={download} centered={true} footer={null} width={560} >
                     <div className="progress-download">
-                    <Icon key="progress-icon" type="loading" style={{ fontSize: 65, marginTop : 30, marginBottom : 10, color : "#FB8632" }}  spin />
+                    <Icon key="progress-icon" type="loading" style={{ fontSize: 65, marginTop : 30, marginBottom : 10, color : "#6174F1" }}  spin />
                     <h3 key="active-h3" className="upgrade-download">{downloadTip}</h3>
                     <h4 key="active-h4" className="upgrade-warning">{warningTip}</h4>
                     </div>

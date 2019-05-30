@@ -39,7 +39,7 @@ import Backup from './Advance/Systemsetup/Backup';
 import TimeZone from './Advance/Systemsetup/TimeZone';
 import Reboot from './Advance/Systemsetup/Reboot';
 import Recovery from './Advance/Systemsetup/Recovery';
-import { UpgradeContext, RebootContext, RecoveryContext } from '~/context';
+import { RebootContext, RecoveryContext } from '~/context';
 
 const MODULE = 'page';
 
@@ -66,7 +66,7 @@ class PrimaryLayout extends React.Component {
         pathname: '/',
         logined: true,
         reboot: {},
-        recovery: {}
+        recovery: {},
     };
 
     setProgress = (type, record, duration) => {
@@ -214,9 +214,8 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/routermanage" component={RouterList} />
                     <Route path="/routersetting/dosd" component={Dosd} />
                     <Route path="/routersetting/changepassword" component={ChangePassword} />
-                    <Route path="/routersetting/upgrade" component={SysUpgrade} />
                     <Route path="/routersetting/backup" component={Backup} />
-                    <ContextRoute exact path="/routersetting/systemsetup" value={this.props.value} contextComponent={UpgradeContext} component={Systemsetup} />
+                    <Route path="/routersetting/upgrade" component={SysUpgrade} />
                     <ContextRoute exact path="/routersetting/reboot" value={this.props.value} contextComponent={RebootContext} component={Reboot} />
                     <ContextRoute exact path="/routersetting/recovery" value={this.props.value} contextComponent={RecoveryContext} component={Recovery} />
                     <Route path="/routersetting/timeset" component={TimeZone} />
