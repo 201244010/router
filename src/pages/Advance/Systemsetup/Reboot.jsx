@@ -88,7 +88,7 @@ class Reboot extends React.Component{
         recordList: {}
     }
 
-    reboot = async (devid, role, record={}, value={}) =>{
+    reboot = async (devid, role, record = {}, value = {}) =>{
         let resp = await common.fetchApi({ opcode: 'SYSTEMTOOLS_RESTART',data: {devs: [...devid]} });
         const { errcode, data } = resp;
         const duration = parseInt(data[0].result.restart_duration);

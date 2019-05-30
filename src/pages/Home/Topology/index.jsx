@@ -163,7 +163,6 @@ class Item extends React.Component {
 
     save = async (e, defaultValue, mac, devid) => {
         const editName = e.target.value;
-        console.log(devid);
         if (editName === defaultValue) {
             this.setState({
                 editing: false
@@ -225,6 +224,7 @@ class Item extends React.Component {
                         autoFocus={true}
                         onPressEnter={e => this.save(e, value, mac, devid)}
                         onBlur={e => this.save(e, value, mac, devid)}
+                        maxLength={32}
                     />
                 )
             }
