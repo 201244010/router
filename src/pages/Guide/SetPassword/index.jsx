@@ -14,7 +14,6 @@ const { FormItem, ErrorTip, Input }  = Form;
 export default class SetPassword extends React.Component {
     constructor(props){
         super(props);
-        this.jump = false;
     }
 
     state = {
@@ -42,24 +41,19 @@ export default class SetPassword extends React.Component {
             opcode: 'ACCOUNT_INITIAL_PASSWORD',
             data: { account: { password: Base64.encode(pwd), user: 'admin' } }
         });
-        this.setState({ loading: false });
 
         const {errcode, data} = response;
         switch (errcode) {
-            case 0:
+			case 0:
+				const quickStartVersion = getQuickStartVersion();
                 init(data[0].result.account.token);
                 window.sessionStorage.setItem('_FACTORY', 'redirect');
-                const quickStartVersion = getQuickStartVersion();
-
                 if ('domestic' === quickStartVersion) { //国内版，跳转到设置上网参数
-                    if(this.jump) {
-                        this.props.history.push('/guide/setwifi');
-                    } else {
-                        this.props.history.push('/guide/setwan');
-                    }   
-                } else if ('abroad' === quickStartVersion) {   //海外版，跳转到设置时区
+					this.dialDetect(); 
+				} else if ('abroad' === quickStartVersion) {   //海外版，跳转到设置时区
+					this.setState({ loading: false });
                     this.props.history.push('/guide/timezone');
-                }
+				}
                 break;
             case '-1608':
                 Modal.info({
@@ -170,10 +164,14 @@ export default class SetPassword extends React.Component {
                                             let { errcode, data } = connectStatus;
                                             if(errcode == 0){
                                                 let online = data[0].result.onlinetest.online;
-                                                if(online){
-                                                    this.jump = true;
-                                                }
-                                            }
+												if(online) {
+													this.props.history.push('/guide/setwifi');
+												} else {
+													this.props.history.push('/guide/setwan');
+												}  
+                                            } else {
+												this.props.history.push('/guide/setwan');
+											}
                                         });
                                     }
                                 }
@@ -185,12 +183,6 @@ export default class SetPassword extends React.Component {
         });
     }
 
-    componentDidMount() {
-        const quickStartVersion = getQuickStartVersion();
-        if ('domestic' === quickStartVersion) { //国内版
-            this.dialDetect();
-        }  
-    }
     render(){
         const { pwd, pwdTip, surePwd, surePwdTip, loading } = this.state;
         const disabled = '' !== pwdTip || '' !== surePwdTip || pwd === '';
