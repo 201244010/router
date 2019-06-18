@@ -53,8 +53,11 @@ export default class SubRouter extends React.Component {
     }
 
     render() {
-        const {deviceId='W1000000000', state='normal', checked=true} = this.props;
+        let {deviceId='W1000000000', state='normal', checked=true, status='1'} = this.props;
         const {visible, loading} = this.state;
+        if ('1' !== status) {
+            state = 'unusual';
+        }
         let footer = '';
 
         switch(state) {
@@ -69,6 +72,9 @@ export default class SubRouter extends React.Component {
                 break;
             case 'failed':
                 footer = <div className='footer final'><div><CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 4}} />设备异常，请检查</div><p className='ignoreTip' onClick={this.ignore}>忽略此设备</p></div>;
+                break;
+            case 'unusual':
+                footer = <div className='footer final'><div className='footer-unusual'>已被其他商米账号绑定，请解绑后组网</div></div>;
                 break;
         }
         return (
