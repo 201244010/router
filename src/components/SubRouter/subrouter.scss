@@ -24,6 +24,15 @@
             text-align: center;
             cursor: pointer;
         }
+        .footer-unusual {
+            width: 140px;
+            position: absolute;
+            top: 4px;
+            text-align: center;
+            font-family: 'PingFangSC-Light';
+            font-size: 12px;
+            color: #ADB1B9;
+        }
     }
     .checkbox {
         display: flex;

@@ -63,14 +63,16 @@ export default class Setting extends React.Component {
                     }
                 );
             } else {
-                data.sonconnect.blocked.push(
-                    {
-                        mac: item.mac,
-                        devid: item.deviceId,
-                        bh2mac: item.bh2mac,
-                        bh5mac: item.bh5mac
-                    }
-                );
+                if ('1' === item.status) {
+                    data.sonconnect.blocked.push(
+                        {
+                            mac: item.mac,
+                            devid: item.deviceId,
+                            bh2mac: item.bh2mac,
+                            bh5mac: item.bh5mac
+                        }
+                    );
+                }  
             }
         });
 
@@ -136,11 +138,12 @@ export default class Setting extends React.Component {
                                     devicesShow.push({
                                         deviceId: item.devid,
                                         mac: item.mac,
-                                        checked: true,
+                                        checked: '1' === item.status,
                                         result: 'failed',
                                         giveUp: false,
                                         bh2mac: item.bh2mac,
                                         bh5mac: item.bh5mac,
+                                        status: item.status || '1',
                                     });
                                 }
 
@@ -174,11 +177,12 @@ export default class Setting extends React.Component {
                         devicesShow.push({
                             deviceId: item.devid || '',
                             mac: item.mac || '',
-                            checked: true,
+                            checked: '1' === item.status,
                             result: 'failed',
                             giveUp: false,
                             bh2mac: item.bh2mac || '',
                             bh5mac: item.bh5mac || '',
+                            status: item.status || '1',
                         });
                     }
 
@@ -257,7 +261,8 @@ class Selecting extends React.Component {
                             key={item.deviceId}
                             checked={item.checked}
                             onChange={checked => this.props.onChange(item.deviceId,checked)}
-                            deviceId={item.deviceId}/>
+                            deviceId={item.deviceId}
+                            status={item.status}/>
             );
         });
 

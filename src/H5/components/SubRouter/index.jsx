@@ -61,8 +61,11 @@ export default class SubRouter extends React.Component {
     }
 
     render () {
-        const { state='success', deviceId='W1000000000', checked=true } = this.props;
+        let { state='success', deviceId='W1000000000', checked=true, status='1' } = this.props;
         const {visible, location} = this.state;
+        if ('1' !== status) {
+            state = 'unusual';
+        }
         let router = '';
 
         switch(state) {
@@ -107,6 +110,18 @@ export default class SubRouter extends React.Component {
                                     <p className='description'>正在同步路由器设置...</p>
                                 </div>
                             </div>
+                        </div>;
+                break;
+            case 'unusual':
+                router = <div className='router-outline'>
+                            <div className='left'>
+                                <div className='routerImg'></div>
+                                <div className='deviceId'>
+                                    {deviceId}
+                                    <p className='unusual'>已被其他商米账号绑定，请解绑后组网</p>
+                                </div>
+                            </div>
+                            <Checkbox onChange={this.onChange} checked={false} disabled></Checkbox>
                         </div>;
                 break;
         }
