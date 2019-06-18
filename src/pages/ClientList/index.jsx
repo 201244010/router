@@ -601,7 +601,7 @@ export default class ClientList extends React.Component {
                             }}
                             bordered={false}
                             rowKey={record => record.mac}
-                            scroll={{ y: window.innerHeight - 267 }}
+                            // scroll={{ y: window.innerHeight - 267 }}
                             style={{ minHeight: 360 }}
                             size="middle"
                             pagination={false}
