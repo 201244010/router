@@ -14,23 +14,33 @@ export default class Setting extends React.Component {
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: 'selecting'  //'selecting'、'settingResult',检测搜索、设置完成
+        condition: 'selecting',  //'selecting'、'settingResult',检测搜索、设置完成
     }
 
-    onChange = (deviceId, checked) => {
+    onChange = (mac, checked) => {
         let devicesShow = this.state.devicesShow;
         for (var i = 0; i < devicesShow.length; i++) {
-            if (deviceId === devicesShow[i].deviceId) {
+            if (mac === devicesShow[i].mac) {
                 devicesShow[i].checked = checked;
                 break;
             }
         }
-
         this.setState({
             devicesShow: devicesShow,
         });
     }
-
+    changeLocation = (mac, location_input) => {
+        let devicesShow = this.state.devicesShow;
+        for (var i = 0; i < devicesShow.length; i++) {
+            if (mac === devicesShow[i].mac) {
+                devicesShow[i].location = location_input;
+                break;
+            }
+        }
+        this.setState({
+            devicesShow: devicesShow,
+        });
+    }
     goHome = () => {
         this.props.history.push("/");
     }
@@ -68,6 +78,7 @@ export default class Setting extends React.Component {
                                 if(need) {
                                     devicesShow.push({
                                         deviceId: item.devid,
+                                        location: item.devid,
                                         mac: item.mac,
                                         checked: '1' === item.status,
                                         result: 'failed',
@@ -107,6 +118,7 @@ export default class Setting extends React.Component {
                     if(need) {
                         devicesShow.push({
                             deviceId: item.devid || '',
+                            location: item.devid,
                             mac: item.mac || '',
                             checked: '1' === item.status,
                             result: 'failed',
@@ -206,7 +218,8 @@ export default class Setting extends React.Component {
     }
 
     render () {
-        const { searchFinish, devicesShow, condition } = this.state;
+        let { searchFinish, devicesShow, condition } = this.state;
+        condition='settingResult';
         let findRouter = '';
 
         if ('selecting' === condition) {
@@ -220,7 +233,12 @@ export default class Setting extends React.Component {
         }
 
         if ('settingResult' === condition) {
-            findRouter = <SettingResult devicesShow={devicesShow} refresh={this.refresh} goHome={this.goHome}/>
+            findRouter = <SettingResult
+                            devicesShow={devicesShow}
+                            refresh={this.refresh}
+                            goHome={this.goHome}
+                            changeLocation={this.changeLocation}
+                        />
         }
 
         return (
@@ -248,7 +266,7 @@ class Selecting extends React.Component {
                             state='checkbox'
                             key={item.deviceId}
                             checked={item.checked}
-                            onChange={checked => this.props.onChange(item.deviceId,checked)}
+                            onChange={checked => this.props.onChange(item.mac,checked)}
                             deviceId={item.deviceId}
                             status={item.status}/>
             );
@@ -303,10 +321,13 @@ class SettingResult extends React.Component {
                     allFailed = false;
                 }
                 showList.push(<SubRouter
+                    location={item.location}
                     state={item.result}
                     key={item.deviceId}
                     mac={item.mac}
-                    deviceId={item.deviceId}/>
+                    deviceId={item.deviceId}
+                    changeLocation={(mac, location_input) => this.props.changeLocation(mac, location_input)}
+                    />
                 );
             }  
         });

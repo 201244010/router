@@ -11,7 +11,7 @@ export default class SubRouter extends React.Component {
 
     state = {
         visible: false,
-        location: '',
+        location_input: '',
     }
 
     onChange = (e) => {
@@ -19,11 +19,13 @@ export default class SubRouter extends React.Component {
     }
 
     inputOnChange = (e) => {
-        this.setState({location: e.target.value});
+        this.setState({location_input: e.target.value});
     }
 
     addLocation = () => {
+        let  {location} = this.props;
         this.setState({
+            location_input: location,
             visible: true,
         });
     }
@@ -35,15 +37,15 @@ export default class SubRouter extends React.Component {
     }
 
     sure = async() => {
-        const { mac, deviceId } = this.props;
-        let  { location } = this.state;
+        let  { mac, deviceId } = this.props;
+        let {location_input} = this.state;
 
-        if ('' === location) {
-            location = deviceId;
+        if ('' === location_input) {
+            location_input = deviceId;
         }
 
         let data = {sonconnect:[]};
-        data.sonconnect.push({devid: deviceId, mac: mac, location: location});
+        data.sonconnect.push({devid: deviceId, mac: mac, location: location_input});
 
         let response = await common.fetchApi(
             {
@@ -54,6 +56,7 @@ export default class SubRouter extends React.Component {
 
         let {errcode} = response;
         if (0 === errcode) {
+            this.props.changeLocation(mac, location_input);
             this.setState({
                 visible: false,
             });
@@ -61,8 +64,8 @@ export default class SubRouter extends React.Component {
     }
 
     render () {
-        let { state='success', deviceId='W1000000000', checked=true, status='1' } = this.props;
-        const {visible, location} = this.state;
+        let { state='success', checked=true, status='1', location } = this.props;
+        const { visible, location_input } = this.state;
         if ('1' !== status) {
             state = 'unusual';
         }
@@ -73,7 +76,7 @@ export default class SubRouter extends React.Component {
                 router = <div className='router-outline'>
                             <div className='left'>
                                 <div className='routerImg'></div>
-                                <div className='deviceId'>{deviceId}</div>
+                                <div className='deviceId'>{location}</div>
                             </div>
                             <Checkbox onChange={this.onChange} checked={checked}></Checkbox>
                         </div>;
@@ -83,7 +86,7 @@ export default class SubRouter extends React.Component {
                             <div className='left'>
                                 <div className='routerImg'><div className='successImg'></div></div>
                                 <div className='deviceId'>
-                                    {deviceId}
+                                    {location}
                                     <p className='description'>设置同步成功</p>
                                 </div>
                             </div>
@@ -95,7 +98,7 @@ export default class SubRouter extends React.Component {
                             <div className='left'>
                                 <div className='routerImg'><div className='failedImg'></div></div>
                                 <div className='deviceId'>
-                                    {deviceId}
+                                    {location}
                                     <p className='description'>状态异常，请检查</p>
                                 </div>
                             </div>
@@ -106,7 +109,7 @@ export default class SubRouter extends React.Component {
                             <div className='left'>
                                 <div className='routerImg'><div className='loadingImg'></div></div>
                                 <div className='deviceId'>
-                                    {deviceId}
+                                    {location}
                                     <p className='description'>正在同步路由器设置...</p>
                                 </div>
                             </div>
@@ -117,7 +120,7 @@ export default class SubRouter extends React.Component {
                             <div className='left'>
                                 <div className='routerImg'></div>
                                 <div className='deviceId'>
-                                    {deviceId}
+                                    {location}
                                     <p className='unusual'>已被其他商米账号绑定，请解绑后组网</p>
                                 </div>
                             </div>
@@ -135,7 +138,7 @@ export default class SubRouter extends React.Component {
                     >
                     <div className='Content'>
                         <div className='Title'>备注</div>
-                        <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location} />
+                        <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location_input} />
                     </div>
                     <div className='Footer'>
                         <div className='footerButton cancel' onClick={this.cancel}>取消</div>
