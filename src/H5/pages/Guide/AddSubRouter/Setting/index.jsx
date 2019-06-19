@@ -5,10 +5,10 @@ import SubRouter from 'h5/components/SubRouter';
 
 import './setting.scss';
 
-const SETTING_CONDITION = [
-    'selecting',         //检测搜索
-    'Finish',           //设置完成
-];
+const SETTING_CONDITION = {
+    Select: 'select',         //检测搜索
+    Finish: 'finish',           //设置完成
+};
 
 export default class Setting extends React.Component {
     constructor (props) {
@@ -19,7 +19,7 @@ export default class Setting extends React.Component {
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: SETTING_CONDITION[0],
+        condition: SETTING_CONDITION['Select'],
     }
 
     onChange = (mac, checked) => {
@@ -204,7 +204,7 @@ export default class Setting extends React.Component {
             }
         }
         this.setState({
-            condition: SETTING_CONDITION[1],
+            condition: SETTING_CONDITION['Finish'],
             devicesShow: devicesShow
         });
     }
@@ -212,7 +212,7 @@ export default class Setting extends React.Component {
     refresh = () => {
         this.flag = 0;
         this.setState({
-            condition: SETTING_CONDITION[0],
+            condition: SETTING_CONDITION['Select'],
             searchFinish: false,
         });
         this.getSubRouters();
@@ -227,7 +227,7 @@ export default class Setting extends React.Component {
 
         return (
             <React.Fragment>
-                {SETTING_CONDITION[0] === condition ?
+                {SETTING_CONDITION['Select'] === condition ?
                     <Selecting 
                         devicesShow={devicesShow}
                         searchFinish={searchFinish}
