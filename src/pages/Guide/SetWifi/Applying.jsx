@@ -47,17 +47,11 @@ export default class Applying extends React.Component {
 
         let timeout = 10;
         let count = window.setInterval(() => {
-            this.setState({ time: timeout});
-            timeout = timeout - 1;
-
             if (timeout <= 0) {
                 this.getWireless();
                 window.clearInterval(count);
-            }
-
-            // if (timeout < -1) {
-                
-            // } 
+			}
+            this.setState({ time: timeout--});			
         }, 1000);
     }
 
@@ -67,7 +61,7 @@ export default class Applying extends React.Component {
         return (
             <div className='create-wifi'>
                 <div className='head'>
-                    { time >= 0 ?
+                    { time >= 1 ?
                     [<CustomIcon type='loading' color='#6174F1' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
                     :
                     [<CustomIcon type='hint' color='#FF6900' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
