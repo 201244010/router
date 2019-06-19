@@ -5,10 +5,10 @@ import SubRouter from 'h5/components/SubRouter';
 
 import './setting.scss';
 
-const settingCondition = {
-    0: 'selecting',         //检测搜索
-    1: 'settingResult',     //设置完成
-}
+const SETTING_CONDITION = [
+    'selecting',         //检测搜索
+    'Finish',           //设置完成
+];
 
 export default class Setting extends React.Component {
     constructor (props) {
@@ -19,7 +19,7 @@ export default class Setting extends React.Component {
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: settingCondition[0],
+        condition: SETTING_CONDITION[0],
     }
 
     onChange = (mac, checked) => {
@@ -204,7 +204,7 @@ export default class Setting extends React.Component {
             }
         }
         this.setState({
-            condition: settingCondition[1],
+            condition: SETTING_CONDITION[1],
             devicesShow: devicesShow
         });
     }
@@ -212,7 +212,7 @@ export default class Setting extends React.Component {
     refresh = () => {
         this.flag = 0;
         this.setState({
-            condition: settingCondition[0],
+            condition: SETTING_CONDITION[0],
             searchFinish: false,
         });
         this.getSubRouters();
@@ -227,7 +227,7 @@ export default class Setting extends React.Component {
 
         return (
             <React.Fragment>
-                {settingCondition[0] === condition ?
+                {SETTING_CONDITION[0] === condition ?
                     <Selecting 
                         devicesShow={devicesShow}
                         searchFinish={searchFinish}
@@ -276,14 +276,15 @@ class Selecting extends React.Component {
                 <div className='guide-upper'>
                     <GuideHeader title='添加更多路由器' tips='将要添加的路由放置在合适的位置，然后接通电源，待信号灯呈白色后点击「开始添加」' />
                     <div className={`routerList ${0 !== devicesShow.length? 'haveLine': ''}`}>
-                        {devicesShow.map(item =>{return  <SubRouter
-                                                            state='checkbox'
-                                                            key={item.mac}
-                                                            checked={item.checked}
-                                                            onChange={checked => this.props.onChange(item.mac, checked)}
-                                                            deviceId={item.deviceId}
-                                                            location={item.location}
-                                                            status={item.status}/>
+                        {devicesShow.map(item =>{
+                            return  [<SubRouter
+                                        state='checkbox'
+                                        key={item.mac}
+                                        checked={item.checked}
+                                        onChange={checked => this.props.onChange(item.mac, checked)}
+                                        deviceId={item.deviceId}
+                                        location={item.location}
+                                        status={item.status}/>]
                         })}
                     </div>
                     <div className='h5addsubrouter-icon'>
@@ -323,14 +324,14 @@ class SettingResult extends React.Component {
                 <GuideHeader title='路由器添加完成' tips='' />
                 <div className='routerList-result'>
                     {devicesShow.map(item => {
-                        return <SubRouter
+                        return  [<SubRouter
                                     location={item.location}
                                     state={item.result}
                                     key={item.mac}
                                     mac={item.mac}
                                     deviceId={item.deviceId}
                                     changeLocation={(mac, locationInput) => this.props.changeLocation(mac, locationInput)}
-                                />
+                                />]
                     })}
                 </div>
             </div>,
