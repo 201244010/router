@@ -11,7 +11,7 @@ export default class SubRouter extends React.Component {
 
     state = {
         visible: false,
-        location_input: '',
+        locationInput: '',
     }
 
     onChange = (e) => {
@@ -19,13 +19,13 @@ export default class SubRouter extends React.Component {
     }
 
     inputOnChange = (e) => {
-        this.setState({location_input: e.target.value});
+        this.setState({locationInput: e.target.value});
     }
 
     addLocation = () => {
         let  {location} = this.props;
         this.setState({
-            location_input: location,
+            locationInput: location,
             visible: true,
         });
     }
@@ -38,14 +38,14 @@ export default class SubRouter extends React.Component {
 
     sure = async() => {
         let  { mac, deviceId } = this.props;
-        let {location_input} = this.state;
+        let {locationInput} = this.state;
 
-        if ('' === location_input) {
-            location_input = deviceId;
+        if ('' === locationInput) {
+            locationInput = deviceId;
         }
 
         let data = {sonconnect:[]};
-        data.sonconnect.push({devid: deviceId, mac: mac, location: location_input});
+        data.sonconnect.push({devid: deviceId, mac: mac, location: locationInput});
 
         let response = await common.fetchApi(
             {
@@ -56,7 +56,7 @@ export default class SubRouter extends React.Component {
 
         let {errcode} = response;
         if (0 === errcode) {
-            this.props.changeLocation(mac, location_input);
+            this.props.changeLocation(mac, locationInput);
             this.setState({
                 visible: false,
             });
@@ -65,7 +65,7 @@ export default class SubRouter extends React.Component {
 
     render () {
         let { state='success', checked=true, status='1', location } = this.props;
-        const { visible, location_input } = this.state;
+        const { visible, locationInput } = this.state;
         if ('1' !== status) {
             state = 'unusual';
         }
@@ -138,7 +138,7 @@ export default class SubRouter extends React.Component {
                     >
                     <div className='Content'>
                         <div className='Title'>备注</div>
-                        <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location_input} />
+                        <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={locationInput} />
                     </div>
                     <div className='Footer'>
                         <div className='footerButton cancel' onClick={this.cancel}>取消</div>

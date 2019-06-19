@@ -29,11 +29,11 @@ export default class Setting extends React.Component {
             devicesShow: devicesShow,
         });
     }
-    changeLocation = (mac, location_input) => {
+    changeLocation = (mac, locationInput) => {
         let devicesShow = this.state.devicesShow;
         for (var i = 0; i < devicesShow.length; i++) {
             if (mac === devicesShow[i].mac) {
-                devicesShow[i].location = location_input;
+                devicesShow[i].location = locationInput;
                 break;
             }
         }
@@ -218,8 +218,7 @@ export default class Setting extends React.Component {
     }
 
     render () {
-        let { searchFinish, devicesShow, condition } = this.state;
-        condition='settingResult';
+        const { searchFinish, devicesShow, condition } = this.state;
         let findRouter = '';
 
         if ('selecting' === condition) {
@@ -326,7 +325,7 @@ class SettingResult extends React.Component {
                     key={item.deviceId}
                     mac={item.mac}
                     deviceId={item.deviceId}
-                    changeLocation={(mac, location_input) => this.props.changeLocation(mac, location_input)}
+                    changeLocation={(mac, locationInput) => this.props.changeLocation(mac, locationInput)}
                     />
                 );
             }  
