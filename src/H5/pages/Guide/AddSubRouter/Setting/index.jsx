@@ -5,6 +5,11 @@ import SubRouter from 'h5/components/SubRouter';
 
 import './setting.scss';
 
+const settingCondition = {
+    0: 'selecting',         //检测搜索
+    1: 'settingResult',     //设置完成
+}
+
 export default class Setting extends React.Component {
     constructor (props) {
         super (props);
@@ -14,7 +19,7 @@ export default class Setting extends React.Component {
     state = {
         searchFinish: false,
         devicesShow: [],
-        condition: 'selecting',  //'selecting'、'settingResult',检测搜索、设置完成
+        condition: settingCondition[0],
     }
 
     onChange = (mac, checked) => {
@@ -199,7 +204,7 @@ export default class Setting extends React.Component {
             }
         }
         this.setState({
-            condition: 'settingResult',
+            condition: settingCondition[1],
             devicesShow: devicesShow
         });
     }
@@ -207,7 +212,7 @@ export default class Setting extends React.Component {
     refresh = () => {
         this.flag = 0;
         this.setState({
-            condition: 'selecting',
+            condition: settingCondition[0],
             searchFinish: false,
         });
         this.getSubRouters();
@@ -219,30 +224,25 @@ export default class Setting extends React.Component {
 
     render () {
         const { searchFinish, devicesShow, condition } = this.state;
-        let findRouter = '';
-
-        if ('selecting' === condition) {
-            findRouter = <Selecting 
-                            devicesShow={devicesShow}
-                            searchFinish={searchFinish}
-                            refresh={this.refresh}
-                            setSubRouter={this.setSubRouter}
-                            onChange={this.onChange}
-                        />;
-        }
-
-        if ('settingResult' === condition) {
-            findRouter = <SettingResult
-                            devicesShow={devicesShow}
-                            refresh={this.refresh}
-                            goHome={this.goHome}
-                            changeLocation={this.changeLocation}
-                        />
-        }
 
         return (
             <React.Fragment>
-                {findRouter}
+                {settingCondition[0] === condition ?
+                    <Selecting 
+                        devicesShow={devicesShow}
+                        searchFinish={searchFinish}
+                        refresh={this.refresh}
+                        setSubRouter={this.setSubRouter}
+                        onChange={this.onChange}
+                    />
+                    :
+                    <SettingResult
+                        devicesShow={devicesShow}
+                        refresh={this.refresh}
+                        goHome={this.goHome}
+                        changeLocation={this.changeLocation}
+                    />
+                }
             </React.Fragment>
         );
     }
@@ -255,23 +255,14 @@ class Selecting extends React.Component {
 
     render() {
         const { devicesShow, searchFinish } = this.props;
-        let showList =[];
         let disabled = true;
         devicesShow.map(item => {
             if (item.checked) {
                 disabled = false;
-            } 
-            showList.push(<SubRouter
-                            state='checkbox'
-                            key={item.deviceId}
-                            checked={item.checked}
-                            onChange={checked => this.props.onChange(item.mac, checked)}
-                            deviceId={item.deviceId}
-                            status={item.status}/>
-            );
+            }
         });
 
-        if (0 === showList.length && searchFinish) {
+        if (0 === devicesShow.length && searchFinish) {
             return (
                 <div className='noRouter'>
                     <div className='no-router'></div>
@@ -284,8 +275,16 @@ class Selecting extends React.Component {
             return ([
                 <div className='guide-upper'>
                     <GuideHeader title='添加更多路由器' tips='将要添加的路由放置在合适的位置，然后接通电源，待信号灯呈白色后点击「开始添加」' />
-                    <div className={`routerList ${0 !== showList.length? 'haveLine': ''}`}>
-                        {showList}
+                    <div className={`routerList ${0 !== devicesShow.length? 'haveLine': ''}`}>
+                        {devicesShow.map(item =>{return  <SubRouter
+                                                            state='checkbox'
+                                                            key={item.mac}
+                                                            checked={item.checked}
+                                                            onChange={checked => this.props.onChange(item.mac, checked)}
+                                                            deviceId={item.deviceId}
+                                                            location={item.location}
+                                                            status={item.status}/>
+                        })}
                     </div>
                     <div className='h5addsubrouter-icon'>
                             {searchFinish?
@@ -309,44 +308,39 @@ class SettingResult extends React.Component {
     }
 
     render() {
-        const { devicesShow } = this.props;
-        let showList =[];
+        let { devicesShow } = this.props;
         let allFailed = true;
-        let footer = '';
+        
+        devicesShow = devicesShow.filter(item => {return item.checked;});
         devicesShow.map(item => {
-            
-            if (item.checked) {
-                if('success' === item.result) {
-                    allFailed = false;
-                }
-                showList.push(<SubRouter
-                    location={item.location}
-                    state={item.result}
-                    key={item.deviceId}
-                    mac={item.mac}
-                    deviceId={item.deviceId}
-                    changeLocation={(mac, locationInput) => this.props.changeLocation(mac, locationInput)}
-                    />
-                );
-            }  
+            if('success' === item.result) {
+                allFailed = false;
+            }
         });
-
-        if (allFailed) {
-            footer = [<Button onClick={this.props.refresh}>重新添加</Button>,
-                    <Button onClick={this.props.goHome}>返回首页</Button>];
-        } else {
-            footer = <Button type='primary' onClick={this.props.goHome}>完成</Button>;
-        }
 
         return ([
             <div className={`guide-upper ${allFailed? 'result': ''}`}>
                 <GuideHeader title='路由器添加完成' tips='' />
                 <div className='routerList-result'>
-                    {showList}
+                    {devicesShow.map(item => {
+                        return <SubRouter
+                                    location={item.location}
+                                    state={item.result}
+                                    key={item.mac}
+                                    mac={item.mac}
+                                    deviceId={item.deviceId}
+                                    changeLocation={(mac, locationInput) => this.props.changeLocation(mac, locationInput)}
+                                />
+                    })}
                 </div>
             </div>,
             <div>
-                {footer}
+                {allFailed?
+                    [<Button onClick={this.props.refresh}>重新添加</Button>,
+                    <Button onClick={this.props.goHome}>返回首页</Button>]
+                    :
+                    <Button type='primary' onClick={this.props.goHome}>完成</Button>
+                }
             </div>
         ]);
     }
