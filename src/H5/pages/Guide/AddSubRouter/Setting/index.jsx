@@ -265,7 +265,7 @@ class Selecting extends React.Component {
                             state='checkbox'
                             key={item.deviceId}
                             checked={item.checked}
-                            onChange={checked => this.props.onChange(item.mac,checked)}
+                            onChange={checked => this.props.onChange(item.mac, checked)}
                             deviceId={item.deviceId}
                             status={item.status}/>
             );

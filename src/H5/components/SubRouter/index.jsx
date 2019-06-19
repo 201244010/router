@@ -37,7 +37,7 @@ export default class SubRouter extends React.Component {
     }
 
     sure = async() => {
-        let  { mac, deviceId } = this.props;
+        const  { mac, deviceId } = this.props;
         let {locationInput} = this.state;
 
         if ('' === locationInput) {
