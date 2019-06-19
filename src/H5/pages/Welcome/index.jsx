@@ -85,7 +85,6 @@ export default class Home extends React.Component {
                 >
                     <Privacy />
                 </Modal>
-                <div className='copyright'>{intl.get(MODULE, 12)}</div>
             </div>
         );
     }

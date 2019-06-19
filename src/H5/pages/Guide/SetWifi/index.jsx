@@ -177,7 +177,7 @@ export default class SetWifi extends React.Component {
                 <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips='' />
                 <form className='h5setwifi'>
                     <Input
-                        inputName='商户WiFi（建议店内设备及员工使用）'
+                        inputName='商户Wi-Fi（建议店内设备及员工使用）'
                         value={hostSsid}
                         placeholder='设置商户WiFi名称'
                         maxLength={32}
@@ -194,7 +194,7 @@ export default class SetWifi extends React.Component {
                         onChange={value => this.onChange('hostPassword', value)}
                     />
                     <Input
-                        inputName='客用WiFi（建议开放给来店客户使用）'
+                        inputName='客用Wi-Fi（建议开放给来店客户使用）'
                         value={guestSsid}
                         placeholder='设置客用WiFi名称'
                         maxLength={32}
