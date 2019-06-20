@@ -65,7 +65,7 @@ export default class Connection extends React.Component {
                         res.push(transformTime(parseInt(item.time) * 1000))
                     });
                     return res;
-                })(this.props.wechatList),
+                })(this.props.wechatList.sort((a, b) => a.time - b.time)),
             },
             yAxis: {
                 show: false,
@@ -79,12 +79,12 @@ export default class Connection extends React.Component {
                 symbolSize: 0, // 拐点圆的大小
                 color: '#7BF3B6',
                 data: (function(e){
-                    var res = [];
+					var res = [];
                     e.map(function(item) {
                         res.push(item.count)
                     });
                     return res;
-                })(this.props.wechatList),
+                })(this.props.wechatList.sort((a, b) => a.time - b.time)),
                 barWidth: 10
             }],
         });
