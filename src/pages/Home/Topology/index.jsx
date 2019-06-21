@@ -189,10 +189,6 @@ class Item extends React.Component {
                     editing: false
                 });
             }
-            // setTimeout(() => {
-            //     // this.props.startRefresh(true);
-            //     setTimeout(toggleEdit, 500);
-            // }, 1500);
         }
     }
 
@@ -294,7 +290,7 @@ class Item extends React.Component {
                     <div className='sate-router'>
                         <CustomIcon size={60} color='#fff' type="router" />
                         <label>
-                            <CustomIcon size={14} color='#fff' style={{display: 'inline', marginRight: 4}} type="main" />
+                            <CustomIcon size={14} color='#fff' style={{display: 'inline', marginRight: 4, verticalAlign: 'unset'}} type="main" />
                             <span title={reList.name}>{reList.name}</span>
                         </label>
                     </div>
