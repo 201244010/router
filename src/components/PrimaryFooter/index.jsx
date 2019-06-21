@@ -8,8 +8,10 @@ export default class PrimaryFooter extends React.PureComponent {
         super(props);
     }
 
-    static getDerivedStateFromProps (){
+    static getDerivedStateFromProps (props, state){
+		console.log(props, state);
 		const logined = !!get();
+		// console.log('logined', logined);
         return {logined};
     }
 
@@ -58,12 +60,14 @@ export default class PrimaryFooter extends React.PureComponent {
     }
 
     render() {
-        const {version, mac, logined} = this.state;
-        const home = location.pathname.indexOf('home') > -1;
+		const {version, mac, logined} = this.state;
+		const {className} = this.props;
+		const visible = logined ? 'visibility' : 'hidden';
+		// console.log(visible);
         return (
-            <footer className={this.props.className} style={{background: home ? '#f4f7fe' : 'none'}}>
+            <footer className={className}>
 				{
-					logined && <p style={{marginTop: home ? 40 : 16}}><span>{intl.get(MODULE, 0, {version})/*_i18n:系统版本：{version}*/}</span><span>{intl.get(MODULE, 2, {mac})/*_i18n:MAC地址：{mac}*/}</span></p>
+					logined && <p> <span>{intl.get(MODULE, 0, {version})/*_i18n:系统版本：{version}*/}</span><span>{intl.get(MODULE, 2, {mac})/*_i18n:MAC地址：{mac}*/}</span></p>
 				}
                 <p>
                     <span>{intl.get(MODULE, 1)/*_i18n:©2018 上海商米科技有限公司 版权所有*/}</span>|<a href="https://sunmi.com/" target='_blank'>{intl.get(MODULE, 3)/*_i18n:官网*/}</a>|<span>{intl.get(MODULE, 4)/*_i18n:服务热线：400-902-1168*/}</span>

@@ -217,9 +217,11 @@
         }
     }
     .home-footer{
-        // position: static;
+		// position: static;
+		background: #f4f7fe;
         opacity: 0.8;
-        color:#ADB1B9;
+		color:#ADB1B9;
+		padding: 40px 0 16px;
         // margin-top: 13px;
         a {
             color: #ADB1B9;
@@ -275,7 +277,8 @@
 }
 
 .container {
-    padding-top: 50px;
+	padding-top: 50px;
+	background: #f4f7fe;
     display: flex;
     li {
         position: relative;
