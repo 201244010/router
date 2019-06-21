@@ -371,7 +371,6 @@ export default class NETWORK extends React.Component {
         let { data, errcode } = response;
         if(errcode == 0){
             let initIp = (ip) => {  // 'x.x.x.x' / ''
-                console.log('ip', ip);
                 if (ip.length === 0) {
                     return ['', '', '', '']
                 } else {
@@ -395,7 +394,6 @@ export default class NETWORK extends React.Component {
                 dns1: '',
                 dns2: '',
             };
-            console.log('get', sm);
             this.setState({
                 type : wan.dial_type,
                 //static
@@ -475,7 +473,6 @@ export default class NETWORK extends React.Component {
                 dialType, onlineStatus, infoGateway, infoMask, infoDns,
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
                 ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
-        console.log(type);
         
         return [
             <SubLayout className="settings">
