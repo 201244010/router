@@ -8,10 +8,8 @@ export default class PrimaryFooter extends React.PureComponent {
         super(props);
     }
 
-    static getDerivedStateFromProps (props, state){
-		console.log(props, state);
+    static getDerivedStateFromProps() {
 		const logined = !!get();
-		// console.log('logined', logined);
         return {logined};
     }
 
@@ -53,17 +51,18 @@ export default class PrimaryFooter extends React.PureComponent {
         })
     }
 
-    componentDidMount(){
-        if(this.state.logined === true){
-            this.fetchFooterInfo();
-        }
-    }
+	componentDidUpdate() {
+		this.fetchFooterInfo();
+	}
+
+	componentDidMount() {
+		const {logined} = this.state;
+		logined && this.fetchFooterInfo();
+	}
 
     render() {
 		const {version, mac, logined} = this.state;
 		const {className} = this.props;
-		const visible = logined ? 'visibility' : 'hidden';
-		// console.log(visible);
         return (
             <footer className={className}>
 				{
