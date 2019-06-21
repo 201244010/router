@@ -34,7 +34,10 @@ export default class Allocation extends React.Component{
             tooltip: {
                 trigger: 'axis',
                 backgroundColor: 'rgba(255,255,255,0.90)',
-                extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
+				extraCssText: 'box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);',
+				position: function (point, params, dom, rect, size) {
+					return [point[0] - size.contentSize[0] / 2, -size.contentSize[1] - 2]
+				},
                 formatter:  function(params) {
                     const index = params[0].dataIndex;
                     return `<span style="display: inline-block;border-radius:100%;background:#FF6900;height:6px;width:6px;margin-right:8px"></span>${params[2].seriesName} : ${data['sunmiPercent'][index]}%<br>` + 
