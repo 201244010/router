@@ -36,7 +36,10 @@ export default class Connection extends React.Component {
                     label: {
                         backgroundColor: '#6a7985'
                     }
-                },
+				},
+				position: function (point, params, dom, rect, size) {
+					return [point[0] - size.contentSize[0] / 2, -size.contentSize[1] - 2]
+				},
                 padding: [12,12,12,12],
                 formatter: '<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
                     '<span style="display: inline-block;height: 22px;line-height: 22px">接入用户： {c0}</span>',
@@ -65,7 +68,7 @@ export default class Connection extends React.Component {
                         res.push(transformTime(parseInt(item.time) * 1000))
                     });
                     return res;
-                })(this.props.wechatList),
+                })(this.props.wechatList.sort((a, b) => a.time - b.time)),
             },
             yAxis: {
                 show: false,
@@ -79,12 +82,12 @@ export default class Connection extends React.Component {
                 symbolSize: 0, // 拐点圆的大小
                 color: '#7BF3B6',
                 data: (function(e){
-                    var res = [];
+					var res = [];
                     e.map(function(item) {
                         res.push(item.count)
                     });
                     return res;
-                })(this.props.wechatList),
+                })(this.props.wechatList.sort((a, b) => a.time - b.time)),
                 barWidth: 10
             }],
         });
