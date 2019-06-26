@@ -35,7 +35,6 @@ export default class SetPassword extends React.Component {
             });
             return;
         }
-
         this.setState({ loading: true });
         const response = await common.fetchApi({
             opcode: 'ACCOUNT_INITIAL_PASSWORD',
@@ -49,7 +48,7 @@ export default class SetPassword extends React.Component {
                 init(data[0].result.account.token);
                 window.sessionStorage.setItem('_FACTORY', 'redirect');
                 if ('domestic' === quickStartVersion) { //国内版，跳转到设置上网参数
-					this.dialDetect(); 
+					this.dialDetect();
 				} else if ('abroad' === quickStartVersion) {   //海外版，跳转到设置时区
 					this.setState({ loading: false });
                     this.props.history.push('/guide/timezone');
@@ -107,7 +106,6 @@ export default class SetPassword extends React.Component {
         ).then((resp) => {
             const { errcode,data } = resp;
             if(errcode == 0){
-                // this.setState({wanLinkState : data[0].result.wan_linkstate.linkstate});
                 if(data[0].result.wan_linkstate.linkstate){
                     common.fetchApi(
                         [
@@ -178,6 +176,8 @@ export default class SetPassword extends React.Component {
                             }
                         });
                     });
+                } else {
+                    this.props.history.push('/guide/setwan');
                 }
             }
         });
