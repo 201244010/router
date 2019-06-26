@@ -24,18 +24,10 @@ export default class PrimaryFooter extends React.PureComponent {
             [
                 {opcode : 'FIRMWARE_GET'},
                 {opcode :'NETWORK_WAN_IPV4_GET' },
-                {opcode : 'ROUTE_GET'},
             ]
         ).then(result => {
             let {errcode, data} = result
             if(errcode === 0){
-                let devId = '';
-                data[2].result.sonconnect.devices.map(item => {
-                    if (item.role === '1') {
-                        devId = item.devid;
-                    }
-                });
-
                 this.setState({
                     version : data[0].result.upgrade.current_version,
                     mac : data[1].result.wan.info.mac
