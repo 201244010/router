@@ -1,6 +1,7 @@
 import React from 'react';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '../../components/Icon';
+import {getQuickStartVersion} from '~/utils';
 
 import './index.scss';
 
@@ -30,9 +31,12 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'backup', type: 'backup', color: '#6D6BD8', content: '备份与恢复'/*_i18n:防蹭网*/},  
             {route: 'upgrade', type: 'upgrade', color: '#47D164', content: '系统升级'/*_i18n:防蹭网*/},  
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: '恢复出厂设置'/*_i18n:防蹭网*/},  
-            {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: '时间设置'/*_i18n:防蹭网*/},  
             {route: 'reboot', type: 'reboot', color: '#E96044', content: '重启路由器'/*_i18n:防蹭网*/},  
         ];
+
+		if (getQuickStartVersion() === 'abroad') {
+			this.systemList.splice(4, 0, {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: '时间设置'/*_i18n:时间设置*/})
+		}
 
         if (window.sessionStorage.getItem('_WECHAT') === 'IS_WECHAT') {
             this.appList.splice(1, 0, {route: 'wechat', type: 'wechat',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:微信连Wi-Fi*/})
