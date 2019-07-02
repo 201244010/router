@@ -172,7 +172,11 @@ export default class SetPassword extends React.Component {
 											}
                                         });
                                     }
+                                } else {
+                                    this.props.history.push('/guide/setwan');
                                 }
+                            } else {
+                                this.props.history.push('/guide/setwan');
                             }
                         });
                     });
