@@ -16,8 +16,6 @@ export default class SetPwd extends React.Component {
     state = {
         pwd: '',
         pwdTip: '',
-        // surePwd: '',
-        // surePwdTip: '',
         loading: false
     };
 
@@ -28,20 +26,6 @@ export default class SetPwd extends React.Component {
     // 表单提交
     post = async () => {
         const {pwd} = this.state;
-
-        // if (pwd !== surePwd && surePwd !== '') {
-        //     this.setState({
-        //         surePwdTip: intl.get(MODULE, 0)/*_i18n:两次密码输入不一致*/
-        //     });
-        //     return;
-        // }
-
-        // if (pwd !== surePwd && surePwd === '') {
-        //     this.setState({
-        //         surePwdTip: intl.get(MODULE, 1)/*_i18n:请再次输入密码*/
-        //     });
-        //     return;
-        // }
 
         this.setState({ loading: true });
         const response = await common.fetchApi({
@@ -77,14 +61,8 @@ export default class SetPwd extends React.Component {
                 func: checkStr,
                 agr: { who: intl.get(MODULE, 6)/*_i18n:密码*/, min: 6, max: 32, type: 'english' }
             },
-            // surePwd: {
-            //     func: () => {
-            //         return '';
-            //     }
-            // }
         }
 
-        // this.setState({surePwdTip : ''});  //surePwdTip清空
         let tip = type[name].func(value,type[name].agr);
         this.setState({
             [name]: value,
@@ -101,7 +79,6 @@ export default class SetPwd extends React.Component {
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips='管理密码用于绑定及登录路由器管理' />
                 <form>
                     <Input
-                        // className='h5-setpwd-input'
                         inputName="密码"
                         value={pwd}
                         type='password'
