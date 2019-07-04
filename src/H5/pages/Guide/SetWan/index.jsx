@@ -204,7 +204,9 @@ export default class SetWan extends React.Component {
                     </form>
                 }   
             </div>,
-            !checkType && <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>
+            <div className='h5-next'>
+                {!checkType && <Button type='primary' loading={loading} onClick={this.nextStep}>{intl.get(MODULE, 17)/*_i18n:下一步*/}</Button>}
+            </div>
         ]);
     }
 }
