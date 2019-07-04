@@ -101,6 +101,7 @@ export default class SetPwd extends React.Component {
                 <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips='管理密码用于绑定及登录路由器管理' />
                 <form>
                     <Input
+                        // className='h5-setpwd-input'
                         inputName="密码"
                         value={pwd}
                         type='password'
@@ -112,7 +113,9 @@ export default class SetPwd extends React.Component {
                     />
                 </form>
             </div>,
-            <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
+            <div className='h5-next'>
+                <Button type='primary' loading={loading} onClick={this.post} disabled={disabled}>{intl.get(MODULE, 11)/*_i18n:下一步*/}</Button>
+            </div>   
         ])
     }
 }

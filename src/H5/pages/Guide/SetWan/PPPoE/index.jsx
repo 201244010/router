@@ -148,7 +148,9 @@ export default class PPPoE extends React.Component {
                     />
                 </div>
             </div>,
-            <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
+            <div className='h5-next'>
+                <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 12)/*_i18n:下一步*/}</Button>
+            </div>   
         ]);
     }
 }

@@ -106,12 +106,18 @@
     width: 4.2667rem;
 }
 .foot {
+    width: 8.9333rem;
+    position: fixed;
+    bottom: 0.5333rem;
     display: flex;
     justify-content: space-between;
     .addMore {
         background: #FFF;
         border: 1px solid #FF6000;
         color: #FF6000;
+    }
+    .goHome, .addMore {
+        width: 4.2667rem;
     }
 }
 .locationModal {
