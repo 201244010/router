@@ -577,7 +577,7 @@ export default class ClientList extends React.Component {
             };
         });
         return (
-            <SubLayout className="net-setting" style={{marginTop: 8, height: window.innerHeight - 148}}>
+            <SubLayout className="net-setting" style={{marginTop: 8, height: window.innerHeight - 148, maxHeight: window.innerHeight - 148, overflow: 'auto'}}>
                     <div className="net-title">
                         <p>
                             <span>上网设备</span>
