@@ -37,11 +37,10 @@ class InputGroup extends React.Component {
         const target = e.target;
         const inputs = this.state.inputs;
         const item = inputs.find(item => item === it);
-
         let val = target.value, goNext = false;
         if ('ip' === this.props.type) {
             let len = val.length;
-            goNext = (len >= 2 && '.' === val[len - 1]);
+            goNext = (len >= 3 && '.' !== val[len - 1]);
             val = val.replace(/\D*/g, '');
         } else {
             val = val.replace(/[^0-9a-f]*/gi, '').toUpperCase();

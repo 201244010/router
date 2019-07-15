@@ -299,7 +299,9 @@ class Selecting extends React.Component {
                             }
                     </div>
                 </div>,
-                <Button type='primary' onClick={this.props.setSubRouter} disabled={disabled}>{intl.get(MODULE, 7)}</Button>   
+                <div className='h5-next'>
+                    <Button type='primary' onClick={this.props.setSubRouter} disabled={disabled}>{intl.get(MODULE, 7)}</Button>
+                </div>       
             ]);
         }
     }
@@ -337,10 +339,10 @@ class SettingResult extends React.Component {
                     })}
                 </div>
             </div>,
-            <div>
+            <div className='h5-next'>
                 {allFailed?
                     [<Button onClick={this.props.refresh}>{intl.get(MODULE, 9)}</Button>,
-                    <Button onClick={this.props.goHome}>{intl.get(MODULE, 10)}</Button>]
+                    <Button style={{marginTop: '0.32rem'}} onClick={this.props.goHome}>{intl.get(MODULE, 10)}</Button>]
                     :
                     <Button type='primary' onClick={this.props.goHome}>{intl.get(MODULE, 11)}</Button>
                 }

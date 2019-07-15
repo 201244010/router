@@ -24,7 +24,9 @@ export default class Preparing extends React.Component {
                     <div className='picture'></div>
                 </div>
             </div>,
-            <Button type='primary' style={{margrinTop: 0}} onClick={this.add} >{intl.get(MODULE, 1)}</Button>
+            <div className='h5-next'>
+                <Button type='primary' style={{margrinTop: 0}} onClick={this.add} >{intl.get(MODULE, 1)}</Button>
+            </div>  
         ]);
     }
 }

@@ -4,8 +4,8 @@
     height: 1.1733rem;
     font-size: 0.4267rem;
     text-align: center;
-    color: #FFF;
-    border: 1px solid #FFFFFF;
+    color: #333333;
+    border: 1px solid rgba(0,0,0,0.40);
     border-radius: 0.5867rem;
     background-color: transparent;
     outline: none;
@@ -14,7 +14,8 @@
         opacity: 0.4;
     }
     &.btn-primary{
-        border-width: 0;
+        color: #FFF;
+        border: 1px solid #FF6000;
         background-color: #FF6000;
     }
     .ui-icon-spin{
