@@ -12,7 +12,7 @@ class Reboot extends React.Component{
         super(props);
         this.onlineDev = [];
         this.columns = [{
-            title: '设备名称'/*_i18n:设备名称*/,
+            title: intl.get(MODULE, 10)/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 400,
             render: (name, record) => {
@@ -24,18 +24,18 @@ class Reboot extends React.Component{
                 </div>
             }
         },  {
-            title: '型号名称'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 11)/*_i18n:接入方式*/,
             dataIndex: 'model',
             width: 240
         }, {
-            title: '状态'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 12)/*_i18n:接入方式*/,
             width: 240,
             render: (_, record) => {
                 const online = record.online;
-                return <div><i className={'dot ' + (online ? '' : 'offline')}></i><span style={{fontSize: 12}}>{online ? '在线' : '离线'}</span></div>                                
+                return <div><i className={'dot ' + (online ? '' : 'offline')}></i><span style={{fontSize: 12}}>{online ? intl.get(MODULE, 13) : intl.get(MODULE, 14)}</span></div>                                
             }
         }, {
-            title: '操作'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 15)/*_i18n:接入方式*/,
             dataIndex: 'operation',
             width: 336,
             render: (_, record) => {
@@ -44,21 +44,21 @@ class Reboot extends React.Component{
                     const percent = value.reboot[record.devid];
                     if ((typeof percent === 'undefined' && online) || (percent > 100 && online)) {
                         return <Popconfirm
-                        title= '您确定将此设备重新启动？'
+                        title= {intl.get(MODULE, 16)}
                         okText={
                             <div className='reboot-confirm'>
                                 确定
                             </div>	
                         }
-                        cancelText='取消'
+                        cancelText={intl.get(MODULE, 4)}
                         placement="topRight"
                         onConfirm={() => this.reboot([record.devid], record.role, record, value)}>
-                        <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>立即重启</span>
+                        <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>{intl.get(MODULE, 3)}</span>
                         </Popconfirm> 
                     }
          
                     if ((typeof percent === 'undefined' && !online) || (percent > 100 && !online)) {
-                         return <span style={{fontSize: 12, color: '#ADB1B9' }}>立即重启</span>
+                         return <span style={{fontSize: 12, color: '#ADB1B9' }}>{intl.get(MODULE, 3)}</span>
                     }
          
                     if (percent >= 1 || percent <= 100) {
@@ -134,7 +134,7 @@ class Reboot extends React.Component{
         ], { ignoreErr: true });
         const {errcode, data} = resp;
         if (errcode !== 0) {
-            message.warning('获取信息失败！')
+            message.warning(intl.get(MODULE, 17))
         }
         const routerList = [];
         data[1].result.sonconnect.devices.map(item => {
@@ -172,7 +172,7 @@ class Reboot extends React.Component{
         return (
              <SubLayout className="settings">
                     <div className="system-reboot">
-                        <label className="reboot-title">重启路由器</label>
+                        <label className="reboot-title">{intl.get(MODULE, 18)}</label>
                         <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>{intl.get(MODULE, 6)/*_i18n:立即重启*/}</Button>
                     </div>
                     <div className="static-table">
@@ -190,7 +190,7 @@ class Reboot extends React.Component{
                             rowKey={record => record.mac}
                             style={{ minHeight: 360 }}
                             pagination={false}
-                            locale={{ emptyText: '暂无设备'/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
+                            locale={{ emptyText: intl.get(MODULE, 19)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 8)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
                             />
                     </div>
                     {loadingActive &&
@@ -217,17 +217,17 @@ class Reboot extends React.Component{
                         centered={true}
                         title={<div className='reboot-modal-title'>
                                 <CustomIcon color="#D0021B" type="hint" size={14}></CustomIcon>
-                                <label>警告</label>
+                                <label>{intl.get(MODULE, 20)}</label>
                             </div>
                         }
                         footer={
                             [
-                                <Button onClick={this.rebootCancel}>取消</Button>,
+                                <Button onClick={this.rebootCancel}>{intl.get(MODULE, 4)}</Button>,
                                 <Button className="reboot-confirm" onClick={() => this.reboot(this.onlineDev, 1)}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>
                             ]
                         }
                     >
-                        <span className="reboot-modal-content">{`路由器重启需要等待${duration}秒左右，确定要重启全部路由器？`}</span>
+                        <span className="reboot-modal-content">{intl.get(MODULE, 21, {duration})}</span>
                     </Modal>
             </SubLayout>
         );

@@ -384,7 +384,7 @@ export default class Bootdevice extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: '设备',
+            title: intl.get(MODULE, 11),
             dataIndex: 'mac',
             width: 420,
             className: 'center',
@@ -415,7 +415,7 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: '所属网络'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 15)/*_i18n:接入方式*/,
             dataIndex: 'network',
             width: 260
         }, {

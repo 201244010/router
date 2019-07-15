@@ -182,7 +182,7 @@ export default class SetWifi extends React.Component {
         let disabled;
         if (setTip) {
             display = 'inline-block';
-            setTipShow = '暂不设置客户Wi-Fi';
+            setTipShow = intl.get(MODULE, 32);
 
             const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
                 return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
@@ -200,7 +200,7 @@ export default class SetWifi extends React.Component {
             }
         } else {
             display = 'none';
-            setTipShow = '设置客用Wi-Fi';
+            setTipShow = intl.get(MODULE, 33);
 
             const checkName = ['hostWifiName'].some(item => {          //判定Wi-Fi名称的合法性
                 return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];

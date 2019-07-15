@@ -3,7 +3,9 @@ import { Checkbox, Modal, Button } from 'antd';
 import CustomIcon from '~/components/Icon';
 
 import './subrouter.scss';
+import intl from '../../i18n/intl';
 
+const MODULE = 'subrouter';
 export default class SubRouter extends React.Component {
     constructor(props) {
         super(props);
@@ -68,13 +70,13 @@ export default class SubRouter extends React.Component {
                 footer = <div className='footer checkbox'><Checkbox onChange={this.onChange} checked={checked}></Checkbox></div>;
                 break;
             case 'success':
-                footer = <div className='footer final'><div><CustomIcon size={14} color='#4EC53F' type="succeed" style={{marginRight: 4}} />设置成功</div></div>;
+                footer = <div className='footer final'><div><CustomIcon size={14} color='#4EC53F' type="succeed" style={{marginRight: 4}} />{intl.get(MODULE, 0)}</div></div>;
                 break;
             case 'failed':
-                footer = <div className='footer final'><div><CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 4}} />设备异常，请检查</div><p className='ignoreTip' onClick={this.ignore}>忽略此设备</p></div>;
+                footer = <div className='footer final'><div><CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 4}} />{intl.get(MODULE, 1)}</div><p className='ignoreTip' onClick={this.ignore}>{intl.get(MODULE, 7)}</p></div>;
                 break;
             case 'unusual':
-                footer = <div className='footer final'><div className='footer-unusual'>已被其他商米账号绑定，请解绑后组网</div></div>;
+                footer = <div className='footer final'><div className='footer-unusual'>{intl.get(MODULE, 2)}</div></div>;
                 break;
         }
         return (
@@ -91,14 +93,14 @@ export default class SubRouter extends React.Component {
                 className='subRouterModal'
                 >
                 <div className='modalTitle'>
-                    <CustomIcon size={14} color='#333C4F' type="hint" style={{marginRight: 8}}/>提示
+                    <CustomIcon size={14} color='#333C4F' type="hint" style={{marginRight: 8}}/>{intl.get(MODULE, 3)}
                 </div>
                 <div className='modalContent'>
-                    您确定放弃添加子路由？
+					{intl.get(MODULE, 4)}
                 </div>
                 <div className='modalFooter'>
-                    <Button className="cancleButton" disabled={false} onClick={this.cancel}>取消</Button>
-                    <Button type="primary" className="OKButton" disabled={false} onClick={this.OK} loading={loading}>确定</Button>
+                    <Button className="cancleButton" disabled={false} onClick={this.cancel}>{intl.get(MODULE, 5)}</Button>
+                    <Button type="primary" className="OKButton" disabled={false} onClick={this.OK} loading={loading}>{intl.get(MODULE, 6)}</Button>
                 </div>
             </Modal>]
         );

@@ -39,6 +39,9 @@ import Backup from './Advance/Systemsetup/Backup';
 import TimeZone from './Advance/Systemsetup/TimeZone';
 import Reboot from './Advance/Systemsetup/Reboot';
 import Recovery from './Advance/Systemsetup/Recovery';
+import UPnP from './Advance/Systemsetup/UPnP';
+import PortForwarding from './Advance/Systemsetup/PortForwarding';
+import CustomUpgrade from './Advance/Systemsetup/CustomUpgrade';
 import { RebootContext, RecoveryContext } from '~/context';
 
 const MODULE = 'page';
@@ -132,6 +135,9 @@ class PrimaryLayout extends React.Component {
             'reboot': { main: 'bg', footer: '', header: true, title: true },
             'recovery': { main: 'bg', footer: '', header: true, title: true },
             'timeset': { main: 'bg', footer: '', header: true, title: true },
+            'upnp': { main: 'bg', footer: '', header: true, title: true },
+            'customupgrade': { main: 'bg', footer: '', header: true, title: true },
+            'portforwarding': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const height = {
@@ -157,15 +163,15 @@ class PrimaryLayout extends React.Component {
         };
 
         let node = {main: '', footer: false, header: true, title: false };
-        let path;
+		let path;
+        const splitResult = pathname.split('/');
         for (let url in conf) {
-            if (pathname.indexOf(url) > -1){
+            if (splitResult.indexOf(url) > -1){
                 node = conf[url];
                 path = url;
                 break;
             }
         }
-        const splitResult = pathname.split('/');
         return (
             <div className={`ui-fullscreen ${node.main}`}>
                 <div className='main-content'>
@@ -219,6 +225,9 @@ class RouterSetting extends React.Component {
                     <ContextRoute exact path="/routersetting/reboot" value={this.props.value} contextComponent={RebootContext} component={Reboot} />
                     <ContextRoute exact path="/routersetting/recovery" value={this.props.value} contextComponent={RecoveryContext} component={Recovery} />
                     <Route path="/routersetting/timeset" component={TimeZone} />
+                    <Route path="/routersetting/upnp" component={UPnP} />
+                    <Route path="/routersetting/portforwarding" component={PortForwarding} />
+                    <Route path="/routersetting/customupgrade" component={CustomUpgrade} />
                 </Switch>
         )
     }

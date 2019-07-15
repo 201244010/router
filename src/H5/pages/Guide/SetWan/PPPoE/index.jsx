@@ -130,7 +130,7 @@ export default class PPPoE extends React.Component {
                 <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在连网，请稍候...*/} />
                 <div style={{marginTop: '1.28rem'}}>
                     <Input
-                        inputName='账号'
+                        inputName={intl.get(MODULE, 0)}
                         value={account}
                         onChange={value => this.onChange('account', value)}
                         tip={accountTip}
@@ -138,7 +138,7 @@ export default class PPPoE extends React.Component {
                         maxLength={64}
                     />
                     <Input
-                        inputName='密码'
+                        inputName={intl.get(MODULE, 1)}
                         type='password'
                         value={pwd}
                         onChange={value => this.onChange('pwd', value)}

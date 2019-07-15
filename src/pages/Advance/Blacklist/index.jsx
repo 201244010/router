@@ -308,7 +308,7 @@ export default class Blacklist extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: '设备',
+            title: intl.get(MODULE, 9),
             dataIndex: 'mac',
             width: 440,
             className: 'center',
@@ -321,7 +321,7 @@ export default class Blacklist extends React.Component {
                 </div>
             )
         }, {
-            title: 'IP/MAC地址'/*_i18n:MAC地址*/,
+            title: intl.get(MODULE, 10)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
             width: 240
         }, {

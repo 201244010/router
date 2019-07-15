@@ -638,14 +638,14 @@ export default class WIFI extends React.Component {
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} tip="建议自己店内业务使用"/>
+                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} tip={intl.get(MODULE, 83)}/>
                         <div className="band-title">
                             <label>{intl.get(MODULE, 28)}</label>
                             <span>（{intl.get(MODULE, 29)}）</span>
                         </div>
                         <RadioGroup onChange={this.onBandSteering} value={channelType}>
-                            <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
-                            <Radio style={{display:'inline-block'}} value={false}>关闭</Radio>
+                            <Radio style={{display:'inline-block'}} value={true}>{intl.get(MODULE, 84)}</Radio>
+                            <Radio style={{display:'inline-block'}} value={false}>{intl.get(MODULE, 85)}</Radio>
                         </RadioGroup>
                         {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
                         {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
@@ -795,7 +795,7 @@ export default class WIFI extends React.Component {
                 </section>
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item" style={{marginTop: 48}}>
-                        <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip=" 建议开放给顾客使用"/>
+                        <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip={intl.get(MODULE, 86)}/>
                         <label className='ssidLabel'>{intl.get(MODULE, 66)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>

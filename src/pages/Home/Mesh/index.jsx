@@ -49,7 +49,7 @@ export default class Mesh extends React.Component{
                 if (errcode == 0) {
                     let { devices } = data[0].result.sunmimesh;
                     let num = devices.length;
-                    let title = (num > 0) ? `搜寻到附近<span>${num}</span>台商米设备` /*_i18n:搜寻到{num}台商米设备，已自动接入商米网络*/ : intl.get(MODULE, 4)/*_i18n:正在搜寻商米设备...*/;
+                    let title = (num > 0) ? intl.get(MODULE, 2, {num}) /*_i18n:搜寻到{num}台商米设备，已自动接入商米网络*/ : intl.get(MODULE, 4)/*_i18n:正在搜寻商米设备...*/;
                     this.setState({
                         devices: devices.map(item => {
                             const result = this.state.devices.find(items => items.mac === item.mac);
@@ -108,7 +108,7 @@ export default class Mesh extends React.Component{
             if (errcode === 0) {
                 // message.success(`${devices.length - blockList.length}台商米设备添加成功`);
             } else {
-                message.error('商米设备添加失败');
+                message.error(intl.get(MODULE, 10));
             }
         });
         await common.fetchApi({ opcode: 'SUNMIMESH_STOP' });        
@@ -138,9 +138,9 @@ export default class Mesh extends React.Component{
         }).then(response => {
             let { errcode } = response;
             if (errcode === 0) {
-                message.success(`${devices.length - blockList.length}台商米设备添加成功`);
+                message.success(`${devices.length - blockList.length}${intl.get(MODULE, 11)}${intl.get(MODULE, 12)}`);
             } else {
-                message.error('商米设备添加失败');
+                message.error(intl.get(MODULE, 10));
             }
         });
     }
@@ -180,7 +180,7 @@ export default class Mesh extends React.Component{
         return (
         <Modal className='sunmi-mesh-modal' title={Title} maskClosable={false} width={560} visible={visible}
             onCancel={this.stopSunmiMesh} centered={true}
-            footer={<Button type="primary" disabled={selectLength === 0} onClick={this.addSunmiMesh}>添加商米设备</Button>}>
+            footer={<Button type="primary" disabled={selectLength === 0} onClick={this.addSunmiMesh}>{intl.get(MODULE, 13)}</Button>}>
             {'running' === state &&
             <ul className={meshList.length > 5 ? 'mesh-list-left' : 'mesh-list-center'}>{meshList}</ul>
             }

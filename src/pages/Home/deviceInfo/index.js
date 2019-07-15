@@ -127,13 +127,13 @@ export default class Device extends React.Component {
             '2': intl.get(MODULE, 2)/*_i18n:有线*/,
         };
         this.deviceList = {
-            'sunmi': '商米设备',
-            'whitelist': '优先设备',
-            'normal': '普通设备'
+            'sunmi': intl.get(MODULE, 42),
+            'whitelist': intl.get(MODULE, 43),
+            'normal': intl.get(MODULE, 44)
         };
         this.logoType = {
-            'sunmi': '商米',
-            'whitelist': '优先'
+            'sunmi': intl.get(MODULE, 40),
+            'whitelist': intl.get(MODULE, 41)
         };
         this.columns = [{
             dataIndex: 'mac',
@@ -186,7 +186,7 @@ export default class Device extends React.Component {
                         <label className='device hostname' style={{maxWidth: maxWidth}} title={hostname}>
                             {hostname}
                         </label>
-                        {record.me && <span className="current-device">（当前设备）</span>}
+                        {record.me && <span className="current-device">{intl.get(MODULE, 46)}</span>}
                         <span className={`logo ${type}`}>{this.logoType[type]}</span>
                     </div>,
                     <div className='device' title={ontime}>
@@ -195,7 +195,7 @@ export default class Device extends React.Component {
                 ])
             }
         }, {
-            title: '信号质量'/*_i18n:信号*/,
+            title: intl.get(MODULE, 48)/*_i18n:信号*/,
             dataIndex: 'rssi',
             filters: [{
                 text: this.RSSI_GOOD,
@@ -387,10 +387,10 @@ export default class Device extends React.Component {
         return(
             <div className='device'>
                 <span className='first-title'>
-                    上网设备
+                    {intl.get(MODULE, 49)}
                 </span>
                 <span className='second-title'>
-                    设置优先上网设备
+                    {intl.get(MODULE, 52)}
                 </span>
                 <div className='third-div'>
                     <div className='device-number'>
@@ -398,7 +398,7 @@ export default class Device extends React.Component {
                         
                         </div>
                         <span className='left-border'>
-                            商米设备
+                            {intl.get(MODULE, 42)}
                         </span>
                         <div className={sunmiLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {sunmiLength}
@@ -412,7 +412,7 @@ export default class Device extends React.Component {
     
                         </div>
                         <span className='left-border'>
-                            优先设备
+                            {intl.get(MODULE, 43)}
                         </span>
                         <div className={priorityLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {priorityLength}
@@ -426,14 +426,14 @@ export default class Device extends React.Component {
     
                         </div>
                         <span className='left-border'>
-                            普通设备
+                            {intl.get(MODULE, 44)}
                         </span>
                         <div className={normalLength === 0 ? 'device-number-show-zero' : 'device-number-show'}>
                             {normalLength}
                         </div>
                     </div>
                 </div>
-                <Button onClick={this.viewDevice} className="button">查看设备</Button>
+                <Button onClick={this.viewDevice} className="button">{intl.get(MODULE, 53)}</Button>
                 <Modal
                     visible={visible}
                     width={960}
@@ -441,11 +441,11 @@ export default class Device extends React.Component {
                     maskClosable={false}
                     onCancel={this.handleCancel}
                     footer={[
-                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
+                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)}</Button>
                     ]}
                 >
                     <div style={{padding: '0 0 16px',marginBottom: 24}}>
-                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>上网设备 ({totalList.length}台)</p>
+                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 49)} ({totalList.length}{intl.get(MODULE, 50)})</p>
                         <Button style={{
                             display: 'inline-block',
                             border: 0,
