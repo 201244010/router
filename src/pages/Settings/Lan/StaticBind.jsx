@@ -450,10 +450,10 @@ export default class StaticBind extends React.Component {
         const total = staticLists.length;
         return [
             <div style={{margin:"48px 60px 20px 60px"}}>
-                <PanelHeader title={intl.get(MODULE, 42)} />
+                <PanelHeader title={intl.get(MODULE, 42)/*_i18n:静态地址分配*/} />
                 <div style={{margin:"29px 0 20px 0", display: 'flex', justifyContent: 'space-between'}}>
                     <p style={{fontSize: 14}}>
-                        {total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 41, {total})}
+                        {total > 1 ? intl.get(MODULE, 0, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 41, {total})/*_i18n:已添加{total}台设备*/}
                     </p>
                     <div>
                         <Button onClick={this.selectAdd} style={{marginRight:20}}>{intl.get(MODULE, 27)/*_i18n:列表添加*/}</Button>

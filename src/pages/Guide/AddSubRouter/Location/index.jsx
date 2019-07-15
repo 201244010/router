@@ -36,7 +36,7 @@ export default class Location extends React.Component {
         routeList[index].tip = '';
         for (var i = 0; i < routeList.length; i++) {
             if (index !== i && routeList[index].location === routeList[i].location) {
-                routeList[index].tip = intl.get(MODULE, 0);
+                routeList[index].tip = intl.get(MODULE, 0)/*_i18n:位置信息重复*/;
             }
         }
         this.setState({routeList: routeList});
@@ -89,23 +89,23 @@ export default class Location extends React.Component {
             }
             let labelInfo = '';
             if('1' === item.role) {
-                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 1)}</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
+                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 1)/*_i18n:主路由*/}</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
                 
             } else {
-                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 2)}{i}</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
+                labelInfo = <label style={{marginBottom: 8,display: 'inline-block'}}><span style={{fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 2)/*_i18n:子路由*/}{i}</span><span style={{fontSize: 14,color: '#ADB1B9'}}>（SN:{item.deviceId}）</span></label>;
                 i++;
             }
             routeShow.push(
                 labelInfo,
                 <FormItem
-                    label={intl.get(MODULE, 3)}
+                    label={intl.get(MODULE, 3)/*_i18n:位置*/}
                     showErrorTip={item.tip}
                     labelStyle={{width: 'auto', verticalAlign: 'top'}}
                     inputStyle={{marginLeft: 12, width: 260}}
                     >
                     <Input
                         type="text"
-                        placeholder={intl.get(MODULE, 4)}
+                        placeholder={intl.get(MODULE, 4)/*_i18n:如大堂、收银区等*/}
                         value={item.location === item.deviceId? '':item.location}
                         onChange = {value => this.onChange(value, `${item.deviceId}`)}
                         maxLength={32}
@@ -116,8 +116,8 @@ export default class Location extends React.Component {
         });
         return (
             <div className="location">
-                <h2>{intl.get(MODULE, 5)}</h2> 
-                <p className="ui-tips guide-tip">{intl.get(MODULE, 6)}</p>
+                <h2>{intl.get(MODULE, 5)/*_i18n:设置位置*/}</h2> 
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 6)/*_i18n:位置将作为路由器的名称，有助于您今后识别和管理*/}</p>
                 <div className="content">
                 <Form style={{margin : '24px auto',display: 'inline-block',textAlign: 'left'}}>
                     {routeShow}
@@ -131,7 +131,7 @@ export default class Location extends React.Component {
                             style={{ width: 260,height: 42,float: 'right',marginTop:8}}
                             onClick={this.setRouterLocation}
                             size="large"
-                            type="primary">{intl.get(MODULE, 7)}</Button>
+                            type="primary">{intl.get(MODULE, 7)/*_i18n:下一步*/}</Button>
                     </FormItem>
                 </Form>
                 </div>

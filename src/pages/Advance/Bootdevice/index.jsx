@@ -384,7 +384,7 @@ export default class Bootdevice extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: intl.get(MODULE, 11),
+            title: intl.get(MODULE, 11)/*_i18n:设备*/,
             dataIndex: 'mac',
             width: 420,
             className: 'center',
@@ -415,7 +415,7 @@ export default class Bootdevice extends React.Component {
                 </span>
             )
         }, {
-            title: intl.get(MODULE, 15)/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 15)/*_i18n:所属网络*/,
             dataIndex: 'network',
             width: 260
         }, {
@@ -461,7 +461,7 @@ export default class Bootdevice extends React.Component {
                     <PanelHeader title={intl.get(MODULE, 22)/*_i18n:添加优先设备*/} />
                     <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
                         <p style={{fontSize: 14, color: '#333C4F'}}>
-                            {total > 1 ? intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 37, {total})}
+                            {total > 1 ? intl.get(MODULE, 34, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 37, {total})/*_i18n:已添加{total}台设备*/}
                         </p>
                         <div>
                             <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 23)/*_i18n:列表添加*/}</Button>

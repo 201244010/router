@@ -130,17 +130,17 @@ export default class ClientList extends React.Component {
             '2': intl.get(MODULE, 2)/*_i18n:有线*/,
         };
         this.logoType = {
-            'sunmi': intl.get(MODULE, 40),
-            'whitelist': intl.get(MODULE, 41)
+            'sunmi': intl.get(MODULE, 40)/*_i18n:商米*/,
+            'whitelist': intl.get(MODULE, 41)/*_i18n:优先*/
         };
         this.deviceList = {
-            'sunmi': intl.get(MODULE, 42),
-            'whitelist': intl.get(MODULE, 43),
-            'normal': intl.get(MODULE, 44)
+            'sunmi': intl.get(MODULE, 42)/*_i18n:商米设备*/,
+            'whitelist': intl.get(MODULE, 43)/*_i18n:优先设备*/,
+            'normal': intl.get(MODULE, 44)/*_i18n:普通设备*/
         };
         this.connectRouter = JSON.parse(window.sessionStorage.getItem('_ROUTER_LIST')) || [];
         this.columns = [{
-            title: intl.get(MODULE, 45)/*_i18n:设备名称*/,
+            title: intl.get(MODULE, 45)/*_i18n:设备*/,
             dataIndex: 'mac',
             width: 112,
             className: 'center',
@@ -190,7 +190,7 @@ export default class ClientList extends React.Component {
                         <label className='device hostname' style={{maxWidth: maxWidth}} title={hostname}>
                             {hostname}
                         </label>
-                        {record.me && <span className="current-device">{intl.get(MODULE, 46)}</span>}
+                        {record.me && <span className="current-device">{intl.get(MODULE, 46)/*_i18n:（当前设备）*/}</span>}
                         <span className={`logo ${type}`}>{this.logoType[type]}</span>
                     </div>,
                     <div className='device' title={ontime}>
@@ -208,7 +208,7 @@ export default class ClientList extends React.Component {
                 </ul>
             )
         }, {
-            title: intl.get(MODULE, 47),
+            title: intl.get(MODULE, 47)/*_i18n:连接路由*/,
             dataIndex: 'routerName',
             filters: this.connectRouter,
             onFilter: (value, record) => {
@@ -241,7 +241,7 @@ export default class ClientList extends React.Component {
             render: (mode, record) => this.modeMap[mode],
             width: 100
         }, {
-            title: intl.get(MODULE, 48)/*_i18n:信号*/,
+            title: intl.get(MODULE, 48)/*_i18n:信号质量*/,
             dataIndex: 'rssi',
             filters: [{
                 text: this.RSSI_GOOD,
@@ -375,7 +375,7 @@ export default class ClientList extends React.Component {
 
         let { errcode } = response;
         if (errcode == 0) {
-            message.success(intl.get(MODULE, 20)/*_i18n:配置生效！如需恢复，可在高级设置-防蹭网中恢复上网*/);
+            message.success(intl.get(MODULE, 20)/*_i18n:配置生效！如需恢复，可在路由设置-防蹭网中恢复上网*/);
 
             // 后台生效需要1秒左右，延迟2秒刷新数据，
             setTimeout(() => {
@@ -451,7 +451,7 @@ export default class ClientList extends React.Component {
         const ME = this.state.me;
         let { errcode, data } = resp;
         if (0 !== errcode) {
-            message.warning(intl.get(MODULE, 8, {error: errcode})/*_i18n:请求失败[{error}]*/);
+            message.warning(intl.get(MODULE, 8, {error: errcode})/*_i18n:信号*/);
             return;
         }
 
@@ -580,12 +580,12 @@ export default class ClientList extends React.Component {
             <SubLayout className="net-setting" style={{marginTop: 8, height: window.innerHeight - 148, maxHeight: window.innerHeight - 148, overflow: 'auto'}}>
                     <div className="net-title">
                         <p>
-                            <span>{intl.get(MODULE, 49)}</span>
+                            <span>{intl.get(MODULE, 49)/*_i18n:上网设备*/}</span>
                             <span>
-                                {total}{intl.get(MODULE, 50)}
+                                {total}{intl.get(MODULE, 50)/*_i18n:台*/}
                             </span>
                         </p>
-                        <Button className="net-refersh" onClick={this.updateClientsInfo}>{intl.get(MODULE, 51)}</Button>
+                        <Button className="net-refersh" onClick={this.updateClientsInfo}>{intl.get(MODULE, 51)/*_i18n:刷新*/}</Button>
                     </div>
                     <div className="table-background">
                         <Table

@@ -100,7 +100,7 @@ class PrimaryLayout extends React.Component {
     }
 
     componentDidMount() {
-        document.title = intl.get(MODULE, 0);
+        document.title = intl.get(MODULE, 0)/*_i18n:商米商用路由*/;
         style.use();
 
         // set global mesage conf

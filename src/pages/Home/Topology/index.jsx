@@ -74,7 +74,7 @@ export default class Topology extends React.Component{
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <Button onClick={this.startDiagnose} className="diagnose"><span>{intl.get(MODULE, 0)}</span></Button>
+                                    <Button onClick={this.startDiagnose} className="diagnose"><span>{intl.get(MODULE, 0)/*_i18n:诊断故障*/}</span></Button>
                                 </div>
                             }
                             
@@ -93,9 +93,9 @@ export default class Topology extends React.Component{
                         </li>
                     </ul>
                     <ul className="func-label">
-                        <label>{intl.get(MODULE, 1)}</label>
-                        <label>{intl.get(MODULE, 2)}</label>
-                        <label>{intl.get(MODULE, 3)}</label>  
+                        <label>{intl.get(MODULE, 1)/*_i18n:互联网*/}</label>
+                        <label>{intl.get(MODULE, 2)/*_i18n:网络连接*/}</label>
+                        <label>{intl.get(MODULE, 3)/*_i18n:上网设备*/}</label>  
                     </ul>
                     <div className="strateline">
                         <div className="line"></div>
@@ -107,7 +107,7 @@ export default class Topology extends React.Component{
                                 <div className='add-router' onClick={this.addRouter}>
                                     <CustomIcon size={40} color='#fff' type="add" />
                                 </div>
-                                <label>{intl.get(MODULE, 4)}</label>
+                                <label>{intl.get(MODULE, 4)/*_i18n:添加子路由*/}</label>
                             </li>
                         </ul> 
                     </div>
@@ -116,7 +116,7 @@ export default class Topology extends React.Component{
                     <ul>
                         <li>
                             <div>
-                                <label className="up-speed">{intl.get(MODULE, 5)}</label>
+                                <label className="up-speed">{intl.get(MODULE, 5)/*_i18n:上传速度*/}</label>
                                 <CustomIcon color="#fff" type="upload" style={{marginBottom: 1, marginLeft: 3, opacity: 0.6}} size={12}/>
                             </div>
                             <div className="speed-content">
@@ -126,7 +126,7 @@ export default class Topology extends React.Component{
                         </li>
                         <li>
                             <div>
-                                <label className="up-speed">{intl.get(MODULE, 6)}</label>
+                                <label className="up-speed">{intl.get(MODULE, 6)/*_i18n:下载速度*/}</label>
                                 <CustomIcon color="#fff" type="download" style={{marginBottom: 1, marginLeft: 3, opacity: 0.6}} size={12}/>
                             </div>
                             <div className="speed-content">
@@ -182,7 +182,7 @@ class Item extends React.Component {
             });
             let { errcode } = resp;
             if (0 !== errcode) {
-                message.error(intl.get(MODULE, 22)/*_i18n:保存失败，设备名称过长*/);
+                message.error(intl.get(MODULE, 22)/*_i18n:undefined*/);
                 return;
             }
             if (0 === errcode) {
@@ -199,8 +199,8 @@ class Item extends React.Component {
         const role = parseInt(reList.role);
         const color = reList.rssi >= 20 ? '#97E063' : '#FFCEBD';
         const colorDetail = reList.rssi >= 20 ? '#60CC13' : '#D0021B';
-        const rssi = reList.rssi >= 20 ? intl.get(MODULE, 7) : intl.get(MODULE, 18);
-        const online = type === 0 ? intl.get(MODULE, 8) : intl.get(MODULE, 21);
+        const rssi = reList.rssi >= 20 ? intl.get(MODULE, 7)/*_i18n:信号较好*/ : intl.get(MODULE, 18)/*_i18n:信号较差*/;
+        const online = type === 0 ? intl.get(MODULE, 8)/*_i18n:异常*/ : intl.get(MODULE, 21)/*_i18n:正常*/;
         const Title = (editing, value, mac, devid) => {
             if (!editing) {
                 return (
@@ -217,7 +217,7 @@ class Item extends React.Component {
                 return (
                     <Input
                         defaultValue={value}
-                        placeholder={intl.get(MODULE, 9)}
+                        placeholder={intl.get(MODULE, 9)/*_i18n:请输入设备位置*/}
                         autoFocus={true}
                         onPressEnter={e => this.save(e, value, mac, devid)}
                         onBlur={e => this.save(e, value, mac, devid)}
@@ -232,7 +232,7 @@ class Item extends React.Component {
                     <div className='satelite-info'>
                         {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                         <ul>
-                            <li><label>{intl.get(MODULE, 10)}</label><span style={{color: type === 0 ? '#DD726D' : '#60CC13'}}>{online}</span></li>
+                            <li><label>{intl.get(MODULE, 10)/*_i18n:联网状态：*/}</label><span style={{color: type === 0 ? '#DD726D' : '#60CC13'}}>{online}</span></li>
                             <li><label>IP：</label><span>{reList.ip}</span></li>
                             <li><label>MAC：</label><span>{reList.mac}</span></li>
                         </ul>
@@ -245,10 +245,10 @@ class Item extends React.Component {
                             <div className='satelite-info'>
                                 {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                                 <ul>
-                                    <li><label>{intl.get(MODULE, 11)}</label><span style={{color: colorDetail}}>{rssi}</span></li>
+                                    <li><label>{intl.get(MODULE, 11)/*_i18n:信号强度：*/}</label><span style={{color: colorDetail}}>{rssi}</span></li>
                                     <li><label>IP：</label><span>{reList.ip}</span></li>
                                     <li><label>MAC：</label><span>{reList.mac}</span></li>
-                                    <li><label>{intl.get(MODULE, 12)}</label><span>{reList.parent}</span></li>
+                                    <li><label>{intl.get(MODULE, 12)/*_i18n:上级路由：*/}</label><span>{reList.parent}</span></li>
                                 </ul>
                             </div>
                         );
@@ -257,10 +257,10 @@ class Item extends React.Component {
                             <div className='satelite-info'>
                                 {Title(this.state.editing, reList.name, reList.mac, reList.devid)}
                                 <ul>
-                                    <li><label>{intl.get(MODULE, 13)}</label></li>
+                                    <li><label>{intl.get(MODULE, 13)/*_i18n:离线*/}</label></li>
                                     <li><label>IP：</label><span>--</span></li>
                                     <li><label>MAC：</label><span>{reList.mac}</span></li>
-                                    <li><label>{intl.get(MODULE, 14)}</label><span>--</span></li>
+                                    <li><label>{intl.get(MODULE, 14)/*_i18n:上级路由：*/}</label><span>--</span></li>
                                 </ul>
                             </div>
                         )   
@@ -274,10 +274,10 @@ class Item extends React.Component {
                                     <CustomIcon size={8} style={{marginTop: -30}} type="Rename" />
                                 </p>
                                 <ul>
-                                    <li><label>{intl.get(MODULE, 15)}</label><span style={{color: colorDetail}}>{intl.get(MODULE, 19)}</span></li>
+                                    <li><label>{intl.get(MODULE, 15)/*_i18n:信号强度：*/}</label><span style={{color: colorDetail}}>{intl.get(MODULE, 19)/*_i18n:较差*/}</span></li>
                                     <li><label>IP：</label><span>192.168.2.1</span></li>
                                     <li><label>MAC：</label><span>00.00.00.00.00.00</span></li>
-                                    <li><label>{intl.get(MODULE, 16)}</label><span>SUNIM_XX({intl.get(MODULE, 20)}})</span></li>
+                                    <li><label>{intl.get(MODULE, 16)/*_i18n:上级路由：*/}</label><span>SUNIM_XX({intl.get(MODULE, 20)/*_i18n:位置*/}})</span></li>
                                 </ul>
                             </div>
                         );
@@ -315,7 +315,7 @@ class Item extends React.Component {
                                     <CustomIcon size={60} color='#fff' type="router" />
                                 </div>
                                 <label title={reList.name}>{reList.name}</label>
-                                <p className="sate-offline">{intl.get(MODULE, 17)}</p>
+                                <p className="sate-offline">{intl.get(MODULE, 17)/*_i18n:已离线*/}</p>
                             </div>
                         )   
                 }

@@ -126,11 +126,11 @@ export default class PPPoE extends React.Component {
 
         return ([
             <div className='guide-upper'>
-                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:宽带拨号上网（PPPoE）*/} tips={intl.get(MODULE, 8)/*_i18n:请输入运营商提供的宽带账号和密码*/} />
+                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:输入宽带账号密码*/} tips={intl.get(MODULE, 8)/*_i18n:请输入运营商提供的宽带账号和密码*/} />
                 <Loading visible={visible} content={intl.get(MODULE, 9)/*_i18n:正在连网，请稍候...*/} />
                 <div style={{marginTop: '1.28rem'}}>
                     <Input
-                        inputName={intl.get(MODULE, 0)}
+                        inputName={intl.get(MODULE, 0)/*_i18n:账号*/}
                         value={account}
                         onChange={value => this.onChange('account', value)}
                         tip={accountTip}
@@ -138,7 +138,7 @@ export default class PPPoE extends React.Component {
                         maxLength={64}
                     />
                     <Input
-                        inputName={intl.get(MODULE, 1)}
+                        inputName={intl.get(MODULE, 1)/*_i18n:密码*/}
                         type='password'
                         value={pwd}
                         onChange={value => this.onChange('pwd', value)}

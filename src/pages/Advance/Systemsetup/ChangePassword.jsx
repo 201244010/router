@@ -88,12 +88,12 @@ export default class ChangePassword extends React.Component{
             <div>
                 <Form style={{width:'100%',margin:0,paddingLeft:0}}>
                     <div style={{paddingLeft:60,marginTop:30,marginBottom:124}}>
-                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 5)/*_i18n:原密码*/}</label>                       
+                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 5)/*_i18n:输入旧密码*/}</label>                       
                         <FormItem type="small" showErrorTip={oldPWDTip} style={{ width : 320}}>    
-                            <Input type="password" placeholder={intl.get(MODULE, 6)/*_i18n:请输入原密码*/} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
+                            <Input type="password" placeholder={intl.get(MODULE, 6)/*_i18n:请输入旧密码*/} value={oldPWD} onChange={(value)=>this.onChange('oldPWD',value)} />
                             <ErrorTip>{oldPWDTip}</ErrorTip>
                         </FormItem> 
-                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 7)/*_i18n:新密码*/}</label>                      
+                        <label style={{marginBottom: 6,display: 'block',lineHeight:'22px'}}>{intl.get(MODULE, 7)/*_i18n:设置新密码*/}</label>                      
                         <FormItem type="small" showErrorTip={newPWDTip} style={{ width : 320}}>    
                             <Input type="password" maxLength={32} placeholder={intl.get(MODULE, 8)/*_i18n:请输入新密码*/} value={newPWD} onChange={(value)=>this.onChange('newPWD',value)} />
                             <ErrorTip>{newPWDTip}</ErrorTip>

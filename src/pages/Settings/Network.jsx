@@ -493,15 +493,15 @@ export default class NETWORK extends React.Component {
                                 <label className="oneline">{infoIp}</label>
                             </div>
                             <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 25)/*_i18n:子网掩码*/}</ul>
+                                <ul className="ui-mute">{intl.get(MODULE, 25)/*_i18n:子网掩码：*/}</ul>
                                 <label className="oneline">{infoMask}</label>
                             </div>
                             <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 26)/*_i18n:默认网关*/}</ul>
+                                <ul className="ui-mute">{intl.get(MODULE, 26)/*_i18n:默认网关：*/}</ul>
                                 <label className="oneline">{infoGateway}</label>
                             </div>
                             <div className='network-info' style={{marginBottom: 23}}>    
-                                <ul className="ui-mute">{intl.get(MODULE, 49)}</ul>
+                                <ul className="ui-mute">{intl.get(MODULE, 49)/*_i18n:DNS：*/}</ul>
                                 <label className="oneline">{infoDns}</label>
                             </div>
                         </section>

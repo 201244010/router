@@ -167,7 +167,7 @@ export default class SetWan extends React.Component {
         dial_type = dial_type === 'none' ? 'dhcp' : dial_type;
 
         if ('dhcp' === dial_type) {
-            this.setState({content: intl.get(MODULE, 18)});
+            this.setState({content: intl.get(MODULE, 18)/*_i18n:自动获取IP...*/});
             this.setDHCP();
         } else {
             this.setState({checkType: false});
@@ -189,8 +189,8 @@ export default class SetWan extends React.Component {
 
         return ([
             <div className='guide-upper'>
-                <GuideHeader title={intl.get(MODULE, 15)/*_i18n:确认上网方式*/} tips={intl.get(MODULE, 16)/*_i18n:请选择正确的上网方式*/} />
-                <Loading visible={visible} content={intl.get(MODULE, 19)} />
+                <GuideHeader title={intl.get(MODULE, 15)/*_i18n:检测上网方式*/} tips={intl.get(MODULE, 16)/*_i18n:请选择正确的上网方式，如不清楚请咨询你的宽带运营商*/} />
+                <Loading visible={visible} content={intl.get(MODULE, 19)/*_i18n:正在联网...*/} />
                 {checkType?
                     !visible&&<div className='h5setwan-icon'>
                         <div className='icon'>

@@ -89,10 +89,10 @@ export default class SubRouter extends React.Component {
                                 <div className='routerImg'><div className='successImg'></div></div>
                                 <div className='deviceId'>
                                     {location}
-                                    <p className='description'>{intl.get(MODULE, 0)}</p>
+                                    <p className='description'>{intl.get(MODULE, 0)/*_i18n:设置同步成功*/}</p>
                                 </div>
                             </div>
-                            <div className='addLocation'>{intl.get(MODULE, 1)}<div className='addLocationImg' onClick={this.addLocation}></div></div>
+                            <div className='addLocation'>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addLocationImg' onClick={this.addLocation}></div></div>
                         </div>;
                 break;
             case 'failed':
@@ -101,7 +101,7 @@ export default class SubRouter extends React.Component {
                                 <div className='routerImg'><div className='failedImg'></div></div>
                                 <div className='deviceId'>
                                     {location}
-                                    <p className='description'>{intl.get(MODULE, 2)}</p>
+                                    <p className='description'>{intl.get(MODULE, 2)/*_i18n:状态异常，请检查*/}</p>
                                 </div>
                             </div>
                         </div>;
@@ -112,7 +112,7 @@ export default class SubRouter extends React.Component {
                                 <div className='routerImg'><div className='loadingImg'></div></div>
                                 <div className='deviceId'>
                                     {location}
-                                    <p className='description'>{intl.get(MODULE, 3)}</p>
+                                    <p className='description'>{intl.get(MODULE, 3)/*_i18n:正在同步路由器设置*/}</p>
                                 </div>
                             </div>
                         </div>;
@@ -123,7 +123,7 @@ export default class SubRouter extends React.Component {
                                 <div className='routerImg'></div>
                                 <div className='deviceId'>
                                     {location}
-                                    <p className='unusual'>{intl.get(MODULE, 4)}</p>
+                                    <p className='unusual'>{intl.get(MODULE, 4)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</p>
                                 </div>
                             </div>
                             <Checkbox onChange={this.onChange} checked={false} disabled></Checkbox>
@@ -139,12 +139,12 @@ export default class SubRouter extends React.Component {
                     footer={null}
                     >
                     <div className='Content'>
-                        <div className='Title'>{intl.get(MODULE, 5)}</div>
-                        <input placeholder={intl.get(MODULE, 6)} className='input' onChange={this.inputOnChange} value={locationInput} />
+                        <div className='Title'>{intl.get(MODULE, 5)/*_i18n:备注*/}</div>
+                        <input placeholder={intl.get(MODULE, 6)/*_i18n:请输入备注信息*/} className='input' onChange={this.inputOnChange} value={locationInput} />
                     </div>
                     <div className='Footer'>
-                        <div className='footerButton cancel' onClick={this.cancel}>{intl.get(MODULE, 7)}</div>
-                        <div className='footerButton sure' onClick={this.sure}>{intl.get(MODULE, 8)}</div>
+                        <div className='footerButton cancel' onClick={this.cancel}>{intl.get(MODULE, 7)/*_i18n:取消*/}</div>
+                        <div className='footerButton sure' onClick={this.sure}>{intl.get(MODULE, 8)/*_i18n:确定*/}</div>
                     </div>
                 </CustomModal>
             </React.Fragment>   

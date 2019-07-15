@@ -11,30 +11,30 @@ export default class RouterSetting extends React.PureComponent {
         super(props);
 
         this.netList = [
-            {route: 'wifiset', type: 'WiFi', color: '#6D6BD8', content: intl.get(MODULE, 0) /*_i18n:网速智能分配*/},
-            {route: 'network', type: 'Internet',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:网速智能分配*/},
-            {route: 'lan', type: 'lan',color: '#448BE9', content: intl.get(MODULE, 2)/*_i18n:网速智能分配*/},
-            {route: 'routermanage', type: 'childroute', color: '#3CA8E7', content: intl.get(MODULE, 3)/*_i18n:网速智能分配*/},
+            {route: 'wifiset', type: 'WiFi', color: '#6D6BD8', content: intl.get(MODULE, 0)/*_i18n:Wi-Fi设置*/ },
+            {route: 'network', type: 'Internet',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:上网设置*/},
+            {route: 'lan', type: 'lan',color: '#448BE9', content: intl.get(MODULE, 2)/*_i18n:局域网设置*/},
+            {route: 'routermanage', type: 'childroute', color: '#3CA8E7', content: intl.get(MODULE, 3)/*_i18n:子路由设置*/},
         ];
 
         this.appList = [
-            // {route: 'wechat', type: 'wechat',color: '#47D164', content: intl.get(MODULE, 1)},
+            // {route: 'wechat', type: 'wechat',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:上网设置*/},
             {route: 'bandwidth', color: '#6D6BD8', type: 'Bandwidth', content: intl.get(MODULE, 14)/*_i18n:网速智能分配*/},
             {route: 'bootdevice', color: '#47D164', type: 'Bootdevice', content: intl.get(MODULE, 16)/*_i18n:优先设备*/},
             {route: 'blacklist', color: '#448BE9', type: 'blacklist', content: intl.get(MODULE, 17)/*_i18n:防蹭网*/},
-            {route: 'dosd', type: 'protect',color: '#47D164', content: intl.get(MODULE, 4)/*_i18n:网速智能分配*/},
-            // {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:系统设置*/}
+            {route: 'dosd', type: 'protect',color: '#47D164', content: intl.get(MODULE, 4)/*_i18n:攻击防护*/},
+            // {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:攻击防护*/}
         ];
 
         this.systemList = [
-            {route: 'changepassword', type: 'changepassword', color: '#E96044', content: intl.get(MODULE, 5)/*_i18n:优先设备*/},
-            {route: 'backup', type: 'backup', color: '#6D6BD8', content: intl.get(MODULE, 6)/*_i18n:防蹭网*/},  
-            {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:防蹭网*/},  
-            {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:防蹭网*/},  
-            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:防蹭网*/},  
-            {route: 'upnp', type: 'protect', color: '#47D164', content: intl.get(MODULE, 19)/*_i18n:防蹭网*/},  
-            {route: 'portforwarding', type: 'Bootdevice', color: '#3CA8E7', content: intl.get(MODULE, 20)/*_i18n:防蹭网*/},  
-            // {route: 'customupgrade', type: 'childroute', color: '#E96044', content: '自定义固件升级'/*_i18n:防蹭网*/},  
+            {route: 'changepassword', type: 'changepassword', color: '#E96044', content: intl.get(MODULE, 5)/*_i18n:修改管理密码*/},
+            {route: 'backup', type: 'backup', color: '#6D6BD8', content: intl.get(MODULE, 6)/*_i18n:备份与恢复*/},  
+            {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},  
+            {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
+            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/},  
+            {route: 'upnp', type: 'protect', color: '#47D164', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},  
+            {route: 'portforwarding', type: 'Bootdevice', color: '#3CA8E7', content: intl.get(MODULE, 20)/*_i18n:端口转发*/},  
+            // {route: 'customupgrade', type: 'childroute', color: '#E96044', content: '自定义固件升级'},  
         ];
 
 		if (getQuickStartVersion() === 'abroad') {
@@ -75,9 +75,9 @@ export default class RouterSetting extends React.PureComponent {
         return (
             <SubLayout className="advance-settings" style={{height: window.innerHeight - 148, marginTop: 8}}>
                 <ul>
-                    {listItems(this.netList, intl.get(MODULE, 11))}
-                    {listItems(this.appList, intl.get(MODULE, 12))}
-                    {listItems(this.systemList, intl.get(MODULE, 13))}
+                    {listItems(this.netList, intl.get(MODULE, 11)/*_i18n:网络设置*/)}
+                    {listItems(this.appList, intl.get(MODULE, 12)/*_i18n:应用工具*/)}
+                    {listItems(this.systemList, intl.get(MODULE, 13)/*_i18n:系统工具*/)}
                 </ul>
             </SubLayout>
         );

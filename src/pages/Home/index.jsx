@@ -439,15 +439,15 @@ export default class Home extends React.Component {
                         </li>
                         <div className='grid'></div>
                         <li>
-                            <span>{intl.get(MODULE, 26)}</span>
+                            <span>{intl.get(MODULE, 26)/*_i18n:搜寻商米设备*/}</span>
                             <span className='second-title'>
-								{intl.get(MODULE, 27)}
+								{intl.get(MODULE, 27)/*_i18n:商米设备一键联网*/}
                             </span>
                             <p>
-                                <span>{intl.get(MODULE, 28)}</span>
-                                <span>{intl.get(MODULE, 29)}</span>
+                                <span>{intl.get(MODULE, 28)/*_i18n:无需输入密码*/}</span>
+                                <span>{intl.get(MODULE, 29)/*_i18n:快捷安全*/}</span>
                             </p>
-                            <Button onClick={this.startSunmiMesh} className="button">{intl.get(MODULE, 30)}</Button>
+                            <Button onClick={this.startSunmiMesh} className="button">{intl.get(MODULE, 30)/*_i18n:搜寻*/}</Button>
                             <Mesh ref="sunmiMesh" />
                         </li>
                     </ul>
@@ -460,16 +460,16 @@ export default class Home extends React.Component {
                         centered={true}
                         title={<div className="home-ap-title">
                                 <CustomIcon type="hint" size={14}></CustomIcon>
-                                <label>{intl.get(MODULE, 31)}</label>
+                                <label>{intl.get(MODULE, 31)/*_i18n:提示*/}</label>
                             </div>
                         }
                         footer={
                             [
-                                <Button type='primary' onClick={this.confirmAp}>{intl.get(MODULE, 32)}</Button>
+                                <Button type='primary' onClick={this.confirmAp}>{intl.get(MODULE, 32)/*_i18n:我知道了*/}</Button>
                             ]
                         }
                     >
-                        <span className="reboot-modal-content">{intl.get(MODULE, 33)}</span>
+                        <span className="reboot-modal-content">{intl.get(MODULE, 33)/*_i18n:检测到当前网络没有主路由，为了保障更好的体验，已将当前设备设置为主路由*/}</span>
                     </Modal>
             </SubLayout>
         );

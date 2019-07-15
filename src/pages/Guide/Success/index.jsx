@@ -24,14 +24,14 @@ export default class Success extends React.Component {
                 <div className='success'>
                     <CustomIcon size={72} color='#87D068' type='succeed' style={{marginBottom: 16}} />
                     <h4>{intl.get(MODULE, 11)/*_i18n:设置完成*/}</h4>
-                    <p>{intl.get(MODULE, 0)/*_i18n:我们为您准备以下功能，开始体验吧*/}</p>
+                    <p>{intl.get(MODULE, 0)/*_i18n:下载商米助手APP，体验更多功能！*/}</p>
                     <div className='QR'>
                         <img src={require('~/assets/images/qr.png')} />
-                        <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
+                        <p>{intl.get(MODULE, 10)/*_i18n:扫描二维码下载APP*/}</p>
                     </div>
                     <div className="footButtons">
-                        <Button type="primary" onClick={this.goHome}>{intl.get(MODULE, 1)}</Button>
-                        <Button onClick={this.addSubRouter}>{intl.get(MODULE, 2)}</Button>
+                        <Button type="primary" onClick={this.goHome}>{intl.get(MODULE, 1)/*_i18n:配置完成*/}</Button>
+                        <Button onClick={this.addSubRouter}>{intl.get(MODULE, 2)/*_i18n:添加更多商米路由器*/}</Button>
                     </div> 
                 </div>
             </React.Fragment>

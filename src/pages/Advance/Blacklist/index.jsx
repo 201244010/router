@@ -308,7 +308,7 @@ export default class Blacklist extends React.Component {
         const disabled = check;
 
         const columns = [{
-            title: intl.get(MODULE, 9),
+            title: intl.get(MODULE, 9)/*_i18n:设备*/,
             dataIndex: 'mac',
             width: 440,
             className: 'center',
@@ -321,7 +321,7 @@ export default class Blacklist extends React.Component {
                 </div>
             )
         }, {
-            title: intl.get(MODULE, 10)/*_i18n:MAC地址*/,
+            title: intl.get(MODULE, 10)/*_i18n:IP/MAC地址*/,
             dataIndex: 'mac',
             width: 240
         }, {
@@ -371,7 +371,7 @@ export default class Blacklist extends React.Component {
                     <PanelHeader title={intl.get(MODULE, 18)/*_i18n:添加黑名单设备*/} />
                     <div style={{ margin: "20px 0 20px 0", display: 'flex', justifyContent: 'space-between' }}>
                         <p style={{fontSize: 14, color: '#333C4F'}}>
-                            {total > 1 ? intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 2, {total})}
+                            {total > 1 ? intl.get(MODULE, 1, {total})/*_i18n:已添加{total}台设备*/ : intl.get(MODULE, 2, {total})/*_i18n:已添加{total}台设备*/}
                         </p>
                         <div>
                             <Button onClick={this.selectAdd} style={{ marginRight: 20 }}>{intl.get(MODULE, 19)/*_i18n:列表添加*/}</Button>
