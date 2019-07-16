@@ -194,12 +194,14 @@ class Item extends React.Component {
     }
 
     render() {
-        const reList = this.props.reList;
+		const reList = this.props.reList;
+		const wired = reList.connMode.wired;
         const type = parseInt(reList.online);
-        const role = parseInt(reList.role);
-        const color = reList.rssi >= 20 ? '#97E063' : '#FFCEBD';
-        const colorDetail = reList.rssi >= 20 ? '#60CC13' : '#D0021B';
-        const rssi = reList.rssi >= 20 ? intl.get(MODULE, 7)/*_i18n:信号较好*/ : intl.get(MODULE, 18)/*_i18n:信号较差*/;
+		const role = parseInt(reList.role);
+		const highSignal = wired || reList.rssi >= 20;
+        const color = highSignal ? '#97E063' : '#FFCEBD';
+        const colorDetail = highSignal ? '#60CC13' : '#D0021B';
+        const rssi = highSignal ? intl.get(MODULE, 7)/*_i18n:信号较好*/ : intl.get(MODULE, 18)/*_i18n:信号较差*/;
         const online = type === 0 ? intl.get(MODULE, 8)/*_i18n:异常*/ : intl.get(MODULE, 21)/*_i18n:正常*/;
         const Title = (editing, value, mac, devid) => {
             if (!editing) {

@@ -267,7 +267,8 @@ export default class Home extends React.Component {
                 rssi: re.rssi,
                 ip: re.ip,
                 devid: re.devid,
-                parent: routeList[re.routermac.toUpperCase()]
+				parent: routeList[re.routermac.toUpperCase()],
+				connMode: re.conn_mode || {}
             }
         });
 
