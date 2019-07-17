@@ -571,19 +571,35 @@
   content: "\e6c5";
 }
 
-.ui-icon-loading_bg:before {
-  content: "\e6c6";
-}
-
-.ui-icon-loading_ring:before {
-  content: "\e6c7";
-}
-
 .ui-icon-p2_pro:before {
   content: "\e6c8";
 }
 
 .ui-icon-h1:before {
   content: "\e6c9";
+}
+
+.ui-icon-loadingtest:before {
+  content: "\e6ca";
+}
+
+.ui-icon-loading_bg:before {
+  content: "\e6cb";
+}
+
+.ui-icon-loading_ring:before {
+  content: "\e6cc";
+}
+
+.ui-icon-upgradetime:before {
+  content: "\e6cd";
+}
+
+.ui-icon-portforwarding:before {
+  content: "\e6ce";
+}
+
+.ui-icon-upnp:before {
+  content: "\e6cf";
 }
 

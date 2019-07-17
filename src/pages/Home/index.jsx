@@ -409,7 +409,7 @@ export default class Home extends React.Component {
                         upSpeed={upSpeed} upUnit={upUnit} downSpeed={downSpeed} downUnit={downUnit}
                         reList={reList} online={online} history={this.props.history}
                     />
-                    <ul className="container">
+                    <ul className={getQuickStartVersion() !== 'abroad' ? "container" : "container-us"}>
                         <li>
                             <Device 
                                 sunmiLength={sunmiLength}

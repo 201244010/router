@@ -317,6 +317,16 @@
     }
 }
 
+.container-us {
+	@extend .container;
+	li {
+		width: 400px
+	}
+	li:not(:last-child) {
+        width: 410px;
+    }
+}
+
 .grid {
     margin-top: 26px;
     width: 1px;
