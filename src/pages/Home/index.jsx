@@ -12,6 +12,7 @@ import Allocation from './speedAllocation';
 import Connection from './wechat';
 import CustomIcon from '~/components/Icon';
 import Mesh from './Mesh';
+import {getQuickStartVersion} from '~/utils';
 import { set, clear } from '~/assets/common/cookie';
 
 import './home.scss';
@@ -429,15 +430,18 @@ export default class Home extends React.Component {
                                 history={this.props.history}
                             />
                         </li>
-                        <div className='grid'></div>
-                        <li>
-                            <Connection
-                                chatTotal={chatTotal}
-                                wechatList={wechatList}
-                                wechatConfig={wechatConfig}
-                                history={this.props.history}
-                            />
-                        </li>
+						{
+							getQuickStartVersion() !== 'abroad' ? [
+								<div className='grid'></div>,
+								<li>
+									<Connection
+										chatTotal={chatTotal}
+										wechatList={wechatList}
+										wechatConfig={wechatConfig}
+										history={this.props.history}
+									/>
+							</li>]  : ''
+						}
                         <div className='grid'></div>
                         <li>
                             <span>{intl.get(MODULE, 26)/*_i18n:搜寻商米设备*/}</span>

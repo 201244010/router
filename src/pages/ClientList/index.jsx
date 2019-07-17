@@ -580,9 +580,9 @@ export default class ClientList extends React.Component {
             <SubLayout className="net-setting" style={{marginTop: 8, height: window.innerHeight - 148, maxHeight: window.innerHeight - 148, overflow: 'auto'}}>
                     <div className="net-title">
                         <p>
-                            <span>{intl.get(MODULE, 49)/*_i18n:上网设备*/}</span>
+                            <span>{intl.get(MODULE, 54)/*_i18n:上网设备*/}</span>
                             <span>
-                                {total}{intl.get(MODULE, 50)/*_i18n:台*/}
+                                {total} {intl.get(MODULE, 50)/*_i18n:台*/}
                             </span>
                         </p>
                         <Button className="net-refersh" onClick={this.updateClientsInfo}>{intl.get(MODULE, 51)/*_i18n:刷新*/}</Button>

@@ -722,8 +722,8 @@ export default class WIFI extends React.Component {
                                         <label>{intl.get(MODULE, 48)/*_i18n:频道带宽*/}</label>
                                         <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('htmode24Area')}>
                                             <Option value={'auto'}>{intl.get(MODULE, 49)/*_i18n:自动*/}</Option>
-                                            <Option value={'HT20'}>20M</Option>
-                                            <Option value={'HT40'}>40M</Option>
+                                            <Option value={'HT20'}>20MHZ</Option>
+                                            <Option value={'HT40'}>40MHZ</Option>
                                         </Select>
                                     </div>
                                     <div className='moreDiv' id="channel24Area">
@@ -772,9 +772,9 @@ export default class WIFI extends React.Component {
                                             <label>{intl.get(MODULE, 62)/*_i18n:频道带宽*/}</label>
                                             <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('htmode5Area')}>
                                                 <Option value={'auto'}>{intl.get(MODULE, 49)/*_i18n:自动*/}</Option>
-                                                <Option value={'HT20'}>20M</Option>
-                                                <Option value={'HT40'}>40M</Option>
-                                                <Option value={'HT80'}>80M</Option>
+                                                <Option value={'HT20'}>20MHZ</Option>
+                                                <Option value={'HT40'}>40MHZ</Option>
+                                                <Option value={'HT80'}>80MHZ</Option>
                                             </Select>
                                         </div>
                                         <div className='moreDiv' id="channel5Area">
