@@ -32,7 +32,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},  
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
             {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/},  
-            {route: 'upnp', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},  
+            // {route: 'upnp', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},  
             {route: 'portforwarding', type: 'portforwarding', color: '#448BE9', content: intl.get(MODULE, 20)/*_i18n:端口转发*/},  
             {route: 'customupgrade', type: 'upgradetime', color: '#6174F1', content: '自定义固件升级'},  
         ];

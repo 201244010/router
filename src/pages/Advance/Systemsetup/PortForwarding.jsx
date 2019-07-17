@@ -82,7 +82,7 @@ export default class PortForwarding extends React.Component {
 		srcport: '',
 		srcportTip: '',
 		proto: 0,
-		portList: [{destip: ''}],
+		portList: [],
 		type: '',
 		tag: '',
 		pagination: {
