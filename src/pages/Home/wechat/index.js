@@ -6,6 +6,8 @@ import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip' 
 import './index.scss';
 
+const MODULE = 'wechat';
+
 export default class Connection extends React.Component {
     constructor(props) {
         super(props);
@@ -41,8 +43,8 @@ export default class Connection extends React.Component {
 					return [point[0] - size.contentSize[0] / 2, -size.contentSize[1] - 2]
 				},
                 padding: [12,12,12,12],
-                formatter: '<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
-                    '<span style="display: inline-block;height: 22px;line-height: 22px">接入用户： {c0}</span>',
+                formatter: `<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
+                    '<span style="display: inline-block;height: 22px;line-height: 22px">${intl.get(MODULE, 0)/*_i18n:接入用户：*/}： {c0}</span>`,
             },
             grid: {
                 left: 0,
@@ -75,7 +77,7 @@ export default class Connection extends React.Component {
                 type: 'value'
             },
             series: [{
-                name: '用户数',
+                name: intl.get(MODULE, 1)/*_i18n:用户数*/,
                 type: 'bar',
                 smooth: true,
                 symbol: 'circle', // 拐点类型
@@ -107,29 +109,29 @@ export default class Connection extends React.Component {
             this.props.wechatConfig ?
                 <div className='connection'>
                     <span className='first-title'>
-                        微信连Wi-Fi
+                        {intl.get(MODULE, 2)/*_i18n:微信连Wi-Fi*/}
                     </span>
                     <span className='second-title'>
-                        顾客连接Wi-Fi新方式
+						{intl.get(MODULE, 3)/*_i18n:顾客连接Wi-Fi新方式*/}
                     </span>
                     <p>
-                        <span>无需告知密码</span>
-                        <span>安全防蹭网</span>
+                        <span>{intl.get(MODULE, 4)/*_i18n:无需告知密码*/}</span>
+                        <span>{intl.get(MODULE, 5)/*_i18n:安全防蹭网*/}</span>
                     </p>
-                    <Button onClick={this.goWechat} className="button">去开启</Button>
+                    <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 6)/*_i18n:去开启*/}</Button>
                 </div>
                 : <div className='connection'>
                 <span className='first-title'>
-                    微信连Wi-Fi
+					{intl.get(MODULE, 2)/*_i18n:微信连Wi-Fi*/}
                 </span>
                 <span className='subtitle'>
-                    累计连接用户
+                    {intl.get(MODULE, 7)/*_i18n:累计连接用户*/}
                 </span>
                 <span className='number'>
                     {chatTotal}
                 </span>
                 <div className='chart' style={{width: 250, height: 80}} ref='dom'></div>
-                <Button onClick={this.goWechat} className="button">修改设置</Button>
+                <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 8)/*_i18n:修改设置*/}</Button>
             </div>
         )
     }

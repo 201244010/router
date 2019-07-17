@@ -25,7 +25,7 @@ class Login extends React.Component {
             password: value,
         });
         if (0 >= value.length) {
-            message.error(intl.get(MODULE, 0));
+            message.error(intl.get(MODULE, 0)/*_i18n:请输入密码*/);
         }
     }
 
@@ -42,7 +42,7 @@ class Login extends React.Component {
         const password = this.state.password;
 
         if ('' === password) {
-            message.error(intl.get(MODULE, 1));
+            message.error(intl.get(MODULE, 1)/*_i18n:请输入密码*/);
             return;
         }
 
@@ -65,16 +65,16 @@ class Login extends React.Component {
                 this.props.history.push('/welcome');
                 return;
             case '-1601':
-                message.error(intl.get(MODULE, 2));
+                message.error(intl.get(MODULE, 2)/*_i18n:请输入密码*/);
                 break;
             case '-1605':
-                message.error(intl.get(MODULE, 3));
+                message.error(intl.get(MODULE, 3)/*_i18n:密码错误*/);
                 break;
             case '-1606':
-                message.error(intl.get(MODULE, 4));
+                message.error(intl.get(MODULE, 4)/*_i18n:密码错误次数过多，请5分钟后再试*/);
                 break;
             default:
-                message.error(intl.get(MODULE, 5, {error: errcode}));
+                message.error(intl.get(MODULE, 5, {error: errcode})/*_i18n:未知错误[{error}]*/);
                 break;
         }
     }

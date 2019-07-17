@@ -3,6 +3,7 @@ import Button from 'h5/components/Button';
 import CustomModal from 'h5/components/Modal';
 
 import './finish.scss';
+import intl from '../../../../i18n/intl';
 
 const MODULE = 'h5finish';
 
@@ -112,39 +113,39 @@ export default class Finish extends React.PureComponent {
         return ([
             <div className='h5finish'>
                 <div className='icon-success'></div>
-                <p className='finish-tip'>路由器设置成功</p>
+                <p className='finish-tip'>{intl.get(MODULE, 0)/*_i18n:路由器设置成功*/}</p>
                 <div className='deviceInfo'>
                     <div className='left'>
                         <div className='deviceImg'></div>
                         <span className='title-left'>{devid}</span>
                     </div>
                     <div className='right'>
-                        <span className='title-right'>备注<div className='addApLocation' onClick={this.addLocation}></div></span>    
+                        <span className='title-right'>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation' onClick={this.addLocation}></div></span>    
                     </div>
                 </div>
                 <div>
-                    <p className='wifi-title'>商户Wi-Fi</p>
+                    <p className='wifi-title'>{intl.get(MODULE, 2)/*_i18n:商户Wi-Fi*/}</p>
                     <div className='wifi-content'>
                         <div className='wifi-ssid'>
-                            <span className='wifi-left'>商户Wi-iFi名称</span>
+                            <span className='wifi-left'>{intl.get(MODULE, 3)/*_i18n:商户Wi-Fi名称*/}</span>
                             <span className='wifi-right'>{data.hostSsid}</span>
                         </div>
                         <div className='wifi-pwd'>
-                            <span className='wifi-left'>商户Wi-Fi密码</span>
+                            <span className='wifi-left'>{intl.get(MODULE, 4)/*_i18n:商户Wi-Fi密码*/}</span>
                             <span className='wifi-right'>{data.hostPassword}</span>
                         </div>
                     </div>
                 </div>
                 {'block' === data.guestDisplay &&
                 <div>
-                    <p className='wifi-title'>客用Wi-Fi</p>
+                    <p className='wifi-title'>{intl.get(MODULE, 5)/*_i18n:客用Wi-Fi*/}</p>
                     <div className='wifi-content'>
                         <div className='wifi-ssid'>
-                            <span className='wifi-left'>客用Wi-Fi名称</span>
+                            <span className='wifi-left'>{intl.get(MODULE, 6)/*_i18n:客用Wi-Fi名称*/}</span>
                             <span className='wifi-right'>{data.guestSsid}</span>
                         </div>
                         <div className='wifi-pwd'>
-                            <span className='wifi-left'>客用Wi-Fi密码</span>
+                            <span className='wifi-left'>{intl.get(MODULE, 7)/*_i18n:客用Wi-Fi密码*/}</span>
                             <span className='wifi-right'>{data.guestPassword}</span>
                         </div>
                     </div>
@@ -152,8 +153,8 @@ export default class Finish extends React.PureComponent {
                 }
             </div>,
             <div className='foot'>
-                <Button type='primary' className='goHome' onClick={this.goHome} >完成</Button>
-                <Button type='primary' className='addMore' onClick={this.addMore} >添加更多路由器</Button>
+                <Button type='primary' className='goHome' onClick={this.goHome} >{intl.get(MODULE, 8)/*_i18n:完成*/}</Button>
+                <Button type='primary' className='addMore' onClick={this.addMore} >{intl.get(MODULE, 9)/*_i18n:添加更多路由器*/}</Button>
             </div>,
             <CustomModal
                 className='locationModal'
@@ -161,12 +162,12 @@ export default class Finish extends React.PureComponent {
                 footer={null}
                 >
                 <div className='Content'>
-                    <div className='Title'>备注</div>
-                    <input placeholder='请输入备注信息' className='input' onChange={this.inputOnChange} value={location} />
+                    <div className='Title'>{intl.get(MODULE, 10)/*_i18n:备注*/}</div>
+                    <input placeholder={intl.get(MODULE, 11)/*_i18n:请输入备注信息*/} className='input' onChange={this.inputOnChange} value={location} />
                 </div>
                 <div className='Footer'>
-                    <div className='footerButton cancel' onClick={this.cancel}>取消</div>
-                    <div className='footerButton sure' onClick={this.sure}>确定</div>
+                    <div className='footerButton cancel' onClick={this.cancel}>{intl.get(MODULE, 12)/*_i18n:取消*/}</div>
+                    <div className='footerButton sure' onClick={this.sure}>{intl.get(MODULE, 13)/*_i18n:确定*/}</div>
                 </div>
             </CustomModal>
         ]);

@@ -12,6 +12,7 @@ import Allocation from './speedAllocation';
 import Connection from './wechat';
 import CustomIcon from '~/components/Icon';
 import Mesh from './Mesh';
+import {getQuickStartVersion} from '~/utils';
 import { set, clear } from '~/assets/common/cookie';
 
 import './home.scss';
@@ -267,7 +268,8 @@ export default class Home extends React.Component {
                 rssi: re.rssi,
                 ip: re.ip,
                 devid: re.devid,
-                parent: routeList[re.routermac.toUpperCase()]
+				parent: routeList[re.routermac.toUpperCase()],
+				connMode: re.conn_mode || {}
             }
         });
 
@@ -407,7 +409,7 @@ export default class Home extends React.Component {
                         upSpeed={upSpeed} upUnit={upUnit} downSpeed={downSpeed} downUnit={downUnit}
                         reList={reList} online={online} history={this.props.history}
                     />
-                    <ul className="container">
+                    <ul className={getQuickStartVersion() !== 'abroad' ? "container" : "container-us"}>
                         <li>
                             <Device 
                                 sunmiLength={sunmiLength}
@@ -428,26 +430,29 @@ export default class Home extends React.Component {
                                 history={this.props.history}
                             />
                         </li>
+						{
+							getQuickStartVersion() !== 'abroad' ? [
+								<div className='grid'></div>,
+								<li>
+									<Connection
+										chatTotal={chatTotal}
+										wechatList={wechatList}
+										wechatConfig={wechatConfig}
+										history={this.props.history}
+									/>
+							</li>]  : ''
+						}
                         <div className='grid'></div>
                         <li>
-                            <Connection
-                                chatTotal={chatTotal}
-                                wechatList={wechatList}
-                                wechatConfig={wechatConfig}
-                                history={this.props.history}
-                            />
-                        </li>
-                        <div className='grid'></div>
-                        <li>
-                            <span>搜寻商米设备</span>
+                            <span>{intl.get(MODULE, 26)/*_i18n:搜寻商米设备*/}</span>
                             <span className='second-title'>
-                                商米设备一键联网
+								{intl.get(MODULE, 27)/*_i18n:商米设备一键联网*/}
                             </span>
                             <p>
-                                <span>无需输入密码</span>
-                                <span>快捷安全</span>
+                                <span>{intl.get(MODULE, 28)/*_i18n:无需输入密码*/}</span>
+                                <span>{intl.get(MODULE, 29)/*_i18n:快捷安全*/}</span>
                             </p>
-                            <Button onClick={this.startSunmiMesh} className="button">搜寻</Button>
+                            <Button onClick={this.startSunmiMesh} className="button">{intl.get(MODULE, 30)/*_i18n:搜寻*/}</Button>
                             <Mesh ref="sunmiMesh" />
                         </li>
                     </ul>
@@ -460,16 +465,16 @@ export default class Home extends React.Component {
                         centered={true}
                         title={<div className="home-ap-title">
                                 <CustomIcon type="hint" size={14}></CustomIcon>
-                                <label>提示</label>
+                                <label>{intl.get(MODULE, 31)/*_i18n:提示*/}</label>
                             </div>
                         }
                         footer={
                             [
-                                <Button type='primary' onClick={this.confirmAp}>我知道了</Button>
+                                <Button type='primary' onClick={this.confirmAp}>{intl.get(MODULE, 32)/*_i18n:我知道了*/}</Button>
                             ]
                         }
                     >
-                        <span className="reboot-modal-content">检测到当前网络没有主路由，为了保障更好的体验，已将当前设备设置为主路由</span>
+                        <span className="reboot-modal-content">{intl.get(MODULE, 33)/*_i18n:检测到当前网络没有主路由，为了保障更好的体验，已将当前设备设置为主路由*/}</span>
                     </Modal>
             </SubLayout>
         );

@@ -193,7 +193,7 @@ export default class TimeZone extends React.Component {
                         {this.children}
                     </Select>
                     <div>
-                        <Button type='primary' className='btn' loading={loading} onClick={this.nextStep} >{intl.get(MODULE, 3)/*_i18n:设置时区*/}</Button>
+                        <Button type='primary' className='btn' loading={loading} onClick={this.nextStep} >{intl.get(MODULE, 3)/*_i18n:下一步*/}</Button>
                     </div>   
                 </div>
             </div>

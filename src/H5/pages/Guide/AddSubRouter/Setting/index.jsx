@@ -5,6 +5,8 @@ import SubRouter from 'h5/components/SubRouter';
 
 import './setting.scss';
 
+const MODULE = 'h5setting';
+
 const SETTING_CONDITION = {
     Select: 'select',         //检测搜索
     Finish: 'finish',           //设置完成
@@ -266,15 +268,15 @@ class Selecting extends React.Component {
             return (
                 <div className='noRouter'>
                     <div className='no-router'></div>
-                    <p className='noRouterTitle'>没有可添加的路由器</p>
-                    <p className='noRouterDescription'>请检查路由器电源是否接通，并处于可添加范围内</p>
-                    <Button type='primary' onClick={this.props.refresh} style={{width: '2.88rem',marginTop: 0}} >刷新</Button>
+                    <p className='noRouterTitle'>{intl.get(MODULE, 0)/*_i18n:没有可添加的路由器*/}</p>
+                    <p className='noRouterDescription'>{intl.get(MODULE, 1)/*_i18n:请检查路由器电源是否接通，并处于可添加范围内*/}</p>
+                    <Button type='primary' onClick={this.props.refresh} style={{width: '2.88rem',marginTop: 0}} >{intl.get(MODULE, 2)/*_i18n:刷新*/}</Button>
                 </div>
             );
         } else {
             return ([
                 <div className='guide-upper'>
-                    <GuideHeader title='添加更多路由器' tips='将要添加的路由放置在合适的位置，然后接通电源，待信号灯呈白色后点击「开始添加」' />
+                    <GuideHeader title={intl.get(MODULE, 3)/*_i18n:添加更多路由器*/} tips={intl.get(MODULE, 6)/*_i18n:将要添加的路由放置在合适的位置，然后接通电源，待信号灯呈白色后点击「开始添加」*/} />
                     <div className={`routerList ${0 !== devicesShow.length? 'haveLine': ''}`}>
                         {devicesShow.map(item =>{
                             return  (<SubRouter
@@ -289,16 +291,16 @@ class Selecting extends React.Component {
                     </div>
                     <div className='h5addsubrouter-icon'>
                             {searchFinish?
-                            <div className='refresh' onClick={this.props.refresh}><div className='refreshImg'></div>刷新</div>
+                            <div className='refresh' onClick={this.props.refresh}><div className='refreshImg'></div>{intl.get(MODULE, 4)/*_i18n:刷新*/}</div>
                             :
                             <div className='icon'>
-                                <i className='img spin'></i><span className='content'>搜索中…</span>
+                                <i className='img spin'></i><span className='content'>{intl.get(MODULE, 5)/*_i18n:搜索中…*/}</span>
                             </div>
                             }
                     </div>
                 </div>,
                 <div className='h5-next'>
-                    <Button type='primary' onClick={this.props.setSubRouter} disabled={disabled}>下一步</Button>
+                    <Button type='primary' onClick={this.props.setSubRouter} disabled={disabled}>{intl.get(MODULE, 7)/*_i18n:下一步*/}</Button>
                 </div>       
             ]);
         }
@@ -323,7 +325,7 @@ class SettingResult extends React.Component {
 
         return ([
             <div className={`guide-upper ${allFailed? 'result': ''}`}>
-                <GuideHeader title='路由器添加完成' tips='' />
+                <GuideHeader title={intl.get(MODULE, 8)/*_i18n:路由器添加完成*/} tips='' />
                 <div className='routerList-result'>
                     {devicesShow.map(item => {
                         return  (<SubRouter
@@ -339,10 +341,10 @@ class SettingResult extends React.Component {
             </div>,
             <div className='h5-next'>
                 {allFailed?
-                    [<Button onClick={this.props.refresh}>重新添加</Button>,
-                    <Button style={{marginTop: '0.32rem'}} onClick={this.props.goHome}>返回首页</Button>]
+                    [<Button onClick={this.props.refresh}>{intl.get(MODULE, 9)/*_i18n:重新添加*/}</Button>,
+                    <Button style={{marginTop: '0.32rem'}} onClick={this.props.goHome}>{intl.get(MODULE, 10)/*_i18n:返回首页*/}</Button>]
                     :
-                    <Button type='primary' onClick={this.props.goHome}>完成</Button>
+                    <Button type='primary' onClick={this.props.goHome}>{intl.get(MODULE, 11)/*_i18n:完成*/}</Button>
                 }
             </div>
         ]);

@@ -31,7 +31,7 @@ export default class SetPassword extends React.Component {
         if (pwd !== surePwd) {
             this.setState({
                 // surePwdTip: '两次密码输入不一致',
-                surePwdTip: intl.get(MODULE, surePwd === '' ? 1 : 0)/*_i18n:两次密码输入不一致*/,
+                surePwdTip: intl.get(MODULE, surePwd === '' ? 1 : 0),
             });
             return;
         }
