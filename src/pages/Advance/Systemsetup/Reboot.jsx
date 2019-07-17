@@ -47,7 +47,7 @@ class Reboot extends React.Component{
                         title= {intl.get(MODULE, 16)/*_i18n:您确定将此设备重新启动？*/}
                         okText={
                             <div className='reboot-confirm'>
-                                确定
+                                {intl.get(MODULE, 8)/*_i18n:确定*/}
                             </div>	
                         }
                         cancelText={intl.get(MODULE, 4)/*_i18n:取消*/}

@@ -648,7 +648,7 @@ export default class WIFI extends React.Component {
                             <Radio style={{display:'inline-block'}} value={false}>{intl.get(MODULE, 85)/*_i18n:关闭*/}</Radio>
                         </RadioGroup>
                         {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一*/}
-                        {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)/*_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
+                        {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)/*_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启*/}
                     </section>
                     {this.state.channelType ? (
                     <section className="wifi-setting-item">

@@ -64,16 +64,16 @@ export const getTitle = () => {
             "titleTip": intl.get(MODULE, 29)/*_i18n:路由器系统时间可以从网络自动获取，也可以从本机获取*/
 			},
 		'upnp': { 
-			"title" : 'UPnP',
-			"titleTip": 'UPnP服务通过端口转发，可以实现任意两个UPnP设备之间的智能互联。UPnP设备可以自动获得IP地址，并动态接入因特网。'
+			"title" : intl.get(MODULE, 30)/*_i18n:UPnP*/,
+			"titleTip": intl.get(MODULE, 31)/*_i18n:服务通过端口转发，可以实现任意两个x设备之间的智能互联。x设备可以自动获得x地址，并动态接入因特网。*/
 			},
 		'customupgrade': { 
-			"title" : '自定义时间升级',
-			"titleTip": '路由器可以在指定空闲时间点自动升级最新固件'
+			"title" : intl.get(MODULE, 32)/*_i18n:自定义时间升级*/,
+			"titleTip": intl.get(MODULE, 33)/*_i18n:路由器可以在指定空闲时间点自动升级最新固件*/
 			},
 		'portforwarding': { 
-			"title" : '端口转发',
-			"titleTip": '端口转发可以转发一个网络端口从一个网络节点到另一个网络节点'
+			"title" : intl.get(MODULE, 34)/*_i18n:端口转发*/,
+			"titleTip": intl.get(MODULE, 35)/*_i18n:端口转发可以转发一个网络端口从一个网络节点到另一个网络节点*/
 			},
     };
     return funcTitle;

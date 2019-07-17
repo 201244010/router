@@ -4,6 +4,7 @@ import {Button, Select, message} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
 
+const MODULE = 'customupgrade';
 const {Option} = Select;
 
 export default class CustomUpgrade extends React.Component {
@@ -36,7 +37,7 @@ export default class CustomUpgrade extends React.Component {
 				upgradeTime: Math.floor(timeStart / 3600)
 			})
 		} else {
-			message.error('获取信息失败')
+			message.error(intl.get(MODULE, 3)/*_i18n:获取信息失败*/)
 		}
 	}
 
@@ -55,9 +56,9 @@ export default class CustomUpgrade extends React.Component {
 		], { ignoreErr: true });
 		const {errcode} = resp;
 		if (0 === errcode) {
-			message.success('保存成功')
+			message.success(intl.get(MODULE, 4)/*_i18n:保存成功*/)
 		} else {
-			message.error('保存失败')
+			message.error(intl.get(MODULE, 5)/*_i18n:保存失败*/)
 		}
 	}
 
@@ -75,8 +76,8 @@ export default class CustomUpgrade extends React.Component {
 		const { enable, upgradeTime } = this.state;
 		return <SubLayout className="settings">
 			<div style={{ margin: "0 60px" }}>
-				<PanelHeader title='自定义时间' checkable={true} checked={enable} onChange={this.onPanelChange}/>
-				<p className="custom-paragraph">选择升级时间段</p>
+				<PanelHeader title={intl.get(MODULE, 0)/*_i18n:自定义时间*/} checkable={true} checked={enable} onChange={this.onPanelChange}/>
+				<p className="custom-paragraph">{intl.get(MODULE, 1)/*_i18n:选择升级时间段*/}</p>
 				<Select onChange={this.onSelectChange} value={upgradeTime} disabled={!enable} style={{width:320, height:36}}>
 					<Option value={0}>00:00-01:00</Option>
 					<Option value={1}>01:00-02:00</Option>
@@ -87,7 +88,7 @@ export default class CustomUpgrade extends React.Component {
 			</div>
 
 			<div className="custom-save">
-                <Button type="primary" size='large' style={{ width: 200, height: 42 }} onClick={this.save}>保存</Button>
+                <Button type="primary" size='large' style={{ width: 200, height: 42 }} onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
             </div>
 		</SubLayout>
 	}

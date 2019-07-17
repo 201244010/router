@@ -5,7 +5,8 @@ import {Table, Button, Popconfirm, Modal, Select, message, Switch} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import {checkRange, checkIp} from '~/assets/common/check';
 import SubLayout from '~/components/SubLayout';
-import { parse } from 'url';
+
+const MODULE = 'portforwarding';
 
 const {FormItem, Input, ErrorTip, InputGroup} = Form;
 const {Option} = Select;
@@ -18,55 +19,55 @@ export default class PortForwarding extends React.Component {
 	constructor(props){
 		super(props);
 		this.err = {
-			'1022': '端口转发内外端口号相同',
-			'1023': '端口转发统一',
-			'1024': '外部端口已被占用'
+			'1022': intl.get(MODULE, 0)/*_i18n:端口转发内外端口号相同*/,
+			'1023': intl.get(MODULE, 1)/*_i18n:保存异常*/,
+			'1024': intl.get(MODULE, 2)/*_i18n:外部端口已被占用*/
 		}
 		this.columns = [{
-            title: '编号',
+            title: intl.get(MODULE, 3)/*_i18n:编号*/,
 			dataIndex: 'number',
             width:180			
         }, {
-            title: '名称描述',
+            title: intl.get(MODULE, 4)/*_i18n:名称描述*/,
             dataIndex: 'name',
             width:170
         }, {
-            title: '内部IP',
+            title: intl.get(MODULE, 5)/*_i18n:内部IP*/,
             dataIndex: 'destip',
             width:160
         }, {
-            title: '内部端口',
+            title: intl.get(MODULE, 6)/*_i18n:内部端口*/,
             dataIndex: 'desport',
             width:140
         }, {
-			title: '外部端口',
+			title: intl.get(MODULE, 7)/*_i18n:外部端口*/,
 			dataIndex: 'srcport',
             width:140
         },{
-			title: '端口协议',
+			title: intl.get(MODULE, 8)/*_i18n:端口协议*/,
 			dataIndex: 'proto',
 			width:140,
 			render: (record) => protoType[record]
 		},{
-			title: '状态开关',
+			title: intl.get(MODULE, 9)/*_i18n:状态开关*/,
 			dataIndex: 'enable',
 			width:120,
 			render: (_, record) => {
 				return <Switch checked={parseInt(record.enabled)} onChange={(e) => this.changeSwitch(e, record)}/>
 			}
 		},{
-            title: '操作',
+            title: intl.get(MODULE, 10)/*_i18n:操作*/,
 			width:166,
 			render: (_, record) => {
 				return <div>
-					<span className="port-edit" onClick={() => this.editRule(record)}>编辑</span>
+					<span className="port-edit" onClick={() => this.editRule(record)}>{intl.get(MODULE, 11)/*_i18n:编辑*/}</span>
 					<Popconfirm
-						title='确认删除本条端口转发规则么?'
-						okText='确定'
-						cancelText='取消'
+						title={intl.get(MODULE, 12)/*_i18n:确认删除本条端口转发规则么*/}
+						okText={intl.get(MODULE, 13)/*_i18n:确定*/}
+						cancelText={intl.get(MODULE, 14)/*_i18n:取消*/}
 						placement="topRight"
 						onConfirm={() => this.deleteRule(record)}>
-						<span style={{fontSize: 14, color: '#D0021B', cursor: 'pointer'}}>删除</span>
+						<span style={{fontSize: 14, color: '#D0021B', cursor: 'pointer'}}>{intl.get(MODULE, 15)/*_i18n:删除*/}</span>
 					</Popconfirm>
 				</div>
 			}
@@ -104,10 +105,10 @@ export default class PortForwarding extends React.Component {
 		}]);
         const { errcode } = resp;
 		if (0 === errcode) {
-			message.success('删除成功');
+			message.success(intl.get(MODULE, 16)/*_i18n:删除成功*/);
 			this.fetchPortforwarding({});
 		} else {
-			message.error(this.err(errcode));
+			message.error(this.err[errcode]);
 		}
 	}
 
@@ -121,10 +122,10 @@ export default class PortForwarding extends React.Component {
 		}]);
         const { errcode } = resp;
 		if (0 === errcode) {
-			message.success(Number(value) ? '打开成功' : '关闭成功');
+			message.success(Number(value) ?  intl.get(MODULE, 17)/*_i18n:打开成功*/ : intl.get(MODULE, 24)/*_i18n:关闭成功*/);
 			this.fetchPortforwarding({});
 		} else {
-			message.error(this.err(errcode));
+			message.error(this.err[errcode]);
 		}
 	}
 
@@ -189,9 +190,9 @@ export default class PortForwarding extends React.Component {
 			this.setState({
 				visible: false
 			});
-			message.success(type === 'create' ? '创建成功' : '修改成功');
+			message.success(type === 'create' ? intl.get(MODULE, 18)/*_i18n:创建成功*/ : intl.get(MODULE, 19)/*_i18n:修改成功*/);
 		} else {
-			message.error(type === 'create' ? '创建失败' : '修改失败');
+			message.error(this.err[errcode]);
 		}
 	}
 
@@ -202,15 +203,15 @@ export default class PortForwarding extends React.Component {
 		const portArray = val.split(',');
 		let max = 0, min = 65535, value = [];
 		if (val === '') {
-			tip = '端口号不能为空';
+			tip = intl.get(MODULE, 20)/*_i18n:端口号不能为空*/;
 			return tip;
 		}
 		if (regValid.test(val)) {
-			tip = '端口输入非法';
+			tip = intl.get(MODULE, 21)/*_i18n:端口输入非法*/;
 			return tip;
 		}
 		if (portArray.length > 5) {
-			return tip = '端口组合不超过五组';
+			return tip = intl.get(MODULE, 22)/*_i18n:端口组合不超过五组*/;
 		}
 
 		portArray.map(item => {
@@ -222,13 +223,13 @@ export default class PortForwarding extends React.Component {
 				max = Math.max(max, portStart);
 				min = Math.min(min, portEnd);
 				if (min >= max && portArray.filter(item => item.split('-').length > 1).length > 1) {
-					return tip = '端口组合不能有交叉';
+					return tip = intl.get(MODULE, 23)/*_i18n:端口组合不能有交叉*/;
 				} else {
 					return tip = '';
 				}
 			} else {
 				if (max !== 0 && min !== 65535 && max < portStart && portStart < min) {
-					return tip = '端口组合不能有交叉';
+					return tip = intl.get(MODULE, 23)/*_i18n:端口组合不能有交叉*/;
 				}
 				value.push(portStart);
 			}
@@ -239,23 +240,23 @@ export default class PortForwarding extends React.Component {
 			const portEnd = portContent[1];
 			const length = portContent.length;
 			if (this.checkSame(value)) {
-				return tip = '端口组合不能相同';
+				return tip = intl.get(MODULE, 25)/*_i18n:端口组合不能相同*/;
 			}
 
 			if (portStart === '' || ( length > 1 && portEnd === '') ) {
-				return tip = '端口格式不合法'
+				return tip = intl.get(MODULE, 26)/*_i18n:端口格式不合法*/
 			}
 
 			if (!regNum.test(portStart) || (length > 1 && !regNum.test(portEnd))) {
-				return tip = '端口不能从0开始';
+				return tip = intl.get(MODULE, 27)/*_i18n:端口不能从0开始*/;
 			}
 
 			if (length > 1 && parseInt(portEnd) <= parseInt(portStart)) {
-				return tip = '端口范围不正确';				
+				return tip = intl.get(MODULE, 28)/*_i18n:端口范围不正确*/;				
 			}
 
 			if (portStart < 1 || portStart > 65535 || (length > 1 && portEnd < 1 || portEnd > 65535)) {
-				return tip = '端口范围应在1-65535';
+				return tip = intl.get(MODULE, 29)/*_i18n:端口范围应在1-65535*/;
 			}
 		});
 
@@ -289,15 +290,15 @@ export default class PortForwarding extends React.Component {
                 args: {
                     min: 1,
                     max: 65535,
-                    who: '端口范围',
+                    who: intl.get(MODULE, 30)/*_i18n:端口范围*/,
                 }
             },
 			destip:{
                 func: checkIp,
-                who: 'IP地址'/*_i18n:IP地址*/,
+                who: intl.get(MODULE, 31)/*_i18n:IP地址*/,
 			},
 			name: {
-				func: (val) => val === '' ? '应用名称不能为空' : ''
+				func: (val) => val === '' ? intl.get(MODULE, 32)/*_i18n:应用名称不能为空*/ : ''
 			}
 		};
 		let tip = valid[key].func(val, valid[key].args);
@@ -329,7 +330,7 @@ export default class PortForwarding extends React.Component {
 				pagination: {...this.state.pagination, total: data[0].sum, current: data[0].page}
 			})
 		} else {
-			message.error('信息获取失败')
+			message.error(intl.get(MODULE, 33)/*_i18n:信息获取失败*/)
 		}
 	}
 
@@ -372,11 +373,11 @@ export default class PortForwarding extends React.Component {
 		const ruleNum = portList.length;
 		return <SubLayout className="settings">
 			<div style={{ margin: "0 60px" }}>
-				<PanelHeader title='规则列表'/>
+				<PanelHeader title={intl.get(MODULE, 34)/*_i18n:规则列表*/}/>
 			</div>
 			<div className="system-reboot">
-					<label className="reboot-title">已建立{ruleNum}条规则</label>
-					<Button style={{height: 32}} type="primary" onClick={this.createRule}>新建</Button>
+					<label className="reboot-title">{intl.get(MODULE, 35, {ruleNum})/*_i18n:已建立{ruleNum}条规则*/}</label>
+					<Button style={{height: 32}} type="primary" onClick={this.createRule}>{intl.get(MODULE, 36)/*_i18n:新建*/}</Button>
 				</div>
 			<div className="static-table">
 				<Table 
@@ -393,7 +394,7 @@ export default class PortForwarding extends React.Component {
 						}
 						return className;
 					}}
-					size="middle" locale={{ emptyText: '暂无设备'}} 
+					size="middle" locale={{ emptyText: intl.get(MODULE, 37)/*_i18n:暂无设备*/}} 
 					onChange={this.onTableChange}
 				/>
 			</div>
@@ -402,39 +403,39 @@ export default class PortForwarding extends React.Component {
 				onCancel={this.onCancel}
 				onOk={this.submit}
 				width={360}
-				title={type === 'create' ? '新建规则' : '修改规则'}
+				title={type === 'create' ? intl.get(MODULE, 38)/*_i18n:新建规则*/ : intl.get(MODULE, 50)/*_i18n:修改规则*/}
 				footer={
 					[
-						<Button key="back" onClick={this.onCancel}>取消</Button>,
+						<Button key="back" onClick={this.onCancel}>{intl.get(MODULE, 39)/*_i18n:取消*/}</Button>,
 						<Button key="submit" type="primary" disabled={disabled} onClick={this.submit}>
-							{type === 'create' ? '新建' : '保存'}
+							{type === 'create' ? intl.get(MODULE, 40)/*_i18n:新建*/ : intl.get(MODULE, 51)/*_i18n:保存*/}
 						</Button>,
 					]
 				}
 			>
-				<label style={{ display:'block',marginBottom: 6 }}>应用名称</label>
+				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 41)/*_i18n:应用名称*/}</label>
 				<FormItem showErrorTip={nameTip} type="small" >
-					<Input type="text" value={name} onChange={value => this.onInputChange(value, 'name')} maxLength={40} placeholder='请输入应用名称' />
+					<Input type="text" value={name} onChange={value => this.onInputChange(value, 'name')} maxLength={40} placeholder={intl.get(MODULE, 42)/*_i18n:请输入应用名称*/} />
 					<ErrorTip>{nameTip}</ErrorTip>
 				</FormItem>
-				<label style={{ display:'block',marginBottom: 6 }}>内部IP</label>
+				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 43)/*_i18n:内部IP*/}</label>
 				<FormItem key='ipv4' showErrorTip={destipTip} style={{ width : 320}}>
                 <InputGroup 
                     inputs={[{value : destip[0], maxLength : 3}, {value : destip[1], maxLength : 3}, {value : destip[2], maxLength : 3}, {value : destip[3], maxLength : 3}]} 
                     onChange={value => this.onInputChange(value, 'destip')} />
                 <ErrorTip>{destipTip}</ErrorTip>
                 </FormItem>
-				<label style={{ display:'block',marginBottom: 6 }}>内部端口</label>
+				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 44)/*_i18n:内部端口*/}</label>
 				<FormItem showErrorTip={desportTip} type="small" >
-					<Input type="text" value={desport} onChange={value => this.onInputChange(value, 'desport')} spellcheck={false} placeholder='例如：XX、1-65535' />
+					<Input type="text" value={desport} onChange={value => this.onInputChange(value, 'desport')} spellcheck={false} placeholder={intl.get(MODULE, 45)/*_i18n:例如：X、1-65535*/} />
 					<ErrorTip>{desportTip}</ErrorTip>
 				</FormItem>
-				<label style={{ display:'block',marginBottom: 6 }}>外部端口</label>
+				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 46)/*_i18n:外部端口*/}</label>
 				<FormItem showErrorTip={srcportTip} type="small" >
-					<Input type="text" value={srcport} onChange={value => this.onSrcChange(value)} spellcheck={false} placeholder='例如：XX、XXX、1-65535' />
+					<Input type="text" value={srcport} onChange={value => this.onSrcChange(value)} spellcheck={false} placeholder={intl.get(MODULE, 47)/*_i18n:例如：X、XX、1-65535*/} />
 					<ErrorTip>{srcportTip}</ErrorTip>
 				</FormItem>
-				<label style={{ display:'block',marginBottom: 6 }}>端口协议</label>
+				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 48)/*_i18n:端口协议*/}</label>
 				<FormItem type="small" >
 					<Select onChange={value => this.onChange(value, 'proto')} value={proto} style={{width:'100%', height:36}}>
 						<Option value={0}>ALL</Option>
