@@ -12,7 +12,7 @@ export default class Agreement extends React.Component{
 
         return (
             <div className="totalStyle">           
-                <p style={{textAlign: 'center'}} className="titleWrap"><span className="title">{intl.get(MODULE, 106)}</span></p>
+                <p style={{textAlign: 'center'}} className="titleWrap"><span className="title">{intl.get(MODULE, 106)/*_i18n:商米用户协议*/}</span></p>
                 <p  className='content'>
                     {intl.get(MODULE, 0)/*_i18n:商米账号基于互联网提供的相关服务（以下简称“本服务”）是由上海商米科技有限公司（以下简称“本公司”）向用户提供的产品与服务。本条款由您和本公司签订。*/}
                     <br/>

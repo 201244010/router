@@ -20,8 +20,8 @@ export default class Success extends React.Component {
         return ([
             <div className='user-experience'>
                 <div className='head'>
-                    <h4>{intl.get(MODULE, 0)/*_i18n:我们为您准备以下功能，开始体验吧*/}</h4>
-                    <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)/*_i18n:去首页*/}</Button>
+                    <h4>{intl.get(MODULE, 0)/*_i18n:下载商米助手APP，体验更多功能！*/}</h4>
+                    <Button onClick={this.goHome} className='go-home'>{intl.get(MODULE, 1)/*_i18n:配置完成*/}</Button>
                 </div>
                 <div className='body'>
                     <ul>
@@ -32,7 +32,7 @@ export default class Success extends React.Component {
                                         <CustomIcon style={{ margin: 13 }} size={54} color='#92ABF6' type="networkspeeddistribution" />
                                     </div>
                                     <div className='description'>
-                                        <h4>{intl.get(MODULE, 2)/*_i18n:网速智能分配*/}</h4>
+                                        <h4>{intl.get(MODULE, 2)/*_i18n:添加更多商米路由器*/}</h4>
                                         <p>{intl.get(MODULE, 3)/*_i18n:优先保障商家设备网速*/}</p>
                                     </div>
                                     <div className='background'>
@@ -96,7 +96,7 @@ export default class Success extends React.Component {
             </div>,
             <div className='QR_img'>
                 <img src={require('~/assets/images/qr.png')} />
-                <p>{intl.get(MODULE, 10)/*_i18n:扫码下载APP*/}</p>
+                <p>{intl.get(MODULE, 10)/*_i18n:扫描二维码下载APP*/}</p>
             </div>
         ]);
     }

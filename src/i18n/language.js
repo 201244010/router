@@ -40,7 +40,6 @@ function writeExcel () {
         if (match) {
             match = match.toString();
             var func = k.substr(0, k.length - match.length);
-            
             if (!data[func]) {
                 data[func] = {
                     file: '',
@@ -64,7 +63,6 @@ function writeExcel () {
         }
     }
 
-    //console.log(data);
     var start = 2;
     for (var func in data) {
         var file = data[func]['file'];

@@ -200,25 +200,25 @@ export default class Static extends React.Component {
                         onChange={value => this.onChange('ip', value)}
                     />
                     <InputGroup
-                        inputGroupName='子网掩码'
+                        inputGroupName={intl.get(MODULE, 1)/*_i18n:子网掩码*/}
                         tip={subnetmaskTip}
                         inputs={[{value : subnetmask[0], maxLength : 3}, {value : subnetmask[1], maxLength : 3}, {value : subnetmask[2], maxLength : 3}, {value : subnetmask[3], maxLength : 3}]}
                         onChange={value => this.onChange('subnetmask', value)}
                     />
                     <InputGroup
-                        inputGroupName='默认网关'
+                        inputGroupName={intl.get(MODULE, 2)/*_i18n:默认网关*/}
                         tip={gatewayTip}
                         inputs={[{value : gateway[0], maxLength : 3}, {value : gateway[1], maxLength : 3}, {value : gateway[2], maxLength : 3}, {value : gateway[3], maxLength : 3}]}
                         onChange={value => this.onChange('gateway', value)}
                     />
                     <InputGroup
-                        inputGroupName='首选DNS'
+                        inputGroupName={intl.get(MODULE, 3)/*_i18n:首选DNS*/}
                         tip={dnsTip}
                         inputs={[{value : dns[0], maxLength : 3}, {value : dns[1], maxLength : 3}, {value : dns[2], maxLength : 3}, {value : dns[3], maxLength : 3}]}
                         onChange={value => this.onChange('dns', value)}
                     />
                     <InputGroup
-                        inputGroupName='备选DNS（可选）'
+                        inputGroupName={intl.get(MODULE, 23)/*_i18n:备选DNS（可选）*/}
                         tip={dnsbackupTip}
                         inputs={[{value : dnsbackup[0], maxLength : 3}, {value : dnsbackup[1], maxLength : 3}, {value : dnsbackup[2], maxLength : 3}, {value : dnsbackup[3], maxLength : 3}]}
                         onChange={value => this.onChange('dnsbackup', value)}

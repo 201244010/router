@@ -5,6 +5,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip' 
 // import 'echarts/lib/component/legend';
+const MODULE = 'speedallocation';
 
 export default class Allocation extends React.Component{
     constructor(props) {
@@ -81,7 +82,7 @@ export default class Allocation extends React.Component{
             },
             series: [
                 {
-                    name: '普通',
+                    name: intl.get(MODULE, 0)/*_i18n:普通*/,
                     type: 'line',
                     stack: 'device',
                     animation: false,
@@ -121,7 +122,7 @@ export default class Allocation extends React.Component{
                     } (this.props.percent['normalPercent'])
                 },
                 {
-                    name: '优先',
+                    name: intl.get(MODULE, 1)/*_i18n:优先*/,
                     type: 'line',
                     animation: false,
                     stack: 'device',
@@ -161,7 +162,7 @@ export default class Allocation extends React.Component{
                     } (this.props.percent['priorityPercent'])
                 },
                 {
-                    name: '商米',
+                    name: intl.get(MODULE, 2)/*_i18n:商米*/,
                     type: 'line',
                     animation: false,
                     stack: 'device',
@@ -219,10 +220,10 @@ export default class Allocation extends React.Component{
             this.props.status
                 ? <div className='allocation'>
                 <span className='first-title'>
-                网速分配
+                {intl.get(MODULE, 3)/*_i18n:网速分配*/}
                 </span>
                 <span className='subtitle'>
-                最大网速占用
+                {intl.get(MODULE, 4)/*_i18n:最大网速占用*/}
                 </span>
                 <span className='percent'>
                     {largestPercent}%
@@ -230,27 +231,27 @@ export default class Allocation extends React.Component{
                     <div className='chart' style={{height: 80, width: 250}} ref='dom'></div>
                     <div className='legend'>
                             <div className='sunmi'></div>
-                            <span>商米设备</span>
+                            <span>{intl.get(MODULE, 5)/*_i18n:商米设备*/}</span>
                             <div className='priority'>
                             </div>
-                            <span>优先设备</span>
+                            <span>{intl.get(MODULE, 6)/*_i18n:优先设备*/}</span>
                             <div className='normal'></div>
-                            <span>普通设备</span>
+                            <span>{intl.get(MODULE, 7)/*_i18n:普通设备*/}</span>
                     </div>
-                    <Button onClick={this.goBandwidth} className="button">修改设置</Button>
+                    <Button onClick={this.goBandwidth} className="button">{intl.get(MODULE, 8)/*_i18n:修改设置*/}</Button>
                 </div>
                 : <div className='allocation'>
                     <span className='first-title'>
-                        网速分配
+                        {intl.get(MODULE, 9)/*_i18n:网速分配*/}
                     </span>
                     <span className='second-title'>
-                        保障经营设备网速
+                        {intl.get(MODULE, 10)/*_i18n:保障经营设备网速*/}
                     </span>
                     <p>
-                        <span>划分设备优先级</span>
-                        <span>按优先级分配网速</span>
+                        <span>{intl.get(MODULE, 11)/*_i18n:划分设备优先级*/}</span>
+                        <span>{intl.get(MODULE, 12)/*_i18n:按优先级分配网速*/}</span>
                     </p>
-                <Button onClick={this.goBandwidth} className="button">去开启</Button>
+                <Button onClick={this.goBandwidth} className="button">{intl.get(MODULE, 13)/*_i18n:去开启*/}</Button>
                 </div>
         )
     }

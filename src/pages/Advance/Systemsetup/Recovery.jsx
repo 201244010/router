@@ -14,7 +14,7 @@ export default class Recovery extends React.Component{
         super(props);
         this.onlineDev = [];
         this.columns = [{
-            title: '设备名称'/*_i18n:设备名称*/,
+            title: intl.get(MODULE, 11)/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 400,
             render: (name, record) => {
@@ -26,18 +26,18 @@ export default class Recovery extends React.Component{
                 </div>
             }
         },  {
-            title: '型号名称'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 12)/*_i18n:型号名称*/,
             dataIndex: 'model',
             width: 240
         }, {
-            title: '状态'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 13)/*_i18n:状态*/,
             width: 240,
             render: (_, record) => {
                 const online = record.online;
-                return <div><i className={'dot ' + (online ? '' : 'offline')}></i><span style={{fontSize: 12}}>{online ? '在线' : '离线'}</span></div>                                
+                return <div><i className={'dot ' + (online ? '' : 'offline')}></i><span style={{fontSize: 12}}>{online ? intl.get(MODULE, 14)/*_i18n:在线*/ : intl.get(MODULE, 15)/*_i18n:离线*/}</span></div>                                
             }
         }, {
-            title: '操作'/*_i18n:接入方式*/,
+            title: intl.get(MODULE, 16)/*_i18n:操作*/,
             dataIndex: 'operation',
             width: 336,
             render: (_, record) => {
@@ -46,22 +46,22 @@ export default class Recovery extends React.Component{
                     const percent = value.recovery[record.devid];
                     if ((typeof percent === 'undefined' && online) || (percent > 100 && online)) {
                         return <Popconfirm
-                        title= '您确定将此设备恢复出厂设置？'
+                        title= {intl.get(MODULE, 17)/*_i18n:您确定将此设备恢复出厂设置？*/}
                         okText={
                             <div className='reboot-confirm'>
-                                确定
+                                {intl.get(MODULE, 9)/*_i18n:确定*/}
                             </div>	
                         }
                         className="recovery-popconfirm"
-                        cancelText='取消'
+                        cancelText={intl.get(MODULE, 4)/*_i18n:取消*/}
                         placement="topRight"
                         onConfirm={() => this.reset([record.devid], record.role, record, value)}>
-                        <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>立即恢复</span>
+                        <span style={{fontSize: 12, color: '#6174F1', cursor: 'pointer'}}>{intl.get(MODULE, 3)/*_i18n:立即恢复*/}</span>
                         </Popconfirm> 
                     }
          
                     if ((typeof percent === 'undefined' && !online) || (percent > 100 && !online)) {
-                         return <span style={{fontSize: 12, color: '#ADB1B9' }}>立即恢复</span>
+                         return <span style={{fontSize: 12, color: '#ADB1B9' }}>{intl.get(MODULE, 3)/*_i18n:立即恢复*/}</span>
                     }
          
                     if (percent >= 1 || percent <= 100) {
@@ -144,7 +144,7 @@ export default class Recovery extends React.Component{
         ], { ignoreErr: true });
         const {errcode, data} = resp;
         if (errcode !== 0) {
-            message.warning('获取信息失败！')
+            message.warning(intl.get(MODULE, 18)/*_i18n:获取信息失败！*/)
         }
         const routerList = [];
         data[1].result.sonconnect.devices.map(item => {
@@ -187,8 +187,8 @@ export default class Recovery extends React.Component{
         return (
              <SubLayout className="settings">
                         <div className="system-recovery">
-                            <label className="recovery-title">恢复出厂设置</label>
-                            <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>全部恢复</Button>
+                            <label className="recovery-title">{intl.get(MODULE, 19)/*_i18n:恢复出厂设置*/}</label>
+                            <Button style={{height: 32}} disabled={disabled} type="primary" onClick={this.showModal}>{intl.get(MODULE, 20)/*_i18n:全部恢复*/}</Button>
                         </div>
                         <div className="static-table">
                             <Table
@@ -205,7 +205,7 @@ export default class Recovery extends React.Component{
                                 rowKey={record => record.mac}
                                 style={{ minHeight: 360 }}
                                 pagination={false}
-                                locale={{ emptyText: '暂无设备'/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 15)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:重置*/ }}
+                                locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/, filterConfirm: intl.get(MODULE, 9)/*_i18n:确定*/, filterReset: intl.get(MODULE, 29)/*_i18n:undefined*/ }}
                                 />
                         </div>
                         {loadingActive &&
@@ -233,17 +233,17 @@ export default class Recovery extends React.Component{
                             centered={true}
                             title={<div className='reboot-modal-title'>
                                     <CustomIcon color="#D0021B" type="hint" size={14}></CustomIcon>
-                                    <label>警告</label>
+                                    <label>{intl.get(MODULE, 1)/*_i18n:警告*/}</label>
                                 </div>
                             }
                             footer={
                                 [
-                                    <Button onClick={this.recoveryCancel}>取消</Button>,
-                                    <Button className="reboot-confirm" onClick={() => this.reset(this.onlineDev, 1)}>确定</Button>
+                                    <Button onClick={this.recoveryCancel}>{intl.get(MODULE, 4)/*_i18n:取消*/}</Button>,
+                                    <Button className="reboot-confirm" onClick={() => this.reset(this.onlineDev, 1)}>{intl.get(MODULE, 9)/*_i18n:确定*/}</Button>
                                 ]
                             }
                         >
-                            <span className="reboot-modal-content">{`路由器恢复出厂设置需要等待${duration}秒左右，确定要重启全部恢复出厂设置？`}</span>
+                            <span className="reboot-modal-content">{intl.get(MODULE, 22, {duration})/*_i18n:路由器恢复出厂设置需要等待{duration}秒左右，确定要重启全部恢复出厂设置？*/}</span>
                         </Modal>
                 </SubLayout>
         );

@@ -28,7 +28,7 @@ export default class SetWifi extends React.Component {
         guestPassword: '',
         guestPasswordTip: '',
         guestDisplay: 'none',
-        setMessage: '设置客用Wi-Fi',
+        setMessage: intl.get(MODULE, 11)/*_i18n:设置客用Wi-Fi*/,
     }
 
     onChange = (key, value) => {
@@ -77,7 +77,7 @@ export default class SetWifi extends React.Component {
         let {guestDisplay} = this.state;
         this.setState({
             guestDisplay: 'none' === guestDisplay ? 'block' : 'none',
-            setMessage: 'none' === guestDisplay ? '暂不设置客用Wi-Fi' : '设置客用Wi-Fi'
+            setMessage: 'none' === guestDisplay ? intl.get(MODULE, 10)/*_i18n:暂不设置客用Wi-Fi*/ : intl.get(MODULE, 11)/*_i18n:设置客用Wi-Fi*/
         });
     }
 
@@ -114,7 +114,7 @@ export default class SetWifi extends React.Component {
             this.props.history.push('/guide/finish/' + encodeURIComponent(param));
         } else {
             // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
-            message.error(intl.get(MODULE, 9, {error: errorMessage[errcode] || errcode})/*_i18n:Wi-Fi设置失败[{error}]*/);
+            message.error(intl.get(MODULE, 9, {error: errorMessage[errcode] || errcode})/*_i18n:设置客用*/);
         }
         
     }
@@ -124,9 +124,9 @@ export default class SetWifi extends React.Component {
 
         if(hostPassword.length === 0 || ('block' === guestDisplay && guestPassword.length === 0)){
             confirm({
-                content: (hostPassword.length === 0 ? '商户Wi-Fi' : '') + 
+                content: (hostPassword.length === 0 ? intl.get(MODULE, 12)/*_i18n:商户Wi-Fi*/ : '') + 
                 (hostPassword.length === 0 && guestPassword.length === 0 && 'block' === guestDisplay? '、' : '')+
-                (guestPassword.length === 0 && 'block' === guestDisplay? '客用Wi-Fi' : '') + '密码未设置，确定继续?',
+                (guestPassword.length === 0 && 'block' === guestDisplay? intl.get(MODULE, 13)/*_i18n:客用Wi-Fi*/ : '') + intl.get(MODULE, 14)/*_i18n:密码未设置，确定继续？*/,
                 onOk: this.dataSet,
             });
             this.setState({ loading : false }); 
@@ -151,7 +151,7 @@ export default class SetWifi extends React.Component {
             });
             return;
         }
-        message.error('Wi-Fi信息获取失败');
+        message.error(intl.get(MODULE, 15)/*_i18n:Wi-Fi信息获取失败*/);
     }
 
     componentDidMount() {
@@ -174,12 +174,12 @@ export default class SetWifi extends React.Component {
 
         return ([
             <div className='guide-upper'>
-                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:设置商户Wi-Fi*/} tips='' />
+                <GuideHeader title={intl.get(MODULE, 4)/*_i18n:无线网络设置*/} tips='' />
                 <form className='h5setwifi'>
                     <Input
-                        inputName='商户Wi-Fi（建议店内设备及员工使用）'
+                        inputName={intl.get(MODULE, 16)/*_i18n:商户Wi-Fi（建议店内设备及员工使用）*/}
                         value={hostSsid}
-                        placeholder='设置商户WiFi名称'
+                        placeholder={intl.get(MODULE, 18)/*_i18n:设置商户Wi-Fi名称*/}
                         maxLength={32}
                         tip={hostSsidTip}
                         onChange={value => this.onChange('hostSsid', value)}
@@ -188,15 +188,15 @@ export default class SetWifi extends React.Component {
                     <Input
                         value={hostPassword}
                         type='password'
-                        placeholder='设置商户WiFi密码'
+                        placeholder={intl.get(MODULE, 19)/*_i18n:设置商户Wi-Fi密码*/}
                         maxLength={32}
                         tip={hostPasswordTip}
                         onChange={value => this.onChange('hostPassword', value)}
                     />
                     <Input
-                        inputName='客用Wi-Fi（建议开放给来店客户使用）'
+                        inputName={intl.get(MODULE, 20)/*_i18n:客用Wi-Fi（建议开放给来店客户使用）*/}
                         value={guestSsid}
-                        placeholder='设置客用WiFi名称'
+                        placeholder={intl.get(MODULE, 21)/*_i18n:设置客用Wi-Fi名称*/}
                         maxLength={32}
                         tip={guestSsidTip}
                         onChange={value => this.onChange('guestSsid', value)}
@@ -205,7 +205,7 @@ export default class SetWifi extends React.Component {
                     <Input
                         value={guestPassword}
                         type='password'
-                        placeholder='设置客用WiFi密码'
+                        placeholder={intl.get(MODULE, 22)/*_i18n:设置客用Wi-Fi密码*/}
                         maxLength={32}
                         tip={guestPasswordTip}
                         onChange={value => this.onChange('guestPassword', value)}

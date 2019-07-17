@@ -638,17 +638,17 @@ export default class WIFI extends React.Component {
             <div className="wifi-settings">
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item">
-                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} tip="建议自己店内业务使用"/>
+                        <PanelHeader title={intl.get(MODULE, 30)/*_i18n:商户Wi-Fi*/} checkable={false} checked={host24Enable} onChange={this.onHost24EnableChange} tip={intl.get(MODULE, 83)/*_i18n:建议自己店内业务使用*/}/>
                         <div className="band-title">
-                            <label>{intl.get(MODULE, 28)}</label>
-                            <span>（{intl.get(MODULE, 29)}）</span>
+                            <label>{intl.get(MODULE, 28)/*_i18n:双频合一*/}</label>
+                            <span>（{intl.get(MODULE, 29)/*_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启*/}）</span>
                         </div>
                         <RadioGroup onChange={this.onBandSteering} value={channelType}>
-                            <Radio style={{display:'inline-block'}} value={true}>开启</Radio>
-                            <Radio style={{display:'inline-block'}} value={false}>关闭</Radio>
+                            <Radio style={{display:'inline-block'}} value={true}>{intl.get(MODULE, 84)/*_i18n:开启*/}</Radio>
+                            <Radio style={{display:'inline-block'}} value={false}>{intl.get(MODULE, 85)/*_i18n:关闭*/}</Radio>
                         </RadioGroup>
-                        {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一} checkable={true} checked={channelType} onChange={this.onChannelTypeChange}/> */}
-                        {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启}</p> */}
+                        {/* <PanelHeader title={intl.get(MODULE, 28)/*_i18n:双频合一*/}
+                        {/* <p style={{marginTop: 16,marginBottom:25}}>{intl.get(MODULE, 29)/*_i18n:2.4G和5G信号合并显示，终端自动适配更优的信号，推荐开启*/}
                     </section>
                     {this.state.channelType ? (
                     <section className="wifi-setting-item">
@@ -722,8 +722,8 @@ export default class WIFI extends React.Component {
                                         <label>{intl.get(MODULE, 48)/*_i18n:频道带宽*/}</label>
                                         <Select value={htmode24} onChange={(value)=>this.onChange('htmode24',value)} style={{ width: 320 }} disabled={disabledType24} getPopupContainer={() => document.getElementById('htmode24Area')}>
                                             <Option value={'auto'}>{intl.get(MODULE, 49)/*_i18n:自动*/}</Option>
-                                            <Option value={'HT20'}>20M</Option>
-                                            <Option value={'HT40'}>40M</Option>
+                                            <Option value={'HT20'}>20MHZ</Option>
+                                            <Option value={'HT40'}>40MHZ</Option>
                                         </Select>
                                     </div>
                                     <div className='moreDiv' id="channel24Area">
@@ -772,15 +772,15 @@ export default class WIFI extends React.Component {
                                             <label>{intl.get(MODULE, 62)/*_i18n:频道带宽*/}</label>
                                             <Select value={htmode5} onChange={(value)=>this.onChange('htmode5',value)} style={{ width: 320 }} disabled={disabledType5} getPopupContainer={() => document.getElementById('htmode5Area')}>
                                                 <Option value={'auto'}>{intl.get(MODULE, 49)/*_i18n:自动*/}</Option>
-                                                <Option value={'HT20'}>20M</Option>
-                                                <Option value={'HT40'}>40M</Option>
-                                                <Option value={'HT80'}>80M</Option>
+                                                <Option value={'HT20'}>20MHZ</Option>
+                                                <Option value={'HT40'}>40MHZ</Option>
+                                                <Option value={'HT80'}>80MHZ</Option>
                                             </Select>
                                         </div>
                                         <div className='moreDiv' id="channel5Area">
                                             <label>{intl.get(MODULE, 64)/*_i18n:无线信道*/}</label> 
                                             <Select value={channel5} style={{width:320}} onChange={(value)=>this.onChange('channel5',value)} disabled={disabledType5} getPopupContainer={() => document.getElementById('channel5Area')}>
-                                                <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:客用Wi-Fi*/}</Option>
+                                                <Option value={'auto'}>{intl.get(MODULE, 63, {current_channel5})/*_i18n:自动(当前信道{current_channel5})*/}</Option>
                                                 {channelList5}
                                         </Select>
                                         </div>
@@ -795,7 +795,7 @@ export default class WIFI extends React.Component {
                 </section>
                 <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                     <section className="wifi-setting-item" style={{marginTop: 48}}>
-                        <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip=" 建议开放给顾客使用"/>
+                        <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip={intl.get(MODULE, 86)/*_i18n:建议开放给顾客使用*/}/>
                         <label className='ssidLabel'>{intl.get(MODULE, 66)/*_i18n:Wi-Fi名称*/}</label>
                         <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>
                             <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>

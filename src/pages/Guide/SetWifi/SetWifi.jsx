@@ -182,7 +182,7 @@ export default class SetWifi extends React.Component {
         let disabled;
         if (setTip) {
             display = 'inline-block';
-            setTipShow = '暂不设置客户Wi-Fi';
+            setTipShow = intl.get(MODULE, 32)/*_i18n:暂不设置客户Wi-Fi*/;
 
             const checkName = ['hostWifiName', 'guestWifiName'].some(item => {          //判定Wi-Fi名称的合法性
                 return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
@@ -200,7 +200,7 @@ export default class SetWifi extends React.Component {
             }
         } else {
             display = 'none';
-            setTipShow = '设置客用Wi-Fi';
+            setTipShow = intl.get(MODULE, 33)/*_i18n:设置客用Wi-Fi*/;
 
             const checkName = ['hostWifiName'].some(item => {          //判定Wi-Fi名称的合法性
                 return 0 === this.state[item].length || '' !== this.state[item + 'Tip'];
@@ -222,7 +222,7 @@ export default class SetWifi extends React.Component {
                 <div className="wifi-box ui-relative">
                     <Form style={{display: 'inline-block',marginRight: 420}}>
                         <div style={{marginBottom: 20,textAlign: 'left'}}>
-                                <p  className='title'>{intl.get(MODULE, 21)/*_i18n:商户Wi-Fi*/}<span className='titleTip'>{intl.get(MODULE, 22)/*_i18n:(建议店内设备和店员使用)*/}</span></p>
+                                <p  className='title'>{intl.get(MODULE, 21)/*_i18n:商户Wi-Fi*/}<span className='titleTip'>{intl.get(MODULE, 22)/*_i18n:（建议店内设备和店员使用）*/}</span></p>
                         </div>
                         <FormItem
                             label={intl.get(MODULE, 23)/*_i18n:Wi-Fi名称*/}
@@ -243,7 +243,7 @@ export default class SetWifi extends React.Component {
                     </Form>
                     <Form style={{display: display,marginRight: 420,marginBottom: 0}}>
                         <div style={{marginBottom: 20,textAlign: 'left'}}>
-                                <span className='title'>{intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/}<span className='titleTip'>{intl.get(MODULE, 28)/*_i18n:(推荐开放给顾客使用)*/}</span>
+                                <span className='title'>{intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/}<span className='titleTip'>{intl.get(MODULE, 28)/*_i18n:（推荐开放给顾客使用）*/}</span>
                                 </span>
                         </div>
                         <FormItem

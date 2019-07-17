@@ -28,10 +28,10 @@ export default class Guide extends React.Component {
 
     // steps = [
     //     {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
-    //     {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+    //     {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
     //     {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
     //     {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-    //     // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+    //     // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
     // ];
 
     // static getDerivedStateFromProps(nextProps){
@@ -59,18 +59,18 @@ export default class Guide extends React.Component {
         if ('domestic' === quickStartVersion) {
             current_steps = [
                 {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
-                // {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                // {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
                 {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
                 {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
             ];
         } else if ('abroad' === quickStartVersion) {
             current_steps = [
                 {route: 'setpassword', component: SetPassword, lang: intl.get(MODULE, 0)/*_i18n:设置管理密码*/},
-                {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
                 {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
                 {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置完成*/},
+                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
             ];
         }
 

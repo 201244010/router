@@ -76,13 +76,13 @@ export default class SetPwd extends React.Component {
 
         return ([
             <div className='guide-upper'>
-                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips='管理密码用于绑定及登录路由器管理' />
+                <GuideHeader title={intl.get(MODULE, 7)/*_i18n:设置管理密码*/} tips={intl.get(MODULE, 12)/*_i18n:管理密码用于绑定及登录路由器管理*/} />
                 <form>
                     <Input
-                        inputName="密码"
+                        inputName={intl.get(MODULE, 6)/*_i18n:密码*/}
                         value={pwd}
                         type='password'
-                        placeholder='设置管理密码'
+                        placeholder={intl.get(MODULE, 7)/*_i18n:设置管理密码*/}
                         maxLength={32}
                         tip={pwdTip}
                         onChange={value => this.onChange('pwd', value)}
