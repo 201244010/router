@@ -4,6 +4,7 @@ import Form from "~/components/Form";
 import {Table, Button, Popconfirm, Modal, Select, message, Switch} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import {checkRange, checkIp} from '~/assets/common/check';
+import loading from '~/components/Loading';
 import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'portforwarding';
@@ -53,7 +54,7 @@ export default class PortForwarding extends React.Component {
 			dataIndex: 'enable',
 			width:120,
 			render: (_, record) => {
-				return <Switch checked={parseInt(record.enabled)} onChange={(e) => this.changeSwitch(e, record)}/>
+				return <Switch checked={parseInt(record.enabled)} disabled={this.state.switchDisable} onChange={(e) => this.changeSwitch(e, record)}/>
 			}
 		},{
             title: intl.get(MODULE, 10)/*_i18n:操作*/,
@@ -93,7 +94,8 @@ export default class PortForwarding extends React.Component {
 		},
 		destip: ["","","",""],
 		destipTip: '',
-		disabled: false
+		disabled: false,
+		switchDisable: false
 	}
 
 	deleteRule = async (record) => {
@@ -113,6 +115,9 @@ export default class PortForwarding extends React.Component {
 	}
 
 	changeSwitch = async (value, record) => {
+		this.setState({
+			switchDisable: true
+		});
 		const resp = await common.fetchApi([{
 			opcode: 'PORTFORWARDING_SWITCH',
 			data: {
@@ -123,6 +128,9 @@ export default class PortForwarding extends React.Component {
         const { errcode } = resp;
 		if (0 === errcode) {
 			message.success(Number(value) ?  intl.get(MODULE, 17)/*_i18n:打开成功*/ : intl.get(MODULE, 24)/*_i18n:关闭成功*/);
+			this.setState({
+				switchDisable: false
+			});
 			this.fetchPortforwarding({});
 		} else {
 			message.error(this.err[errcode]);
@@ -182,8 +190,8 @@ export default class PortForwarding extends React.Component {
 					destip: destip.join('.'),
 					tag
 				}
-			}
-		}]);
+			},
+		}], { loading: true });
         const { errcode } = resp;
 		if (errcode === 0) {
 			this.fetchPortforwarding({});
@@ -308,12 +316,13 @@ export default class PortForwarding extends React.Component {
 		}, () => this.disAddBtn());
 	}
 
-	fetchPortforwarding = async ({page = 1, pageSize = 5}) => {
+	fetchPortforwarding = async ({page, pageSize = 5}) => {
+		const { pagination } = this.state
 		const resp = await common.fetchApi([
 			{ 
 				opcode:'PORTFORWARDING_GET', 
 				data: {
-					page,
+					page: page || pagination.current,
 					pageSize
 				}
 		 	},
@@ -327,7 +336,7 @@ export default class PortForwarding extends React.Component {
 			})
 			this.setState({
 				portList: tmpList,
-				pagination: {...this.state.pagination, total: data[0].sum, current: data[0].page}
+				pagination: {...this.state.pagination, total: data[0].sum, current: data[0].page},
 			})
 		} else {
 			message.error(intl.get(MODULE, 33)/*_i18n:信息获取失败*/)
@@ -368,9 +377,9 @@ export default class PortForwarding extends React.Component {
 	render() {
 		const {
 			visible, nameTip, portList, name, srcport, desport, proto, desportTip, srcportTip, pagination, destip,
-			type, destipTip, disabled
+			type, destipTip, disabled, pagination: {total}
 		} = this.state;
-		const ruleNum = portList.length;
+		const ruleNum = total;
 		return <SubLayout className="settings">
 			<div style={{ margin: "0 60px" }}>
 				<PanelHeader title={intl.get(MODULE, 34)/*_i18n:规则列表*/}/>
