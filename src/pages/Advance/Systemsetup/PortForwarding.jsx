@@ -4,7 +4,6 @@ import Form from "~/components/Form";
 import {Table, Button, Popconfirm, Modal, Select, message, Switch} from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import {checkRange, checkIp} from '~/assets/common/check';
-import loading from '~/components/Loading';
 import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'portforwarding';
@@ -20,9 +19,11 @@ export default class PortForwarding extends React.Component {
 	constructor(props){
 		super(props);
 		this.err = {
+			'-1003': intl.get(MODULE, 53)/*_i18n:内部IP与网关地址冲突*/,
 			'1022': intl.get(MODULE, 0)/*_i18n:端口转发内外端口号相同*/,
 			'1023': intl.get(MODULE, 1)/*_i18n:保存异常*/,
-			'1024': intl.get(MODULE, 2)/*_i18n:外部端口已被占用*/
+			'1024': intl.get(MODULE, 2)/*_i18n:外部端口已被占用*/,
+			'1025': intl.get(MODULE, 52)/*_i18n:规则条目已达系统上限*/
 		}
 		this.columns = [{
             title: intl.get(MODULE, 3)/*_i18n:编号*/,
