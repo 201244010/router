@@ -16,6 +16,7 @@ export default class Finish extends React.PureComponent {
         devid: '',
         mac: '',
         location: '',
+        modalLocation: '',
         visible: false,
     }
 
@@ -45,6 +46,7 @@ export default class Finish extends React.PureComponent {
                 devid: ap.devid,
                 mac: ap.mac,
                 location: ap.location,
+                modalLocation: ap.location,
             });
         }
     }
@@ -52,11 +54,12 @@ export default class Finish extends React.PureComponent {
     addLocation = () => {
         this.setState({
             visible: true,
+            modalLocation: this.state.location
         });
     }
 
     inputOnChange = (e) => {
-        this.setState({location: e.target.value});
+        this.setState({modalLocation: e.target.value});
     }
 
     cancel = () => {
@@ -66,13 +69,13 @@ export default class Finish extends React.PureComponent {
     }
 
     sure = async() => {
-        let { mac, devid, location } = this.state;
+        let { mac, devid, modalLocation } = this.state;
         
-        if ('' === location) {
-            location = devid;
+        if ('' === modalLocation) {
+            modalLocation = devid;
         }
         let data = {sonconnect:[]};
-        data.sonconnect.push({devid: devid, mac: mac, location: location});
+        data.sonconnect.push({devid: devid, mac: mac, location: modalLocation});
 
         let response = await common.fetchApi(
             {
@@ -85,6 +88,7 @@ export default class Finish extends React.PureComponent {
         if (0 === errcode) {
             this.setState({
                 visible: false,
+                location: modalLocation
             });
         }
     }
@@ -94,7 +98,7 @@ export default class Finish extends React.PureComponent {
     }
 
     render() {
-        const { devid, location,visible } = this.state;
+        const { location,visible, modalLocation } = this.state;
         let data = { hostSsid: '', guestSsid: '', hostPassword: '', guestPassword: '', guestDisplay: 'none' };
 
         const params = this.props.match.params;
@@ -117,7 +121,7 @@ export default class Finish extends React.PureComponent {
                 <div className='deviceInfo'>
                     <div className='left'>
                         <div className='deviceImg'></div>
-                        <span className='title-left'>{devid}</span>
+                        <span className='title-left'>{location}</span>
                     </div>
                     <div className='right'>
                         <span className='title-right'>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation' onClick={this.addLocation}></div></span>    
@@ -163,7 +167,7 @@ export default class Finish extends React.PureComponent {
                 >
                 <div className='Content'>
                     <div className='Title'>{intl.get(MODULE, 10)/*_i18n:备注*/}</div>
-                    <input placeholder={intl.get(MODULE, 11)/*_i18n:请输入备注信息*/} className='input' onChange={this.inputOnChange} value={location} />
+                    <input placeholder={intl.get(MODULE, 11)/*_i18n:请输入备注信息*/} className='input' onChange={this.inputOnChange} value={modalLocation} />
                 </div>
                 <div className='Footer'>
                     <div className='footerButton cancel' onClick={this.cancel}>{intl.get(MODULE, 12)/*_i18n:取消*/}</div>

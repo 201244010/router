@@ -214,7 +214,7 @@ export default class SetWifi extends React.Component {
                     <p className='setGuest' onClick={this.setGuest}>{setMessage}</p>
                 </form>
             </div>,
-            <div className='h5-next'>
+            <div className='h5-next-longContent'>
                 <Button type='primary' onClick={this.nextStep} disabled={disabled}>{intl.get(MODULE, 8)/*_i18n:下一步*/}</Button>
             </div>    
         ]);

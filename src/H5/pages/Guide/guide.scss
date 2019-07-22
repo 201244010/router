@@ -1,6 +1,3 @@
-body{
-    background: #446CE6;
-}
 .guide-container{
     height: 100%;
     position: relative;
@@ -20,14 +17,22 @@ body{
         .guide-upper {
             padding: 0 0.2667rem;
             margin-bottom: 0.8533rem;
+            height: 14.3733rem;
             form{
                 margin-top: 1.0667rem;
             }
         }
         .h5-next {
             width: 8.9333rem;
-            bottom: 0.5333rem;
-            position: fixed;
+            margin-top: 0.5333rem;
+            // margin-bottom: 0.5333rem;
+            // bottom: 0.5333rem;
+            // position: fixed;
+        }
+        .h5-next-longContent {
+            width: 8.9333rem;
+            margin-top: 0.5333rem;
+            margin-bottom: 0.5333rem;
         }
         .sm-btn{
             font-size: 0.3733rem;
