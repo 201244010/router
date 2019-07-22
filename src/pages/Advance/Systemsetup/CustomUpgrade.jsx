@@ -51,9 +51,8 @@ export default class CustomUpgrade extends React.Component {
 					time_stop: (upgradeTime + 1) * 3600 + '',
 					enable: enable ? '1' : '0'
 				},
-				loading: true
 		 	},
-		], { ignoreErr: true });
+		], { loading: true });
 		const {errcode} = resp;
 		if (0 === errcode) {
 			message.success(intl.get(MODULE, 4)/*_i18n:保存成功*/)
