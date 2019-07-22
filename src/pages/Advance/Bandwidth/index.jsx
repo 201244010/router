@@ -7,6 +7,7 @@ import { TIME_SPEED_TEST } from '~/assets/common/constants';
 import {checkRange} from '~/assets/common/check';
 import CustomIcon from '~/components/Icon';
 import SubLayout from '~/components/SubLayout';
+import {getQuickStartVersion} from '~/utils';
 
 const MODULE = 'bandwidth';
 
@@ -423,7 +424,9 @@ export default class Bandwidth extends React.PureComponent {
                         </div>
                     </section>
                     <section style={{margin:"16px 20px 32px 0"}}>
-                            <Button style={{marginRight:20,width : 116}} onClick={this.onPercentChange}>{intl.get(MODULE, 28)/*_i18n:自动测速*/}</Button>
+                            {
+                                getQuickStartVersion() === 'domestic' ? <Button style={{marginRight:20}} onClick={this.onPercentChange}>{intl.get(MODULE, 28)/*_i18n:自动测速*/}</Button> : ''
+                            }
                             <Button style={{width : 116}} onClick={this.showManual}>{intl.get(MODULE, 29)/*_i18n:手动设置*/}</Button>
                     </section>
                     <section>
