@@ -2974,7 +2974,7 @@
 		"wi-fi60": "Strong Encryption (WPA2)",
 		"wi-fi61": "Hybrid Encryption (WPA/WPA2)",
 		"wi-fi62": "Channel Bandwidth",
-		"wi-fi63": "Auto {current_channel5}",
+		"wi-fi63": "Auto ({current_channel5})",
 		"wi-fi64": "Wireless Channel",
 		"wi-fi65": "Guest Wi-Fi ",
 		"wi-fi66": "Wi-Fi Name",
