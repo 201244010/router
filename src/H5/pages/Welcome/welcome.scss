@@ -26,6 +26,9 @@
     .policy{
         font-size: 0.2667rem;
         margin-top: 2.5333rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         .ant-checkbox-wrapper .ant-checkbox.ant-checkbox-checked .ant-checkbox-inner:after {
             top: 0.05rem;
             left: 0.11rem;
@@ -55,7 +58,7 @@
         }
         .h5checkbox {
             font-family: PingFangSC-Light;
-            font-size: 0.16rem;
+            font-size: 0.32rem;
             color: #999999;
             text-align: center;
             line-height: 0.1867rem;

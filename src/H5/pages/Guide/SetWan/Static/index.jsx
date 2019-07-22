@@ -225,7 +225,7 @@ export default class Static extends React.Component {
                     />
                 </div>
             </div>,
-            <div className='h5-next'>
+            <div className='h5-next-longContent'>
                 <Button type='primary' loading={loading} onClick={this.submit} disabled={disabled}>{intl.get(MODULE, 21)/*_i18n:下一步*/}</Button>
             </div>  
         ]);
