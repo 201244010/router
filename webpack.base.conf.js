@@ -14,7 +14,7 @@ const options = {
     devtool: "cheap-module-eval-source-map",
     output: {
         path: resolve('dist'),
-        filename: '[name].min.js',
+        filename: '[name].[chunkhash].min.js',
         publicPath: "/"
     },
     module: {
