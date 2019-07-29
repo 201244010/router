@@ -160,6 +160,11 @@ export const DIRECTIVE = {
 	//upgradetime
 	UPGRADETIME_GET: '0x207c',
 	UPGRADETIME_SET: '0x207d',
+
+	//upgradetime
+	UPNP_SWITCH: '0x2038',
+	UPNP_LIST_GET: '0x2039',
+	
 };
 
 /**
