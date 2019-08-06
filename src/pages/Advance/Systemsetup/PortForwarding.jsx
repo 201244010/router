@@ -23,7 +23,8 @@ export default class PortForwarding extends React.Component {
 			'1022': intl.get(MODULE, 0)/*_i18n:端口转发内外端口号相同*/,
 			'1023': intl.get(MODULE, 1)/*_i18n:保存异常*/,
 			'1024': intl.get(MODULE, 2)/*_i18n:外部端口已被占用*/,
-			'1025': intl.get(MODULE, 52)/*_i18n:规则条目已达系统上限*/
+			'1025': intl.get(MODULE, 52)/*_i18n:规则条目已达系统上限*/,
+			'1026': intl.get(MODULE, 54)/*_i18n:规则条目已达系统上限*/
 		}
 		this.columns = [{
             title: intl.get(MODULE, 3)/*_i18n:编号*/,
