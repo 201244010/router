@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button, Modal, Timeline, Icon } from 'antd';
+import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import { checkStr } from '~/assets/common/check';
 
@@ -71,28 +72,25 @@ export default class Account extends React.Component {
         });
     }
 
-    preStep = () => {
-        const { ssid, shopId, appId, secretKey } = this.state;
-        let data = { ssid, shopId, appId, secretKey };
+    // preStep = () => {
+    //     const { ssid, shopId, appId, secretKey } = this.state;
+    //     let data = { ssid, shopId, appId, secretKey };
 
-        window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
+    //     window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
 
-        this.props.history.push('/routersetting/wechat/setup/welcome');
-    }
+    //     this.props.history.push('/routersetting/wechat/setup/welcome');
+    // }
 
     nextStep = () => {
-        const params = this.props.match.params;
+        // const params = this.props.match.params;
         const { ssid, shopId, appId, secretKey } = this.state;
 
         let data = { ssid, shopId, appId, secretKey };
-        let param = Object.assign({}, data, JSON.parse(decodeURIComponent(params.param)));
-
-        let path = this.props.match.path;
-        // let parent = path.substr(0, path.lastIndexOf('/'));
+        // let param = Object.assign({}, data, JSON.parse(decodeURIComponent(params.param)));
+        let param = Object.assign({}, data);
 
         window.sessionStorage.setItem('wechat.account', JSON.stringify(data));
 
-        // this.props.history.push(`${parent}/wifi/` + encodeURIComponent(JSON.stringify(param)));
         this.props.history.push(`/routersetting/wechat/setup/wifi/` + encodeURIComponent(JSON.stringify(param)));
     }
 
@@ -138,6 +136,7 @@ export default class Account extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
+                    <PanelHeader title='填写公众号信息' checkable={false}/>
                     <p className='help'>
                     为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能<a href='javascript:;' onClick={this.settingGuide}>（微信公众平台设置指引）</a>，获得下方所需的信息，将其复制到此页面对应的输入框中。
                     </p>
@@ -177,11 +176,11 @@ export default class Account extends React.Component {
                     </Form>
                 </div>
                 <section className="save-area">
-                    <Button
+                    {/* <Button
                         type="primary"
                         size="large"
                         onClick={this.preStep}
-                    >上一步</Button>
+                    >上一步</Button> */}
                     <Button
                         type="primary"
                         size="large"

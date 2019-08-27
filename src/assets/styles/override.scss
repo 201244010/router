@@ -341,6 +341,10 @@ input[type="radio"][disabled] {
     }
 }
 
+.ant-cascader-picker:focus .ant-cascader-input {
+    border-color:  #6174F1;
+    box-shadow: 0 0 0 2px rgba(97, 116, 241, 0.2);
+}
 
 
 // .ant-select-focused .ant-select-selection,

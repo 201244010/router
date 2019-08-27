@@ -288,7 +288,7 @@ export default class Status extends React.Component {
                             onClick={this.showClients}
                             href='javascript:;'>接入设备列表</a>）
                     </p>
-                    <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
+                    {/* <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
                     <div className='connect-guide'>
                         <ul>
                             <li>
@@ -314,6 +314,25 @@ export default class Status extends React.Component {
                                     <div className='wifi-info'>
                                         <label>当前客用Wi-Fi名称：</label><span className='ssid'>{ssid}</span>
                                     </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> */}
+                    <p className='connect-tip'>引导顾客使用微信扫描二维码上网</p>
+                    <div className='connect-guide'>
+                        <ul>
+                            <li>
+                                <div className='guide-detail'>
+                                    <h4>如何获取二维码？</h4>
+                                    <ol>
+                                        <li>
+                                            <p className='step-tip'>1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码</p>
+                                            <img className='qr-img' src={require('~/assets/images/dl-qr.png')} />
+                                        </li>
+                                        <li>
+                                            <p className='step-tip'>2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网</p>
+                                        </li>
+                                    </ol>
                                 </div>
                             </li>
                         </ul>

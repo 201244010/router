@@ -28,14 +28,14 @@
             flex-direction: row;
             >li{
                 flex: 1;
-                $liWidth: 412px;
+                // $liWidth: 412px;
                 padding: $padding;
                 margin-right: 13px;
                 background: rgba(51, 60, 79, 0.02);
                 border-radius: 12px;
                 .guide-detail{
                     font-size: 14px;
-                    width: $liWidth;
+                    // width: $liWidth;
                     >h4{
                         color: #333C4F;
                         font-weight: bold;
@@ -58,7 +58,8 @@
                     }
                     .qr-img{
                         display: block;
-                        width: $liWidth;
+                        // width: $liWidth;
+                        width: 412px;
                         border-radius: 8px;
                         margin-bottom: 20px;
                     }

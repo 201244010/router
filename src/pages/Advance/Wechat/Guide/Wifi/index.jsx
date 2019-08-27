@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button, Modal, message } from 'antd';
+import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import CustomIcon from "~/components/Icon";
 import { checkRange } from '~/assets/common/check';
@@ -55,16 +56,17 @@ export default class Wifi extends React.Component {
         const { onlineLimit, idleLimit, ssidlist } = this.state;
 
         const param = JSON.parse(decodeURIComponent(params.param));
-        const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
+        // const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
+        const { ssid, shopId, appId, secretKey } = param;
 
         let options = {
             enable: '1',
             online_limit: onlineLimit,
             idle_limit: idleLimit,
-            logo_info: logo,
-            welcome: welcome,
-            login_hint: btnStr,
-            statement: statement,
+            // logo_info: logo,
+            // welcome: welcome,
+            // login_hint: btnStr,
+            // statement: statement,
             ssid: ssid,
             shopid: shopId,
             appid: appId,
@@ -146,6 +148,7 @@ export default class Wifi extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
+                    <PanelHeader title='设置顾客上网时长' checkable={false}/>
                     <p className='help'>设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接。</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <label>顾客上网时长限制</label>

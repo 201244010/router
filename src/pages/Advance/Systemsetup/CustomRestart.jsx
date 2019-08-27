@@ -3,19 +3,18 @@ import { Button, message, Radio, Cascader } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
 import {getOptions} from '~/assets/common/cascader';
-
 import './system.scss';
 
-const MODULE = 'customupgrade';
+const MODULE = 'customrestart';
 
-export default class CustomUpgrade extends React.Component {
+export default class CustomRestart extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	state = {
 		enable: true,
-		upgradeTime: [],
+		restartTime: [],
 		mode: '',
 	}
 
@@ -25,28 +24,28 @@ export default class CustomUpgrade extends React.Component {
 		})
 	}
 
-	fetchUpgradeTime = async () => {
+	fetchRestartTime = async () => {
 		const resp = await common.fetchApi([
 			{ 
-				opcode:'UPGRADETIME_GET',
+				opcode:'AUTO_RESTART_GET', 
 		 	},
 		], { ignoreErr: true });
 		const {errcode, data} = resp;
 		if (0 === errcode) {
 			const { enable, time_week: week = '', time_day: day = '', time_start_hour: startHour, mode } = data[0].result;
 
-			let upgradeTime = [];
+			let restartTime = [];
 			if (week !== '') {
-				upgradeTime = ['week', week, startHour];
+				restartTime = ['week', week, startHour];
 			} else if (day !== '') {
-				upgradeTime = ['month', day, startHour];
+				restartTime = ['month', day, startHour];
 			} else {
-				upgradeTime = ['day', startHour];
+				restartTime = ['day', startHour];
 			}
 
 			this.setState({
 				enable: enable === '1',
-				upgradeTime: upgradeTime,
+				restartTime: restartTime,
 				mode: mode,
 			});
 		} else {
@@ -55,26 +54,26 @@ export default class CustomUpgrade extends React.Component {
 	}
 
 	save = async () => {
-		const { enable, upgradeTime, mode } = this.state;
-		const startHour = upgradeTime[upgradeTime.length - 1];
-		const stopHour = upgradeTime[upgradeTime.length - 1] !== '23'? `${parseInt(upgradeTime[upgradeTime.length - 1])+1}` : '0';
+		const { enable, restartTime, mode } = this.state;
+		const startHour = restartTime[restartTime.length - 1];
+		const stopHour = restartTime[restartTime.length - 1] !== '23'? `${parseInt(restartTime[restartTime.length - 1])+1}` : '0';
 
 		let data = {};
-		if (upgradeTime[0] === 'week') {
+		if (restartTime[0] === 'week') {
 			data = {
-				time_week: upgradeTime[1],
+				time_week: restartTime[1],
 			}
 		}
 
-		if (upgradeTime[0] === 'month') {
+		if (restartTime[0] === 'month') {
 			data = {
-				time_day: upgradeTime[1],
+				time_day: restartTime[1],
 			}
 		}
 
 		const resp = await common.fetchApi([
 			{ 
-				opcode:'UPGRADETIME_SET', 
+				opcode:'AUTO_RESTART_SET', 
 				data: {
 					...data,
 					enable: enable ? '1' : '0',
@@ -100,38 +99,37 @@ export default class CustomUpgrade extends React.Component {
 
 	onCascaderChange = (value) => {
 		this.setState({
-			upgradeTime: value
+			restartTime: value
 		});
 	}
 
 	componentDidMount() {
-		this.fetchUpgradeTime();
+		this.fetchRestartTime();
 	}
 
 	render() {
-		const { enable, mode, upgradeTime } = this.state;
+		const { enable, mode, restartTime } = this.state;
 		return <SubLayout className="settings">
 			<div style={{ margin: "0 60px" }}>
 				<PanelHeader title={intl.get(MODULE, 0)/*_i18n:自定义时间*/} checkable={true} checked={enable} onChange={this.onPanelChange}/>
 				<div>
-					<p className="custom-paragraph">{intl.get(MODULE, 1)/*_i18n:选择升级时间*/}</p>
+					<p className="custom-paragraph">{intl.get(MODULE, 1)/*_i18n:执行规则*/}</p>
 					<Radio.Group onChange={this.onRadioChange} value={mode}>
-						<Radio value='cycle'>{intl.get(MODULE, 7)/*_i18n:循环执行*/}</Radio>
-						<Radio value='single'>{intl.get(MODULE, 8)/*_i18n:仅执行一次*/}</Radio>
+						<Radio value="cycle">{intl.get(MODULE, 7)/*_i18n:循环执行*/}</Radio>
+						<Radio value="single">{intl.get(MODULE, 8)/*_i18n:仅执行一次*/}</Radio>
 					</Radio.Group>
 				</div>
 				<div>
-					<p className="custom-paragraph">{intl.get(MODULE, 6)/*_i18n:执行规则*/}</p>
+					<p className="custom-paragraph">{intl.get(MODULE, 6)/*_i18n:选择升级时间*/}</p>
 					<Cascader
 						options={getOptions()}
-						value={upgradeTime}
+						value={restartTime}
 						onChange={this.onCascaderChange}
 						style={{width: 320, height: 36}}
-						placeholder={intl.get(MODULE, 9)/*_i18n:请选择时间*/}
+						placeholder= {intl.get(MODULE, 9)/*_i18n:请选择时间*/}
 					/>
-				</div>	
+				</div>
 			</div>
-
 			<div className="custom-save">
                 <Button type="primary" size='large' style={{ width: 200, height: 42 }} onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
             </div>
