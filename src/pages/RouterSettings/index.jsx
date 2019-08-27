@@ -18,12 +18,14 @@ export default class RouterSetting extends React.PureComponent {
         ];
 
         this.appList = [
-            // {route: 'wechat', type: 'wechat',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:上网设置*/},
             {route: 'bandwidth', color: '#6D6BD8', type: 'Bandwidth', content: intl.get(MODULE, 14)/*_i18n:网速智能分配*/},
-            {route: 'bootdevice', color: '#47D164', type: 'Bootdevice', content: intl.get(MODULE, 16)/*_i18n:优先设备*/},
-            {route: 'blacklist', color: '#448BE9', type: 'blacklist', content: intl.get(MODULE, 17)/*_i18n:防蹭网*/},
+            {route: 'blacklist', color: '#E96044', type: 'blacklist', content: intl.get(MODULE, 17)/*_i18n:防蹭网*/},
+            {route: 'bootdevice', color: '#448BE9', type: 'Bootdevice', content: intl.get(MODULE, 16)/*_i18n:优先设备*/}, 
             {route: 'dosd', type: 'protect',color: '#47D164', content: intl.get(MODULE, 4)/*_i18n:攻击防护*/},
-            {route: 'customrestart', type: 'restart',color: '#47D164', content: intl.get(MODULE, 22)/*_i18n:攻击防护*/},
+            // {route: 'customupgrade', type: 'upgradetime', color: '#6174F1', content: intl.get(MODULE, 21)/*_i18n:自定义固件升级*/}, 
+            // {route: 'customrestart', type: 'restart',color: '#47D164', content: intl.get(MODULE, 22)/*_i18n:攻击防护*/},
+            {route: 'portforwarding', type: 'portforwarding', color: '#6D6BD8', content: intl.get(MODULE, 20)/*_i18n:端口转发*/},
+            {route: 'upnp', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},
             // {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:攻击防护*/}
         ];
 
@@ -32,14 +34,11 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'backup', type: 'backup', color: '#6D6BD8', content: intl.get(MODULE, 6)/*_i18n:备份与恢复*/},  
             {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},  
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
-            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/},  
-            {route: 'upnp', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},  
-            {route: 'portforwarding', type: 'portforwarding', color: '#6D6BD8', content: intl.get(MODULE, 20)/*_i18n:端口转发*/},  
-            {route: 'customupgrade', type: 'upgradetime', color: '#6174F1', content: intl.get(MODULE, 21)/*_i18n:自定义固件升级*/},  
+            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/},   
         ];
 
 		if (getQuickStartVersion() === 'abroad') {
-			this.systemList.splice(4, 0, {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: intl.get(MODULE, 10)/*_i18n:时间设置*/})
+			this.systemList.splice(5, 0, {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: intl.get(MODULE, 10)/*_i18n:时间设置*/})
 		}
 
         if (window.sessionStorage.getItem('_WECHAT') === 'IS_WECHAT') {
