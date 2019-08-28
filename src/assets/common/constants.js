@@ -159,7 +159,11 @@ export const DIRECTIVE = {
 
 	//upgradetime
 	UPGRADETIME_GET: '0x207c',
-	UPGRADETIME_SET: '0x207d',
+    UPGRADETIME_SET: '0x207d',
+    
+    //AUTO_RESTART
+    AUTO_RESTART_GET: '0x209f',
+    AUTO_RESTART_SET: '0x209g',
 
 	//upgradetime
 	UPNP_SWITCH: '0x2038',

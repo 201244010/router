@@ -11,10 +11,11 @@ import SubLayout from '~/components/SubLayout';
 
 import style from './status.useable.scss';
 
+const MODULE = 'wechatStatus';
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => `已添加${total}台设备`,
+    showTotal: total => `${intl.get(MODULE, 12)/*_i18n:已添加*/}${total}${intl.get(MODULE, 13)/*_i18n:台设备*/}`,
 };
 
 export default class Status extends React.Component {
@@ -50,14 +51,14 @@ export default class Status extends React.Component {
 
         let { errcode } = response;
         if (0 == errcode) {
-            message.success(`配置生效`);
+            message.success(intl.get(MODULE, 14)/*_i18n:配置生效*/);
 
             if (enable) {
                 common.fetchApi({ opcode: 'AUTH_ENABLE_MSG', data: { ssid: this.weixin.ssid }});
             }
         } else {
             this.setState({ enable: !enable });
-            message.error(`配置失败[${errcode}]`);
+            message.error(`${intl.get(MODULE, 15)/*_i18n:配置失败*/}[${errcode}]`);
         }
         this.setState({ 
             disabled: false 
@@ -180,7 +181,7 @@ export default class Status extends React.Component {
 
         let { errcode } = response;
         if (0 != errcode) {
-            message.error(`操作失败[${errcode}]`);
+            message.error(`${intl.get(MODULE, 16)/*_i18n:操作失败*/}[${errcode}]`);
         }
 
         this.fetchClients();
@@ -216,56 +217,50 @@ export default class Status extends React.Component {
                 <Logo mac={mac} size={32} />
             )
         }, {
-            title: '设备名称',
+            title: intl.get(MODULE, 17)/*_i18n:设备名称*/,
             width: 320,
             render: (text, record) => (
                 <div>
-                    <div style={{
-                        width: '300px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'pre',
-                    }} title={record.hostname}>{record.hostname}</div>
-                    <i style={{
-                        display: 'inline-block',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: (record.online ? '#87D068' : '#ADB1B9'),
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                    }}></i>
+                    <div 
+                        className='record-hostname'
+                        title={record.hostname}>{record.hostname}</div>
+                    <i
+                        className='record-online'
+                        style={{
+                            backgroundColor: (record.online ? '#87D068' : '#ADB1B9'),
+                        }}></i>
                     {record.online ? (
-                        <span><label>在线时长：</label><label>{formatTime(record.ontime)}</label></span>
+                        <span><label>{intl.get(MODULE, 0)/*_i18n:在线时长：*/}</label><label>{formatTime(record.ontime)}</label></span>
                     ) : (
-                        <span style={{ color: '#ADB1B9' }}>离线</span>
+                        <span className='record-offline'>{intl.get(MODULE, 1)/*_i18n:离线*/}</span>
                     )}
                 </div>
             )
         }, {
-            title: 'IP/MAC地址',
+            title: intl.get(MODULE, 18)/*_i18n:IP/MAC地址*/,
             width: 220,
             render: (text, record) => (
                 <span>
-                    {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
-                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac.toUpperCase()}</label></div>
+                    {record.online && <div><label className='record-ip'>IP:</label><label>{record.ip}</label></div>}
+                    <div><label className='record-ip'>MAC:</label><label>{record.mac.toUpperCase()}</label></div>
                 </span>
             )
         }, {
-            title: '接入时间',
+            title: intl.get(MODULE, 19)/*_i18n:接入时间*/,
             dataIndex: 'access_time',
             width: 200,
         }, {
-            title: '操作',
+            title: intl.get(MODULE, 20)/*_i18n:操作*/,
             width: 94,
             render: (text, record) => (
                 <span>
                     <Popconfirm
-                        title="确定下线？"
-                        okText="确定"
-                        cancelText="取消"
+                        title={intl.get(MODULE, 21)/*_i18n:确定下线？*/}
+                        okText={intl.get(MODULE, 22)/*_i18n:确定*/}
+                        cancelText={intl.get(MODULE, 23)/*_i18n:取消*/}
                         onConfirm={() => this.handleDelete(record)}
                     >
-                        <a href="javascript:;" style={{ color: "#3D76F6" }}>下线</a>
+                        <a href="javascript:;" className='record-operate'>{intl.get(MODULE, 2)/*_i18n:下线*/}</a>
                     </Popconfirm>
                 </span>
             )
@@ -276,19 +271,19 @@ export default class Status extends React.Component {
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
-                        title="微信连Wi-Fi"
+                        title={intl.get(MODULE, 24)/*_i18n:微信连Wi-Fi*/}
                         checkable={true}
                         checked={enable}
                         disabled={disabled}
                         onChange={this.switchChange}
                     />
                     <p className='connect-status'>
-                        当前有<span>{clients.length}</span>位用户连接Wi-Fi（
+                    {intl.get(MODULE, 3)/*_i18n:当前有*/}<span>{clients.length}</span>{intl.get(MODULE, 4)/*_i18n:位用户连接Wi-Fi（*/}
                         <a
                             onClick={this.showClients}
-                            href='javascript:;'>接入设备列表</a>）
+                            href='javascript:;'>{intl.get(MODULE, 5)/*_i18n:接入设备列表*/}</a>）
                     </p>
-                    <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
+                    {/* <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
                     <div className='connect-guide'>
                         <ul>
                             <li>
@@ -317,10 +312,29 @@ export default class Status extends React.Component {
                                 </div>
                             </li>
                         </ul>
+                    </div> */}
+                    <p className='connect-tip'>{intl.get(MODULE, 6)/*_i18n:引导顾客使用微信扫描二维码上网*/}</p>
+                    <div className='connect-guide'>
+                        <ul>
+                            <li>
+                                <div className='guide-detail'>
+                                    <h4>{intl.get(MODULE, 7)/*_i18n:如何获取二维码？*/}</h4>
+                                    <ol>
+                                        <li>
+                                            <p className='step-tip'>{intl.get(MODULE, 8)/*_i18n:1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码*/}</p>
+                                            <img className='qr-img' src={require('~/assets/images/dl-qr.png')} />
+                                        </li>
+                                        <li>
+                                            <p className='step-tip'>{intl.get(MODULE, 9)/*_i18n:2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网*/}</p>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <Modal
-                    title={`接入设备列表（${clients.length}台）`}
+                    title={`${intl.get(MODULE, 25)/*_i18n:接入设备列表（*/}${clients.length}${intl.get(MODULE, 26)/*_i18n:台）*/}`}
                     closable={false}
                     maskClosable={false}
                     centered={true}
@@ -328,15 +342,11 @@ export default class Status extends React.Component {
                     style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
-                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
+                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 10)/*_i18n:取消*/}</Button>
                     ]}>
-                    <Button style={{
-                        position: "absolute",
-                        top: 10,
-                        left: 186,
-                        border: 0,
-                        padding: 0
-                    }} onClick={this.fetchClientsOnce}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    <Button
+                        className='button-refresh'
+                        onClick={this.fetchClientsOnce}><CustomIcon type="refresh" spin={refresh} /></Button>
                     <Table
                         columns={columns}
                         dataSource={clients}
@@ -346,19 +356,15 @@ export default class Status extends React.Component {
                         style={{ minHeight: 360 }}
                         size="middle"
                         pagination={pagination}
-                        locale={{ emptyText: "暂无设备" }}
+                        locale={{ emptyText: intl.get(MODULE, 27)/*_i18n:暂无设备*/ }}
                     />
                 </Modal>
                 <section className="save">
                     <Button
                         size="large"
                         onClick={this.reSetup}
-                        style={{
-                            background: '#F7F7F7',
-                            height: 42,
-                            width: 150,
-                        }}
-                    >重新设置</Button>
+                        className='save-button'
+                    >{intl.get(MODULE, 11)/*_i18n:取消*/}</Button>
                 </section>
             </div>
             </SubLayout>

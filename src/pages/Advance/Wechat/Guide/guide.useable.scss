@@ -63,13 +63,17 @@ $lineWidth: 320px;
     }
     .setup-body {
         .setup-content{
+            .setup-form {
+                margin: 0;
+                padding: 0;
+            }
             .help {
                 color: #333C4F;
                 font-size: 14px;
                 background: #F2F3F7;
                 border-radius: 4px;
                 padding: 8px 16px;
-                margin-bottom: 32px;
+                margin: 24px 0 32px;
                 a{
                     color: #3D76F6;
                 }

@@ -1,10 +1,14 @@
 
 import React from 'react';
 import { Button, Modal, message } from 'antd';
+import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
 import CustomIcon from "~/components/Icon";
 import { checkRange } from '~/assets/common/check';
 
+import './wifi.scss';
+
+const MODULE = 'wechatWifi';
 const { FormItem, Input, ErrorTip } = Form;
 
 export default class Wifi extends React.Component {
@@ -25,11 +29,11 @@ export default class Wifi extends React.Component {
         const check = {
             onlineLimit:{
                 func: checkRange,
-                args: { min: 1, max: 1440, who: '上网时长' },
+                args: { min: 1, max: 1440, who: intl.get(MODULE, 10)/*_i18n:上网时长*/ },
             },
             idleLimit:{
                 func: checkRange,
-                args: { min: 1, max: 1440, who: '空闲断线' },
+                args: { min: 1, max: 1440, who: intl.get(MODULE, 11)/*_i18n:空闲断线*/ },
             },
         }
 
@@ -55,16 +59,17 @@ export default class Wifi extends React.Component {
         const { onlineLimit, idleLimit, ssidlist } = this.state;
 
         const param = JSON.parse(decodeURIComponent(params.param));
-        const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
+        // const { logo, welcome, btnStr, statement, ssid, shopId, appId, secretKey } = param;
+        const { ssid, shopId, appId, secretKey } = param;
 
         let options = {
             enable: '1',
             online_limit: onlineLimit,
             idle_limit: idleLimit,
-            logo_info: logo,
-            welcome: welcome,
-            login_hint: btnStr,
-            statement: statement,
+            // logo_info: logo,
+            // welcome: welcome,
+            // login_hint: btnStr,
+            // statement: statement,
             ssid: ssid,
             shopid: shopId,
             appid: appId,
@@ -146,27 +151,28 @@ export default class Wifi extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接。</p>
-                    <Form style={{ margin: 0, padding: 0 }}>
-                        <label>顾客上网时长限制</label>
+                    <PanelHeader title={intl.get(MODULE, 0)/*_i18n:设置顾客上网时长*/} checkable={false}/>
+                    <p className='help'>{intl.get(MODULE, 1)/*_i18n:设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接。*/}</p>
+                    <Form className='setup-form'>
+                        <label>{intl.get(MODULE, 2)/*_i18n:顾客上网时长限制*/}</label>
                         <div className='form-item with-time-unit'>
                             <FormItem type="small" showErrorTip={onlineLimitTip} >
                                 <Input type="text"
                                     maxLength={4}
-                                    placeholder='请输入顾客上网时长'
+                                    placeholder={intl.get(MODULE, 3)/*_i18n:请输入顾客上网时长*/}
                                     value={onlineLimit}
                                     onChange={(value)=>this.onChange('onlineLimit', value)}
                                 />
                                 <ErrorTip >{onlineLimitTip}</ErrorTip>
                             </FormItem>
                         </div>
-                        <label>空闲断网时长</label>
+                        <label>{intl.get(MODULE, 4)/*_i18n:空闲断网时长*/}</label>
                         <div className='form-item with-time-unit'>
                             <FormItem type="small" showErrorTip={idleLimitTip}>
                                 <Input
                                     type="text"
                                     maxLength={4}
-                                    placeholder='请输入空闲断网时长'
+                                    placeholder={intl.get(MODULE, 5)/*_i18n:请输入空闲断网时长*/}
                                     value={idleLimit}
                                     onChange={(value)=>this.onChange('idleLimit', value)}
                                 />
@@ -179,14 +185,14 @@ export default class Wifi extends React.Component {
                     <Button
                         size="large"
                         onClick={this.preStep}
-                    >上一步</Button>
+                    >{intl.get(MODULE, 6)/*_i18n:上一步*/}</Button>
                     <Button
                         type="primary"
                         size="large"
                         loading={loading}
                         disabled={disabled}
                         onClick={this.submit}
-                    >完成</Button>
+                    >{intl.get(MODULE, 7)/*_i18n:完成*/}</Button>
                 </section>
                 <FinishModal visible={visible} close={this.close}/>
             </React.Fragment>
@@ -203,13 +209,13 @@ const FinishModal = (props) => {
             maskClosable={false}
             centered={true}
             footer={
-                <div style={{textAlign: 'center',padding: 10}}>
-                    <Button type='primary' size="large" style={{width: 150}} onClick={props.close}>确定</Button>
+                <div className='finish-footer'>
+                    <Button type='primary' size="large" className='footer-button' onClick={props.close}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>
                 </div>
             }>
                 <div className="backup-icon">
                     <CustomIcon color="#87D068" type="succeed" size={64} />
-                    <div className="backup-result">设置完成!</div>
+                    <div className="backup-result">{intl.get(MODULE, 9)/*_i18n:设置完成!*/}</div>
                 </div>
         </Modal>
     );

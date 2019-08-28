@@ -167,6 +167,10 @@
   content: "\e65d";
 }
 
+.ui-icon-m2:before {
+  content: "\e65e";
+}
+
 .ui-icon-d1_s:before {
   content: "\e65f";
 }
@@ -579,6 +583,18 @@
   content: "\e6c9";
 }
 
+.ui-icon-v2:before {
+  content: "\e6c7";
+}
+
+.ui-icon-dragonfly:before {
+  content: "\e6d0";
+}
+
+.ui-icon-x2:before {
+  content: "\e6d1";
+}
+
 .ui-icon-loadingtest:before {
   content: "\e6ca";
 }
@@ -601,5 +617,13 @@
 
 .ui-icon-upnp:before {
   content: "\e6cf";
+}
+
+.ui-icon-usergroup:before {
+  content: "\e6d2";
+}
+
+.ui-icon-restart:before {
+  content: "\e6d3";
 }
 

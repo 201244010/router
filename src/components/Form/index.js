@@ -39,7 +39,7 @@ const Form = props => {
     const blockSubmit = (e) => {e.preventDefault()};
     
     return (
-        <form className="ui-form" style={props.style} onSubmit={blockSubmit} >
+        <form className={`ui-form ${props.className}`} style={props.style} onSubmit={blockSubmit} >
             {props.children}
         </form>
     );

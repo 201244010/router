@@ -1,7 +1,9 @@
 .guide-upper {
     height: 13.7333rem;
     .routerList {
-        margin-top: 1.6rem;  
+        margin-top: 1.6rem;
+        max-height: 9rem;
+        overflow: auto;
     }
     .haveLine {
         border-top: 0.5px solid rgba(0,0,0,0.1);
@@ -9,6 +11,8 @@
     .routerList-result {
         margin-top: 2.3467rem;
         border-top: 0.5px solid rgba(0,0,0,0.1);
+        max-height: 10rem;
+        overflow: auto;
     }
     .h5addsubrouter-icon {
         margin-top: 0.64rem;

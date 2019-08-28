@@ -23,12 +23,24 @@
                         color: #FF8E2D;
                         font-weight: bold;
                     }
-                    P{
+                    p{
                         font-size: 12px;
                         margin: 8px 0 12px;
                         a{
                             color: #3D76F6;
                         }
+                    }
+                    .content-p {
+                        margin-top: -8px;
+                        color: #ADB1B9;
+                    }
+                    .img-first {
+                        width: 680px;
+                        height: 150px;
+                    }
+                    .img-second, .img-third {
+                        width: 680px;
+                        height: 220px;
                     }
                 }
             }
