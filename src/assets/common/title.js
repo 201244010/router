@@ -70,11 +70,15 @@ export const getTitle = () => {
 		'customupgrade': { 
 			"title" : intl.get(MODULE, 32)/*_i18n:自定义时间升级*/,
 			"titleTip": intl.get(MODULE, 33)/*_i18n:路由器可以在指定空闲时间点自动升级最新固件*/
-			},
+            },
 		'portforwarding': { 
 			"title" : intl.get(MODULE, 34)/*_i18n:端口转发*/,
 			"titleTip": intl.get(MODULE, 35)/*_i18n:端口转发可以转发一个网络端口从一个网络节点到另一个网络节点*/
-			},
+            },
+        'customrestart': { 
+            "title" : intl.get(MODULE, 36)/*_i18n:自定义时间升级*/,
+            "titleTip": intl.get(MODULE, 37)/*_i18n:路由器可以在指定空闲时间点自动升级最新固件*/
+            },
     };
     return funcTitle;
 };

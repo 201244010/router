@@ -42,6 +42,7 @@ import Recovery from './Advance/Systemsetup/Recovery';
 import UPnP from './Advance/Systemsetup/UPnP';
 import PortForwarding from './Advance/Systemsetup/PortForwarding';
 import CustomUpgrade from './Advance/Systemsetup/CustomUpgrade';
+import CustomRestart from './Advance/Systemsetup/CustomRestart';
 import { RebootContext, RecoveryContext } from '~/context';
 
 const MODULE = 'page';
@@ -137,6 +138,7 @@ class PrimaryLayout extends React.Component {
             'timeset': { main: 'bg', footer: '', header: true, title: true },
             'upnp': { main: 'bg', footer: '', header: true, title: true },
             'customupgrade': { main: 'bg', footer: '', header: true, title: true },
+            'customrestart': { main: 'bg', footer: '', header: true, title: true },
             'portforwarding': { main: 'bg', footer: '', header: true, title: true },
         }
 
@@ -228,6 +230,7 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/upnp" component={UPnP} />
                     <Route path="/routersetting/portforwarding" component={PortForwarding} />
                     <Route path="/routersetting/customupgrade" component={CustomUpgrade} />
+                    <Route path="/routersetting/customrestart" component={CustomRestart} />
                 </Switch>
         )
     }

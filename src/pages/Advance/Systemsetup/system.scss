@@ -161,12 +161,22 @@
     margin-top: 40px;
     width: calc(100% - 120px);
 	margin-left: 60px;
-	margin-top: 226px;
+    margin-top: 148px;
+    .custom-button {
+        width: 200px;
+        height: 42px;
+    }
 }
-
-.custom-paragraph {
-	margin-top: 24px;
-	margin-bottom: 8px;
+.settings-content {
+    margin: 0 60px;
+    .custom-paragraph {
+        margin-top: 24px;
+        margin-bottom: 16px;
+    }
+    .settings-cascader {
+        width: 320px;
+        height: 36px;
+    }
 }
 
 .port-edit {

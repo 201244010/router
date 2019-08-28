@@ -2,10 +2,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Switch, Route, Redirect } from "react-router-dom";
-import Icon from '~/components/Icon';
+// import Icon from '~/components/Icon';
 import SubLayout from '~/components/SubLayout';
 
-import Welcome from './Welcome';
+// import Welcome from './Welcome';
 import Account from './Account';
 import Wifi from './Wifi';
 
@@ -19,11 +19,11 @@ export default class Guide extends React.Component {
         };
     }
 
-    steps = [
-        { route: 'welcome', title: '设置您的欢迎页' },
-        { route: 'account', title: '填写您的公众号信息' },
-        { route: 'wifi', title: '设置顾客上网时长' },
-    ];
+    // steps = [
+    //     { route: 'welcome', title: '设置您的欢迎页' },
+    //     { route: 'account', title: '填写您的公众号信息' },
+    //     { route: 'wifi', title: '设置顾客上网时长' },
+    // ];
 
     dones = {
         welcome: [],
@@ -61,7 +61,7 @@ export default class Guide extends React.Component {
         return (
             <SubLayout className="settings">
             <div className='wechat-guide'>
-                <ul className='setup-list'>
+                {/* <ul className='setup-list'>
                     {this.steps.map((item, index, steps) => {
                         let className = this.initStepMenu(item.route);
                         return Step({
@@ -71,13 +71,16 @@ export default class Guide extends React.Component {
                             line: (index < steps.length - 1)
                         });
                     })}
-                </ul>
+                </ul> */}
                 <div className="setup-body">
                     <Switch>
-                        <Route path={`${match.path}/welcome`} component={Welcome} />
+                        {/* <Route path={`${match.path}/welcome`} component={Welcome} />
                         <Route path={`${match.path}/account/:param`} component={Account} />
                         <Route path={`${match.path}/wifi/:param`} component={Wifi} />
-                        <Redirect from={match.path} to={`${match.path}/welcome`}></Redirect>
+                        <Redirect from={match.path} to={`${match.path}/welcome`}></Redirect> */}
+                        <Route path={`${match.path}/account`} component={Account} />
+                        <Route path={`${match.path}/wifi/:param`} component={Wifi} />
+                        <Redirect from={match.path} to={`${match.path}/account`}></Redirect>
                     </Switch>
                 </div>
             </div>
@@ -86,27 +89,27 @@ export default class Guide extends React.Component {
     }
 }
 
-const Step = function(props) {
-    const {className, step, title, line} = props;
-    return (
-        <li key={step} className={classnames(['setup-step', className])}>
-            <span className='step-num'>{step}</span>
-            { className.indexOf('done') > -1 &&
-                <Icon type="correct" color="#333C4F" size={26} />
-            }
-            <span className='title'>{title}</span>
-            { line && <Line />}
-        </li>
-    );
-}
+// const Step = function(props) {
+//     const {className, step, title, line} = props;
+//     return (
+//         <li key={step} className={classnames(['setup-step', className])}>
+//             <span className='step-num'>{step}</span>
+//             { className.indexOf('done') > -1 &&
+//                 <Icon type="correct" color="#333C4F" size={26} />
+//             }
+//             <span className='title'>{title}</span>
+//             { line && <Line />}
+//         </li>
+//     );
+// }
 
-const Line = function() {
-    let i = 0, dots = [];
-    for (i = 0; i < 16; i++) {
-        dots.push(<i key={i} className='line-dot'></i>);
-    }
+// const Line = function() {
+//     let i = 0, dots = [];
+//     for (i = 0; i < 16; i++) {
+//         dots.push(<i key={i} className='line-dot'></i>);
+//     }
 
-    return (
-        <span className='step-line'>{dots}</span>
-    );
-}
+//     return (
+//         <span className='step-line'>{dots}</span>
+//     );
+// }
