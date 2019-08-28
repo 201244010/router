@@ -6,6 +6,7 @@ import Form from '~/components/Form';
 import { checkStr, checkRange } from '~/assets/common/check';
 import { get } from '~/assets/common/auth';
 
+const MODULE = 'wechatWelcome';
 const { FormItem, Input, ErrorTip } = Form;
 
 export default class Welcome extends React.Component {
@@ -170,7 +171,7 @@ export default class Welcome extends React.Component {
         return (
             <React.Fragment>
                 <div className='setup-content'>
-                    <p className='help'>顾客在连接客用Wi-Fi时可以看到此欢迎页，您可以在此页展示自己的品牌</p>
+                    <p className='help'>{intl.get(MODULE, 0)/*_i18n:顾客在连接客用Wi-Fi时可以看到此欢迎页，您可以在此页展示自己的品牌*/}</p>
                     <Form style={{ margin: 0, padding: 0 }}>
                         <div className='file-upload'>
                             <Upload
@@ -189,9 +190,9 @@ export default class Welcome extends React.Component {
                                 }}
                                 beforeUpload={this.beforeUpload}
                             >
-                                <Button><Icon type="upload" />上传Logo图</Button>
+                                <Button><Icon type="upload" />{intl.get(MODULE, 1)/*_i18n:上传Logo图*/}</Button>
                             </Upload>
-                            <p>图片格式：.jpg .jpeg .png；最大上传大小：128KB</p>
+                            <p>{intl.get(MODULE, 2)/*_i18n:图片格式：.jpg .jpeg .png；最大上传大小：128KB*/}</p>
                             <Upload
                                 onChange={(file) => {
                                     this.handleUploadChange(file, 'bgImgList', 'bg_img');
@@ -208,62 +209,62 @@ export default class Welcome extends React.Component {
                                 uploadTitle={'上传背景图'}
                                 beforeUpload={this.beforeUpload}
                             >
-                                <Button><Icon type="upload" />上传背景图</Button>
+                                <Button><Icon type="upload" />{intl.get(MODULE, 3)/*_i18n:上传背景图*/}</Button>
                             </Upload>
-                            <p>图片格式：.jpg .jpeg .png；最大上传大小：512KB</p>
+                            <p>{intl.get(MODULE, 4)/*_i18n:图片格式：.jpg .jpeg .png；最大上传大小：512KB*/}</p>
                         </div>
 
                         <label>Logo信息</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={logoTip}>
-                                <Input type="text" maxLength={15} placeholder={'请输入Logo信息'} value={logo} onChange={(value) => this.onChange('logo', value)} />
+                                <Input type="text" maxLength={15} placeholder={intl.get(MODULE, 5)/*_i18n:图片格式：请输入Logo信息*/} value={logo} onChange={(value) => this.onChange('logo', value)} />
                                 <ErrorTip>{logoTip}</ErrorTip>
                             </FormItem>
-                            <Help>1~15个字符</Help>
+                            <Help>{intl.get(MODULE, 6)/*_i18n:1~15个字符*/}</Help>
                         </div>
 
-                        <label>欢迎信息</label>
+                        <label>{intl.get(MODULE, 7)/*_i18n:欢迎信息*/}</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={welcomeTip}>
                                 <Input
                                     type="text"
-                                    placeholder={'请输入欢迎信息'} 
+                                    placeholder={intl.get(MODULE, 8)/*_i18n:请输入欢迎信息*/} 
                                     value={welcome}
                                     onChange={(value) => this.onChange('welcome', value)}
                                     />
                                 <ErrorTip>{welcomeTip}</ErrorTip>
                             </FormItem>
-                            <Help>1~30个字符</Help>
+                            <Help>{intl.get(MODULE, 9)/*_i18n:1~30个字符*/}</Help>
                         </div>
 
-                        <label>登录按钮提示文字</label>
+                        <label>{intl.get(MODULE, 10)/*_i18n:登录按钮提示文字*/}</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={btnStrTip}>
                                 <Input
                                     type="text"
                                     maxLength={15}
-                                    placeholder={'请输入登陆按钮提示文字'}
+                                    placeholder={intl.get(MODULE, 11)/*_i18n:请输入登陆按钮提示文字*/}
                                     value={btnStr}
                                     onChange={(value) => this.onChange('btnStr', value)}
                                     />
                                 <ErrorTip>{btnStrTip}</ErrorTip>
                             </FormItem>
-                            <Help>1~15个字符</Help>
+                            <Help>{intl.get(MODULE, 12)/*_i18n:1~15个字符*/}</Help>
                         </div>
 
-                        <label>版权声明</label>
+                        <label>{intl.get(MODULE, 13)/*_i18n:版权声明*/}</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={statementTip} style={{marginBottom: 0}}>
                                 <Input
                                     type="text"
                                     maxLength={30}
-                                    placeholder={'请输入版权声明'}
+                                    placeholder={intl.get(MODULE, 14)/*_i18n:请输入版权声明*/}
                                     value={statement}
                                     onChange={(value) => this.onChange('statement', value)}
                                     />
                                 <ErrorTip>{statementTip}</ErrorTip>
                             </FormItem>
-                            <Help>1~30个字符</Help>
+                            <Help>{intl.get(MODULE, 15)/*_i18n:1~30个字符*/}</Help>
                         </div>
                         <div className='separate-line'></div>
                         <Preview
@@ -282,7 +283,7 @@ export default class Welcome extends React.Component {
                         size="large"
                         disabled={disabled}
                         onClick={this.nextStep}
-                    >下一步</Button>
+                    >{intl.get(MODULE, 16)/*_i18n:下一步*/}</Button>
                 </section>
             </React.Fragment>
         );

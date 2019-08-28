@@ -3,6 +3,7 @@ import { Button, Checkbox } from 'antd';
 
 import './preview.scss';
 
+const MODULE = 'wechatPreview';
 export default class Preview extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +14,7 @@ export default class Preview extends React.Component {
 
         return (
             <div className='preview-wrap' style={style}>
-                <p className='title'>预览效果</p>
+                <p className='title'>{intl.get(MODULE, 0)/*_i18n:预览效果*/}</p>
                 <div className='preview-translate'>
                     <div
                         className='preview-content'
@@ -27,7 +28,7 @@ export default class Preview extends React.Component {
                                 <Button type="primary" className='button'>{btnStr}</Button>
                             </div>
                             <div className='agreement'>
-                                <Checkbox className='checkbox' checked={true} ><span>我已阅读并同意《上网协议》</span></Checkbox>
+                                <Checkbox className='checkbox' checked={true} ><span>{intl.get(MODULE, 1)/*_i18n:我已阅读并同意《上网协议》*/}</span></Checkbox>
                             </div>
                         </div>
                         <div className='footer'>©{statement}</div>

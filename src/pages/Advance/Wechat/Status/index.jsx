@@ -11,6 +11,7 @@ import SubLayout from '~/components/SubLayout';
 
 import style from './status.useable.scss';
 
+const MODULE = 'wechatStatus';
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
@@ -235,9 +236,9 @@ export default class Status extends React.Component {
                         borderRadius: '50%',
                     }}></i>
                     {record.online ? (
-                        <span><label>在线时长：</label><label>{formatTime(record.ontime)}</label></span>
+                        <span><label>{intl.get(MODULE, 0)/*_i18n:在线时长：*/}</label><label>{formatTime(record.ontime)}</label></span>
                     ) : (
-                        <span style={{ color: '#ADB1B9' }}>离线</span>
+                        <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 1)/*_i18n:离线*/}</span>
                     )}
                 </div>
             )
@@ -265,7 +266,7 @@ export default class Status extends React.Component {
                         cancelText="取消"
                         onConfirm={() => this.handleDelete(record)}
                     >
-                        <a href="javascript:;" style={{ color: "#3D76F6" }}>下线</a>
+                        <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 2)/*_i18n:下线*/}</a>
                     </Popconfirm>
                 </span>
             )
@@ -283,10 +284,10 @@ export default class Status extends React.Component {
                         onChange={this.switchChange}
                     />
                     <p className='connect-status'>
-                        当前有<span>{clients.length}</span>位用户连接Wi-Fi（
+                    {intl.get(MODULE, 3)/*_i18n:当前有*/}<span>{clients.length}</span>{intl.get(MODULE, 4)/*_i18n:位用户连接Wi-Fi（*/}
                         <a
                             onClick={this.showClients}
-                            href='javascript:;'>接入设备列表</a>）
+                            href='javascript:;'>{intl.get(MODULE, 5)/*_i18n:接入设备列表*/}</a>）
                     </p>
                     {/* <p className='connect-tip'>您可以通过以下两种方式引导顾客上网</p>
                     <div className='connect-guide'>
@@ -318,19 +319,19 @@ export default class Status extends React.Component {
                             </li>
                         </ul>
                     </div> */}
-                    <p className='connect-tip'>引导顾客使用微信扫描二维码上网</p>
+                    <p className='connect-tip'>{intl.get(MODULE, 6)/*_i18n:引导顾客使用微信扫描二维码上网*/}</p>
                     <div className='connect-guide'>
                         <ul>
                             <li>
                                 <div className='guide-detail'>
-                                    <h4>如何获取二维码？</h4>
+                                    <h4>{intl.get(MODULE, 7)/*_i18n:如何获取二维码？*/}</h4>
                                     <ol>
                                         <li>
-                                            <p className='step-tip'>1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码</p>
+                                            <p className='step-tip'>{intl.get(MODULE, 8)/*_i18n:1、前往微信公众号平台，进入“微信连Wi-Fi->用户连网方式->扫二维码连网->详情”下载二维码*/}</p>
                                             <img className='qr-img' src={require('~/assets/images/dl-qr.png')} />
                                         </li>
                                         <li>
-                                            <p className='step-tip'>2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网</p>
+                                            <p className='step-tip'>{intl.get(MODULE, 9)/*_i18n:2、打印二维码，贴于店内，告知顾客使用微信扫描二维码即可上网*/}</p>
                                         </li>
                                     </ol>
                                 </div>
@@ -347,7 +348,7 @@ export default class Status extends React.Component {
                     style={{ position: 'relative' }}
                     visible={visible}
                     footer={[
-                        <Button key='cancel' onClick={this.handleCancel}>取消</Button>
+                        <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 10)/*_i18n:取消*/}</Button>
                     ]}>
                     <Button style={{
                         position: "absolute",
@@ -377,7 +378,7 @@ export default class Status extends React.Component {
                             height: 42,
                             width: 150,
                         }}
-                    >重新设置</Button>
+                    >{intl.get(MODULE, 11)/*_i18n:取消*/}</Button>
                 </section>
             </div>
             </SubLayout>
