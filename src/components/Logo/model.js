@@ -74,5 +74,17 @@ export default {
     "p2_pro": {
         "color": "#333C4F",
         "brand": "p2_pro"
+	},
+	"dragonfly": {
+        "color": "#333C4F",
+        "brand": "dragonfly"
+	},
+	"x2": {
+        "color": "#333C4F",
+        "brand": "x2"
+	},
+	"v2": {
+        "color": "#333C4F",
+        "brand": "v2"
     }
 }

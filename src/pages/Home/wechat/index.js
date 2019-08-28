@@ -43,8 +43,8 @@ export default class Connection extends React.Component {
 					return [point[0] - size.contentSize[0] / 2, -size.contentSize[1] - 2]
 				},
                 padding: [12,12,12,12],
-                formatter: `<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>' +
-                    '<span style="display: inline-block;height: 22px;line-height: 22px">${intl.get(MODULE, 0)/*_i18n:接入用户：*/}： {c0}</span>`,
+                formatter: `<span style="font-size:14px;font-family: HelveticaNeue;display: block;height: 22px;line-height: 22px;">{b0}</span>
+                    <span style="display: inline-block;height: 22px;line-height: 22px">${intl.get(MODULE, 0)/*_i18n:接入用户：*/}{c0}</span>`,
             },
             grid: {
                 left: 0,
