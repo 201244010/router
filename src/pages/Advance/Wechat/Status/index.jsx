@@ -15,7 +15,7 @@ const MODULE = 'wechatStatus';
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
-    showTotal: total => `已添加${total}台设备`,
+    showTotal: total => `${intl.get(MODULE, 12)/*_i18n:已添加*/}${total}${intl.get(MODULE, 13)/*_i18n:台设备*/}`,
 };
 
 export default class Status extends React.Component {
@@ -51,14 +51,14 @@ export default class Status extends React.Component {
 
         let { errcode } = response;
         if (0 == errcode) {
-            message.success(`配置生效`);
+            message.success(intl.get(MODULE, 14)/*_i18n:配置生效*/);
 
             if (enable) {
                 common.fetchApi({ opcode: 'AUTH_ENABLE_MSG', data: { ssid: this.weixin.ssid }});
             }
         } else {
             this.setState({ enable: !enable });
-            message.error(`配置失败[${errcode}]`);
+            message.error(`${intl.get(MODULE, 15)/*_i18n:配置失败*/}[${errcode}]`);
         }
         this.setState({ 
             disabled: false 
@@ -181,7 +181,7 @@ export default class Status extends React.Component {
 
         let { errcode } = response;
         if (0 != errcode) {
-            message.error(`操作失败[${errcode}]`);
+            message.error(`${intl.get(MODULE, 16)/*_i18n:操作失败*/}[${errcode}]`);
         }
 
         this.fetchClients();
@@ -217,7 +217,7 @@ export default class Status extends React.Component {
                 <Logo mac={mac} size={32} />
             )
         }, {
-            title: '设备名称',
+            title: intl.get(MODULE, 17)/*_i18n:设备名称*/,
             width: 320,
             render: (text, record) => (
                 <div>
@@ -237,7 +237,7 @@ export default class Status extends React.Component {
                 </div>
             )
         }, {
-            title: 'IP/MAC地址',
+            title: intl.get(MODULE, 18)/*_i18n:IP/MAC地址*/,
             width: 220,
             render: (text, record) => (
                 <span>
@@ -246,18 +246,18 @@ export default class Status extends React.Component {
                 </span>
             )
         }, {
-            title: '接入时间',
+            title: intl.get(MODULE, 19)/*_i18n:接入时间*/,
             dataIndex: 'access_time',
             width: 200,
         }, {
-            title: '操作',
+            title: intl.get(MODULE, 20)/*_i18n:操作*/,
             width: 94,
             render: (text, record) => (
                 <span>
                     <Popconfirm
-                        title="确定下线？"
-                        okText="确定"
-                        cancelText="取消"
+                        title={intl.get(MODULE, 21)/*_i18n:确定下线？*/}
+                        okText={intl.get(MODULE, 22)/*_i18n:确定*/}
+                        cancelText={intl.get(MODULE, 23)/*_i18n:取消*/}
                         onConfirm={() => this.handleDelete(record)}
                     >
                         <a href="javascript:;" className='record-operate'>{intl.get(MODULE, 2)/*_i18n:下线*/}</a>
@@ -271,7 +271,7 @@ export default class Status extends React.Component {
             <div className="setup-body wechat-status">
                 <div className='setup-content'>
                     <PanelHeader
-                        title="微信连Wi-Fi"
+                        title={intl.get(MODULE, 24)/*_i18n:微信连Wi-Fi*/}
                         checkable={true}
                         checked={enable}
                         disabled={disabled}
@@ -334,7 +334,7 @@ export default class Status extends React.Component {
                     </div>
                 </div>
                 <Modal
-                    title={`接入设备列表（${clients.length}台）`}
+                    title={`${intl.get(MODULE, 25)/*_i18n:接入设备列表（*/}${clients.length}${intl.get(MODULE, 26)/*_i18n:台）*/}`}
                     closable={false}
                     maskClosable={false}
                     centered={true}
@@ -356,7 +356,7 @@ export default class Status extends React.Component {
                         style={{ minHeight: 360 }}
                         size="middle"
                         pagination={pagination}
-                        locale={{ emptyText: "暂无设备" }}
+                        locale={{ emptyText: intl.get(MODULE, 27)/*_i18n:暂无设备*/ }}
                     />
                 </Modal>
                 <section className="save">

@@ -63,6 +63,10 @@ $lineWidth: 320px;
     }
     .setup-body {
         .setup-content{
+            .setup-form {
+                margin: 0;
+                padding: 0;
+            }
             .help {
                 color: #333C4F;
                 font-size: 14px;

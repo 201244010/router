@@ -50,7 +50,7 @@ export default class Account extends React.Component {
 
         let tip;
         if ('' === value) {
-            tip = `请复制粘贴${check[name].args['who']}`;
+            tip = `${intl.get(MODULE, 37)/*_i18n:请复制粘贴*/}${check[name].args['who']}`;
         } else {
             tip = check[name].func(value, check[name].args);
         }
@@ -141,7 +141,7 @@ export default class Account extends React.Component {
                     <p className='help'>
                     {intl.get(MODULE, 1)/*_i18n:为给您的微信公众号引流吸粉，请登陆微信公众平台开通“微信连Wi-Fi”功能*/}<a href='javascript:;' onClick={this.settingGuide}>{intl.get(MODULE, 2)/*_i18n:（微信公众平台设置指引）*/}</a>{intl.get(MODULE, 3)/*_i18n:，获得下方所需的信息，将其复制到此页面对应的输入框中。*/}</p>
                     <GuideModal visible={visible} close={this.modalClose}/>
-                    <Form style={{ margin: 0, padding: 0 }}>
+                    <Form className='setup-form'>
                         <label>{intl.get(MODULE, 4)/*_i18n:SSID*/}</label>
                         <div className='form-item'>
                             <FormItem type="small" showErrorTip={ssidTip}>
@@ -221,7 +221,7 @@ const GuideModal = (props) => {
                         <Timeline.Item color={itemColor}>
                             <label>{intl.get(MODULE, 26)/*_i18n:添加Wi-Fi设备*/}</label>
                             <p>{intl.get(MODULE, 27)/*_i18n:进入“*/}<b>{intl.get(MODULE, 28)/*_i18n:微信连Wi-Fi*/}</b>{intl.get(MODULE, 29)/*_i18n:”插件，在设备管理标签页点击添加设备。设备所需门店选择上一步添加的门店；设备类型选择Portal型设备；网络名（SSID）输入客用Wi-Fi的名称（当前客用Wi-Fi名称：*/}<b>SUNMI_XX_Guest</b>）。</p>
-                            <p style={{marginTop: -8, color: '#ADB1B9'}}>{intl.get(MODULE, 30)/*_i18n:注：网络名（SSID）需与客用Wi-Fi名称保持一致，以保证微信连Wi-Fi功能正常，如填写不一致，在设置完成后将自动覆盖客用Wi-Fi名称。*/}</p>
+                            <p className='content-p'>{intl.get(MODULE, 30)/*_i18n:注：网络名（SSID）需与客用Wi-Fi名称保持一致，以保证微信连Wi-Fi功能正常，如填写不一致，在设置完成后将自动覆盖客用Wi-Fi名称。*/}</p>
                             <img className='img-second' src={require('~/assets/images/add-wifi.png')} />
                         </Timeline.Item>
                         <Timeline.Item color={itemColor}>

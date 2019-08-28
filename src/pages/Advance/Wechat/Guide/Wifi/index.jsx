@@ -29,11 +29,11 @@ export default class Wifi extends React.Component {
         const check = {
             onlineLimit:{
                 func: checkRange,
-                args: { min: 1, max: 1440, who: '上网时长' },
+                args: { min: 1, max: 1440, who: intl.get(MODULE, 10)/*_i18n:上网时长*/ },
             },
             idleLimit:{
                 func: checkRange,
-                args: { min: 1, max: 1440, who: '空闲断线' },
+                args: { min: 1, max: 1440, who: intl.get(MODULE, 11)/*_i18n:空闲断线*/ },
             },
         }
 
@@ -153,7 +153,7 @@ export default class Wifi extends React.Component {
                 <div className='setup-content'>
                     <PanelHeader title={intl.get(MODULE, 0)/*_i18n:设置顾客上网时长*/} checkable={false}/>
                     <p className='help'>{intl.get(MODULE, 1)/*_i18n:设置顾客单次连接可上网的时长，超出时间或空闲时间达到所设置的时长都需要重新连接。*/}</p>
-                    <Form style={{ margin: 0, padding: 0 }}>
+                    <Form className='setup-form'>
                         <label>{intl.get(MODULE, 2)/*_i18n:顾客上网时长限制*/}</label>
                         <div className='form-item with-time-unit'>
                             <FormItem type="small" showErrorTip={onlineLimitTip} >

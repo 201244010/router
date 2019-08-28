@@ -110,7 +110,7 @@ export default class CustomRestart extends React.Component {
 	render() {
 		const { enable, mode, restartTime } = this.state;
 		return <SubLayout className="settings">
-			<div style={{ margin: "0 60px" }}>
+			<div className='settings-content'>
 				<PanelHeader title={intl.get(MODULE, 0)/*_i18n:自定义时间*/} checkable={true} checked={enable} onChange={this.onPanelChange}/>
 				<div>
 					<p className="custom-paragraph">{intl.get(MODULE, 1)/*_i18n:执行规则*/}</p>
@@ -125,13 +125,13 @@ export default class CustomRestart extends React.Component {
 						options={getOptions()}
 						value={restartTime}
 						onChange={this.onCascaderChange}
-						style={{width: 320, height: 36}}
+						className='settings-cascader'
 						placeholder= {intl.get(MODULE, 9)/*_i18n:请选择时间*/}
 					/>
 				</div>
 			</div>
 			<div className="custom-save">
-                <Button type="primary" size='large' style={{ width: 200, height: 42 }} onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
+                <Button type="primary" size='large' className='custom-button' onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
             </div>
 		</SubLayout>
 	}
