@@ -2,6 +2,7 @@ import React from 'react';
 import './index.scss'
 import { Button } from 'antd';
 import echarts from 'echarts/lib/echarts';
+import {getQuickStartVersion} from '~/utils';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip' 
 // import 'echarts/lib/component/legend';
@@ -228,7 +229,7 @@ export default class Allocation extends React.Component{
                 <span className='percent'>
                     {largestPercent}%
                 </span>
-                    <div className='chart' style={{height: 80, width: 250}} ref='dom'></div>
+                    <div className='chart' style={{height: 80, width: getQuickStartVersion() === 'abroad' ? 378 : 280}} ref='dom'></div>
                     <div className='legend'>
                             <div className='sunmi'></div>
                             <span>{intl.get(MODULE, 5)/*_i18n:商米设备*/}</span>

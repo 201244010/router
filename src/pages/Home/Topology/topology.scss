@@ -1,250 +1,333 @@
 .wrapper {
-    padding-top: 40px;
-    padding-left: 152px;
-    padding-bottom: 22px;
-    border-radius: 0.5px;
-    border-top: 1px solid  rgba(255,255,255,0.10);
-    .internet {
-        display: inline-block;
-        margin-right: 184px;
-        width: 660px;
-        .router {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            li {
-                width: 100px;
-                display: inline-block;
-                label {
-                    font-family: PingFangSC-Regular;
-                    display: block;
-                    text-align: center;
-                    color: #fff;
-                    font-size: 14px;
-                    letter-spacing: 0;
-                }
-            }
-            img {
-                width: 100px
-            }
-            .line {
-                width: 160px;
-                vertical-align: middle;
-                .circle {
-                    display: inline-block;
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 50%;
-                    border: 3px solid #fff;
-                }
-                .horizenline {
-                    vertical-align: super;
-                    display: inline-block;
-                    width: 136px;
-                    height: 3px;
-                    background:#fff;
-                }
-                .dashline {
-                    position: relative;
-                    display: inline-block;
-                    width: 136px;
-                    .icon {
-                        display: inline-block;
-                    }
-                    .dashpart {
-                        display: inline-block;
-                        vertical-align: super;
-                        height: 3px;
-                        div {
-                            display: inline-block;
-                            width: 12px;
-                            background: #fff;
-                            height: 3px;
-                        }
-                        div:nth-child(2) {
-                            margin-left: 12px;
-                            margin-right:12.3px;
-                        }
-                    }
-                    .diagnose {
-                        position: absolute;
-                        left: 24px;
-                        top: 40px;
-                        background: #AF6666;
-                        border-color:  #AF6666;
-                        color: #fff;
-                        span {
-                            color: #fff;
-                        }
-                    }
-                }
-            }
-        }
-        .func-label {
-            display: flex;
-            justify-content: space-between;
-            label {
-                width: 100px;
-                color: #fff;
-                text-align: center;
-            }
-        }
-        .strateline {
-            display: flex;
-            justify-content: center;
-            padding-top: 8px;
-            .line {
-                width: 3px;
-                height: 24px;
-                background: #fff;
-                opacity: 0.6;
-                border-bottom-left-radius: 1.5px;
-                border-bottom-right-radius: 1.5px;
-                border-top-left-radius: 1.5px;
-                border-top-right-radius: 1.5px;
-            }
-        }
-        .satelite {
-            display: flex;
-            justify-content: center;
-            ul {
-                width: 600px;
-                text-align: center;
-                li {
-                    display: inline-block;
-                    width: 120px;
-                    height: 120px;
-                    color:#fff;
-                    text-align: center;
-                    margin: auto;
-                    vertical-align: middle;
-                    .add-router {
-                        margin: 25px 40px 12px 40px;
-                        cursor: pointer;
-                        opacity: 0.6;
-                    }
-                    .sate-router {
-                        cursor: pointer;
-                        padding: 0 10px;
-                        margin-top: 5px;
-                        label {
-                            cursor: pointer;
-                            display: block;
-                            overflow:hidden; 
-                            text-overflow:ellipsis;
-                            white-space: nowrap;
-                        }
-                    }
-                }
-                li:not(:last-child) {
-                    label {
-                        font-size: 14px;
-                    }
-                }
-                li:last-child {
-                    label {
-                        font-size: 12px;
-                        opacity: 0.8;
-                    }
-                }
-            }
-        }
-    }
-    .speed {
-        border-left: 1px solid rgba(255,255,255,0.10);
-        margin-top: 8px;
-        display: inline-block;
-        height: 240px;
-        vertical-align: top;
-        ul {
-            li {
-                color:#fff;
-                margin-left: 52px;
-                margin-top: 32px;
-                .up-speed {
-                    line-height: 24px;
-                    font-size: 12px;
-                }
-                .speed-content {
-                    font-family: Helvetica;
-                    label {
-                        font-size: 28px;
-                        margin-right: 4px;
-                    }
-                    span {
-                        font-size: 14px;
-                    }
-                }
-            }
-        }
-    }
+	padding-top: 40px;
+	padding-left: 152px;
+	padding-bottom: 22px;
+	border-radius: 0.5px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	.internet {
+		display: inline-block;
+		margin-right: 164px;
+		width: 700px;
+		.router {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			li {
+				width: 100px;
+				display: inline-block;
+				label {
+					font-family: PingFangSC-Regular;
+					display: block;
+					text-align: center;
+					color: #fff;
+					font-size: 14px;
+					letter-spacing: 0;
+				}
+			}
+			img {
+				width: 100px;
+			}
+			.line {
+				width: 160px;
+				vertical-align: middle;
+				.circle {
+					display: inline-block;
+					width: 12px;
+					height: 12px;
+					border-radius: 50%;
+					border: 3px solid #fff;
+				}
+				.horizenline {
+					vertical-align: super;
+					display: inline-block;
+					width: 136px;
+					height: 3px;
+					background: #fff;
+				}
+				.dashline {
+					position: relative;
+					display: inline-block;
+					width: 136px;
+					.icon {
+						display: inline-block;
+					}
+					.dashpart {
+						display: inline-block;
+						vertical-align: super;
+						height: 3px;
+						div {
+							display: inline-block;
+							width: 12px;
+							background: #fff;
+							height: 3px;
+						}
+						div:nth-child(2) {
+							margin-left: 12px;
+							margin-right: 12.3px;
+						}
+					}
+					.diagnose {
+						position: absolute;
+						left: 24px;
+						top: 40px;
+						background: #af6666;
+						border-color: #af6666;
+						color: #fff;
+						span {
+							color: #fff;
+						}
+					}
+					.diagnose-us {
+						@extend .diagnose;
+						left: 2px;
+					}
+				}
+			}
+		}
+		.func-label {
+			display: flex;
+			justify-content: space-between;
+			label {
+				width: 100px;
+				color: #fff;
+				text-align: center;
+			}
+		}
+		.strateline {
+			display: flex;
+			justify-content: center;
+			padding-top: 8px;
+			.line {
+				width: 3px;
+				height: 24px;
+				background: #fff;
+				opacity: 0.6;
+				border-bottom-left-radius: 1.5px;
+				border-bottom-right-radius: 1.5px;
+				border-top-left-radius: 1.5px;
+				border-top-right-radius: 1.5px;
+			}
+		}
+		.satelite {
+			display: flex;
+			justify-content: center;
+			width: 700px;
+			.satelite-carousel {
+				width: 660px;
+				text-align: center;
+				position: relative;
+				.satelite-pageturning-left {
+					position: absolute;
+					cursor: pointer;
+					left: -50px;
+					z-index: 10;
+					top: 20px;
+					.statelite-custom-left {
+						display: inline-block;
+						vertical-align: middle;
+						opacity: 0.2;
+						margin-right: 16px;
+					}
+					.satelite-linegradient {
+						display: inline-block;
+						vertical-align: middle;
+						width: 1px;
+						height: 80px;
+						opacity: 0.8;
+						background-image: linear-gradient(
+							180deg,
+							rgba(255, 255, 255, 0) 0%,
+							#ffffff 52%,
+							rgba(255, 255, 255, 0) 100%
+						);
+					}
+				}
+				.satelite-pageturning-right {
+					position: absolute;
+					cursor: pointer;
+					right: -82px;
+					top: 20px;
+					.statelite-custom-right {
+						display: inline-block;
+						opacity: 0.2;
+						vertical-align: middle;
+						transform: rotate(180deg);
+						margin-left: 16px;
+					}
+					.satelite-linegradient {
+						display: inline-block;
+						vertical-align: middle;
+						width: 1px;
+						height: 80px;
+						opacity: 0.8;
+						background-image: linear-gradient(
+							180deg,
+							rgba(255, 255, 255, 0) 0%,
+							#ffffff 52%,
+							rgba(255, 255, 255, 0) 100%
+						);
+					}
+				}
+				.satelite-li {
+					display: inline-block;
+					width: 110px;
+					height: 120px;
+					color: #fff;
+					text-align: center;
+					margin: auto;
+					vertical-align: middle;
+					.add-router {
+						margin: 25px 35px 12px 35px;
+						cursor: pointer;
+						opacity: 0.6;
+					}
+					.sate-router {
+						cursor: pointer;
+						padding: 0 7px;
+						margin-top: 5px;
+						label {
+							cursor: pointer;
+							display: block;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+					}
+				}
+				.satelite-small-add {
+					display: inline-block;
+					// z-index: 10;
+					color: #fff;
+					text-align: center;
+					margin: auto;
+					vertical-align: middle;
+					.add-router {
+						margin-right: 12px;
+						cursor: pointer;
+						opacity: 0.6;
+					}
+					.sate-router {
+						cursor: pointer;
+						padding: 0 10px;
+						margin-top: 5px;
+						label {
+							cursor: pointer;
+							display: block;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+					}
+				}
+				.satelite-li:not(:last-child) {
+					label {
+						font-size: 14px;
+					}
+				}
+				.satelite-li:last-child {
+					label {
+						font-size: 12px;
+						opacity: 0.8;
+					}
+				}
+			}
+		}
+	}
+	.speed {
+		border-left: 1px solid rgba(255, 255, 255, 0.1);
+		margin-top: 8px;
+		display: inline-block;
+		height: 240px;
+		vertical-align: top;
+		ul {
+			li {
+				color: #fff;
+				margin-left: 52px;
+				margin-top: 32px;
+				.up-speed {
+					line-height: 24px;
+					font-size: 12px;
+				}
+				.speed-content {
+					font-family: Helvetica;
+					label {
+						font-size: 28px;
+						margin-right: 4px;
+					}
+					span {
+						font-size: 14px;
+					}
+				}
+			}
+		}
+	}
 }
 
 .satelite-info {
-    padding: 8px 4px 0 4px;
-    p {
-        label {
-            position: relative;
-            display: inline-block;
-            max-width: 218px;
-            margin-right: 8px;
-            font-size: 14px;
-            font-weight:600;
-            color: #333C4F;
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: pre;
-        }
-    }
-    ul{
-        width: 240px;
-        li{
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: pre;
-            font-size: 10px;
-            margin-bottom: 8px;
-            label{
-                color: #ADB1B9;
-            }
-            span{
-                color: #333C4F;
-            }
-        }
-    }
-    .ant-input {
-        height: 24px;
-        border-radius: unset;
-        margin-bottom: 10px;
-        margin-left: -2px;
-        padding: 2px;
-        border-radius: 4px;
-    }
-    .ant-input::placeholder {
-        font-size: 14px;
-        color: rgba(51,60,79,0.30);
-        text-align: left;
-    }
+	padding: 8px 4px 0 4px;
+	p {
+		label {
+			position: relative;
+			display: inline-block;
+			max-width: 218px;
+			margin-right: 8px;
+			font-size: 14px;
+			font-weight: 600;
+			color: #333c4f;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: pre;
+		}
+	}
+	ul {
+		width: 240px;
+		li {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: pre;
+			font-size: 10px;
+			margin-bottom: 8px;
+			label {
+				color: #adb1b9;
+			}
+			span {
+				color: #333c4f;
+			}
+		}
+	}
+	.ant-input {
+		height: 24px;
+		border-radius: unset;
+		margin-bottom: 10px;
+		margin-left: -2px;
+		padding: 2px;
+		border-radius: 4px;
+	}
+	.ant-input::placeholder {
+		font-size: 14px;
+		color: rgba(51, 60, 79, 0.3);
+		text-align: left;
+	}
 
-    .button {
-        border-top: 1px solid rgba(0,0,0,0.04);
-        padding-top: 6px;
-        text-align: center;
-        margin-bottom: -6px;
-        button{
-            border-width: 0;
-            // width: 140px;
-            color: #3D76F6
-        }
-    }
+	.button {
+		border-top: 1px solid rgba(0, 0, 0, 0.04);
+		padding-top: 6px;
+		text-align: center;
+		margin-bottom: -6px;
+		button {
+			border-width: 0;
+			// width: 140px;
+			color: #3d76f6;
+		}
+	}
 }
 
 .sate-error {
-    font-size: 12px;
-    color: #D0021B;
+	font-size: 12px;
+	color: #d0021b;
 }
 
 .sate-offline {
-    font-size: 12px;
-    color:rgba(255,255,255,0.60);
+	font-size: 12px;
+	color: rgba(255, 255, 255, 0.6);
 }
