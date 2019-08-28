@@ -77,3 +77,37 @@
         }
     }
 }
+.record-hostname {
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+}
+.record-online {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+.record-offline {
+    color: #ADB1B9;
+}
+.record-ip {
+    margin-right: 3px;
+}
+.record-operate {
+    color: #3D76F6;
+}
+.button-refresh {
+    position: absolute;
+    top: 10px;
+    left: 186px;
+    border: 0!important;
+    padding: 0;
+}
+.save-button {
+    background: #F7F7F7;
+    height: 42px;
+    width: 150px;
+}

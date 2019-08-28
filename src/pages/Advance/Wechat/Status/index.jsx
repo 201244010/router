@@ -221,24 +221,18 @@ export default class Status extends React.Component {
             width: 320,
             render: (text, record) => (
                 <div>
-                    <div style={{
-                        width: '300px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'pre',
-                    }} title={record.hostname}>{record.hostname}</div>
-                    <i style={{
-                        display: 'inline-block',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: (record.online ? '#87D068' : '#ADB1B9'),
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                    }}></i>
+                    <div 
+                        className='record-hostname'
+                        title={record.hostname}>{record.hostname}</div>
+                    <i
+                        className='record-online'
+                        style={{
+                            backgroundColor: (record.online ? '#87D068' : '#ADB1B9'),
+                        }}></i>
                     {record.online ? (
                         <span><label>{intl.get(MODULE, 0)/*_i18n:在线时长：*/}</label><label>{formatTime(record.ontime)}</label></span>
                     ) : (
-                        <span style={{ color: '#ADB1B9' }}>{intl.get(MODULE, 1)/*_i18n:离线*/}</span>
+                        <span className='record-offline'>{intl.get(MODULE, 1)/*_i18n:离线*/}</span>
                     )}
                 </div>
             )
@@ -247,8 +241,8 @@ export default class Status extends React.Component {
             width: 220,
             render: (text, record) => (
                 <span>
-                    {record.online && <div><label style={{ marginRight: 3 }}>IP:</label><label>{record.ip}</label></div>}
-                    <div><label style={{ marginRight: 3 }}>MAC:</label><label>{record.mac.toUpperCase()}</label></div>
+                    {record.online && <div><label className='record-ip'>IP:</label><label>{record.ip}</label></div>}
+                    <div><label className='record-ip'>MAC:</label><label>{record.mac.toUpperCase()}</label></div>
                 </span>
             )
         }, {
@@ -266,7 +260,7 @@ export default class Status extends React.Component {
                         cancelText="取消"
                         onConfirm={() => this.handleDelete(record)}
                     >
-                        <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 2)/*_i18n:下线*/}</a>
+                        <a href="javascript:;" className='record-operate'>{intl.get(MODULE, 2)/*_i18n:下线*/}</a>
                     </Popconfirm>
                 </span>
             )
@@ -350,13 +344,9 @@ export default class Status extends React.Component {
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 10)/*_i18n:取消*/}</Button>
                     ]}>
-                    <Button style={{
-                        position: "absolute",
-                        top: 10,
-                        left: 186,
-                        border: 0,
-                        padding: 0
-                    }} onClick={this.fetchClientsOnce}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    <Button
+                        className='button-refresh'
+                        onClick={this.fetchClientsOnce}><CustomIcon type="refresh" spin={refresh} /></Button>
                     <Table
                         columns={columns}
                         dataSource={clients}
@@ -373,11 +363,7 @@ export default class Status extends React.Component {
                     <Button
                         size="large"
                         onClick={this.reSetup}
-                        style={{
-                            background: '#F7F7F7',
-                            height: 42,
-                            width: 150,
-                        }}
+                        className='save-button'
                     >{intl.get(MODULE, 11)/*_i18n:取消*/}</Button>
                 </section>
             </div>

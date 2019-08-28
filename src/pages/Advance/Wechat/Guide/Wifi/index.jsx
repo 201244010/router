@@ -6,6 +6,8 @@ import Form from '~/components/Form';
 import CustomIcon from "~/components/Icon";
 import { checkRange } from '~/assets/common/check';
 
+import './wifi.scss';
+
 const MODULE = 'wechatWifi';
 const { FormItem, Input, ErrorTip } = Form;
 
@@ -207,8 +209,8 @@ const FinishModal = (props) => {
             maskClosable={false}
             centered={true}
             footer={
-                <div style={{textAlign: 'center',padding: 10}}>
-                    <Button type='primary' size="large" style={{width: 150}} onClick={props.close}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>
+                <div className='finish-footer'>
+                    <Button type='primary' size="large" className='footer-button' onClick={props.close}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>
                 </div>
             }>
                 <div className="backup-icon">
