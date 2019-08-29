@@ -2657,7 +2657,7 @@
 		"sysupgrade9": "Checking",
 		"sysupgrade10": "Failed to get information",
 		"sysupgrade11": "The current version is the latest",
-		"sysupgrade12": "Find new version",
+		"sysupgrade12": "Find new version: ",
 		"sysupgrade13": "The device is offline",
 		"sysupgrade14": "Re-check",
 		"diagnose0": "Re-check",
