@@ -82,7 +82,7 @@ export default class SysUpgrade extends React.Component{
                     </p>
                     <div>
                         <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
-                        <Button type="primary" disabled={detecting || update || hasVersion} onClick={this.startUpgrade}>{intl.get(MODULE, 7)/*_i18n:全部升级*/}</Button>
+                        <Button type="primary" disabled={detecting || update || !hasVersion} onClick={this.startUpgrade}>{intl.get(MODULE, 7)/*_i18n:全部升级*/}</Button>
                     </div>
                 </div>
                 <div className="static-table">
@@ -131,7 +131,7 @@ export default class SysUpgrade extends React.Component{
             message.warning(intl.get(MODULE, 10)/*_i18n:获取信息失败！*/)
         }
 
-        let hasVersion = true;
+        let hasVersion = false;
         const routerList = [];
 
         data[1].result.sonconnect.devices.map(items => {
@@ -145,7 +145,7 @@ export default class SysUpgrade extends React.Component{
                         versiontTip = intl.get(MODULE, 11)/*_i18n:当前已是最新版本*/;
                     } else {
                         versiontTip = intl.get(MODULE, 12)/*_i18n:发现新版本：*/ + newVersion;
-                        hasVersion = online ? false : true;
+                        hasVersion = hasVersion || online
                     }
 
                     return routerList.push({
