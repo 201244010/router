@@ -239,7 +239,7 @@ export default class ClientList extends React.Component {
             }],
             onFilter: (value, record) => record.mode.indexOf(value) === 0,
             render: (mode, record) => this.modeMap[mode],
-            width: 100
+            width: 120
         }, {
             title: intl.get(MODULE, 48)/*_i18n:信号质量*/,
             dataIndex: 'rssi',
