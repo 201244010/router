@@ -52,7 +52,7 @@ export default class Welcome extends React.Component {
                         <Checkbox
                             checked={checked}
                             onChange={this.onCheckBoxChange}>
-                            <span className='checkbox' >{intl.get(MODULE, 3)/*_i18n:同意*/}《<Link to={`/agreement/user`} target='_blank'>{intl.get(MODULE, 4)/*_i18n:商米用户协议*/}</Link>》{intl.get(MODULE, 5)/*_i18n:和*/}《<Link to={`/agreement/secret`} target='_blank'>{intl.get(MODULE, 6)/*_i18n:隐私政策*/}</Link>》</span>
+                            <span className='checkbox' >{intl.get(MODULE, 3)/*_i18n:同意*/}{intl.get(MODULE, 7)}<Link to={`/agreement/user`} target='_blank'>{intl.get(MODULE, 4)/*_i18n:商米用户协议*/}{intl.get(MODULE, 8)}</Link>{intl.get(MODULE, 5)/*_i18n:和*/}{intl.get(MODULE, 7)}<Link to={`/agreement/secret`} target='_blank'>{intl.get(MODULE, 6)/*_i18n:隐私政策*/}</Link>{intl.get(MODULE, 8)}</span>
                         </Checkbox>
                     </div>
                 </div>
