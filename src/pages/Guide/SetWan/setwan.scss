@@ -9,20 +9,28 @@
         color: #ccc;
         margin-bottom: 25px;
     }
-    .help {
-        width: 100%;
-        margin-top: 8px;
-        .back, .next {
-            font-size: 12px;
-            line-height: 12px;
-            color: #adb1b9;
-        }
-        .back {
-            float: left;
-        }
-        .next {
-            float: right;
-        }
+}
+.setwan-help {
+    width: 100%;
+    margin-top: 8px;
+    &::after {
+        content:"";
+        height:0;
+        line-height:0;
+        display:block;
+        visibility:hidden;
+        clear:both;
+    }
+    .a-right, .a-left {
+        font-size: 12px;
+        line-height: 12px;
+        color: #adb1b9;
+    }
+    .a-right {
+        float: right;
+    }
+    .a-left {
+        float: left;
     }
 }
 .set-wan {
