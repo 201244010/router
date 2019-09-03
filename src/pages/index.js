@@ -229,8 +229,8 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/timeset" component={TimeZone} />
                     <Route path="/routersetting/upnp" component={UPnP} />
                     <Route path="/routersetting/portforwarding" component={PortForwarding} />
-                    <Route path="/routersetting/customupgrade" component={CustomUpgrade} />
-                    <Route path="/routersetting/customrestart" component={CustomRestart} />
+                    {/* <Route path="/routersetting/customupgrade" component={CustomUpgrade} />
+                    <Route path="/routersetting/customrestart" component={CustomRestart} /> */}
                 </Switch>
         )
     }

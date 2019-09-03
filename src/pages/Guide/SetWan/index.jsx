@@ -364,9 +364,11 @@ export default class SetWan extends React.PureComponent {
         });
     }
     OnwanLinkState = () =>{
-        this.setState({
-            wanLinkState:true
-        })
+        // this.setState({
+        //     wanLinkState:true
+        // })
+        this.setState({ detect : false});
+        this.props.history.push("/guide/setwifi");
     }
     
     render(){
@@ -461,8 +463,8 @@ const LinkState = props =>{
             <CustomIcon type="hint" size="large" color="#FF5500"/>
             <h3 style={{marginBottom:25,marginTop:17}}>{intl.get(MODULE, 23)/*_i18n:请检查您的网线是否插好*/}</h3>
             <Button type="primary" size='large' onClick={props.dialDetect} style={{ width : '100%' }}>{intl.get(MODULE, 24)/*_i18n:已经插好网线，再试一次*/}</Button>
-            <div className="help">
-                    <a style={{width:'100%',textAlign:'right',marginTop:5}} href="javascript:;" className="ui-tips" onClick={props.OnwanLinkState}>{intl.get(MODULE, 25)/*_i18n:跳过*/}</a>
+            <div className="setwan-help">
+                    <a className='a-right' href="javascript:;" onClick={props.OnwanLinkState}>{intl.get(MODULE, 25)/*_i18n:跳过*/}</a>
             </div>
         </div>
     );
@@ -479,9 +481,9 @@ const NetStatus = props => {
             <h3 style={{ marginBottom : 15 }}>{intl.get(MODULE, 27)/*_i18n:无法连接互联网*/}</h3>
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
             <Button type="primary" style={{ width: "100%" }} onClick={props.reSet} size='large'>{intl.get(MODULE, 28)/*_i18n:重新设置*/}</Button>
-            <div className="help">
-                <a href="javascript:;" onClick={props.reSet} className="back">{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
-                <a href="javascript:;" className="next" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
+            <div className="setwan-help">
+                <a className='a-left' href="javascript:;" onClick={props.reSet}>{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
+                <a className='a-right' href="javascript:;" onClick={props.nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>
             </div>
         </div>)
 }
