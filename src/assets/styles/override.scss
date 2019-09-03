@@ -118,6 +118,10 @@ button.ant-btn-primary.ant-btn-loading {
 	margin-right: 8px;
 }
 
+.ant-tooltip-inner {
+	word-break: keep-all;
+}
+
 .ant-table-column-sorter-up.on .anticon-caret-up {
     color:  #6174F1!important;
 }
