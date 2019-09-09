@@ -220,8 +220,7 @@ let checkStr = function(val, opt = {}){
             tip: intl.get(MODULE, 30, {who})/*_i18n{who}非法，不能有含有中文且需以WX开头*/,
         },
     };
-    // console.log(checkMap[type].reg.test(val));
-    // console.log(typeof !checkMap[type].reg.test(val));
+
     if (!checkMap[type].reg.test(val)) {
         return checkMap[type].tip;
     }
