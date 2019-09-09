@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Checkbox, Popconfirm, Modal, Timeline, Table, message } from 'antd';
+import { Button, Checkbox, Modal, Timeline, message } from 'antd';
+import { Base64 } from 'js-base64';
 import Form from "~/components/Form";
 import { checkStr } from '~/assets/common/check';
 import PanelHeader from '~/components/PanelHeader';
-import CustomIcon from '~/components/Icon';
 import SubLayout from '~/components/SubLayout';
 
 import './index.scss';
@@ -17,6 +17,7 @@ export default class Wechat extends React.Component {
         ssidDisabled: false,
         pwdDisabled: false,
         checkBoxDisabled: false,
+        saveDisable: false,
         ssid: '',
         ssidTip: '',
         pwd: '',
@@ -32,10 +33,13 @@ export default class Wechat extends React.Component {
             ssidDisabled: !value,
             pwdDisabled: !value || encryption,
         }, () => {
-            const { ssidDisabled, ssidTip, pwdDisabled, pwdTip } = this.state;
+            const { ssidDisabled, ssid, pwdDisabled, pwd } = this.state;
+            const ssidTip = ssidDisabled ? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
+            const pwdTip = pwdDisabled ? '' : checkStr(pwd, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
             this.setState({
-                ssidTip: ssidDisabled ? '' : ssidTip,
-                pwdTip: pwdDisabled ? '' : pwdTip,
+                ssidTip: ssidTip,
+                pwdTip: pwdTip,
+                saveDisable: ssidTip !== '' || pwdTip !== '',
             })
         });
     }
@@ -45,16 +49,37 @@ export default class Wechat extends React.Component {
         this.setState({
             encryption: e.target.checked,
             pwdDisabled: !enable || e.target.checked,
+        }, () => {
+            const { pwdDisabled, pwd, ssidTip } = this.state;
+            const pwdTip = pwdDisabled ? '' : checkStr(pwd, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
+            this.setState({
+                pwdTip: pwdTip,
+                saveDisable: ssidTip !== '' || pwdTip !== '',
+            })
         });
     }
 
     onChange = (type, value) => {
-        if (type === 'ssid') {
-            this.setState({ ssidTip: checkStr(value, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true })});
-        } else {
-            this.setState({ pwdTip: checkStr(value, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true })});
-        } 
-        this.setState({ [type]: value });
+        const field = {
+            ssid: {
+                name: 'ssidTip',
+                content: checkStr(value, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true }),
+            },
+            pwd: {
+                name: 'pwdTip',
+                content: checkStr(value, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true }),
+            },
+        };
+
+        this.setState({
+            [type]: value,
+            [field[type].name]: field[type].content,
+        }, () => {
+            const { ssidTip, pwdTip } = this.state;
+            this.setState({
+                saveDisable: ssidTip !== '' || pwdTip !== '',
+            });
+        });
     }
 
     openModal = () => {
@@ -69,39 +94,61 @@ export default class Wechat extends React.Component {
         let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }]);
         let { errcode, data } = response;
         if(errcode === 0){
-            let { guest: { ssid = '', enable = '', static_password = '', encryption = 'psk-mixed/ccmp+tkip'} = {} } = data[0].result;
+            const { guest: { ssid = '', enable = '', static_password = '', encryption = 'psk-mixed/ccmp+tkip'} = {} } = data[0].result;
+            this.guestData = data[0].result.guest;
+            this.mainData = data[0].result.main;
+            const ssidDisabled = enable === '1'? false : true;
+            const pwdDisabled = !(enable === '1') || encryption === 'none';
+            const ssidTip = ssidDisabled? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
+            const pwdTip = pwdDisabled? '' : checkStr(static_password, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
             this.setState({
                 ssid: ssid,
                 enable: enable === '1'? true : false,
                 pwd: Base64.decode(static_password),
                 encryption: encryption === 'none',
-                ssidDisabled: enable === '1'? false : true,
+                ssidDisabled: ssidDisabled,
                 checkBoxDisabled: enable === '1'? false : true,
-                pwdDisabled: !(enable === '1') || encryption === 'none',
+                pwdDisabled: pwdDisabled,
+                ssidTip: ssidTip,
+                pwdTip: pwdTip,
+                saveDisable: ssidTip !== '' || pwdTip !== '',
             });
         }
     }
 
     setWechatInfo = async() => {
         const { ssid, enable, pwd, encryption } = this.state;
-        await common.fetchApi(
+
+        const response = await common.fetchApi(
             [{
                 opcode: 'WIRELESS_SET',
                 data: { 
                     guest: {
                         ssid: ssid,
-                        static_password: pwd,
-                        encryption: encryption,
-                        PWDType: 'static',
+                        password: Base64.encode(pwd),
+                        static_password: Base64.encode(pwd),
+                        encryption: encryption? 'none' : 'psk-mixed/ccmp+tkip',
+                        password_type: 'static',
                         enable: enable? '1': '0',
-                    }
+                        period: this.guestData.period
+                    },
+                    main: this.mainData,
                 }
             }]
         );
+        const { errcode } = response;
+        if(errcode === 0){
+            message.success(intl.get(MODULE, 30)/*_i18n:设置完成*/)
+        } else {
+            message.error(intl.get(MODULE, 31)/*_i18n:设置失败*/)
+        }
     }
 
+    componentDidMount() {
+        this.getWechatInfo();
+    }
     render() {
-        const { enable, ssid, ssidTip, pwd, pwdTip, encryption, ssidDisabled, pwdDisabled, checkBoxDisabled, modalVisible } = this.state;
+        const { enable, ssid, ssidTip, pwd, pwdTip, encryption, ssidDisabled, pwdDisabled, checkBoxDisabled, modalVisible, saveDisable } = this.state;
         return (
             <SubLayout className="settings">
                 <div className="setup-body">
@@ -135,6 +182,7 @@ export default class Wechat extends React.Component {
                     <section className="save-area">
                         <Button
                             size="large"
+                            disabled={saveDisable}
                             onClick={this.setWechatInfo}
                             className='button'
                         >{intl.get(MODULE, 10)/*_i18n:保存*/}</Button>

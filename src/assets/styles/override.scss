@@ -346,7 +346,12 @@ input[type="radio"][disabled] {
     box-shadow: 0 0 0 2px rgba(97, 116, 241, 0.2);
 }
 
-
+.account-step-guide .ant-modal-content .ant-modal-body .body .content label {
+    color: #6174F1;
+}
+.ant-timeline-item-head {
+    background-color: rgb(97, 116, 241);
+}
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
 // .ant-select-selection:active {
