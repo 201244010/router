@@ -1,0 +1,105 @@
+$edge: 60px;
+
+.setup-body {
+    .setup-content {
+        margin: 0 $edge;
+        .wechat-form {
+            width : 100%;
+            margin-top : 0;
+            padding: 0;
+            .wechat-description {
+                font-size: 14px;
+                font-family:PingFangSC;
+                font-weight:400;
+                color:rgba(51,60,79,1);
+                line-height: 36px;
+                background:rgba(242,243,247,1);
+                border-radius:4px;
+                padding: 0 16px;
+                margin: 24px 0 32px;
+                .wechat-clickModal {
+                    color: #6174F1;
+                }
+            }
+            .wechat-label {
+                margin-bottom: 8px;
+                display: inline-block;
+                width: 320px;
+                &.have-checkbox {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+            .wechat-formItem {
+                width: 320px;
+                .ssid-description {
+                    position: absolute;
+                    top: 0;
+                    left: 332px;
+                    width: 778px;
+                }
+            }
+        }   
+    }
+    .save-area {
+        border-top:1px solid #ECECEC;
+        padding:28px 60px 20px 0;
+        margin-top: 40px;
+        width: calc(100% - 120px);
+        margin-left: 60px;
+        button {
+            width: 200px;
+            height: 42px;
+            margin-right: 20px;
+        }
+    }
+}
+.account-step-guide{
+    height: 90%;
+    .ant-modal-content{
+        height: 100%;
+        .ant-modal-body{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 0;
+            .body{
+                flex: 1;
+                padding: 32px 60px 34px;
+                overflow: auto;
+                h4{
+                    font-size: 16px;
+                    font-weight: normal;
+                    text-align: center;
+                }
+                .content{
+                    margin-top: 40px;
+                    label{
+                        font-size: 14px;
+                        color: #FF8E2D;
+                        font-weight: bold;
+                    }
+                    p{
+                        font-size: 12px;
+                        margin: 8px 0 12px;
+                        a{
+                            color: #3D76F6;
+                        }
+                    }
+                    .content-p {
+                        margin-top: -8px;
+                        color: #ADB1B9;
+                    }
+                    .img-size {
+                        width: 680px;
+                    }
+                }
+            }
+            .footer{
+                text-align: center;
+                padding: 20px;
+                border-top: 1px solid rgba(51,60,79,0.10);
+            }
+        }
+    }
+}

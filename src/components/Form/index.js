@@ -17,7 +17,8 @@ const FormItem = props => {
             'ui-form-item-with-help' :  showErrorTip, 
             "has-error" : showErrorTip,
             "ui-form-item-small" : props.type === 'small',
-        }
+        },
+        props.className,
     ]);
     return (
         <div className={klass} style={props.style} >
@@ -37,7 +38,6 @@ const FormItem = props => {
 
 const Form = props => {
     const blockSubmit = (e) => {e.preventDefault()};
-    
     return (
         <form className={`ui-form ${props.className}`} style={props.style} onSubmit={blockSubmit} >
             {props.children}

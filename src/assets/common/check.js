@@ -214,10 +214,13 @@ let checkStr = function(val, opt = {}){
         },
         all: {
             reg: /[\s\S]*/g,
-        }
+        },
+        wechat: {
+            reg: /^WX[^\u4e00-\u9fa5]+$/g,
+            tip: intl.get(MODULE, 30, {who})/*_i18n{who}非法，不能有含有中文且需以WX开头*/,
+        },
     };
-    
-    
+
     if (!checkMap[type].reg.test(val)) {
         return checkMap[type].tip;
     }
