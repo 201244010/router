@@ -23,16 +23,14 @@ export default class Wechat extends React.Component {
         ssidTip: '',
         pwd: '',
         pwdTip: '',
-        encryption: false,
     }
 
     changeEnable = value => {
-        const { encryption } = this.state;
         this.setState({
             enable: value,
             checkBoxDisabled: !value,
             ssidDisabled: !value,
-            pwdDisabled: !value || encryption,
+            pwdDisabled: !value,
         }, () => {
             const { ssidDisabled, ssid, pwdDisabled, pwd } = this.state;
             const ssidTip = ssidDisabled ? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
@@ -45,20 +43,20 @@ export default class Wechat extends React.Component {
         });
     }
 
-    changeEncryption = e => {
-        const { enable } = this.state;
-        this.setState({
-            encryption: e.target.checked,
-            pwdDisabled: !enable || e.target.checked,
-        }, () => {
-            const { pwdDisabled, pwd, ssidTip } = this.state;
-            const pwdTip = pwdDisabled ? '' : checkStr(pwd, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
-            this.setState({
-                pwdTip: pwdTip,
-                saveDisable: ssidTip !== '' || pwdTip !== '',
-            })
-        });
-    }
+    // changeEncryption = e => {
+    //     const { enable } = this.state;
+    //     this.setState({
+    //         encryption: e.target.checked,
+    //         pwdDisabled: !enable || e.target.checked,
+    //     }, () => {
+    //         const { pwdDisabled, pwd, ssidTip } = this.state;
+    //         const pwdTip = pwdDisabled ? '' : checkStr(pwd, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
+    //         this.setState({
+    //             pwdTip: pwdTip,
+    //             saveDisable: ssidTip !== '' || pwdTip !== '',
+    //         })
+    //     });
+    // }
 
     onChange = (type, value) => {
         const field = {
@@ -99,14 +97,13 @@ export default class Wechat extends React.Component {
             this.guestData = data[0].result.guest;
             this.mainData = data[0].result.main;
             const ssidDisabled = enable === '1'? false : true;
-            const pwdDisabled = !(enable === '1') || encryption === 'none';
+            const pwdDisabled = !(enable === '1');
             const ssidTip = ssidDisabled? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
             const pwdTip = pwdDisabled? '' : checkStr(static_password, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
             this.setState({
                 ssid: ssid,
                 enable: enable === '1'? true : false,
                 pwd: Base64.decode(static_password),
-                encryption: encryption === 'none',
                 ssidDisabled: ssidDisabled,
                 checkBoxDisabled: enable === '1'? false : true,
                 pwdDisabled: pwdDisabled,
@@ -118,7 +115,7 @@ export default class Wechat extends React.Component {
     }
 
     setWechatInfo = async() => {
-        const { ssid, enable, pwd, encryption } = this.state;
+        const { ssid, enable, pwd } = this.state;
 
         const response = await common.fetchApi(
             [{
@@ -128,7 +125,7 @@ export default class Wechat extends React.Component {
                         ssid: ssid,
                         password: Base64.encode(pwd),
                         static_password: Base64.encode(pwd),
-                        encryption: encryption? 'none' : 'psk-mixed/ccmp+tkip',
+                        encryption: enable? 'psk-mixed/ccmp+tkip' : 'none',
                         password_type: 'static',
                         enable: enable? '1': '0',
                         period: this.guestData.period
@@ -149,7 +146,7 @@ export default class Wechat extends React.Component {
         this.getWechatInfo();
     }
     render() {
-        const { enable, ssid, ssidTip, pwd, pwdTip, encryption, ssidDisabled, pwdDisabled, checkBoxDisabled, modalVisible, saveDisable } = this.state;
+        const { enable, ssid, ssidTip, pwd, pwdTip, ssidDisabled, pwdDisabled, checkBoxDisabled, modalVisible, saveDisable } = this.state;
         return (
             <SubLayout className="settings">
                 <div className="setup-body">
@@ -169,11 +166,7 @@ export default class Wechat extends React.Component {
                                 <span className='ssid-description'>{intl.get(MODULE, 7)/*_i18n:Wi-Fi名称必须以大写字母“WX”开头，示例：WX_SUNMI _Guest*/}</span>
                                 <ErrorTip>{ssidTip}</ErrorTip>
                             </FormItem>
-                            
-                            <div className="wechat-label have-checkbox">
-                                <label>{intl.get(MODULE, 8)/*_i18n:客用Wi-Fi密码*/}</label>
-                                <Checkbox checked={encryption} onChange={this.changeEncryption} disabled={checkBoxDisabled}>{intl.get(MODULE, 9)/*_i18n:不设密码*/}</Checkbox>
-                            </div>
+                            <label className='wechat-label'>{intl.get(MODULE, 8)/*_i18n:客用Wi-Fi密码*/}</label>
                             <FormItem className='wechat-formItem' type="small" showErrorTip={pwdTip}>
                                 <Input type="password" value={pwd} onChange={value => this.onChange('pwd',value)} disabled={pwdDisabled} maxLength={32}/>
                                 <ErrorTip>{pwdTip}</ErrorTip>
@@ -183,6 +176,7 @@ export default class Wechat extends React.Component {
                     <section className="save-area">
                         <Button
                             size="large"
+                            type="primary"
                             disabled={saveDisable}
                             onClick={this.setWechatInfo}
                             className='button'
