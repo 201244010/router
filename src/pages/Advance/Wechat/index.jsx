@@ -90,22 +90,24 @@ export default class Wechat extends React.Component {
     }
 
     getWechatInfo = async() => {
-        let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }]);
+        let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }, { opcode: 'AUTH_WEIXIN_CONFIG_GET' }]);
         let { errcode, data } = response;
         if(errcode === 0){
-            const { guest: { ssid = '', enable = '', static_password = '', encryption = 'psk-mixed/ccmp+tkip'} = {} } = data[0].result;
+            const { guest: { ssid = '', enable = '', static_password = ''} = {} } = data[0].result;
+            const { enable: wechatEnable } = data[1].result.weixin;
             this.guestData = data[0].result.guest;
             this.mainData = data[0].result.main;
-            const ssidDisabled = enable === '1'? false : true;
-            const pwdDisabled = !(enable === '1');
+            this.weixin = data[1].result.weixin;
+            const ssidDisabled = !((enable === '1')&& wechatEnable);
+            const pwdDisabled = !((enable === '1')&& wechatEnable);
             const ssidTip = ssidDisabled? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
             const pwdTip = pwdDisabled? '' : checkStr(static_password, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
             this.setState({
                 ssid: ssid,
-                enable: enable === '1'? true : false,
+                enable: (enable === '1')&& wechatEnable,
                 pwd: Base64.decode(static_password),
                 ssidDisabled: ssidDisabled,
-                checkBoxDisabled: enable === '1'? false : true,
+                checkBoxDisabled: !(enable === '1'),
                 pwdDisabled: pwdDisabled,
                 ssidTip: ssidTip,
                 pwdTip: pwdTip,
@@ -116,23 +118,32 @@ export default class Wechat extends React.Component {
 
     setWechatInfo = async() => {
         const { ssid, enable, pwd } = this.state;
+        this.weixin.enable = enable ? '1' : '0';
 
         const response = await common.fetchApi(
-            [{
-                opcode: 'WIRELESS_SET',
-                data: { 
-                    guest: {
-                        ssid: ssid,
-                        password: Base64.encode(pwd),
-                        static_password: Base64.encode(pwd),
-                        encryption: enable? 'psk-mixed/ccmp+tkip' : 'none',
-                        password_type: 'static',
-                        enable: enable? '1': '0',
-                        period: this.guestData.period
-                    },
-                    main: this.mainData,
+            [
+                {
+                    opcode: 'WIRELESS_SET',
+                    data: { 
+                        guest: {
+                            ssid: ssid,
+                            password: Base64.encode(pwd),
+                            static_password: Base64.encode(pwd),
+                            encryption: enable? 'psk-mixed/ccmp+tkip' : 'none',
+                            password_type: 'static',
+                            enable: enable? '1': '0',
+                            period: this.guestData.period
+                        },
+                        main: this.mainData,
+                    }
+                },
+                {
+                    opcode: 'AUTH_WEIXIN_CONFIG_SET',
+                    data: {
+                        weixin: this.weixin
+                    }
                 }
-            }]
+            ]
         );
         const { errcode } = response;
         if(errcode === 0){

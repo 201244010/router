@@ -437,12 +437,20 @@ export default class WIFI extends React.Component {
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
         this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : Base64.encode(this.state.guestDynamicPassword);
-    
+        this.weixin.enable = this.state.guestEnable ? '1' : '0';
         let response = await common.fetchApi(
-            [{
-                opcode: 'WIRELESS_SET',
-                data: { main : this.initMain, guest : this.guestWireLess}
-            }]
+            [
+                {
+                    opcode: 'WIRELESS_SET',
+                    data: { main : this.initMain, guest : this.guestWireLess}
+                },
+                {
+                    opcode: 'AUTH_WEIXIN_CONFIG_SET',
+                    data: {
+                        weixin: this.weixin
+                    }
+                }
+            ]
         );
 
         this.setState({
@@ -480,13 +488,15 @@ export default class WIFI extends React.Component {
                 },
                 {
                     opcode: 'WIRELESS_CHANNEL_LIST_GET',
-                }
+                },
+                { opcode: 'AUTH_WEIXIN_CONFIG_GET' }
             ]
         );
         let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
             let { channel_list } = data[1].result;
+            this.weixin = data[2].result.weixin;
             this.channel_list = channel_list;
             this.mainWireLess = main;
             this.initMain = main;
