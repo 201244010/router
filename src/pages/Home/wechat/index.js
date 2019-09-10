@@ -131,7 +131,7 @@ export default class Connection extends React.Component {
                     {chatTotal}
                 </span>
                 <div className='chart' style={{width: 250, height: 80}} ref='dom'></div>
-                <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 8)/*_i18n:修改设置*/}</Button>
+                {/* <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 8)}</Button> */}
             </div>
         )
     }
