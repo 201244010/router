@@ -424,7 +424,7 @@ export default class Home extends React.Component {
                         <div className='grid'></div>
                         <li>
                             <Allocation
-                                status={source === 'default' ? false : true}
+                                status={qosEnable}
                                 percent={percent}
                                 largestPercent={largestPercent}
                                 history={this.props.history}
