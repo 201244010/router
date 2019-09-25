@@ -232,11 +232,12 @@ export default class Allocation extends React.Component {
 	}
 
 	componentDidUpdate() {
-        if (this.myChart) {
-            this.props.status && this.renderChart();
-        } else {
-            this.props.status && this.initChart();
-        }
+		const { status } = this.props;
+		if (this.myChart) {
+			status && this.renderChart();
+		} else {
+			status && this.initChart();
+		}
 	}
 
 	render() {
