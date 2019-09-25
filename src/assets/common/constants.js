@@ -167,8 +167,13 @@ export const DIRECTIVE = {
 
 	//upgradetime
 	UPNP_SWITCH: '0x2038',
-	UPNP_LIST_GET: '0x2039',
-	
+    UPNP_LIST_GET: '0x2039',
+    
+    //W1-4G
+    MOBILE_CONFIG_GET: '0x2135',
+    MOBILE_CONFIG_SET: '0x2134',
+    
+    LOCAL_UPGRADE: '0x207e',
 };
 
 /**
