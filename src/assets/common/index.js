@@ -60,11 +60,12 @@ export const getTimeZone = () => {
  */
 export function fetchApi(data, options = {}, loopOption = {}) {
     data = Object.prototype.toString.call(data) === "[object Array]" ? data : [data];
-    options = assign({ timeout: 10000, method: 'POST', loading: false, ignoreErr: false }, options);
+    options = assign({ timeout: 10000, method: 'POST', loading: false, ignoreErr: false, headers: {'Content-Type': 'application/json'} }, options);
 
     let url = __BASEAPI__ + '/';
     let {loop, interval} = assign({loop: false, interval: 1000, pending: noop}, loopOption);
 
+    
     let payload = data.map(item => {
         return {
             opcode: DIRECTIVE[item.opcode],
@@ -77,7 +78,14 @@ export function fetchApi(data, options = {}, loopOption = {}) {
         options.params = {"params": payload, count: "1"};
     }
     else if (method === 'post') {
-        options.data = {"params": payload, count: "1"};
+        if (options.headers['Content-Type'] === 'multipart/form-data') {
+            const formData = new FormData();
+            formData.append('opcode', payload[0].opcode);
+            formData.append(payload[0].param.filename, payload[0].param.file);
+            options.data = formData;
+        } else {
+            options.data = {"params": payload, count: "1"};
+        } 
     }
 
     const stok = get();
@@ -86,6 +94,7 @@ export function fetchApi(data, options = {}, loopOption = {}) {
         options.headers = {
             //Cookie: cookie,   // 直接设置Cookie axios不生效，也不合理，改用自定义Header XSRF-TOKEN
             ['XSRF-TOKEN']: stok,
+            ...options.headers
         };
     }
 

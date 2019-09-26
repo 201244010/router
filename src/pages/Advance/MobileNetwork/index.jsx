@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Select } from 'antd';
+import { Button, Select, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
@@ -30,8 +30,8 @@ class MobileNetwork extends React.PureComponent {
 	}
 
 	getMobileConfig = async() => {
-		let response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
-        let { errcode, data } = response;
+		const response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
+        const { errcode, data } = response;
         if(errcode === 0){
 			const { mobile: { switch: enable, status, mode, iptype: ipType, auth, apn } = {} } = data[0].result;
 			this.setState({

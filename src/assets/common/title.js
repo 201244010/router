@@ -83,6 +83,10 @@ export const getTitle = () => {
             "title" : intl.get(MODULE, 38)/*_i18n:移动网络设置*/,
             "titleTip": intl.get(MODULE, 39)/*_i18n:快速查看移动网络状态，设置移动网络参数*/
             },
+        'localUpgrade': {
+            "title" : intl.get(MODULE, 40)/*_i18n:本地升级*/,
+            "titleTip": intl.get(MODULE, 41)/*_i18n:将升级文件下载到本地电脑，手动升级路由器固件*/
+            },
     };
     return funcTitle;
 };
