@@ -81,7 +81,7 @@ export default class Topology extends React.Component {
 						);
 					})}
 					{reList.length < 6 && (
-						<div className="satelite-li">
+						<div className="satelite-li-add">
 							<div
 								className="add-router"
 								onClick={this.addRouter}
@@ -198,7 +198,7 @@ export default class Topology extends React.Component {
 								{listItems}
 							</Carousel>
 							{reList.length === 0 && (
-								<div className="satelite-li">
+								<div className="satelite-li-add">
 									<div
 										className="add-router"
 										onClick={this.addRouter}

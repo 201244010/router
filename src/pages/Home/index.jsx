@@ -43,9 +43,9 @@ export default class Home extends React.Component {
         downSpeed: 0,
         downUnit: 'KB/s',
         online: true,
-        qosEnable: true,
+        qosEnable: false,
         totalBand: 8 * 1024 * 1024,
-        source: 'defaul',
+        source: 'default',
         me: '',
         apModal: false,
         wechatConfig: false,
@@ -101,9 +101,9 @@ export default class Home extends React.Component {
         ]);
         let { errcode, data } = response;
         if (errcode == 0) {
-            let { qos } = data[0].result;
-            let { mac } = data[1].result;
-            let { weixin } = data[2].result;
+            let { result: { qos = {} } = {} } = data[0] || {};
+            let { result: { mac = '' } = {} } = data[1] || {};
+            let { result: { weixin = {} } = {} } = data[2] || {};
             this.setState({
                 qosEnable: qos.enable,
                 totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
@@ -424,7 +424,7 @@ export default class Home extends React.Component {
                         <div className='grid'></div>
                         <li>
                             <Allocation
-                                status={source === 'default' ? false : true}
+                                status={qosEnable}
                                 percent={percent}
                                 largestPercent={largestPercent}
                                 history={this.props.history}
