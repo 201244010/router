@@ -43,7 +43,6 @@ import UPnP from './Advance/Systemsetup/UPnP';
 import PortForwarding from './Advance/Systemsetup/PortForwarding';
 import CustomUpgrade from './Advance/Systemsetup/CustomUpgrade';
 import CustomRestart from './Advance/Systemsetup/CustomRestart';
-import MobileNetwork from './Advance/MobileNetwork';
 import LocalUpgrade from './Advance/Systemsetup/LocalUpgrade';
 import { RebootContext, RecoveryContext } from '~/context';
 
@@ -142,7 +141,6 @@ class PrimaryLayout extends React.Component {
             'customupgrade': { main: 'bg', footer: '', header: true, title: true },
             'customrestart': { main: 'bg', footer: '', header: true, title: true },
             'portforwarding': { main: 'bg', footer: '', header: true, title: true },
-            'mobileNetwork':  { main: 'bg', footer: '', header: true, title: true },
             'localUpgrade': { main: 'bg', footer: '', header: true, title: true },
         }
 
@@ -235,7 +233,6 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/portforwarding" component={PortForwarding} />
                     {/* <Route path="/routersetting/customupgrade" component={CustomUpgrade} />
                     <Route path="/routersetting/customrestart" component={CustomRestart} /> */}
-                    <Route path="/routersetting/mobileNetwork" component={MobileNetwork} />
                     <Route path="/routersetting/localUpgrade" component={LocalUpgrade} />
                 </Switch>
         )
