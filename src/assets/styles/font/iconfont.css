@@ -635,4 +635,11 @@
 	content: "\e6d5";
   }
   
-  
+.ui-icon-local:before {
+  content: "\e6d6";
+}
+
+.ui-icon-mobilenetwork:before {
+  content: "\e6d7";
+}
+
