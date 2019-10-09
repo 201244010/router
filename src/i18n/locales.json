@@ -1714,7 +1714,10 @@
 		"upgrade8": "确定",
 		"upgrade9": "升级完成，请重新登录管理界面",
 		"upgrade10": "正在升级系统，请耐心等待",
-		"upgrade11": "升级过程中请勿断电"
+		"upgrade11": "升级过程中请勿断电",
+		"upgrade12": "云端参数异常",
+		"upgrade13": "非法操作",
+		"upgrade14": "当前已有升级流程在执行"
 	},
 	"en-us": {
 		"app0": "You might have selected the Private Mode, please turn off the Private Mode and retry",
@@ -3276,6 +3279,9 @@
 		"upgrade8": "Confirm",
 		"upgrade9": "Upgrade Completed, please login again to the Admin page",
 		"upgrade10": "Now upgrading the system, please wait…",
-		"upgrade11": "Do not shut off the power during upgrading"
+		"upgrade11": "Do not shut off the power during upgrading",
+		"upgrade12": "Cloud parameter exception",
+		"upgrade13": "Illegal operation",
+		"upgrade14": "There is currently an upgrade process in progress"
 	}
 }

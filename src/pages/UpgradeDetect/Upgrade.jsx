@@ -11,6 +11,11 @@ export default class Upgrade extends React.Component{
         super(props);
         this.devList = {};
         this.codeList = {};
+        this.err = {
+            '-1008': intl.get(MODULE, 12)/*_i18n:云端参数异常*/,
+            '-1009': intl.get(MODULE, 13)/*_i18n:非法操作*/,
+            '-1012': intl.get(MODULE, 14)/*_i18n:当前已有升级流程在执行*/,
+        }
     }
     
     state = {
@@ -35,7 +40,8 @@ export default class Upgrade extends React.Component{
         common.fetchApi({
             opcode : 'MESH_UPGRADE_START',
         }).then((resp)=>{
-            if(resp.errcode == 0){
+            const { errcode } = resp;
+            if(errcode == 0){
                 this.setState({
                     duration : resp.data[0].result.upgrade.restart_duration,
                 });
@@ -103,8 +109,8 @@ export default class Upgrade extends React.Component{
                     }
                 })
             }) 
-        }else{
-            Modal.error({title : intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
+        } else {
+            Modal.error({title : this.err[errcode] || intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
         }});
     }
 
