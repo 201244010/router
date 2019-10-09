@@ -20,6 +20,9 @@ export default class PortForwarding extends React.Component {
 		super(props);
 		this.err = {
 			'-1003': intl.get(MODULE, 52)/*_i18n:规则条目已达系统上限*/,
+			'1000': intl.get(MODULE, 55)/*_i18n:规则名称不合法*/,
+			'1001': intl.get(MODULE, 56)/*_i18n:内部IP不合法*/,
+			'1021': intl.get(MODULE, 57)/*_i18n:端口号格式不合法*/,
 			'1022': intl.get(MODULE, 0)/*_i18n:端口转发内外端口号相同*/,
 			'1023': intl.get(MODULE, 1)/*_i18n:保存异常*/,
 			'1024': intl.get(MODULE, 2)/*_i18n:外部端口已被占用*/,

@@ -56,7 +56,7 @@ export default class SysUpgrade extends React.Component{
                             </div>
                         )
                     } else {
-                        return <span style={{fontSize: 14, color: online ? '#333C4F' : '#ADB1B9' }}>
+                        return <span style={{color: online ? '#333C4F' : '#ADB1B9' }}>
                         {record.status}
                         </span>
                     }
