@@ -15,7 +15,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'network', type: 'Internet',color: '#47D164', content: intl.get(MODULE, 1)/*_i18n:上网设置*/},
             {route: 'lan', type: 'lan',color: '#448BE9', content: intl.get(MODULE, 2)/*_i18n:局域网设置*/},
             {route: 'routermanage', type: 'childroute', color: '#3CA8E7', content: intl.get(MODULE, 3)/*_i18n:子路由设置*/},
-            {route: 'mobileNetwork', type: 'childroute', color: '#3CA8E7', content: intl.get(MODULE, 23)/*_i18n:子路由设置*/},
+            {route: 'mobileNetwork', type: 'mobilenetwork', color: '#47D164', content: intl.get(MODULE, 23)/*_i18n:子路由设置*/},
         ];
 
         this.appList = [
@@ -33,14 +33,14 @@ export default class RouterSetting extends React.PureComponent {
         this.systemList = [
             {route: 'changepassword', type: 'changepassword', color: '#E96044', content: intl.get(MODULE, 5)/*_i18n:修改管理密码*/},
             {route: 'backup', type: 'backup', color: '#6D6BD8', content: intl.get(MODULE, 6)/*_i18n:备份与恢复*/},  
-            {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},  
+            {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},
+            {route: 'localUpgrade', type: 'local', color: '#448BE9', content: intl.get(MODULE, 24)/*_i18n:本地升级*/}, 
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
-            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/},
-            {route: 'localUpgrade', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 24)/*_i18n:本地升级*/}, 
+            {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/}, 
         ];
 
 		if (getQuickStartVersion() === 'abroad') {
-			this.systemList.splice(5, 0, {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: intl.get(MODULE, 10)/*_i18n:时间设置*/})
+			this.systemList.splice(6, 0, {route: 'timeset', type: 'timezone', color: '#6D6BD8', content: intl.get(MODULE, 10)/*_i18n:时间设置*/})
 		}
 
         if (window.sessionStorage.getItem('_WECHAT') === 'IS_WECHAT') {
