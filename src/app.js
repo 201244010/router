@@ -29,7 +29,7 @@ if (PAGE_STYLE_WEB === web) {
 }
 if ('localhost' === location.hostname) {
     intl.init({
-      currentLocale: 'zh-cn',
+      currentLocale: 'en-us',
       locales
     });
     const result = {
@@ -47,7 +47,8 @@ if ('localhost' === location.hostname) {
     ReactDOM.render(<App />, document.querySelector('#wrap'));
 } else {
     common.fetchApi([
-        { opcode: 'SYSTEM_GET' }
+        { opcode: 'SYSTEM_GET' },
+        { opcode: 'RSA_ENCRYPTION' }
     ], { ignoreErr: true }).then(res => {
         const { data, errcode } = res;
         
@@ -68,6 +69,12 @@ if ('localhost' === location.hostname) {
             } else {
                 window.sessionStorage.setItem('_FACTORY', 'redirect');
             }
+
+            const { result: { public_key: publicKey, random } = {} } =
+            data[1] || {};
+            window.sessionStorage.setItem('_PUBLIC_KEY', publicKey);
+            window.sessionStorage.setItem('_RANDOM', random);
+
             intl.init({
                 currentLocale: getLang(),
                 locales

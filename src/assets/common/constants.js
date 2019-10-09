@@ -168,7 +168,9 @@ export const DIRECTIVE = {
 	//upgradetime
 	UPNP_SWITCH: '0x2038',
 	UPNP_LIST_GET: '0x2039',
-	
+    
+    //encryption
+    RSA_ENCRYPTION: '0x2103'
 };
 
 /**
