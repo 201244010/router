@@ -29,7 +29,7 @@ if (PAGE_STYLE_WEB === web) {
 }
 if ('localhost' === location.hostname) {
     intl.init({
-      currentLocale: 'en-us',
+      currentLocale: 'zh-cn',
       locales
     });
     const result = {
