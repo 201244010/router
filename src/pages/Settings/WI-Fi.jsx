@@ -2,6 +2,7 @@
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
+import { encryption } from '~/assets/common/encryption';
 import PanelHeader from '~/components/PanelHeader';
 import PrimaryTitle from '~/components/PrimaryTitle';
 import Form from "~/components/Form";
@@ -382,11 +383,10 @@ export default class WIFI extends React.Component {
             visibile: 'visible',
         });
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
-
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
         this.hostWireLess.band_2g.ssid = this.state.hostSsid24;
-        this.hostWireLess.band_2g.password = Base64.encode(this.state.hostSsid24Password);
+        this.hostWireLess.band_2g.password = encryption(this.state.hostSsid24Password);
         this.hostWireLess.band_2g.hide_ssid = this.state.hide_ssid24 == true? '1' : '0';
         this.hostWireLess.band_2g.encryption = this.state.encryption24;
         this.hostWireLess.band_2g.htmode = this.state.htmode24;
@@ -396,7 +396,7 @@ export default class WIFI extends React.Component {
         if( !this.state.channelType ){
             this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
             this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
-            this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
+            this.hostWireLess.band_5g.password = encryption(this.state.hostSsid5Password);
             this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
             this.hostWireLess.band_5g.encryption = this.state.encryption5;
             this.hostWireLess.band_5g.htmode = this.state.htmode5;
@@ -431,12 +431,12 @@ export default class WIFI extends React.Component {
 
     submitGuest = async () => {
         this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
+        this.guestWireLess.static_password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
         this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : Base64.encode(this.state.guestDynamicPassword);
+        this.guestWireLess.password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : encryption(this.state.guestDynamicPassword);
         this.weixin.enable = this.state.guestEnable ? '1' : '0';
         let response = await common.fetchApi(
             [
