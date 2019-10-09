@@ -1,0 +1,35 @@
+.localUpgrade-body {
+	width: 100%;
+	margin-top: 0;
+	padding: 0;
+	.localUpgrade-label {
+		width: 320px;
+		margin:24px 0 8px;
+		display: inline-block;
+		font-family: PingFangSC-Regular, sans-serif;
+	}
+	.localUpgrade-flex {
+		width: 418px;
+		display: flex;
+		justify-content: space-between;
+		.localUpgrade-formItem {
+			width: 320px;
+		}
+		.upload-button {
+			width: 80px;
+			height: 36px;
+			margin-top: 2px;
+		}
+	}
+}
+.localUpgrade-save {
+	border-top:1px solid #ECECEC;
+	padding:28px 60px 20px 0;
+	margin: 198px 60px 0;
+	.save-button {
+		width: 200px;
+		height: 42px;
+		margin-right: 20px;
+	}
+}
+	
