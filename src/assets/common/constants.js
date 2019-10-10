@@ -170,7 +170,13 @@ export const DIRECTIVE = {
 	UPNP_LIST_GET: '0x2039',
     
     //encryption
-    RSA_ENCRYPTION: '0x2103'
+    RSA_ENCRYPTION: '0x2103',
+    
+    //W1-4G
+    MOBILE_CONFIG_GET: '0x2135',
+    MOBILE_CONFIG_SET: '0x2134',
+    
+    LOCAL_UPGRADE: '0x207e',
 };
 
 /**
