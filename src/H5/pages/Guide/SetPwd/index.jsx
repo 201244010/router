@@ -4,6 +4,7 @@ import Button from 'h5/components/Button';
 import Input from 'h5/components/Input';
 import confirm from 'h5/components/confirm';
 import {checkStr} from '~/assets/common/check';
+import { encryption } from '~/assets/common/encryption';
 import { init } from '~/assets/common/auth';
 
 const MODULE = 'h5setpwd';
@@ -30,7 +31,7 @@ export default class SetPwd extends React.Component {
         this.setState({ loading: true });
         const response = await common.fetchApi({
             opcode: 'ACCOUNT_INITIAL_PASSWORD',
-            data: { account: { password: Base64.encode(pwd), user: 'admin' } }
+            data: { account: { password: encryption(pwd), user: 'admin' } }
         });
         this.setState({ loading: false });
 
