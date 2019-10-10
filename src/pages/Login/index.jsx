@@ -6,6 +6,7 @@ import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import SwitchLang from '~/components/SwitchLang';
 import { getQuickStartVersion } from '~/utils';
+import { encryption } from '~/assets/common/encryption';
 import './login.scss';
 
 const MODULE = 'login';
@@ -18,7 +19,7 @@ class Login extends React.Component {
 
 	state = {
 		password: '',
-		loading: false
+		loading: false,
 	};
 
 	onChange = value => {
@@ -40,8 +41,7 @@ class Login extends React.Component {
 	}
 
 	post = async () => {
-		const password = this.state.password;
-
+		const { password } = this.state;
 		if ('' === password) {
 			message.error(intl.get(MODULE, 1) /*_i18n:请输入密码*/);
 			return;
@@ -53,7 +53,7 @@ class Login extends React.Component {
 				opcode: 'ACCOUNT_LOGIN',
 				data: {
 					account: {
-						password: Base64.encode(password),
+						password: encryption(password),
 						user: 'admin'
 					}
 				}

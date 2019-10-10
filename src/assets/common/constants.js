@@ -167,7 +167,10 @@ export const DIRECTIVE = {
 
 	//upgradetime
 	UPNP_SWITCH: '0x2038',
-    UPNP_LIST_GET: '0x2039',
+	UPNP_LIST_GET: '0x2039',
+    
+    //encryption
+    RSA_ENCRYPTION: '0x2103',
     
     //W1-4G
     MOBILE_CONFIG_GET: '0x2135',
