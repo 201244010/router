@@ -6,6 +6,7 @@ import { checkStr } from '~/assets/common/check';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
 import GuideModal from './GuideModal';
+import ModalLoading from '~/components/ModalLoading';
 
 import './index.scss';
 
@@ -17,18 +18,18 @@ export default class Wechat extends React.Component {
         enable: true,
         ssidDisabled: false,
         pwdDisabled: false,
-        checkBoxDisabled: false,
         saveDisable: false,
         ssid: '',
         ssidTip: '',
         pwd: '',
         pwdTip: '',
+        modalVisible: false,
+        loadingVisible: false,
     }
 
     changeEnable = value => {
         this.setState({
             enable: value,
-            checkBoxDisabled: !value,
             ssidDisabled: !value,
             pwdDisabled: !value,
         }, () => {
@@ -42,21 +43,6 @@ export default class Wechat extends React.Component {
             })
         });
     }
-
-    // changeEncryption = e => {
-    //     const { enable } = this.state;
-    //     this.setState({
-    //         encryption: e.target.checked,
-    //         pwdDisabled: !enable || e.target.checked,
-    //     }, () => {
-    //         const { pwdDisabled, pwd, ssidTip } = this.state;
-    //         const pwdTip = pwdDisabled ? '' : checkStr(pwd, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
-    //         this.setState({
-    //             pwdTip: pwdTip,
-    //             saveDisable: ssidTip !== '' || pwdTip !== '',
-    //         })
-    //     });
-    // }
 
     onChange = (type, value) => {
         const field = {
@@ -107,7 +93,6 @@ export default class Wechat extends React.Component {
                 enable: (enable === '1')&& wechatEnable,
                 pwd: Base64.decode(static_password),
                 ssidDisabled: ssidDisabled,
-                checkBoxDisabled: !(enable === '1'),
                 pwdDisabled: pwdDisabled,
                 ssidTip: ssidTip,
                 pwdTip: pwdTip,
@@ -147,7 +132,11 @@ export default class Wechat extends React.Component {
         );
         const { errcode } = response;
         if(errcode === 0){
-            message.success(intl.get(MODULE, 30)/*_i18n:设置完成*/)
+            this.setState({loadingVisible: true});
+            setTimeout(()=> {
+                this.setState({loadingVisible: false});
+                message.success(intl.get(MODULE, 30)/*_i18n:设置完成*/)
+            },15000);
         } else {
             message.error(intl.get(MODULE, 31)/*_i18n:设置失败*/)
         }
@@ -157,7 +146,7 @@ export default class Wechat extends React.Component {
         this.getWechatInfo();
     }
     render() {
-        const { enable, ssid, ssidTip, pwd, pwdTip, ssidDisabled, pwdDisabled, checkBoxDisabled, modalVisible, saveDisable } = this.state;
+        const { enable, ssid, ssidTip, pwd, pwdTip, ssidDisabled, pwdDisabled, modalVisible, saveDisable, loadingVisible } = this.state;
         return (
             <SubLayout className="settings">
                 <div className="setup-body">
@@ -195,6 +184,10 @@ export default class Wechat extends React.Component {
                     </section>
                 </div>
                 <GuideModal visible={modalVisible} close={this.closeModal}/>
+                <ModalLoading 
+                    visible={loadingVisible}
+                    tip={intl.get(MODULE, 32)/*_i18n:正在配置微信连Wi-Fi，请稍候...*/}
+                />
             </SubLayout>
         );
     }
