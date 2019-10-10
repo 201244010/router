@@ -2,8 +2,7 @@ import React from 'react';
 import { Button, Switch, Modal, Icon, message } from 'antd';
 import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
-import CustomIcon from '~/components/Icon';
-import Tips from '~/components/Tips';
+import { encryption } from '~/assets/common/encryption';
 import {checkStr} from '~/assets/common/check';
 
 const MODULE = 'setwifi';
@@ -86,15 +85,15 @@ export default class SetWifi extends React.Component {
         let { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw, setTip } = this.state;
         if (setTip) {
             this.guestWireLess.ssid = guestWifiName;
-            this.guestWireLess.static_password = Base64.encode(guestWifiPsw);
+            this.guestWireLess.static_password = encryption(guestWifiPsw);
             this.guestWireLess.enable = '1';
             this.guestWireLess.encryption = guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
         }
         
         this.mainWireLess.host.band_2g.ssid = hostWifiName;
-        this.mainWireLess.host.band_2g.password = Base64.encode(hostWifiPsw);
+        this.mainWireLess.host.band_2g.password = encryption(hostWifiPsw);
         this.mainWireLess.host.band_5g.ssid = hostWifiName.substring(0,29) + '_5G';
-        this.mainWireLess.host.band_5g.password = Base64.encode(hostWifiPsw);
+        this.mainWireLess.host.band_5g.password = encryption(hostWifiPsw);
         this.mainWireLess.host.band_2g.encryption = hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_5g.encryption = hostWifiPsw.length === 0 ?'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_2g.enable = "1";
