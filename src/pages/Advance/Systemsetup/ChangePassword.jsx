@@ -59,15 +59,16 @@ export default class ChangePassword extends React.Component{
             return ;
         }else{
             this.setState({loading : true});
-            const { userName, oldPWD, newPWD, publicKey, random } = this.state;
-            this.account= {
-                user: userName,
-                oldpassword: encryption(oldPWD),
-                password: encryption(newPWD),
-            };
+            const { userName, oldPWD, newPWD } = this.state;
             common.fetchApi({
                 opcode: 'ACCOUNT_MODIFY',
-                data: { account: this.account }
+                data: { 
+                    account: {
+                        user: userName,
+                        oldpassword: encryption(oldPWD),
+                        password: encryption(newPWD),
+                    } 
+                }
             }).then((resp)=>{
                 let { errcode } = resp; 
                 if(errcode === 0){
