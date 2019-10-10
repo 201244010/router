@@ -495,14 +495,20 @@ export default class WIFI extends React.Component {
         let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
+            const { host: {band_2g: {password: password2G}, band_5g: { password: password5G}}} = main;
+            const { password: dynamicPassword, static_password: staticPassword } = guest;
             let { channel_list } = data[1].result;
             this.weixin = data[2].result.weixin;
             this.channel_list = channel_list;
             this.mainWireLess = main;
-            this.initMain = main;
+            this.initMain = JSON.parse(JSON.stringify(main));
+            this.initMain.host.band_2g.password = encryption(Base64.decode(password2G));
+            this.initMain.host.band_5g.password = encryption(Base64.decode(password5G));
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
-            this.initGuest = guest;
+            this.initGuest = { ...guest };
+            this.initGuest.password = encryption(Base64.decode(dynamicPassword));
+            this.initGuest.static_password = encryption(Base64.decode(staticPassword));
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
