@@ -15,7 +15,7 @@ class ModalLoading extends React.Component {
 				centered={true}
 				footer={null}
 			>
-				<div className='modalLoading-body' style={{textAlign: 'center'}}>
+				<div className='modalLoading-body'>
 					<CustomIcon color="#6174f1" type="loading" size={80} spin/>
 					<Tips size="16" top={19}>{tip}</Tips>
 				</div>
