@@ -2,9 +2,8 @@
     flex:none;
     color: #333C4F;
     .head{
-        padding: 10px 0 28px;
-        border-bottom: 1px solid #ECECEC;
-        margin-bottom: 102px;
+        margin-bottom: 26px;
+        text-align: center;
         p{
             display: inline-block;
             margin-left: 12px;
@@ -20,11 +19,11 @@
             text-align: left;
             display: inline-block;
             width: 486px;
-            min-height: 202px;
+            min-height: 212px;
             padding: 40px 0 32px 60px;
-            background: #FFF;
-            border: 1px solid rgba(0,0,0,0.04);
+            background:rgba(246,247,249,1);
             border-radius: 12px;
+            width:486px;
             .title{
                 display: inline-block;
                 margin-bottom: 20px;
@@ -45,8 +44,11 @@
                 overflow: hidden;
             }
         }
-        li:nth-child(1){
+        li:nth-child(2){
             margin-right: 40px;
+            &::before {
+                
+            }
         }
     }
 }
