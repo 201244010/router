@@ -16,8 +16,8 @@ export default class SetWifi extends React.Component {
 
         return (
             <div className="setwifi">
-                <h2>{intl.get(MODULE, 19)/*_i18n:设置无线网络*/}</h2> 
-                <p className="ui-tips guide-tip">{intl.get(MODULE, 20)/*_i18n:客用Wi-Fi可开放给客人使用，保障隐私安全*/}</p>
+                <h2>{intl.get(MODULE, 19)/*_i18n:设置Wi-Fi*/}</h2> 
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 20)/*_i18n:设置商户Wi-Fi、客用Wi-Fi的名称与密码*/}</p>
                 <Switch>
                     <Route path={`${match.path}/setWifi`} component={Setting} />
                     <Route path={`${match.path}/applying/:param`} component={Applying} />
