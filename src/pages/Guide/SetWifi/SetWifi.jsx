@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Switch, Modal, Icon, message } from 'antd';
 import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
-import { encryption } from '~/assets/common/encryption';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import {checkStr} from '~/assets/common/check';
 
 const MODULE = 'setwifi';
@@ -81,8 +81,9 @@ export default class SetWifi extends React.Component {
         });
     }
 
-    dataSet = async() =>{
+    dataSet = async () =>{
         let { hostWifiName, guestWifiName, hostWifiPsw, guestWifiPsw, setTip } = this.state;
+		await fetchPublicKey();
         if (setTip) {
             this.guestWireLess.ssid = guestWifiName;
             this.guestWireLess.static_password = encryption(guestWifiPsw);

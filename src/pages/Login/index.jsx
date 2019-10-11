@@ -6,7 +6,7 @@ import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import SwitchLang from '~/components/SwitchLang';
 import { getQuickStartVersion } from '~/utils';
-import { encryption } from '~/assets/common/encryption';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import './login.scss';
 
 const MODULE = 'login';
@@ -48,6 +48,7 @@ class Login extends React.Component {
 		}
 
 		this.setState({ loading: true });
+		await fetchPublicKey();
 		const response = await common.fetchApi([
 			{
 				opcode: 'ACCOUNT_LOGIN',

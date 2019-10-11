@@ -2,7 +2,7 @@
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
-import { encryption } from '~/assets/common/encryption';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import PanelHeader from '~/components/PanelHeader';
 import PrimaryTitle from '~/components/PrimaryTitle';
 import Form from "~/components/Form";
@@ -363,6 +363,7 @@ export default class WIFI extends React.Component {
     submitMain = async ()=> {
         const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
 
+        await fetchPublicKey();
         //商户Wi-Fi 2.4G和5G ssid不能相同
         if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
             message.error(intl.get(MODULE, 23)/*_i18n:2.4G、5G Wi-Fi名称不能相同*/);
@@ -492,6 +493,7 @@ export default class WIFI extends React.Component {
                 { opcode: 'AUTH_WEIXIN_CONFIG_GET' }
             ]
         );
+        await fetchPublicKey();
         let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
