@@ -52,10 +52,3 @@ export default class Setting extends React.Component {
         )
     }
 };
-
-
-
-
-
-
-
