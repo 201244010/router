@@ -101,11 +101,16 @@ export default class Topology extends React.Component {
 				<div className="internet">
 					<ul className="router">
 						<li>
-							<CustomIcon
-								size={100}
-								color="#fff"
-								type="network"
-							/>
+							<div>
+								<CustomIcon
+									size={100}
+									color="#fff"
+									type="network"
+								/>
+								<label>
+									{intl.get(MODULE, 1) /*_i18n:互联网*/}
+								</label>
+							</div>
 						</li>
 						<li className="line">
 							<div className="circle" />
@@ -150,7 +155,16 @@ export default class Topology extends React.Component {
 							<div className="circle" />
 						</li>
 						<li>
-							<CustomIcon size={100} color="#fff" type="link" />
+							<div>
+								<CustomIcon
+									size={100}
+									color="#fff"
+									type="link"
+								/>
+								<label>
+									大厅<span>（主路由）</span>
+								</label>
+							</div>
 						</li>
 						<li className="line">
 							<div className="circle" />
@@ -158,17 +172,17 @@ export default class Topology extends React.Component {
 							<div className="circle" />
 						</li>
 						<li>
-							<CustomIcon
-								size={100}
-								color="#fff"
-								type="equipment"
-							/>
+							<div>
+								<CustomIcon
+									size={100}
+									color="#fff"
+									type="equipment"
+								/>
+								<label>
+									{intl.get(MODULE, 3) /*_i18n:上网设备*/}
+								</label>
+							</div>
 						</li>
-					</ul>
-					<ul className="func-label">
-						<label>{intl.get(MODULE, 1) /*_i18n:互联网*/}</label>
-						<label>{intl.get(MODULE, 2) /*_i18n:网络连接*/}</label>
-						<label>{intl.get(MODULE, 3) /*_i18n:上网设备*/}</label>
 					</ul>
 					<div className="strateline">
 						<div className="line" />
@@ -353,6 +367,7 @@ class Item extends React.Component {
 
 	render() {
 		const reList = this.props.reList;
+		console.log('reInfo3', new Date());
 		const wired = reList.connMode.wired;
 		const type = parseInt(reList.online);
 		const role = parseInt(reList.role);

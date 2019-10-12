@@ -14,7 +14,7 @@ const options = {
     devtool: "cheap-module-eval-source-map",
     output: {
         path: resolve('dist'),
-        filename: '[name].[hash].min.js',
+        filename: '[name].min.js',
         publicPath: "/"
     },
     module: {
@@ -29,7 +29,7 @@ const options = {
                 test: /\.(png|jpg|gif|woff|woff2|ttf|eot|svg|swf)$/,
                 loader: "file-loader",
                 options: {
-                    name: "[name].[hash].[ext]"
+                    name: "[name].[ext]"
                 }
             }
         ]

@@ -94,10 +94,11 @@ export default class Home extends React.Component {
     }
 
     fetchBasic = async () => {
+        console.log('basic');
         let response = await common.fetchApi([
             { opcode: 'QOS_GET' },
             { opcode: 'WHOAMI_GET' },
-            { opcode: 'AUTH_WEIXIN_CONFIG_GET'}
+            { opcode: 'AUTH_WEIXIN_CONFIG_GET'},
         ]);
         let { errcode, data } = response;
         if (errcode == 0) {
@@ -113,6 +114,48 @@ export default class Home extends React.Component {
             });
             return;
         }
+    }
+
+    fetchMainRouter = async () => {
+        console.log('start', new Date());
+
+        let response = await common.fetchApi([
+            { opcode: 'ROUTE_GET'},
+        ]);
+        let { errcode, data } = response;
+        console.log('end', new Date());
+
+        console.log(data);
+        const reInfo = data[0].result.sonconnect.devices;
+        console.log('reInfo1', new Date());
+        let routeList = {};
+        let routeName = [];
+        reInfo.map(item => {
+            routeList[item.mac.toUpperCase()] = item.location;
+            routeName.push({
+                text: item.location,
+                value: item.location
+            })
+        });
+
+        let reList = reInfo.map((re) => {
+            
+            return {
+                mac: re.mac.toUpperCase(),
+                online: re.online,
+                name: re.location,
+                role: re.role,
+                rssi: re.rssi,
+                ip: re.ip,
+                devid: re.devid,
+				parent: routeList[re.routermac.toUpperCase()],
+				connMode: re.conn_mode || {}
+            }
+        });
+
+        this.setState({
+            reList
+        })
     }
 
     fetchService = async () => {
@@ -157,6 +200,9 @@ export default class Home extends React.Component {
             wechats = data[5].result,
             reInfo = data[6].result.sonconnect.devices,
             role = data[7].result.sunmimesh.role;
+
+            console.log('reInfo2', new Date());
+        
         //时间戳转时间，获取每天微信接入的数量
         const wechatList = wechats.access_report;
         let band = {
@@ -385,11 +431,14 @@ export default class Home extends React.Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.stop = false;
-        this.fetchBasic();
-        this.startRefresh();
-        this.fetchService();
+        console.log('reInfo0', new Date());
+
+        await this.fetchMainRouter();
+        await this.fetchBasic();
+        await this.startRefresh();
+        await this.fetchService();
     }
 
     componentWillUnmount(){

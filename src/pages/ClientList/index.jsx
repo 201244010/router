@@ -267,9 +267,12 @@ export default class ClientList extends React.Component {
         }, {
             title: intl.get(MODULE, 10)/*_i18n:流量消耗*/,
             width: 110,
-            dataIndex: 'flux',
-            sorter: (a, b) => a.flux - b.flux,
-            render: (flux, record) => formatSpeed(flux).replace('/s', ''),
+            render: (text, record) => (
+                <div>
+                    <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{ marginLeft: 5 }}>{record.fluxTx}</span></div>
+                    <div><CustomIcon type="downloadtraffic" color='#87D068' size={12} /><span style={{ marginLeft: 5 }}>{record.fluxRx}</span></div>
+                </div>
+            )
         }, {
             title: intl.get(MODULE, 11)/*_i18n:操作*/,
             width: 178,
@@ -482,7 +485,8 @@ export default class ClientList extends React.Component {
                 cur_rx_bytes: 0
             };
             let tf = traffics.find(item => item.ip === client.ip) || dft;
-            let flux = tf.total_tx_bytes + tf.total_rx_bytes;
+            const fluxTx = tf.total_tx_bytes;
+            const fluxRx = tf.total_rx_bytes;
 
             let mode = modeMap[client.wifi_mode];
 
@@ -524,10 +528,14 @@ export default class ClientList extends React.Component {
                 rssi: rssi,
                 tx: formatSpeed(tf.cur_tx_bytes),
                 rx: formatSpeed(tf.cur_rx_bytes),
-                flux: flux,
+                fluxTx: formatSpeed(fluxTx).replace('/s', ''),
+                fluxRx: formatSpeed(fluxRx).replace('/s', '')
             }
         });
-
+        const currentDevice = totalList.filter(item => item.me == 1);
+        const sunmiList = totalList.filter(item => item.me != 1 && item.type === 'sunmi');
+        const priorityList = totalList.filter(item => item.me != 1 && item.type === 'whitelist');
+        const normalList = totalList.filter(item => item.me != 1 && item.type !== 'whitelist' && item.type !== 'sunmi');
         let wan = data[1].result.traffic_stats.wan;
         let tx = formatSpeed(wan.cur_tx_bytes);
         let rx = formatSpeed(wan.cur_rx_bytes);
@@ -537,7 +545,7 @@ export default class ClientList extends React.Component {
             upUnit: tx.match(/[a-z/]+/gi),
             downSpeed: rx.match(/[0-9\.]+/g),
             downUnit: rx.match(/[a-z/]+/gi),
-            clients: totalList
+            clients: [...currentDevice, ...sunmiList, ...priorityList, ...normalList]
         });
     } 
 
