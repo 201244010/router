@@ -1,6 +1,14 @@
 import JSEncrypt from 'jsencrypt'; // 引入模块
 
-const encryption = (password) => {
+const fetchPublicKey = async () => {
+	const response = await common.fetchApi([{ opcode: 'RSA_ENCRYPTION' }]);
+	const { data } = response;
+	const { result: { public_key: publicKey, random } = {} } = data[0] || {};
+	window.sessionStorage.setItem('_PUBLIC_KEY', publicKey);
+	window.sessionStorage.setItem('_RANDOM', random);
+};
+
+const encryption = password => {
 	const encrypt = new JSEncrypt(); // 实例化加密对象
 	const publicKey = window.sessionStorage.getItem('_PUBLIC_KEY');
 	const random = window.sessionStorage.getItem('_RANDOM');
@@ -9,5 +17,4 @@ const encryption = (password) => {
 	return encryptoPasswd;
 };
 
-
-export { encryption };
+export { fetchPublicKey, encryption };

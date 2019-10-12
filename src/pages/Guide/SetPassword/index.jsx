@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64';
 import { init } from '~/assets/common/auth';
 import { checkStr } from '~/assets/common/check';
 import { getQuickStartVersion } from '~/utils';
-import { encryption } from '~/assets/common/encryption';
+import { encryption, fetchPublicKey} from '~/assets/common/encryption';
 import './setpassword.scss';
 
 const MODULE = 'setpassword';
@@ -36,6 +36,7 @@ export default class SetPassword extends React.Component {
 			return;
 		}
 		this.setState({ loading: true });
+		await fetchPublicKey();
 		const response = await common.fetchApi({
 			opcode: 'ACCOUNT_INITIAL_PASSWORD',
 			data: {

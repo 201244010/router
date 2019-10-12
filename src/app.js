@@ -48,7 +48,6 @@ if ('localhost' === location.hostname) {
 } else {
     common.fetchApi([
         { opcode: 'SYSTEM_GET' },
-        { opcode: 'RSA_ENCRYPTION' }
     ], { ignoreErr: true }).then(res => {
         const { data, errcode } = res;
         
@@ -69,11 +68,6 @@ if ('localhost' === location.hostname) {
             } else {
                 window.sessionStorage.setItem('_FACTORY', 'redirect');
             }
-
-            const { result: { public_key: publicKey, random } = {} } =
-            data[1] || {};
-            window.sessionStorage.setItem('_PUBLIC_KEY', publicKey);
-            window.sessionStorage.setItem('_RANDOM', random);
 
             intl.init({
                 currentLocale: getLang(),

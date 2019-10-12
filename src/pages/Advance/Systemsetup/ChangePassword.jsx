@@ -4,7 +4,7 @@ import { Base64 } from 'js-base64';
 import Form from '~/components/Form';
 import { message, Button } from 'antd';
 import {checkStr} from '~/assets/common/check';
-import { encryption } from '~/assets/common/encryption';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import SubLayout from '~/components/SubLayout';
 
 const MODULE = 'changepassword';
@@ -60,6 +60,7 @@ export default class ChangePassword extends React.Component{
         }else{
             this.setState({loading : true});
             const { userName, oldPWD, newPWD } = this.state;
+            await fetchPublicKey();
             common.fetchApi({
                 opcode: 'ACCOUNT_MODIFY',
                 data: { 
