@@ -90,7 +90,7 @@ class LocalUpgrade extends React.PureComponent {
 				message.error(errorInfo);
 			}
 		} else {
-			const loadingTip = '';
+			let loadingTip = '';
 			switch (state) {
 				case '1':
 					loadingTip = intl.get(MODULE, 11)/*_i18n:正在进行文件上传*/;	
