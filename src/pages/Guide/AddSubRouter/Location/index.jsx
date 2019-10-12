@@ -116,8 +116,8 @@ export default class Location extends React.Component {
         });
         return (
             <div className="location">
-                <h2>{intl.get(MODULE, 5)/*_i18n:设置位置*/}</h2> 
-                <p className="ui-tips guide-tip">{intl.get(MODULE, 6)/*_i18n:位置将作为路由器的名称，有助于您今后识别和管理*/}</p>
+                <h2>{intl.get(MODULE, 5)/*_i18n:设置备注名称*/}</h2> 
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 6)/*_i18n:设置您的路由器的备注，有助于您今后识别和管理*/}</p>
                 <div className="content">
                 <Form style={{margin : '24px auto',display: 'inline-block',textAlign: 'left'}}>
                     {routeShow}

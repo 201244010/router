@@ -70,10 +70,10 @@ export default class SubRouter extends React.Component {
                 footer = <div className='footer checkbox'><Checkbox onChange={this.onChange} checked={checked}></Checkbox></div>;
                 break;
             case 'success':
-                footer = <div className='footer final'><div><CustomIcon size={14} color='#4EC53F' type="succeed" style={{marginRight: 4}} />{intl.get(MODULE, 0)/*_i18n:设置成功*/}</div></div>;
+                footer = <div className='footer final'><div><CustomIcon size={14} color='#4EC53F' type="succeed" style={{marginRight: 4}} />{intl.get(MODULE, 0)/*_i18n:组网成功*/}</div></div>;
                 break;
             case 'failed':
-                footer = <div className='footer final'><div><CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 4}} />{intl.get(MODULE, 1)/*_i18n:设备异常，请检查*/}</div><p className='ignoreTip' onClick={this.ignore}>{intl.get(MODULE, 7)/*_i18n:忽略此设备*/}</p></div>;
+                footer = <div className='footer final'><div><CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 4}} />{intl.get(MODULE, 1)/*_i18n:组网异常，可将子路由恢复出厂后重试*/}</div><p className='ignoreTip' onClick={this.ignore}>{intl.get(MODULE, 7)/*_i18n:忽略此设备*/}</p></div>;
                 break;
             case 'unusual':
                 footer = <div className='footer final'><div className='footer-unusual'>{intl.get(MODULE, 2)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</div></div>;
@@ -96,7 +96,7 @@ export default class SubRouter extends React.Component {
                     <CustomIcon size={14} color='#333C4F' type="hint" style={{marginRight: 8}}/>{intl.get(MODULE, 3)/*_i18n:提示*/}
                 </div>
                 <div className='modalContent'>
-					{intl.get(MODULE, 4)/*_i18n:您确定放弃添加子路由？*/}
+					{intl.get(MODULE, 4)/*_i18n:您确定放弃添加此台子路由？*/}
                 </div>
                 <div className='modalFooter'>
                     <Button className="cancleButton" disabled={false} onClick={this.cancel}>{intl.get(MODULE, 5)/*_i18n:取消*/}</Button>

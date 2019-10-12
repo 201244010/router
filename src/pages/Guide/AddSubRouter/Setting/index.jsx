@@ -234,8 +234,8 @@ export default class Setting extends React.Component {
         }
         return (
             <div className="setting">
-                <h2>{intl.get(MODULE, 0)/*_i18n:设置子路由*/}</h2> 
-                <p className="ui-tips guide-tip">{intl.get(MODULE, 1)/*_i18n:检测完成后，请确认您需要添加的子路由*/}</p>
+                <h2>{intl.get(MODULE, 0)/*_i18n:组网设置*/}</h2> 
+                <p className="ui-tips guide-tip">{intl.get(MODULE, 1)/*_i18n:搜索完成后，勾选您需要添加的子路由即可*/}</p>
                 <div className="content">
                     {findRouter}
                 </div>
@@ -274,7 +274,7 @@ class Selecting extends React.Component {
                         <CustomIcon size={80} color="#6174F1" type="loading" spin />
                     </div>
                     {/* <Icon key="progress-icon" type="loading" className="bigLoading"  spin /> */}
-                    <h3 className='bigTitle'>{intl.get(MODULE, 2)/*_i18n:正在检测子路由……*/}</h3>
+                    <h3 className='bigTitle'>{intl.get(MODULE, 2)/*_i18n:正在搜索子路由……*/}</h3>
                 </React.Fragment>
             );
         }
@@ -300,7 +300,7 @@ class Selecting extends React.Component {
                         <div className="smallLoading">
                             <CustomIcon size={24} color="#6174F1" type="loading" spin />
                         </div>
-                        <span className='smallTitle'>{intl.get(MODULE, 7)/*_i18n:正在检测子路由……*/}</span>
+                        <span className='smallTitle'>{intl.get(MODULE, 7)/*_i18n:正在搜索子路由……*/}</span>
                     </div>
                     <div className="body">
                     {showList}
@@ -395,7 +395,7 @@ class SettingResult extends React.Component {
                 <React.Fragment>
                 <div className="settingHeader">
                     <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
-                    <span className='smallTitle' style={{verticalAlign: 'middle'}}>{intl.get(MODULE, 13)/*_i18n:设置完成*/}</span>
+                    <span className='smallTitle' style={{verticalAlign: 'middle'}}>{intl.get(MODULE, 13)/*_i18n:组网完成*/}</span>
                 </div>
                 <div className="body">
                 {showList}
