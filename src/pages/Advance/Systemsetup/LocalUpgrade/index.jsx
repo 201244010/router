@@ -35,24 +35,6 @@ class LocalUpgrade extends React.PureComponent {
 		this.setState({filename: value});
 	}
 
-	// stopState = resp => {
-	// 	const {errcode, data} = resp;
-	// 	if(errcode === 0) {
-	// 		const { result: { restart_duration: duration = 0 } = {} } = data[0];
-	// 		this.setState({
-	// 			loadingVisible: false,
-	// 			loadingTip: '',
-	// 			duration,
-	// 			progressActive: true,
-	// 		});
-	// 		setTimeout(()=>{
-	// 			this.setState({
-	// 				progressActive: false,
-	// 			});
-	// 		}, duration * 1000);
-	// 	}
-	// }
-
 	pendingState = resp => {
 		const {errcode, data} = resp;
 		const { result: { state, restart_duration: duration = 0 } = {} } = data[0];
@@ -140,35 +122,11 @@ class LocalUpgrade extends React.PureComponent {
 			{
 				loop: true,
 				interval: 3000,
-				// stop: resp => this.stopState(resp),
+				stop: resp => {},
 				pending: resp => this.pendingState(resp),
 			},
 	
 		);
-
-		// const { errcode, data } = response;
-		// const { result: { restart_duration: duration = 0 } = {} } = data[0];
-		// switch (errcode) {
-		// 	case 0:
-		// 		this.setState({
-		// 			duration,
-		// 			progressActive: true,
-		// 		});
-		// 		setTimeout(()=>{
-		// 			this.setState({
-		// 				progressActive: false,
-		// 			});
-		// 		}, duration * 1000);
-		// 		break;
-		// 	case '-1009':
-		// 		message.error(intl.get(MODULE, 8)/*_i18n:升级文件解析失败*/);
-		// 		break;
-		// 	case '-1012':
-		// 		message.error(intl.get(MODULE, 5)/*_i18n:其他升级流程正在进行中*/);
-		// 		break;
-		// 	default:
-		// 		message.error(intl.get(MODULE, 9)/*_i18n:升级失败，请重试*/);
-		// }
 	}
 
 	render() {
