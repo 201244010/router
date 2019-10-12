@@ -82,8 +82,7 @@ class LocalUpgrade extends React.PureComponent {
 			}
 			this.setState({
 				loadingTip,
-			});
-			
+			});	
 		}
 		return errcode !== 0;
 	}
@@ -125,7 +124,6 @@ class LocalUpgrade extends React.PureComponent {
 				stop: resp => {},
 				pending: resp => this.pendingState(resp),
 			},
-	
 		);
 	}
 
