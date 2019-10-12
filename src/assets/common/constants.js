@@ -176,7 +176,8 @@ export const DIRECTIVE = {
     MOBILE_CONFIG_GET: '0x2135',
     MOBILE_CONFIG_SET: '0x2134',
     
-    LOCAL_UPGRADE: '0x207e',
+    LOCAL_UPGRADE_UPLOAD: '0x207e',
+    LOCAL_UPGRADE_STATE: '0x207f',
 };
 
 /**
