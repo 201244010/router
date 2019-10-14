@@ -147,11 +147,17 @@
     display: flex;
     margin: 8px 0 0px;
 }
-
-.network-info{
-    width: 100%;
-    height: 20px;
-    margin: 24px 0 0;
+.network{
+    position: relative;
+    margin-top: 20px;
+    .network-info{
+        height: 20px;
+    }
+    .right {
+        position: absolute;
+        left: 378px;
+        top: 0;
+    }
 }
 
 .last{

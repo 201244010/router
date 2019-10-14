@@ -482,13 +482,15 @@ export default class Network extends React.Component {
                     <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                         <section className="wifi-setting-item" style={{marginBottom : 48}}>
                             <PanelHeader title={intl.get(MODULE, 21)/*_i18n:当前上网信息*/} checkable={false} checked={true} />
-                            <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>
-                                <label className="oneline">{onlineStatus}</label>
-                            </div>
-                            <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 23)/*_i18n:上网方式：*/}</ul>
-                                <label className="oneline">{dialType}</label>
+                            <div className='network'>
+                                <div className='network-info'>
+                                    <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>
+                                    <label className="oneline">{onlineStatus}</label>
+                                </div>
+                                <div className='network-info right'>
+                                    <ul className="ui-mute">{intl.get(MODULE, 23)/*_i18n:上网方式：*/}</ul>
+                                    <label className="oneline">{dialType}</label>
+                                </div>
                             </div>
                             <div className='network-info'>
                                 <ul className="ui-mute">{intl.get(MODULE, 24)/*_i18n:IP地址：*/}</ul>
