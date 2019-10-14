@@ -850,7 +850,7 @@ export default class WIFI extends React.Component {
                 <section className="save">
                         <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={guestDisabled} onClick={this.submitGuest}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
-                <ModalLoading 
+                <ModalLoading
                     visible={visibile}
                     tip={intl.get(MODULE, 78)/*_i18n:正在等待Wi-Fi重启，请稍候...*/}
                 />
