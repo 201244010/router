@@ -16,7 +16,7 @@ class ModalLoading extends React.Component {
 				footer={null}
 			>
 				<div className='modalLoading-body'>
-					<CustomIcon color="#6174f1" type="loading" size={80} spin/>
+					<CustomIcon className='icon-color' type="loading" size={80} spin/>
 					<Tips size="16" top={19}>{tip}</Tips>
 				</div>
 			</Modal>
