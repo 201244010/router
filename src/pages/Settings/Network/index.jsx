@@ -25,7 +25,7 @@ export default class Network extends React.Component {
         }
     }
     state = {
-        type : 'dhcp',
+        type : 'static',
         disabled : false,
         onlineStatus : '',
         dialType : '',
@@ -475,6 +475,39 @@ export default class Network extends React.Component {
                 dialType, onlineStatus, infoGateway, infoMask, infoDns,
                 pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
                 ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
+
+        const infoList = [
+            {
+                left: {
+                    label: intl.get(MODULE, 22)/*_i18n:联网状态：*/,
+                    content: onlineStatus,
+                },
+                right: {
+                    label: intl.get(MODULE, 23)/*_i18n:上网方式：*/,
+                    content: dialType,
+                },
+            },
+            {
+                left: {
+                    label: intl.get(MODULE, 24)/*_i18n:IP地址：*/,
+                    content: infoIp,
+                },
+                right: {
+                    label: intl.get(MODULE, 25)/*_i18n:子网掩码：*/,
+                    content: infoMask,
+                },
+            },
+            {
+                left: {
+                    label: intl.get(MODULE, 26)/*_i18n:默认网关：*/,
+                    content: infoGateway,
+                },
+                right: {
+                    label: intl.get(MODULE, 49)/*_i18n:DNS：*/,
+                    content: infoDns,
+                },
+            }
+        ];
         
         return [
             <SubLayout className="settings">
@@ -482,35 +515,25 @@ export default class Network extends React.Component {
                     <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
                         <section className="wifi-setting-item" style={{marginBottom : 48}}>
                             <PanelHeader title={intl.get(MODULE, 21)/*_i18n:当前上网信息*/} checkable={false} checked={true} />
-                            <div className='network'>
-                                <div className='network-info'>
-                                    <ul className="ui-mute">{intl.get(MODULE, 22)/*_i18n:联网状态：*/}</ul>
-                                    <label className="oneline">{onlineStatus}</label>
-                                </div>
-                                <div className='network-info right'>
-                                    <ul className="ui-mute">{intl.get(MODULE, 23)/*_i18n:上网方式：*/}</ul>
-                                    <label className="oneline">{dialType}</label>
-                                </div>
-                            </div>
-                            <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 24)/*_i18n:IP地址：*/}</ul>
-                                <label className="oneline">{infoIp}</label>
-                            </div>
-                            <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 25)/*_i18n:子网掩码：*/}</ul>
-                                <label className="oneline">{infoMask}</label>
-                            </div>
-                            <div className='network-info'>
-                                <ul className="ui-mute">{intl.get(MODULE, 26)/*_i18n:默认网关：*/}</ul>
-                                <label className="oneline">{infoGateway}</label>
-                            </div>
-                            <div className='network-info' style={{marginBottom: 23}}>    
-                                <ul className="ui-mute">{intl.get(MODULE, 49)/*_i18n:DNS：*/}</ul>
-                                <label className="oneline">{infoDns}</label>
-                            </div>
+                            {
+                                infoList.map(item => (
+                                    <div className='network-info'>
+                                        <div>
+                                            <span className="ui-mute status">{item.left.label}</span>
+                                            <span>{item.left.content}</span>
+                                        </div>
+                                        {
+                                            item.right&&<div className='right'>
+                                                <span className="ui-mute status">{item.right.label}</span>
+                                                <span>{item.right.content}</span>
+                                            </div>
+                                        }   
+                                    </div>
+                                ))
+                            }
                         </section>
                         <section className="wifi-setting-item">
-                            <PanelHeader title={intl.get(MODULE, 27)/*_i18n:上网设置*/} checkable={false} checked={true} />
+                            <PanelHeader title={intl.get(MODULE, 27)/*_i18n:上网方式*/} checkable={false} checked={true} />
                             <div style={{ padding: 0, marginTop:28, position: 'relative' }} id="typeArea">
                                 <label>{intl.get(MODULE, 28)/*_i18n:上网方式*/}</label>
                                 <Select value={type} style={{ width: 320, marginBottom: 24}} onChange={this.onTypeChange} getPopupContainer={() => document.getElementById('typeArea')}>
@@ -556,20 +579,19 @@ export default class Network extends React.Component {
                                                 ipv4Tip={ipv4Tip}
                                                 gatewayTip={gatewayTip}
                                                 subnetmaskTip={subnetmaskTip}
-
+                                                dnsTip={staticDnsTip}
+                                                dnsbackupTip={staticDnsbackupTip}
+                                                dnsbackup={staticDnsbackup}
+                                                dns={staticDns}
+                                                dnsname='staticDns'
+                                                dnsbackupname='staticDnsbackup'
                                 /> : ''
                             } 
                             {
                                 type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
                                 dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
                                 dns={dhcpDns} dnsname='dhcpDns' dnsbackupname='dhcpDnsbackup' onChange={this.onIPConifgChange}/> : ''
-                            }             
-                            {
-                                type === 'static' ? <Dns dnsTip={staticDnsTip}
-                                dnsbackupTip={staticDnsbackupTip} dnsbackup={staticDnsbackup}
-                                dns={staticDns} dnsname='staticDns' dnsbackupname='staticDnsbackup' onChange={this.onIPConifgChange}/> : ''
                             }
-
                         </section>
                     </Form>
                     <section className="save">

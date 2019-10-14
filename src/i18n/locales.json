@@ -1627,7 +1627,7 @@
 		"network24": "IP地址：",
 		"network25": "子网掩码：",
 		"network26": "默认网关：",
-		"network27": "上网设置",
+		"network27": "上网方式",
 		"network28": "上网方式",
 		"network29": "宽带拨号上网（PPPoE）",
 		"network30": "自动获取IP（DHCP）",
