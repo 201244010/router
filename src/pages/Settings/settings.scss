@@ -95,16 +95,20 @@
             display: block;
             margin-bottom: 6px;
         }
-        .oneline {
-            display:inline-block;
-            margin-left:5px;
-        }
         .ui-form .more .ui-icon {
             position: static;
         }
         .ui-input {
             display:inline;
             margin-right:10px;
+        }
+        .network-row {
+            position: relative;
+            .row-right {
+                position: absolute;
+                top: 0;
+                left: 383px;
+            }
         }
     }
 
@@ -147,11 +151,11 @@
     display: flex;
     margin: 8px 0 0px;
 }
-.network{
+.network-info {
     position: relative;
     margin-top: 20px;
-    .network-info{
-        height: 20px;
+    .status {
+        margin-right:5px;
     }
     .right {
         position: absolute;
