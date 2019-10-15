@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Checkbox, message } from 'antd';
+import { Button, Modal } from 'antd';
 import { Base64 } from 'js-base64';
 import Form from "~/components/Form";
 import { checkStr } from '~/assets/common/check';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
+import CustomIcon from '~/components/Icon';
 import GuideModal from './GuideModal';
 import ModalLoading from '~/components/ModalLoading';
 import { encryption, fetchPublicKey } from '~/assets/common/encryption';
@@ -26,6 +27,8 @@ export default class Wechat extends React.Component {
         pwdTip: '',
         modalVisible: false,
         loadingVisible: false,
+        resVisibile: false,
+        result: true,
     }
 
     changeEnable = value => {
@@ -74,6 +77,12 @@ export default class Wechat extends React.Component {
 
     closeModal = () => {
         this.setState({modalVisible: false});
+    }
+
+    resCancle = () => {
+        this.setState({
+            resVisibile: false,
+        });
     }
 
     getWechatInfo = async() => {
@@ -139,11 +148,17 @@ export default class Wechat extends React.Component {
         if(errcode === 0){
             this.setState({loadingVisible: true});
             setTimeout(()=> {
-                this.setState({loadingVisible: false});
-                message.success(intl.get(MODULE, 30)/*_i18n:设置完成*/)
+                this.setState({
+                    loadingVisible: false,
+                    resVisibile: true,
+                    result: true,
+                });
             },15000);
         } else {
-            message.error(intl.get(MODULE, 31)/*_i18n:设置失败*/)
+            this.setState({
+                resVisibile: true,
+                result: false,
+            });
         }
     }
 
@@ -151,7 +166,8 @@ export default class Wechat extends React.Component {
         this.getWechatInfo();
     }
     render() {
-        const { enable, ssid, ssidTip, pwd, pwdTip, ssidDisabled, pwdDisabled, modalVisible, saveDisable, loadingVisible } = this.state;
+        const { enable, ssid, ssidTip, pwd, pwdTip, ssidDisabled, pwdDisabled, modalVisible, saveDisable, loadingVisible, resVisibile, result } = this.state;
+        const resultTip = result? intl.get(MODULE, 34)/*_i18n:配置生效，请重新连接无线网络*/:intl.get(MODULE, 35)/*_i18n:配置失败，稍后重试*/;
         return (
             <SubLayout className="settings">
                 <div className="setup-body">
@@ -193,6 +209,20 @@ export default class Wechat extends React.Component {
                     visible={loadingVisible}
                     tip={intl.get(MODULE, 32)/*_i18n:正在配置微信连Wi-Fi，请稍候...*/}
                 />
+                <Modal 
+                    closable={false}
+                    visible={resVisibile}
+                    maskClosable={false}
+                    centered={true}
+                    footer={
+                        <Button className="wechat-modal-button" type="primary" onClick={this.resCancle}>{intl.get(MODULE, 33)/*_i18n:确定*/}</Button>
+                    }
+                >
+                    <div className="wechat-icon">
+                        {result?<CustomIcon className='wechat-icon-succeed' type="succeed" size={64} />:<CustomIcon className='wechat-icon-defeated' type="defeated" size={64} />}
+                        <div className="backup-result">{resultTip}</div>
+                    </div>
+                </Modal>
             </SubLayout>
         );
     }
