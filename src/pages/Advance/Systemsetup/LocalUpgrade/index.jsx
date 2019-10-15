@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import Upload from 'rc-upload';
+import CustomIcon from '~/components/Icon';
 import CustomProgress from '~/components/Progress';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
@@ -22,6 +23,7 @@ class LocalUpgrade extends React.PureComponent {
 			duration: 0,
 			loadingVisible: false,
 			loadingTip: '',
+			succeedActive: true,
 		}
 	}
 
@@ -33,6 +35,13 @@ class LocalUpgrade extends React.PureComponent {
 
 	onChange = (value) => {
 		this.setState({filename: value});
+	}
+
+	login = () =>{
+		this.setState({
+			succeedActive: false,
+		});
+        location.href = '/login';
 	}
 
 	pendingState = resp => {
@@ -65,8 +74,8 @@ class LocalUpgrade extends React.PureComponent {
 				setTimeout(()=>{
 					this.setState({
 						progressActive: false,
+						succeedActive: true,
 					});
-					message.success(intl.get(MODULE, 9)/*_i18n:升级成功*/);
 				}, duration * 1000);
 			} else {
 				message.error(errorInfo);
@@ -105,6 +114,7 @@ class LocalUpgrade extends React.PureComponent {
 				},
 			},
 			{
+				timeout: 120000,
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
@@ -128,7 +138,7 @@ class LocalUpgrade extends React.PureComponent {
 	}
 
 	render() {
-		const { filename, progressActive, duration, loadingVisible, loadingTip } = this.state;
+		const { filename, progressActive, duration, loadingVisible, loadingTip, succeedActive } = this.state;
 		return (
 			<SubLayout className="settings">
 				<Form className='localUpgrade-body '>
@@ -165,11 +175,22 @@ class LocalUpgrade extends React.PureComponent {
 				{progressActive&&<CustomProgress
 					duration={duration}
 					title={intl.get(MODULE, 10)/*_i18n:正在升级路由器，请耐心等待...*/}
+					tips={intl.get(MODULE, 13)/*_i18n:升级过程中请勿断电！*/}
 				/>}
 				<ModalLoading 
                     visible={loadingVisible}
                     tip={loadingTip}
                 />
+				<Modal
+					visible={succeedActive}
+					className='modal-center'
+					closable={false}
+					centered={true}
+					footer={[<Button type="primary" onClick={this.login}>{intl.get(MODULE, 14)/*_i18n:确定*/}</Button>]}
+				>
+					<CustomIcon type="succeed" size={64} className='succeed-icon'/>
+					<h3 className='succeed-tip'>{intl.get(MODULE, 9)/*_i18n:升级成功，请重新连接无线网络*/}</h3>
+				</Modal>
 			</SubLayout>
 		);
 	}

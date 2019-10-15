@@ -259,8 +259,8 @@ export default class Lan extends React.Component {
                     title: intl.get(MODULE, 19)/*_i18n:DHCP服务*/,
                     checkable: true,
                     checked: enable,
-                    checkedChildren: "开",
-                    unCheckedChildren: "关",
+                    checkedChildren: intl.get(MODULE, 24)/*_i18n:开*/,
+                    unCheckedChildren: intl.get(MODULE, 25)/*_i18n:关*/,
                     onChange: value => this.onChange(value, 'enable'),
                 },
                 content: [
