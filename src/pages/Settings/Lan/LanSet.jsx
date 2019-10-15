@@ -255,10 +255,12 @@ export default class Lan extends React.Component {
             },
             {
                 header: {
-                    className: 'item-header',
+                    className: 'item-header switch-location',
                     title: intl.get(MODULE, 19)/*_i18n:DHCP服务*/,
                     checkable: true,
                     checked: enable,
+                    checkedChildren: "开",
+                    unCheckedChildren: "关",
                     onChange: value => this.onChange(value, 'enable'),
                 },
                 content: [
@@ -297,7 +299,7 @@ export default class Lan extends React.Component {
                                             <div className='network-row' key={item}>
                                                 <div>
                                                     <label>{item.left.label}</label>
-                                                    <FormItem showErrorTip={item.left.tip} style={{ width: 320 }}>
+                                                    <FormItem showErrorTip={item.left.tip} className='lan-formItem'>
                                                         <InputGroup size="small"
                                                             inputs={[{ value: item.left.value[0], maxLength: 3 }, { value: item.left.value[1], maxLength: 3 }, { value: item.left.value[2], maxLength: 3 }, { value: item.left.value[3], maxLength: 3 }]}
                                                             onChange={value => this.onChange(value, item.left.name)}
@@ -308,7 +310,7 @@ export default class Lan extends React.Component {
                                                 </div>
                                                 <div className='row-right'>
                                                     <label>{item.right.label}</label>
-                                                    <FormItem showErrorTip={item.right.tip} style={{ width: 320 }}>
+                                                    <FormItem showErrorTip={item.right.tip} className='lan-formItem'>
                                                         <InputGroup size="small"
                                                             inputs={[{ value: item.right.value[0], maxLength: 3 }, { value: item.right.value[1], maxLength: 3 }, { value: item.right.value[2], maxLength: 3 }, { value: item.right.value[3], maxLength: 3 }]}
                                                             onChange={value => this.onChange(value, item.right.name)}
@@ -325,8 +327,8 @@ export default class Lan extends React.Component {
                         })
                     }
                     <label>{intl.get(MODULE, 20)/*_i18n:地址租期*/}</label>
-                    <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320, marginBottom: 0 }}>
-                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 , opacity: 0.65 }}>{intl.get(MODULE, 21)/*_i18n:分钟*/}</label>
+                    <FormItem showErrorTip={leasetimeTip} type="small" className='lan-formItem leasetime'>
+                        <label className='leasetime-label'>{intl.get(MODULE, 21)/*_i18n:分钟*/}</label>
                         <Input
                             type='text'
                             disabled={!enable}
@@ -338,7 +340,7 @@ export default class Lan extends React.Component {
                     </FormItem>
                 </Form>
                 <div className="save">
-                    <Button disabled={disabled} loading={loading} style={{ width: 200, height: 42 }} onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
+                    <Button disabled={disabled} loading={loading} className='lan-save' onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
                 </div>
         </div>
         );
