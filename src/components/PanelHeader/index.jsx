@@ -50,12 +50,10 @@ export default class PanelHeader extends React.PureComponent {
 								return document.getElementById(id);
 							}}
 						>
-							<span>
+							<span className="tooltip-icon" >
 								<Icon
 									size={16}
 									type="help"
-									color="#ADB1B9"
-									className='tooltip-icon'
 								/>
 							</span>
 						</Tooltip>
