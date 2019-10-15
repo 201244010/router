@@ -23,7 +23,9 @@ class LocalUpgrade extends React.PureComponent {
 			duration: 0,
 			loadingVisible: false,
 			loadingTip: '',
-			succeedActive: true,
+			succeedActive: false,
+			result: true,
+			modalTip: '',
 		}
 	}
 
@@ -37,30 +39,37 @@ class LocalUpgrade extends React.PureComponent {
 		this.setState({filename: value});
 	}
 
-	login = () =>{
+	sure = () =>{
+		const {result} = this.state;
 		this.setState({
 			succeedActive: false,
 		});
-        location.href = '/login';
+
+		if(result) {
+			location.href = '/login';
+		}	
 	}
 
 	pendingState = resp => {
 		const {errcode, data} = resp;
 		const { result: { state, restart_duration: duration = 0 } = {} } = data[0];
 		if(errcode === 0) {
-			let errorInfo = '';
+			let modalTip = '';
 			let progressActive = false;
+			let result = false;
 			switch (state) {
 				case '3':
-					errorInfo = intl.get(MODULE, 5)/*_i18n:文件上传失败，请检查网络后重试*/;
+					modalTip = intl.get(MODULE, 5)/*_i18n:文件上传失败，请检查网络后重试*/;
 					break;
 				case '4':
-					errorInfo = intl.get(MODULE, 7)/*_i18n:文件校验失败，请检查文件格式后重试*/;
+					modalTip = intl.get(MODULE, 7)/*_i18n:文件校验失败，请检查文件格式后重试*/;
 					break;
 				case '5':
-					errorInfo = intl.get(MODULE, 8)/*_i18n:已有其他升级流程正在进行中*/;
+					modalTip = intl.get(MODULE, 8)/*_i18n:已有其他升级流程正在进行中*/;
 					break;
 				default:
+					modalTip =	intl.get(MODULE, 9)/*_i18n:升级成功，请重新连接无线网络*/
+					result = true;
 					progressActive = true;
 			}
 			this.setState({
@@ -68,6 +77,9 @@ class LocalUpgrade extends React.PureComponent {
 				loadingTip: '',
 				duration,
 				progressActive,
+				result,
+				succeedActive: !result,
+				modalTip,
 			});
 
 			if(progressActive) {
@@ -77,8 +89,6 @@ class LocalUpgrade extends React.PureComponent {
 						succeedActive: true,
 					});
 				}, duration * 1000);
-			} else {
-				message.error(errorInfo);
 			}
 		} else {
 			let loadingTip = '';
@@ -138,7 +148,7 @@ class LocalUpgrade extends React.PureComponent {
 	}
 
 	render() {
-		const { filename, progressActive, duration, loadingVisible, loadingTip, succeedActive } = this.state;
+		const { filename, progressActive, duration, loadingVisible, loadingTip, succeedActive, result, modalTip } = this.state;
 		return (
 			<SubLayout className="settings">
 				<Form className='localUpgrade-body '>
@@ -186,10 +196,11 @@ class LocalUpgrade extends React.PureComponent {
 					className='modal-center'
 					closable={false}
 					centered={true}
-					footer={[<Button type="primary" onClick={this.login}>{intl.get(MODULE, 14)/*_i18n:确定*/}</Button>]}
+					footer={<Button type="primary" onClick={this.sure}>{intl.get(MODULE, 14)/*_i18n:确定*/}</Button>}
 				>
-					<CustomIcon type="succeed" size={64} className='succeed-icon'/>
-					<h3 className='succeed-tip'>{intl.get(MODULE, 9)/*_i18n:升级成功，请重新连接无线网络*/}</h3>
+					{result? <CustomIcon type="succeed" size={64} className='succeed-icon'/>
+					:<CustomIcon type="defeated" size={64} className='defeated-icon'/>}
+					<h3 className='succeed-tip'>{modalTip}</h3>
 				</Modal>
 			</SubLayout>
 		);
