@@ -6,12 +6,21 @@
     }
 }
 .lan-settting {
-    .content-item{
-        >label {
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 8px;
-        }
+    padding-top: 9px;
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    .item-header {
+        margin-bottom: 24px;
+    }
+    .network-row {
+        position: relative;
+        .row-right {
+            position: absolute;
+            top: 0;
+            left: 383px;
+        }   
     }
 }
 
