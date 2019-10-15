@@ -1,21 +1,34 @@
 .panel-hd {
-    position: relative;
-    border-bottom : 1px solid #ECECEC;
-    height: 55px;
-    margin-bottom : 5px;
-    span {
-        color: #333C4F;
-        font-size : 18px;
-        font-family:  PingFangSC-Medium, serif;
-    }
-    .help-content{
-        .item-list{
-            li{
-                span{
-                    color: #fff;
-                    font-size: 14px;
-                }
-            }
-        }
-    }
+	position: relative;
+	border-bottom: 1px solid #ececec;
+	height: 55px;
+	margin-bottom: 5px;
+	display: flex;
+	align-items: center;
+	li {
+		display: inline-block;
+	}
+	.panel-switch {
+		margin-left: 32px;
+	}
+	span {
+		color: #333c4f;
+		font-size: 18px;
+		font-family: PingFangSC-Medium, serif;
+	}
+	.help-content {
+		.item-list {
+			li {
+				span {
+					color: #fff;
+					font-size: 14px;
+				}
+			}
+		}
+	}
+	.tooltip-icon {
+		margin-left: 8px;
+		cursor: pointer;
+		vertical-align: baseline;
+	}
 }

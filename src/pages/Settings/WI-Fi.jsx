@@ -704,7 +704,7 @@ export default class WIFI extends React.Component {
                     <section className="wifi-setting-item">
                         <section className="wifi-setting-twocolumn">
                             <section>
-                                <PanelHeader title={intl.get(MODULE, 39)/*_i18n:2.4G信号*/} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
+                                <PanelHeader title={intl.get(MODULE, 39)/*_i18n:2.4G信号*/}  tiled={false} checkable={true} checked={host24Enable} onChange={this.onHost24EnableChange}/> 
                                 <label className = 'firstLabel'>{intl.get(MODULE, 40)/*_i18n:Wi-Fi名称*/}</label>
                                 <FormItem type="small" showErrorTip={hostSsid24Tip} style={{ width : 320}}>
                                     <Input type="text" maxLength={32} value={hostSsid24} onChange={(value)=>this.onChange('hostSsid24',value)} disabled={disabledType24} />
@@ -754,7 +754,7 @@ export default class WIFI extends React.Component {
                                 </div>
                             </section>
                             <section>
-                                <PanelHeader title={intl.get(MODULE, 53)/*_i18n:5G信号*/} checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
+                                <PanelHeader title={intl.get(MODULE, 53)/*_i18n:5G信号*/}  tiled={false} checkable={true} checked={host5Enable} onChange={this.onHost5EnableChange}/> 
                                     <label className = 'firstLabel'>{intl.get(MODULE, 54)/*_i18n:Wi-Fi名称*/}</label>
                                     <FormItem type="small" showErrorTip={hostSsid5Tip} style={{ width : 320}}>
                                         <Input type="text" maxLength={32} value={hostSsid5} onChange={(value)=>this.onChange('hostSsid5',value)} disabled={disabledType5} />
