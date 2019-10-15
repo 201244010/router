@@ -24,6 +24,15 @@
 					letter-spacing: 0;
 				}
 			}
+			.main-router {
+				width: 100px;
+				height: 20px;
+				cursor: pointer;
+				display: block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
 			img {
 				width: 100px;
 			}
@@ -188,6 +197,12 @@
 							text-overflow: ellipsis;
 							white-space: nowrap;
 						}
+						.high-signal {
+							color: #97E063;
+						}
+						.low-signal {
+							color: #FFCEBD
+						}
 					}
 				}
 				.satelite-small-add {
@@ -297,6 +312,15 @@
 			span {
 				color: #333c4f;
 			}
+			.ap-online, .ap-high {
+				color: #60CC13;
+			}
+			.ap-offline {
+				color: #DD726D;
+			}
+			.ap-low {
+				color: #D0021B;
+			}
 		}
 	}
 	.ant-input {
@@ -334,4 +358,8 @@
 .sate-offline {
 	font-size: 12px;
 	color: rgba(255, 255, 255, 0.6);
+}
+
+.topology-white {
+	color: #fff;
 }

@@ -5,6 +5,8 @@ import { getQuickStartVersion } from '~/utils';
 import { Popover, Button, Input, Carousel } from 'antd';
 import './topology.scss';
 
+import RouterContent from './RouterContent';
+
 const MODULE = 'topology';
 
 export default class Topology extends React.Component {
@@ -14,7 +16,14 @@ export default class Topology extends React.Component {
 	}
 
 	state = {
-		edit: false
+		editing: false
+	};
+
+	toggleEdit = () => {
+		const editing = !this.state.editing;
+		this.setState({
+			editing: editing
+		});
 	};
 
 	handleEdit = () => {
@@ -34,7 +43,7 @@ export default class Topology extends React.Component {
 		doc.className = `${ui} ${online ? 'home-bg' : 'home-bg-offline'}`;
 	};
 
-	arrayGroup = (data, num) => {
+	arrayGroup = (data, num = 6) => {
 		const result = [];
 
 		for (let i = 0, len = data.length; i < len; i += num) {
@@ -52,6 +61,70 @@ export default class Topology extends React.Component {
 		this.chooseIndex.next();
 	};
 
+	toggleEdit = () => {
+		const { editing } = this.state;
+		this.setState({
+			editing: !editing
+		});
+	};
+
+	setTitle = (editing, value, mac, devid) => {
+		if (!editing) {
+			return (
+				<p>
+					<label title={value}>{value}</label>
+					<label style={{ marginTop: -30 }} onClick={this.toggleEdit}>
+						<CustomIcon size={8} type="rename" />
+					</label>
+				</p>
+			);
+		} else {
+			return (
+				<Input
+					defaultValue={value}
+					placeholder={intl.get(MODULE, 9) /*_i18n:请输入设备位置*/}
+					autoFocus={true}
+					onPressEnter={e => this.save(e, value, mac, devid)}
+					onBlur={e => this.save(e, value, mac, devid)}
+					maxLength={32}
+				/>
+			);
+		}
+	};
+
+	save = async (e, defaultValue, mac, devid) => {
+		const editName = e.target.value;
+		if (editName === defaultValue) {
+			this.setState({
+				editing: false
+			});
+		} else {
+			Loading.show({ duration: 2 });
+			let resp = await common.fetchApi({
+				opcode: 'ROUTENAME_SET',
+				data: {
+					sonconnect: [
+						{
+							mac,
+							location: editName,
+							devid
+						}
+					]
+				}
+			});
+			let { errcode } = resp;
+			if (0 !== errcode) {
+				message.error(intl.get(MODULE, 22) /*_i18n:undefined*/);
+				return;
+			}
+			if (0 === errcode) {
+				this.setState({
+					editing: false
+				});
+			}
+		}
+	};
+
 	componentDidMount() {
 		this.setTheme();
 	}
@@ -67,16 +140,20 @@ export default class Topology extends React.Component {
 			downSpeed,
 			downUnit,
 			reList,
-			online
+			online,
+			apInfo
 		} = this.props;
-		const { edit } = this.state;
+		const { editing } = this.state;
 		const listItems = this.arrayGroup(reList, 6).map(item => {
 			return (
 				<div>
 					{item.map(items => {
 						return (
 							<span className="satelite-li" key={items.mac}>
-								<Item reList={items} />
+								<RouterContent
+									setTitle={this.setTitle}
+									reList={items}
+								/>
 							</span>
 						);
 					})}
@@ -96,6 +173,7 @@ export default class Topology extends React.Component {
 				</div>
 			);
 		});
+		const { name, mac, devid, ip } = apInfo;
 		return (
 			<div className="wrapper">
 				<div className="internet">
@@ -155,16 +233,57 @@ export default class Topology extends React.Component {
 							<div className="circle" />
 						</li>
 						<li>
-							<div>
-								<CustomIcon
-									size={100}
-									color="#fff"
-									type="link"
-								/>
-								<label>
-									大厅<span>（主路由）</span>
-								</label>
-							</div>
+							<Popover
+								placement="bottom"
+								arrowPointAtCenter
+								trigger="click"
+								content={
+									<div className="satelite-info">
+										{this.setTitle(editing, name, mac, devid)}
+										<ul>
+											<li>
+												<label>
+													{intl.get(
+														MODULE,
+														10
+													) /*_i18n:联网状态：*/}
+												</label>
+												<span
+													className={
+														online
+															? 'ap-online'
+															: 'ap-offline'
+													}
+												>
+													{online
+														? intl.get(MODULE, 21)
+														: intl.get(MODULE, 8)}
+												</span>
+											</li>
+											<li>
+												<label>IP：</label>
+												<span>{ip}</span>
+											</li>
+											<li>
+												<label>MAC：</label>
+												<span>{mac}</span>
+											</li>
+										</ul>
+									</div>
+								}
+							>
+								<div>
+									<CustomIcon
+										size={100}
+										color="#fff"
+										type="link"
+									/>
+									<label className="main-router">
+										{name}
+										<span>{name ? '（主路由）' : ''}</span>
+									</label>
+								</div>
+							</Popover>
 						</li>
 						<li className="line">
 							<div className="circle" />
@@ -314,289 +433,4 @@ export default class Topology extends React.Component {
 	addRouter = () => {
 		this.props.history.push('/guide/addsubrouter');
 	};
-}
-
-class Item extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	state = {
-		editing: false
-	};
-
-	toggleEdit = () => {
-		const editing = !this.state.editing;
-		this.setState({
-			editing: editing
-		});
-	};
-
-	save = async (e, defaultValue, mac, devid) => {
-		const editName = e.target.value;
-		if (editName === defaultValue) {
-			this.setState({
-				editing: false
-			});
-		} else {
-			Loading.show({ duration: 2 });
-			let resp = await common.fetchApi({
-				opcode: 'ROUTENAME_SET',
-				data: {
-					sonconnect: [
-						{
-							mac,
-							location: editName,
-							devid
-						}
-					]
-				}
-			});
-			let { errcode } = resp;
-			if (0 !== errcode) {
-				message.error(intl.get(MODULE, 22) /*_i18n:undefined*/);
-				return;
-			}
-			if (0 === errcode) {
-				this.setState({
-					editing: false
-				});
-			}
-		}
-	};
-
-	render() {
-		const reList = this.props.reList;
-		console.log('reInfo3', new Date());
-		const wired = reList.connMode.wired;
-		const type = parseInt(reList.online);
-		const role = parseInt(reList.role);
-		const highSignal = wired || reList.rssi >= 20;
-		const color = highSignal ? '#97E063' : '#FFCEBD';
-		const colorDetail = highSignal ? '#60CC13' : '#D0021B';
-		const rssi = highSignal
-			? intl.get(MODULE, 7) /*_i18n:信号较好*/
-			: intl.get(MODULE, 18); /*_i18n:信号较差*/
-		const online =
-			type === 0
-				? intl.get(MODULE, 8) /*_i18n:异常*/
-				: intl.get(MODULE, 21); /*_i18n:正常*/
-		const Title = (editing, value, mac, devid) => {
-			if (!editing) {
-				return (
-					<p>
-						<label title={value}>{value}</label>
-						<label
-							style={{ marginTop: -30 }}
-							onClick={this.toggleEdit}
-						>
-							<CustomIcon size={8} type="rename" />
-						</label>
-					</p>
-				);
-			} else {
-				return (
-					<Input
-						defaultValue={value}
-						placeholder={
-							intl.get(MODULE, 9) /*_i18n:请输入设备位置*/
-						}
-						autoFocus={true}
-						onPressEnter={e => this.save(e, value, mac, devid)}
-						onBlur={e => this.save(e, value, mac, devid)}
-						maxLength={32}
-					/>
-				);
-			}
-		};
-		const Info = (type, role) => {
-			if (role) {
-				return (
-					<div className="satelite-info">
-						{Title(
-							this.state.editing,
-							reList.name,
-							reList.mac,
-							reList.devid
-						)}
-						<ul>
-							<li>
-								<label>
-									{intl.get(MODULE, 10) /*_i18n:联网状态：*/}
-								</label>
-								<span
-									style={{
-										color:
-											type === 0 ? '#DD726D' : '#60CC13'
-									}}
-								>
-									{online}
-								</span>
-							</li>
-							<li>
-								<label>IP：</label>
-								<span>{reList.ip}</span>
-							</li>
-							<li>
-								<label>MAC：</label>
-								<span>{reList.mac}</span>
-							</li>
-						</ul>
-					</div>
-				);
-			} else {
-				switch (type) {
-					case 1: //较差较好的情况
-						return (
-							<div className="satelite-info">
-								{Title(
-									this.state.editing,
-									reList.name,
-									reList.mac,
-									reList.devid
-								)}
-								<ul>
-									<li>
-										<label>
-											{intl.get(
-												MODULE,
-												11
-											) /*_i18n:信号强度：*/}
-										</label>
-										<span style={{ color: colorDetail }}>
-											{rssi}
-										</span>
-									</li>
-									<li>
-										<label>IP：</label>
-										<span>{reList.ip}</span>
-									</li>
-									<li>
-										<label>MAC：</label>
-										<span>{reList.mac}</span>
-									</li>
-									<li>
-										<label>
-											{intl.get(
-												MODULE,
-												12
-											) /*_i18n:上级路由：*/}
-										</label>
-										<span>{reList.parent}</span>
-									</li>
-								</ul>
-							</div>
-						);
-					case 0: //设备离线情况
-						return (
-							<div className="satelite-info">
-								{Title(
-									this.state.editing,
-									reList.name,
-									reList.mac,
-									reList.devid
-								)}
-								<ul>
-									<li>
-										<label>
-											{intl.get(
-												MODULE,
-												13
-											) /*_i18n:离线*/}
-										</label>
-									</li>
-									<li>
-										<label>IP：</label>
-										<span>--</span>
-									</li>
-									<li>
-										<label>MAC：</label>
-										<span>{reList.mac}</span>
-									</li>
-									<li>
-										<label>
-											{intl.get(
-												MODULE,
-												14
-											) /*_i18n:上级路由：*/}
-										</label>
-										<span>--</span>
-									</li>
-								</ul>
-							</div>
-						);
-					default:
-						return <noscript />;
-				}
-			}
-		};
-
-		const contentType = (type, role) => {
-			if (role) {
-				return (
-					<div className="sate-router">
-						<CustomIcon size={60} color="#fff" type="router" />
-						<label>
-							<CustomIcon
-								size={14}
-								color="#fff"
-								style={{
-									display: 'inline',
-									marginRight: 4,
-									verticalAlign: 'unset'
-								}}
-								type="main"
-							/>
-							<span title={reList.name}>{reList.name}</span>
-						</label>
-					</div>
-				);
-			} else {
-				switch (type) {
-					case 1: //较差较好的情况
-						return (
-							<div className="sate-router">
-								<div>
-									<CustomIcon
-										size={60}
-										color="#fff"
-										type="router"
-									/>
-								</div>
-								<label title={reList.name}>{reList.name}</label>
-								<p>
-									<span style={{ color: color }}>{rssi}</span>
-								</p>
-							</div>
-						);
-					case 0: //设备离线情况
-						return (
-							<div className="sate-router">
-								<div>
-									<CustomIcon
-										size={60}
-										color="#fff"
-										type="router"
-									/>
-								</div>
-								<label title={reList.name}>{reList.name}</label>
-								<p className="sate-offline">
-									{intl.get(MODULE, 17) /*_i18n:已离线*/}
-								</p>
-							</div>
-						);
-				}
-			}
-		};
-		return (
-			<Popover
-				placement="bottomLeft"
-				arrowPointAtCenter
-				trigger="click"
-				content={Info(type, role)}
-			>
-				{contentType(type, role)}
-			</Popover>
-		);
-	}
 }
