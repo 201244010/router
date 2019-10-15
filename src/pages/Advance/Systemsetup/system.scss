@@ -169,6 +169,18 @@
 }
 .settings-content {
     margin: 0 60px;
+    .custom-upgrade-location {
+        >li {
+            flex: none;
+            &:first-child {
+                margin-right: 41px;
+            }
+            .ant-switch-inner {
+                font-size: 12px;
+                color: #FFFFFF;
+            }
+        }
+    }
     .custom-paragraph {
         margin-top: 24px;
         margin-bottom: 16px;

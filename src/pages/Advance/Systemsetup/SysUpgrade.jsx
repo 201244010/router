@@ -1,9 +1,10 @@
 
 import React from 'react';
-import {Button, Table, message, Progress, Modal} from 'antd';
+import {Button, Table, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '~/pages/UpgradeDetect/Upgrade';
+import CustomUpgrade from './CustomUpgrade';
 const MODULE = 'sysupgrade';
 
 export default class SysUpgrade extends React.Component{
@@ -76,6 +77,7 @@ export default class SysUpgrade extends React.Component{
         const {detecting, routerList, detectTip, update, hasVersion} = this.state;
         return (
             <SubLayout className="settings">
+                <CustomUpgrade />
                 <div className='sys-upgrade'>
                     <p>
                         {intl.get(MODULE, 6)/*_i18n:检测是否有适用的新固件*/}
