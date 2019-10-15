@@ -63,8 +63,8 @@ export default class Home extends React.Component {
 		chatTotal: 0,
 		wechatList: [],
 		totalList: [],
-        reList: [],
-        apInfo: {},
+		reList: [],
+		apInfo: {},
 		normalClients: [],
 		priorityClients: [],
 		qosData: [
@@ -153,11 +153,11 @@ export default class Home extends React.Component {
 			};
 		});
 
-        const reList = tmpList.filter(item => item.role == 0);
-        const apInfo = tmpList.filter(item => item.role == 1)[0] || {};
+		const reList = tmpList.filter(item => item.role == 0);
+		const apInfo = tmpList.filter(item => item.role == 1)[0] || {};
 		this.setState({
-            apInfo,
-            reList
+			apInfo,
+			reList
 		});
 	};
 
@@ -317,25 +317,23 @@ export default class Home extends React.Component {
 			});
 		});
 
-		const tmpList = reInfo
-			.map(re => {
-				return {
-					mac: re.mac.toUpperCase(),
-					online: re.online,
-					name: re.location,
-					role: re.role,
-					rssi: re.rssi,
-					ip: re.ip,
-					devid: re.devid,
-					parent: routeList[re.routermac.toUpperCase()],
-					connMode: re.conn_mode || {}
-				};
-            });
-        const reList = tmpList.filter(item => item.role == 0);
+		const tmpList = reInfo.map(re => {
+			return {
+				mac: re.mac.toUpperCase(),
+				online: re.online,
+				name: re.location,
+				role: re.role,
+				rssi: re.rssi,
+				ip: re.ip,
+				devid: re.devid,
+				parent: routeList[re.routermac.toUpperCase()],
+				connMode: re.conn_mode || {}
+			};
+		});
+		const reList = tmpList.filter(item => item.role == 0);
 
 		const apInfo = tmpList.filter(item => item.role == 1)[0] || {};
 
-        console.log(reList, apInfo);
 		window.sessionStorage.setItem(
 			'_ROUTER_LIST',
 			JSON.stringify(routeName)
@@ -489,8 +487,8 @@ export default class Home extends React.Component {
 			wechatList,
 			percent,
 			largestPercent,
-            chatTotal,
-            apInfo
+			chatTotal,
+			apInfo
 		} = this.state;
 		return (
 			<SubLayout className="home">
@@ -500,8 +498,8 @@ export default class Home extends React.Component {
 						upUnit={upUnit}
 						downSpeed={downSpeed}
 						downUnit={downUnit}
-                        reList={reList}
-                        apInfo={apInfo}
+						reList={reList}
+						apInfo={apInfo}
 						online={online}
 						history={this.props.history}
 					/>

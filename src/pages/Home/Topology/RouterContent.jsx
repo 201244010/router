@@ -23,12 +23,12 @@ export default class RouterContent extends React.Component {
 		});
 	};
 
-	setTitle = (editing, value, mac, devid) => {
+	setTitle = ({ editing, name, mac, devid }) => {
 		if (!editing) {
 			return (
 				<p>
-					<label title={value}>{value}</label>
-					<label style={{ marginTop: -30 }} onClick={this.toggleEdit}>
+					<label title={name}>{name}</label>
+					<label className="edit-position" onClick={this.toggleEdit}>
 						<CustomIcon size={8} type="rename" />
 					</label>
 				</p>
@@ -36,48 +36,25 @@ export default class RouterContent extends React.Component {
 		} else {
 			return (
 				<Input
-					defaultValue={value}
+					defaultValue={name}
 					placeholder={intl.get(MODULE, 9) /*_i18n:请输入设备位置*/}
 					autoFocus={true}
-					onPressEnter={e => this.save(e, value, mac, devid)}
-					onBlur={e => this.save(e, value, mac, devid)}
+					onPressEnter={e =>
+						this.handleSave({ editing: e, name, mac, devid })
+					}
+					onBlur={e => this.handleSave({ editing: e, name, mac, devid })}
 					maxLength={32}
 				/>
 			);
 		}
 	};
 
-	save = async (e, defaultValue, mac, devid) => {
-		const editName = e.target.value;
-		if (editName === defaultValue) {
-			this.setState({
-				editing: false
-			});
-		} else {
-			Loading.show({ duration: 2 });
-			let resp = await common.fetchApi({
-				opcode: 'ROUTENAME_SET',
-				data: {
-					sonconnect: [
-						{
-							mac,
-							location: editName,
-							devid
-						}
-					]
-				}
-			});
-			let { errcode } = resp;
-			if (0 !== errcode) {
-				message.error(intl.get(MODULE, 22) /*_i18n:undefined*/);
-				return;
-			}
-			if (0 === errcode) {
-				this.setState({
-					editing: false
-				});
-			}
-		}
+	handleSave = async payload => {
+		const { save } = this.props;
+		await save(payload);
+		this.setState({
+			editing: false
+		});
 	};
 
 	render() {
@@ -100,7 +77,7 @@ export default class RouterContent extends React.Component {
 			const { editing } = this.state;
 			return (
 				<div className="satelite-info">
-					{this.setTitle(editing, name, mac, devid)}
+					{this.setTitle({ editing, name, mac, devid })}
 					<ul>
 						<li>
 							<label>

@@ -68,12 +68,12 @@ export default class Topology extends React.Component {
 		});
 	};
 
-	setTitle = (editing, value, mac, devid) => {
+	setTitle = ({ editing, name, mac, devid }) => {
 		if (!editing) {
 			return (
 				<p>
-					<label title={value}>{value}</label>
-					<label style={{ marginTop: -30 }} onClick={this.toggleEdit}>
+					<label title={name}>{name}</label>
+					<label className="edit-position" onClick={this.toggleEdit}>
 						<CustomIcon size={8} type="rename" />
 					</label>
 				</p>
@@ -81,20 +81,29 @@ export default class Topology extends React.Component {
 		} else {
 			return (
 				<Input
-					defaultValue={value}
+					defaultValue={name}
 					placeholder={intl.get(MODULE, 9) /*_i18n:请输入设备位置*/}
 					autoFocus={true}
-					onPressEnter={e => this.save(e, value, mac, devid)}
-					onBlur={e => this.save(e, value, mac, devid)}
+					onPressEnter={e =>
+						this.handleSave({ editing: e, name, mac, devid })
+					}
+					onBlur={e => this.handleSave({ editing: e, name, mac, devid })}
 					maxLength={32}
 				/>
 			);
 		}
 	};
 
-	save = async (e, defaultValue, mac, devid) => {
-		const editName = e.target.value;
-		if (editName === defaultValue) {
+	handleSave = async payload => {
+		await this.save(payload);
+		this.setState({
+			editing: false
+		});
+	};
+
+	save = async ({ editing, name, mac, devid }) => {
+		const editName = editing.target.value;
+		if (editName === name) {
 			this.setState({
 				editing: false
 			});
@@ -116,11 +125,6 @@ export default class Topology extends React.Component {
 			if (0 !== errcode) {
 				message.error(intl.get(MODULE, 22) /*_i18n:undefined*/);
 				return;
-			}
-			if (0 === errcode) {
-				this.setState({
-					editing: false
-				});
 			}
 		}
 	};
@@ -151,8 +155,8 @@ export default class Topology extends React.Component {
 						return (
 							<span className="satelite-li" key={items.mac}>
 								<RouterContent
-									setTitle={this.setTitle}
 									reList={items}
+									save={this.save}
 								/>
 							</span>
 						);
@@ -239,7 +243,12 @@ export default class Topology extends React.Component {
 								trigger="click"
 								content={
 									<div className="satelite-info">
-										{this.setTitle(editing, name, mac, devid)}
+										{this.setTitle({
+											editing,
+											name,
+											mac,
+											devid
+										})}
 										<ul>
 											<li>
 												<label>
