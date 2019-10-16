@@ -146,25 +146,16 @@
         }
     }
 }
+.sysUpgrade-panelHeader {
+    margin: 76px 60px 0;
+}
 .sys-upgrade {
-    padding: 29px 60px 29px 60px;
+    padding: 20px 60px 29px 60px;
     display: flex;
     justify-content: space-between;
     p {
         font-size: 16px;
         color: #333C4F;
-    }
-}
-.custom-save {
-	border-top: 1px solid #ECECEC;
-    padding: 28px 60px 20px 0;
-    margin-top: 40px;
-    width: calc(100% - 120px);
-	margin-left: 60px;
-    margin-top: 148px;
-    .custom-button {
-        width: 200px;
-        height: 42px;
     }
 }
 .settings-content {
@@ -189,10 +180,17 @@
         width: 320px;
         height: 36px;
     }
+    .custom-upgrade-save {
+        margin: 48px 0 0;
+        .custom-button {
+            width: 200px;
+            height: 42px;
+        }
+    }
 }
 
 .port-edit {
-	font-family: PingFangSC-Regular;
+	font-family: PingFangSC-Regular, sans-serif;
 	font-size: 14px;
 	color: #6174F1;
 	margin-right: 12px;

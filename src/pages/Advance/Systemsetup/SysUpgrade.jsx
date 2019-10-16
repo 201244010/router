@@ -4,6 +4,7 @@ import {Button, Table, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '~/pages/UpgradeDetect/Upgrade';
+import PanelHeader from '~/components/PanelHeader';
 import CustomUpgrade from './CustomUpgrade';
 const MODULE = 'sysupgrade';
 
@@ -78,10 +79,9 @@ export default class SysUpgrade extends React.Component{
         return (
             <SubLayout className="settings">
                 <CustomUpgrade />
+                <PanelHeader className='sysUpgrade-panelHeader' title='手动升级'/>
                 <div className='sys-upgrade'>
-                    <p>
-                        {intl.get(MODULE, 6)/*_i18n:检测是否有适用的新固件*/}
-                    </p>
+                    <p>{intl.get(MODULE, 6)/*_i18n:检测是否有适用的新固件*/}</p>
                     <div>
                         <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
                         <Button type="primary" disabled={detecting || update || !hasVersion} onClick={this.startUpgrade}>{intl.get(MODULE, 7)/*_i18n:全部升级*/}</Button>
