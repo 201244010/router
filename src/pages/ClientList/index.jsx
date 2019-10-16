@@ -260,8 +260,8 @@ export default class ClientList extends React.Component {
             width: 110,
             render: (text, record) => (
                 <div>
-                    <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{ marginLeft: 5 }}>{record.tx}</span></div>
-                    <div><CustomIcon type="downloadtraffic" color='#87D068' size={12} /><span style={{ marginLeft: 5 }}>{record.rx}</span></div>
+                    <div><CustomIcon className='clientList-icon-kbyte' type="kbyte" size={12} /><span>{record.tx}</span></div>
+                    <div><CustomIcon className='clientList-icon-download' type="downloadtraffic" size={12} /><span>{record.rx}</span></div>
                 </div>
             )
         }, {

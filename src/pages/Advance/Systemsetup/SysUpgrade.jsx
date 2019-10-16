@@ -52,15 +52,13 @@ export default class SysUpgrade extends React.Component{
                     const {detecting} = this.state;
                     if (detecting && online) {
                         return (
-                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                <CustomIcon type="loading" color='#6174F1' size={14} spin/>
-                                <span style={{marginLeft: 4}}>{intl.get(MODULE, 5)/*_i18n:检测中...*/}</span>
+                            <div className='columns-status'>
+                                <CustomIcon className='status-loading' type="loading" size={14} spin/>
+                                <span className='status-tip'>{intl.get(MODULE, 5)/*_i18n:检测中...*/}</span>
                             </div>
                         )
                     } else {
-                        return <span style={{color: online ? '#333C4F' : '#ADB1B9' }}>
-                        {record.status}
-                        </span>
+                        return <span className={online ?'status-online':'status-offline'}>{record.status}</span>
                     }
                 }
                 return (

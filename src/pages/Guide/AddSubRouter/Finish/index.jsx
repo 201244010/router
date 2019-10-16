@@ -18,7 +18,7 @@ export default class Success extends React.Component {
         return (
             <React.Fragment>
                 <div className='finish'>
-                    <CustomIcon size={72} color='#87D068' type='succeed' style={{marginBottom: 16}} />
+                    <CustomIcon className='finish-icon-succeed' size={72} type='succeed'/>
                     <h4>{intl.get(MODULE, 0)/*_i18n:设置完成*/}</h4>
                     <p>{intl.get(MODULE, 1)/*_i18n:下载商米助手APP，随时随地管理路由器！*/}</p>
                     <div className='QR'>

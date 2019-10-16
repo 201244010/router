@@ -128,6 +128,9 @@
     .reboot-modal-title {
         display: flex;
         align-items: center;
+        .reboot-icon-hint {
+            color: #D0021B;
+        }
         label {
             color: #D0021B;
             font-size: 14px;
@@ -195,4 +198,28 @@
 	color: #6174F1;
 	margin-right: 12px;
 	cursor: pointer;
+}
+.modal-center {
+    .center-icon-succeed {
+        color: #87D068;
+        margin: 20px 0 15px;
+    }
+}
+.static-table {
+    .columns-status {
+        display: flex;
+        align-items: center;
+        .status-loading {
+            color: #6174F1;
+        }
+        .status-tip {
+            margin-left: 4px;
+        }
+    }
+    .status-online {
+        color: #333C4F;
+    }
+    .status-offline {
+        color: #ADB1B9;
+    }
 }

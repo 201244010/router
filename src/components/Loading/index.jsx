@@ -38,7 +38,7 @@ class Loading extends React.PureComponent {
 		return (
 			<div className={'sm-loading-wrap ' + className} style={{visibility: this.state.visible}}>
 				<div className='sm-loading-content'>
-					<CustomIcon size={36} color="#6174F1" type="loading" spin />
+					<CustomIcon size={36} className='sm-loading-color' type="loading" spin />
 				</div>
 			</div>
 		)

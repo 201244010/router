@@ -28,7 +28,7 @@ class Selecting extends React.Component {
             return (
                 <React.Fragment>
                     <div className="bigLoading">
-                        <CustomIcon size={80} color="#6174F1" type="loading" spin />
+                        <CustomIcon className='selecting-icon-loading' size={80} type="loading" spin />
                     </div>
                     {/* <Icon key="progress-icon" type="loading" className="bigLoading"  spin /> */}
                     <h3 className='bigTitle'>{intl.get(MODULE, 2)/*_i18n:正在搜索子路由……*/}</h3>
@@ -39,11 +39,17 @@ class Selecting extends React.Component {
         if (0 === showList.length && searchFinish) {        //搜索完成，且设备列表为空
             return (
                 <React.Fragment>
-                    <CustomIcon size={200} color='#D7D8DC' type="noroute" style={{margin: '40px auto 12px'}}/>
+                    <CustomIcon className='selecting-icon-noroute' size={200} type="noroute"/>
                     <p className='noFindTip'>{intl.get(MODULE, 3)/*_i18n:没有检测到其他路由器*/}</p>
                     <div className='warning'>
-                        <p className='warningTip' style={{marginBottom: 8}}><CustomIcon size={12} color='#FB8632' type="hint" style={{marginRight: 4}}/>{intl.get(MODULE, 4)/*_i18n:请确认子路由已插上电源，并放置在距离主路由较近的位置*/}</p>
-                        <p className='warningTip'><CustomIcon size={12} color='#FB8632' type="hint" style={{marginRight: 4}}/>{intl.get(MODULE, 5)/*_i18n:如完成上述步骤仍无法检测到子路由，请将子路由恢复出厂后重试*/}</p>
+                        <p className='warningTip'>
+                            <CustomIcon className='warningTip-hint' size={12} type="hint" />
+                            <span>{intl.get(MODULE, 4)/*_i18n:请确认子路由已插上电源，并放置在距离主路由较近的位置*/}</span>
+                        </p>
+                        <p className='warningTip'>
+                            <CustomIcon className='warningTip-hint' size={12} type="hint" />
+                            <span>{intl.get(MODULE, 5)/*_i18n:如完成上述步骤仍无法检测到子路由，请将子路由恢复出厂后重试*/}</span>
+                        </p>
                     </div>
                     <Button type="primary" className="settingButton" onClick={this.props.reSearch}>{intl.get(MODULE, 6)/*_i18n:重新检测*/}</Button>
                 </React.Fragment>
@@ -55,7 +61,7 @@ class Selecting extends React.Component {
                 <React.Fragment>
                     <div className="settingHeader">
                         <div className="smallLoading">
-                            <CustomIcon size={24} color="#6174F1" type="loading" spin />
+                            <CustomIcon className='smallLoading-icon-loading' size={24} type="loading" spin />
                         </div>
                         <span className='smallTitle'>{intl.get(MODULE, 7)/*_i18n:正在搜索子路由……*/}</span>
                     </div>
@@ -71,8 +77,8 @@ class Selecting extends React.Component {
             return (
                 <React.Fragment>
                     <div className="settingHeader">
-                        <CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
-                        <span className='smallTitle' style={{verticalAlign: 'middle'}}>{intl.get(MODULE, 9)/*_i18n:检测完成，请选择您要添加的子路由*/}</span>
+                        <CustomIcon className='settingHeader-icon-succeed' size={24} type="succeed" />
+                        <span className='smallTitle small-middle'>{intl.get(MODULE, 9)/*_i18n:检测完成，请选择您要添加的子路由*/}</span>
                     </div>
                     <div className="body">
                     {showList}

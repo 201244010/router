@@ -472,13 +472,13 @@ export default class Backup extends React.Component{
                 </Modal>
                 <Modal closable={false} visible={backupFail} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupFailCancle}>{intl.get(MODULE, 38)/*_i18n:我知道了*/}</Button>} width={560}>
                     <div className="backup-icon">
-                        <CustomIcon color="#FF5500" type="defeated" size={64} />
+                        <CustomIcon className='backup-icon-defeated' type="defeated" size={64} />
                         <div className="backup-result">{backupFailTip}</div>
                     </div>
                 </Modal>
                 <Modal closable={false} visible={backupSuccess} maskClosable={false} centered={true} footer={<Button className="backup-btm" type="primary" onClick={this.backupSuccessCancle}>{intl.get(MODULE, 39)/*_i18n:确定*/}</Button>} width={560} >
                     <div className="backup-icon">
-                        <CustomIcon color="#87D068" type="succeed" size={64} />
+                        <CustomIcon className='backup-icon-succeed' type="succeed" size={64} />
                         <div className="backup-result">{backupSuccessTip}</div>
                     </div>
                 </Modal>

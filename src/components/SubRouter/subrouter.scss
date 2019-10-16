@@ -5,6 +5,9 @@
     text-align: center;
     display: inline-block;
     margin: 0 12px 24px;
+    .subRouter-icon {
+        color: grey;
+    }
     .macInfo {
         font-family: 'PingFangSC-Regular';
         font-size: 12px;
@@ -32,6 +35,14 @@
             font-family: 'PingFangSC-Light';
             font-size: 12px;
             color: #ADB1B9;
+        }
+        .footer-success {
+            color: #4EC53F;
+            margin-right: 4px;
+        }
+        .footer-failed {
+            color: #FB8632;
+            margin-right: 4px;
         }
     }
     .checkbox {
@@ -66,6 +77,10 @@
     padding: 0 0 0 20px;
     margin: 0;
     text-align: left;
+    .modalTitle-icon {
+        color: #333C4F;
+        margin-right: 8px;
+    }
 }
 .modalContent {
     height: 80px;

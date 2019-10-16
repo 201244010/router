@@ -222,7 +222,7 @@ export default class Recovery extends React.Component{
                             centered={true}
                             footer={[<Button type="primary" onClick={this.guide}>{intl.get(MODULE, 9)/*_i18n:确定*/}</Button>]}
                         >
-                            <CustomIcon type="succeed" size={64} color='#87D068' style={{marginTop:20}} />
+                            <CustomIcon className='center-icon-succeed' type="succeed" size={64} />
                             <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 10)/*_i18n:恢复出厂设置完成，请重新连接无线网络*/}</h3>
                         </Modal>
                         <Modal
@@ -232,7 +232,7 @@ export default class Recovery extends React.Component{
                             closable={false}
                             centered={true}
                             title={<div className='reboot-modal-title'>
-                                    <CustomIcon color="#D0021B" type="hint" size={14}></CustomIcon>
+                                    <CustomIcon className='reboot-icon-hint' type="hint" size={14} />
                                     <label>{intl.get(MODULE, 1)/*_i18n:警告*/}</label>
                                 </div>
                             }
