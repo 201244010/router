@@ -283,20 +283,8 @@ function Background(props) {
             <i className='noise' style={{
                 backgroundImage: `url(${props.image})`,
             }}></i>
-            <CustomIcon type='earth' size={500} style={{
-                color: '#FFF',
-                opacity: 0.05,
-                position: 'fixed',
-                top: '-88px',
-                right: '-129px',
-            }} />
-            <CustomIcon type='earth' size={600} style={{
-                color: '#FFF',
-                opacity: 0.1,
-                position: 'fixed',
-                bottom: '-40px',
-                left: '-220px',
-            }} />
+            <CustomIcon className='icon-earth-small' type='earth' size={500} />
+            <CustomIcon className='icon-earth-big' type='earth' size={600} />
         </div>
     )
 }

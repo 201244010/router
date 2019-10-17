@@ -25,9 +25,8 @@ export default class Success extends React.Component {
 				<div className="success">
 					<CustomIcon
 						size={72}
-						color="#87D068"
+						className='success-icon-succeed'
 						type="succeed"
-						style={{ marginBottom: 16 }}
 					/>
 					<h4>{intl.get(MODULE, 11) /*_i18n:设置完成*/}</h4>
 					<p>

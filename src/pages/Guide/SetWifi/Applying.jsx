@@ -59,7 +59,7 @@ export default class Applying extends React.Component {
         const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw, setTip } = this.state;
         const list = [
             {
-                color: '#FB8632',
+                className: 'list-icon-business',
                 type: 'business',
                 label: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi*/,
                 wifiName: intl.get(MODULE, 4, {hostWifiName})/*_i18n:名称：{hostWifiName}*/,
@@ -67,7 +67,7 @@ export default class Applying extends React.Component {
                 exist: true,
             },
             {
-                color: '#4EC53F',
+                className: 'list-icon-customer',
                 type: 'customer',
                 label: intl.get(MODULE, 7)/*_i18n:客用Wi-Fi*/,
                 wifiName: intl.get(MODULE, 8, {guestWifiName})/*_i18n:名称：{guestWifiName}*/,
@@ -80,9 +80,9 @@ export default class Applying extends React.Component {
             <div className='create-wifi'>
                 <div className='head'>
                     { time >= 1 ?
-                    [<CustomIcon type='loading' color='#6174F1' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
+                    [<CustomIcon className='head-icon-loading' type='loading' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
                     :
-                    [<CustomIcon type='hint' color='#FF6900' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
+                    [<CustomIcon className='head-icon-hint' type='hint' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
                     }
                 </div>
                 <ul className='body'>
@@ -93,7 +93,7 @@ export default class Applying extends React.Component {
                             </li>,
                             <li className='item'>
                                 <div className='title'>
-                                    <CustomIcon size={24} color={item.color} type={item.type} />
+                                    <CustomIcon size={24} className={item.className} type={item.type} />
                                     <label>{item.label}</label>
                                 </div>
                                 <p>{item.wifiName}</p>

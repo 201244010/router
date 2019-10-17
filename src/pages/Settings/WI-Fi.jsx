@@ -9,6 +9,7 @@ import CustomIcon from "~/components/Icon";
 import { checkStr ,checkRange } from '~/assets/common/check';
 import SubLayout from '~/components/SubLayout';
 import ModalLoading from '~/components/ModalLoading';
+import './settings.scss';
 
 const MODULE = 'wi-fi';
 const {FormItem, ErrorTip, Input} = Form;
@@ -867,6 +868,7 @@ export default class WIFI extends React.Component {
                     visible={resVisibile}
                     maskClosable={false}
                     centered={true}
+                    className='setting-wifi-modal'
                     footer={
                         <Button className="backup-btm" type="primary" onClick={this.resCancle}>
                         {result? intl.get(MODULE, 81)/*_i18n:确定*/ : intl.get(MODULE, 82)/*_i18n:我知道了*/}
@@ -875,15 +877,15 @@ export default class WIFI extends React.Component {
                     width={560}>
                     {result?
                         <div className="backup-icon">
-                            <CustomIcon color="#87D068" type="succeed" size={64} />
+                            <CustomIcon className='backup-icon-succeed' type="succeed" size={64} />
                             <div className="backup-result">{intl.get(MODULE, 79)/*_i18n:配置生效，请重新连接无线网络*/}</div>
                         </div>
                         :
                         <div className="backup-icon">
-                            <CustomIcon color="#FF5500" type="defeated" size={64} />
+                            <CustomIcon className='backup-icon-defeated' type="defeated" size={64} />
                             <div className="backup-result">
-                                <div style={{fontSize: 16}}>{intl.get(MODULE, 80)/*_i18n:配置失败!*/}</div>
-                                <div style={{ fontSize: 12, color: '#ADB1B9' }}>{this.state.err}</div>
+                                <div className='result-failed'>{intl.get(MODULE, 80)/*_i18n:配置失败!*/}</div>
+                                <div className='result-err'>{this.state.err}</div>
                             </div>
                         </div>
                     }

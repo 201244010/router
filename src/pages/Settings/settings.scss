@@ -230,3 +230,36 @@
         color: #ADB1B9;
     }
 }
+.setting-wifi-modal {
+    .backup-btm{
+        display: block;
+        width: 160px;
+        margin: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .backup-icon {
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+        .backup-icon-defeated {
+            color: #FF5500;
+        }
+        .backup-icon-succeed {
+            color: #87D068;
+        }
+        .backup-result {
+            font-size: 16px;
+            color: #333C4F;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            .result-failed {
+                font-size: 16px;
+            }
+            .result-err {
+                font-size: 12px;
+                color: #ADB1B9;
+            }
+        }
+    }
+}

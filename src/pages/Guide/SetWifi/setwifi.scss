@@ -4,6 +4,12 @@
     .head{
         margin-bottom: 26px;
         text-align: center;
+        .head-icon-loading {
+            color: #6174F1;
+        }
+        .head-icon-hint {
+            color: #FF6900;
+        }
         p{
             display: inline-block;
             margin-left: 12px;
@@ -25,6 +31,12 @@
             .title{
                 display: inline-block;
                 margin-bottom: 20px;
+                .list-icon-business {
+                    color: #FB8632;
+                }
+                .list-icon-customer {
+                    color: #4EC53F;
+                }
                 label{
                     margin-left: 8px;
                     font-size: 20px;

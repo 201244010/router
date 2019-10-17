@@ -26,7 +26,7 @@ class SettingRouter extends React.Component {
             <React.Fragment>
                 <div className="settingHeader">
                     <div className="smallLoading">
-                        <CustomIcon size={24} color="#6174F1" type="loading" spin />
+                        <CustomIcon className='smallLoading-icon-loading' size={24} type="loading" spin />
                     </div>
                     <span className='smallTitle'>{intl.get(MODULE, 12)/*_i18n:正在设置子路由，请稍后……*/}</span>
                 </div>

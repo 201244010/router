@@ -33,8 +33,8 @@ class SettingResult extends React.Component {
             return (
                 <React.Fragment>
 					<div className="settingHeader">
-						<CustomIcon size={24} color='#4EC53F' type="succeed" style={{marginRight: 8}}/>
-						<span className='smallTitle' style={{verticalAlign: 'middle'}}>{intl.get(MODULE, 13)/*_i18n:组网完成*/}</span>
+						<CustomIcon className='settingHeader-icon-succeed' size={24} type="succeed" />
+						<span className='smallTitle small-middle'>{intl.get(MODULE, 13)/*_i18n:组网完成*/}</span>
 					</div>
 					<div className="body">
 					{showList}
@@ -73,11 +73,11 @@ class SettingResult extends React.Component {
             return (
                 <React.Fragment>
 					<div className="settingHeader">
-						<CustomIcon size={14} color='#FB8632' type="hint" style={{marginRight: 8}}/>
-						<span className='smallTitle' style={{verticalAlign: 'middle'}}>{intl.get(MODULE, 18)/*_i18n:已放弃添加子路由*/}</span>
+						<CustomIcon className='settingHeader-icon-hint' size={14} type="hint" />
+						<span className='smallTitle small-middle'>{intl.get(MODULE, 18)/*_i18n:已放弃添加子路由*/}</span>
 					</div>
 					<div className="body">
-						<CustomIcon size={140} color='#D7D8DC' type="noroute"/>  
+						<CustomIcon className='body-icon-noroute' size={140} type="noroute"/> 
 					</div>
 					<Button type="primary" className="settingButton" disabled={false} onClick={this.props.goHome}>{intl.get(MODULE, 19)/*_i18n:去首页*/}</Button>
 				</React.Fragment>
