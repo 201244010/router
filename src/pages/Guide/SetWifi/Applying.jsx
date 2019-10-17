@@ -57,33 +57,50 @@ export default class Applying extends React.Component {
 
     render() {
         const { time, hostWifiName,  hostWifiPsw, guestWifiName, guestWifiPsw, setTip } = this.state;
+        const list = [
+            {
+                className: 'list-icon-business',
+                type: 'business',
+                label: intl.get(MODULE, 3)/*_i18n:商户Wi-Fi*/,
+                wifiName: intl.get(MODULE, 4, {hostWifiName})/*_i18n:名称：{hostWifiName}*/,
+                password: '' === hostWifiPsw ? intl.get(MODULE, 5)/*_i18n:无密码*/ : intl.get(MODULE, 6, {hostWifiPsw})/*_i18n:密码：{hostWifiPsw}*/,
+                exist: true,
+            },
+            {
+                className: 'list-icon-customer',
+                type: 'customer',
+                label: intl.get(MODULE, 7)/*_i18n:客用Wi-Fi*/,
+                wifiName: intl.get(MODULE, 8, {guestWifiName})/*_i18n:名称：{guestWifiName}*/,
+                password: '' === guestWifiPsw ? intl.get(MODULE, 9)/*_i18n:无密码*/ : intl.get(MODULE, 10, {guestWifiPsw})/*_i18n:密码：{guestWifiPsw}*/,
+                exist: setTip,
+            }
+        ];
 
         return (
             <div className='create-wifi'>
                 <div className='head'>
                     { time >= 1 ?
-                    [<CustomIcon type='loading' color='#6174F1' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
+                    [<CustomIcon className='head-icon-loading' type='loading' size={32} spin />,<p>{intl.get(MODULE, 0,{time})/*_i18n:正在为您创建Wi-Fi，请稍候({time}s)...*/}</p>]
                     :
-                    [<CustomIcon type='hint' color='#FF6900' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
+                    [<CustomIcon className='head-icon-hint' type='hint' size={32} />,<p>{intl.get(MODULE, 1, {hostWifiName})/*_i18n:由于Wi-Fi配置变更，请重新连接'{hostWifiName}',体验更多功能*/}</p>]
                     }
                 </div>
                 <ul className='body'>
-                    <li>
-                        <div className='title'> 
-                            <CustomIcon size={24} color='#FB8632' type="business" />
-                            <label>{intl.get(MODULE, 3)/*_i18n:商户Wi-Fi*/}</label>
-                        </div>
-                        <p>{intl.get(MODULE, 4, {hostWifiName})/*_i18n:名称：{hostWifiName}*/}</p>
-                        <p>{'' === hostWifiPsw ? intl.get(MODULE, 5)/*_i18n:无密码*/ : intl.get(MODULE, 6, {hostWifiPsw})/*_i18n:密码：{hostWifiPsw}*/}</p>
-                    </li>
-                    {setTip && <li>
-                        <div className='title'>
-                            <CustomIcon size={24} color='#4EC53F' type="customer" />
-                            <label>{intl.get(MODULE, 7)/*_i18n:客用Wi-Fi*/}</label>
-                        </div>
-                        <p>{intl.get(MODULE, 8, {guestWifiName})/*_i18n:名称：{guestWifiName}*/}</p>
-                        <p>{'' === guestWifiPsw ? intl.get(MODULE, 9)/*_i18n:无密码*/ : intl.get(MODULE, 10, {guestWifiPsw})/*_i18n:密码：{guestWifiPsw}*/}</p>
-                    </li>}
+                    {
+                        list.map(item => (item.exist&&[
+                            <li className='line'>
+                                <span className='line-style'></span>
+                            </li>,
+                            <li className='item'>
+                                <div className='title'>
+                                    <CustomIcon size={24} className={item.className} type={item.type} />
+                                    <label>{item.label}</label>
+                                </div>
+                                <p>{item.wifiName}</p>
+                                <p>{item.password}</p>
+                            </li>]
+                        ))
+                    }
                 </ul>
             </div>
         );

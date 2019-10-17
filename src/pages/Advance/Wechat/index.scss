@@ -104,3 +104,27 @@ $edge: 60px;
         }
     }
 }
+.wechat-modal-button {
+    display: block;
+    width: 160px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.wechat-icon {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    .wechat-icon-succeed {
+        color: #87D068;
+    }
+    .wechat-icon-defeated {
+        color: #FF5500;
+    }
+    .backup-result {
+        font-size: 16px;
+        color: #333C4F;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+}

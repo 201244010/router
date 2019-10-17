@@ -407,8 +407,9 @@ export default class Bandwidth extends React.PureComponent {
                             <div className="band-left">{upband}</div>
                             <div className="band-right">
                                 <span className="band-unit">{unit}</span>
-                                <span className="band-unit">{intl.get(MODULE, 26)/*_i18n:上行带宽*/}
-                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#3D76F6" type="kbyte"/></span>
+                                <span className="band-unit">
+                                    <span>{intl.get(MODULE, 26)/*_i18n:上行带宽*/}</span>
+                                    <CustomIcon className='unit-icon-kbyte' style={{paddingBottom:3}} size={12} type="kbyte"/>
                                 </span>
                             </div>
                         </div>
@@ -417,25 +418,26 @@ export default class Bandwidth extends React.PureComponent {
                             <div className="band-left">{downband}</div>
                             <div className="band-right">
                                 <span className="band-unit">{unit}</span>
-                                <span className="band-unit">{intl.get(MODULE, 27)/*_i18n:下行带宽*/}
-                                    <span style={{marginLeft: 8}}><CustomIcon style={{paddingBottom:3}} size={12} color="#87D068" type="downloadtraffic"/></span>
+                                <span className="band-unit">
+                                    <span>{intl.get(MODULE, 27)/*_i18n:下行带宽*/}</span>
+                                    <CustomIcon className='unit-icon-download' size={12} type="downloadtraffic"/>
                                 </span>
                             </div>
                         </div>
                     </section>
-                    <section style={{margin:"16px 20px 32px 0"}}>
+                    <section className='band-setting'>
                             {
-                                getQuickStartVersion() === 'domestic' ? <Button style={{marginRight:20}} onClick={this.onPercentChange}>{intl.get(MODULE, 28)/*_i18n:自动测速*/}</Button> : ''
+                                getQuickStartVersion() === 'domestic' &&<Button className='setting-auto' onClick={this.onPercentChange}>{intl.get(MODULE, 28)/*_i18n:自动测速*/}</Button>
                             }
-                            <Button style={{width : 116}} onClick={this.showManual}>{intl.get(MODULE, 29)/*_i18n:手动设置*/}</Button>
+                            <Button className='setting-manual' onClick={this.showManual}>{intl.get(MODULE, 29)/*_i18n:手动设置*/}</Button>
                     </section>
                     <section>
                         <PanelHeader title={intl.get(MODULE, 43)/*_i18n:网速智能分配*/} checkable={true} checked={bandenable} tip={intl.get(MODULE, 30)/*_i18n:启用后，当网络带宽占满时，路由器将按照设置的最低保证比例为三类设备划分带宽，进而保证核心设备业务正常处理*/} onChange={this.OnBandEnable}/>
-                        <Table className="qos-table" style={{fontSize : 16,marginTop:12}}  pagination={false} columns={columns} dataSource={data} />
+                        <Table className="qos-table" pagination={false} columns={columns} dataSource={data} />
                     </section>
                 </Form>
                 <section className="save">
-                    <Button disabled={saveDisable} size='large' style={{ width: 200, height: 42 }} type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)/*_i18n:保存*/}</Button>
+                    <Button disabled={saveDisable} size='large' className='band-save-button' type="primary" loading={loading} onClick={this.post}>{intl.get(MODULE, 31)/*_i18n:保存*/}</Button>
                 </section>
                 {visible &&
                     <Progress
@@ -444,21 +446,21 @@ export default class Bandwidth extends React.PureComponent {
                         showPercent={true}
                     />
                 }
-                <Modal title={intl.get(MODULE, 33)/*_i18n:手动设置带宽*/} okText={intl.get(MODULE, 39)/*_i18n:确定*/} cancelText={intl.get(MODULE, 34)/*_i18n:取消*/} 
+                <Modal className='band-manual-modal' title={intl.get(MODULE, 33)/*_i18n:手动设置带宽*/} okText={intl.get(MODULE, 39)/*_i18n:确定*/} cancelText={intl.get(MODULE, 34)/*_i18n:取消*/} 
                     onOk={this.onEditOk} onCancel={this.onEditCancle} maskClosable={false}
                     closable={false} visible={manualShow} 
                     centered={true} width={360} 
                     okButtonProps={{disabled : this.state.disable ,loading: btloading}}
                     >
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 35)/*_i18n:上行总带宽*/}</label>
+                    <label className='manual-modal-name'>{intl.get(MODULE, 35)/*_i18n:上行总带宽*/}</label>
                     <FormItem showErrorTip={upbandTmpTip} type="small" >
-                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <label className='manual-modal-unit'>{unit}</label>
                         <Input type="text" value={upbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'upbandTmp')} placeholder={intl.get(MODULE, 36)/*_i18n:请输入上行总带宽*/} />
                         <ErrorTip>{upbandTmpTip}</ErrorTip>
                     </FormItem>
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 37)/*_i18n:下行总带宽*/}</label>
+                    <label className='manual-modal-name'>{intl.get(MODULE, 37)/*_i18n:下行总带宽*/}</label>
                     <FormItem showErrorTip={downbandTmpTip} type="small" style={{ marginBottom: 8 }}>
-                        <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 }}>{unit}</label>
+                        <label className='manual-modal-unit'>{unit}</label>
                         <Input type="text" value={downbandTmp} maxLength={4} onChange={value => this.onbandChange(value, 'downbandTmp')} placeholder={intl.get(MODULE, 38)/*_i18n:请输入下行总带宽*/} />
                         <ErrorTip>{downbandTmpTip}</ErrorTip>
                     </FormItem>
@@ -466,28 +468,28 @@ export default class Bandwidth extends React.PureComponent {
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFill} centered={true} 
                 footer={<Button type="primary" onClick={this.onSpeedFillCancle}>{intl.get(MODULE, 39)/*_i18n:确定*/}</Button>}>
                     <div className='status-icon'>
-                        <CustomIcon color="#87D068" type="succeed" size={64}/>   
+                        <CustomIcon className='status-icon-succeed' type="succeed" size={64}/>   
                     </div>
                     <h4>{intl.get(MODULE, 40)/*_i18n:带宽测速完成*/}</h4>
                     <ul className='speed-result'>
                         <li>
-                            <CustomIcon color="#779FF8" type="kbyte" size={16}/>
-                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 44)/*_i18n:上行带宽：*/}</span><span>{upband}{unit}</span></label>
+                            <CustomIcon className='result-kbyte-icon' type="kbyte" size={16}/>
+                            <label><span className='result-content'>{intl.get(MODULE, 44)/*_i18n:上行带宽：*/}</span><span>{upband}{unit}</span></label>
                         </li>
                         <li>
-                            <CustomIcon color="#ABDE95" type="downloadtraffic" size={16}/>
-                            <label><span style={{color:'#adb1b9'}}>{intl.get(MODULE, 45)/*_i18n:下行带宽：*/}</span><span>{downband}{unit}</span></label>
+                            <CustomIcon className='result-download-icon' type="downloadtraffic" size={16}/>
+                            <label><span className='result-content'>{intl.get(MODULE, 45)/*_i18n:下行带宽：*/}</span><span>{downband}{unit}</span></label>
                         </li>
                     </ul>
                 </Modal>
                 <Modal className='speed-result-modal' width={560} closable={false} visible={speedFail} centered={true} 
                 footer={<Button type="primary" onClick={this.onSpeedFailCancle}>{intl.get(MODULE, 41)/*_i18n:我知道了*/}</Button>}>
                     <div className="status-icon">
-                        <CustomIcon color="red" type="defeated" size={64}/>
+                        <CustomIcon className='status-icon-defeated' type="defeated" size={64}/>
                     </div>
-                    <div style={{ textAlign:'center',fontSize: 16,color: '#333C4F'}}>{intl.get(MODULE, 42)/*_i18n:带宽测速失败，请重试*/}</div>
-                    <div style={{ textAlign:'center',margin: '4px auto 6px'}}>   
-                        <div style={{fontSize : 12,color: '#ADB1B9'}}>{failTip}</div>
+                    <div className='status-defeated-message'>{intl.get(MODULE, 42)/*_i18n:带宽测速失败，请重试*/}</div>
+                    <div className='status-defeated-tip'>   
+                        <div className='tip-content'>{failTip}</div>
                     </div>   
                 </Modal>
             </div>

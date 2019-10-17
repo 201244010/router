@@ -32,6 +32,7 @@ export default class Lan extends React.Component {
     };
 
     onChange = (val, key) => {
+        console.log('val',val,'key',key);
         let tip = '',
             startipTip = '',
             endipTip = '';
@@ -227,60 +228,119 @@ export default class Lan extends React.Component {
 
     render(){
         const { ipv4, mask, enable, startip, endip, leasetime, ipv4Tip, maskTip,startipTip,endipTip, leasetimeTip, disabled, loading } = this.state;
+        const list = [
+            {
+                header: {
+                    className: 'item-header',
+                    title: intl.get(MODULE, 16)/*_i18n:局域网IP地址*/,
+                },
+                content: [
+                    {
+                        left: {
+                            label: intl.get(MODULE, 17)/*_i18n:IP地址*/,
+                            tip: ipv4Tip,
+                            value: ipv4,
+                            name: 'ipv4',
+                            disabled: false,
+                        },
+                        right: {
+                            label: intl.get(MODULE, 18)/*_i18n:子网掩码*/,
+                            tip: maskTip,
+                            value: mask,
+                            name: 'mask',
+                            disabled: false,
+                        },
+                    },
+                ],
+            },
+            {
+                header: {
+                    className: 'item-header switch-location',
+                    title: intl.get(MODULE, 19)/*_i18n:DHCP服务*/,
+                    checkable: true,
+                    checked: enable,
+                    checkedChildren: intl.get(MODULE, 24)/*_i18n:开*/,
+                    unCheckedChildren: intl.get(MODULE, 25)/*_i18n:关*/,
+                    onChange: value => this.onChange(value, 'enable'),
+                },
+                content: [
+                    {
+                        left: {
+                            label: intl.get(MODULE, 4)/*_i18n:起始IP地址*/,
+                            tip: startipTip,
+                            value: startip,
+                            name: 'startip',
+                            disabled: !enable,
+                        },
+                        right: {
+                            label: intl.get(MODULE, 5)/*_i18n:结束IP地址*/,
+                            tip: endipTip,
+                            value: endip,
+                            name: 'endip',
+                            disabled: !enable,
+                        },
+                    },
+                ],
+            }
+        ];
         return (
         <div className="lan-settting">
                 <Form>
-                    <section className="content-item" style={{marginTop: 9}}>
-                        <PanelHeader title={intl.get(MODULE, 16)/*_i18n:局域网IP地址*/} />
-                        <label style={{ marginTop: 24 }}>{intl.get(MODULE, 17)/*_i18n:IP地址*/}</label>
-                        <FormItem showErrorTip={ipv4Tip} style={{ width: 320 }}>
-                            <InputGroup size="small"
-                                inputs={[{ value: ipv4[0], maxLength: 3 }, { value: ipv4[1], maxLength: 3 }, { value: ipv4[2], maxLength: 3 }, { value: ipv4[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'ipv4')} />
-                            <ErrorTip>{ipv4Tip}</ErrorTip>
-                        </FormItem>
-                        <label>{intl.get(MODULE, 18)/*_i18n:子网掩码*/}</label>
-                        <FormItem showErrorTip={maskTip} style={{ width: 320 }}>
-                            <InputGroup size="small"
-                                inputs={[{ value: mask[0], maxLength: 3 }, { value: mask[1], maxLength: 3 }, { value: mask[2], maxLength: 3 }, { value: mask[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'mask')} />
-                            <ErrorTip>{maskTip}</ErrorTip>
-                        </FormItem>
-                    </section>
-                    <section className="content-item">
-                        <PanelHeader title={intl.get(MODULE, 19)/*_i18n:DHCP服务*/} checkable={true} checked={enable} onChange={value => this.onChange(value, 'enable')} />
-                        <label style={{ marginTop: 24 }}>{intl.get(MODULE, 4)/*_i18n:起始IP地址*/}</label>
-                        <FormItem showErrorTip={startipTip} style={{ width: 320 }}>
-                            <InputGroup size="small"
-                                disabled={!enable}
-                                inputs={[{ value: startip[0], maxLength: 3 }, { value: startip[1], maxLength: 3 }, { value: startip[2], maxLength: 3 }, { value: startip[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'startip')} />
-                            <ErrorTip>{startipTip}</ErrorTip>
-                        </FormItem>
-                        <label>{intl.get(MODULE, 5)/*_i18n:结束IP地址*/}</label>
-                        <FormItem showErrorTip={endipTip} style={{ width: 320 }}>
-                            <InputGroup size="small"
-                                disabled={!enable}
-                                inputs={[{ value: endip[0], maxLength: 3 }, { value: endip[1], maxLength: 3 }, { value: endip[2], maxLength: 3 }, { value: endip[3], maxLength: 3 }]}
-                                onChange={value => this.onChange(value, 'endip')} />
-                            <ErrorTip>{endipTip}</ErrorTip>
-                        </FormItem>
-                        <label>{intl.get(MODULE, 20)/*_i18n:地址租期*/}</label>
-                        <FormItem showErrorTip={leasetimeTip} type="small" style={{ width: 320, marginBottom: 0 }}>
-                            <label style={{ position: 'absolute', right: 10, top: 0, zIndex: 1 , opacity: 0.65 }}>{intl.get(MODULE, 21)/*_i18n:分钟*/}</label>
-                            <Input
-                                type='text'
-                                disabled={!enable}
-                                value={leasetime}
-                                onChange={value => this.onChange(value, 'leasetime')}
-                                placeholder='2～1440'
-                                maxLength={4} />
-                            <ErrorTip>{leasetimeTip}</ErrorTip>
-                        </FormItem>
-                    </section>
+                    {
+                        list.map(item => {
+                            const { header, content } = item;
+                            return (
+                                <React.Fragment key={item.title}>
+                                    <PanelHeader
+                                        {...header}
+                                    />
+                                    {
+                                        content.map(item => (
+                                            <div className='network-row' key={item}>
+                                                <div>
+                                                    <label>{item.left.label}</label>
+                                                    <FormItem showErrorTip={item.left.tip} className='lan-formItem'>
+                                                        <InputGroup size="small"
+                                                            inputs={[{ value: item.left.value[0], maxLength: 3 }, { value: item.left.value[1], maxLength: 3 }, { value: item.left.value[2], maxLength: 3 }, { value: item.left.value[3], maxLength: 3 }]}
+                                                            onChange={value => this.onChange(value, item.left.name)}
+                                                            disabled={item.left.disabled}
+                                                        />
+                                                        <ErrorTip>{item.left.tip}</ErrorTip>
+                                                    </FormItem>
+                                                </div>
+                                                <div className='row-right'>
+                                                    <label>{item.right.label}</label>
+                                                    <FormItem showErrorTip={item.right.tip} className='lan-formItem'>
+                                                        <InputGroup size="small"
+                                                            inputs={[{ value: item.right.value[0], maxLength: 3 }, { value: item.right.value[1], maxLength: 3 }, { value: item.right.value[2], maxLength: 3 }, { value: item.right.value[3], maxLength: 3 }]}
+                                                            onChange={value => this.onChange(value, item.right.name)}
+                                                            disabled={item.right.disabled}
+                                                        />
+                                                        <ErrorTip>{item.right.tip}</ErrorTip>
+                                                    </FormItem>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </React.Fragment>
+                            );
+                        })
+                    }
+                    <label>{intl.get(MODULE, 20)/*_i18n:地址租期*/}</label>
+                    <FormItem showErrorTip={leasetimeTip} type="small" className='lan-formItem leasetime'>
+                        <label className='leasetime-label'>{intl.get(MODULE, 21)/*_i18n:分钟*/}</label>
+                        <Input
+                            type='text'
+                            disabled={!enable}
+                            value={leasetime}
+                            onChange={value => this.onChange(value, 'leasetime')}
+                            placeholder='2～1440'
+                            maxLength={4} />
+                        <ErrorTip>{leasetimeTip}</ErrorTip>
+                    </FormItem>
                 </Form>
                 <div className="save">
-                    <Button disabled={disabled} loading={loading} style={{ width: 200, height: 42 }} onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
+                    <Button disabled={disabled} loading={loading} className='lan-save' onClick={this.submit} size="large" type="primary">{intl.get(MODULE, 23)/*_i18n:保存*/}</Button>
                 </div>
         </div>
         );

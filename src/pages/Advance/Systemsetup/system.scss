@@ -32,6 +32,12 @@
     display: block;
     text-align: center;
     margin-top: 6px;
+    .result-icon-defeated {
+        color: red;
+    }
+    .result-icon-succeed {
+        color: lightgreen;
+    }
     .progressfill {
         font-weight: 600;
         font-size: 16px;
@@ -39,11 +45,14 @@
         font-weight: bold;
         color: #333C4F;
     }
+    .progressfill-color {
+        color: #333C4F;
+    }
     .progressfail {
         margin-top: 6px;
         font-size: 12px;
         color: #ADB1B9;
-    }
+    }   
 }
 
 .progress-download {
@@ -128,6 +137,9 @@
     .reboot-modal-title {
         display: flex;
         align-items: center;
+        .reboot-icon-hint {
+            color: #D0021B;
+        }
         label {
             color: #D0021B;
             font-size: 14px;
@@ -146,8 +158,11 @@
         }
     }
 }
+.sysUpgrade-panelHeader {
+    margin: 76px 60px 0;
+}
 .sys-upgrade {
-    padding: 29px 60px 29px 60px;
+    padding: 20px 60px 29px 60px;
     display: flex;
     justify-content: space-between;
     p {
@@ -155,20 +170,20 @@
         color: #333C4F;
     }
 }
-.custom-save {
-	border-top: 1px solid #ECECEC;
-    padding: 28px 60px 20px 0;
-    margin-top: 40px;
-    width: calc(100% - 120px);
-	margin-left: 60px;
-    margin-top: 148px;
-    .custom-button {
-        width: 200px;
-        height: 42px;
-    }
-}
 .settings-content {
     margin: 0 60px;
+    .custom-upgrade-location {
+        >li {
+            flex: none;
+            &:first-child {
+                margin-right: 41px;
+            }
+            .ant-switch-inner {
+                font-size: 12px;
+                color: #FFFFFF;
+            }
+        }
+    }
     .custom-paragraph {
         margin-top: 24px;
         margin-bottom: 16px;
@@ -177,12 +192,43 @@
         width: 320px;
         height: 36px;
     }
+    .custom-upgrade-save {
+        margin: 48px 0 0;
+        .custom-button {
+            width: 200px;
+            height: 42px;
+        }
+    }
 }
 
 .port-edit {
-	font-family: PingFangSC-Regular;
+	font-family: PingFangSC-Regular, sans-serif;
 	font-size: 14px;
 	color: #6174F1;
 	margin-right: 12px;
 	cursor: pointer;
+}
+.modal-center {
+    .center-icon-succeed {
+        color: #87D068;
+        margin: 20px 0 15px;
+    }
+}
+.static-table {
+    .columns-status {
+        display: flex;
+        align-items: center;
+        .status-loading {
+            color: #6174F1;
+        }
+        .status-tip {
+            margin-left: 4px;
+        }
+    }
+    .status-online {
+        color: #333C4F;
+    }
+    .status-offline {
+        color: #ADB1B9;
+    }
 }

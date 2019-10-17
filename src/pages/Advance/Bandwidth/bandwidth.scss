@@ -20,6 +20,14 @@
             height: 17px;
             color: #ADB1B9;
             font-size: 12px;
+            .unit-icon-kbyte {
+                margin-left: 11px;
+                color: #3D76F6;
+            }
+            .unit-icon-download {
+                margin-left: 11px;
+                color: #87D068;   
+            }
         }
     }
     .band-line {
@@ -32,8 +40,18 @@
         width:1px;
     }
 }
-
+.band-setting {
+    margin: 16px 20px 32px 0;
+    .setting-auto {
+        margin-right:20px;
+    }
+    .setting-manual {
+        width : 116px;
+    }
+}
 .qos-table {
+    font-size: 16px;
+    margin-top: 12px;
     .ant-table{
         color: #333C4F;
     }
@@ -58,11 +76,41 @@
         }
     }
 }
-
+.band-manual-modal {
+    .manual-modal-name {
+        display: block;
+        margin-bottom: 6px;
+    }
+    .manual-modal-unit {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        z-index: 1;
+    }
+}
 .speed-result-modal{
     .status-icon{
         text-align: center;
         margin: 6px 20px 12px;
+        .status-icon-succeed {
+            color: #87D068;
+        }
+        .status-icon-defeated {
+            color: red;
+        }
+    }
+    .status-defeated-message {
+        text-align: center;
+        font-size: 16px;
+        color: #333C4F;
+    }
+    .status-defeated-tip{
+        text-align: center;
+        margin: 4px auto 6px;
+        .tip-content {
+            font-size: 12px;
+            color: #ADB1B9;
+        }
     }
     h4{
         font-size: 16px;
@@ -77,6 +125,15 @@
             display: inline-block;
             width: 50%;
             text-align: center;
+            .result-kbyte-icon {
+                color: #779FF8;
+            }
+            .result-download-icon {
+                color: #ABDE95;
+            }
+            .result-content {
+                color: #adb1b9;
+            }
         }
         label{
             font-size: 16px;
@@ -124,5 +181,9 @@
     margin-top: 40px;
     width: calc(100% - 120px);
     margin-left: 60px;
+    .band-save-button {
+        width: 200px;
+        height: 42px;
+    }
 }
 

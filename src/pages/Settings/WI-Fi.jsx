@@ -4,12 +4,12 @@ import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
 import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import PanelHeader from '~/components/PanelHeader';
-import PrimaryTitle from '~/components/PrimaryTitle';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
-import Tips from '~/components/Tips';
 import { checkStr ,checkRange } from '~/assets/common/check';
 import SubLayout from '~/components/SubLayout';
+import ModalLoading from '~/components/ModalLoading';
+import './settings.scss';
 
 const MODULE = 'wi-fi';
 const {FormItem, ErrorTip, Input} = Form;
@@ -82,7 +82,7 @@ export default class WIFI extends React.Component {
         hostSsid24PasswordTip: '',
         hostSsid5Tip: '',
         hostSsid5PasswordTip:'',
-        visibile: 'hidden',
+        visibile: false,
         resVisibile: false,
         result: true,
         err: '',
@@ -381,7 +381,7 @@ export default class WIFI extends React.Component {
         }
         //是否双频合一
         this.setState({
-            visibile: 'visible',
+            visibile: true,
         });
         this.hostWireLess.band_division = this.state.channelType == true? '0' : '1';
         //2.4G
@@ -415,14 +415,14 @@ export default class WIFI extends React.Component {
         if(errcode === 0){
             setTimeout(async() => {
                 this.setState({
-                    visibile: 'hidden',
+                    visibile: false,
                     resVisibile: true,
                     result: true,
                 });
             }, 15000);
         }else{
             this.setState({
-                visibile: 'hidden',
+                visibile: false,
                 resVisibile: true,
                 result: false,
                 err: this.err[errcode] || errcode,
@@ -455,21 +455,21 @@ export default class WIFI extends React.Component {
         );
 
         this.setState({
-            visibile: 'visible',
+            visibile: true,
         });
 
         let { errcode } = response;
         if(errcode === 0){
             setTimeout(async() => {
                 this.setState({
-                    visibile: 'hidden',
+                    visibile: false,
                     resVisibile: true,
                     result: true,
                 });
             }, 15000);
         }else{
             this.setState({
-                visibile: 'hidden',
+                visibile: false,
                 resVisibile: true,
                 result: false,
                 err: this.err[errcode] || errcode,
@@ -859,25 +859,16 @@ export default class WIFI extends React.Component {
                 <section className="save">
                         <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={guestDisabled} onClick={this.submitGuest}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
-                <Modal
-                    visible={true}
-                    maskStyle={{ visibility: visibile }}
-                    closable={false}
-                    wrapClassName={'hidden' === visibile && 'ui-hidden'}
-                    centered={true}
-                    style={{ textAlign: 'center', visibility: visibile }}
-                    footer={null}
-                >
-                    <div className="progress">
-                        <CustomIcon color="#6174f1" type="loading" size={80} spin/>
-                        <Tips size="16" top={19}>{intl.get(MODULE, 78)/*_i18n:正在等待Wi-Fi重启，请稍候...*/}</Tips>
-                    </div>
-                </Modal>
+                <ModalLoading
+                    visible={visibile}
+                    tip={intl.get(MODULE, 78)/*_i18n:正在等待Wi-Fi重启，请稍候...*/}
+                />
                 <Modal 
                     closable={false}
                     visible={resVisibile}
                     maskClosable={false}
                     centered={true}
+                    className='setting-wifi-modal'
                     footer={
                         <Button className="backup-btm" type="primary" onClick={this.resCancle}>
                         {result? intl.get(MODULE, 81)/*_i18n:确定*/ : intl.get(MODULE, 82)/*_i18n:我知道了*/}
@@ -886,15 +877,15 @@ export default class WIFI extends React.Component {
                     width={560}>
                     {result?
                         <div className="backup-icon">
-                            <CustomIcon color="#87D068" type="succeed" size={64} />
+                            <CustomIcon className='backup-icon-succeed' type="succeed" size={64} />
                             <div className="backup-result">{intl.get(MODULE, 79)/*_i18n:配置生效，请重新连接无线网络*/}</div>
                         </div>
                         :
                         <div className="backup-icon">
-                            <CustomIcon color="#FF5500" type="defeated" size={64} />
+                            <CustomIcon className='backup-icon-defeated' type="defeated" size={64} />
                             <div className="backup-result">
-                                <div style={{fontSize: 16}}>{intl.get(MODULE, 80)/*_i18n:配置失败!*/}</div>
-                                <div style={{ fontSize: 12, color: '#ADB1B9' }}>{this.state.err}</div>
+                                <div className='result-failed'>{intl.get(MODULE, 80)/*_i18n:配置失败!*/}</div>
+                                <div className='result-err'>{this.state.err}</div>
                             </div>
                         </div>
                     }

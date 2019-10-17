@@ -464,7 +464,7 @@ export default class Home extends React.Component {
                         closable={false}
                         centered={true}
                         title={<div className="home-ap-title">
-                                <CustomIcon type="hint" size={14}></CustomIcon>
+                                <CustomIcon type="hint" size={14} />
                                 <label>{intl.get(MODULE, 31)/*_i18n:提示*/}</label>
                             </div>
                         }

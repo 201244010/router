@@ -51,6 +51,33 @@
     color: #D0021B;
   }
 }
+.deviceInfo-modal {
+    .deviceInfo-modal-top {
+        padding: 0 0 16px;
+        margin-bottom: 24px;
+        .modal-top-p {
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: 500;
+            color: rgba(0,0,0,.85);
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .modal-top-button {
+            display: inline-block;
+            border: 0;
+            padding: 0;
+            height: 22px;
+        }
+    }
+    .modal-top-line {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top:62px;
+        border-bottom: 1px solid #e8e8e8;
+    }
+}
 
 
 i.dot{
@@ -67,6 +94,14 @@ i.dot{
 }
 
 .device-table {
+    .device-icon-kbyte {
+        color: #779FF8;
+        margin-right: 5px;
+    }
+    .device-icon-download {
+        color: #87D068;
+        margin-right: 5px;
+    }
     .editable-row-device{
         .logo-cell{
             position: relative;

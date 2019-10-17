@@ -16,7 +16,7 @@ class PrimaryTitle extends React.Component {
 		return (
 			<div className="primarytitle">
                 <div className="icon" onClick={this.goBackPage}>
-                    <CustomIcon color="#FFFFFF" type="back" size={28} />
+                    <CustomIcon className='primarytitle-icon-color' type="back" size={28} />
                 </div>
                 <div className="title">
                     <label>{title}</label>

@@ -214,8 +214,8 @@ export default class Device extends React.Component {
             width: 110,
             render: (text, record) => (
                 <div>
-                    <div><CustomIcon type="kbyte" color='#779FF8' size={12} /><span style={{ marginLeft: 5 }}>{record.tx}</span></div>
-                    <div><CustomIcon type="downloadtraffic" color='#87D068' size={12} /><span style={{ marginLeft: 5 }}>{record.rx}</span></div>
+                    <div><CustomIcon className='device-icon-kbyte' type="kbyte" size={12} /><span>{record.tx}</span></div>
+                    <div><CustomIcon className='device-icon-download' type="downloadtraffic" size={12} /><span>{record.rx}</span></div>
                 </div>
             )
         }, {
@@ -440,20 +440,21 @@ export default class Device extends React.Component {
                     closable={true}
                     maskClosable={false}
                     onCancel={this.handleCancel}
+                    className='deviceInfo-modal'
                     footer={[
                         <Button key='cancel' onClick={this.handleCancel}>{intl.get(MODULE, 16)/*_i18n:取消*/}</Button>
                     ]}
                 >
-                    <div style={{padding: '0 0 16px',marginBottom: 24}}>
-                        <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 49)/*_i18n:上网设备*/} ({totalList.length}{intl.get(MODULE, 50)/*_i18n:台*/})</p>
-                        <Button style={{
-                            display: 'inline-block',
-                            border: 0,
-                            padding: 0,
-                            height: 22,
-                        }} onClick={this.updateClientsInfo}><CustomIcon type="refresh" spin={refresh} /></Button>
+                    <div className='deviceInfo-modal-top'>
+                        <p className='modal-top-p'>{intl.get(MODULE, 49)/*_i18n:上网设备*/} ({totalList.length}{intl.get(MODULE, 50)/*_i18n:台*/})</p>
+                        <Button
+                            className='modal-top-button'
+                            onClick={this.updateClientsInfo}
+                        >
+                            <CustomIcon type="refresh" spin={refresh} />
+                        </Button>
                     </div>
-                    <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
+                    <div className='modal-top-line'></div>
                     <div className="device-table">
                         <Table
                             columns={columns}

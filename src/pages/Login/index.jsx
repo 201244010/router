@@ -104,10 +104,10 @@ class Login extends React.Component {
 				style={{ height: window.innerHeight - 76 }}
 			>
 				<SwitchLang className="login-lang" />
-				<div className="form-box" style={{ textAlign: 'center' }}>
-					<CustomIcon type="logo" size={90} color="#fff" />
-					<Form style={{ width: 320, padding: 0, margin: '0 auto' }}>
-						<FormItem style={{ margin: '45px auto 30px' }}>
+				<div className="form-box">
+					<CustomIcon className='login-icon-logo' type="logo" size={90} />
+					<Form className='login-form'>
+						<FormItem className='login-form-item'>
 							<Input
 								placeholder={
 									intl.get(
@@ -124,27 +124,15 @@ class Login extends React.Component {
 						</FormItem>
 					</Form>
 					<Button
+						className='login-button'
 						type="primary"
 						size="large"
 						onClick={this.post}
-						style={{ margin: '0 0 10px', width: 320 }}
 						loading={this.state.loading}
 					>
 						{intl.get(MODULE, 7) /*_i18n:登录*/}
 					</Button>
-					<p
-						style={{
-							fontSize: 12,
-							lineHeight: 1.5,
-							color: '#FFF',
-							opacity: 0.6
-						}}
-					>
-						{intl.get(
-							MODULE,
-							8
-						) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}
-					</p>
+					<p className='login-tip'>{intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}</p>
 				</div>
 				<div className="qr">
 					{getQuickStartVersion() === 'domestic' ? (

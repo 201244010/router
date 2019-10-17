@@ -4,10 +4,11 @@
 .setting .content {
     text-align: center;
     .bigLoading {
-        // font-size: 80px;
-        // color: #6174F1;
         margin-top: 120px;
         margin-bottom: 16px;
+        .selecting-icon-loading {
+            color: #6174F1;
+        }
     }
     .bigTitle {
         margin-bottom: 200px;
@@ -21,6 +22,10 @@
     //     margin: 40px auto 12px;
     //     background-size: 100% 100%;
     // }
+    .selecting-icon-noroute {
+        color: #D7D8DC;
+        margin: 40px auto 12px;
+    }
     .noFindTip {
         font-family: 'PingFangSC-Regular';
         font-size: 16px;
@@ -37,6 +42,13 @@
             font-family: 'PingFangSC-Regular';
             font-size: 12px;
             color: #ADB1B9;
+            .warningTip-hint {
+                color: #FB8632;
+                margin-right: 4px;
+            }
+            &:first-child {
+                margin-bottom: 8px;
+            }
         }
     }
     .settingHeader {
@@ -46,11 +58,25 @@
             color: #6174F1;
             margin: 0 8px 0 0;
             display: inline-block;
+            .smallLoading-icon-loading {
+                color: #6174F1;
+            }
+        }
+        .settingHeader-icon-succeed {
+            color: #4EC53F;
+            margin-right: 8px;
+        }
+        .settingHeader-icon-hint {
+            color: #FB8632;
+            margin-right: 8px;
         }
         .smallTitle {
             font-family: 'PingFangSC-Regular';
             font-size: 20px;
             color: #333C4F;
+        }
+        .small-middle {
+            vertical-align: middle;
         }
     }
     .haveFailed {
@@ -80,10 +106,9 @@
         margin: 0 auto;
         padding: 36px 85px;
         background: #F6F7F9;
-        // .noRoute {
-        //     width: 140px;
-        //     height: 140px;
-        // }
+        .body-icon-noroute {
+            color: #D7D8DC;
+        }
     }
     .research {
         font-family: 'PingFangSC-Regular';
