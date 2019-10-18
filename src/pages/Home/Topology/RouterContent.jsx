@@ -125,7 +125,10 @@ export default class RouterContent extends React.Component {
 					</div>
 					<label title={name}>
 						{!highSignal && type ? (
-							<Tooltip title={intl.get(MODULE, 22)}>
+							<Tooltip
+								placement="bottom"
+								title={intl.get(MODULE, 22)}
+							>
 								<span>
 									<CustomIcon
 										size={12}
@@ -137,7 +140,6 @@ export default class RouterContent extends React.Component {
 						) : (
 							''
 						)}
-
 						<span>{name}</span>
 					</label>
 					<div className={type ? signalClass : 'sate-offline'}>
