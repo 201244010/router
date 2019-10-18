@@ -2,7 +2,6 @@
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
-import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import CustomIcon from "~/components/Icon";
@@ -363,7 +362,6 @@ export default class WIFI extends React.Component {
     submitMain = async ()=> {
         const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
 
-        await fetchPublicKey();
         //商户Wi-Fi 2.4G和5G ssid不能相同
         if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
             message.error(intl.get(MODULE, 23)/*_i18n:2.4G、5G Wi-Fi名称不能相同*/);
@@ -387,7 +385,7 @@ export default class WIFI extends React.Component {
         //2.4G
         this.hostWireLess.band_2g.enable = this.state.host24Enable == true? '1' : '0';
         this.hostWireLess.band_2g.ssid = this.state.hostSsid24;
-        this.hostWireLess.band_2g.password = encryption(this.state.hostSsid24Password);
+        this.hostWireLess.band_2g.password = Base64.encode(this.state.hostSsid24Password);
         this.hostWireLess.band_2g.hide_ssid = this.state.hide_ssid24 == true? '1' : '0';
         this.hostWireLess.band_2g.encryption = this.state.encryption24;
         this.hostWireLess.band_2g.htmode = this.state.htmode24;
@@ -397,7 +395,7 @@ export default class WIFI extends React.Component {
         if( !this.state.channelType ){
             this.hostWireLess.band_5g.enable = this.state.host5Enable == true? '1' : '0';
             this.hostWireLess.band_5g.ssid = this.state.hostSsid5;
-            this.hostWireLess.band_5g.password = encryption(this.state.hostSsid5Password);
+            this.hostWireLess.band_5g.password = Base64.encode(this.state.hostSsid5Password);
             this.hostWireLess.band_5g.hide_ssid = this.state.hide_ssid5 == true? '1' : '0';
             this.hostWireLess.band_5g.encryption = this.state.encryption5;
             this.hostWireLess.band_5g.htmode = this.state.htmode5;
@@ -432,12 +430,12 @@ export default class WIFI extends React.Component {
 
     submitGuest = async () => {
         this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
+        this.guestWireLess.static_password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
         this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : encryption(this.state.guestDynamicPassword);
+        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : encryption(this.state.guestDynamicPassword);
         this.weixin.enable = this.state.guestEnable ? '1' : '0';
         let response = await common.fetchApi(
             [
@@ -493,24 +491,17 @@ export default class WIFI extends React.Component {
                 { opcode: 'AUTH_WEIXIN_CONFIG_GET' }
             ]
         );
-        await fetchPublicKey();
         let { errcode, data } = response;
         if(errcode == 0){
             let { main, guest } = data[0].result;
-            const { host: {band_2g: {password: password2G}, band_5g: { password: password5G}}} = main;
-            const { password: dynamicPassword, static_password: staticPassword } = guest;
             let { channel_list } = data[1].result;
             this.weixin = data[2].result.weixin;
             this.channel_list = channel_list;
             this.mainWireLess = main;
-            this.initMain = JSON.parse(JSON.stringify(main));
-            this.initMain.host.band_2g.password = encryption(Base64.decode(password2G));
-            this.initMain.host.band_5g.password = encryption(Base64.decode(password5G));
+            this.initMain = main;
             this.hostWireLess = main.host;
             this.guestWireLess = guest;
-            this.initGuest = { ...guest };
-            this.initGuest.password = encryption(Base64.decode(dynamicPassword));
-            this.initGuest.static_password = encryption(Base64.decode(staticPassword));
+            this.initGuest = guest;
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
