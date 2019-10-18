@@ -143,7 +143,7 @@ export default class UPnP extends React.Component {
 		}, 3000);
 	}
 
-	componentWillMount() {
+	componentWillUnmount() {
 		clearInterval(this.intervalTimer);
 	}
 
