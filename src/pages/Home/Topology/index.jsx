@@ -87,7 +87,9 @@ export default class Topology extends React.Component {
 					onPressEnter={e =>
 						this.handleSave({ editing: e, name, mac, devid })
 					}
-					onBlur={e => this.handleSave({ editing: e, name, mac, devid })}
+					onBlur={e =>
+						this.handleSave({ editing: e, name, mac, devid })
+					}
 					maxLength={32}
 				/>
 			);
@@ -167,7 +169,11 @@ export default class Topology extends React.Component {
 								className="add-router"
 								onClick={this.addRouter}
 							>
-								<CustomIcon size={40} color="#fff" type="add" />
+								<CustomIcon
+									size={40}
+									className="topology-white"
+									type="add"
+								/>
 							</div>
 							<label>
 								{intl.get(MODULE, 4) /*_i18n:添加子路由*/}
@@ -186,7 +192,7 @@ export default class Topology extends React.Component {
 							<div>
 								<CustomIcon
 									size={100}
-									color="#fff"
+									className="topology-white"
 									type="network"
 								/>
 								<label>
@@ -207,8 +213,7 @@ export default class Topology extends React.Component {
 									</div>
 									<CustomIcon
 										size={15}
-										color="#fff"
-										style={{ marginBottom: 8 }}
+										className="icon-break"
 										type="break"
 									/>
 									<div className="dashpart">
@@ -284,7 +289,7 @@ export default class Topology extends React.Component {
 								<div>
 									<CustomIcon
 										size={100}
-										color="#fff"
+										className="topology-white"
 										type="link"
 									/>
 									<label className="main-router">
@@ -303,7 +308,7 @@ export default class Topology extends React.Component {
 							<div>
 								<CustomIcon
 									size={100}
-									color="#fff"
+									className="topology-white"
 									type="equipment"
 								/>
 								<label>
@@ -325,7 +330,7 @@ export default class Topology extends React.Component {
 									>
 										<CustomIcon
 											size={32}
-											color="white"
+											className="topology-white"
 											type="pageturning"
 										/>
 									</div>
@@ -347,7 +352,7 @@ export default class Topology extends React.Component {
 									>
 										<CustomIcon
 											size={40}
-											color="#fff"
+											className="topology-white"
 											type="add"
 										/>
 									</div>
@@ -368,7 +373,7 @@ export default class Topology extends React.Component {
 										>
 											<CustomIcon
 												size={20}
-												color="#fff"
+												className="topology-white"
 												type="add"
 											/>
 										</div>
@@ -380,7 +385,7 @@ export default class Topology extends React.Component {
 									>
 										<CustomIcon
 											size={32}
-											color="white"
+											className="topology-white"
 											type="pageturning"
 										/>
 									</div>

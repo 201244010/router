@@ -1,8 +1,6 @@
 import React from 'react';
 import CustomIcon from '~/components/Icon';
-import Loading from '~/components/Loading';
-import { getQuickStartVersion } from '~/utils';
-import { Popover, Button, Input, Carousel } from 'antd';
+import { Popover, Input, Tooltip } from 'antd';
 import './topology.scss';
 
 const MODULE = 'topology';
@@ -42,7 +40,9 @@ export default class RouterContent extends React.Component {
 					onPressEnter={e =>
 						this.handleSave({ editing: e, name, mac, devid })
 					}
-					onBlur={e => this.handleSave({ editing: e, name, mac, devid })}
+					onBlur={e =>
+						this.handleSave({ editing: e, name, mac, devid })
+					}
 					maxLength={32}
 				/>
 			);
@@ -117,9 +117,29 @@ export default class RouterContent extends React.Component {
 			>
 				<div className="sate-router">
 					<div>
-						<CustomIcon size={60} color="#fff" type="router" />
+						<CustomIcon
+							size={60}
+							type="router"
+							className="topology-white"
+						/>
 					</div>
-					<label title={name}>{name}</label>
+					<label title={name}>
+						{!highSignal && type ? (
+							<Tooltip title="prompt text">
+								<span>
+									<CustomIcon
+										size={12}
+										type="m-hint"
+										className="topology-error"
+									/>
+								</span>
+							</Tooltip>
+						) : (
+							''
+						)}
+
+						<span>{name}</span>
+					</label>
 					<div className={type ? signalClass : 'sate-offline'}>
 						{type ? rssi : intl.get(MODULE, 17)}
 					</div>
