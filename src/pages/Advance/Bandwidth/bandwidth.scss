@@ -1,44 +1,36 @@
 .band-value {
-    height: 80px;
-    padding: 16px 0;
-    .band-size {
-        font-size: 34px;
-        display: inline-block;
-    }
-    .band-left{
-        height: 48px;
-        display: inline-block
-    }
-    .band-right{
-        display:inline-block;
-        height: 48px;
-        padding: 7px 0;
-        font-size: 12px;
-        margin-left: 12px;
-        .band-unit{
-            display: block;
-            height: 17px;
-            color: #ADB1B9;
-            font-size: 12px;
-            .unit-icon-kbyte {
-                margin-left: 11px;
-                color: #3D76F6;
-            }
-            .unit-icon-download {
-                margin-left: 11px;
-                color: #87D068;   
-            }
-        }
-    }
-    .band-line {
-        display: inline-block;
-        line-height: 40px;
-        height: 40px;
-        margin: 4px 30px -4px;
-        background:#333C4F;
-        opacity: 0.1;
-        width:1px;
-    }
+	height: 80px;
+	padding: 16px 0;
+	.band-size {
+		font-size: 34px;
+		display: inline-block;
+	}
+	.band-left {
+		height: 48px;
+		display: inline-block;
+	}
+	.band-right {
+		display: inline-block;
+		height: 48px;
+		padding: 7px 0;
+		font-size: 12px;
+		margin-left: 12px;
+		.band-unit {
+			display: block;
+			height: 17px;
+			color: #adb1b9;
+			font-size: 12px;
+		}
+	}
+	.band-line {
+		display: inline-block;
+		line-height: 40px;
+		height: 40px;
+		margin: 4px 30px -4px;
+		background: #333c4f;
+		opacity: 0.1;
+		width: 1px;
+	}
 }
 .band-setting {
     margin: 16px 20px 32px 0;
@@ -50,129 +42,89 @@
     }
 }
 .qos-table {
-    font-size: 16px;
-    margin-top: 12px;
-    .ant-table{
-        color: #333C4F;
-    }
-    .ant-table-thead >tr >th{
-        padding : 8px 0;
-        color: #333C4F;
-        font-weight: bolder;
-        border-bottom:none;
-        background: none;
-    }
-    .ant-table-thead {
-        color: #333C4F;
-        font-size: 16px;
-        font-weight: bolder;
-    }
-    .ant-table-tbody > tr > td {
-        padding : 2px 0;
-        border-bottom:none;
-        background: none;
-        .ui-form-item-field {
-            width : 236px;
-        }
-    }
+	.ant-table {
+		color: #333c4f;
+	}
+	.ant-table-thead > tr > th {
+		padding: 8px 0;
+		color: #333c4f;
+		font-weight: bolder;
+		border-bottom: none;
+		background: none;
+	}
+	.ant-table-thead {
+		color: #333c4f;
+		font-size: 16px;
+		font-weight: bolder;
+	}
+	.ant-table-tbody > tr > td {
+		padding: 2px 0;
+		border-bottom: none;
+		background: none;
+		font-size: 14px;
+		.ui-form-item-field {
+			width: 236px;
+		}
+	}
 }
-.band-manual-modal {
-    .manual-modal-name {
-        display: block;
-        margin-bottom: 6px;
-    }
-    .manual-modal-unit {
-        position: absolute;
-        right: 10px;
-        top: 0;
-        z-index: 1;
-    }
-}
-.speed-result-modal{
-    .status-icon{
-        text-align: center;
-        margin: 6px 20px 12px;
-        .status-icon-succeed {
-            color: #87D068;
-        }
-        .status-icon-defeated {
-            color: red;
-        }
-    }
-    .status-defeated-message {
-        text-align: center;
-        font-size: 16px;
-        color: #333C4F;
-    }
-    .status-defeated-tip{
-        text-align: center;
-        margin: 4px auto 6px;
-        .tip-content {
-            font-size: 12px;
-            color: #ADB1B9;
-        }
-    }
-    h4{
-        font-size: 16px;
-        font-weight: bold;
-        color: #333C4F;
-        text-align: center;
-        margin-bottom: 32px;
-    }
-    .speed-result{
-        text-align:center;
-        li{
-            display: inline-block;
-            width: 50%;
-            text-align: center;
-            .result-kbyte-icon {
-                color: #779FF8;
-            }
-            .result-download-icon {
-                color: #ABDE95;
-            }
-            .result-content {
-                color: #adb1b9;
-            }
-        }
-        label{
-            font-size: 16px;
-            color: #333C4F;
-            margin-left: 5px;
-            vertical-align: middle;
-        }
-        span{
-            font-size: 16px;
-            color: #333C4F;
-            margin-left: 3px;
-            vertical-align: middle;
-        }
-    }
-    .ant-modal-footer{
-        padding: 20px 16px;
-        text-align: center;
-        button{
-            width: 160px;
-            height: 42px;
-        }
-    }
+
+.speed-result-modal {
+	.status-icon {
+		text-align: center;
+		margin: 6px 20px 12px;
+	}
+	h4 {
+		font-size: 16px;
+		font-weight: bold;
+		color: #333c4f;
+		text-align: center;
+		margin-bottom: 32px;
+	}
+	.speed-result {
+		text-align: center;
+		li {
+			display: inline-block;
+			width: 50%;
+			text-align: center;
+		}
+		label {
+			font-size: 16px;
+			color: #333c4f;
+			margin-left: 5px;
+			vertical-align: middle;
+		}
+		span {
+			font-size: 16px;
+			color: #333c4f;
+			margin-left: 3px;
+			vertical-align: middle;
+		}
+	}
+	.ant-modal-footer {
+		padding: 20px 16px;
+		text-align: center;
+		button {
+			width: 160px;
+			height: 42px;
+		}
+	}
 }
 
 .qos-input {
-    display: inline-block;
-    margin-right: 8px;
-    .ui-input{
-        width: 75px;
-        height: 28px !important;
-    }
+	display: inline-block;
+	margin-right: 8px;
+	.ui-input {
+		width: 75px;
+		height: 28px !important;
+	}
 }
 
 .qos-tip {
-    position: absolute;
-    top: 0;
-    left: 100px;
-    color : red;
-    margin-left: 6px;
+	position: absolute;
+	top: 0;
+	left: 100px;
+	color: red;
+	margin-left: 6px;
 }
 
 .save{
@@ -187,3 +139,68 @@
     }
 }
 
+.title-bandwidth {
+	padding-left: 60px;
+}
+
+.speed-fail {
+	text-align: center;
+	font-size: 16;
+	color: #333c4f;
+}
+
+.speed-fail-tip {
+	text-align: center;
+	margin: 4px auto 6px;
+}
+
+.bandwidth-content {
+	font-family: PingFangSC-Regular, PingFangSC;
+	font-weight: 400;
+	color: rgba(51, 60, 79, 1);
+	padding-left: 60px;
+	margin-top: 16px;
+}
+
+.bandwidth-input {
+	width: 200px;
+	display: inline-block;
+	margin-right: 24px;
+}
+
+.bandwidth-set-title {
+	margin-top: 36px;
+	font-family: PingFangSC-Regular, PingFangSC;
+
+	label {
+		font-size: 16px;
+		font-weight: 500;
+		color: rgba(51, 60, 79, 1);
+	}
+	span {
+		font-size: 14px;
+		font-weight: 400;
+		color: rgba(74, 74, 74, 1);
+	}
+}
+
+.bandwidth-set {
+    display: flex;
+    margin-top: 8px;
+    height: 58px;
+}
+
+.bandwidth-unit {
+	z-index: 1;
+	position: absolute;
+	right: 10px;
+	top: 0;
+}
+
+.speed-auto {
+	font-size: 14px;
+	font-family: PingFangSC-Regular, PingFangSC;
+	font-weight: 400;
+    color: rgba(97, 116, 241, 1);
+    margin-top: 7px;
+}

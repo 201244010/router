@@ -111,6 +111,9 @@ export default class Upgrade extends React.Component{
             }) 
         } else {
             Modal.error({title : this.err[errcode] || intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
+            this.setState({
+                download: false
+            });
         }});
     }
 
