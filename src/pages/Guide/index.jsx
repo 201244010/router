@@ -10,7 +10,6 @@ import SetWan from './SetWan';
 import SetWifi from './SetWifi';
 import Success from './Success';
 import AddSubRouter from './AddSubRouter';
-// import Finish from './Finish';
 import Icon from '~/components/Icon';
 import {getQuickStartVersion} from '~/utils';
 
@@ -31,7 +30,6 @@ export default class Guide extends React.Component {
     //     {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
     //     {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
     //     {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-    //     // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
     // ];
 
     // static getDerivedStateFromProps(nextProps){
@@ -62,7 +60,6 @@ export default class Guide extends React.Component {
                 // {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
                 {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
                 {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
             ];
         } else if ('abroad' === quickStartVersion) {
             current_steps = [
@@ -70,7 +67,6 @@ export default class Guide extends React.Component {
                 {route: 'timezone', component: TimeZone, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
                 {route: 'setwan', component: SetWan, lang: intl.get(MODULE, 1)/*_i18n:设置上网参数*/},
                 {route: 'setwifi', component: SetWifi, lang: intl.get(MODULE, 2)/*_i18n:设置无线网络*/},
-                // {route: 'finish', component: Finish, lang: intl.get(MODULE, 3)/*_i18n:设置时区*/},
             ];
         }
 

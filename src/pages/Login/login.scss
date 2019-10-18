@@ -46,6 +46,33 @@
             color: #fff;
         }
     }
+    .form-box {
+        text-align: center;
+        .login-icon-logo {
+            color: #fff;
+        }
+        .login-form {
+            width: 320px;
+            padding: 0;
+            margin: 0 auto;
+            .login-form-item {
+                margin: 45px auto 30px;
+            }
+        }
+        .login-button {
+            margin: 0 0 10px;
+            width: 320px;
+        }
+        .login-tip {
+            font-size: 12;
+            line-height: 1.5;
+            color: #FFF;
+            opacity: 0.6;
+        }
+    }
+    .qr-normal {
+
+    }
     button.ant-btn-primary {
         background-color: #92A0FF;
     }

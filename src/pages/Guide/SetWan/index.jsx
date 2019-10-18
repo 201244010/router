@@ -380,9 +380,9 @@ export default class SetWan extends React.PureComponent {
                 {/* 网络嗅探 SPIN */}
                 <div className={classnames(["ui-center speed-test", {'none' : !detect}])}>
                     <div className="bigLoading">
-                        <CustomIcon size={80} color="#6174F1" type="loading" spin />
+                        <CustomIcon className='bigLoading-icon-loading' size={80} type="loading" spin />
                     </div>
-                    <h3 key="active-h3" style={{textAlign: "center"}}>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
+                    <h3 key="active-h3" className='speed-test-tip'>{intl.get(MODULE, 17)/*_i18n:正在检查上网方式，请稍候...*/}</h3>
                 </div>
                 {/* 显示网络连接状态 */}
                 {
@@ -395,7 +395,7 @@ export default class SetWan extends React.PureComponent {
                         </div>) :
                     (
                         <div className={classnames(['wan', {'block' : !detect}])}>
-                            <Form style={{margin : '24px auto', width:260}}>
+                            <Form className='wan-form'>
                                 <FormItem 
                                     label={intl.get(MODULE, 18)/*_i18n:上网方式*/}
                                     labelStyle={{position: 'absolute',right: 272}}
@@ -460,12 +460,12 @@ export default class SetWan extends React.PureComponent {
 const LinkState = props =>{
     const { dialDetect, OnwanLinkState } = props;
     return(
-        <div style={{width:260,textAlign:'center',margin:'-15px auto 0'}}>
-            <CustomIcon type="hint" size="large" color="#FF5500"/>
-            <h3 style={{marginBottom:25,marginTop:17}}>{intl.get(MODULE, 23)/*_i18n:请检查您的网线是否插好*/}</h3>
-            <Button type="primary" size='large' onClick={dialDetect} style={{ width : '100%' }}>{intl.get(MODULE, 24)/*_i18n:已经插好网线，再试一次*/}</Button>
+        <div className='linkState'>
+            <CustomIcon className='linkState-icon-hint' type="hint" size="large"/>
+            <h3 className='linkState-h3'>{intl.get(MODULE, 23)/*_i18n:请检查您的网线是否插好*/}</h3>
+            <Button className='linkState-button' type="primary" size='large' onClick={dialDetect}>{intl.get(MODULE, 24)/*_i18n:已经插好网线，再试一次*/}</Button>
             <div className="setwan-help">
-                    <a className='a-right' href="javascript:void(0);" onClick={OnwanLinkState}>{intl.get(MODULE, 25)/*_i18n:跳过*/}</a>
+                <a className='a-right' href="javascript:void(0);" onClick={OnwanLinkState}>{intl.get(MODULE, 25)/*_i18n:跳过*/}</a>
             </div>
         </div>
     );
@@ -475,14 +475,14 @@ const NetStatus = props => {
     const { online, reSet, nextStep } = props;
     return online ?
         (<div className="progress-tip">
-            <CustomIcon type="correct" size="large" color="#87d067" />
+            <CustomIcon className='progress-icon-correct' type="correct" size="large" />
             <h3>{intl.get(MODULE, 26)/*_i18n:已连接网络，正在跳转到无线网络设置...*/}</h3>
         </div>) :
         (<div className="progress-tip" style={{ width : 260 }}>
-            <CustomIcon type="hint" size="large" color="#FF5500" />
-            <h3 style={{ marginBottom : 15 }}>{intl.get(MODULE, 27)/*_i18n:无法连接互联网*/}</h3>
+            <CustomIcon className='progress-icon-hint' type="hint" size="large" />
+            <h3>{intl.get(MODULE, 27)/*_i18n:无法连接互联网*/}</h3>
             {/* <h4>请检查您的宽带帐号密码是否正确</h4> */}
-            <Button type="primary" style={{ width: "100%" }} onClick={reSet} size='large'>{intl.get(MODULE, 28)/*_i18n:重新设置*/}</Button>
+            <Button className='progress-tip-button' type="primary" onClick={reSet} size='large'>{intl.get(MODULE, 28)/*_i18n:重新设置*/}</Button>
             <div className="setwan-help">
                 <a className='a-left' href="javascript:void(0);" onClick={reSet}>{intl.get(MODULE, 29)/*_i18n:上一步*/}</a>
                 <a className='a-right' href="javascript:void(0);" onClick={nextStep}>{intl.get(MODULE, 30)/*_i18n:跳过*/}</a>

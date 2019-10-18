@@ -32,7 +32,15 @@
 		width: 1px;
 	}
 }
-
+.band-setting {
+    margin: 16px 20px 32px 0;
+    .setting-auto {
+        margin-right:20px;
+    }
+    .setting-manual {
+        width : 116px;
+    }
+}
 .qos-table {
 	.ant-table {
 		color: #333c4f;
@@ -119,12 +127,16 @@
 	margin-left: 6px;
 }
 
-.save {
-	border-top: 1px solid #ececec;
-	padding: 28px 60px 20px 0;
-	margin-top: 40px;
-	width: calc(100% - 120px);
-	margin-left: 60px;
+.save{
+    border-top:1px solid #ECECEC;
+    padding:28px 60px 20px 0;
+    margin-top: 40px;
+    width: calc(100% - 120px);
+    margin-left: 60px;
+    .band-save-button {
+        width: 200px;
+        height: 42px;
+    }
 }
 
 .title-bandwidth {

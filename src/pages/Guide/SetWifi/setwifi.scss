@@ -2,9 +2,14 @@
     flex:none;
     color: #333C4F;
     .head{
-        padding: 10px 0 28px;
-        border-bottom: 1px solid #ECECEC;
-        margin-bottom: 102px;
+        margin-bottom: 26px;
+        text-align: center;
+        .head-icon-loading {
+            color: #6174F1;
+        }
+        .head-icon-hint {
+            color: #FF6900;
+        }
         p{
             display: inline-block;
             margin-left: 12px;
@@ -13,21 +18,25 @@
         }
     }
     .body{
-        width: 1012px;
-        margin: auto;
-        text-align: center;
-        li{
+        display: flex;
+        justify-content: center;
+        .item{
             text-align: left;
             display: inline-block;
             width: 486px;
-            min-height: 202px;
-            padding: 40px 0 32px 60px;
-            background: #FFF;
-            border: 1px solid rgba(0,0,0,0.04);
+            height: 212px;
+            padding: 53px 0 0 60px;
+            background:rgba(246,247,249,1);
             border-radius: 12px;
             .title{
                 display: inline-block;
                 margin-bottom: 20px;
+                .list-icon-business {
+                    color: #FB8632;
+                }
+                .list-icon-customer {
+                    color: #4EC53F;
+                }
                 label{
                     margin-left: 8px;
                     font-size: 20px;
@@ -36,17 +45,33 @@
                 }
             }
             p{
-                font-size: 20px;
-                line-height: 28px;
-                font-weight: 550;
+                font-size: 18px;
+                line-height:25px;
+                font-weight:400;
+                font-family:PingFangSC-Regular, PingFangSC, sans-serif;
+                color:rgba(51,60,79,1);
                 margin-bottom: 8px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                overflow: hidden;
+                overflow: hidden;    
             }
         }
-        li:nth-child(1){
-            margin-right: 40px;
+        .line {
+            width: 29px;
+            height: 212px;
+            background:rgba(246,247,249,1);
+            text-align: center;
+            .line-style {
+                display: inline-block;
+                border-left:2px solid rgba(173,177,185,0.2);
+                transform: scaleX(0.5);
+                height:168px;
+                margin-top: 22px;
+                border-radius:1px;
+            }
+            &:first-child {
+                display: none;
+            }
         }
     }
 }

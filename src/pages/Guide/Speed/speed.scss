@@ -33,8 +33,18 @@
         margin: auto;
         padding-top: 20px;
     }
+    .config-icon-dashboard {
+        color: #e0e1e2;
+    }
     .button-wrap {
         width: 260px;
+        .config-auto-button {
+            width: 100%;
+            margin: 30px auto 5px;
+        }
+        .config-help {
+            margin-top: -1px;
+        }
     }
     .speed-result {
         color: #333C4F;;
@@ -69,6 +79,12 @@
                 display: inline-block;
                 .ui-tips {
                     display: block;
+                    .tips-icon-bandwidthdown {
+                        color: #4687FF;
+                    }
+                    .tips-icon-bandwidthup {
+                        color: #87D068;
+                    }
                 }
             }
             }

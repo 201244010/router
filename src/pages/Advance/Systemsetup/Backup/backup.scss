@@ -61,6 +61,12 @@
     margin-top: 10px;
     display: block;
     text-align: center;
+    .backup-icon-defeated {
+        color: #FF5500;
+    }
+    .backup-icon-succeed {
+        color: #87D068;
+    }
     .backup-result {
         font-size: 16px;
         color: #333C4F;

@@ -1,9 +1,11 @@
 
 import React from 'react';
-import {Button, Table, message, Progress, Modal} from 'antd';
+import {Button, Table, message } from 'antd';
 import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
 import Upgrade from '~/pages/UpgradeDetect/Upgrade';
+import PanelHeader from '~/components/PanelHeader';
+import CustomUpgrade from './CustomUpgrade';
 const MODULE = 'sysupgrade';
 
 export default class SysUpgrade extends React.Component{
@@ -50,15 +52,13 @@ export default class SysUpgrade extends React.Component{
                     const {detecting} = this.state;
                     if (detecting && online) {
                         return (
-                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                <CustomIcon type="loading" color='#6174F1' size={14} spin/>
-                                <span style={{marginLeft: 4}}>{intl.get(MODULE, 5)/*_i18n:检测中...*/}</span>
+                            <div className='columns-status'>
+                                <CustomIcon className='status-loading' type="loading" size={14} spin/>
+                                <span className='status-tip'>{intl.get(MODULE, 5)/*_i18n:检测中...*/}</span>
                             </div>
                         )
                     } else {
-                        return <span style={{color: online ? '#333C4F' : '#ADB1B9' }}>
-                        {record.status}
-                        </span>
+                        return <span className={online ?'status-online':'status-offline'}>{record.status}</span>
                     }
                 }
                 return (
@@ -76,10 +76,10 @@ export default class SysUpgrade extends React.Component{
         const {detecting, routerList, detectTip, update, hasVersion} = this.state;
         return (
             <SubLayout className="settings">
+                <CustomUpgrade />
+                <PanelHeader className='sysUpgrade-panelHeader' title='手动升级'/>
                 <div className='sys-upgrade'>
-                    <p>
-                        {intl.get(MODULE, 6)/*_i18n:检测是否有适用的新固件*/}
-                    </p>
+                    <p>{intl.get(MODULE, 6)/*_i18n:检测是否有适用的新固件*/}</p>
                     <div>
                         <Button onClick={this.reDetect} disabled={detecting || update} style={{marginRight: 20, borderRadius: 8}}>{detectTip}</Button>
                         <Button type="primary" disabled={detecting || update || !hasVersion} onClick={this.startUpgrade}>{intl.get(MODULE, 7)/*_i18n:全部升级*/}</Button>
