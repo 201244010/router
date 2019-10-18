@@ -6,11 +6,45 @@
     }
 }
 .lan-settting {
-    .content-item{
-        >label {
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 8px;
+    padding-top: 9px;
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    .item-header {
+        margin-bottom: 24px;
+    }
+    .switch-location {
+        >li {
+            flex: none;
+            &:first-child {
+                margin-right: 41px;
+            }
+            .ant-switch-inner {
+                font-size: 12px;
+                color: #FFFFFF;
+            }
+        }
+    }
+    .network-row {
+        position: relative;
+        .row-right {
+            position: absolute;
+            top: 0;
+            left: 383px;
+        }   
+    }
+    .lan-formItem {
+        width: 320px;
+    }
+    .leasetime {
+        margin-bottom: 0;
+        .leasetime-label {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            z-index: 1;
+            opacity: 0.65;
         }
     }
 }
@@ -21,6 +55,10 @@
     margin-top: 40px;
     width: calc(100% - 120px);
     margin-left: 60px;
+    .lan-save {
+        width: 200px;
+        height: 42px;
+    }
 }
 
 .static-table {

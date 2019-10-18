@@ -3,6 +3,7 @@ import CustomIcon from '~/components/Icon';
 import { withRouter } from "react-router-dom";
 import React from "react";
 import Upgrade from './Upgrade';
+import './updateDetect.scss';
 
 const MODULE = 'upgradedetect';
 
@@ -97,12 +98,15 @@ class UpdateDetect extends React.Component {
     render() {
         let { update, releaseLog } = this.state;
         let Title = [
-            <span style={{ fontSize: 14, color: '#333C4F' }}><CustomIcon style={{ marginRight: 5 }} color="#333C4F" type="hint" size={14} />{intl.get(MODULE, 0)/*_i18n:软件升级提醒*/}</span>
+            <span className='detect-modal-title'>
+                <CustomIcon className='title-icon-hint' type="hint" size={14} />
+                <span>{intl.get(MODULE, 0)/*_i18n:软件升级提醒*/}</span>
+            </span>
         ];
         return (
             <div>
-                <Modal visible={update} maskClosable={false} title={Title} centered={true} closable={false} okText={intl.get(MODULE, 1)/*_i18n:立即升级*/} cancelText={intl.get(MODULE, 2)/*_i18n:暂不升级*/} onCancel={this.cancle} onOk={this.post}>
-                    <pre style={{ color: '#333C4F' }}>{releaseLog}</pre>
+                <Modal className='upgrade-detect-modal' visible={update} maskClosable={false} title={Title} centered={true} closable={false} okText={intl.get(MODULE, 1)/*_i18n:立即升级*/} cancelText={intl.get(MODULE, 2)/*_i18n:暂不升级*/} onCancel={this.cancle} onOk={this.post}>
+                    <pre className='detect-modal-pre'>{releaseLog}</pre>
                 </Modal>
                 <Upgrade ref='Upgrade' />
             </div>

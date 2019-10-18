@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import Upload from 'rc-upload';
+import CustomIcon from '~/components/Icon';
 import CustomProgress from '~/components/Progress';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
+import ModalLoading from '~/components/ModalLoading';
 import './index.scss';
 
 const MODULE = 'localUpgrade';
@@ -19,6 +21,11 @@ class LocalUpgrade extends React.PureComponent {
 			filename: '',
 			progressActive: false,
 			duration: 0,
+			loadingVisible: false,
+			loadingTip: '',
+			succeedActive: false,
+			result: true,
+			modalTip: '',
 		}
 	}
 
@@ -32,53 +39,116 @@ class LocalUpgrade extends React.PureComponent {
 		this.setState({filename: value});
 	}
 
+	sure = () =>{
+		const {result} = this.state;
+		this.setState({
+			succeedActive: false,
+		});
+
+		if(result) {
+			location.href = '/login';
+		}	
+	}
+
+	pendingState = resp => {
+		const {errcode, data} = resp;
+		const { result: { state, restart_duration: duration = 0 } = {} } = data[0];
+		if(errcode === 0) {
+			let modalTip = '';
+			let progressActive = false;
+			let result = false;
+			switch (state) {
+				case '3':
+					modalTip = intl.get(MODULE, 5)/*_i18n:文件上传失败，请检查网络后重试*/;
+					break;
+				case '4':
+					modalTip = intl.get(MODULE, 7)/*_i18n:文件校验失败，请检查文件格式后重试*/;
+					break;
+				case '5':
+					modalTip = intl.get(MODULE, 8)/*_i18n:已有其他升级流程正在进行中*/;
+					break;
+				default:
+					modalTip =	intl.get(MODULE, 9)/*_i18n:升级成功，请重新连接无线网络*/
+					result = true;
+					progressActive = true;
+			}
+			this.setState({
+				loadingVisible: false,
+				loadingTip: '',
+				duration,
+				progressActive,
+				result,
+				succeedActive: !result,
+				modalTip,
+			});
+
+			if(progressActive) {
+				setTimeout(()=>{
+					this.setState({
+						progressActive: false,
+						succeedActive: true,
+					});
+				}, duration * 1000);
+			}
+		} else {
+			let loadingTip = '';
+			switch (state) {
+				case '1':
+					loadingTip = intl.get(MODULE, 11)/*_i18n:正在进行文件上传*/;	
+					break;
+				default:
+					loadingTip = intl.get(MODULE, 12)/*_i18n:正在进行文件校验*/;
+			}
+			this.setState({
+				loadingTip,
+			});	
+		}
+		return errcode !== 0;
+	}
+
 	submit = async() => {
 		if (!this.file) {
 			message.warning(intl.get(MODULE, 6)/*_i18n:请选择升级版本的文件*/);
 			return;
 		}
-		const response = await common.fetchApi(
+		this.setState({
+			loadingVisible: true,
+			loadingTip: intl.get(MODULE, 11)/*_i18n:正在进行文件上传*/,
+		});
+		common.fetchApi(
 			{
-				opcode : 'LOCAL_UPGRADE',
+				opcode : 'LOCAL_UPGRADE_UPLOAD',
 				data: {
 					filename: this.filename,
 					file: this.file,
 				},
 			},
 			{
+				timeout: 120000,
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
 			}
 		);
-
-		const { errcode, data } = response;
-		const { result: { restart_duration: duration = 0 } = {} } = data[0];
-		switch (errcode) {
-			case 0:
-				this.setState({
-					duration,
-					progressActive: true,
-				});
-				setTimeout(()=>{
-					this.setState({
-						progressActive: false,
-					});
-				}, duration * 1000);
-				break;
-			case '-1009':
-				message.error(intl.get(MODULE, 8)/*_i18n:升级文件解析失败*/);
-				break;
-			case '-1012':
-				message.error(intl.get(MODULE, 5)/*_i18n:其他升级流程正在进行中*/);
-				break;
-			default:
-				message.error(intl.get(MODULE, 9)/*_i18n:升级失败，请重试*/);
-		}
+		await common.fetchApi(
+			{
+				opcode : 'LOCAL_UPGRADE_STATE',
+				data: {
+					file_name: this.filename,
+				},
+			},
+			{ method: 'POST' },
+			{
+				loop: true,
+				interval: 3000,
+				stop: resp => {},
+				pending: resp => this.pendingState(resp),
+			},
+		);
 	}
 
 	render() {
-		const { filename, progressActive, duration } = this.state;
+		const { filename, progressActive, duration, loadingVisible, loadingTip, succeedActive, result, modalTip } = this.state;
 		return (
 			<SubLayout className="settings">
 				<Form className='localUpgrade-body '>
@@ -115,7 +185,23 @@ class LocalUpgrade extends React.PureComponent {
 				{progressActive&&<CustomProgress
 					duration={duration}
 					title={intl.get(MODULE, 10)/*_i18n:正在升级路由器，请耐心等待...*/}
+					tips={intl.get(MODULE, 13)/*_i18n:升级过程中请勿断电！*/}
 				/>}
+				<ModalLoading 
+                    visible={loadingVisible}
+                    tip={loadingTip}
+                />
+				<Modal
+					visible={succeedActive}
+					className='modal-center'
+					closable={false}
+					centered={true}
+					footer={<Button type="primary" onClick={this.sure}>{intl.get(MODULE, 14)/*_i18n:确定*/}</Button>}
+				>
+					{result? <CustomIcon type="succeed" size={64} className='succeed-icon'/>
+					:<CustomIcon type="defeated" size={64} className='defeated-icon'/>}
+					<h3 className='succeed-tip'>{modalTip}</h3>
+				</Modal>
 			</SubLayout>
 		);
 	}

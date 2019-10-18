@@ -111,6 +111,9 @@ export default class Upgrade extends React.Component{
             }) 
         } else {
             Modal.error({title : this.err[errcode] || intl.get(MODULE, 6)/*_i18n:启动升级失败*/, centered: true});
+            this.setState({
+                download: false
+            });
         }});
     }
 
@@ -141,15 +144,15 @@ export default class Upgrade extends React.Component{
                 </Modal>
                 <Modal closable={false} maskClosable={false} visible={downloadFail} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFail}>{intl.get(MODULE, 7)/*_i18n:我知道了*/}</Button>} width={560}>
                     <div className="progress-result">
-                        <CustomIcon color="red" type="defeated" size={64}/>
+                        <CustomIcon className='result-icon-defeated' type="defeated" size={64}/>
                         <div className="progressfill">{downloadFailtip}</div>
                         <div className="progressfail">{failReason}</div>
                     </div>
                 </Modal>
                 <Modal closable={false} maskClosable={false} visible={downloadSuccess} centered={true} footer={<Button className="speed-btn" type="primary" onClick={this.updateFill}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>} width={560}>
                     <div className="progress-result">
-                        <CustomIcon color="lightgreen" type="succeed" size={64}/>
-                        <div className="progressfill" style={{color : '#333C4F'}}>{intl.get(MODULE, 9)/*_i18n:升级完成，请重新登录管理界面*/}</div>
+                        <CustomIcon className='result-icon-succeed' type="succeed" size={64}/>
+                        <div className="progressfill progressfill-color">{intl.get(MODULE, 9)/*_i18n:升级完成，请重新登录管理界面*/}</div>
                     </div>
                 </Modal>
                 {visible && 

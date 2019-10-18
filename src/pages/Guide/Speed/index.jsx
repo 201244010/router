@@ -249,10 +249,10 @@ export default class Speed extends React.Component {
 
 const SpeedAutoConfig = props => {
 	return [
-        <CustomIcon key="autoSpeedIcon" type="dashboard" color="#e0e1e2" size={160} />,
+        <CustomIcon className='config-icon-dashboard' key="autoSpeedIcon" type="dashboard" size={160} />,
         <div className='button-wrap'>
-            <Button key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large" style={{ width : "100%", margin : "30px auto 5px" }}>{intl.get(MODULE, 15)/*_i18n:开始测速*/}</Button>
-            <div key="help" className="help" style={{ marginTop : -1 }}>
+            <Button className='config-auto-button'  key="autoSpeedButton" type="primary" onClick={props.autoSpeedTest} size="large">{intl.get(MODULE, 15)/*_i18n:开始测速*/}</Button>
+            <div key="help" className="help config-help">
                 <a href="javascript:;" onClick={props.back} className="ui-tips">{intl.get(MODULE, 16)/*_i18n:上一步*/}</a>
                 <a href="javascript:;" className="ui-tips" onClick={props.nextStep}>{intl.get(MODULE, 17)/*_i18n:跳过*/}</a>
             </div>
@@ -270,7 +270,10 @@ const SpeedAutoBoard = props => {
                         <span className="band-width">{props.upBandWidth}</span>
                         <span className="band-result">
                             <em className="ui-tips">Mbps</em>
-                            <strong className="ui-tips">{intl.get(MODULE, 19)/*_i18n:上行带宽*/}<CustomIcon type="bandwidthdown" size={12} color="#4687FF"/></strong>
+                            <strong className="ui-tips">
+                                <span>{intl.get(MODULE, 19)/*_i18n:上行带宽*/}</span>
+                                <CustomIcon className='tips-icon-bandwidthdown' type="bandwidthdown" size={12}/>
+                            </strong>
                         </span>
                     </span>
                 </div>
@@ -280,7 +283,10 @@ const SpeedAutoBoard = props => {
                         <span className="band-width">{props.downBandWidth}</span>
                         <span className="band-result">
                             <em className="ui-tips">Mbps</em>
-                            <strong className="ui-tips">{intl.get(MODULE, 20)/*_i18n:下行带宽*/} <CustomIcon type="bandwidthup" size={12} color="#87D068"/></strong>
+                            <strong className="ui-tips">
+                                <span>{intl.get(MODULE, 20)/*_i18n:下行带宽*/}</span>
+                                <CustomIcon className='tips-icon-bandwidthup' type="bandwidthup" size={12}/>
+                            </strong>
                         </span>
                     </span>
                 </div>

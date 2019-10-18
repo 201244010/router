@@ -159,7 +159,7 @@ export default class Mesh extends React.Component{
     render() {
         const { visible, state, title, devices }  = this.state;
         const num = devices.length;
-        const icon = <CustomIcon color="#6174F1" type="loading" size={20} spin/>
+        const icon = <CustomIcon className='spin-icon-loading' type="loading" size={20} spin/>
         let Title = [
             'running' === state && <Spin className='spin' indicator={icon} />,
             <span dangerouslySetInnerHTML={{ __html: title }} className='title' />
@@ -189,7 +189,7 @@ export default class Mesh extends React.Component{
             }
             {'done' === state && num == 0 &&
             <div>
-                <div className='status-icon'><CustomIcon color="#FF5500" type="hint" size={64} /></div>
+                <div className='status-icon'><CustomIcon className='status-icon-hint' type="hint" size={64} /></div>
                 <h4>{intl.get(MODULE, 8)/*_i18n:没有搜寻到新商米设备*/}</h4>
             </div>
             }

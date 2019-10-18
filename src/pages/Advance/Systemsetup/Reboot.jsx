@@ -206,8 +206,8 @@ class Reboot extends React.Component{
                         centered={true}
                         footer={[<Button type="primary" onClick={this.login}>{intl.get(MODULE, 8)/*_i18n:确定*/}</Button>]}
                     >
-                        <CustomIcon type="succeed" size={64} color='#87D068' style={{ marginTop: 20 }} />
-                        <h3 style={{ marginTop: 15 }}>{intl.get(MODULE, 9)/*_i18n:重启成功，请重新连接无线网络*/}</h3>
+                        <CustomIcon className='center-icon-succeed' type="succeed" size={64}/>
+                        <h3>{intl.get(MODULE, 9)/*_i18n:重启成功，请重新连接无线网络*/}</h3>
                     </Modal>
                     <Modal
                         visible={rebootModal}
@@ -216,7 +216,7 @@ class Reboot extends React.Component{
                         closable={false}
                         centered={true}
                         title={<div className='reboot-modal-title'>
-                                <CustomIcon color="#D0021B" type="hint" size={14}></CustomIcon>
+                                <CustomIcon className='reboot-icon-hint' type="hint" size={14} />
                                 <label>{intl.get(MODULE, 20)/*_i18n:警告*/}</label>
                             </div>
                         }

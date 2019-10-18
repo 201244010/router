@@ -17,6 +17,9 @@
         border-radius: 50%;
         background-clip: padding-box;
         box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        .sm-loading-color {
+            color: #6174F1;
+        }
         .ui-icon-spin {
             margin-top: 23%;
             margin-left: 23%;
