@@ -8,7 +8,6 @@ import SubLayout from '~/components/SubLayout';
 import CustomIcon from '~/components/Icon';
 import GuideModal from './GuideModal';
 import ModalLoading from '~/components/ModalLoading';
-import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 
 import './index.scss';
 
@@ -86,17 +85,13 @@ export default class Wechat extends React.Component {
     }
 
     getWechatInfo = async() => {
-        await fetchPublicKey();
         let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }, { opcode: 'AUTH_WEIXIN_CONFIG_GET' }]);
         let { errcode, data } = response;
         if(errcode === 0){
             const { guest: { ssid = '', enable = '', static_password = ''} = {} } = data[0].result;
             const { enable: wechatEnable } = data[1].result.weixin;
             this.guestData = data[0].result.guest;
-            const { host: {band_2g: {password: password2G}, band_5g: { password: password5G}}} = data[0].result.main;
-            this.mainData = JSON.parse(JSON.stringify(data[0].result.main));
-            this.mainData.host.band_2g.password = encryption(Base64.decode(password2G));
-            this.mainData.host.band_5g.password = encryption(Base64.decode(password5G));
+            this.mainData = data[0].result.main;
             this.weixin = data[1].result.weixin;
             const ssidDisabled = !((enable === '1')&& wechatEnable);
             const pwdDisabled = !((enable === '1')&& wechatEnable);
@@ -118,7 +113,6 @@ export default class Wechat extends React.Component {
     setWechatInfo = async() => {
         const { ssid, enable, pwd } = this.state;
         this.weixin.enable = enable ? '1' : '0';
-        await fetchPublicKey();
         const response = await common.fetchApi(
             [
                 {
@@ -126,8 +120,8 @@ export default class Wechat extends React.Component {
                     data: { 
                         guest: {
                             ssid: ssid,
-                            password: encryption(pwd),
-                            static_password: encryption(pwd),
+                            password: Base64.encode(pwd),
+                            static_password: Base64.encode(pwd),
                             encryption: enable? 'psk-mixed/ccmp+tkip' : 'none',
                             password_type: 'static',
                             enable: enable? '1': '0',
