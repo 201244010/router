@@ -277,6 +277,12 @@
 						font-size: 14px;
 					}
 				}
+				.icon-speed {
+					color: #fff;
+					margin-bottom: 1px;
+					margin-left: 3px;
+					opacity: 0.6;
+				}
 			}
 		}
 	}
@@ -305,12 +311,10 @@
 	}
 
 	.topology-error {
-		color: rgba(255,206,189,1);
+		color: rgba(255, 206, 189, 1);
 		margin-right: 4px;
 	}
 }
-
-
 
 .satelite-info {
 	padding: 8px 4px 0 4px;
@@ -380,5 +384,3 @@
 		}
 	}
 }
-
-

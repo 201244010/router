@@ -402,13 +402,8 @@ export default class Topology extends React.Component {
 									{intl.get(MODULE, 5) /*_i18n:上传速度*/}
 								</label>
 								<CustomIcon
-									color="#fff"
 									type="upload"
-									style={{
-										marginBottom: 1,
-										marginLeft: 3,
-										opacity: 0.6
-									}}
+									className="icon-speed"
 									size={12}
 								/>
 							</div>
@@ -423,13 +418,8 @@ export default class Topology extends React.Component {
 									{intl.get(MODULE, 6) /*_i18n:下载速度*/}
 								</label>
 								<CustomIcon
-									color="#fff"
 									type="download"
-									style={{
-										marginBottom: 1,
-										marginLeft: 3,
-										opacity: 0.6
-									}}
+									className="icon-speed"
 									size={12}
 								/>
 							</div>

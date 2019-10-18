@@ -41,7 +41,7 @@ let plugins = [
 const conf = merge(require('./webpack.base.conf'), {
     module : { rules : styleLoaders },
     devtool : false,
-    watch: true,
+    watch: false,
     plugins
 });
 

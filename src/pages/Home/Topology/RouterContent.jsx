@@ -125,7 +125,7 @@ export default class RouterContent extends React.Component {
 					</div>
 					<label title={name}>
 						{!highSignal && type ? (
-							<Tooltip title="prompt text">
+							<Tooltip title={intl.get(MODULE, 22)}>
 								<span>
 									<CustomIcon
 										size={12}

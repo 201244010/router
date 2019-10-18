@@ -59,61 +59,61 @@
 		}
 	}
 
-    // > article {
-    //     width : 100%;
-    //     padding : 30px 0 0 0;
-    //     overflow-y : auto;
-    //     flex: 1;
-    // }
+	// > article {
+	//     width : 100%;
+	//     padding : 30px 0 0 0;
+	//     overflow-y : auto;
+	//     flex: 1;
+	// }
 
-    .wifi-settings {
-        font-size: 14px;
-        margin-bottom: 24px;
-        .wifi-setting-item {
-            padding-left: 60px;
-            .band-title {
-                margin-top: 32px;
-                margin-bottom: 16px;
-                label {
-                    font-size: 16px;
-                    display: inline;
-                }
-                span {
-                    color: #ADB1B9;
-                    letter-spacing: 0;
-                    font-size: 12px;
-                    text-align: left;
-                    margin-left: 4px;
-                }
-            }
-        }
-        .ssidLabel{
-            margin-top: 24px;
-        }
-        .ui-tiled.compact {
-            width : 320px;
-            height: 22px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-        }
-        .ui-form .more .ui-icon {
-            position: static;
-        }
-        .ui-input {
-            display:inline;
-            margin-right:10px;
-        }
-        .network-row {
-            position: relative;
-            .row-right {
-                position: absolute;
-                top: 0;
-                left: 383px;
-            }
-        }
-    }
+	.wifi-settings {
+		font-size: 14px;
+		margin-bottom: 24px;
+		.wifi-setting-item {
+			padding-left: 60px;
+			.band-title {
+				margin-top: 32px;
+				margin-bottom: 16px;
+				label {
+					font-size: 16px;
+					display: inline;
+				}
+				span {
+					color: #adb1b9;
+					letter-spacing: 0;
+					font-size: 12px;
+					text-align: left;
+					margin-left: 4px;
+				}
+			}
+		}
+		.ssidLabel {
+			margin-top: 24px;
+		}
+		.ui-tiled.compact {
+			width: 320px;
+			height: 22px;
+		}
+		label {
+			display: block;
+			margin-bottom: 6px;
+		}
+		.ui-form .more .ui-icon {
+			position: static;
+		}
+		.ui-input {
+			display: inline;
+			margin-right: 10px;
+		}
+		.network-row {
+			position: relative;
+			.row-right {
+				position: absolute;
+				top: 0;
+				left: 383px;
+			}
+		}
+	}
 
 	.wifi-settings {
 		font-size: 14px;
@@ -194,21 +194,21 @@
 	}
 }
 
-.radio-choice{
-    display: flex;
-    margin: 8px 0 0px;
+.radio-choice {
+	display: flex;
+	margin: 8px 0 0px;
 }
 .network-info {
-    position: relative;
-    margin-top: 20px;
-    .status {
-        margin-right:5px;
-    }
-    .right {
-        position: absolute;
-        left: 378px;
-        top: 0;
-    }
+	position: relative;
+	margin-top: 20px;
+	.status {
+		margin-right: 5px;
+	}
+	.right {
+		position: absolute;
+		left: 378px;
+		top: 0;
+	}
 }
 
 .last {
@@ -260,6 +260,23 @@
 			color: rgba(51, 60, 79, 0.6);
 		}
 	}
+	.sub-router-title {
+		display: inline-flex;
+    	align-items: center;
+		.sub-router-name {
+			margin: 0 8px 0 8px;
+		}
+	}
+	.sub-input {
+		display: inline-block;
+		margin-left: 12px;
+	}
+	.sub-mainrouter {
+		margin-right: 8px;
+		border-radius: 4px;
+		color:  rgba(97, 116, 241, 1);
+		border: 1px solid rgba(97, 116, 241, 1);
+	}
 }
 
 .parent-router {
@@ -309,48 +326,48 @@
 }
 
 .router-mode {
-    font-size: 12;
-    color: #333C4F;
-    width: 265px;
-    label {
-        font-size: 12px;
-        color: #333C4F;
-    }
-    p {
-        font-size: 12px;
-        color: #ADB1B9;
-    }
+	font-size: 12;
+	color: #333c4f;
+	width: 265px;
+	label {
+		font-size: 12px;
+		color: #333c4f;
+	}
+	p {
+		font-size: 12px;
+		color: #adb1b9;
+	}
 }
 .setting-wifi-modal {
-    .backup-btm{
-        display: block;
-        width: 160px;
-        margin: auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .backup-icon {
-        margin-top: 10px;
-        display: block;
-        text-align: center;
-        .backup-icon-defeated {
-            color: #FF5500;
-        }
-        .backup-icon-succeed {
-            color: #87D068;
-        }
-        .backup-result {
-            font-size: 16px;
-            color: #333C4F;
-            margin-top: 10px;
-            margin-bottom: 6px;
-            .result-failed {
-                font-size: 16px;
-            }
-            .result-err {
-                font-size: 12px;
-                color: #ADB1B9;
-            }
-        }
-    }
+	.backup-btm {
+		display: block;
+		width: 160px;
+		margin: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.backup-icon {
+		margin-top: 10px;
+		display: block;
+		text-align: center;
+		.backup-icon-defeated {
+			color: #ff5500;
+		}
+		.backup-icon-succeed {
+			color: #87d068;
+		}
+		.backup-result {
+			font-size: 16px;
+			color: #333c4f;
+			margin-top: 10px;
+			margin-bottom: 6px;
+			.result-failed {
+				font-size: 16px;
+			}
+			.result-err {
+				font-size: 12px;
+				color: #adb1b9;
+			}
+		}
+	}
 }
