@@ -143,7 +143,7 @@ export default class RouterContent extends React.Component {
 						<span>{name}</span>
 					</label>
 					<div className={type ? signalClass : 'sate-offline'}>
-						{type ? rssi : intl.get(MODULE, 17)}
+						{type ? rssiType : intl.get(MODULE, 17)}
 					</div>
 				</div>
 			</Popover>
