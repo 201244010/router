@@ -103,22 +103,19 @@ export default class Home extends React.Component {
 		let response = await common.fetchApi([
 			{ opcode: 'QOS_GET' },
 			{ opcode: 'WHOAMI_GET' },
-			{ opcode: 'AUTH_WEIXIN_CONFIG_GET' }
+			{ opcode: 'WIRELESS_GET' }
 		]);
 		let { errcode, data } = response;
 		if (errcode == 0) {
 			let { result: { qos = {} } = {} } = data[0] || {};
 			let { result: { mac = '' } = {} } = data[1] || {};
-			let { result: { weixin = {} } = {} } = data[2] || {};
+			let { result: { guest: { enable = ''} = {} } = {} } = data[2] || {};
 			this.setState({
 				qosEnable: qos.enable,
 				totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
 				source: qos.source,
 				me: mac.toUpperCase(),
-				wechatConfig:
-					parseInt(weixin.initial) || !parseInt(weixin.enable)
-						? true
-						: false
+				wechatConfig: enable === '1',
 			});
 			return;
 		}
