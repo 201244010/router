@@ -301,14 +301,17 @@ i.dot{
         color: #87D068;
         margin-right: 5px;
     }
-    .logo-cell{
+    .center {
         position: relative;
-        text-align: right;
-        padding-right: 26px;
+        .logo-cell{
+            position: relative;
+            text-align: right;
+            padding-right: 26px;
+        }
         img{
             position: absolute;
             right: 0;
-            top: -22px;
+            top: 0;
             width: 32px;
         }
     }

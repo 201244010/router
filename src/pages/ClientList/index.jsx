@@ -188,19 +188,19 @@ export default class ClientList extends React.Component {
 				onFilter: (value, record) => record.type.indexOf(value) === 0,
 				render: (mac, record) => {
 					return (
-						<div className="logo-cell">
-							<Logo
-								logoColor="#AEB1B9"
-								mac={mac}
-								model={record.model}
-								size={32}
-							/>
+						<React.Fragment>
+							<div className="logo-cell">
+								<Logo
+									logoColor="#AEB1B9"
+									mac={mac}
+									model={record.model}
+									size={32}
+								/>
+							</div>
 							{TYPE_SUNMI === record.type && (
-								<img
-									src={require('~/assets/images/sunmi-badge.svg')}
-								></img>
+								<img src={require('~/assets/images/sunmi-badge.svg')} />
 							)}
-						</div>
+						</React.Fragment>
 					);
 				}
 			},
