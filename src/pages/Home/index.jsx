@@ -115,7 +115,7 @@ export default class Home extends React.Component {
 				totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
 				source: qos.source,
 				me: mac.toUpperCase(),
-				wechatConfig: enable === '1',
+				wechatConfig: !(enable === '1'),
 			});
 			return;
 		}

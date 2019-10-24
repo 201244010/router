@@ -91,7 +91,6 @@ export default class Wechat extends React.Component {
             const { guest: { ssid = '', enable = '', static_password = ''} = {} } = data[0].result;
             this.guestData = data[0].result.guest;
             this.mainData = data[0].result.main;
-            this.weixin = data[1].result.weixin;
             const ssidDisabled = !(enable === '1');
             const pwdDisabled = !(enable === '1');
             const ssidTip = ssidDisabled? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
@@ -112,7 +111,6 @@ export default class Wechat extends React.Component {
     setWechatInfo = async() => {
         const { ssid, enable, pwd } = this.state;
         this.setState({loadingVisible: true});
-        this.weixin.enable = enable ? '1' : '0';
         const response = await common.fetchApi(
             [
                 {
