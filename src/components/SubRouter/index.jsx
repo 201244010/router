@@ -76,7 +76,7 @@ export default class SubRouter extends React.Component {
                 footer = <div className='footer final'><div><CustomIcon size={14} className='footer-failed' type="hint" /><span>{intl.get(MODULE, 1)/*_i18n:组网异常，可将子路由恢复出厂后重试*/}</span></div><p className='ignoreTip' onClick={this.ignore}>{intl.get(MODULE, 7)/*_i18n:忽略此设备*/}</p></div>;
                 break;
             case 'unusual':
-                footer = <div className='footer final'><CustomIcon size={14} className='footer-failed' type="hint" /><span className='footer-unusual'>{intl.get(MODULE, 2)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</span></div>;
+                footer = <div className='footer'><div className='footer-unusual'><CustomIcon size={14} className='footer-failed unusual-icon' type="hint" /><span className='unusual-span'>{intl.get(MODULE, 2)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</span></div></div>;
                 break;
         }
         return (

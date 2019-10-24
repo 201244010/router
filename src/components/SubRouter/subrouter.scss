@@ -28,10 +28,20 @@
             cursor: pointer;
         }
         .footer-unusual {
+            width: 148px;
+            position: absolute;
+            top: 6px;
             text-align: center;
-            font-family: 'PingFangSC-Light';
-            font-size: 12px;
-            color: #ADB1B9;
+            .unusual-icon {
+                position: absolute;
+                top: 2px;
+                left: -16px;
+            }
+            .unusual-span {
+                font-family: 'PingFangSC-Light';
+                font-size: 12px;
+                color: #ADB1B9;
+            }
         }
         .footer-success {
             color: #4EC53F;
