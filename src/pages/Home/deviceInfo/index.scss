@@ -103,12 +103,15 @@ i.dot{
         margin-right: 5px;
     }
     .editable-row-device{
-        .logo-cell{
+        .center {
             position: relative;
+            .logo-cell{
+                position: relative;
+            }
             img{
                 position: absolute;
                 right: 0;
-                top: -22px;
+                top: 0;
                 width: 32px;
             }
         }
