@@ -104,9 +104,9 @@ export default class Connection extends React.Component {
     }
     
     render() {
-        const {chatTotal} = this.props;
+        const {chatTotal, wechatConfig} = this.props;
         return (
-            this.props.wechatConfig ?
+            wechatConfig ?
                 <div className='connection'>
                     <span className='first-title'>
                         {intl.get(MODULE, 2)/*_i18n:微信连Wi-Fi*/}
