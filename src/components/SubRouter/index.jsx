@@ -55,7 +55,7 @@ export default class SubRouter extends React.Component {
     }
 
     render() {
-        let {deviceId='W1000000000', state='normal', checked=true, status='1'} = this.props;
+        let {deviceId='', state='normal', checked=true, status='1'} = this.props;
         const {visible, loading} = this.state;
         if ('1' !== status) {
             state = 'unusual';
@@ -76,7 +76,7 @@ export default class SubRouter extends React.Component {
                 footer = <div className='footer final'><div><CustomIcon size={14} className='footer-failed' type="hint" /><span>{intl.get(MODULE, 1)/*_i18n:组网异常，可将子路由恢复出厂后重试*/}</span></div><p className='ignoreTip' onClick={this.ignore}>{intl.get(MODULE, 7)/*_i18n:忽略此设备*/}</p></div>;
                 break;
             case 'unusual':
-                footer = <div className='footer final'><div className='footer-unusual'>{intl.get(MODULE, 2)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</div></div>;
+                footer = <div className='footer final'><CustomIcon size={14} className='footer-failed' type="hint" /><span className='footer-unusual'>{intl.get(MODULE, 2)/*_i18n:已被其他商米账号绑定，请解绑后组网*/}</span></div>;
                 break;
         }
         return (
