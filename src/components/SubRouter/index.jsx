@@ -55,7 +55,7 @@ export default class SubRouter extends React.Component {
     }
 
     render() {
-        let {deviceId='W1000000000', state='normal', checked=true, status='1'} = this.props;
+        let {deviceId='', state='normal', checked=true, status='1'} = this.props;
         const {visible, loading} = this.state;
         if ('1' !== status) {
             state = 'unusual';
