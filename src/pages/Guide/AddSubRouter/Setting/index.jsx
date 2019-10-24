@@ -27,6 +27,10 @@ export default class Setting extends React.Component {
         this.props.history.push("/");
     }
 
+    goBack = () => {
+        this.props.history.goBack();
+    }
+
     onChange = (deviceId, checked) => {
         let devicesShow = this.state.devicesShow;
         for (var i = 0; i < devicesShow.length; i++) {
@@ -222,6 +226,7 @@ export default class Setting extends React.Component {
                             reSearch={this.reSearch}
                             setSubRouter={this.setSubRouter}
                             onChange={this.onChange}
+                            goBack={this.goBack}
                         />;
         }
 

@@ -51,6 +51,18 @@
             }
         }
     }
+    .warning-footer {
+        margin: 32px auto 12px;
+        display: flex;
+        justify-content: center;
+        .settingButton {
+            width: 200px;
+            height: 42px;   
+        }
+        .settingButton-margin {
+            margin-right: 20px;
+        }
+    }
     .settingHeader {
         margin: 56px 0 24px;
         .smallLoading {
@@ -121,5 +133,5 @@
         height: 42px;
         display: block;
         margin: 32px auto 12px;
-    }   
+    }
 }
