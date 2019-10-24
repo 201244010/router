@@ -23,9 +23,16 @@
                 color: rgba(51,60,79,1);
             }
         }
-        .next {
-            width: 260px;
-            height: 42px;
+        .content-footer {
+            display: flex;
+            justify-content: center;
+            .footer-button {
+                width: 200px;
+                height: 42px;
+            }
+            .button-margin {
+                margin-right: 20px;
+            }
         }
     }
 }
