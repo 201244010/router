@@ -170,9 +170,13 @@ export default class SysUpgrade extends React.Component {
 
 	save = async ({ editing, name, mac, devid }) => {
 		const editName = editing.target.value;
+		const { routerList } = this.state;
 		if (editName === name) {
 			this.setState({
-				editing: false
+				routerList: routerList.map(item => {
+					item.editing = false; 
+					return item;
+				})
 			});
 		} else {
 			Loading.show({ duration: 2 });

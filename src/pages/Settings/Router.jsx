@@ -16,8 +16,7 @@ export default class Router extends React.Component {
 				dataIndex: 'name',
 				width: 330,
 				render: (name, record) => {
-					const { editing } = this.state;
-					const { mac, devid } = record;
+					const { mac, devid, editing } = record;
 					return (
 						<div className="sub-router-set">
 							<div>
@@ -28,7 +27,7 @@ export default class Router extends React.Component {
 									<li>
 										{editing ? (
 											<Input
-												defaultValue={name}
+												defaultValue={name || devid}
 												placeholder={
 													intl.get(
 														MODULE,
@@ -216,7 +215,6 @@ export default class Router extends React.Component {
 	};
 
 	toggleEdit = devid => {
-		console.log(devid);
 		const { routerList } = this.state;
 		const tmpList = routerList.map(item => {
 			if (item.devid === devid) {
@@ -224,7 +222,6 @@ export default class Router extends React.Component {
 			}
 			return item;
 		});
-		console.log(tmpList);
 		this.setState({
 			routerList: tmpList
 		});
@@ -233,9 +230,13 @@ export default class Router extends React.Component {
 
 	save = async (e, defaultValue, mac, devid) => {
 		const editName = e.target.value;
+		const { routerList } = this.state;
 		if (editName === defaultValue) {
 			this.setState({
-				editing: false
+				routerList: routerList.map(item => {
+					item.editing = false; 
+					return item;
+				})
 			});
 		} else {
 			Loading.show({ duration: 2 });
@@ -258,9 +259,6 @@ export default class Router extends React.Component {
 			}
 			if (0 === errcode) {
 				await this.fetchRouter();
-				this.setState({
-                    editing: false,
-				});
 			}
 		}
 	};
@@ -340,7 +338,8 @@ export default class Router extends React.Component {
 						uptime: uptime,
 						mode: online ? mode : '--',
 						rssi: rssi,
-						online: online
+						online: online,
+						editing: false
 					};
 				}
 			});
