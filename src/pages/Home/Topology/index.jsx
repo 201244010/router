@@ -74,7 +74,7 @@ export default class Topology extends React.Component {
 				<p>
 					<label title={name}>{name}</label>
 					<label className="edit-position" onClick={this.toggleEdit}>
-						<CustomIcon size={8} type="rename" />
+						<CustomIcon size={14} type="rename" />
 					</label>
 				</p>
 			);

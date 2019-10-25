@@ -59,7 +59,7 @@ export default class Router extends React.Component {
 												<label>{name}</label>
 												<span onClick={this.toggleEdit}>
 													<CustomIcon
-														size={8}
+														size={14}
 														type="rename"
 													/>
 												</span>

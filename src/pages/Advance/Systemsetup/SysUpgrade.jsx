@@ -84,7 +84,7 @@ export default class SysUpgrade extends React.Component {
 											}
 										>
 											<CustomIcon
-												size={8}
+												size={14}
 												type="rename"
 											/>
 										</span>
