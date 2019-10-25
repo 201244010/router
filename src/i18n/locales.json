@@ -1033,6 +1033,7 @@
 		"sysupgrade12": "发现新版本：",
 		"sysupgrade13": "设备已离线",
 		"sysupgrade14": "重新检测",
+		"sysupgrade15": "主路由",
 		"diagnose.file": "src/pages/Diagnose/index.jsx",
 		"diagnose0": "重新检测",
 		"diagnose1": "网线异常",
