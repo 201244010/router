@@ -491,7 +491,7 @@ export default class StaticBind extends React.Component {
                         bordered
                         size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 33)/*_i18n:暂无设备*/ }} />
                 </Modal>
-                <Modal title={editType === 'edit' ? intl.get(MODULE, 34)/*_i18n:编辑静态地址*/ : intl.get(MODULE, 35)/*_i18n:备注名称*/}
+                <Modal title={editType === 'edit' ? intl.get(MODULE, 34)/*_i18n:编辑静态地址*/ : intl.get(MODULE, 35)/*_i18n:添加静态地址*/}
                     cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} okText={editType === 'edit' ? intl.get(MODULE, 40)/*_i18n:保存*/ : intl.get(MODULE, 32)/*_i18n:添加*/}
                     closable={false} maskClosable={false} width={360}
                     visible={editShow} centered={true}
