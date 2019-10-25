@@ -15,10 +15,12 @@ export default class RouterContent extends React.Component {
 	};
 
 	toggleEdit = () => {
+		const { stopRefresh } = this.props;
 		const { editing } = this.state;
 		this.setState({
 			editing: !editing
 		});
+		stopRefresh();
 	};
 
 	setTitle = ({ editing, name, mac, devid }) => {
@@ -50,11 +52,12 @@ export default class RouterContent extends React.Component {
 	};
 
 	handleSave = async payload => {
-		const { save } = this.props;
+		const { save, startRefresh } = this.props;
 		await save(payload);
 		this.setState({
 			editing: false
 		});
+		startRefresh();
 	};
 
 	render() {

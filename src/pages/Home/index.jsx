@@ -498,6 +498,8 @@ export default class Home extends React.Component {
 						reList={reList}
 						apInfo={apInfo}
 						online={online}
+						startRefresh={this.startRefresh}
+						stopRefresh={this.stopRefresh}
 						history={this.props.history}
 					/>
 					<ul
