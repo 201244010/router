@@ -73,7 +73,7 @@ export default class SysUpgrade extends React.Component {
 										</label>
 										{role == 1 ? (
 											<span className="sub-mainrouter">
-												主路由
+												{intl.get(MODULE, 15) /*_i18n:主路由*/}
 											</span>
 										) : (
 											''

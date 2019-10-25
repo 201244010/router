@@ -57,7 +57,7 @@ export default class Router extends React.Component {
 										) : (
 											<div>
 												<label>{name}</label>
-												<span onClick={this.toggleEdit}>
+												<span onClick={() => this.toggleEdit(devid)}>
 													<CustomIcon
 														size={14}
 														type="rename"
@@ -215,12 +215,21 @@ export default class Router extends React.Component {
 		// }]
 	};
 
-	toggleEdit = () => {
-		const { editing } = this.state;
+	toggleEdit = devid => {
+		console.log(devid);
+		const { routerList } = this.state;
+		const tmpList = routerList.map(item => {
+			if (item.devid === devid) {
+				item.editing = true;
+			}
+			return item;
+		});
+		console.log(tmpList);
 		this.setState({
-			editing: !editing
+			routerList: tmpList
 		});
 	};
+
 
 	save = async (e, defaultValue, mac, devid) => {
 		const editName = e.target.value;
