@@ -230,7 +230,6 @@ export default class Router extends React.Component {
 	save = async (e, defaultValue, mac, devid) => {
 		const editName = e.target.value;
 		const { routerList } = this.state;
-		console.log(editName, defaultValue);
 		if (editName === defaultValue) {
 			this.setState({
 				routerList: routerList.map(item => {
