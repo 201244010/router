@@ -141,10 +141,12 @@ export default class Device extends React.Component {
             className: 'center',
             render: (mac, record) => {
                 return (
-                    <div className='logo-cell'>
-                        <Logo logoColor='#AEB1B9' mac={mac} model={record.model} size={32} />
-                        {('sunmi' === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')}></img>}
-                    </div>
+                    <React.Fragment>
+                        <div className='logo-cell'>
+                            <Logo logoColor='#AEB1B9' mac={mac} model={record.model} size={32} />
+                        </div>
+                        {('sunmi' === record.type) && <img src={require('~/assets/images/sunmi-badge.svg')} />}
+                    </React.Fragment>
                 )
             }
         }, {

@@ -73,7 +73,7 @@ export default class SysUpgrade extends React.Component {
 										</label>
 										{role == 1 ? (
 											<span className="sub-mainrouter">
-												主路由
+												{intl.get(MODULE, 15) /*_i18n:主路由*/}
 											</span>
 										) : (
 											''
@@ -84,7 +84,7 @@ export default class SysUpgrade extends React.Component {
 											}
 										>
 											<CustomIcon
-												size={8}
+												size={14}
 												type="rename"
 											/>
 										</span>
@@ -151,7 +151,6 @@ export default class SysUpgrade extends React.Component {
 	}
 
 	toggleEdit = devid => {
-		console.log(devid);
 		const { routerList } = this.state;
 		const tmpList = routerList.map(item => {
 			if (item.devid === devid) {
@@ -159,7 +158,6 @@ export default class SysUpgrade extends React.Component {
 			}
 			return item;
 		});
-		console.log(tmpList);
 		this.setState({
 			routerList: tmpList
 		});
@@ -172,9 +170,13 @@ export default class SysUpgrade extends React.Component {
 
 	save = async ({ editing, name, mac, devid }) => {
 		const editName = editing.target.value;
+		const { routerList } = this.state;
 		if (editName === name) {
 			this.setState({
-				editing: false
+				routerList: routerList.map(item => {
+					item.editing = false; 
+					return item;
+				})
 			});
 		} else {
 			Loading.show({ duration: 2 });

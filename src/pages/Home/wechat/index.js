@@ -104,9 +104,9 @@ export default class Connection extends React.Component {
     }
     
     render() {
-        const {chatTotal} = this.props;
+        const {chatTotal, wechatConfig} = this.props;
         return (
-            this.props.wechatConfig ?
+            wechatConfig ?
                 <div className='connection'>
                     <span className='first-title'>
                         {intl.get(MODULE, 2)/*_i18n:微信连Wi-Fi*/}
@@ -118,7 +118,7 @@ export default class Connection extends React.Component {
                         <span>{intl.get(MODULE, 4)/*_i18n:无需告知密码*/}</span>
                         <span>{intl.get(MODULE, 5)/*_i18n:安全防蹭网*/}</span>
                     </p>
-                    {/* <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 6)}</Button> */}
+                    <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 6)}</Button>
                 </div>
                 : <div className='connection'>
                 <span className='first-title'>
@@ -130,7 +130,7 @@ export default class Connection extends React.Component {
                 <span className='number'>
                     {chatTotal}
                 </span>
-                <div className='chart' style={{width: 250, height: 80}} ref='dom'></div>
+                <div className='chart' ref='dom'></div>
                 {/* <Button onClick={this.goWechat} className="button">{intl.get(MODULE, 8)}</Button> */}
             </div>
         )

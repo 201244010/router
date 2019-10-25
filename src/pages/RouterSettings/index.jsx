@@ -32,7 +32,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'changepassword', type: 'changepassword', color: '#E96044', content: intl.get(MODULE, 5)/*_i18n:修改管理密码*/},
             {route: 'backup', type: 'backup', color: '#6D6BD8', content: intl.get(MODULE, 6)/*_i18n:备份与恢复*/},  
             {route: 'upgrade', type: 'upgrade', color: '#47D164', content: intl.get(MODULE, 7)/*_i18n:系统升级*/},
-            {route: 'localUpgrade', type: 'local', color: '#448BE9', content: intl.get(MODULE, 24)/*_i18n:本地升级*/}, 
+            {route: 'localUpgrade', type: 'local', color: '#448BE9', content: intl.get(MODULE, 24)/*_i18n:本地系统升级*/}, 
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
             {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/}, 
         ];

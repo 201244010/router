@@ -389,10 +389,10 @@ export default class Bandwidth extends React.PureComponent {
 
 	post = async () => {
 		let { source, upband, downband } = this.state;
-		if (source === 'default') {
-			message.error(intl.get(MODULE, 13) /*_i18n:请先设置带宽*/);
-			return;
-		}
+		// if (source === 'default') {
+		// 	message.error(intl.get(MODULE, 13) /*_i18n:请先设置带宽*/);
+		// 	return;
+		// }
 		this.setState({ loading: true });
 		let payload = this.composeparams('manual', upband, downband);
 		await common

@@ -143,6 +143,7 @@ export default class Mesh extends React.Component{
                 message.error(intl.get(MODULE, 10)/*_i18n:商米设备添加失败*/);
             }
         });
+        await common.fetchApi({ opcode: 'SUNMIMESH_STOP' });
     }
 
     changeCheck = (e, mac) => {

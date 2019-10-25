@@ -46,9 +46,19 @@
                 color: #FB8632;
                 margin-right: 4px;
             }
-            &:first-child {
-                margin-bottom: 8px;
-            }
+        }
+    }
+    .warning-footer {
+        margin: 32px auto 12px;
+        display: flex;
+        justify-content: center;
+        .settingButton {
+            width: 200px;
+            height: 42px;
+            margin: 0;  
+        }
+        .settingButton-margin {
+            margin-right: 20px;
         }
     }
     .settingHeader {
@@ -121,5 +131,5 @@
         height: 42px;
         display: block;
         margin: 32px auto 12px;
-    }   
+    }
 }

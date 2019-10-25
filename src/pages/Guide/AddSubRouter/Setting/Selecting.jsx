@@ -48,10 +48,17 @@ class Selecting extends React.Component {
                         </p>
                         <p className='warningTip'>
                             <CustomIcon className='warningTip-hint' size={12} type="hint" />
+                            <span>{intl.get(MODULE, 21)/*_i18n:请确保子路由的软件版本高于V1.1.1*/}</span>
+                        </p>
+                        <p className='warningTip'>
+                            <CustomIcon className='warningTip-hint' size={12} type="hint" />
                             <span>{intl.get(MODULE, 5)/*_i18n:如完成上述步骤仍无法检测到子路由，请将子路由恢复出厂后重试*/}</span>
                         </p>
                     </div>
-                    <Button type="primary" className="settingButton" onClick={this.props.reSearch}>{intl.get(MODULE, 6)/*_i18n:重新检测*/}</Button>
+                    <div className='warning-footer'>
+                        <Button className="settingButton settingButton-margin" onClick={this.props.goBack}>{intl.get(MODULE, 20)/*_i18n:返回*/}</Button>
+                        <Button type="primary" className="settingButton" onClick={this.props.reSearch}>{intl.get(MODULE, 6)/*_i18n:重新检测*/}</Button>
+                    </div>
                 </React.Fragment>
             );
         }

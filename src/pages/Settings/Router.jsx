@@ -16,8 +16,7 @@ export default class Router extends React.Component {
 				dataIndex: 'name',
 				width: 330,
 				render: (name, record) => {
-					const { editing } = this.state;
-					const { mac, devid } = record;
+					const { mac, devid, editing } = record;
 					return (
 						<div className="sub-router-set">
 							<div>
@@ -28,7 +27,7 @@ export default class Router extends React.Component {
 									<li>
 										{editing ? (
 											<Input
-												defaultValue={name}
+												defaultValue={name || devid}
 												placeholder={
 													intl.get(
 														MODULE,
@@ -57,9 +56,9 @@ export default class Router extends React.Component {
 										) : (
 											<div>
 												<label>{name}</label>
-												<span onClick={this.toggleEdit}>
+												<span onClick={() => this.toggleEdit(devid)}>
 													<CustomIcon
-														size={8}
+														size={14}
 														type="rename"
 													/>
 												</span>
@@ -215,18 +214,29 @@ export default class Router extends React.Component {
 		// }]
 	};
 
-	toggleEdit = () => {
-		const { editing } = this.state;
+	toggleEdit = devid => {
+		const { routerList } = this.state;
+		const tmpList = routerList.map(item => {
+			if (item.devid === devid) {
+				item.editing = true;
+			}
+			return item;
+		});
 		this.setState({
-			editing: !editing
+			routerList: tmpList
 		});
 	};
 
 	save = async (e, defaultValue, mac, devid) => {
 		const editName = e.target.value;
+		const { routerList } = this.state;
+		console.log(editName, defaultValue);
 		if (editName === defaultValue) {
 			this.setState({
-				editing: false
+				routerList: routerList.map(item => {
+					item.editing = false; 
+					return item;
+				})
 			});
 		} else {
 			Loading.show({ duration: 2 });
@@ -331,7 +341,8 @@ export default class Router extends React.Component {
 						uptime: uptime,
 						mode: online ? mode : '--',
 						rssi: rssi,
-						online: online
+						online: online,
+						editing: false,
 					};
 				}
 			});
