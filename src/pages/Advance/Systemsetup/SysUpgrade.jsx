@@ -151,7 +151,6 @@ export default class SysUpgrade extends React.Component {
 	}
 
 	toggleEdit = devid => {
-		console.log(devid);
 		const { routerList } = this.state;
 		const tmpList = routerList.map(item => {
 			if (item.devid === devid) {
@@ -159,7 +158,6 @@ export default class SysUpgrade extends React.Component {
 			}
 			return item;
 		});
-		console.log(tmpList);
 		this.setState({
 			routerList: tmpList
 		});
