@@ -245,10 +245,10 @@ export default class Allocation extends React.Component {
 		return status ? (
 			<div className="allocation">
 				<span className="first-title">
-					{intl.get(MODULE, 3) /*_i18n:网速分配*/}
+					{intl.get(MODULE, 3) /*_i18n:网速智能分配*/}
 				</span>
 				<span className="subtitle">
-					{intl.get(MODULE, 4) /*_i18n:最大网速占用*/}
+					{intl.get(MODULE, 4) /*_i18n:当前带宽占用*/}
 				</span>
 				<span className="percent">{largestPercent}%</span>
 				<div

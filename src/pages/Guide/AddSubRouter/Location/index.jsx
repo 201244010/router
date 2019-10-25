@@ -18,28 +18,38 @@ export default class Location extends React.Component {
     }
 
     onChange = (value, deviceId) => {
-        const {routeList} = this.state;
-        let index = 0;
+        let {routeList} = this.state;
 
         if ('' === value) {
             value = deviceId;
         }
 
-        for (var i = 0; i < routeList.length; i++) {
-            if (deviceId === routeList[i].deviceId) {
-                routeList[i].location = value;
-                index = i;
-                break;
+        routeList = routeList.map(item => {
+            if(item.deviceId === deviceId) {
+                item.location = value;
             }
-        }
+            return item;
+        });
 
-        routeList[index].tip = '';
-        for (var i = 0; i < routeList.length; i++) {
-            if (index !== i && routeList[index].location === routeList[i].location) {
-                routeList[index].tip = intl.get(MODULE, 0)/*_i18n:位置信息重复*/;
+        const locationNum = routeList.reduce((pre, cur) => {
+            if(cur.location in pre) {
+                pre[cur.location]++;
+            } else {
+                pre[cur.location] = 1;
             }
-        }
-        this.setState({routeList: routeList});
+            return pre;
+        },{});
+
+        routeList = routeList.map(item => {
+            if(locationNum[item.location] > 1) {
+                item.tip = intl.get(MODULE, 0)/*_i18n:位置信息重复*/;
+            } else {
+                item.tip = '';
+            }
+            return item;
+        });
+
+        this.setState({routeList});
     }
 
     getRouterLocation = async() => {
