@@ -87,8 +87,12 @@ export default class SetWifi extends React.Component {
         if (setTip) {
             this.guestWireLess.ssid = guestWifiName;
             this.guestWireLess.static_password = encryption(guestWifiPsw);
+            this.guestWireLess.password = encryption(Base64.decode(this.guestWireLess.password));
             this.guestWireLess.enable = '1';
             this.guestWireLess.encryption = guestWifiPsw.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
+        } else {
+            this.guestWireLess.static_password = encryption(Base64.decode(this.guestWireLess.static_password));
+            this.guestWireLess.password = encryption(Base64.decode(this.guestWireLess.password));
         }
         
         this.mainWireLess.host.band_2g.ssid = hostWifiName;

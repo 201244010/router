@@ -188,19 +188,19 @@ export default class ClientList extends React.Component {
 				onFilter: (value, record) => record.type.indexOf(value) === 0,
 				render: (mac, record) => {
 					return (
-						<div className="logo-cell">
-							<Logo
-								logoColor="#AEB1B9"
-								mac={mac}
-								model={record.model}
-								size={32}
-							/>
+						<React.Fragment>
+							<div className="logo-cell">
+								<Logo
+									logoColor="#AEB1B9"
+									mac={mac}
+									model={record.model}
+									size={32}
+								/>
+							</div>
 							{TYPE_SUNMI === record.type && (
-								<img
-									src={require('~/assets/images/sunmi-badge.svg')}
-								></img>
+								<img src={require('~/assets/images/sunmi-badge.svg')} />
 							)}
-						</div>
+						</React.Fragment>
 					);
 				}
 			},
@@ -424,10 +424,20 @@ export default class ClientList extends React.Component {
 							)}
 							<Popconfirm
 								title={
-									intl.get(
-										MODULE,
-										14
-									) /*_i18n:确定禁止此设备上网？*/
+									<div className="pop-content">
+										<label>
+											{intl.get(
+												MODULE,
+												14
+											) /*_i18n:您确定要将此设备加入黑名单？*/}
+										</label>
+										<p>
+											{intl.get(
+												MODULE,
+												56
+											) /*_i18n:可从“路由设置-黑名单”中恢复*/}
+										</p>
+									</div>
 								}
 								okText={intl.get(MODULE, 15) /*_i18n:确定*/}
 								cancelText={intl.get(MODULE, 16) /*_i18n:取消*/}
@@ -513,6 +523,7 @@ export default class ClientList extends React.Component {
 			setTimeout(() => {
 				// this.props.startRefresh(true);
 				this.fetchStatus();
+				message.success(intl.get(MODULE, 55) /*_i18n:已设为优先设备*/);
 			}, 2000);
 			return;
 		}

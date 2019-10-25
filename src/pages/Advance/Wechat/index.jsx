@@ -87,24 +87,22 @@ export default class Wechat extends React.Component {
 
     getWechatInfo = async() => {
         await fetchPublicKey();
-        let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }, { opcode: 'AUTH_WEIXIN_CONFIG_GET' }]);
+        let response = await common.fetchApi([{ opcode: 'WIRELESS_GET' }]);
         let { errcode, data } = response;
         if(errcode === 0){
             const { guest: { ssid = '', enable = '', static_password = ''} = {} } = data[0].result;
-            const { enable: wechatEnable } = data[1].result.weixin;
             this.guestData = data[0].result.guest;
             const { host: {band_2g: {password: password2G}, band_5g: { password: password5G}}} = data[0].result.main;
             this.mainData = JSON.parse(JSON.stringify(data[0].result.main));
             this.mainData.host.band_2g.password = encryption(Base64.decode(password2G));
             this.mainData.host.band_5g.password = encryption(Base64.decode(password5G));
-            this.weixin = data[1].result.weixin;
-            const ssidDisabled = !((enable === '1')&& wechatEnable);
-            const pwdDisabled = !((enable === '1')&& wechatEnable);
+            const ssidDisabled = !(enable === '1');
+            const pwdDisabled = !(enable === '1');
             const ssidTip = ssidDisabled? '' : checkStr(ssid, { who: intl.get(MODULE, 0)/*_i18n:客用Wi-Fi名称*/, min: 1, max: 32, type: 'wechat', byte: true });
             const pwdTip = pwdDisabled? '' : checkStr(static_password, { who: intl.get(MODULE, 1)/*_i18n:客用Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true });
             this.setState({
                 ssid: ssid,
-                enable: (enable === '1')&& wechatEnable,
+                enable: enable === '1',
                 pwd: Base64.decode(static_password),
                 ssidDisabled: ssidDisabled,
                 pwdDisabled: pwdDisabled,
@@ -117,7 +115,7 @@ export default class Wechat extends React.Component {
 
     setWechatInfo = async() => {
         const { ssid, enable, pwd } = this.state;
-        this.weixin.enable = enable ? '1' : '0';
+        this.setState({loadingVisible: true});
         await fetchPublicKey();
         const response = await common.fetchApi(
             [
@@ -135,18 +133,11 @@ export default class Wechat extends React.Component {
                         },
                         main: this.mainData,
                     }
-                },
-                {
-                    opcode: 'AUTH_WEIXIN_CONFIG_SET',
-                    data: {
-                        weixin: this.weixin
-                    }
                 }
             ]
         );
         const { errcode } = response;
         if(errcode === 0){
-            this.setState({loadingVisible: true});
             setTimeout(()=> {
                 this.setState({
                     loadingVisible: false,
@@ -156,6 +147,7 @@ export default class Wechat extends React.Component {
             },15000);
         } else {
             this.setState({
+                loadingVisible: false,
                 resVisibile: true,
                 result: false,
             });
