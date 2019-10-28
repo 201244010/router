@@ -523,7 +523,11 @@ export default class ClientList extends React.Component {
 			setTimeout(() => {
 				// this.props.startRefresh(true);
 				this.fetchStatus();
-				message.success(intl.get(MODULE, 55) /*_i18n:已设为优先设备*/);
+				if(TYPE_NORMAL === record.type) {
+					message.success(intl.get(MODULE, 55) /*_i18n:已设为优先设备*/);
+				} else {
+					message.success(intl.get(MODULE, 57) /*_i18n:已解除优先设备*/);
+				}
 			}, 2000);
 			return;
 		}
