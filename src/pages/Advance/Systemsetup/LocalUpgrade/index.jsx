@@ -153,7 +153,7 @@ class LocalUpgrade extends React.PureComponent {
 			<SubLayout className="settings">
 				<Form className='localUpgrade-body '>
 					<PanelHeader
-						title={intl.get(MODULE, 0)/*_i18n:本地升级*/}
+						title={intl.get(MODULE, 0)/*_i18n:本地系统升级*/}
 						checkable={false}
 					/>
 					<label className='localUpgrade-label'>{intl.get(MODULE, 1)/*_i18n:选择升级文件*/}</label>
