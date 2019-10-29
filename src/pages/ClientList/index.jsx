@@ -268,11 +268,9 @@ export default class ClientList extends React.Component {
 				render: (text, record) => (
 					<ul className="macAddress">
 						<li>
-							<label>IP:</label>
 							<span>{record.ip}</span>
 						</li>
 						<li>
-							<label>MAC:</label>
 							<span>{record.mac}</span>
 						</li>
 					</ul>
