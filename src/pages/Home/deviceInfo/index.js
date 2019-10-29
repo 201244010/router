@@ -243,7 +243,22 @@ export default class Device extends React.Component {
                             </a>
                         }
                         <Popconfirm
-                            title={intl.get(MODULE, 14)/*_i18n:确定禁止此设备上网？*/}
+                            title={
+                                <div className="pop-content">
+                                    <label>
+                                        {intl.get(
+                                            MODULE,
+                                            14
+                                        ) /*_i18n:您确定要将此设备加入黑名单？*/}
+                                    </label>
+                                    <p>
+                                        {intl.get(
+                                            MODULE,
+                                            56
+                                        ) /*_i18n:可从“路由设置-黑名单”中恢复*/}
+                                    </p>
+                                </div>
+                            }
                             okText={intl.get(MODULE, 15)/*_i18n:确定*/}
                             cancelText={intl.get(MODULE, 16)/*_i18n:取消*/}
                             placement="topRight"
@@ -283,6 +298,11 @@ export default class Device extends React.Component {
             // 后台生效需要1秒左右，延迟2秒刷新数据，
             setTimeout(() => {
                 this.props.startRefresh(true);
+                if('normal' === record.type) {
+					message.success(intl.get(MODULE, 55) /*_i18n:已设为优先设备*/);
+				} else {
+					message.success(intl.get(MODULE, 57) /*_i18n:已解除优先设备*/);
+				}
             }, 2000);
             return;
         }
