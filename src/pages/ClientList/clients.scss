@@ -301,14 +301,17 @@ i.dot{
         color: #87D068;
         margin-right: 5px;
     }
-    .logo-cell{
+    .center {
         position: relative;
-        text-align: right;
-        padding-right: 26px;
+        .logo-cell{
+            position: relative;
+            text-align: right;
+            padding-right: 26px;
+        }
         img{
             position: absolute;
             right: 0;
-            top: -22px;
+            top: 0;
             width: 32px;
         }
     }
@@ -387,4 +390,15 @@ i.dot{
         background: #F8F9FB;
         border-bottom: none;
     }
+}
+.pop-content {
+	width: 265px;
+	label {
+		font-size: 12px;
+		color: #333c4f;
+	}
+	p {
+		font-size: 12px;
+		color: #adb1b9;
+	}
 }

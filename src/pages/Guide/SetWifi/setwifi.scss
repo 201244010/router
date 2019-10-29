@@ -3,7 +3,9 @@
     color: #333C4F;
     .head{
         margin-bottom: 26px;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .head-icon-loading {
             color: #6174F1;
         }
@@ -29,7 +31,8 @@
             background:rgba(246,247,249,1);
             border-radius: 12px;
             .title{
-                display: inline-block;
+                display: inline-flex;
+                align-items: center;
                 margin-bottom: 20px;
                 .list-icon-business {
                     color: #FB8632;

@@ -129,10 +129,10 @@ export default class CustomRestart extends React.Component {
 						placeholder= {intl.get(MODULE, 9)/*_i18n:请选择时间*/}
 					/>
 				</div>
+				<div className="customrestart-save">
+					<Button type="primary" size='large' className='customrestart-button' onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
+				</div>
 			</div>
-			<div className="custom-save">
-                <Button type="primary" size='large' className='custom-button' onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
-            </div>
 		</SubLayout>
 	}
 }

@@ -62,10 +62,12 @@ export default class Topology extends React.Component {
 	};
 
 	toggleEdit = () => {
+		const { stopRefresh } = this.props;
 		const { editing } = this.state;
 		this.setState({
 			editing: !editing
 		});
+		stopRefresh();
 	};
 
 	setTitle = ({ editing, name, mac, devid }) => {
@@ -74,7 +76,7 @@ export default class Topology extends React.Component {
 				<p>
 					<label title={name}>{name}</label>
 					<label className="edit-position" onClick={this.toggleEdit}>
-						<CustomIcon size={8} type="rename" />
+						<CustomIcon size={14} type="rename" />
 					</label>
 				</p>
 			);
@@ -97,10 +99,12 @@ export default class Topology extends React.Component {
 	};
 
 	handleSave = async payload => {
+		const { startRefresh } = this.props;
 		await this.save(payload);
 		this.setState({
 			editing: false
 		});
+		startRefresh();
 	};
 
 	save = async ({ editing, name, mac, devid }) => {
@@ -147,7 +151,9 @@ export default class Topology extends React.Component {
 			downUnit,
 			reList,
 			online,
-			apInfo
+			apInfo,
+			startRefresh,
+			stopRefresh
 		} = this.props;
 		const { editing } = this.state;
 		const listItems = this.arrayGroup(reList, 6).map(item => {
@@ -159,6 +165,8 @@ export default class Topology extends React.Component {
 								<RouterContent
 									reList={items}
 									save={this.save}
+									startRefresh={startRefresh}
+									stopRefresh={stopRefresh}
 								/>
 							</span>
 						);

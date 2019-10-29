@@ -103,12 +103,15 @@ i.dot{
         margin-right: 5px;
     }
     .editable-row-device{
-        .logo-cell{
+        .center {
             position: relative;
+            .logo-cell{
+                position: relative;
+            }
             img{
                 position: absolute;
                 right: 0;
-                top: -22px;
+                top: 0;
                 width: 32px;
             }
         }
@@ -362,4 +365,15 @@ i.dot{
           color: #BF4C41;
       }
   }
+}
+.pop-content {
+	width: 265px;
+	label {
+		font-size: 12px;
+		color: #333c4f;
+	}
+	p {
+		font-size: 12px;
+		color: #adb1b9;
+	}
 }

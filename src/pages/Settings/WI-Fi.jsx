@@ -431,6 +431,11 @@ export default class WIFI extends React.Component {
     }
 
     submitGuest = async () => {
+        await fetchPublicKey();
+        this.setState({
+            visibile: true,
+        });
+
         this.guestWireLess.ssid = this.state.guestSsid;
         this.guestWireLess.static_password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
         this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
@@ -453,10 +458,6 @@ export default class WIFI extends React.Component {
                 }
             ]
         );
-
-        this.setState({
-            visibile: true,
-        });
 
         let { errcode } = response;
         if(errcode === 0){
