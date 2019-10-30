@@ -217,7 +217,7 @@ export default class SysUpgrade extends React.Component {
 				<CustomUpgrade />
 				<PanelHeader
 					className="sysUpgrade-panelHeader"
-					title="手动升级"
+					title={intl.get(MODULE, 16)}
 				/>
 				<div className="sys-upgrade">
 					<p>
