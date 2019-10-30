@@ -16,6 +16,7 @@ import { formatTime, formatSpeed } from '~/assets/common/utils';
 import CustomIcon from '~/components/Icon';
 import Logo from '~/components/Logo';
 import SubLayout from '~/components/SubLayout';
+import { getQuickStartVersion } from '~/utils';
 
 import './clients.scss';
 
@@ -264,15 +265,13 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 6) /*_i18n:IP/MAC地址*/,
-				width: 170,
+				width: 160,
 				render: (text, record) => (
 					<ul className="macAddress">
 						<li>
-							<label>IP:</label>
 							<span>{record.ip}</span>
 						</li>
 						<li>
-							<label>MAC:</label>
 							<span>{record.mac}</span>
 						</li>
 					</ul>
@@ -292,7 +291,7 @@ export default class ClientList extends React.Component {
 				render: (routerName, record) => (
 					<div className="routerName">{routerName || '--'}</div>
 				),
-				width: 118
+				width: 128
 			},
 			{
 				title: intl.get(MODULE, 7) /*_i18n:接入方式*/,
@@ -405,11 +404,7 @@ export default class ClientList extends React.Component {
 								<a
 									onClick={() => this.handleEdit(record)}
 									href="javascript:;"
-									style={{
-										color: '#3D76F6',
-										fontSize: 12,
-										marginRight: 12
-									}}
+									className="client-priority"
 								>
 									{TYPE_WHITE === record.type
 										? intl.get(
@@ -447,10 +442,11 @@ export default class ClientList extends React.Component {
 								{!record.me && (
 									<a
 										href="javascript:;"
-										style={{
-											color: '#BF4C41',
-											fontSize: 12
-										}}
+										className={
+											getQuickStartVersion() !== 'abroad'
+												? 'client-blacklist'
+												: 'client-blacklist-us'
+										}
 									>
 										{intl.get(
 											MODULE,
