@@ -264,7 +264,7 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 6) /*_i18n:IP/MAC地址*/,
-				width: 170,
+				width: 160,
 				render: (text, record) => (
 					<ul className="macAddress">
 						<li>
@@ -290,7 +290,7 @@ export default class ClientList extends React.Component {
 				render: (routerName, record) => (
 					<div className="routerName">{routerName || '--'}</div>
 				),
-				width: 118
+				width: 128
 			},
 			{
 				title: intl.get(MODULE, 7) /*_i18n:接入方式*/,
