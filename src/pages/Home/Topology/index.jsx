@@ -301,8 +301,8 @@ export default class Topology extends React.Component {
 										type="link"
 									/>
 									<label className="main-router">
-										{name}
-										<span>{name ? '（主路由）' : ''}</span>
+										<span>{name}</span>
+										<span>{name ? intl.get(MODULE,23)/*_i18n:（主路由）*/ : ''}</span>
 									</label>
 								</div>
 							</Popover>

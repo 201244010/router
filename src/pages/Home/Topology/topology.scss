@@ -16,7 +16,6 @@
 				width: 100px;
 				display: inline-block;
 				label {
-					font-family: PingFangSC-Regular;
 					display: block;
 					text-align: center;
 					color: #fff;
@@ -26,12 +25,15 @@
 			}
 			.main-router {
 				width: 100px;
-				height: 20px;
+				height: 40px;
 				cursor: pointer;
 				display: block;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				display: flex;
+				flex-direction: column;
+				span {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
 			}
 			img {
 				width: 100px;
@@ -268,7 +270,7 @@
 					font-size: 12px;
 				}
 				.speed-content {
-					font-family: Helvetica;
+					font-family: Helvetica, sans-serif;
 					label {
 						font-size: 28px;
 						margin-right: 4px;

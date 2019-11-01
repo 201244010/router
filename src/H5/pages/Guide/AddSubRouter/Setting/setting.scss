@@ -22,7 +22,6 @@
             border-radius: 0.5867rem;
             border: 0.5px solid rgba(0,0,0,0.4);
             margin: auto;
-            font-family: 'PingFangSC-Regular';
             font-size: 0.3733rem;
             color: #333;
             text-align: center;
@@ -57,7 +56,7 @@
             margin-left: 0.1067rem;
             font-size: 0.3733rem;
             line-height: 0.5333rem;
-            font-family: 'PingFangSC-Light';
+            font-family: 'PingFangSC-Light', sans-serif;
             color: #666666;
         }
     }  
@@ -75,13 +74,12 @@
         background-size: 100% 100%;
     }
     .noRouterTitle {
-        font-family: 'PingFangSC-Regular';
         font-size: 0.5333rem;
         color: #333;
         text-align: center;
     }
     .noRouterDescription {
-        font-family: 'PingFangSC-Light';
+        font-family: 'PingFangSC-Light', sans-serif;
         font-size: 0.32rem;
         color: #666;
         text-align: center;
