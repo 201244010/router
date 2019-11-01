@@ -1,8 +1,7 @@
-
-@import "normalize";
 @import "constants";
-@import "ui";
 @import 'common';
+@import "normalize";
+@import "ui";
+@import 'override.scss';
 @import 'font/iconfont.css';
 @import 'antd-font/iconfont.css';
-@import 'override.scss';

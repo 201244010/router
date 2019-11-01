@@ -97,6 +97,8 @@ export default class Bandwidth extends React.PureComponent {
 	};
 
 	onChange = (val, key) => {
+		const { upband, downband, upbandTip, downbandTip } = this.state;
+		const saveDisable = upbandTip !== '' || downbandTip !== '' || upband === '' || downband === '';
 		val = val.replace(/\D/g, '');
 
 		let valid = {
@@ -155,7 +157,7 @@ export default class Bandwidth extends React.PureComponent {
 								MODULE,
 								9
 							) /*_i18n:带宽比例总和不能大于100%*/,
-							saveDisable: true
+							saveDisable: true,
 						});
 						return;
 					} else {
@@ -163,7 +165,7 @@ export default class Bandwidth extends React.PureComponent {
 							sunmiTip: '',
 							whiteTip: '',
 							normalTip: '',
-							saveDisable: false
+							saveDisable,
 						});
 						return;
 					}

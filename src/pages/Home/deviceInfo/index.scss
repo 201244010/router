@@ -2,7 +2,6 @@
   margin-top: 20px;
   .device-number {
     display: inline-block;
-    font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #ADB1B9;
     .yellow {
@@ -41,7 +40,7 @@
     width: 1px;
   }
   .device-number-show {
-    font-family: Helvetica;
+    font-family: Helvetica, sans-serif;
     font-size: 26px;
     color: #333C4F;
     padding-left: 6px;
