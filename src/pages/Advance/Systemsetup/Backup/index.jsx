@@ -447,10 +447,11 @@ export default class Backup extends React.Component{
                                     'XSRF-TOKEN': get(),
                                 }}
                                 action={__BASEAPI__}
+                                className='restore-func-upload'
                             >
                                 <Button>{intl.get(MODULE, 30)/*_i18n:从本地恢复*/}</Button>
                             </Upload>
-                            <Button className={getLang() === 'zh-cn' ? 'cloud-restore' : 'cloud-restore-us'} onClick={this.cloudRecover}>{intl.get(MODULE, 31)/*_i18n:从云恢复*/}</Button>
+                            <Button className='cloud-restore' onClick={this.cloudRecover}>{intl.get(MODULE, 31)/*_i18n:从云恢复*/}</Button>
                         </div>
                     </section>
                 </Form>
