@@ -26,12 +26,15 @@
 			}
 			.main-router {
 				width: 100px;
-				height: 20px;
+				height: 40px;
 				cursor: pointer;
 				display: block;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				display: flex;
+				flex-direction: column;
+				span {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
 			}
 			img {
 				width: 100px;
