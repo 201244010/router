@@ -389,6 +389,20 @@ i.dot{
         background: #F8F9FB;
         border-bottom: none;
     }
+    .client-priority {
+        color: #3D76F6;
+        font-size: 12px;
+        margin-right: 12px;
+    }
+    .client-blacklist {
+        color: #BF4C41;
+        font-size: 12px;
+    }
+    .client-blacklist-us {
+        display: block;
+        color: #BF4C41;
+        font-size: 12px;
+    }
 }
 .pop-content {
 	width: 265px;
