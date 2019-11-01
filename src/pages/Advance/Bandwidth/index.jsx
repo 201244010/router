@@ -157,7 +157,7 @@ export default class Bandwidth extends React.PureComponent {
 								MODULE,
 								9
 							) /*_i18n:带宽比例总和不能大于100%*/,
-							saveDisable,
+							saveDisable: true,
 						});
 						return;
 					} else {
@@ -165,7 +165,7 @@ export default class Bandwidth extends React.PureComponent {
 							sunmiTip: '',
 							whiteTip: '',
 							normalTip: '',
-							saveDisable: false
+							saveDisable,
 						});
 						return;
 					}
