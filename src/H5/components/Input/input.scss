@@ -1,7 +1,6 @@
 .sm-form{
     margin: 0 auto 1.12rem;
     .input-name {
-        font-family: 'PingFangSC-Regular';
         font-size: 0.3733rem;
         color: #333333;
         line-height: 0.48rem;
@@ -43,7 +42,7 @@
     .sm-form-tip{
         margin-top: 0.1867rem;
         text-align: left;
-        font-family: 'PingFangSC-Light';
+        font-family: 'PingFangSC-Light', sans-serif;
         font-size: 0.32rem;
         color: #D0021B;
         line-height: 0.48rem;

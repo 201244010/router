@@ -9,7 +9,6 @@
         background-size: 100% 100%;
     }
     .finish-tip {
-        font-family: 'PingFangSC-Regular';
         font-size: 0.5333rem;
         color: #333;
         text-align: center;
@@ -33,7 +32,6 @@
                 background-size: 100% 100%;
             }
             .title-left {
-                font-family: 'PingFangSC-Regular';
                 font-size: 0.4267rem;
                 color: #333;
             }
@@ -46,7 +44,7 @@
                 flex: 1;
                 display: flex;
                 justify-content: flex-end;
-                font-family: 'PingFangSC-Light';
+                font-family: 'PingFangSC-Light', sans-serif;
                 font-size: 0.3733rem;
                 color: #666;
                 .addApLocation {
@@ -60,7 +58,6 @@
         }   
     }
     .wifi-title {
-        font-family: 'PingFangSC-Regular';
         font-size: 0.3733rem;
         color: #999;
         line-height: 0.48rem;
@@ -86,13 +83,12 @@
             align-items: center;
         }
         .wifi-ssid .wifi-left,.wifi-pwd .wifi-left {
-            font-family: 'PingFangSC-Regular';
             font-size: 0.4267rem;
             color: #333;
         }
         .wifi-ssid .wifi-right,.wifi-pwd .wifi-right {
             flex: 1;
-            font-family: 'PingFangSC-Light';
+            font-family: 'PingFangSC-Light', sans-serif;
             font-size: 0.3733rem;
             color: #666;
             text-align: right;
@@ -134,7 +130,7 @@
         text-align: center;
         .Title {
             margin: 0.64rem auto 0.4267rem;
-            font-family: 'PingFangSC-Medium';
+            font-family: 'PingFangSC-Medium', sans-serif;
             font-size: 0.48rem;
             color: #333;
             line-height: 0.64rem;
@@ -157,7 +153,6 @@
         .footerButton {
             width: 50%;
             height: 1.1733rem;
-            font-family: 'PingFangSC-Regular';
             font-size: 0.3733rem;
             display: flex;
             align-items: center;

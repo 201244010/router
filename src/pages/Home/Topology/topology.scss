@@ -16,7 +16,6 @@
 				width: 100px;
 				display: inline-block;
 				label {
-					font-family: PingFangSC-Regular;
 					display: block;
 					text-align: center;
 					color: #fff;
@@ -271,7 +270,7 @@
 					font-size: 12px;
 				}
 				.speed-content {
-					font-family: Helvetica;
+					font-family: Helvetica, sans-serif;
 					label {
 						font-size: 28px;
 						margin-right: 4px;

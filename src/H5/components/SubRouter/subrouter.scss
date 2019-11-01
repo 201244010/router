@@ -36,12 +36,11 @@
             }
         }
         .deviceId {
-            font-family: 'PingFangSC-Regular';
             font-size: 0.4267rem;
             line-height: 0.5867rem;
             color: #333;
             .description {
-                font-family: 'PingFangSC-Light';
+                font-family: 'PingFangSC-Light', sans-serif;
                 font-size: 0.3733rem;
                 line-height: 0.5333rem;
                 color: #999;
@@ -49,7 +48,7 @@
             }
             .unusual {
                 width: 5.5733rem;
-                font-family: 'PingFangSC-Light';
+                font-family: 'PingFangSC-Light', sans-serif;
                 font-size: 0.32rem;
                 color: #ADB1B9;
                 margin-top: 0.0533rem;
@@ -62,7 +61,7 @@
     .addLocation {
         display: flex;
         align-items: center;
-        font-family: 'PingFangSC-Light';
+        font-family: 'PingFangSC-Light', sans-serif;
         font-size: 0.3733rem;
         line-height: 0.5333rem;
         color: #666;
@@ -92,7 +91,7 @@
         text-align: center;
         .Title {
             margin: 0.64rem auto 0.4267rem;
-            font-family: 'PingFangSC-Medium';
+            font-family: 'PingFangSC-Medium', sans-serif;
             font-size: 0.48rem;
             color: #333;
             line-height: 0.64rem;
@@ -115,7 +114,6 @@
         .footerButton {
             width: 50%;
             height: 1.1733rem;
-            font-family: 'PingFangSC-Regular';
             font-size: 0.3733rem;
             display: flex;
             align-items: center;
