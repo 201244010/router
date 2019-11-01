@@ -301,7 +301,7 @@ export default class Topology extends React.Component {
 										type="link"
 									/>
 									<label className="main-router">
-										{name}
+										<span>{name}</span>
 										<span>{name ? '（主路由）' : ''}</span>
 									</label>
 								</div>
