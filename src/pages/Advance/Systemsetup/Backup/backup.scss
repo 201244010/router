@@ -21,14 +21,11 @@
         margin-top: 52px;
         .restore-func{
             margin-top: 36px;
-            .cloud-restore{
-                position: relative;
-                top: -42px;
-                left: 120px;
+            .restore-func-upload {
+                display: inline-block;
             }
-            .cloud-restore-us {
-                @extend .cloud-restore;
-                left: 140px;
+            .cloud-restore{
+                margin-left: 20px;
             }
             .ant-upload-list-item{
                 display: none;
