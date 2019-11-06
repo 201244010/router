@@ -275,24 +275,33 @@
 }
 
 .container {
-	padding-top: 50px;
-	background: #f4f7fe;
     display: flex;
+	padding-top: 50px;
+    background: #f4f7fe;
+    font-family:Helvetica;
     li {
         position: relative;
         width: 232px;
         height: 251px;
         padding-left: 28px;
         .first-title {
-            display: block;
             font-size: 14px;
             color: #ADB1B9;
         }
+        .first-title-us {
+            font-size: 20px;
+            color:rgba(51,60,79,1);
+        }
         .second-title {
-            display: block;
             margin-top: 40px;
             font-size: 18px;
             color: #333C4F;
+            margin-bottom: 20px;
+        }
+        .second-title-us {
+            margin-top: 40px;
+            font-size: 16px;
+            color:rgba(51,60,79,0.6);
             margin-bottom: 20px;
         }
         p {
