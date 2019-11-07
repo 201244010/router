@@ -402,7 +402,7 @@ export default class WIFI extends React.Component {
             this.hostWireLess.band_5g.encryption = this.state.encryption5;
             this.hostWireLess.band_5g.htmode = this.state.htmode5;
             this.hostWireLess.band_5g.channel = this.state. channel5;
-        } else {
+        }else {
             this.hostWireLess.band_5g.password = encryption(Base64.decode(this.hostWireLess.band_5g.password));
         }
         this.mainWireLess.host=this.hostWireLess;

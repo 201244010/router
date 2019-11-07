@@ -60,7 +60,7 @@ export default class UPnP extends React.Component {
 		});
 	};
 
-	fetchUpnp = async ({ page, pageSize = 5 }) => {
+	fetchUpnp = async ({ page = 1, pageSize = 5 }) => {
 		const { pagination } = this.state;
 		const resp = await common.fetchApi(
 			[
@@ -143,7 +143,7 @@ export default class UPnP extends React.Component {
 		}, 3000);
 	}
 
-	componentWillMount() {
+	componentWillUnmount() {
 		clearInterval(this.intervalTimer);
 	}
 

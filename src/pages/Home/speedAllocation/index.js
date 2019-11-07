@@ -11,6 +11,7 @@ const MODULE = 'speedallocation';
 export default class Allocation extends React.Component {
 	constructor(props) {
 		super(props);
+		this.isEnglish = getQuickStartVersion() === 'abroad';
 		this.myChart = null;
 	}
 
@@ -244,9 +245,13 @@ export default class Allocation extends React.Component {
 		const { largestPercent, status } = this.props;
 		return status ? (
 			<div className="allocation">
-				<span className="first-title">
+				<div
+					className={
+						this.isEnglish ? 'first-title-us' : 'first-title'
+					}
+				>
 					{intl.get(MODULE, 3) /*_i18n:网速智能分配*/}
-				</span>
+				</div>
 				<span className="subtitle">
 					{intl.get(MODULE, 4) /*_i18n:当前带宽占用*/}
 				</span>
@@ -255,7 +260,7 @@ export default class Allocation extends React.Component {
 					className="chart"
 					style={{
 						height: 80,
-						width: getQuickStartVersion() === 'abroad' ? 378 : 280
+						width: 250
 					}}
 					ref="dom"
 				></div>
@@ -273,18 +278,33 @@ export default class Allocation extends React.Component {
 			</div>
 		) : (
 			<div className="allocation">
-				<span className="first-title">
+				<span
+					className={
+						this.isEnglish ? 'first-title-us' : 'first-title'
+					}
+				>
 					{intl.get(MODULE, 9) /*_i18n:网速分配*/}
 				</span>
-				<span className="second-title">
+				<div
+					className={
+						this.isEnglish ? 'second-title-us' : 'second-title'
+					}
+				>
 					{intl.get(MODULE, 10) /*_i18n:保障经营设备网速*/}
-				</span>
-				<p>
-					<span>{intl.get(MODULE, 11) /*_i18n:划分设备优先级*/}</span>
-					<span>
-						{intl.get(MODULE, 12) /*_i18n:按优先级分配网速*/}
-					</span>
-				</p>
+				</div>
+				{this.isEnglish ? (
+					''
+				) : (
+					<p>
+						<span>
+							{intl.get(MODULE, 11) /*_i18n:划分设备优先级*/}
+						</span>
+						<span>
+							{intl.get(MODULE, 12) /*_i18n:按优先级分配网速*/}
+						</span>
+					</p>
+				)}
+
 				<Button onClick={this.goBandwidth} className="button">
 					{intl.get(MODULE, 13) /*_i18n:去开启*/}
 				</Button>
