@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, message } from 'antd';
+import { Button, message, Tooltip } from 'antd';
 import Form from '~/components/Form';
 import CustomIcon from '~/components/Icon';
+import Icon from '~/components/Icon';
 import { init, clear } from '~/assets/common/auth';
 import { Base64 } from 'js-base64';
 import SwitchLang from '~/components/SwitchLang';
@@ -130,7 +131,19 @@ class Login extends React.Component {
 					>
 						{intl.get(MODULE, 7) /*_i18n:登录*/}
 					</Button>
-					<p className='login-tip'>{intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}</p>
+					<p className='login-tip'>
+						{/* {intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}
+						<span>{intl.get(MODULE, 10)}</span>
+						<Tooltip placement='right' title={intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}>
+							<span className="tooltip-icon" >
+								<Icon
+									size={12}
+									className='icon-white'
+									type="help"
+								/>
+							</span>
+						</Tooltip>
+					</p>
 				</div>
 				<div className="qr">
 					{getQuickStartVersion() === 'domestic' ? (

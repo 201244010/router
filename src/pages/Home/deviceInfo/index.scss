@@ -1,3 +1,55 @@
+
+.deviceinfo-us {
+    .device-title-us {  
+        font-size:20px;
+        // font-family:Helvetica;
+        color:rgba(51,60,79,1);
+        margin-bottom: 27px;
+    }
+    .device-type {
+        display: flex;
+        font-family:Helvetica;
+        align-items: center;
+        margin-top: 19px;
+        span:nth-child(2) {
+            font-size:16px;
+            font-family:Helvetica;
+            color:rgba(51,60,79,1);
+        }
+        .yellow {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            margin-right: 8px;
+            background: #FF6900;
+        }
+        .green {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            margin-right: 8px;
+            background: #60CC13;
+        }
+        .blue {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            margin-right: 8px;
+            background: #446CE6;
+        }
+        .device-number-show {
+            font-family: Helvetica, sans-serif;
+            font-size: 20px;
+            color: #333C4F;
+            margin-left: 8px;
+        }
+        .device-number-show-zero {
+            @extend .device-number-show;
+            color: #D0021B;
+        }
+    }
+}
+
 .third-div{
   margin-top: 20px;
   .device-number {
@@ -23,7 +75,7 @@
     .blue {
       width: 2px;
       height: 12px;
-      background: #446CE6;;
+      background: #446CE6;
       display: inline-block;
       margin-right: 4px;
       margin-bottom: -1px;
@@ -34,7 +86,7 @@
   }
   .device-grid {
     display: inline-block;
-    margin: 9px 11.5px 0 0 ;
+    margin: 9px 10px 0 4px ;
     background: rgba(51,60,79,0.06);
     height: 40px;
     width: 1px;
