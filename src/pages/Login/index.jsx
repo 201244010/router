@@ -133,7 +133,7 @@ class Login extends React.Component {
 					</Button>
 					<p className='login-tip'>
 						{/* {intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}
-						<span>忘记密码</span>
+						<span>{intl.get(MODULE, 10)}</span>
 						<Tooltip placement='right' title={intl.get(MODULE, 8) /*_i18n:忘记密码请按RESET键5秒复位，重新设置路由器*/}>
 							<span className="tooltip-icon" >
 								<Icon
