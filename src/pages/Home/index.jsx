@@ -12,6 +12,7 @@ import Connection from './wechat';
 import CustomIcon from '~/components/Icon';
 import Mesh from './Mesh';
 import { getQuickStartVersion } from '~/utils';
+import { getLang } from '~/i18n/index.js';
 import { set, clear } from '~/assets/common/cookie';
 
 import './home.scss';
@@ -25,6 +26,7 @@ const TYPE_SUNMI = 'sunmi',
 export default class Home extends React.Component {
 	constructor(props) {
 		super(props);
+		this.isEnglish = getLang() === 'en-us';
 		this.RSSI_GOOD = intl.get(MODULE, 0) /*_i18n:较好*/;
 		this.RSSI_BAD = intl.get(MODULE, 25) /*_i18n:较差*/;
 		this.err = {
@@ -99,7 +101,6 @@ export default class Home extends React.Component {
 	};
 
 	fetchBasic = async () => {
-		console.log('basic');
 		let response = await common.fetchApi([
 			{ opcode: 'QOS_GET' },
 			{ opcode: 'WHOAMI_GET' },
@@ -109,13 +110,14 @@ export default class Home extends React.Component {
 		if (errcode == 0) {
 			let { result: { qos = {} } = {} } = data[0] || {};
 			let { result: { mac = '' } = {} } = data[1] || {};
-			let { result: { guest: { enable = ''} = {} } = {} } = data[2] || {};
+			let { result: { guest: { enable = '' } = {} } = {} } =
+				data[2] || {};
 			this.setState({
 				qosEnable: qos.enable,
 				totalBand: parseInt(qos.down_bandwidth, 10) * 128, // kbps -> byte
 				source: qos.source,
 				me: mac.toUpperCase(),
-				wechatConfig: !(enable === '1'),
+				wechatConfig: !(enable === '1')
 			});
 			return;
 		}
@@ -504,9 +506,7 @@ export default class Home extends React.Component {
 					/>
 					<ul
 						className={
-							getQuickStartVersion() !== 'abroad'
-								? 'container'
-								: 'container-us'
+							getQuickStartVersion() === 'abroad' ? 'container-us' : 'container'
 						}
 					>
 						<li>
@@ -544,26 +544,40 @@ export default class Home extends React.Component {
 							: ''}
 						<div className="grid"></div>
 						<li>
-							<span className="first-title">
+							<span
+								className={
+									this.isEnglish
+										? 'first-title-us'
+										: 'first-title'
+								}
+							>
 								{intl.get(MODULE, 26) /*_i18n:搜寻商米设备*/}
 							</span>
-							<span className="second-title">
+							<div className={this.isEnglish ? 'second-title-us' : 'second-title'}>
 								{intl.get(
 									MODULE,
 									27
 								) /*_i18n:商米设备一键联网*/}
-							</span>
-							<p>
-								<span>
-									{intl.get(
-										MODULE,
-										28
-									) /*_i18n:无需输入密码*/}
-								</span>
-								<span>
-									{intl.get(MODULE, 29) /*_i18n:快捷安全*/}
-								</span>
-							</p>
+							</div>
+							{this.isEnglish ? (
+								''
+							) : (
+								<p>
+									<span>
+										{intl.get(
+											MODULE,
+											28
+										) /*_i18n:无需输入密码*/}
+									</span>
+									<span>
+										{intl.get(
+											MODULE,
+											29
+										) /*_i18n:快捷安全*/}
+									</span>
+								</p>
+							)}
+
 							<Button
 								onClick={this.startSunmiMesh}
 								className="button"
