@@ -1530,7 +1530,7 @@
 		"login5": "未知错误[{error}]",
 		"login6": "请输入您的管理密码",
 		"login7": "登录",
-		"login8": "忘记密码请按RESET键1秒复位，重新设置路由器或通过APP找回密码，无需重新设置路由器",
+		"login8": "忘记密码请按RESET键5秒复位，重新设置路由器或通过APP找回密码，无需重新设置路由器",
 		"login9": "扫描二维码下载APP",
 		"login10": "忘记密码",
 		"settings.file": "src/pages/Settings/index.jsx",
