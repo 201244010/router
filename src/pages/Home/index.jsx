@@ -543,7 +543,7 @@ export default class Home extends React.Component {
 							: ''}
 						<div className="grid"></div>
 						<li>
-							<span>
+							<span className="first-title">
 								{intl.get(MODULE, 26) /*_i18n:搜寻商米设备*/}
 							</span>
 							<span className="second-title">
