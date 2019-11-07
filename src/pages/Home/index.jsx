@@ -12,6 +12,7 @@ import Connection from './wechat';
 import CustomIcon from '~/components/Icon';
 import Mesh from './Mesh';
 import { getQuickStartVersion } from '~/utils';
+import { getLang } from '~/i18n/index.js';
 import { set, clear } from '~/assets/common/cookie';
 
 import './home.scss';
@@ -25,7 +26,7 @@ const TYPE_SUNMI = 'sunmi',
 export default class Home extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isEnglish = getQuickStartVersion() === 'abroad';
+		this.isEnglish = getLang() === 'en-us';
 		this.RSSI_GOOD = intl.get(MODULE, 0) /*_i18n:较好*/;
 		this.RSSI_BAD = intl.get(MODULE, 25) /*_i18n:较差*/;
 		this.err = {
@@ -505,7 +506,7 @@ export default class Home extends React.Component {
 					/>
 					<ul
 						className={
-							this.isEnglish ? 'container-us' : 'container'
+							getQuickStartVersion() === 'abroad' ? 'container-us' : 'container'
 						}
 					>
 						<li>
@@ -528,7 +529,7 @@ export default class Home extends React.Component {
 								history={this.props.history}
 							/>
 						</li>
-						{!this.isEnglish
+						{getQuickStartVersion() !== 'abroad'
 							? [
 									<div className="grid"></div>,
 									<li>
