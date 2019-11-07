@@ -2,16 +2,16 @@ import React from 'react';
 import './index.scss';
 import { Button } from 'antd';
 import echarts from 'echarts/lib/echarts';
-import { getQuickStartVersion } from '~/utils';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
+import { getLang } from '~/i18n/index.js';
 // import 'echarts/lib/component/legend';
 const MODULE = 'speedallocation';
 
 export default class Allocation extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isEnglish = getQuickStartVersion() === 'abroad';
+		this.isEnglish = getLang() === 'en-us';
 		this.myChart = null;
 	}
 

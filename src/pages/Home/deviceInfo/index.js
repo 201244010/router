@@ -5,6 +5,7 @@ import { Button, Modal, Table, message, Popconfirm, Input, Form } from 'antd';
 import Loading from '~/components/Loading';
 import { formatTime, formatSpeed } from '~/assets/common/utils';
 import { getQuickStartVersion } from '~/utils';
+import { getLang } from '~/i18n/index.js';
 import Logo from '~/components/Logo';
 
 const MODULE = 'clientlist';
@@ -535,7 +536,7 @@ export default class Device extends React.Component {
 		});
 		return (
 			<div>
-				{getQuickStartVersion() === 'abroad' ? (
+				{getLang() === 'en-us' ? (
 					<div className="deviceinfo-us">
 						<div className="device-title-us">
 							{intl.get(MODULE, 49) /*_i18n:上网设备*/}
@@ -588,12 +589,12 @@ export default class Device extends React.Component {
 					</div>
 				) : (
 					<div>
-						<span className="first-title">
+						<div className="first-title">
 							{intl.get(MODULE, 49) /*_i18n:上网设备*/}
-						</span>
-						<span className="second-title">
+						</div>
+						<div className="second-title">
 							{intl.get(MODULE, 52) /*_i18n:设置上网设备*/}
-						</span>
+						</div>
 						<div className="third-div">
 							<div className="device-number">
 								<div className="yellow"></div>
