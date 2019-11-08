@@ -827,7 +827,7 @@ export default class WIFI extends React.Component {
                                 <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={intl.get(MODULE, 71)/*_i18n:请输入变更周期时间(1～72)*/}/>
                                 <ErrorTip>{periodTip}</ErrorTip>    
                             </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-35,marginBottom:0,zIndex:1,opacity:0.5}}>{intl.get(MODULE, 72)/*_i18n:小时*/}</span>
+                            <span style={{height:40,lineHeight:'40px',marginLeft:-48,marginBottom:0,zIndex:1,opacity:0.5}}>{intl.get(MODULE, 72)/*_i18n:小时*/}</span>
                             </div>
                             <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap', marginBottom: 0}}>
                                 <label>{intl.get(MODULE, 73)/*_i18n:当前密码是：*/}</label>

@@ -20,7 +20,7 @@ class PrimaryTitle extends React.Component {
                 </div>
                 <div className="title">
                     <label>{title}</label>
-                    <p>{titleTip}</p>
+                    {/* <p>{titleTip}</p> */}
                 </div>
 			</div>
 		);
