@@ -11,7 +11,7 @@
             display: block;
         }
         .attention {
-            width: 693px;
+            width: 760px;
             text-align: left;
             margin: 0 0 32px 217px;
             font-size:14px;
@@ -20,6 +20,10 @@
             line-height:20px;
             .icon-Internet {
                 color: rgba(51,60,79,1);
+                vertical-align: middle;
+            }
+            p {
+                margin-bottom: 10px;
             }
         }
         .content-footer {

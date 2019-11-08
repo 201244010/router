@@ -106,11 +106,9 @@
 			margin-right: 10px;
 		}
 		.network-row {
-			position: relative;
+			display: flex;
 			.row-right {
-				position: absolute;
-				top: 0;
-				left: 383px;
+				margin-left: 60px;
 			}
 		}
 	}

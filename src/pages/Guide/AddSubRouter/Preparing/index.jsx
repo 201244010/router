@@ -24,7 +24,7 @@ export default class Preparing extends React.Component {
                 <div className="content">
                     <img className='image' src={require('~/assets/images/guide-router.png')}/>
                     <div className='attention'>
-                        <div><span>{intl.get(MODULE, 3)/*_i18n:1. 将需要加入网络的路由器接通电源，待系统指示灯*/}</span><CustomIcon className='icon-Internet' size={20} type="Internet"/><span>{intl.get(MODULE, 4)/*_i18n:停止闪烁，即启动完成；*/}</span></div>
+                        <p><span>{intl.get(MODULE, 3)/*_i18n:1. 将需要加入网络的路由器接通电源，待系统指示灯*/}</span><CustomIcon className='icon-Internet' size={20} type="Internet"/><span>{intl.get(MODULE, 4)/*_i18n:停止闪烁，即启动完成；*/}</span></p>
                         <p>{intl.get(MODULE, 5)/*_i18n:2. 若需要加入网络的路由器已被配置过，请先长按路由器背面Reset孔5秒以上，将之恢复出厂设置后重新启动；*/}</p>
                         <p>{intl.get(MODULE, 6)/*_i18n:3. 点击“开始设置”*/}</p>
                     </div>
