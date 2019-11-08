@@ -1798,7 +1798,7 @@
 		"page0": "Sunmi Business Wireless Router",
 		"check0": "Please enter the correct numbers",
 		"check1": "Number",
-		"check2": "The rang of {who} should be any value between {min}-{max}",
+		"check2": "The rang should be any value between {min}-{max}",
 		"check3": "IP Address",
 		"check4": "The correct format of {who} should be X.X.X.X, X must be a number between 0 ~ 255.",
 		"check6": "The {who} cannot be 0.0.0.0",
