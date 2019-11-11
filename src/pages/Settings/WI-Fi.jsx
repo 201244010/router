@@ -439,7 +439,7 @@ export default class WIFI extends React.Component {
         this.guestWireLess.password_type = this.state.PWDType;
         this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
         this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : encryption(this.state.guestDynamicPassword);
+        this.guestWireLess.password = this.state.PWDType == 'static'? Base64.encode(this.state.guestStaticPassword) : this.state.guestDynamicPassword;
         let response = await common.fetchApi(
             [
                 {
