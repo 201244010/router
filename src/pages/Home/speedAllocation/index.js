@@ -5,6 +5,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
 import { getLang } from '~/i18n/index.js';
+import {getQuickStartVersion} from '~/utils';
 // import 'echarts/lib/component/legend';
 const MODULE = 'speedallocation';
 
@@ -260,7 +261,7 @@ export default class Allocation extends React.Component {
 					className="chart"
 					style={{
 						height: 80,
-						width: 250
+						width: getQuickStartVersion() === 'abroad' ? 378 : 280,
 					}}
 					ref="dom"
 				></div>
