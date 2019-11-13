@@ -3066,7 +3066,7 @@
 		"preparing2": "Next",
 		"preparing3": "1. Plug in the new router and wait until its system indicator",
 		"preparing4": "stops flashing.",
-		"preparing5": "2. If the new router has been configured≤, please press and hold the \"Reset\" button on the back for 5 seconds. Wait until its system indicator stops flashing.",
+		"preparing5": "2. If the new router has been configured, please press and hold the \"Reset\" button on the back for 5 seconds. Wait until its system indicator stops flashing.",
 		"preparing6": "3. Click \"Next\".",
 		"preparing7": "Back",
 		"setting.file": "src/pages/Guide/AddSubRouter/Setting/index.jsx",
