@@ -208,7 +208,7 @@ export default class ClientList extends React.Component {
 				}
 			},
 			{
-				width: 218,
+				width: 145,
 				dataIndex: 'name',
 				className: 'editable-cell-client',
 				editable: true,
@@ -219,15 +219,15 @@ export default class ClientList extends React.Component {
 					let type = record.type;
 					const maxWidth = (() => {
 						if (record.me && 'normal' !== type) {
-							return 64;
+							return 50;
 						}
 						if (record.me && 'normal' === type) {
-							return 106;
+							return 80;
 						}
 						if ('normal' !== type) {
-							return 135;
+							return 105;
 						}
-						return 186;
+						return 125;
 					})();
 					return [
 						<div
@@ -267,7 +267,7 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 6) /*_i18n:IP/MAC地址*/,
-				width: 160,
+				width: 140,
 				render: (text, record) => (
 					<ul className="macAddress">
 						<li>
@@ -293,7 +293,7 @@ export default class ClientList extends React.Component {
 				render: (routerName, record) => (
 					<div className="routerName">{routerName || '--'}</div>
 				),
-				width: 128
+				width: 158
 			},
 			{
 				title: intl.get(MODULE, 7) /*_i18n:接入方式*/,
@@ -345,7 +345,7 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 9) /*_i18n:当前速率*/,
-				width: 110,
+				width: 100,
 				render: (text, record) => (
 					<div>
 						<div>
@@ -397,7 +397,7 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 11) /*_i18n:操作*/,
-				width: 178,
+				width: 158,
 				render: (text, record) => {
 					let type = record.type;
 					return (
