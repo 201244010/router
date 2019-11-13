@@ -60,6 +60,9 @@
     }
     .settingHeader {
         margin: 56px 0 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .smallLoading {
             font-size: 24px;
             color: #6174F1;

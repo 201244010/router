@@ -176,7 +176,7 @@ export default class Device extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 4) /*_i18n:设备名称*/,
-				width: 271,
+				width: 210,
 				dataIndex: 'name',
 				className: 'editable-cell',
 				editable: true,
@@ -261,7 +261,7 @@ export default class Device extends React.Component {
 					}
 				],
 				onFilter: (value, record) => record.rssi.indexOf(value) === 0,
-				width: 140,
+				width: 130,
 				render: (rssi, record) => (
 					<div>
 						<i
@@ -276,7 +276,7 @@ export default class Device extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 9) /*_i18n:当前速率*/,
-				width: 110,
+				width: 100,
 				render: (text, record) => (
 					<div>
 						<div>
@@ -307,7 +307,7 @@ export default class Device extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 11) /*_i18n:操作*/,
-				width: 169,
+				width: 239,
 				render: (text, record) => {
 					let type = record.type;
 					return (

@@ -433,7 +433,7 @@ export default class PortForwarding extends React.Component {
 					<ErrorTip>{nameTip}</ErrorTip>
 				</FormItem>
 				<label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 43)/*_i18n:内部IP*/}</label>
-				<FormItem key='ipv4' showErrorTip={destipTip}>
+				<FormItem key='ipv4' showErrorTip={destipTip} type="small">
                 <InputGroup 
                     inputs={[{value : destip[0], maxLength : 3}, {value : destip[1], maxLength : 3}, {value : destip[2], maxLength : 3}, {value : destip[3], maxLength : 3}]} 
 					onChange={value => this.onInputChange(value, 'destip')} 
