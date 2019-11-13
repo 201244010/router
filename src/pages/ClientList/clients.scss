@@ -205,7 +205,6 @@ i.dot{
     vertical-align: top;
     position: relative;
     .editable-cell-value-wrap {
-        width: 196px;
         cursor: pointer;
         .device {
             max-width: 140px;
@@ -226,6 +225,7 @@ i.dot{
             font-size: 12px;
             text-align: center;
             border-radius: 4px;
+            margin-left: 2px;
         }
         .sunmi {
             color:  #FDB784;
