@@ -176,7 +176,7 @@ export default class Device extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 4) /*_i18n:设备名称*/,
-				width: 210,
+				width: 212,
 				dataIndex: 'name',
 				className: 'editable-cell',
 				editable: true,
@@ -202,15 +202,15 @@ export default class Device extends React.Component {
 					let type = record.type;
 					const maxWidth = (() => {
 						if (record.me && 'normal' !== type) {
-							return 124;
+							return 96;
 						}
 						if (record.me && 'normal' === type) {
-							return 164;
+							return 130;
 						}
 						if ('normal' !== type) {
-							return 194;
+							return 160;
 						}
-						return 243;
+						return 210;
 					})();
 					return [
 						<div
