@@ -206,7 +206,7 @@ export default class ClientList extends React.Component {
 				}
 			},
 			{
-				width: 145,
+				width: 155,
 				dataIndex: 'name',
 				className: 'editable-cell-client',
 				editable: true,
@@ -291,7 +291,7 @@ export default class ClientList extends React.Component {
 				render: (routerName, record) => (
 					<div className="routerName">{routerName || '--'}</div>
 				),
-				width: 158
+				width: 148
 			},
 			{
 				title: intl.get(MODULE, 7) /*_i18n:接入方式*/,
