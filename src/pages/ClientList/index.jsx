@@ -206,7 +206,7 @@ export default class ClientList extends React.Component {
 				}
 			},
 			{
-				width: 100,
+				width: 145,
 				dataIndex: 'name',
 				className: 'editable-cell-client',
 				editable: true,
@@ -220,12 +220,12 @@ export default class ClientList extends React.Component {
 							return 50;
 						}
 						if (record.me && 'normal' === type) {
-							return 96;
+							return 80;
 						}
 						if ('normal' !== type) {
-							return 125;
+							return 105;
 						}
-						return 186;
+						return 125;
 					})();
 					return [
 						<div
@@ -395,7 +395,7 @@ export default class ClientList extends React.Component {
 			},
 			{
 				title: intl.get(MODULE, 11) /*_i18n:操作*/,
-				width: 178,
+				width: 158,
 				render: (text, record) => {
 					let type = record.type;
 					return (
