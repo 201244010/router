@@ -217,13 +217,13 @@ export default class ClientList extends React.Component {
 					let type = record.type;
 					const maxWidth = (() => {
 						if (record.me && 'normal' !== type) {
-							return 64;
+							return 50;
 						}
 						if (record.me && 'normal' === type) {
-							return 106;
+							return 96;
 						}
 						if ('normal' !== type) {
-							return 135;
+							return 125;
 						}
 						return 186;
 					})();
