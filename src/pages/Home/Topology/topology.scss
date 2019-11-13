@@ -77,20 +77,24 @@
 							margin-right: 12.3px;
 						}
 					}
-					.diagnose {
+					.dashline-button {
 						position: absolute;
-						left: 24px;
+						left: -30px;
 						top: 40px;
-						background: #af6666;
-						border-color: #af6666;
-						color: #fff;
-						span {
+						width: 196px;
+						display: flex;
+						justify-content: center;
+						.diagnose {
+							background: #af6666;
+							border-color: #af6666;
 							color: #fff;
+							span {
+								color: #fff;
+							}
 						}
-					}
-					.diagnose-us {
-						@extend .diagnose;
-						left: 2px;
+						.diagnose-us {
+							@extend .diagnose;
+						}
 					}
 				}
 			}
