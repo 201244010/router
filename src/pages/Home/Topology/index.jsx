@@ -210,7 +210,7 @@ export default class Topology extends React.Component {
 						</li>
 						<li className="line">
 							<div className="circle" />
-							{false ? (
+							{online ? (
 								<div className="horizenline" />
 							) : (
 								<div className="dashline">
