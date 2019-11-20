@@ -19,7 +19,7 @@ function getMessage() {
 	ajax({
 		type: 'POST',
 		url: '/api/DP_GET_INFO',
-		params: JSON.stringify({params: [{param: {mac: parseUrl('mac')}, opcode: "0x20a6"}], count: "1"}),
+		params: JSON.stringify({params: [{param: {mac: parseUrl('mac')}, opcode: "0x20b6"}], count: "1"}),
 		callback: function (response) {
 			if (response.errcode === 0) {
 				var guestInfo = response.data[0].result;

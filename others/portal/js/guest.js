@@ -54,7 +54,7 @@ confirmElement.addEventListener('click', function(){
 	ajax({
 		type: 'POST',
 		url: '/api/DP_CODE_VERIFY',
-		params: JSON.stringify({params: [{param: {code: getCode(), mac: parseUrl('mac')}, opcode: "0x20a5"}], count: "1"}),
+		params: JSON.stringify({params: [{param: {code: getCode(), mac: parseUrl('mac')}, opcode: "0x20b5"}], count: "1"}),
 		callback: function (response) {
 			if (response.errcode === 0) {
 				var result = response.data[0].result.success;
