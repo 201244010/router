@@ -86,5 +86,17 @@ export default {
 	"v2": {
         "color": "#333C4F",
         "brand": "v2"
-    }
+    },
+    "fm010": {
+        "color": "#333C4F",
+        "brand": "ss"
+    },
+    "fm020": {
+        "color": "#333C4F",
+        "brand": "fs"
+    },
+    "l2k": {
+        "color": "#333C4F",
+        "brand": "lk"
+    },
 }
