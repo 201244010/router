@@ -294,7 +294,7 @@ export default class Backup extends React.Component{
                 //Loading.close();
                 this.setState({
                     backupFail : true,
-                    // backupFailTip : '恢复失败！请重试～',
+                    loadingActive: false,
                     backupFailTip : intl.get(MODULE, 16)/*_i18n:恢复失败！请重试*/,
                     recoverCloud : false,
                 });
