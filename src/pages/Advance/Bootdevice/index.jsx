@@ -234,6 +234,7 @@ export default class Bootdevice extends React.Component {
             this.setState({
                 editShow: false
             })
+            message.success(intl.get(MODULE, 40)/*_i18n:添加成功*/);
             return;
         }
 
