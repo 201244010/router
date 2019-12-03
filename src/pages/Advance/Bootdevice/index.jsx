@@ -112,6 +112,7 @@ export default class Bootdevice extends React.Component {
         let { errcode, message } = response;
         if (errcode == 0) {
             this.fetchBasic();
+            message.success(intl.get(MODULE, 38)/*_i18n:删除成功*/);
             return;
         }
 
@@ -184,6 +185,7 @@ export default class Bootdevice extends React.Component {
                 visible: false,
                 editShow: false
             })
+            message.success(intl.get(MODULE, 39)/*_i18n:保存成功*/);
             return;
         }
 

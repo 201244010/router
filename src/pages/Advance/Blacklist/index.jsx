@@ -97,6 +97,7 @@ export default class Blacklist extends React.Component {
         let { errcode, message } = response;
         if (errcode == 0) {
             this.fetchBasic();
+            message.success(intl.get(MODULE, 32)/*_i18n:删除成功*/);
             return;
         }
 
@@ -220,6 +221,7 @@ export default class Blacklist extends React.Component {
             this.setState({
                 editShow: false
             })
+            message.success(intl.get(MODULE, 33)/*_i18n:添加成功*/);
             return;
         }
 
