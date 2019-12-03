@@ -1317,7 +1317,7 @@
 		"preparing3": "1. 将需要加入网络的路由器接通电源，待系统指示灯",
 		"preparing4": "停止闪烁，即启动完成；",
 		"preparing5": "2. 若需要加入网络的路由器已被配置过，请先长按路由器背面Reset孔5秒以上，将之恢复出厂设置后重新启动；",
-		"preparing6": "3. 点击“开始设置”",
+		"preparing6": "3. 点击“下一步”",
 		"preparing7": "返回",
 		"setting.file": "src/pages/Guide/AddSubRouter/Setting/index.jsx",
 		"setting0": "组网设置",
