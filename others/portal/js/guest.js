@@ -57,9 +57,11 @@ confirmElement.addEventListener('click', function(){
 		params: JSON.stringify({params: [{param: {code: getCode(), mac: parseUrl('mac')}, opcode: "0x20b5"}], count: "1"}),
 		callback: function (response) {
 			if (response.errcode === 0) {
-				var result = response.data[0].result.success;
-				if (result === 'true') {
+				var result = response.data[0].result.verify_status;
+				if (result === 'success') {
 					window.location.href = 'message.html?mac=' + parseUrl('mac');
+				} else if (result === 'invaild') {
+					showToast('Coauthorization code Invalid')
 				} else {
 					showToast('Coauthorization code Error')
 				}
