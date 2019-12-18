@@ -111,9 +111,9 @@ export default class Connection extends React.Component {
                     <span className='first-title'>
                         {intl.get(MODULE, 2)/*_i18n:微信连Wi-Fi*/}
                     </span>
-                    <span className='second-title'>
+                    <div className='second-title'>
 						{intl.get(MODULE, 3)/*_i18n:顾客连接Wi-Fi新方式*/}
-                    </span>
+                    </div>
                     <p>
                         <span>{intl.get(MODULE, 4)/*_i18n:无需告知密码*/}</span>
                         <span>{intl.get(MODULE, 5)/*_i18n:安全防蹭网*/}</span>
