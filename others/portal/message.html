@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <title>SUNMI_GUEST</title>
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./css/guest.css">
+        <link rel="stylesheet" href="./fonts/iconfont.css">
+    </head>
+    <body>
+        <div class="guest-info" id="info">
+            <div class="guest-title">
+                <p>Information</p>
+            </div>
+            <div class="guest-message">
+                <p>
+                    <label>MAC Address</label>
+                    <span id="mac">--</span>
+                </p>
+                <p>
+                    <label>Purchased Time</label>
+                    <span id='purchaseTime'>--</span>
+                </p>
+                <p>
+                    <label>Remaining Time</label>
+                    <span id="remainingTime">--</span>
+                </p>
+                <p>
+                    <label>Purchased Data</label>
+                    <span id="purchaseData">--</span>               
+                </p>
+                <p>
+                    <label>Remaining Data</label>
+                    <span id="remainingData">--</span>
+                </p>
+            </div>
+            <button class='message-button' id='refresh'>REFRESH</button>
+		</div>
+		<div class="toast-guest not-show" id="toast">Coauthorization code Error</div>	
+		<div id="sunmiLogo"></div>	
+        <script type="application/javascript" src="./js/flexible.js"></script>
+		<script type="application/javascript" src="./js/message.js"></script>
+		<script type="application/javascript" src="./js/util.js"></script>
+        <script type="application/javascript" src="./js/dynamic.js"></script>
+    </body>
+</html>
