@@ -643,3 +643,11 @@
   content: "\e6d7";
 }
 
+.ui-icon-fs:before {
+  content: "\e6d8";
+}
+
+.ui-icon-ss:before {
+  content: "\e6d9";
+}
+

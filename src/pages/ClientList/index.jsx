@@ -170,7 +170,7 @@ export default class ClientList extends React.Component {
 			{
 				title: intl.get(MODULE, 45) /*_i18n:设备*/,
 				dataIndex: 'mac',
-				width: 112,
+				width: 80,
 				className: 'center',
 				filters: [
 					{
@@ -208,7 +208,7 @@ export default class ClientList extends React.Component {
 				}
 			},
 			{
-				width: 155,
+				width: 187,
 				dataIndex: 'name',
 				className: 'editable-cell-client',
 				editable: true,
@@ -222,12 +222,12 @@ export default class ClientList extends React.Component {
 							return 50;
 						}
 						if (record.me && 'normal' === type) {
-							return 80;
+							return 70;
 						}
 						if ('normal' !== type) {
-							return 105;
+							return 110;
 						}
-						return 125;
+						return 130;
 					})();
 					return [
 						<div

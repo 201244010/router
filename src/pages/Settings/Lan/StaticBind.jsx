@@ -125,6 +125,7 @@ export default class StaticBind extends React.Component {
         let { errcode } = response;
         if (errcode == 0) {
             this.fetchBasic();
+            message.success(intl.get(MODULE, 45)/*_i18n:删除成功*/);
             return;
         }
 
@@ -215,6 +216,7 @@ export default class StaticBind extends React.Component {
                 visible: false,
                 editShow: false
             })
+            message.success(intl.get(MODULE, 43)/*_i18n:添加成功*/);
             return;
         }
 
@@ -228,7 +230,7 @@ export default class StaticBind extends React.Component {
             editLoading: true
         });
 
-        let directive, reservedIp, aliaslist;
+        let directive, reservedIp, aliaslist, successMsg;
         switch(editType) {
             case 'add':
                 directive = 'DHCPS_RESERVEDIP_ADD';
@@ -238,6 +240,7 @@ export default class StaticBind extends React.Component {
                     mac: editMac.join(':').toUpperCase(),
                     note: editName
                 }];
+                successMsg = intl.get(MODULE, 43)/*_i18n:添加成功*/;
                 break;
             case 'edit':
                 directive = 'DHCPS_RESERVEDIP_MODIFY';
@@ -256,6 +259,7 @@ export default class StaticBind extends React.Component {
                         note: editName
                     }
                 };
+                successMsg = intl.get(MODULE, 44)/*_i18n:修改成功*/;
                 break;
         }
 
@@ -285,6 +289,7 @@ export default class StaticBind extends React.Component {
             this.setState({
                 editShow: false
             })
+            message.success(successMsg);
             return;
         }
 

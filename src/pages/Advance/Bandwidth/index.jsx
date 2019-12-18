@@ -50,11 +50,8 @@ export default class Bandwidth extends React.PureComponent {
 		normalTip: '',
 
 		//手动设置
-		disable: true, //手动设置保存按钮灰显
-		saveDisable: false, //保存按钮灰显
 		upbandTip: '',
 		downbandTip: '',
-		btloading: false
 	};
 
 	onbandChange = (val, key) => {
@@ -78,27 +75,13 @@ export default class Bandwidth extends React.PureComponent {
 			}
 		};
 		tip = valid[key].func(val, valid[key].args);
-		this.setState(
-			{
-				[key]: val,
-				[key + 'Tip']: tip
-			},
-			() => {
-				const { upband, downband, upbandTip, downbandTip } = this.state;
-				this.setState({
-					saveDisable:
-						upbandTip !== '' ||
-						downbandTip !== '' ||
-						upband === '' ||
-						downband === ''
-				});
-			}
-		);
+		this.setState({
+			[key]: val,
+			[key + 'Tip']: tip
+		});
 	};
 
 	onChange = (val, key) => {
-		const { upband, downband, upbandTip, downbandTip } = this.state;
-		const saveDisable = upbandTip !== '' || downbandTip !== '' || upband === '' || downband === '';
 		val = val.replace(/\D/g, '');
 
 		let valid = {
@@ -157,7 +140,6 @@ export default class Bandwidth extends React.PureComponent {
 								MODULE,
 								9
 							) /*_i18n:带宽比例总和不能大于100%*/,
-							saveDisable: true,
 						});
 						return;
 					} else {
@@ -165,15 +147,10 @@ export default class Bandwidth extends React.PureComponent {
 							sunmiTip: '',
 							whiteTip: '',
 							normalTip: '',
-							saveDisable,
 						});
 						return;
 					}
 				}
-
-				this.setState({
-					saveDisable: true
-				});
 			}
 		);
 	};
@@ -238,7 +215,7 @@ export default class Bandwidth extends React.PureComponent {
 				speedFill: true,
 				upband: (info.up_bandwidth / 1024).toFixed(0),
 				downband: (info.down_bandwidth / 1024).toFixed(0),
-				source: 'speedtest'
+				source: 'speedtest',
 			});
 			let payload = this.composeparams(
 				'speedtest',
@@ -277,7 +254,6 @@ export default class Bandwidth extends React.PureComponent {
 	};
 
 	onEditOk = async () => {
-		this.setState({ btloading: true });
 		let payload = this.composeparams(
 			'manual',
 			this.state.upband,
@@ -293,14 +269,12 @@ export default class Bandwidth extends React.PureComponent {
 				if (errcode == 0) {
 					this.setState({
 						manualShow: false,
-						btloading: false
 					});
 					this.getBandInfo();
 					return;
 				}
 				this.setState({
 					manualShow: false,
-					btloading: false
 				});
 				message.error(
 					intl.get(MODULE, 11, {
@@ -379,10 +353,6 @@ export default class Bandwidth extends React.PureComponent {
 	async componentDidMount() {
 		this.stop = false;
 		await this.getBandInfo();
-		const { upband, downband } = this.state;
-		this.setState({
-			saveDisable: upband === '' || downband === ''
-		});
 	}
 
 	componentWillUnmount() {
@@ -390,11 +360,7 @@ export default class Bandwidth extends React.PureComponent {
 	}
 
 	post = async () => {
-		let { source, upband, downband } = this.state;
-		// if (source === 'default') {
-		// 	message.error(intl.get(MODULE, 13) /*_i18n:请先设置带宽*/);
-		// 	return;
-		// }
+		let { upband, downband } = this.state;
 		this.setState({ loading: true });
 		let payload = this.composeparams('manual', upband, downband);
 		await common
@@ -421,7 +387,6 @@ export default class Bandwidth extends React.PureComponent {
 
 	render() {
 		const {
-			saveDisable,
 			unit,
 			bandenable,
 			visible,
@@ -429,7 +394,6 @@ export default class Bandwidth extends React.PureComponent {
 			speedFail,
 			speedFill,
 			failTip,
-			disable,
 			sunmi,
 			white,
 			normal,
@@ -441,8 +405,9 @@ export default class Bandwidth extends React.PureComponent {
 			upbandTip,
 			downbandTip,
 			loading,
-			btloading
 		} = this.state;
+		let checkTip = sunmiTip !== '' || whiteTip !== '' || normalTip !== '' || upbandTip !== '' || downbandTip !== '';
+		let saveDisable = checkTip || upband === '' || downband === '';
 		const columns = [
 			{
 				title: intl.get(MODULE, 15) /*_i18n:设备类型*/,
