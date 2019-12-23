@@ -651,3 +651,15 @@
   content: "\e6d9";
 }
 
+.ui-icon-WAN:before {
+  content: "\e601";
+}
+
+.ui-icon-LAN:before {
+  content: "\e602";
+}
+
+.ui-icon-WAN1:before {
+  content: "\e603";
+}
+
