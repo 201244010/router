@@ -4,6 +4,7 @@ import NetworkTemple from '~/components/NetworkTemple';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
 import Form from "~/components/Form";
+import WanIcon from './WanIcon';
 
 import './multipleWan.scss';
 
@@ -36,7 +37,7 @@ export default class MultipleWan extends React.Component {
 						<Option value={3}>3</Option>
 					</Select>
 				</div>
-				
+				<WanIcon />
 				<NetworkTemple
 					opcodeSet='NETWORK_WAN_IPV4_SET'
 					opcodeGet='NETWORK_WAN_IPV4_GET'

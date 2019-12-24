@@ -13,3 +13,33 @@
 		}
 	}
 }
+.wanIcon {
+	width: 48px;
+	margin-left: 24px;
+	display: inline-block;
+	text-align: center;
+	.wanIcon-wan-image {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 8px;
+		background-image: url('./wan.png');
+	}
+	.wanIcon-lan-image {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 8px;
+		background-image: url('./lan.png');
+	}
+	.wanIcon-wan-p {
+		color: #6174F1;
+		font-size: 12px;
+	}
+	.wanIcon-lan-p {
+		color: #ADB1B9;
+		font-size: 12px;
+	}
+}
+.WanIcon-mainWan {
+	margin-right: 24px;
+	margin-left: 0;
+}
