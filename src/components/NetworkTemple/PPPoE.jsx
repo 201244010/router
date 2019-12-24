@@ -1,9 +1,10 @@
 import React from 'react';
-import { Radio } from 'antd';
+// import { Radio } from 'antd';
+import AdvancedSettings from './AdvancedSettings';
 import Form from "~/components/Form";
 
 const {FormItem, Input, ErrorTip} = Form;
-const RadioGroup = Radio.Group;
+// const RadioGroup = Radio.Group;
 const MODULE = 'network';
 
 class PPPoE extends React.Component {
@@ -29,12 +30,10 @@ class PPPoE extends React.Component {
 						</FormItem>
 					</div>
 				</div>
-				<label>{intl.get(MODULE, 37)/*_i18n:DNS配置*/}</label>
-				<RadioGroup className='radio-choice' key="pppoedns" onChange={onPppoeRadioChange} value={pppoeType}>
-					<Radio className="label-in" value='auto'>{intl.get(MODULE, 38)/*_i18n:自动设置*/}</Radio>
-					<Radio className="label-in" value='manual'>{intl.get(MODULE, 39)/*_i18n:手动设置*/}</Radio>
-				</RadioGroup>
-			</div>
+			</div>,
+			<AdvancedSettings
+				type='pppoe'
+			/>
 		];
 	}  
 };

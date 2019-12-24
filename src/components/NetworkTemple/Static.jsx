@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from "~/components/Form";
+import AdvancedSettings from './AdvancedSettings';
 
 const {FormItem, InputGroup, ErrorTip} = Form;
 const MODULE = 'network';
@@ -30,20 +31,20 @@ class Static extends React.Component {
 					tip: gatewayTip,
 				},
 			},
-			{
-				left: {
-					label: intl.get(MODULE, 46)/*_i18n:首选DNS*/,
-					key: dnsname,
-					tip: dnsTip,
-					value: dns,
-				},
-				right: {
-					label: intl.get(MODULE, 47)/*_i18n:备选DNS（选填）*/,
-					key: dnsbackupname,
-					tip: dnsbackupTip,
-					value: dnsbackup,
-				},
-			}
+			// {
+			// 	left: {
+			// 		label: intl.get(MODULE, 46)/*_i18n:首选DNS*/,
+			// 		key: dnsname,
+			// 		tip: dnsTip,
+			// 		value: dns,
+			// 	},
+			// 	right: {
+			// 		label: intl.get(MODULE, 47)/*_i18n:备选DNS（选填）*/,
+			// 		key: dnsbackupname,
+			// 		tip: dnsbackupTip,
+			// 		value: dnsbackup,
+			// 	},
+			// }
 		];
 		return [
 			<div key="static" className="wifi-settings">
@@ -75,7 +76,10 @@ class Static extends React.Component {
 						</React.Fragment>	
 					))
 				}
-			</div>
+			</div>,
+			<AdvancedSettings
+				type='static'
+			/>
 		];
 	}   
 };

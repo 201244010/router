@@ -1,15 +1,8 @@
 import React from 'react';
-import { Select, Button, message } from 'antd';
-import NetworkTemple from '~/components/NetworkTemple';
-import PanelHeader from '~/components/PanelHeader';
-import SubLayout from '~/components/SubLayout';
-import Form from "~/components/Form";
 
 import './multipleWan.scss';
 
-const Option = Select.Option;
-
-export default class MultipleWan extends React.Component {
+export default class Wan extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

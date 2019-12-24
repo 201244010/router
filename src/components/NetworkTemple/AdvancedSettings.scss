@@ -1,0 +1,14 @@
+.advancedSettings-PanelHeader {
+	margin-bottom: 24px;
+}
+
+.advancedSettings-row {
+	display: flex;
+	label {
+		display: inline-block;
+		margin-bottom: 8px;
+	}
+	.row-right {
+		margin-left: 60px;
+	}
+}
