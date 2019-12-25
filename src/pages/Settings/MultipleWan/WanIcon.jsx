@@ -18,6 +18,7 @@ export default class WanIcon extends React.Component {
 		return (
 			<React.Fragment>
 				<WanItem
+					num={0}
 					className='WanIcon-mainWan'
 				/>
 				{wanIconList}

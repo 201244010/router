@@ -12,6 +12,15 @@
 			}
 		}
 	}
+	.settings-tabs {
+		margin-top: 32px;
+		.ant-tabs-nav {
+			margin-left: 0;
+		}
+	}
+	.settings-tabs-disappear {
+		display: none;
+	}
 }
 .wanIcon {
 	width: 48px;

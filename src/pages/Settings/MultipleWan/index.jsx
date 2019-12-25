@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Button, message } from 'antd';
+import { Select, Button, message, Tabs } from 'antd';
 import NetworkTemple from '~/components/NetworkTemple';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
@@ -9,22 +9,39 @@ import WanIcon from './WanIcon';
 import './multipleWan.scss';
 
 const Option = Select.Option;
+const { TabPane } = Tabs;
 
 export default class MultipleWan extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			wanNum: 0,
+			wanNum: 3,
 		}
 	}
 
 	onWanNumChange = num => {
+		this.setState({
+			wanNum: num
+		})
+	}
 
+	callback(key) {
+		console.log(key);
 	}
 
     render() {
 		const { wanNum } = this.state;
 
+		const tabsContent = [];
+		for(let i = 1; i <= wanNum; i++) {
+			tabsContent.push(
+				<TabPane tab={`WAN${i}`} key={i}>
+					<NetworkTemple
+						port={i+1}
+					/>
+				</TabPane>
+			);
+		}
 		return <SubLayout className="settings">
 			<Form className='multipleWan-settings'>
 				<PanelHeader title='多WAN设置' checkable={false} checked={true} />
@@ -37,11 +54,10 @@ export default class MultipleWan extends React.Component {
 						<Option value={3}>3</Option>
 					</Select>
 				</div>
-				<WanIcon />
-				<NetworkTemple
-					opcodeSet='NETWORK_WAN_IPV4_SET'
-					opcodeGet='NETWORK_WAN_IPV4_GET'
-				/>
+				<WanIcon wanNum={wanNum}/>
+				<Tabs className={`settings-tabs ${wanNum === 0 && 'settings-tabs-disappear'}`} defaultActiveKey="1" onChange={this.callback}>
+					{tabsContent}
+				</Tabs>
 			</Form>
 		</SubLayout>;
     }

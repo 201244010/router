@@ -9,8 +9,7 @@ export default class Network extends React.Component {
         return <SubLayout className="settings">
             <Form className="network-settings">
                 <NetworkTemple
-                    opcodeSet='NETWORK_WAN_IPV4_SET'
-                    opcodeGet='NETWORK_WAN_IPV4_GET'
+                    port={1}
                 />
             </Form>
         </SubLayout>;

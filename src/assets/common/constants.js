@@ -178,6 +178,12 @@ export const DIRECTIVE = {
     
     LOCAL_UPGRADE_UPLOAD: '0x207e',
     LOCAL_UPGRADE_STATE: '0x207f',
+
+    //MultipWan
+    NETWORK_MULTI_WAN_SET: '0x20c0',
+    NETWORK_MULTI_WAN_GET: '0x20c1',
+    NETWORK_MULTI_WAN_CONN_GET: '0x20c2',
+    NETWORK_MULTI_WAN_RESET: '0x20c3',
 };
 
 /**

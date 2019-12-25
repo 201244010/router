@@ -5,7 +5,7 @@ import PanelHeader from '~/components/PanelHeader';
 import Form from "~/components/Form";
 import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
 // import SubLayout from '~/components/SubLayout';
-import Dns from './Dns';
+// import Dns from './Dns';
 import Static from './Static';
 import Dhcp from './Dhcp';
 import PPPoE from './PPPoE';
@@ -16,6 +16,12 @@ const MODULE = 'network';
 
 const {FormItem, Input } = Form;
 const Option = Select.Option;
+
+const DIAL_TYPE = {
+    dhcp: intl.get(MODULE, 16)/*_i18n:自动获取IP（DHCP）*/,
+    pppoe: intl.get(MODULE, 17)/*_i18n:宽带拨号上网（PPPoE）*/,
+    static: intl.get(MODULE, 18)/*_i18n:手动输入IP（静态IP）*/,
+};
 
 export default class NetworkTemple extends React.Component {
     constructor(props) {
@@ -71,7 +77,36 @@ export default class NetworkTemple extends React.Component {
         pppoeDnsTip : '',
         pppoeDnsbackupTip : '',
 
-        loading: false
+        loading: false,
+
+        dhcp: {
+            dns1: ['', '', '', ''],
+            dns2: ['', '', '', ''],
+            down: '',
+            up: '',
+            mtu: '', 
+        },
+        staticIP: {
+            down:  '',
+            up: '',
+            gateway: ['', '', '', ''],
+            mask: ['', '', '', ''],
+            ipv4: ['', '', '', ''],
+            dns1: ['', '', '', ''],
+            dns2: ['', '', '', ''],
+            mtu: ''
+        },
+        pppoe: {
+            dns1: ['', '', '', ''],
+            dns2: ['', '', '', ''],
+            down: '',
+            up: '',
+            username: '',
+            password: '',
+            mtu: '',
+            service: '',
+        },
+        info: {},
     };
 
     onIPConifgChange = (val, key) => {
@@ -163,12 +198,9 @@ export default class NetworkTemple extends React.Component {
     };
     
     onTypeChange = value => {
+        console.log('onTypeChange', value);
         this.setState({
             type : value,
-        },()=>{
-            this.setState({
-                disabled : !this.checkParams()
-            })
         })
     }
     
@@ -329,7 +361,6 @@ export default class NetworkTemple extends React.Component {
 
     //表单提交
     post = async() => {
-        const { opcodeSet } = this.props;
         this.setState({
             loading : true,
         });
@@ -352,7 +383,7 @@ export default class NetworkTemple extends React.Component {
         }
         await common.fetchApi(
             {
-                opcode : opcodeSet,
+                opcode : 'NETWORK_MULTI_WAN_SET',
                 data : payload
             },
             ).then(refs => {
@@ -370,9 +401,8 @@ export default class NetworkTemple extends React.Component {
 
     //获取信息
     getNetInfo = async ()=>{
-        const { opcodeGet } = this.props;
         let response = await common.fetchApi(
-            { opcode : opcodeGet}
+            { opcode : 'NETWORK_MULTI_WAN_GET'}
         );
         let { data, errcode } = response;
         if(errcode == 0){
@@ -453,65 +483,183 @@ export default class NetworkTemple extends React.Component {
     }
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        const { opcodeGet } = this.props;
-        let response = await common.fetchApi({ opcode: opcodeGet}, { ignoreErr: true });
-            let {errcode, data} = response;
-            if(errcode == 0){
-                this.updateNetStatus(data[0].result.wan);
-            }
+        let response = await common.fetchApi({ opcode: 'NETWORK_MULTI_WAN_GET'}, { ignoreErr: true });
+        let {errcode, data} = response;
+        if(errcode == 0){
+            this.updateNetStatus(data[0].result.wan);
         }
+    }
+
+    onChange = (value, key, name) => {
+        const {pppoe, staticIP, dhcp} = this.state;
+        console.log('onChange', value, key, name);
+        const field = {
+            'pppoe': pppoe,
+            'staticIP': staticIP,
+            'dhcp': dhcp,
+        }
+        let substitute = field[name];
+        substitute[key] = value;
+        this.setState({
+            [name]: substitute
+        })
+    }
+
+    onAdvancedSettings = (value, key) => {
+        console.log('onAdvancedSettings', value, key);
+    }
+
+    getWanInfo = async() => {
+        const { port } = this.props;
+        const response = await common.fetchApi(
+            { opcode : 'NETWORK_MULTI_WAN_GET'}
+        );
+        const { data, errcode } = response;
+        if(errcode === 0) {
+            const wanInfo = data[0].result.wans[port-1]|| {};
+            const {
+                dhcp: {
+                    dns_info: {
+                        dns1: dhcpDns1 = '',
+                        dns2: dhcpDns2 = '',
+                    } = {},
+                    bandwidth: {
+                        down: dhcpDown = '',
+                        up: dhcpUp = '',
+                    } = {},
+                    mtu: dhcpMtu = '', 
+                },
+                static: {
+                    bandwidth: {
+                        down:  staticDown= '',
+                        up: staticUp = '',
+                    } = {},
+                    info: {
+                        gateway: staticGateway = '',
+                        mask: staticMask = '',
+                        ipv4: staticIpv4 = '',
+                        dns1: staticDns1 = '',
+                        dns2: staticDns2 = '',
+                    } = {},
+                    mtu: staticMtu = ''
+                },
+                pppoe: {
+                    dns_info: {
+                        dns1: pppoeDns1 = '',
+                        dns2: pppoeDns2 = '',
+                    } = {},
+                    bandwidth: {
+                        down: pppoeDown = '',
+                        up: pppoeUp = '',
+                    } = {},
+                    user_info: {
+                        username: pppoeUsername = '',
+                        password: pppoePassword = '',
+                    } = {},
+                    mtu: pppoeMtu = '',
+                    service: pppoeService = '',
+                }, 
+                info = {},
+                dial_type = '',
+            } = wanInfo;
+            this.setState({
+                dhcp: {
+                    dns1: dhcpDns1,
+                    dns2: dhcpDns2,
+                    down: dhcpDown,
+                    up: dhcpUp,
+                    mtu: dhcpMtu, 
+                },
+                staticIP: {
+                    down:  staticDown,
+                    up: staticUp,
+                    gateway: staticGateway,
+                    mask: staticMask,
+                    ipv4: staticIpv4,
+                    dns1: staticDns1,
+                    dns2: staticDns2,
+                    mtu: staticMtu
+                },
+                pppoe: {
+                    dns1: pppoeDns1,
+                    dns2: pppoeDns2,
+                    down: pppoeDown,
+                    up: pppoeUp,
+                    username: pppoeUsername,
+                    password: pppoePassword,
+                    mtu: pppoeMtu,
+                    service: pppoeService,
+                },
+                info: {dial_type: dial_type, ...info}
+            });
+        }
+    }
 
     componentDidMount(){
         //获取网络状况
-        this.getNetInfo();
-        this.handleTime = setInterval(this.refreshNetStatus, 3000);
-        this.stop = false;
+        // this.getNetInfo();
+        this.getWanInfo();
+        this.refreshWanInfo = setInterval(this.getWanInfo(), 3000);
+        // this.handleTime = setInterval(this.refreshNetStatus, 3000);
+        // this.stop = false;
     }
 
     componentWillUnmount(){
-        this.stop = true;
-        clearInterval(this.handleTime);
+        // this.stop = true;
+        // clearInterval(this.handleTime);
+        clearInterval(this.refreshWanInfo);
     }
 
     render(){
-        const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,
-                dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,
-                disabled, loading, type, infoIp ,
-                dialType, onlineStatus, infoGateway, infoMask, infoDns,
-                pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
-                ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
+        const { dhcp, staticIP, pppoe, info, type } = this.state;
+        const {
+            online = false,
+            dial_type = 'dhcp',
+            ipv4 = '0.0.0.0',
+            mask = '0.0.0.0',
+            gateway = '0.0.0.0',
+            dns1 = '0.0.0.0',
+            dns2 = '0.0.0.0',
+            isp = '',
+        } = info;
+        // const { ipv4Tip,gatewayTip,subnetmaskTip,staticDnsTip, staticDnsbackupTip,
+        //         dhcpDnsTip,dhcpDnsbackupTip,pppoeDnsTip,pppoeDnsbackupTip,
+        //         disabled, loading, type, infoIp ,
+        //         dialType, onlineStatus, infoGateway, infoMask, infoDns,
+        //         pppoeDns, pppoeDnsbackup, dhcpDns, dhcpDnsbackup, staticDns, staticDnsbackup,
+        //         ipv4, subnetmask, gateway, dhcpType, pppoeType,pppoeAccount, pppoeAccountTip, pppoePasswordTip, pppoePassword, service} = this.state;
 
         const infoList = [
-            {
-                left: {
+            [
+                {
                     label: intl.get(MODULE, 22)/*_i18n:联网状态：*/,
-                    content: onlineStatus,
+                    content: online ? `${intl.get(MODULE, 19)/*_i18n:已联网*/}（${isp}）` : intl.get(MODULE, 20)/*_i18n:未联网*/,
                 },
-                right: {
+                {
                     label: intl.get(MODULE, 23)/*_i18n:上网方式：*/,
-                    content: dialType,
+                    content: DIAL_TYPE[dial_type],
                 },
-            },
-            {
-                left: {
+            ],
+            [
+                {
                     label: intl.get(MODULE, 24)/*_i18n:IP地址：*/,
-                    content: infoIp,
+                    content: ipv4,
                 },
-                right: {
+                {
                     label: intl.get(MODULE, 25)/*_i18n:子网掩码：*/,
-                    content: infoMask,
+                    content: mask,
                 },
-            },
-            {
-                left: {
+            ],
+            [
+                {
                     label: intl.get(MODULE, 26)/*_i18n:默认网关：*/,
-                    content: infoGateway,
+                    content: gateway,
                 },
-                right: {
+                {
                     label: intl.get(MODULE, 49)/*_i18n:DNS：*/,
-                    content: infoDns,
+                    content: [dns1, dns2].filter(val => (val != '' && val != '0.0.0.0')).join(', '),
                 },
-            }
+            ]
         ];
         
         return (
@@ -521,17 +669,15 @@ export default class NetworkTemple extends React.Component {
                     {
                         infoList.map(item => (
                             <div className='network-info'>
-                                <div>
-                                    <span className="ui-mute status">{item.left.label}</span>
-                                    <span>{item.left.content}</span>
-                                </div>
-                                {
-                                    item.right&&<div className='right'>
-                                        <span className="ui-mute status">{item.right.label}</span>
-                                        <span>{item.right.content}</span>
+                            {
+                                item.map((item, index) => (
+                                    <div className={index > 0?'right': ''}>
+                                        <span className="ui-mute status">{item.label}</span>
+                                        <span>{item.content}</span>
                                     </div>
-                                }   
-                            </div>
+                                ))
+                            }
+                            </div> 
                         ))
                     }
                 </section>
@@ -546,6 +692,24 @@ export default class NetworkTemple extends React.Component {
                         </Select>
                     </div>
                     {
+                        type === 'pppoe'&&<PPPoE
+                            pppoe={pppoe}
+                            onChange={this.onChange}
+                        />
+                    }
+                    {   
+                        type === 'dhcp'&&<Dhcp
+                            dhcp={dhcp}
+                            onChange={this.onChange}
+                        />
+                    }
+                    {
+                        type === 'static'&&<Static
+                            staticIP={staticIP}
+                            onChange={this.onChange}
+                        />
+                    }
+                    {/* {
     
                         type === 'pppoe' ? <PPPoE pppoeAccount={pppoeAccount}
                                 pppoeAccountTip={pppoeAccountTip}
@@ -557,7 +721,7 @@ export default class NetworkTemple extends React.Component {
                                 onPppoeRadioChange={this.onPppoeRadioChange}
                                 handleAccountChange={this.handleAccountChange}
                         />: ''
-                    }
+                    } */}
                     {/* {
                         type === 'pppoe' && pppoeType === 'manual' ? <Dns dnsTip={pppoeDnsTip}
                         dnsbackupTip={pppoeDnsbackupTip} dnsbackup={pppoeDnsbackup}
@@ -569,12 +733,12 @@ export default class NetworkTemple extends React.Component {
                             <Input maxLength={64} type="text" value={service} onChange={this.handleServiceChange}/>
                         </FormItem></div> : ''
                     } */}
-                    {   
+                    {/* {   
                         type === 'dhcp' ? <Dhcp onDhcpRadioChange={this.onDhcpRadioChange}
                                 dhcpType={this.state.dhcpType}
                         />: ''
-                    }
-                    {
+                    } */}
+                    {/* {
                         type === 'static' ? <Static ipv4={ipv4} 
                                         gateway={gateway} 
                                         subnetmask={subnetmask}
@@ -589,7 +753,7 @@ export default class NetworkTemple extends React.Component {
                                         dnsname='staticDns'
                                         dnsbackupname='staticDnsbackup'
                         /> : ''
-                    } 
+                    } */}
                     {/* {
                         type === 'dhcp' && dhcpType === 'manual' ? <Dns dnsTip={dhcpDnsTip}
                         dnsbackupTip={dhcpDnsbackupTip} dnsbackup={dhcpDnsbackup}
@@ -597,7 +761,7 @@ export default class NetworkTemple extends React.Component {
                     } */}
                 </section>
                 <section className="advancedSettings-save">
-                    <Button type="primary" size='large' style={{ width: 200, height: 42 }} disabled={disabled} onClick={this.post} loading={loading}>{intl.get(MODULE, 34)}</Button>
+                    <Button type="primary" size='large' style={{ width: 200, height: 42 }} onClick={this.post} >{intl.get(MODULE, 34)}</Button>
                 </section>
             </React.Fragment>
         );
