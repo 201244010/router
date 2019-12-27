@@ -11,12 +11,9 @@ class Static extends React.Component {
 		const { onChange } = this.props;
 		onChange(value, key, name);
 	}
-	// onAdvancedSettings = (value, key) => {
-	// 	const { onAdvancedSettings } = this.props;
-	// 	onAdvancedSettings(value, key);
-	// }
+
 	render() {
-		const { staticIP } = this.props;
+		const { staticIP, setWanInfo, buttonLoading } = this.props;
 		const {
 			down = '',
 			up = '',
@@ -51,6 +48,7 @@ class Static extends React.Component {
 				},
 			],
 		];
+		const disabledStatus = list.some(item => item.some(item => item.tip !== ''));
 		return [
 			<div key="static" className="wifi-settings">
 				{
@@ -58,7 +56,7 @@ class Static extends React.Component {
 						<React.Fragment key={item[0].label}>
 							<div className='network-row'>
 								{
-									item.map((item, index) => {
+									item.map((item, index) => (
 										<div className={index > 0 && 'row-right'}>
 											<label>{item.label}</label>
 											<FormItem key={item.key} showErrorTip={item.tip} style={{ width : 320}}>
@@ -68,7 +66,7 @@ class Static extends React.Component {
 												<ErrorTip>{item.tip}</ErrorTip>
 											</FormItem>
 										</div>
-									})
+									))
 								}
 							</div>
 						</React.Fragment>	
@@ -76,13 +74,16 @@ class Static extends React.Component {
 				}
 			</div>,
 			<AdvancedSettings
-				type='staticIP'
+				advanceType='staticIP'
+				disabledStatus={disabledStatus}
 				mtu={mtu}
 				upBandwidth={up}
 				downBandwidth={down}
 				dns={dns1}
 				dnsBackup={dns2}
 				onChange={this.onChange}
+				setWanInfo={setWanInfo}
+				buttonLoading={buttonLoading}
 			/>
 		];
 	}   

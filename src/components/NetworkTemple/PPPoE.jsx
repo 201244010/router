@@ -12,7 +12,7 @@ class PPPoE extends React.Component {
 		onChange(value, key, name);
 	}
 	render() {
-		const {pppoe, usernameTip = '', passwordTip = ''} = this.props;
+		const {pppoe, usernameTip = '', passwordTip = '', setWanInfo, buttonLoading} = this.props;
 		const {
 			dns1 = ['', '', '', ''],
 			dns2 = ['', '', '', ''],
@@ -23,7 +23,7 @@ class PPPoE extends React.Component {
 			mtu = '',
 			service = '',
 		} = pppoe;
-
+		const disabledStatus = usernameTip !== '' || passwordTip!=='';
 		return [
 			<div key="pppoe" className="wifi-settings">
 				<div className='network-row'>
@@ -44,7 +44,8 @@ class PPPoE extends React.Component {
 				</div>
 			</div>,
 			<AdvancedSettings
-				type='pppoe'
+				advanceType='pppoe'
+				disabledStatus={disabledStatus}
 				serviceName={service}
 				mtu={mtu}
 				upBandwidth={up}
@@ -52,6 +53,8 @@ class PPPoE extends React.Component {
 				dns={dns1}
 				dnsBackup={dns2}
 				onChange={this.onChange}
+				setWanInfo={setWanInfo}
+				buttonLoading={buttonLoading}
 			/>
 		];
 	}  

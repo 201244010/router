@@ -1,9 +1,5 @@
 import React from 'react';
-import { Radio } from 'antd';
 import AdvancedSettings from './AdvancedSettings';
-
-const RadioGroup = Radio.Group;
-const MODULE = 'network';
 
 class Dhcp extends React.Component {
 	onChange = (value, key, name) => {
@@ -11,7 +7,7 @@ class Dhcp extends React.Component {
 		onChange(value, key, name);
 	}
 	render() {
-		const { dhcp } = this.props;
+		const { dhcp, setWanInfo, buttonLoading } = this.props;
 		const {
 			dns1 = ['', '', '', ''],
 			dns2 = ['', '', '', ''],
@@ -21,13 +17,16 @@ class Dhcp extends React.Component {
 		} = dhcp;
 		return [
 			<AdvancedSettings
-				type='dhcp'
+				advanceType='dhcp'
+				disabledStatus={false}
 				mtu={mtu}
 				upBandwidth={up}
 				downBandwidth={down}
 				dns={dns1}
 				dnsBackup={dns2}
 				onChange={this.onChange}
+				setWanInfo={setWanInfo}
+				buttonLoading={buttonLoading}
 			/>
 		];
 	}
