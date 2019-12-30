@@ -44,6 +44,7 @@ import UPnP from './Advance/Systemsetup/UPnP';
 import PortForwarding from './Advance/Systemsetup/PortForwarding';
 import CustomRestart from './Advance/Systemsetup/CustomRestart';
 import LocalUpgrade from './Advance/Systemsetup/LocalUpgrade';
+import MobileNetwork from './Advance/MobileNetwork';
 import { RebootContext, RecoveryContext } from '~/context';
 
 const MODULE = 'page';
@@ -139,6 +140,7 @@ class PrimaryLayout extends React.Component {
             'timeset': { main: 'bg', footer: '', header: true, title: true },
             'upnp': { main: 'bg', footer: '', header: true, title: true },
             'customrestart': { main: 'bg', footer: '', header: true, title: true },
+            'mobileNetwork':  { main: 'bg', footer: '', header: true, title: true },
             'portforwarding': { main: 'bg', footer: '', header: true, title: true },
             'localUpgrade': { main: 'bg', footer: '', header: true, title: true },
             'multipleWan': { main: 'bg', footer: '', header: true, title: true },
@@ -232,6 +234,7 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/upnp" component={UPnP} />
                     <Route path="/routersetting/portforwarding" component={PortForwarding} />
                     <Route path="/routersetting/customrestart" component={CustomRestart} />
+                    <Route path="/routersetting/mobileNetwork" component={MobileNetwork} />
                     <Route path="/routersetting/localUpgrade" component={LocalUpgrade} />
                     <Route path="/routersetting/multipleWan" component={MultipleWan} />
                 </Switch>
