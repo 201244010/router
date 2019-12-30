@@ -10,7 +10,7 @@ const MODULE = 'network';
 
 const {FormItem, Input, InputGroup, ErrorTip } = Form;
 
-export default class AdvancedSettings extends React.PureComponent {
+export default class AdvancedSettings extends React.Component {
 	onChange = (value, key, name) => {
 		const { onChange } = this.props;
 		onChange(value, key, name);
