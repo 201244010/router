@@ -1,4 +1,5 @@
 import React from 'react';
+import {message} from 'antd';
 import GuideHeader from 'h5/components/GuideHeader';
 import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
@@ -113,8 +114,7 @@ export default class SetWifi extends React.Component {
         if(errcode === 0){
             this.props.history.push('/guide/finish/' + encodeURIComponent(param));
         } else {
-            // message.error(`Wi-Fi设置失败[${errorMessage[errcode] || errcode}]`);
-            message.error(intl.get(MODULE, 9, {error: errorMessage[errcode] || errcode})/*_i18n:设置客用*/);
+            message.error(intl.get(MODULE, 9, {error: errcode})/*_i18n:设置客用*/);
         }
         
     }

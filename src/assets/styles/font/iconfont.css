@@ -635,18 +635,31 @@
 	content: "\e6d5";
   }
   
-  .ui-icon-local:before {
+.ui-icon-local:before {
   content: "\e6d6";
-  }
+}
 
-  .ui-icon-mobilenetwork:before {
+.ui-icon-mobilenetwork:before {
   content: "\e6d7";
-  }
+}
 
-  .ui-icon-fs:before {
+.ui-icon-fs:before {
   content: "\e6d8";
-  }
+}
 
-  .ui-icon-ss:before {
+.ui-icon-ss:before {
   content: "\e6d9";
-  }
+}
+
+.ui-icon-WAN:before {
+  content: "\e601";
+}
+
+.ui-icon-LAN:before {
+  content: "\e602";
+}
+
+.ui-icon-WAN1:before {
+  content: "\e603";
+}
+

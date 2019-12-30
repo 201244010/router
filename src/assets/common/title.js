@@ -87,6 +87,10 @@ export const getTitle = () => {
             "title" : intl.get(MODULE, 40)/*_i18n:本地系统升级*/,
             "titleTip": intl.get(MODULE, 41)/*_i18n:将升级文件下载到本地电脑，手动升级路由器固件*/
             },
+        'multipleWan': {
+            "title" : intl.get(MODULE, 42)/*_i18n:多WAN设置*/,
+            "titleTip": intl.get(MODULE, 43)/*_i18n:*/
+            },
     };
     return funcTitle;
 };
