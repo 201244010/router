@@ -1,0 +1,57 @@
+.mobile-form {
+	width : 100%;
+	margin-top : 0;
+	padding: 0;
+	.mobile-label {
+		width: 320px;
+		margin-bottom: 8px;
+		display: inline-block;
+		font-family: PingFangSC-Regular, sans-serif;
+		&.have-checkbox {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+	.mobile-formItem {
+		width: 320px;
+		.ssid-description {
+			position: absolute;
+			top: 0;
+			left: 332px;
+			width: 778px;
+		}
+	}
+	.mobile-netStatus {
+		font-size: 16px;
+		color: #333C4F;
+		margin: 32px 0 24px;
+		.netStatus-title {
+			font-family: PingFangSC-Regular, sans-serif;
+		}
+		.netStatus-status {
+			font-family: PingFangSC-Semibold, sans-serif;
+		}
+	}
+	.mobile-dilInfo {
+		margin: 32px 0 24px;
+		font-family: PingFangSC-Medium, sans-serif;
+		font-size: 16px;
+		color: #333C4F;
+	}
+	.mobile-selectArea {
+		padding: 0;
+		position: relative;
+		margin-bottom: 24px;
+	}
+}
+
+.save-area {
+	border-top:1px solid #ECECEC;
+	padding:28px 60px 20px 0;
+	margin: 40px 60px 0;
+	.button {
+		width: 200px;
+		height: 42px;
+		margin-right: 20px;
+	}
+}
