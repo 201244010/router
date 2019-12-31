@@ -305,7 +305,7 @@ export default class Home extends React.Component {
 		const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
 		const totalPercent = sunmi + whitelist + normal;
 
-		let { count, wans } = data[3].result;
+		const { count, wans } = data[3].result;
 		const online = !wans.every(item => item.online === false);
 		const tips = [];
 		for(let i = 0; i < count; i++) {
