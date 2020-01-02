@@ -44,9 +44,9 @@ class MobileNetwork extends React.Component {
 		const response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
         const { errcode, data } = response;
         if(errcode === 0){
-			const { mobile: { switch: enable, status, mode, iptype: ipType, auth, apn, user, passwd, profile, autoconnect: autoConnect } = {} } = data[0].result;
+			const { mobile: { switch: enable, status, mode, iptype: ipType, auth, apn = '', user = '', passwd = '', profile = '', autoconnect: autoConnect } = {} } = data[0].result;
 			this.setState({
-				enable: enable === 'on',
+				enable: enable === '1',
 				status,
 				mode: mode.cfg,
 				modeOptions: mode.list,
@@ -66,20 +66,21 @@ class MobileNetwork extends React.Component {
 	}
 
 	setMobileConfig = async() => {
-		const { enable, mode, ipType, auth, userName, password, fileName, autoConnect } = this.state;
+		const { enable, mode, ipType, auth, userName, password, fileName, autoConnect, apn } = this.state;
 
 		const response = await common.fetchApi([{
 			opcode: 'MOBILE_CONFIG_SET',
 			data: {
 				mobile: {
-					switch: enable? 'on' : 'off',
+					switch: enable? '1' : '0',
 					mode,
 					iptype: ipType,
 					auth,
 					user: userName,
 					passwd: password,
 					profile: fileName,
-					autoconnect: autoConnect
+					autoconnect: autoConnect,
+					apn,
 				},
 			}
 		}]);
@@ -101,7 +102,6 @@ class MobileNetwork extends React.Component {
 
 		let netStatus = status === ''? '' : status === 'online'? intl.get(MODULE, 2)/*_i18n:已连接*/: intl.get(MODULE, 3)/*_i18n:未连接*/;
 		netStatus = enable? netStatus : intl.get(MODULE, 13)/*_i18n:已关闭*/;
-
 		const tip = checkStr(apn, { who: intl.get(MODULE, 7)/*_i18n:APN*/, min: 1, byte: true });
 		const dialInfo = [
 			[
@@ -109,7 +109,7 @@ class MobileNetwork extends React.Component {
 					label: 'Profile名称（选填）',
 					value: fileName,
 					type: 'fileName',
-					inputType: 'input',
+					inputType: 'text',
 					disabled,
 				},
 				{
@@ -136,9 +136,9 @@ class MobileNetwork extends React.Component {
 					label: intl.get(MODULE, 7)/*_i18n:APN*/,
 					value: apn,
 					type: 'apn',
-					inputType: 'input',
+					inputType: 'text',
 					disabled,
-					tip,
+					tip: tip,
 				},
 			],
 			[
@@ -146,14 +146,14 @@ class MobileNetwork extends React.Component {
 					label: '用户名（选填）',
 					value: userName,
 					type: 'userName',
-					inputType: 'input',
+					inputType: 'text',
 					disabled,
 				},
 				{
 					label: '密码（选填）',
 					value: password,
 					type: 'password',
-					inputType: 'input',
+					inputType: 'password',
 					disabled,
 				},
 			],
@@ -214,7 +214,7 @@ class MobileNetwork extends React.Component {
 									<div className={index > 0? 'dilInfo-list-right':''} key={item.label}>
 										<label className='mobile-label'>{item.label}</label>
 										<FormItem className='mobile-formItem' showErrorTip={item.tip} type="small">
-											<Input type="text" value={item.value} disabled={disabled} onChange={value => {this.onChange(item.type, value)}}/>
+											<Input type={item.inputType} value={item.value} disabled={disabled} onChange={value => {this.onChange(item.type, value)}}/>
 											<ErrorTip>{item.tip}</ErrorTip>
 										</FormItem>
 									</div>
