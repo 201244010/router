@@ -2,7 +2,7 @@ import React from 'react';
 import { Base64 } from 'js-base64';
 import { Select, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
-import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import { checkSameNet } from '~/assets/common/check';
 import Static from './Static';
 import Dhcp from './Dhcp';
 import PPPoE from './PPPoE';
