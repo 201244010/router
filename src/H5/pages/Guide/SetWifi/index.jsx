@@ -4,7 +4,7 @@ import GuideHeader from 'h5/components/GuideHeader';
 import Input from 'h5/components/Input';
 import Button from 'h5/components/Button';
 import confirm from 'h5/components/confirm';
-
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import { Base64 } from 'js-base64';
 import { checkStr } from '~/assets/common/check';
 
@@ -83,18 +83,21 @@ export default class SetWifi extends React.Component {
     }
 
     dataSet = async() =>{
+        await fetchPublicKey();
         let { hostSsid, guestSsid, hostPassword, guestPassword, guestDisplay } = this.state;
         if ('block' === guestDisplay) {
             this.guestWireLess.ssid = guestSsid;
-            this.guestWireLess.static_password = Base64.encode(guestPassword);
+            this.guestWireLess.static_password = encryption(Base64.encode(guestPassword));
             this.guestWireLess.enable = '1';
             this.guestWireLess.encryption = guestPassword.length === 0 ? 'none':'psk-mixed/ccmp+tkip';
+        } else {
+            this.guestWireLess.static_password = encryption(this.guestWireLess.static_password);
         }
         
         this.mainWireLess.host.band_2g.ssid = hostSsid;
-        this.mainWireLess.host.band_2g.password = Base64.encode(hostPassword);
+        this.mainWireLess.host.band_2g.password = encryption(Base64.encode(hostPassword));
         this.mainWireLess.host.band_5g.ssid = hostSsid.substring(0,29) + '_5G';
-        this.mainWireLess.host.band_5g.password = Base64.encode(hostPassword);
+        this.mainWireLess.host.band_5g.password = encryption(Base64.encode(hostPassword));
         this.mainWireLess.host.band_2g.encryption = hostPassword.length === 0 ?'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_5g.encryption = hostPassword.length === 0 ?'none':'psk-mixed/ccmp+tkip';
         this.mainWireLess.host.band_2g.enable = "1";
