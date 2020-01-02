@@ -33,7 +33,7 @@
 		}
 	}
 	.mobile-dilInfo {
-		margin: 32px 0 24px;
+		margin: 32px 0 16px;
 		font-family: PingFangSC-Medium, sans-serif;
 		font-size: 16px;
 		color: #333C4F;
@@ -47,6 +47,15 @@
 			padding: 0;
 			position: relative;
 			margin-bottom: 24px;
+		}
+	}
+	.mobile-radio-group {
+		display: flex;
+		align-items: center;
+		margin-bottom: 24px;
+		.mobile-radio-item {
+			display: flex;
+			align-items: center;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Select, message } from 'antd';
+import { Button, Select, message, Radio } from 'antd';
 import { checkStr } from '~/assets/common/check';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
@@ -10,7 +10,7 @@ const MODULE = 'mobileNetwork';
 const Option = Select.Option;
 const {FormItem, Input, ErrorTip} = Form;
 
-class MobileNetwork extends React.PureComponent {
+class MobileNetwork extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -27,18 +27,24 @@ class MobileNetwork extends React.PureComponent {
 			userName: '',
 			password: '',
 			disabled: false,
+			autoConnect: "1",
 		};
 	}
 
 	onChange = (type, value) => {
 		this.setState({[type]: value});
 	}
+	onRadioChange = e => {
+		this.setState({
+			autoConnect: e.target.value
+		})
+	}
 
 	getMobileConfig = async() => {
 		const response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
         const { errcode, data } = response;
         if(errcode === 0){
-			const { mobile: { switch: enable, status, mode, iptype: ipType, auth, apn, user, passwd, profile } = {} } = data[0].result;
+			const { mobile: { switch: enable, status, mode, iptype: ipType, auth, apn, user, passwd, profile, autoconnect: autoConnect } = {} } = data[0].result;
 			this.setState({
 				enable: enable === 'on',
 				status,
@@ -52,6 +58,7 @@ class MobileNetwork extends React.PureComponent {
 				fileName: profile,
 				userName: user,
 				password: passwd,
+				autoConnect,
 			});
 		} else {
 			message.error(intl.get(MODULE, 10)/*_i18n:配置获取失败*/);
@@ -59,7 +66,7 @@ class MobileNetwork extends React.PureComponent {
 	}
 
 	setMobileConfig = async() => {
-		const { enable, mode, ipType, auth, userName, password, fileName } = this.state;
+		const { enable, mode, ipType, auth, userName, password, fileName, autoConnect } = this.state;
 
 		const response = await common.fetchApi([{
 			opcode: 'MOBILE_CONFIG_SET',
@@ -72,6 +79,7 @@ class MobileNetwork extends React.PureComponent {
 					user: userName,
 					passwd: password,
 					profile: fileName,
+					autoconnect: autoConnect
 				},
 			}
 		}]);
@@ -89,7 +97,7 @@ class MobileNetwork extends React.PureComponent {
 	}
 
 	render() {
-		const { enable, status, mode, modeOptions, ipType, ipTypeOptions, auth, authOptions, apn, fileName, userName, password, disabled } = this.state;
+		const { enable, status, mode, modeOptions, ipType, ipTypeOptions, auth, authOptions, apn, fileName, userName, password, disabled, autoConnect } = this.state;
 
 		let netStatus = status === ''? '' : status === 'online'? intl.get(MODULE, 2)/*_i18n:已连接*/: intl.get(MODULE, 3)/*_i18n:未连接*/;
 		netStatus = enable? netStatus : intl.get(MODULE, 13)/*_i18n:已关闭*/;
@@ -150,7 +158,7 @@ class MobileNetwork extends React.PureComponent {
 				},
 			],
 		];
-		const buttonDisabled = enable? (disabled || tip !== ''): false;
+		const buttonDisabled = enable? (autoConnect === '1'? false : (disabled || tip !== '')) : false;
 		return (
 			<SubLayout className="settings">
 				<Form className='mobile-form'>
@@ -178,7 +186,11 @@ class MobileNetwork extends React.PureComponent {
 							</Select>
 						</div>
 						<p className='mobile-dilInfo'>{intl.get(MODULE, 9)/*_i18n:拨号信息*/}</p>
-						{dialInfo.map(item => (
+						<Radio.Group className='mobile-radio-group' onChange={this.onRadioChange} value={autoConnect} >
+							<Radio className='mobile-radio-item' value={"1"}>{intl.get(MODULE, 14)/*_i18n:自动拨号*/}</Radio>
+        					<Radio className='mobile-radio-item' value={"0"}>{intl.get(MODULE, 15)/*_i18n:手动拨号*/}</Radio>
+						</Radio.Group>
+						{autoConnect === "0" && dialInfo.map(item => (
 							<div className='mobile-dilInfo-list'>
 								{item.map((item, index) => (
 									item.inputType === 'select'?
