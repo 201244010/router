@@ -1,5 +1,5 @@
 import React from 'react';
-import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import { checkStr } from '~/assets/common/check';
 import AdvancedSettings from './AdvancedSettings';
 import Form from "~/components/Form";
 
@@ -12,7 +12,7 @@ class PPPoE extends React.Component {
 		onChange(value, key, name);
 	}
 	render() {
-		const {pppoe, usernameTip = '', passwordTip = '', setWanInfo, buttonLoading} = this.props;
+		const {pppoe, setWanInfo, buttonLoading} = this.props;
 		const {
 			dns1 = ['', '', '', ''],
 			dns2 = ['', '', '', ''],
@@ -23,6 +23,8 @@ class PPPoE extends React.Component {
 			mtu = '',
 			service = '',
 		} = pppoe;
+		const usernameTip = checkStr(username, { who: intl.get(MODULE, 35)/*_i18n:账号*/, min: 1, byte: true });
+		const passwordTip = checkStr(password, { who: intl.get(MODULE, 36)/*_i18n:密码*/, min: 1, byte: true });
 		const disabledStatus = usernameTip !== '' || passwordTip!=='';
 		return [
 			<div key="pppoe" className="wifi-settings">
