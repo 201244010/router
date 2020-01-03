@@ -40,6 +40,17 @@ class MobileNetwork extends React.Component {
 		})
 	}
 
+	getMobileNetworkStatus = async() => {
+		const response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
+        const { errcode, data } = response;
+        if(errcode === 0){
+			const { mobile: { status } = {} } = data[0].result;
+			this.setState({
+				status,
+			});
+		}
+	}
+
 	getMobileConfig = async() => {
 		const response = await common.fetchApi([{ opcode: 'MOBILE_CONFIG_GET' }]);
         const { errcode, data } = response;
@@ -86,15 +97,21 @@ class MobileNetwork extends React.Component {
 		}]);
 		const { errcode } = response;
         if(errcode === 0){
-            message.success(intl.get(MODULE, 11)/*_i18n:设置完成*/)
+			this.getMobileConfig();
+			message.success(intl.get(MODULE, 11)/*_i18n:设置完成*/);	
         } else {
-            message.error(intl.get(MODULE, 12)/*_i18n:设置失败*/)
+            message.error(intl.get(MODULE, 12)/*_i18n:设置失败*/);
         }
 
 	}
 
 	componentDidMount() {
 		this.getMobileConfig();
+		this.time = setInterval(this.getMobileNetworkStatus, 3000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.time);
 	}
 
 	render() {
