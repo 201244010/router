@@ -63,7 +63,15 @@
             right: 10px;
             top: 0;
             cursor: pointer;
-        }
+		}
+		.input-descripiton {
+			position: absolute;
+			left: 328px;
+			width: 100%;
+			font-family:PingFangSC-Regular,PingFang SC;
+			font-size: 14px;
+			color:rgba(173,177,185,1);
+		}
     }
 
     .ui-input-group {

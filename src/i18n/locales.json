@@ -89,6 +89,7 @@
 		"title41": "将升级文件下载到本地电脑，手动升级路由器固件",
 		"title42": "多WAN设置",
 		"title43": " ",
+		"title44": "客用Wi-Fi",
 		"upnp.file": "src/pages/Advance/Systemsetup/UPnP.jsx",
 		"upnp0": "编号",
 		"upnp1": "应用名称",

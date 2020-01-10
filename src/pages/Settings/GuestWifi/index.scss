@@ -1,0 +1,76 @@
+.guest-wifi {
+	
+	.guest-padding {
+		padding: 0 60px;
+	}
+
+	.guest-button {
+		margin: 0 60px;
+		margin-bottom: 30px;
+	}
+
+	.guest-form {
+		padding: 0;
+	}
+	.guest-close-content {
+		font-size: 14px;
+		padding-left: 60px;
+		margin-top: 16px;
+		color:rgba(51,60,79,1);
+	}
+
+	.guest-select {
+		padding: 0 60px;
+		margin-bottom: 20px;
+	}
+
+	.guest-hour {
+		height: 40px;
+		line-height: 40px;
+		margin-left: -48px;
+		margin-bottom: 0;
+		z-index: 1;
+		opacity: 0.5;
+	}
+
+	.guest-weekly {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+
+	.guest-password {
+		color: orange;
+	}
+
+	.message-access {
+		font-size: 14px;
+		margin-left: 18px;
+		color: rgba(97,116,241,1);
+		text-decoration: underline;
+	}
+
+	.ad-title {
+		font-size: 16px;
+		font-weight: 500;
+		margin: 24px 0;
+		color: rgba(51,60,79,1);
+	}
+
+	.guest-upload {
+		margin: 24px 0;
+		.ant-btn span {
+			color: rgba(51,60,79,1);
+		}
+		.guest-tip {
+			font-size:12px;
+			font-family:PingFangSC-Regular,PingFang SC;
+			font-weight:400;
+			color:rgba(173,177,185,1);
+		}
+	}
+}
+
+.message-service {
+	margin-bottom: 24px;
+}
