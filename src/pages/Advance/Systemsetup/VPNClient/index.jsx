@@ -32,15 +32,15 @@ class VPNClient extends React.Component {
 		const { serviceAddress, userName, password, buttonLoading } = this.state;
 		const staticInfo = [
 			{
-				label: '当前状态: ',
+				label: '当前状态：',
 				value: '',
 			},
 			{
-				label: 'IP地址: ',
+				label: 'IP地址：',
 				value: '0.0.0.0',
 			},
 			{
-				label: 'DNS服务器: ',
+				label: 'DNS服务器：',
 				value: '0.0.0.0',
 			},
 		];
@@ -72,7 +72,7 @@ class VPNClient extends React.Component {
 		return (
 			<SubLayout className="settings">
 				<Form className='vpnClient-settings'>
-					<PanelHeader title='网络信息' checkable={false} checked={true} />
+					<PanelHeader title='当前上网信息' checkable={false} checked={true} />
 					{
 						staticInfo.map(item => (
 							<div className='info-item' key={item.label}>
@@ -81,7 +81,7 @@ class VPNClient extends React.Component {
 							</div>
 						))
 					}
-					<PanelHeader title='信息设置' checkable={false} checked={true} />
+					<PanelHeader title='VPN设置' className='panelHeader-setting' checkable={false} checked={true} />
 					{
 						inputInfo.map(item => (
 							<div className='info-item' key={item.label}>
