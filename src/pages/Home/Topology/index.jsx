@@ -229,21 +229,23 @@ export default class Topology extends React.Component {
 										<div />
 										<div />
 									</div>
-									<Button
-										onClick={this.startDiagnose}
-										className={
-											getQuickStartVersion() === 'abroad'
-												? 'diagnose-us'
-												: 'diagnose'
-										}
-									>
-										<span>
-											{intl.get(
-												MODULE,
-												0
-											) /*_i18n:诊断故障*/}
-										</span>
-									</Button>
+									<div className='dashline-button'>
+										<Button
+											onClick={this.startDiagnose}
+											className={
+												getQuickStartVersion() === 'abroad'
+													? 'diagnose-us'
+													: 'diagnose'
+											}
+										>
+											<span>
+												{intl.get(
+													MODULE,
+													0
+												) /*_i18n:诊断故障*/}
+											</span>
+										</Button>
+									</div>
 								</div>
 							)}
 

@@ -181,10 +181,9 @@ i.dot{
     .editable-cell {
         position: relative;
         .editable-cell-value-wrap {
-            width: 254px;
             cursor: pointer;
             .device {
-                max-width: 140px;
+                max-width: 200px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -203,6 +202,7 @@ i.dot{
             font-size: 12px;
             text-align: center;
             border-radius: 4px;
+            margin-left: 2px;
             }
             .sunmi {
             color:  #FDB784;
@@ -219,7 +219,7 @@ i.dot{
             font-size: 14px;
             color: #333C4F;
             line-height: 20px;
-            margin-left: -14px;
+            margin-left: -8px;
             }
         }
         .ant-table-column-sorter{
