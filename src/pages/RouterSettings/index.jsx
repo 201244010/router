@@ -36,7 +36,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'localUpgrade', type: 'local', color: '#448BE9', content: intl.get(MODULE, 24)/*_i18n:本地系统升级*/}, 
             {route: 'recovery', type: 'factoryreset', color: '#E96044', content: intl.get(MODULE, 8)/*_i18n:恢复出厂设置*/},  
             {route: 'reboot', type: 'reboot', color: '#E96044', content: intl.get(MODULE, 9)/*_i18n:重启路由器*/}, 
-            {route: 'customrestart', type: 'restart',color: '#47D164', content: intl.get(MODULE, 22)/*_i18n:自定义时间重启*/},
+            {route: 'customrestart', type: 'restart',color: '#47D164', content: intl.get(MODULE, 22)/*_i18n:闲时重启*/},
         ];
 
 		if (getQuickStartVersion() === 'abroad') {
