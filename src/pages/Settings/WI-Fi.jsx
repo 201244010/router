@@ -417,7 +417,7 @@ export default class WIFI extends React.Component {
                     resVisibile: true,
                     result: true,
                 });
-            }, 15000);
+            }, 10000);
         }else{
             this.setState({
                 visibile: false,
@@ -457,7 +457,7 @@ export default class WIFI extends React.Component {
                     resVisibile: true,
                     result: true,
                 });
-            }, 15000);
+            }, 10000);
         }else{
             this.setState({
                 visibile: false,
