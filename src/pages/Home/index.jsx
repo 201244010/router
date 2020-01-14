@@ -185,7 +185,8 @@ export default class Home extends React.Component {
 				{ opcode: 'CLIENT_ALIAS_GET' },
 				{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
 				{ opcode: 'ROUTE_GET' },
-				{ opcode: 'SUNMIMESH_ROLE_GET' }
+				{ opcode: 'SUNMIMESH_ROLE_GET' },
+				{ opcode: 'MOBILE_STATS_GET' },
 			],
 			{ ignoreErr: true }
 		);
@@ -306,13 +307,14 @@ export default class Home extends React.Component {
 		const totalPercent = sunmi + whitelist + normal;
 
 		const { count, wans } = data[3].result;
-		const online = !wans.every(item => item.online === false);
+		const { status } = data[8].result.mobile;
+		const online = (!wans.every(item => item.online === false)) || (status === 'online');
 		const tips = [];
 		for(let i = 0; i < count; i++) {
 			if(i === 0) {
 				tips.push(`${intl.get(MODULE, 34) /*_i18n:默认WAN口*/}${wans[i].online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
 			} else {
-				tips.push(`WAN ${i+1}${intl.get(MODULE, 37) /*_i18n:口*/}${wans[i].online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
+				tips.push(`WAN ${i}${intl.get(MODULE, 37) /*_i18n:口*/}${wans[i].online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
 			}
 		}
 		const onlineTip = tips.join('，');

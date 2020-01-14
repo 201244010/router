@@ -3,6 +3,7 @@ import { Base64 } from 'js-base64';
 import { Select, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
 import { checkSameNet } from '~/assets/common/check';
+import ModalLoading from '~/components/ModalLoading';
 import Static from './Static';
 import Dhcp from './Dhcp';
 import PPPoE from './PPPoE';
@@ -63,6 +64,7 @@ export default class NetworkTemple extends React.Component {
         pppoeLoading: false,
         dhcpLoading: false,
         staticLoading: false,
+        visibile: false,
     };
 
     onTypeChange = value => {
@@ -144,7 +146,8 @@ export default class NetworkTemple extends React.Component {
         };
         const wanInfo = field[type];
         this.setState({
-            [field[type].loading]: true
+            [field[type].loading]: true,
+            visibile: true,
         });
 
         if(type === 'static' && ((staticIP.ipv4).join('.') === (staticIP.gateway).join('.'))){
@@ -175,7 +178,7 @@ export default class NetworkTemple extends React.Component {
 					data: { ports }
 				}
 			);
-		} 
+		}
         const response = await common.fetchApi(
             {
                 opcode : 'NETWORK_MULTI_WAN_SET',
@@ -188,7 +191,8 @@ export default class NetworkTemple extends React.Component {
             this.getWanInfo();
         } 
         this.setState({
-            [field[type].loading]: false
+            [field[type].loading]: false,
+            visibile: false,
         }); 
     }
 
@@ -276,7 +280,7 @@ export default class NetworkTemple extends React.Component {
                         service: pppoeService,
                     },
                     info: {dial_type: dial_type, ...info},
-                    wansLen: data[0].result.wans.length,
+                    wansLen: data[0].result.wans.length - 1,
                 });
                 this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
                 return dial_type;
@@ -326,7 +330,8 @@ export default class NetworkTemple extends React.Component {
             [
                 {
                     label: intl.get(MODULE, 22)/*_i18n:联网状态：*/,
-                    content: online ? `${intl.get(MODULE, 19)/*_i18n:已联网*/}（${isp}）` : intl.get(MODULE, 20)/*_i18n:未联网*/,
+                    content: online ? intl.get(MODULE, 19)/*_i18n:已联网*/ : intl.get(MODULE, 20)/*_i18n:未联网*/,
+                    // content: online ? `${intl.get(MODULE, 19)/*_i18n:已联网*/}（${isp}）` : intl.get(MODULE, 20)/*_i18n:未联网*/,
                 },
                 {
                     label: intl.get(MODULE, 23)/*_i18n:上网方式：*/,
@@ -408,7 +413,11 @@ export default class NetworkTemple extends React.Component {
                             buttonLoading={staticLoading}
                         />
                     }
-                </section>  
+                </section>
+                <ModalLoading
+                    visible={visibile}
+                    tip={intl.get(MODULE, 50)/*_i18n:正在配置WAN口信息,请稍等...*/}
+                />
             </React.Fragment>
         );
     }
