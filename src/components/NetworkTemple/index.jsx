@@ -315,7 +315,7 @@ export default class NetworkTemple extends React.Component {
 
     render(){
         const { wanNum, port } = this.props;
-        const { dhcp, staticIP, pppoe, info, type, wansLen, pppoeLoading, dhcpLoading, staticLoading } = this.state;
+        const { dhcp, staticIP, pppoe, info, type, wansLen, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
         const {
             online = false,
             dial_type = '',
