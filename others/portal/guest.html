@@ -25,9 +25,13 @@
                 <input id="i6" class='inputw' onkeyup="this.value=this.value.replace(/\D/g,'')" type="tel" maxlength="1">
                 <input id="i7" class='inputw' onkeyup="this.value=this.value.replace(/\D/g,'')" type="tel" disabled maxlength="1">
             </div>
-			<button id="confirm" class='guest-button'>CONFIRM</button>
+            <div class='guest-footer'>
+                <button id="confirm" class='guest-button'>CONFIRM</button>
+            </div>
+            <div class="guest-toast-div">
+                <div class="toast-guest not-show" id="toast"></div>
+            </div> 
         </div>
-        <div class="toast-guest not-show" id="toast"></div>		
         <script type="application/javascript" src="./js/flexible.js"></script>
 		<script type="application/javascript" src="./js/guest.js"></script>
 		<script type="application/javascript" src="./js/util.js"></script>
