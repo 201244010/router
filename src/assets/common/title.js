@@ -76,8 +76,8 @@ export const getTitle = () => {
 			"titleTip": intl.get(MODULE, 35)/*_i18n:端口转发可以转发一个网络端口从一个网络节点到另一个网络节点*/
             },
         'customrestart': { 
-            "title" : intl.get(MODULE, 36)/*_i18n:自定义时间升级*/,
-            "titleTip": intl.get(MODULE, 37)/*_i18n:路由器可以在指定空闲时间点自动升级最新固件*/
+            "title" : intl.get(MODULE, 36)/*_i18n:闲时重启*/,
+            "titleTip": intl.get(MODULE, 37)/*_i18n:路由器可以在指定空闲时间点重启路由器*/
             },
         'mobileNetwork': {
             "title" : intl.get(MODULE, 38)/*_i18n:移动网络设置*/,
