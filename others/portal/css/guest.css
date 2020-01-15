@@ -95,7 +95,8 @@
 }
 
 .guest-input {
-    margin: 0 0.5833rem;
+    width: 9rem;
+    margin: auto;
     display: flex;
     justify-content: space-between;
 }
@@ -124,15 +125,17 @@
     line-height: 32px;
 }
 
+.guest-footer {
+    text-align: center;
+}
+
 .guest-button {
 	font-family: PingFang SC, Roboto-Regular;
     color: #FF6000;
-	text-align: center;
 	background: #FFFFFF;
     border-radius: 22px;
     width: 8.8889rem;
     height: 1.2222rem;
-    margin: 0 0.5833rem;
     padding: 0;
 	border: none;
     font-size: 0.4444rem;	
@@ -147,4 +150,23 @@
 	color: rgba(255,96,0,0.60);
 	opacity: 0.6;
 	background: #FFFFFF;
+}
+
+.guest-toast-div {
+    width: 100%;
+    position: fixed;
+    bottom: 2.5rem;
+}
+
+.toast-guest {
+    width: 7.5rem;
+    padding: 0.25rem 0.25rem;
+    margin: 0 auto;
+    font-size: 0.50rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background-color: #666;
+    color: #fff;
 }
