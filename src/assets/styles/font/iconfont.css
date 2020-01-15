@@ -691,3 +691,7 @@
   content: "\e6e0";
 }
 
+.ui-icon-password:before {
+  content: "\e6e1";
+}
+

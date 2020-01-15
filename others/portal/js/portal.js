@@ -54,10 +54,11 @@ var connectBtn = document.getElementById('connectBtn');
 var connectText = document.getElementById('connectText');
 var protocol = document.getElementById('protocol');
 var toast = document.getElementById('toast');
-var nameElement = document.getElementById('name');
+// var nameElement = document.getElementById('name');
 var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
-var inputsElement = document.getElementById('inputs');
+var passwordInputsElement = document.getElementById('password-inputs');
+var smsInputsElement = document.getElementById('sms-inputs');
 var logoElement = document.getElementById('logo');
 var agreementElement = document.getElementById('agreement');
 var lawMaskElement = document.getElementById('lawMask');
@@ -78,7 +79,7 @@ window.onload = function () {
                 var weixin = response.data[0].result.portal.weixin;
                 var sms = response.data[0].result.portal.sms;
                 if (Number(weixin.enable) === 1 && isMobile()) {
-                    inputsElement.style.display = 'none';
+                    smsInputsElement.style.display = 'none';
                     document.getElementById('tip').style.display = 'block';
                     connectBtn.classList.remove('btn-disabled');
                     btnDisabled = false;
@@ -88,7 +89,7 @@ window.onload = function () {
                         data: weixin
                     };
                 } else if (Number(sms.enable) === 1) {
-                    inputsElement.style.display = 'block';
+                    smsInputsElement.style.display = 'block';
                     document.getElementById('tip').style.display = 'none';
                     smsDataToPage(sms);
                     enable = {
@@ -96,7 +97,7 @@ window.onload = function () {
                         data: sms
                     };
                 } else {
-                    inputsElement.style.display = 'none';
+                    smsInputsElement.style.display = 'none';
                     document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
                     + ((weixin.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
                     logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
@@ -325,13 +326,13 @@ function validate() {
 
 function weixinDataToPage(data) {
     commonDataToPage(data);
-    nameElement.innerText = data.logo_info || '欢迎';
+    // nameElement.innerText = data.logo_info || '欢迎';
     connectText.innerText = data.login_hint || '连接Wi-Fi';
 }
 
 function smsDataToPage(data) {
     commonDataToPage(data);
-    nameElement.innerText = data.logo_info || '欢迎';
+    // nameElement.innerText = data.logo_info || '欢迎';
     connectText.innerText = data.login_hint || '连接Wi-Fi';
 }
 
