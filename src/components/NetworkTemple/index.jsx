@@ -416,7 +416,7 @@ export default class NetworkTemple extends React.Component {
                 </section>
                 <ModalLoading
                     visible={visibile}
-                    tip={intl.get(MODULE, 50)/*_i18n:正在配置WAN口信息,请稍等...*/}
+                    tip={intl.get(MODULE, 50)/*_i18n:正在配置，请稍后...*/}
                 />
             </React.Fragment>
         );
