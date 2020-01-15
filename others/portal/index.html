@@ -15,10 +15,17 @@
                 <div id="logo">
                     <!-- <img id="logo"> -->
                 </div>
-                <h2 class="name" id="name"></h2>
-                <p class="desc" id="desc"></p>
+                <!-- <h2 class="name" id="name">名称</h2> -->
+                <p class="desc" id="desc">描述</p>
                 <div id="connecting">
-                    <div class="inputs show" id="inputs" style="display: none;">
+                    <div class="inputs show" id="password-inputs" style="display: none;">
+                        <div class="input-wrap">
+                            <i class="pre-icon iconfont icon-password"></i>
+                            <input id="mobileInput" type="text" placeholder="请输入Wi-Fi密码" maxlength="11">
+                            <span id="mobileError" class="not-show">Wi-Fi密码错误<i id="cleanIcon" class="iconfont icon-clean"></i></span>
+                        </div>
+                    </div>
+                    <div class="inputs show" id="sms-inputs" style="display: none;">
                         <div class="input-wrap">
                             <i class="pre-icon iconfont icon-number"></i>
                             <input id="mobileInput" type="text" placeholder="请输入手机号" maxlength="11">
@@ -35,16 +42,16 @@
                         </div>
                     </div>
                     <div class="btn btn-submit btn-disabled" id="connectBtn">
-                        <a class="btn-text" href="javascript: void(0)" id="connectText">连接Wi-Fi</a>
+                        <a class="btn-text" href="javascript: void(0)" id="connectText">一键连网</a>
                     </div>
-                    <div id="tip">
+                    <!-- <div id="tip">
                         <span>如无法正常跳转至微信，请打开手机浏览器<br />输入<a href="http://sunmi.com">http://sunmi.com</a>尝试</span>
                     </div>
                     <div class="protocol">
                         <input type="checkbox" id="protocolInput" checked/>
                         <label for="protocolInput" id="protocol"></label>
                         <span>我已阅读并同意《<a href="javascript: void (0)" class="agreement" id="agreement">上网协议</a>》</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

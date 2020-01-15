@@ -12,7 +12,7 @@ body {
     bottom: 50px;
 }
 .content-open-wifi {
-    margin-top: 100px;
+    margin-top: 180px;
 }
 #logo {
     width: 80px;
@@ -33,14 +33,16 @@ body {
     overflow: hidden;
 }
 .name {
+    min-height: 28px;
     margin-top: 20px;
     font-size: 20px;
     color: #fff;
     text-align: center;
 }
 .desc {
+    min-height: 44px;
     width: 480px;
-    margin: 40px auto 0;
+    margin: 48px auto 40px;
     font-size: 32px;
     color: #fff;
     text-align: center;
@@ -55,14 +57,11 @@ body {
 .inputs .input-wrap .pre-icon {
     position: absolute;
     left: 16px;
-    font-size: 22px;
+    font-size: 20px;
     color: #ADB1B9;
 }
-.inputs .input-wrap:nth-child(1) .pre-icon {
-    top: 26px;
-}
-.inputs .input-wrap:nth-child(2) .pre-icon {
-    top: 26px;
+.inputs .input-wrap .pre-icon {
+    top: 11px;
 }
 #cleanIcon, #cleanCodeIcon {
     margin-left: 8px;
@@ -73,7 +72,7 @@ body {
     width: 100%;
     height: 42px;
     background: #fff;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 16px;
     text-indent: 44px;
     color: #333C4F;
@@ -81,11 +80,11 @@ body {
 .inputs input.error {
     border: 2px solid #D33419;
 }
-.inputs input:nth-child(1) {
-    margin-top: 40px;
+.inputs .input-wrap:nth-child(1) {
+    margin-bottom: 16px;
 }
-.inputs input:nth-child(2) {
-    margin-top: 16px;
+.inputs .input-wrap:nth-child(2) {
+    margin-bottom: 24px;
 }
 .inputs span {
     position: absolute;
@@ -105,7 +104,7 @@ body {
     height: 44px;
     line-height: 44px;
     background: #FB8632;
-    border-radius: 4px;
+    border-radius: 8px;
     text-align: center;
     margin: 24px auto 0;
     font-size: 0;
@@ -115,7 +114,11 @@ body {
     color: #fff;
 }
 .btn.btn-disabled {
-    background: #999;
+    background: rgba(230,232,235,1);
+
+}
+.btn.btn-disabled .btn-text {
+    color: #A1A7B3;
 }
 #tip{
     display: none;
@@ -181,7 +184,8 @@ body {
     visibility: hidden;
 }
 #codeGetter {
-    font-size: 16px;
+    font-size: 14px;
+    color: #CCCCCC;
     cursor: pointer;
 }
 .footer {
