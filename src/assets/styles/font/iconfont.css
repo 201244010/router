@@ -663,3 +663,31 @@
   content: "\e603";
 }
 
+.ui-icon-Vpn:before {
+  content: "\e6da";
+}
+
+.ui-icon-Guest:before {
+  content: "\e6db";
+}
+
+.ui-icon-dslite:before {
+  content: "\e6dc";
+}
+
+.ui-icon-p:before {
+  content: "\e6dd";
+}
+
+.ui-icon-dscombo:before {
+  content: "\e6de";
+}
+
+.ui-icon-ftmini:before {
+  content: "\e6df";
+}
+
+.ui-icon-dmini:before {
+  content: "\e6e0";
+}
+
