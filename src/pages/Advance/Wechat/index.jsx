@@ -144,7 +144,7 @@ export default class Wechat extends React.Component {
                     resVisibile: true,
                     result: true,
                 });
-            },15000);
+            },10000);
         } else {
             this.setState({
                 loadingVisible: false,
