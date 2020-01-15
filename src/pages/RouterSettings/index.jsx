@@ -26,7 +26,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'portforwarding', type: 'portforwarding', color: '#6D6BD8', content: intl.get(MODULE, 20)/*_i18n:端口转发*/},
             {route: 'upnp', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 19)/*_i18n:UPnP设置*/},
             // {route: 'systemsetup', type: 'systemsetup', content: intl.get(MODULE, 4)/*_i18n:攻击防护*/}
-            {route: 'vpnClient', type: 'upnp', color: '#3CA8E7', content: intl.get(MODULE, 26)/*_i18n:VPN客户端*/},
+            {route: 'vpnClient', type: 'Vpn', color: '#6D6BD8', content: intl.get(MODULE, 26)/*_i18n:VPN客户端*/},
         ];
 
         this.systemList = [
