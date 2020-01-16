@@ -1,12 +1,10 @@
 .guest-wifi {
-	
-	.guest-padding {
-		padding: 0 60px;
-	}
+	position: relative;
 
 	.guest-button {
-		margin: 0 60px;
-		margin-bottom: 30px;
+		border-top: 1px solid #ececec;
+		padding: 30px 60px 30px 0;
+		margin-top: 40px;
 	}
 
 	.guest-form {
@@ -14,13 +12,11 @@
 	}
 	.guest-close-content {
 		font-size: 14px;
-		padding-left: 60px;
 		margin-top: 16px;
 		color:rgba(51,60,79,1);
 	}
 
 	.guest-select {
-		padding: 0 60px;
 		margin-bottom: 20px;
 	}
 
@@ -53,7 +49,7 @@
 	.ad-title {
 		font-size: 16px;
 		font-weight: 500;
-		margin: 24px 0;
+		margin-bottom: 24px;
 		color: rgba(51,60,79,1);
 	}
 
@@ -68,6 +64,309 @@
 			font-weight:400;
 			color:rgba(173,177,185,1);
 		}
+	}
+
+	.guest-border-line {
+		position: absolute;
+		width: 1px;
+		height: 400px;
+		top: 449px;
+		left: 530px;
+		background:rgba(236,236,236,1);
+	}
+
+	.guest-portal {
+		position: absolute;
+		top: 403px;
+		left: 591px;
+	}
+
+	.guest-border-line-message {
+		position: absolute;
+		width: 1px;
+		height: 400px;
+		top: 713px;
+		left: 530px;
+		background:rgba(236,236,236,1);
+	}
+
+	.guest-portal-message {
+		position: absolute;
+		top: 665px;
+		left: 614px;
+	}
+
+	.guest-phone {
+		margin-top: 30px;
+		width: 600px;
+		height: 900px;
+		background:rgba(216,216,216,1);
+		border-radius: 24px;
+		overflow: hidden;
+		transform: scale(0.5);
+		transform-origin: left top;
+		.guest-web-button {
+			margin: 0 auto;
+			width: 528px;
+			height: 72px;
+			background: linear-gradient(135deg,rgba(255,127,0,1) 0%,rgba(255,96,0,1) 100%);
+			border-radius: 12px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 32px;
+			span {
+				font-size:24px;
+				color: rgba(255,255,255,1);
+				line-height: 24px;
+			}
+		}
+	
+		.guest-password {
+			width: 528px;
+			height: 76px;
+			margin: 0 auto;
+			margin-top: 32px;
+			margin-bottom: 32px;
+			position: relative;
+			background:rgba(255,255,255,1);
+			border-radius: 14px;
+			display: flex;
+			align-items: center;
+			// justify-content: center;
+			.guest-password-icon {
+				width: 36px;
+				height: 36px;
+				margin-left: 10px;
+				background-size: contain;
+				background-image: url('../../../assets/images/lock.png');
+			}
+			.guest-phone-icon {
+				width: 36px;
+				height: 36px;
+				margin-left: 10px;
+				background-size: contain;
+				background-image: url('../../../assets/images/phone.png');
+			}
+			.guest-code-icon {
+				width: 36px;
+				height: 36px;
+				margin-left: 10px;
+				background-size: contain;
+				background-image: url('../../../assets/images/code.png');
+			}
+			span {
+				font-size: 24px;
+				margin-left: 10px;
+				color:rgba(51,60,79,0.3);
+			}
+		}
+		.guest-margin {
+			margin-bottom: 24px;
+		}
+		.guest-code {
+			margin-top: 24px;
+		}
+		.guest-logo {
+			width: 106px;
+			height: 106px;
+			border-radius: 50%;
+			background:rgba(255,105,0,1);
+			border:1px solid rgba(255,255,255,1);
+			margin-top: 74px;
+			margin-left: 38px;
+		}
+		.guest-text {
+			margin: 0 auto;
+			margin-top: 56px;
+			min-height: 44px;
+			line-height: 44px;
+			text-align: center;
+			font-size: 44px;
+			width: 496px;
+			color:rgba(255,255,255,1);
+			word-wrap:break-word;
+		}
+		.guest-copyright {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 56px;
+			bottom: 0px;
+			width: 100%;
+			// margin-left: 
+			margin: 0 auto;
+			.guest-copyright-icon {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-image: url('../../../assets/images/copyright.png');
+			}
+			span {
+				margin-left: 8px;
+				font-size: 20px;
+				color:rgba(173,177,185,1);
+			}
+		}
+	
+		.guest-message-block {
+			margin-top: 24px;
+			width: 80%;
+		}
+	
+		.guest-left {
+			display: inline-block;
+		}
+	
+		.guest-right {
+			display: inline-block;
+			margin-left: 207px;
+		}
+	}
+	
+	.guest-web {
+		margin-top: 15px;
+		width: 508px;
+		height: 285px;
+		// background: blue;
+		position: relative;
+		background:rgba(216,216,216,1);
+		// background:rgba(0,0,0,1);
+		opacity: 0.5;
+		border-radius: 12px;
+		overflow: hidden;
+		.guest-web-button {
+			margin: 0 auto;
+			width: 128px;
+			height:16px;
+			background: linear-gradient(135deg,rgba(255,127,0,1) 0%,rgba(255,96,0,1) 100%);
+			border-radius:4px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				font-size:12px;
+				transform: scale(0.5);
+				color: rgba(255,255,255,1);
+				line-height:8px;
+			}
+		}
+	
+		.guest-password {
+			width: 126px;
+			height: 16px;
+			margin: 0 auto;
+			margin-top: 17px;
+			margin-bottom: 11px;
+			position: relative;
+			background:rgba(255,255,255,1);
+			border-radius:4px;
+			display: flex;
+			align-items: center;
+			// justify-content: center;
+			.guest-password-icon {
+				width: 8px;
+				height: 8px;
+				margin-left: 6px;
+				background-size: contain;
+				background-image: url('../../../assets/images/lock.png');
+			}
+			.guest-phone-icon {
+				width: 8px;
+				height: 8px;
+				margin-left: 6px;
+				background-size: contain;
+				background-image: url('../../../assets/images/phone.png');
+			}
+			.guest-code-icon {
+				width: 8px;
+				height: 8px;
+				margin-left: 6px;
+				background-size: contain;
+				background-image: url('../../../assets/images/code.png');
+			}
+			label {
+				font-size: 12px;
+				margin-left: -20px;
+				transform: scale(0.5);
+				color:rgba(51,60,79,0.3);
+			}
+			span {
+				font-size: 12px;
+				margin-left: -16px;
+				transform: scale(0.5);
+				color:rgba(51,60,79,0.3);
+			}
+		}
+		.guest-margin {
+			margin-bottom: 7px;
+		}
+		.guest-code {
+			margin-top: 7px;
+		}
+		.guest-logo {
+			width:32px;
+			height:32px;
+			border-radius: 50%;
+			background:rgba(255,105,0,1);
+			border:1px solid rgba(255,255,255,1);
+			margin: 0 auto;
+			margin-top: 72px;
+		}
+		.guest-text {
+			margin: 0 auto;
+			margin-top: 18px;
+			margin-bottom: 16px;
+			min-height: 22px;
+			text-align: center;
+			font-size: 24px;
+			width: 400px;
+			color:rgba(255,255,255,1);
+			transform: scale(0.5);
+			word-wrap:break-word;			
+		}
+		.guest-copyright {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 22px;
+			bottom: 0px;
+			width: 100%;
+			margin: 0 auto;
+			transform: scale(0.5);
+			.guest-copyright-icon {
+				display: inline-block;
+				width: 12px;
+				height: 12px;
+				background-size: contain;
+				background-image: url('../../../assets/images/copyright.png');
+			}
+			span {
+				margin-left: 4px;
+				font-size: 12px;
+				color:rgba(173,177,185,1);
+			}
+		}
+	}
+
+	.guest-message-block {
+		margin-top: 24px;
+		width: 80%;
+		display: flex;
+   		flex-wrap: wrap;
+	}
+
+	.guest-left {
+		display: inline-block;
+	}
+
+	.guest-right {
+		display: inline-block;
+		margin-left: 207px;
 	}
 }
 
