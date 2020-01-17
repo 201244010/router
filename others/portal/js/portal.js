@@ -69,9 +69,6 @@ var enable = null;
 var btnDisabled = true;
 
 window.onload = function () {
-    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
-    + (("./bg-min.png") + "?r=") + Math.random() + ")";
-    logoElement.style.backgroundImage = 'url('+ ('./logo.png') +'?r=' + Math.random()+')';
     ajax({
         type: 'POST',
         url: '/api/AUTH_PORTAL',
