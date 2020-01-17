@@ -13,7 +13,7 @@ body {
     width: 100%;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
-    margin-top: 1.6rem;
+    margin-top: 2.9333rem;
 }
 #logo {
     width: 1.6rem;
@@ -52,6 +52,7 @@ body {
     text-align: center;
     margin-top: 0.5333rem;
     font-size: 0;
+    cursor: pointer;
 }
 .btn .btn-text {
     font-size: 0.43rem;
@@ -206,8 +207,11 @@ body {
     border-radius: 0.25rem;
     font-size: 0.3rem;
 }
+#success {
+    margin-bottom: 0.8rem;
+}
 #success p:nth-child(1) {
-    margin-top: 0.53rem;
+    margin-top: 1.0667rem;
     font-size: 0.75rem;
     color: #fff;
 }

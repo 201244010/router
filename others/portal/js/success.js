@@ -1,4 +1,4 @@
-var nameElement = document.getElementById('name');
+// var nameElement = document.getElementById('name');
 //var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var logoElement = document.getElementById('logo');
@@ -38,7 +38,7 @@ function commonDataToPage(data) {
         logoIcon.style.display = 'block';
     }
     serviceElement.innerText = data.statement || '欢迎';
-    nameElement.innerText = data.logo_info || '欢迎';
+    // nameElement.innerText = data.logo_info || '欢迎';
 }
 
 function countDown(time) {
