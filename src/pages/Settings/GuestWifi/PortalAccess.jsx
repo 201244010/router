@@ -3,64 +3,71 @@ import { Select, Modal, Upload, Icon, Button, Radio, message } from 'antd';
 import Form from '~/components/Form';
 import GuestWeb from './GuestWeb';
 import GuestPhone from './GuestPhone';
-const { FormItem, ErrorTip, Input } = Form;
 import {
 	VALID_NETWORK_TIME,
-	EMPTY_NETWORK_TIME
+	EMPTY_NETWORK_TIME,
+	NONE,
+	PWD_AUTH,
+	SMS
 } from '~/assets/common/constants';
+const { FormItem, ErrorTip, Input } = Form;
 
+const MODULE = 'portalaccess';
 export default class PortalAccess extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			imgUrl: '',
+			logoUrl: ''
 		};
 	}
 
-	beforeUpload = (file) => {
-		console.log(file);
-		const isJpg = file.type === "image/jpeg";
-		console.log(isJpg);
+	beforeUpload = file => {
+		// console.log(file);
+		const isJpg = file.type === 'image/jpeg';
+		// console.log(isJpg);
 		// const isLt128K = file.size / 1024 < 128;
-        if (!isJpg) {
+		if (!isJpg) {
 			message.error('只支持.jpg后缀的图片');
 		}
-		
+
 		// if (!isLt128K) {
 		// 	message.error('图片大小不超过128k');
 		// }
 		// console.log(isJpg, isLt128K, isJpg && isLt128K);
-        return isJpg;
-    }  
+		return isJpg;
+	};
 
 	getBase64 = (img, callback) => {
 		const reader = new FileReader();
 		reader.addEventListener('load', () => callback(reader.result));
 		reader.readAsDataURL(img);
-	}
+	};
+
+	onRemove = () => {};
 
 	handleUploadChange = (info, fileKey, imgKey) => {
 		let fileList = info.fileList;
 		console.log(info);
 		const { setFile } = this.props;
 		setFile(fileKey, fileList);
-        const file = info.file;
+		const file = info.file;
 		if (info.file.status === 'uploading') {
 			// this.setState({ loading: true });
 			return;
-		  }
-		  if (info.file.status === 'done') {
+		}
+		if (info.file.status === 'done') {
 			// Get this url from response in real world.
 			this.getBase64(info.file.originFileObj, imgUrl =>
-			  this.setState({
-				imgUrl
-			  }),
+				this.setState({
+					[imgKey]: imgUrl
+				})
 			);
-		  }
-	}
+		}
+	};
 
 	render() {
-		const { imgUrl } = this.state;
+		const { imgUrl, logoUrl } = this.state;
 		const {
 			onRadioChange,
 			onSelectChange,
@@ -100,7 +107,7 @@ export default class PortalAccess extends React.Component {
 				logoFileList,
 				bgFileList
 			},
-			onChange,
+			onChange
 		} = this.props;
 		const messageMap = [
 			{
@@ -108,98 +115,98 @@ export default class PortalAccess extends React.Component {
 				description: '30s-180s',
 				tip: messageTimeTip,
 				value: messageTime,
-				label: '验证码有效时长'
+				label: intl.get(MODULE, 0)
 			},
 			{
 				type: 'appKey',
-				description: '1~50个字符',
+				description: intl.get(MODULE, 1),
 				maxLength: 50,
 				tip: appKeyTip,
 				value: appKey,
-				placeholder: '请输入SMK_App_ID',
+				placeholder: intl.get(MODULE, 2),
 				label: 'AppKey'
 			},
 			{
 				type: 'appSecret',
-				description: '1~50个字符',
+				description: intl.get(MODULE, 1),
 				maxLength: 50,
 				tip: appSecretTip,
 				value: appSecret,
-				placeholder: '请输入APP Secret',
+				placeholder: intl.get(MODULE, 3),
 				label: 'APP Secret'
 			},
 			{
 				type: 'modelId',
-				description: '1~50个字符',
+				description: intl.get(MODULE, 1),
 				maxLength: 50,
 				tip: modelIdTip,
 				value: modelId,
-				placeholder: '请输入模板ID',
-				label: '模板ID'
+				placeholder: intl.get(MODULE, 4),
+				label: intl.get(MODULE, 5)
 			},
 			{
 				type: 'sign',
-				description: '1~50个字符',
+				description: intl.get(MODULE, 1),
 				maxLength: 50,
 				tip: signTip,
 				value: sign,
-				placeholder: '请输入签名名称',
-				label: '签名名称'
+				placeholder: intl.get(MODULE, 6),
+				label: intl.get(MODULE, 7)
 			}
 		];
 		const portalMap = [
 			{
 				type: 'welcome',
-				description: '1~30个字符',
+				description: intl.get(MODULE, 8),
 				tip: welcomeTip,
 				maxLength: 30,
 				value: welcome,
-				label: '欢迎语'
+				label: intl.get(MODULE, 9)
 			},
 			{
 				type: 'connectButton',
-				description: '1~15个字符',
+				description: intl.get(MODULE, 10),
 				tip: connectButtonTip,
 				maxLength: 15,
 				value: connectButton,
-				label: '连接按钮文案'
+				label: intl.get(MODULE, 11)
 			},
 			{
 				type: 'version',
-				description: '1~30个字符',
+				description: intl.get(MODULE, 8),
 				tip: versionTip,
 				maxLength: 30,
 				value: version,
-				label: '版权声明'
+				label: intl.get(MODULE, 12)
 			}
 		];
-		console.log(imgUrl);
+		// console.log(imgUrl);
 		return (
 			<div>
-				<div className={ portalValue !== 3 ? "message-service" : ''}>
-					<div>Portal认证</div>
+				<div className={portalValue !== SMS ? 'message-service' : ''}>
+					<div>{intl.get(MODULE, 13)}</div>
 					<Select
 						style={{ width: 320 }}
 						onChange={value => onSelectChange('portalValue', value)}
 						defaultValue={portalValue}
 					>
-						<Option value={1}>无密码</Option>
-						<Option value={2}>普通密码</Option>
-						<Option value={3}>短信认证</Option>
+						<Option value={NONE}>{intl.get(MODULE, 14)}</Option>
+						<Option value={PWD_AUTH}>{intl.get(MODULE, 15)}</Option>
+						<Option value={SMS}>{intl.get(MODULE, 16)}</Option>
 					</Select>
-					{portalValue === 3 && (
+					{portalValue === SMS && (
 						<div className="guest-message-block">
 							<div className="guest-left">
-								<div>短信服务商</div>
+								<div>{intl.get(MODULE, 17)}</div>
 								<Select
 									style={{ width: 320 }}
 									onChange={this.onChange}
 									defaultValue={messageValue}
 								>
-									<Option value={1}>阿里云</Option>
-									<Option value={2}>腾讯云</Option>
-									<Option value={3}>百度云</Option>
-									<Option value={4}>网易云信</Option>
+									<Option value={'ali'}>{intl.get(MODULE, 18)}</Option>
+									<Option value={'tencent'}>{intl.get(MODULE, 19)}</Option>
+									<Option value={'baidu'}>{intl.get(MODULE, 20)}</Option>
+									<Option value={'nets'}>{intl.get(MODULE, 21)}</Option>
 								</Select>
 							</div>
 							{messageMap.map((item, index) => {
@@ -244,50 +251,64 @@ export default class PortalAccess extends React.Component {
 						</div>
 					)}
 				</div>
-				<div className="ad-title">自定义广告语</div>
+				<div className="ad-title">{intl.get(MODULE, 22)}</div>
 				<div className="guest-upload">
-					<Upload {...{
-						onChange: (file) => {
-							this.handleUploadChange(file, 'logoFileList', 'logo_img');
-						},
-						// beforeUpload: this.beforeUpload,
-						name: 'file',
-						multiple: false,
-						// data: { opcode: '0x2089' },
-						// action: __BASEAPI__,
-						action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-						fileList: logoFileList,
-						uploadTitle: '上传Logo图'
-					}}>
+					<Upload
+						{...{
+							onChange: file => {
+								this.handleUploadChange(
+									file,
+									'logoFileList',
+									'logoUrl'
+								);
+							},
+							// beforeUpload: this.beforeUpload,
+							name: 'file',
+							multiple: false,
+							// data: { opcode: '0x2089' },
+							// action: __BASEAPI__,
+							action:
+								'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+							fileList: logoFileList,
+							uploadTitle: '上传Logo图'
+						}}
+					>
 						<Button>
-							<Icon type="upload" /> 上传Logo图
+							<Icon type="upload" /> {intl.get(MODULE, 23)}
 						</Button>
 					</Upload>
-					<span className="guest-tip">图片最大128k, 支持jpg格式</span>
+					{/* <span className="guest-tip">图片最大128k, 支持jpg格式</span> */}
 				</div>
 				<div className="guest-upload">
-					<Upload {...{
-						onChange: (file) => {
-							this.handleUploadChange(file, 'bgFileList', 'bg_img');
-						},
-						beforeUpload: this.beforeUpload,
-						name: 'file',
-						// multiple: false,
-						// data: { opcode: '0x2089' },
-						// action: __BASEAPI__,
-						action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-						fileList: bgFileList,
-						uploadTitle: '上传Logo图'
-					}}>
+					<Upload
+						{...{
+							onChange: file => {
+								this.handleUploadChange(
+									file,
+									'bgFileList',
+									'imgUrl'
+								);
+							},
+							// beforeUpload: this.beforeUpload,
+							name: 'file',
+							// multiple: false,
+							// data: { opcode: '0x2089' },
+							// action: __BASEAPI__,
+							action:
+								'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+							fileList: bgFileList,
+							uploadTitle: '上传Logo图'
+						}}
+					>
 						<Button>
-							<Icon type="upload" /> 上传背景图
+							<Icon type="upload" /> {intl.get(MODULE, 24)}
 						</Button>
 					</Upload>
-					<span className="guest-tip">图片最大128k, 支持jpg格式</span>
+					{/* <span className="guest-tip">图片最大128k, 支持jpg格式</span> */}
 				</div>
-				{portalValue === 2 && (
+				{portalValue === PWD_AUTH && (
 					<div>
-						<label>验证密码</label>
+						<label>{intl.get(MODULE, 25)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={accessPasswordTip}
@@ -297,7 +318,7 @@ export default class PortalAccess extends React.Component {
 								type="text"
 								maxLength={32}
 								value={accessPassword}
-								placeholder="请输入验证密码"
+								placeholder={intl.get(MODULE, 26)}
 								onChange={value =>
 									onChange('accessPassword', value)
 								}
@@ -337,19 +358,19 @@ export default class PortalAccess extends React.Component {
 						</div>
 					);
 				})}
-				<label>跳转按钮</label>
+				<label>{intl.get(MODULE, 27)}</label>
 				<FormItem type="small" style={{ width: 320 }}>
 					<Radio.Group
 						onChange={e => onRadioChange('navigateValue', e)}
 						value={navigateValue}
 					>
-						<Radio value={1}>开启</Radio>
-						<Radio value={0}>关闭</Radio>
+						<Radio value={1}>{intl.get(MODULE, 28)}</Radio>
+						<Radio value={0}>{intl.get(MODULE, 29)}</Radio>
 					</Radio.Group>
 				</FormItem>
 				{navigateValue === 1 && (
 					<div>
-						<label>跳转按钮文案</label>
+						<label>{intl.get(MODULE,30)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={jumpTextTip}
@@ -359,12 +380,12 @@ export default class PortalAccess extends React.Component {
 								type="text"
 								maxLength={32}
 								value={jumpText}
-								placeholder="请输入按钮文案"
+								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
-						<label>跳转按钮链接</label>
+						<label>{intl.get(MODULE,32)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={jumpLinkTip}
@@ -374,7 +395,7 @@ export default class PortalAccess extends React.Component {
 								type="text"
 								maxLength={32}
 								value={jumpLink}
-								placeholder="请输入按钮链接"
+								placeholder={intl.get(MODULE,33)}
 								onChange={value => onChange('jumpLink', value)}
 							/>
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
@@ -382,9 +403,9 @@ export default class PortalAccess extends React.Component {
 					</div>
 				)}
 				<div className="guest-padding">
-					<div className="ad-title">上网时长设置</div>
+					<div className="ad-title">{intl.get(MODULE,34)}</div>
 					<div className="message-service">
-						<div>有效上网时长</div>
+						<div>{intl.get(MODULE,35)}</div>
 						<Select
 							style={{ width: 320 }}
 							onChange={this.onChange}
@@ -396,7 +417,7 @@ export default class PortalAccess extends React.Component {
 						</Select>
 					</div>
 					<div className="message-service">
-						<div>空闲断网时长</div>
+						<div>{intl.get(MODULE,36)}</div>
 						<Select
 							style={{ width: 320 }}
 							onChange={this.onChange}
@@ -410,7 +431,7 @@ export default class PortalAccess extends React.Component {
 				</div>
 				<div
 					className={
-						portalValue === 3
+						portalValue === SMS
 							? 'guest-portal-message'
 							: 'guest-portal'
 					}
@@ -419,18 +440,36 @@ export default class PortalAccess extends React.Component {
 						onChange={e => onRadioChange('previewValue', e)}
 						value={previewValue}
 					>
-						<Radio value={1}>手机效果预览</Radio>
-						<Radio value={0}>网页效果预览</Radio>
+						<Radio value={0}>{intl.get(MODULE,37)}</Radio>
+						<Radio value={1}>{intl.get(MODULE,38)}</Radio>
 					</Radio.Group>
 					{previewValue === 1 ? (
-						<GuestPhone { ...{ portalValue, welcome, version, connectButton, imgUrl } }/>						
+						<GuestPhone
+							{...{
+								portalValue,
+								welcome,
+								version,
+								connectButton,
+								imgUrl,
+								logoUrl
+							}}
+						/>
 					) : (
-						<GuestWeb { ...{ portalValue, welcome, version, connectButton, imgUrl } }/>
+						<GuestWeb
+							{...{
+								portalValue,
+								welcome,
+								version,
+								connectButton,
+								imgUrl,
+								logoUrl
+							}}
+						/>
 					)}
 				</div>
 				<div
 					className={
-						portalValue === 3
+						portalValue === SMS
 							? 'guest-border-line-message'
 							: 'guest-border-line'
 					}

@@ -52,13 +52,25 @@
 		margin-bottom: 24px;
 		color: rgba(51,60,79,1);
 	}
+	
+	.ant-upload-list {
+		width: 40%;
+	}
+
+	.ant-progress-bg {
+		
+	}
 
 	.guest-upload {
+		position: relative;
 		margin: 24px 0;
 		.ant-btn span {
 			color: rgba(51,60,79,1);
 		}
 		.guest-tip {
+			position: absolute;
+			left: 145px;
+			top: 6px;
 			font-size:12px;
 			font-family:PingFangSC-Regular,PingFang SC;
 			font-weight:400;
@@ -102,6 +114,9 @@
 		height: 900px;
 		background:rgba(216,216,216,1);
 		border-radius: 24px;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
 		overflow: hidden;
 		transform: scale(0.5);
 		transform-origin: left top;
@@ -175,6 +190,9 @@
 			border:1px solid rgba(255,255,255,1);
 			margin-top: 74px;
 			margin-left: 38px;
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
 		}
 		.guest-text {
 			margin: 0 auto;
@@ -235,7 +253,10 @@
 		position: relative;
 		background:rgba(216,216,216,1);
 		// background:rgba(0,0,0,1);
-		opacity: 0.5;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center;
+		// opacity: 0.5;
 		border-radius: 12px;
 		overflow: hidden;
 		.guest-web-button {
@@ -315,6 +336,9 @@
 			border:1px solid rgba(255,255,255,1);
 			margin: 0 auto;
 			margin-top: 72px;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
 		}
 		.guest-text {
 			margin: 0 auto;
