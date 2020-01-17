@@ -13,9 +13,7 @@ body {
     width: 100%;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
-    position: absolute;
-    top: 50%;
-    margin-top: -60%;
+    margin-top: 1.6rem;
 }
 #logo {
     width: 1.6rem;
@@ -42,7 +40,8 @@ body {
 .desc {
     font-size: 0.75rem;
     color: #fff;
-    margin-top: 0.53rem;
+    margin: 1.0667rem 0 0;
+    min-height: 1.0667rem;
 }
 .btn {
     width: 100%;
@@ -51,7 +50,7 @@ body {
     background: #FB8632;
     border-radius: 0.21rem;
     text-align: center;
-    margin-top: 0.53rem;
+    margin-top: 0.5333rem;
     font-size: 0;
 }
 .btn .btn-text {
@@ -59,7 +58,10 @@ body {
     color: #fff;
 }
 .btn.btn-disabled {
-    background: #999;
+    background: rgba(230,232,235,1);
+}
+.btn.btn-disabled .btn-text {
+    color: #A1A7B3;
 }
 #tip{
     height: 0.44rem;
@@ -129,11 +131,8 @@ body {
     font-size: 0.65rem;
     color: #333C4F;
 }
-.inputs .input-wrap:nth-child(1) .pre-icon {
-    top: 0.65rem;
-}
-.inputs .input-wrap:nth-child(2) .pre-icon {
-    top: 0.65rem;
+.inputs .input-wrap .pre-icon {
+    top: 0.29rem;
 }
 #cleanIcon, #cleanCodeIcon {
     margin-left: 8px;
@@ -149,11 +148,11 @@ body {
     text-indent: 1.12rem;
     color: #333C4F;
 }
-.inputs input:nth-child(1) {
-    margin-top: 0.59rem;
+.inputs .input-wrap:nth-child(1) {
+    margin-top: 0.4267rem;
 }
-.inputs input:nth-child(2) {
-    margin-top: 0.37rem;
+.inputs .input-wrap:nth-child(2) {
+    margin-top: 0.3733rem;
 }
 .inputs input.error {
     border: 2px solid #D33419;
