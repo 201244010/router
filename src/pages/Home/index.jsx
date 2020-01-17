@@ -184,7 +184,8 @@ export default class Home extends React.Component {
 				{ opcode: 'CLIENT_ALIAS_GET' },
 				{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
 				{ opcode: 'ROUTE_GET' },
-				{ opcode: 'SUNMIMESH_ROLE_GET' }
+				{ opcode: 'SUNMIMESH_ROLE_GET' },
+				{ opcode: 'MOBILE_STATS_GET' },
 			],
 			{ ignoreErr: true }
 		);
@@ -305,6 +306,9 @@ export default class Home extends React.Component {
 		const totalPercent = sunmi + whitelist + normal;
 
 		let { online } = data[3].result.wan.info;
+		const { status } = data[8].result.mobile;
+
+		online = online || (status === 'online');
 
 		const routeList = {};
 		const routeName = [];
