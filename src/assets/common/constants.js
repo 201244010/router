@@ -179,6 +179,8 @@ export const DIRECTIVE = {
     LOCAL_UPGRADE_UPLOAD: '0x207e',
     LOCAL_UPGRADE_STATE: '0x207f',
 
+    MOBILE_STATS_GET: '0x2133',
+
     //MultipWan
     NETWORK_MULTI_WAN_SET: '0x20c0',
     NETWORK_MULTI_WAN_GET: '0x20c1',
