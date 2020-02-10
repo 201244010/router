@@ -188,7 +188,7 @@ export default class PortalAccess extends React.Component {
 					<Select
 						style={{ width: 320 }}
 						onChange={value => onSelectChange('portalValue', value)}
-						defaultValue={portalValue}
+						value={portalValue}
 					>
 						<Option value={NONE}>{intl.get(MODULE, 14)}</Option>
 						<Option value={PWD_AUTH}>{intl.get(MODULE, 15)}</Option>
@@ -364,11 +364,11 @@ export default class PortalAccess extends React.Component {
 						onChange={e => onRadioChange('navigateValue', e)}
 						value={navigateValue}
 					>
-						<Radio value={1}>{intl.get(MODULE, 28)}</Radio>
-						<Radio value={0}>{intl.get(MODULE, 29)}</Radio>
+						<Radio value={'1'}>{intl.get(MODULE, 28)}</Radio>
+						<Radio value={'0'}>{intl.get(MODULE, 29)}</Radio>
 					</Radio.Group>
 				</FormItem>
-				{navigateValue === 1 && (
+				{navigateValue === '1' && (
 					<div>
 						<label>{intl.get(MODULE,30)}</label>
 						<FormItem

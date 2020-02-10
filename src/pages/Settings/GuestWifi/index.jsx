@@ -1,5 +1,7 @@
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
+import { Base64 } from 'js-base64';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
@@ -38,7 +40,7 @@ export default class GuestWifi extends React.Component {
 			guestDynamicPassword: '',
 			messageValue: 'ali',
 			portalValue: SMS,
-			navigateValue: 1,
+			navigateValue: '1',
 			validValue: 2,
 			emptyValue: 10,
 			previewValue: 0,
@@ -50,7 +52,108 @@ export default class GuestWifi extends React.Component {
 		this.strObjectTip = {};
 	}
 
-	submit = async () => {
+	submit = async() => {
+		await fetchPublicKey();
+		const {
+			inputValue: {
+				guestSsid,
+				period,
+				hostSsidPassword,
+				welcome,
+				connectButton,
+				jumpLink,
+				jumpText,
+				messageTime,
+				appKey,
+				appSecret,
+				modelId,
+				sign,
+				accessPassword,
+				version
+			},
+			guestEnable,
+			radioValue,
+			guestDynamicPassword,
+			navigateValue,
+			messageValue,
+			validValue,
+			emptyValue,
+			portalValue
+		} = this.state;
+
+		const data = {
+			none: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "none",
+			},
+			static: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "psk-mixed/ccmp+tkip",
+				static:{
+					password: encryption(hostSsidPassword),
+				}
+			},
+			dynamic: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "psk-mixed/ccmp+tkip",
+				dynamic: {
+					period,
+					password: encryption(guestDynamicPassword),
+				},
+			},
+			portal: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "none",
+				portal: {
+					auth_config: {
+						welcome,
+						connect_label: connectButton,
+						link_enable: navigateValue,
+						link_label: jumpText,
+						link_addr: jumpLink,
+						statement: version,
+						online_limit: validValue,
+						idle_limit: emptyValue,
+						auth_type: portalValue,
+						pwd_auth: {
+							auth_password: accessPassword
+						},
+						sms: {
+							server_provider: messageValue,
+							code_expired: messageTime,
+							access_key_id: appKey,
+							access_key_secret: appSecret,
+							template_code: modelId,
+							sign_name: sign
+						}
+					}
+				}
+			}
+		};
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_SET',
+			data: {
+				guest: data[radioValue]
+			}
+		});
+
+		const { errcode } = response;
+		if(errcode === 0) {
+			message.success('配置成功');
+		} else {
+			message.error('配置失败');
+		}
+	}
+
+	submit2 = async () => {
 		const {
 			inputValue: {
 				guestSsid,
@@ -84,9 +187,10 @@ export default class GuestWifi extends React.Component {
 			enable,
 			ssid: guestSsid,
 			connect_type: radioValue,
+			"encryption":"psk-mixed/ccmp+tkip",
 			dynamic: {
 				period,
-				password: dynamicPassword
+				password: guestDynamicPassword
 			},
 			static: {
 				password: hostSsidPassword
@@ -116,6 +220,7 @@ export default class GuestWifi extends React.Component {
 				}
 			}
 		};
+
 		const response = await common.fetchApi({
 			opcode: 'WIRELESS_GUEST_SET',
 			data: {
@@ -128,6 +233,7 @@ export default class GuestWifi extends React.Component {
 		const response = await common.fetchApi({
 			opcode: 'WIRELESS_GUEST_GET'
 		});
+		console.log('response', response);
 		const { errcode, data } = response;
 		const {
 			guest: {
@@ -169,7 +275,7 @@ export default class GuestWifi extends React.Component {
 			inputValue: {
 				guestSsid: ssid,
 				period,
-				hostSsidPassword: staticPassword,
+				hostSsidPassword: Base64.decode(staticPassword),
 				welcome,
 				connectButton: connect_label,
 				jumpLink: link_addr,
@@ -182,9 +288,9 @@ export default class GuestWifi extends React.Component {
 				accessPassword: auth_password,
 				version: statement
 			},
-			enable,
+			guestEnable: enable === '1',
 			radioValue: connect_type,
-			guestDynamicPassword: dynamicPassword,
+			guestDynamicPassword: Base64.decode(dynamicPassword),
 			navigateValue: link_enable,
 			messageValue: server_provider,
 			validValue: online_limit,
@@ -201,10 +307,27 @@ export default class GuestWifi extends React.Component {
 		});
 	};
 
-	onGuestEnableChange = type => {
-		this.setState({
-			guestEnable: type
-		});
+	onGuestEnableChange = async(type) => {
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_SET',
+			data: {
+				guest:  {
+					enable: type? '1' : '0',
+				}
+			}
+			
+		}, { loading: true });
+		
+		const { errcode } = response;
+		if(errcode === 0) {
+			this.setState({
+				guestEnable: type
+			});
+			message.success(type? '打开成功' : '关闭成功');
+			this.fetchGuest();
+		} else {
+			message.error(type?'打开失败' : '关闭失败');
+		}
 	};
 
 	onRadioChange = (type, e) => {
@@ -320,24 +443,23 @@ export default class GuestWifi extends React.Component {
 		});
 	};
 
-	checkDisable = () => {
-		const {
-			radioValue,
-			inputValue: { guestSsid, hostSsidPassword, period }
-		} = this.state;
-		const disableResult = {
-			none: guestSsid === '',
-			static:
-				[guestSsid, hostSsidPassword].includes('') ||
-				this.strObjectTip['hostSsidPasswordTip'] !== '',
-			dynamic:
-				[guestSsid, period].includes('') ||
-				this.strObjectTip['periodTip'] !== '',
-			portal: this.checkMessage()
-		};
-
-		return disableResult[radioValue];
-	};
+	// checkDisable = () => {
+	// 	const {
+	// 		radioValue,
+	// 		inputValue: { guestSsid, hostSsidPassword, period }
+	// 	} = this.state;
+	// 	const disableResult = {
+	// 		none: guestSsid === '',
+	// 		static:
+	// 			[guestSsid, hostSsidPassword].includes('') ||
+	// 			this.strObjectTip['hostSsidPasswordTip'] !== '',
+	// 		dynamic:
+	// 			[guestSsid, period].includes('') ||
+	// 			this.strObjectTip['periodTip'] !== '',
+	// 		portal: this.checkMessage()
+	// 	};
+	// 	return disableResult[radioValue];
+	// };
 
 	checkMessage = () => {
 		const {
@@ -414,6 +536,10 @@ export default class GuestWifi extends React.Component {
 		return fixResult || radioResult;
 	};
 
+	componentDidMount() {
+		this.fetchGuest();
+	}
+
 	render() {
 		const {
 			guestEnable,
@@ -426,6 +552,20 @@ export default class GuestWifi extends React.Component {
 			hostSsidPasswordTip,
 			periodTip
 		} = this.strObjectTip;
+
+		const disableResult = {
+			none: guestSsid === '',
+			static:
+				[guestSsid, hostSsidPassword].includes('') ||
+				this.strObjectTip['hostSsidPasswordTip'] !== '',
+			dynamic:
+				[guestSsid, period].includes('') ||
+				this.strObjectTip['periodTip'] !== '',
+			portal: this.checkMessage()
+		};
+
+		const buttonDisabled = disableResult[radioValue];
+		console.log('buttonDisabled', buttonDisabled, 'radioValue', radioValue);
 		return (
 			<SubLayout className="settings">
 				<Form>
@@ -529,12 +669,13 @@ export default class GuestWifi extends React.Component {
 										type="primary"
 										size="large"
 										style={{ width: 200, height: 42 }}
-										disabled={this.checkDisable()}
+										disabled={buttonDisabled}
+										onClick={this.submit}
 									>
 										{intl.get(MODULE,20)}
 									</Button>
 								</div>
-							</div>
+							</div>	
 						) : (
 							<div className="guest-close-content">
 								{intl.get(MODULE,21)}

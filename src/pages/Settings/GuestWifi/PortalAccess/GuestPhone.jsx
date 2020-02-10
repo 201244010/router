@@ -1,6 +1,6 @@
 import React from 'react';
 import { PWD_AUTH, SMS } from '~/assets/common/constants';
-import './index.scss';
+import '../index.scss';
 const MODULE = 'guestpreview';
 
 export default class GuestPhone extends React.Component {

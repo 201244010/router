@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.scss';
+import '../index.scss';
 import { PWD_AUTH, SMS } from '~/assets/common/constants';
 
 const MODULE = 'guestpreview';
