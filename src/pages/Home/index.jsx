@@ -47,7 +47,7 @@ export default class Home extends React.Component {
 		downSpeed: 0,
 		downUnit: 'KB/s',
 		online: true,
-		onlineTip: '',
+		onlineTip: [],
 		qosEnable: false,
 		totalBand: 8 * 1024 * 1024,
 		source: 'default',
@@ -312,12 +312,12 @@ export default class Home extends React.Component {
 		const tips = [];
 		wans.map(item => {
 			if(item.port == 1) {
-				tips.push(`${intl.get(MODULE, 34) /*_i18n:默认WAN口*/}${item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
+				tips.push(<p>{intl.get(MODULE, 34) /*_i18n:默认WAN口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
 			} else {
-				tips.push(`WAN ${item.port - 1}${intl.get(MODULE, 37) /*_i18n:口*/}${item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
+				tips.push(<p>WAN {item.port - 1}{intl.get(MODULE, 37) /*_i18n:口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
 			}
 		});
-		const onlineTip = tips.join('，');
+		const onlineTip = <div>{tips.map(item => item)}</div>;
 		const routeList = {};
 		const routeName = [];
 		reInfo.map(item => {
@@ -503,6 +503,8 @@ export default class Home extends React.Component {
 			chatTotal,
 			apInfo
 		} = this.state;
+		// const tips1 = [<p>1234</p>,<p>23456</p>,<p>1313143看见伤口附近阿斯利康放假啊开始减肥</p>];
+		// const onlineTip1 = <div>{tips1.map(item => item)}</div>;
 		return (
 			<SubLayout className="home">
 				<div>
