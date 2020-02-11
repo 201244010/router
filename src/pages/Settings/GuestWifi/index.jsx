@@ -49,7 +49,22 @@ export default class GuestWifi extends React.Component {
 			logoUrl: '',
 			bgUrl: ''
 		};
-		this.strObjectTip = {};
+		this.strObjectTip = {
+			guestSsidTip: '',
+			hostSsidPasswordTip: '',
+			periodTip: '',
+			welcomeTip: '',
+			connectButtonTip: '',
+			versionTip: '',
+			jumpTextTip: '',
+			jumpLinkTip: '',
+			messageTimeTip: '',
+			appKeyTip: '',
+			appSecretTip: '',
+			modelIdTip: '',
+			signTip: '',
+			accessPasswordTip: '',
+		};
 	}
 
 	submit = async() => {
@@ -238,38 +253,125 @@ export default class GuestWifi extends React.Component {
 		const {
 			guest: {
 				enable,
-				ssid,
-				connect_type,
+				ssid = '',
+				connect_type = '',
 				encryption,
-				dynamic: { period, password: dynamicPassword },
-				static: { password: staticPassword },
+				dynamic: { period = '', password: dynamicPassword = '' },
+				static: { password: staticPassword = '' },
 				portal: {
 					server_type,
 					auth_config: {
-						welcome,
-						connect_label,
-						link_enable,
-						link_label,
-						link_addr,
-						statement,
-						online_limit,
-						idle_limit,
-						auth_type,
-						logo_url,
-						background_url,
-						pwd_auth: { auth_password },
+						welcome = '',
+						connect_label = '',
+						link_enable = '',
+						link_label = '',
+						link_addr = '',
+						statement = '',
+						online_limit = '',
+						idle_limit = '',
+						auth_type = '',
+						logo_url = '',
+						background_url = '',
+						pwd_auth: { auth_password = '' },
 						sms: {
-							code_expired,
-							server_provider,
-							access_key_id,
-							access_key_secret,
-							template_code,
-							sign_name
+							code_expired = '',
+							server_provider = '',
+							access_key_id = '',
+							access_key_secret = '',
+							template_code = '',
+							sign_name = '',
 						}
 					}
 				}
 			}
 		} = data[0].result || {};
+
+		this.strObjectTip = {
+			guestSsidTip: checkStr(ssid, {
+				who: intl.get(MODULE,0),
+				min: 1,
+				max: 32,
+				byte: true
+			}),
+			hostSsidPasswordTip: checkStr(Base64.decode(staticPassword), {
+				who: intl.get(MODULE,9),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+			periodTip: checkRange(period, {
+				min: 1,
+				max: 72,
+				who: intl.get(MODULE,10)
+			}),
+			welcomeTip: checkStr(welcome, {
+				who: intl.get(MODULE,2),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			connectButtonTip: checkStr(connect_label, {
+				who: intl.get(MODULE,1),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			versionTip: checkStr(statement, {
+				who: intl.get(MODULE,5),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpTextTip: checkStr(link_label, {
+				who: intl.get(MODULE,3),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpLinkTip: checkStr(link_addr, {
+				who: intl.get(MODULE,4),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			messageTimeTip: checkRange(code_expired, {
+				min: 30,
+				max: 180,
+				who: intl.get(MODULE,11)
+			}),
+			appKeyTip: checkStr(access_key_id, {
+				who: 'AppKey',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			appSecretTip: checkStr(access_key_secret, {
+				who: 'APP Secret',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			modelIdTip: checkStr(template_code, {
+				who: intl.get(MODULE,7),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			signTip: checkStr(sign_name, {
+				who: intl.get(MODULE,8),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			accessPasswordTip: checkStr(auth_password, {
+				who: intl.get(MODULE,12),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+		};
 
 		this.setState({
 			inputValue: {
@@ -298,7 +400,7 @@ export default class GuestWifi extends React.Component {
 			bgUrl: background_url,
 			logoUrl: logo_url,
 			portalValue: auth_type
-		});
+		});	
 	};
 
 	onSelectChange = (type, value) => {
@@ -379,12 +481,6 @@ export default class GuestWifi extends React.Component {
 				max: 30,
 				byte: true
 			}),
-			messageTime: checkStr(value, {
-				who: intl.get(MODULE,6),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
 			appKey: checkStr(value, {
 				who: 'AppKey',
 				min: 1,
@@ -442,24 +538,6 @@ export default class GuestWifi extends React.Component {
 			}
 		});
 	};
-
-	// checkDisable = () => {
-	// 	const {
-	// 		radioValue,
-	// 		inputValue: { guestSsid, hostSsidPassword, period }
-	// 	} = this.state;
-	// 	const disableResult = {
-	// 		none: guestSsid === '',
-	// 		static:
-	// 			[guestSsid, hostSsidPassword].includes('') ||
-	// 			this.strObjectTip['hostSsidPasswordTip'] !== '',
-	// 		dynamic:
-	// 			[guestSsid, period].includes('') ||
-	// 			this.strObjectTip['periodTip'] !== '',
-	// 		portal: this.checkMessage()
-	// 	};
-	// 	return disableResult[radioValue];
-	// };
 
 	checkMessage = () => {
 		const {
@@ -563,9 +641,8 @@ export default class GuestWifi extends React.Component {
 				this.strObjectTip['periodTip'] !== '',
 			portal: this.checkMessage()
 		};
-
+		console.log('disableResult',disableResult, 'radioValue', radioValue);
 		const buttonDisabled = disableResult[radioValue];
-		console.log('buttonDisabled', buttonDisabled, 'radioValue', radioValue);
 		return (
 			<SubLayout className="settings">
 				<Form>
