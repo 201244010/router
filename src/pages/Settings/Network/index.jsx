@@ -15,7 +15,7 @@ const MODULE = 'network';
 const {FormItem, Input } = Form;
 const Option = Select.Option;
 
-export default class NetworkTemple extends React.Component {
+export default class Network extends React.Component {
     constructor(props) {
         super(props);
         this.err = {
@@ -327,7 +327,6 @@ export default class NetworkTemple extends React.Component {
 
     //表单提交
     post = async() => {
-        const { opcodeSet } = this.props;
         this.setState({
             loading : true,
         });
@@ -350,7 +349,7 @@ export default class NetworkTemple extends React.Component {
         }
         await common.fetchApi(
             {
-                opcode : opcodeSet,
+                opcode : 'NETWORK_WAN_IPV4_SET',
                 data : payload
             },
             ).then(refs => {
@@ -368,9 +367,8 @@ export default class NetworkTemple extends React.Component {
 
     //获取信息
     getNetInfo = async ()=>{
-        const { opcodeGet } = this.props;
         let response = await common.fetchApi(
-            { opcode : opcodeGet}
+            { opcode : 'NETWORK_WAN_IPV4_GET'}
         );
         let { data, errcode } = response;
         if(errcode == 0){
@@ -451,8 +449,7 @@ export default class NetworkTemple extends React.Component {
     }
     //上网信息刷新
     refreshNetStatus = async ()=>{
-        const { opcodeGet } = this.props;
-        let response = await common.fetchApi({ opcode: opcodeGet}, { ignoreErr: true });
+        let response = await common.fetchApi({ opcode: 'NETWORK_WAN_IPV4_GET'}, { ignoreErr: true });
             let {errcode, data} = response;
             if(errcode == 0){
                 this.updateNetStatus(data[0].result.wan);
