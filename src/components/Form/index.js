@@ -72,7 +72,8 @@ class Input extends React.Component {
         disabled : PropTypes.bool,
         width : PropTypes.oneOfType([PropTypes.string, PropTypes.number ]),
         visibilityChange : PropTypes.func,
-        placeholder : PropTypes.string,
+		placeholder : PropTypes.string,
+		description: PropTypes.string
     };
 
     HandleVisibilityChange = ()=>{
@@ -102,7 +103,8 @@ class Input extends React.Component {
     }
     
     render(){
-        let hidden = this.state.hidden;
+		let hidden = this.state.hidden;
+		const { description } = this.props;
         let classes = this.props.size ? [{[this.props.size] : true}, "ui-input"] : ["ui-input"];
         let checkDisabled = this.props.disabled ? 'ui-input-disabled':''; //disabled 为true 时，字体颜色透明度为30%
         return (
@@ -132,6 +134,9 @@ class Input extends React.Component {
                     autoComplete="new-password" // 修复chrome上密码自动填充问题
                     type={this.state.type}
                 />
+				{
+					description && <span className='input-descripiton'>{description}</span>
+				}
             </div>
         );
     }

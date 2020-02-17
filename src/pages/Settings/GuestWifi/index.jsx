@@ -1,0 +1,766 @@
+import React from 'react';
+import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
+import { Base64 } from 'js-base64';
+import { encryption, fetchPublicKey } from '~/assets/common/encryption';
+import SubLayout from '~/components/SubLayout';
+import PanelHeader from '~/components/PanelHeader';
+import Form from '~/components/Form';
+import DynamicPassword from './DynamicPassword';
+import PortalAccess from './PortalAccess';
+import { checkStr, checkRange } from '~/assets/common/check';
+import { PORTAL, STATIC, DYNAMIC, NONE, PWD_AUTH, SMS } from '~/assets/common/constants';
+import './index.scss';
+
+const { FormItem, ErrorTip, Input } = Form;
+const { Option } = Select;
+
+const MODULE = 'guestwifi';
+export default class GuestWifi extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			guestEnable: true,
+			radioValue: PORTAL,
+			inputValue: {
+				guestSsid: '',
+				hostSsidPassword: '',
+				period: '',
+				welcome: '',
+				connectButton: '',
+				version: '',
+				jumpText: '',
+				jumpLink: '',
+				messageTime: '',
+				appKey: '',
+				appSecret: '',
+				modelId: '',
+				sign: '',
+				accessPassword: ''
+			},
+			guestDynamicPassword: '',
+			messageValue: 'ali',
+			portalValue: SMS,
+			navigateValue: '1',
+			validValue: 2,
+			emptyValue: 10,
+			previewValue: 0,
+			logoFileList: [],
+			bgFileList: [],
+			logoUrl: '',
+			bgUrl: ''
+		};
+		this.strObjectTip = {
+			guestSsidTip: '',
+			hostSsidPasswordTip: '',
+			periodTip: '',
+			welcomeTip: '',
+			connectButtonTip: '',
+			versionTip: '',
+			jumpTextTip: '',
+			jumpLinkTip: '',
+			messageTimeTip: '',
+			appKeyTip: '',
+			appSecretTip: '',
+			modelIdTip: '',
+			signTip: '',
+			accessPasswordTip: '',
+		};
+	}
+
+	submit = async() => {
+		await fetchPublicKey();
+		const {
+			inputValue: {
+				guestSsid,
+				period,
+				hostSsidPassword,
+				welcome,
+				connectButton,
+				jumpLink,
+				jumpText,
+				messageTime,
+				appKey,
+				appSecret,
+				modelId,
+				sign,
+				accessPassword,
+				version
+			},
+			guestEnable,
+			radioValue,
+			guestDynamicPassword,
+			navigateValue,
+			messageValue,
+			validValue,
+			emptyValue,
+			portalValue
+		} = this.state;
+
+		const data = {
+			none: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "none",
+			},
+			static: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "psk-mixed/ccmp+tkip",
+				static:{
+					password: encryption(hostSsidPassword),
+				}
+			},
+			dynamic: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "psk-mixed/ccmp+tkip",
+				dynamic: {
+					period,
+					password: encryption(guestDynamicPassword),
+				},
+			},
+			portal: {
+				enable: guestEnable? '1' : '0',
+				ssid: guestSsid,
+				connect_type: radioValue,
+				encryption: "none",
+				portal: {
+					auth_config: {
+						welcome,
+						connect_label: connectButton,
+						link_enable: navigateValue,
+						link_label: jumpText,
+						link_addr: jumpLink,
+						statement: version,
+						online_limit: validValue,
+						idle_limit: emptyValue,
+						auth_type: portalValue,
+						pwd_auth: {
+							auth_password: accessPassword
+						},
+						sms: {
+							server_provider: messageValue,
+							code_expired: messageTime,
+							access_key_id: appKey,
+							access_key_secret: appSecret,
+							template_code: modelId,
+							sign_name: sign
+						}
+					}
+				}
+			}
+		};
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_SET',
+			data: {
+				guest: data[radioValue]
+			}
+		});
+
+		const { errcode } = response;
+		if(errcode === 0) {
+			message.success('配置成功');
+		} else {
+			message.error('配置失败');
+		}
+	}
+
+	submit2 = async () => {
+		const {
+			inputValue: {
+				guestSsid,
+				period,
+				hostSsidPassword,
+				welcome,
+				connectButton,
+				jumpLink,
+				jumpText,
+				messageTime,
+				appKey,
+				appSecret,
+				modelId,
+				sign,
+				accessPassword,
+				version
+			},
+			enable,
+			radioValue,
+			guestDynamicPassword,
+			navigateValue,
+			messageValue,
+			validValue,
+			emptyValue,
+			bgUrl,
+			logoUrl,
+			portalValue
+		} = this.state;
+
+		const guest = {
+			enable,
+			ssid: guestSsid,
+			connect_type: radioValue,
+			"encryption":"psk-mixed/ccmp+tkip",
+			dynamic: {
+				period,
+				password: guestDynamicPassword
+			},
+			static: {
+				password: hostSsidPassword
+			},
+			portal: {
+				auth_config: {
+					welcome,
+					connect_label: connectButton,
+					link_enable: navigateValue,
+					link_label: jumpText,
+					link_addr: jumpLink,
+					statement: version,
+					online_limit: validValue,
+					idle_limit: emptyValue,
+					auth_type: portalValue,
+					pwd_auth: {
+						auth_password: accessPassword
+					},
+					sms: {
+						server_provider: messageValue,
+						code_expired: messageTime,
+						access_key_id: appKey,
+						access_key_secret: appSecret,
+						template_code: modelId,
+						sign_name: sign
+					}
+				}
+			}
+		};
+
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_SET',
+			data: {
+				guest
+			}
+		});
+	};
+
+	fetchGuest = async () => {
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_GET'
+		});
+		console.log('response', response);
+		const { errcode, data } = response;
+		const {
+			guest: {
+				enable,
+				ssid = '',
+				connect_type = '',
+				encryption,
+				dynamic: { period = '', password: dynamicPassword = '' },
+				static: { password: staticPassword = '' },
+				portal: {
+					server_type,
+					auth_config: {
+						welcome = '',
+						connect_label = '',
+						link_enable = '',
+						link_label = '',
+						link_addr = '',
+						statement = '',
+						online_limit = '',
+						idle_limit = '',
+						auth_type = '',
+						logo_url = '',
+						background_url = '',
+						pwd_auth: { auth_password = '' },
+						sms: {
+							code_expired = '',
+							server_provider = '',
+							access_key_id = '',
+							access_key_secret = '',
+							template_code = '',
+							sign_name = '',
+						}
+					}
+				}
+			}
+		} = data[0].result || {};
+
+		this.strObjectTip = {
+			guestSsidTip: checkStr(ssid, {
+				who: intl.get(MODULE,0),
+				min: 1,
+				max: 32,
+				byte: true
+			}),
+			hostSsidPasswordTip: checkStr(Base64.decode(staticPassword), {
+				who: intl.get(MODULE,9),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+			periodTip: checkRange(period, {
+				min: 1,
+				max: 72,
+				who: intl.get(MODULE,10)
+			}),
+			welcomeTip: checkStr(welcome, {
+				who: intl.get(MODULE,2),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			connectButtonTip: checkStr(connect_label, {
+				who: intl.get(MODULE,1),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			versionTip: checkStr(statement, {
+				who: intl.get(MODULE,5),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpTextTip: checkStr(link_label, {
+				who: intl.get(MODULE,3),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpLinkTip: checkStr(link_addr, {
+				who: intl.get(MODULE,4),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			messageTimeTip: checkRange(code_expired, {
+				min: 30,
+				max: 180,
+				who: intl.get(MODULE,11)
+			}),
+			appKeyTip: checkStr(access_key_id, {
+				who: 'AppKey',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			appSecretTip: checkStr(access_key_secret, {
+				who: 'APP Secret',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			modelIdTip: checkStr(template_code, {
+				who: intl.get(MODULE,7),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			signTip: checkStr(sign_name, {
+				who: intl.get(MODULE,8),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			accessPasswordTip: checkStr(auth_password, {
+				who: intl.get(MODULE,12),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+		};
+
+		this.setState({
+			inputValue: {
+				guestSsid: ssid,
+				period,
+				hostSsidPassword: Base64.decode(staticPassword),
+				welcome,
+				connectButton: connect_label,
+				jumpLink: link_addr,
+				jumpText: link_label,
+				messageTime: code_expired,
+				appKey: access_key_id,
+				appSecret: access_key_secret,
+				modelId: template_code,
+				sign: sign_name,
+				accessPassword: auth_password,
+				version: statement
+			},
+			guestEnable: enable === '1',
+			radioValue: connect_type,
+			guestDynamicPassword: Base64.decode(dynamicPassword),
+			navigateValue: link_enable,
+			messageValue: server_provider,
+			validValue: online_limit,
+			emptyValue: idle_limit,
+			bgUrl: background_url,
+			logoUrl: logo_url,
+			portalValue: auth_type
+		});	
+	};
+
+	onSelectChange = (type, value) => {
+		this.setState({
+			[type]: value
+		});
+	};
+
+	onGuestEnableChange = async(type) => {
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_SET',
+			data: {
+				guest:  {
+					enable: type? '1' : '0',
+				}
+			}
+			
+		}, { loading: true });
+		
+		const { errcode } = response;
+		if(errcode === 0) {
+			this.setState({
+				guestEnable: type
+			});
+			message.success(type? '打开成功' : '关闭成功');
+			this.fetchGuest();
+		} else {
+			message.error(type?'打开失败' : '关闭失败');
+		}
+	};
+
+	onRadioChange = (type, e) => {
+		this.setState({
+			[type]: e.target.value
+		});
+	};
+
+	setFile = (fileKey, fileList) => {
+		this.setState({ [fileKey]: fileList });
+	};
+
+	onChange = (type, value) => {
+		const { inputValue } = this.state;
+		const strObjectTip = {
+			guestSsid: checkStr(value, {
+				who: intl.get(MODULE,0),
+				min: 1,
+				max: 32,
+				byte: true
+			}),
+			connectButton: checkStr(value, {
+				who: intl.get(MODULE,1),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			welcome: checkStr(value, {
+				who: intl.get(MODULE,2),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpText: checkStr(value, {
+				who: intl.get(MODULE,3),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			jumpLink: checkStr(value, {
+				who: intl.get(MODULE,4),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			version: checkStr(value, {
+				who: intl.get(MODULE,5),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			appKey: checkStr(value, {
+				who: 'AppKey',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			appSecret: checkStr(value, {
+				who: 'APP Secret',
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			modelId: checkStr(value, {
+				who: intl.get(MODULE,7),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			sign: checkStr(value, {
+				who: intl.get(MODULE,8),
+				min: 1,
+				max: 30,
+				byte: true
+			}),
+			hostSsidPassword: checkStr(value, {
+				who: intl.get(MODULE,9),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+			period: checkRange(value, {
+				min: 1,
+				max: 72,
+				who: intl.get(MODULE,10)
+			}),
+			messageTime: checkRange(value, {
+				min: 30,
+				max: 180,
+				who: intl.get(MODULE,11)
+			}),
+			accessPassword: checkStr(value, {
+				who: intl.get(MODULE,12),
+				min: 8,
+				max: 32,
+				type: 'english',
+				byte: true
+			}),
+		};
+		this.strObjectTip[type + 'Tip'] = strObjectTip[type];
+		this.setState({
+			inputValue: {
+				...inputValue,
+				[type]: value
+			}
+		});
+	};
+
+	checkMessage = () => {
+		const {
+			inputValue: {
+				guestSsid,
+				welcome,
+				connectButton,
+				version,
+				jumpText,
+				jumpLink,
+				messageTime,
+				appKey,
+				appSecret,
+				modelId,
+				sign,
+				accessPassword
+			},
+			portalValue,
+			navigateValue
+		} = this.state;
+		const {
+			guestSsidTip,
+			welcomeTip,
+			connectButtonTip,
+			versionTip,
+			accessPasswordTip,
+			jumpTextTip,
+			jumpLinkTip,
+			messageTimeTip,
+			appKeyTip,
+			appSecretTip,
+			modelIdTip,
+			signTip
+		} = this.strObjectTip;
+		const fixResult =
+			[guestSsid, welcome, connectButton, version].includes('') ||
+			[guestSsidTip, welcomeTip, connectButtonTip, versionTip].some(
+				item => item !== ''
+			);
+		let radioResult = false;
+		if (navigateValue) {
+			radioResult =
+				[jumpText, jumpLink].includes('') ||
+				[jumpTextTip, jumpLinkTip].some(item => item !== '');
+		}
+		if (portalValue === NONE) {
+			return fixResult || radioResult;
+		}
+
+		if (portalValue === PWD_AUTH) {
+			return (
+				fixResult ||
+				radioResult ||
+				accessPassword === '' ||
+				accessPasswordTip !== ''
+			);
+		}
+
+		if (portalValue === SMS) {
+			return (
+				fixResult ||
+				radioResult ||
+				[messageTime, appKey, appSecret, modelId, sign].includes('') ||
+				[
+					messageTimeTip,
+					appKeyTip,
+					appSecretTip,
+					modelIdTip,
+					signTip
+				].some(item => item !== '')
+			);
+		}
+
+		return fixResult || radioResult;
+	};
+
+	componentDidMount() {
+		this.fetchGuest();
+	}
+
+	render() {
+		const {
+			guestEnable,
+			radioValue,
+			inputValue: { guestSsid, hostSsidPassword, period },
+			guestDynamicPassword
+		} = this.state;
+		const {
+			guestSsidTip,
+			hostSsidPasswordTip,
+			periodTip
+		} = this.strObjectTip;
+
+		const disableResult = {
+			none: guestSsid === '',
+			static:
+				[guestSsid, hostSsidPassword].includes('') ||
+				this.strObjectTip['hostSsidPasswordTip'] !== '',
+			dynamic:
+				[guestSsid, period].includes('') ||
+				this.strObjectTip['periodTip'] !== '',
+			portal: this.checkMessage()
+		};
+		console.log('disableResult',disableResult, 'radioValue', radioValue);
+		const buttonDisabled = disableResult[radioValue];
+		return (
+			<SubLayout className="settings">
+				<Form>
+					<div className="guest-wifi">
+						<PanelHeader
+							title={intl.get(MODULE,13) /*_i18n:客用Wi-Fi*/}
+							checkable={true}
+							checked={guestEnable}
+							onChange={this.onGuestEnableChange}
+							tip={intl.get(MODULE,14)}
+						/>
+						{guestEnable ? (
+							<div>
+								<label className="ssidLabel">
+									{intl.get(MODULE,0)}
+								</label>
+								<FormItem
+									type="small"
+									showErrorTip={guestSsidTip}
+									style={{ width: 320 }}
+								>
+									<Input
+										type="text"
+										maxLength={32}
+										value={guestSsid}
+										onChange={value =>
+											this.onChange('guestSsid', value)
+										}
+									/>
+									<ErrorTip>{guestSsidTip}</ErrorTip>
+								</FormItem>
+								<div className="guest-select">
+									<label>{intl.get(MODULE,15)}</label>
+									<Radio.Group
+										value={radioValue}
+										onChange={e =>
+											this.onRadioChange('radioValue', e)
+										}
+									>
+										<Radio value={NONE}>{intl.get(MODULE,16)}</Radio>
+										<Radio value={STATIC}>{intl.get(MODULE,17)}</Radio>
+										<Radio value={DYNAMIC}>
+											{intl.get(MODULE,18)}
+										</Radio>
+										<Radio value={PORTAL}>
+											{intl.get(MODULE,19)}
+										</Radio>
+									</Radio.Group>
+								</div>
+								{radioValue === STATIC && (
+									<div>
+										<label className="ssidLabel">
+											{intl.get(MODULE,9)}
+										</label>
+										<FormItem
+											type="small"
+											showErrorTip={hostSsidPasswordTip}
+											style={{ width: 320 }}
+										>
+											<Input
+												type="text"
+												maxLength={32}
+												value={hostSsidPassword}
+												onChange={value =>
+													this.onChange(
+														'hostSsidPassword',
+														value
+													)
+												}
+											/>
+											<ErrorTip>
+												{hostSsidPasswordTip}
+											</ErrorTip>
+										</FormItem>
+									</div>
+								)}
+								{radioValue === DYNAMIC && (
+									<DynamicPassword
+										{...{
+											period,
+											periodTip,
+											onChange: this.onChange,
+											guestDynamicPassword
+										}}
+									/>
+								)}
+								{radioValue === PORTAL && (
+									<PortalAccess
+										{...{
+											state: this.state,
+											onChange: this.onChange,
+											onRadioChange: this.onRadioChange,
+											strObjectTip: this.strObjectTip,
+											onSelectChange: this.onSelectChange,
+											setFile: this.setFile
+										}}
+									/>
+								)}
+								<div className="guest-button">
+									<Button
+										type="primary"
+										size="large"
+										style={{ width: 200, height: 42 }}
+										disabled={buttonDisabled}
+										onClick={this.submit}
+									>
+										{intl.get(MODULE,20)}
+									</Button>
+								</div>
+							</div>	
+						) : (
+							<div className="guest-close-content">
+								{intl.get(MODULE,21)}
+							</div>
+						)}
+					</div>
+				</Form>
+			</SubLayout>
+		);
+	}
+}
