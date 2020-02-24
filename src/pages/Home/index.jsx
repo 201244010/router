@@ -47,6 +47,7 @@ export default class Home extends React.Component {
 		downSpeed: 0,
 		downUnit: 'KB/s',
 		online: true,
+		onlineTip: [],
 		qosEnable: false,
 		totalBand: 8 * 1024 * 1024,
 		source: 'default',
@@ -180,7 +181,7 @@ export default class Home extends React.Component {
 				{ opcode: 'CLIENT_LIST_GET' },
 				{ opcode: 'TRAFFIC_STATS_GET' },
 				{ opcode: 'WIRELESS_LIST_GET' },
-				{ opcode: 'NETWORK_WAN_IPV4_GET' },
+				{ opcode: 'NETWORK_MULTI_WAN_CONN_GET' },
 				{ opcode: 'CLIENT_ALIAS_GET' },
 				{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
 				{ opcode: 'ROUTE_GET' },
@@ -305,11 +306,18 @@ export default class Home extends React.Component {
 		const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
 		const totalPercent = sunmi + whitelist + normal;
 
-		let { online } = data[3].result.wan.info;
+		const { wans } = data[3].result;
 		const { status } = data[8].result.mobile;
-
-		online = online || (status === 'online');
-
+		const online = (!wans.every(item => item.online === false)) || (status === 'online');
+		const tips = [];
+		wans.map(item => {
+			if(item.port == 1) {
+				tips.push(<p>{intl.get(MODULE, 34) /*_i18n:默认WAN口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
+			} else {
+				tips.push(<p>WAN {item.port - 1}{intl.get(MODULE, 37) /*_i18n:口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
+			}
+		});
+		const onlineTip = <div>{tips.map(item => item)}</div>;
 		const routeList = {};
 		const routeName = [];
 		reInfo.map(item => {
@@ -343,6 +351,7 @@ export default class Home extends React.Component {
 		);
 
 		this.setState({
+			onlineTip,
 			online: online,
 			upSpeed: tx.match(/[0-9\.]+/g),
 			upUnit: tx.match(/[a-z/]+/gi),
@@ -474,6 +483,7 @@ export default class Home extends React.Component {
 
 	render() {
 		const {
+			onlineTip,
 			online,
 			qosEnable,
 			upSpeed,
@@ -493,6 +503,7 @@ export default class Home extends React.Component {
 			chatTotal,
 			apInfo
 		} = this.state;
+
 		return (
 			<SubLayout className="home">
 				<div>
@@ -504,6 +515,7 @@ export default class Home extends React.Component {
 						reList={reList}
 						apInfo={apInfo}
 						online={online}
+						onlineTip={onlineTip}
 						startRefresh={this.startRefresh}
 						stopRefresh={this.stopRefresh}
 						history={this.props.history}
