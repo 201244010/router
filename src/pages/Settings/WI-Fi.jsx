@@ -29,18 +29,6 @@ export default class WIFI extends React.Component {
 
     state = {
         channelType: '',
-        // guestSsid : '',
-        // guestEncryption : '',
-        // guestStaticPassword : '',
-        // guestDynamicPassword : '',
-        // guestPasswordDisabled:false,
-        // guestPwdForbid:false,
-        // PWDType:'',
-        // guestEnable:true,
-        // disabledType2:false,
-        // period : '',
-        // periodTip: '',
-        // displayType:'none',
         //2.4G
         host24Enable:true,
         hostSsid24:'',
@@ -279,16 +267,6 @@ export default class WIFI extends React.Component {
             message.error(intl.get(MODULE, 23)/*_i18n:2.4G、5G Wi-Fi名称不能相同*/);
             return;
         }
-
-        // if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-        //     message.error(channelType ? intl.get(MODULE, 24)/*_i18n:商户、客用Wi-Fi名称不能相同*/:intl.get(MODULE, 25)/*_i18n:2.4G、客用Wi-Fi名称不能相同*/);
-        //     return;
-        // }
-
-        // if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-        //     message.error(intl.get(MODULE, 26)/*_i18n:5G、客用Wi-Fi名称不能相同*/);
-        //     return;
-        // }
         //是否双频合一
         this.setState({
             visibile: true,
@@ -340,10 +318,6 @@ export default class WIFI extends React.Component {
         }   
     }
 
-    format = ()=>{
-        return this.tick + 'S';
-    }
-
     async fetchWireLessInfo(){
         let response = await common.fetchApi(
             [
@@ -388,19 +362,6 @@ export default class WIFI extends React.Component {
             this.setState({
                 //host
                 channelType : this.hostWireLess.band_division == '0'? true : false,
-                //guest
-                // guestSsid : this.guestWireLess.ssid,
-                // guestEncryption : this.guestWireLess.encryption,
-                // guestStaticPassword : this.guestWireLess.encryption == 'none' ? '' : Base64.decode(this.guestWireLess.static_password),
-                // guestPasswordDisabled : (this.guestWireLess.enable != '1') || (this.guestWireLess.encryption == 'none'),
-                // PWDType : this.guestWireLess.password_type,
-                // displayType : this.guestWireLess.password_type == 'static'? 'none' : 'block',
-                // guestEnable : this.guestWireLess.enable == '1'? true : false,
-                // disabledType2 : this.guestWireLess.enable == '1'? false : true,
-                // period : this.guestWireLess.period,
-                // guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : Base64.decode(this.guestWireLess.password),
-                // guestStaticPassword : Base64.decode(this.guestWireLess.static_password), 
-                // guestPwdForbid: this.guestWireLess.encryption == 'none',
                 
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1',
