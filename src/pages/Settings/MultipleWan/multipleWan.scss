@@ -1,0 +1,54 @@
+.settings {
+	.multipleWan-settings {
+		margin-left: 60px;
+		.settings-selectArea {
+			padding: 0;
+			margin-top: 16px;
+			position: relative;
+			.settings-select {
+				width: 80px;
+				height: 36px;
+				margin-bottom: 24px;
+			}
+		}
+	}
+	.settings-tabs {
+		margin-top: 32px;
+		.ant-tabs-nav {
+			margin-left: 0;
+		}
+	}
+	.settings-tabs-disappear {
+		display: none;
+	}
+}
+.wanIcon {
+	width: 48px;
+	margin-left: 24px;
+	display: inline-block;
+	text-align: center;
+	.wanIcon-wan-image {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 8px;
+		background-image: url('./wan.png');
+	}
+	.wanIcon-lan-image {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 8px;
+		background-image: url('./lan.png');
+	}
+	.wanIcon-wan-p {
+		color: #6174F1;
+		font-size: 12px;
+	}
+	.wanIcon-lan-p {
+		color: #ADB1B9;
+		font-size: 12px;
+	}
+}
+.WanIcon-mainWan {
+	margin-right: 24px;
+	margin-left: 0;
+}
