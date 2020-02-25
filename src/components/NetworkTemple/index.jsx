@@ -282,6 +282,9 @@ export default class NetworkTemple extends React.Component {
                     info: {dial_type: dial_type, ...info},
                     wansLen: data[0].result.wans.length - 1,
                 });
+                if(this.props.parent) {
+                    this.props.parent.refreshWanNum(data[0].result.wans.length - 1);
+                }
                 this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
                 return dial_type;
             }
