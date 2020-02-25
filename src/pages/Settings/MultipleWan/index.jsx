@@ -96,7 +96,7 @@ export default class MultipleWan extends React.Component {
 				<TabPane tab={`WAN${i}`} key={i}>
 					<NetworkTemple
 						port={i+1}
-						wanNum
+						wanNum={wanNum}
 						parent={this}
 					/>
 				</TabPane>
