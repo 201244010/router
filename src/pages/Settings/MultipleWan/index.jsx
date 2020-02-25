@@ -66,10 +66,17 @@ export default class MultipleWan extends React.Component {
 			});
 		}
 	}
+
 	onWanNumChange = async(num) => {
 		this.setState({
 			wanNum: num
 		});
+	}
+
+	refreshWanNum = (num) => {
+		this.setState({
+			wanNum: num
+		})
 	}
 
 	callback(key) {
@@ -90,6 +97,7 @@ export default class MultipleWan extends React.Component {
 					<NetworkTemple
 						port={i+1}
 						wanNum
+						parent={this}
 					/>
 				</TabPane>
 			);
