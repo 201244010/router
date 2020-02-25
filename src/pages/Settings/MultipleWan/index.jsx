@@ -18,6 +18,7 @@ export default class MultipleWan extends React.Component {
 		this.state = {
 			wanNum: 0,
 			buttonLoading: false,
+			refreshInfo: [],
 		}
 	}
 
@@ -61,10 +62,39 @@ export default class MultipleWan extends React.Component {
         );
         const { data, errcode } = response;
 		if(errcode === 0) {
+			const { wans } = data[0].result;
+			const refreshInfo = wans.map(item => {
+				return {
+					dial_type: item.dial_type,
+					...item.info,
+				}
+			});
+
 			this.setState({
-				wanNum: data[0].result.wans.length - 1 || 0,
+				wanNum: wans.length - 1 || 0,
+				refreshInfo: refreshInfo,
 			});
 		}
+	}
+
+	refreshWanIno = async() => {
+        const response = await common.fetchApi(
+            { opcode : 'NETWORK_MULTI_WAN_GET'}
+        );
+        const { data, errcode } = response;
+        if(errcode === 0) {
+			const { wans } = data[0].result;
+			const refreshInfo = wans.map(item => {
+				return {
+					dial_type: item.dial_type,
+					...item.info,
+				}
+			});
+
+			this.setState({
+				refreshInfo: refreshInfo,
+			});
+        }
 	}
 
 	onWanNumChange = async(num) => {
@@ -85,22 +115,41 @@ export default class MultipleWan extends React.Component {
 
 	componentDidMount() {
 		this.getWanInfo();
+		this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
 	}
 
+	componentWillUnmount(){
+        clearInterval(this.refreshWanInfo);
+    }
+
     render() {
-		const { wanNum, buttonLoading } = this.state;
+		const { wanNum, buttonLoading, refreshInfo } = this.state;
 
 		const tabsContent = [];
 		for(let i = 1; i <= wanNum; i++) {
-			tabsContent.push(
-				<TabPane tab={`WAN${i}`} key={i}>
-					<NetworkTemple
-						port={i+1}
-						wanNum={wanNum}
-						parent={this}
-					/>
-				</TabPane>
-			);
+			if (i < refreshInfo.length) {
+				tabsContent.push(
+					<TabPane tab={`WAN${i}`} key={i}>
+						<NetworkTemple
+							port={i+1}
+							wanNum={wanNum}
+							parent={this}
+							refreshInfo={refreshInfo[i]}
+						/>
+					</TabPane>
+				);
+			} else {
+				tabsContent.push(
+					<TabPane tab={`WAN${i}`} key={i}>
+						<NetworkTemple
+							port={i+1}
+							wanNum={wanNum}
+							parent={this}
+						/>
+					</TabPane>
+				);
+			}
+			
 		}
 		return <SubLayout className="settings">
 			<Form className='multipleWan-settings'>
