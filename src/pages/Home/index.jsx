@@ -176,18 +176,22 @@ export default class Home extends React.Component {
 	};
 
 	refreshStatus = async () => {
+		const opcodes = [
+			{ opcode: 'CLIENT_LIST_GET' },
+			{ opcode: 'TRAFFIC_STATS_GET' },
+			{ opcode: 'WIRELESS_LIST_GET' },
+			{ opcode: 'NETWORK_MULTI_WAN_CONN_GET' },
+			{ opcode: 'CLIENT_ALIAS_GET' },
+			{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
+			{ opcode: 'ROUTE_GET' },
+			{ opcode: 'SUNMIMESH_ROLE_GET' },
+		];
+		if(getQuickStartVersion() === 'abroad') {
+			opcodes.push({ opcode: 'MOBILE_STATS_GET' });
+		}
+
 		let resp = await common.fetchApi(
-			[
-				{ opcode: 'CLIENT_LIST_GET' },
-				{ opcode: 'TRAFFIC_STATS_GET' },
-				{ opcode: 'WIRELESS_LIST_GET' },
-				{ opcode: 'NETWORK_MULTI_WAN_CONN_GET' },
-				{ opcode: 'CLIENT_ALIAS_GET' },
-				{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
-				{ opcode: 'ROUTE_GET' },
-				{ opcode: 'SUNMIMESH_ROLE_GET' },
-				{ opcode: 'MOBILE_STATS_GET' },
-			],
+			opcodes,
 			{ ignoreErr: true }
 		);
 
@@ -306,9 +310,15 @@ export default class Home extends React.Component {
 		const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
 		const totalPercent = sunmi + whitelist + normal;
 
-		const { count, wans } = data[3].result;
-		const { status } = data[8].result.mobile;
-		const online = (!wans.every(item => item.online === false)) || (status === 'online');
+		let online = true;
+		const { wans } = data[3].result;
+		if(getQuickStartVersion() === 'abroad') {
+			const { status } = data[8].result.mobile;
+			online = (!wans.every(item => item.online === false)) || (status === 'online');
+		} else {
+			online = (!wans.every(item => item.online === false));
+		}
+
 		const tips = [];
 		wans.map(item => {
 			if(item.port == 1) {
