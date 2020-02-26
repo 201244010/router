@@ -115,11 +115,11 @@ export default class MultipleWan extends React.Component {
 
 	componentDidMount() {
 		this.getWanInfo();
-		this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
+		this.refreshWanInfos = setInterval(this.refreshWanIno, 3000);
 	}
 
 	componentWillUnmount(){
-        clearInterval(this.refreshWanInfo);
+        clearInterval(this.refreshWanInfos);
     }
 
     render() {

@@ -33,6 +33,7 @@ export default class Network extends React.Component {
     }
 
     componentDidMount() {
+        this.refreshWanIno();
 		this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
     }
 
