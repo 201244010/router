@@ -299,7 +299,7 @@ export default class NetworkTemple extends React.Component {
     }
 
     render(){
-        const { port, refreshInfo } = this.props;
+        const { port, refreshInfo = {} } = this.props;
 
         const { dhcp, staticIP, pppoe, type, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
         const {
@@ -346,7 +346,6 @@ export default class NetworkTemple extends React.Component {
             ]
         ];
         
-        console.log('infoList', dial_type, this.DIAL_TYPE,this.DIAL_TYPE[dial_type]);
         return (
             <React.Fragment>
                 <section>
