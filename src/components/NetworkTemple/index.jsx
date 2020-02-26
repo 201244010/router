@@ -2,7 +2,8 @@ import React from 'react';
 import { Base64 } from 'js-base64';
 import { Select, message } from 'antd';
 import PanelHeader from '~/components/PanelHeader';
-import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import { checkSameNet } from '~/assets/common/check';
+import ModalLoading from '~/components/ModalLoading';
 import Static from './Static';
 import Dhcp from './Dhcp';
 import PPPoE from './PPPoE';
@@ -63,6 +64,7 @@ export default class NetworkTemple extends React.Component {
         pppoeLoading: false,
         dhcpLoading: false,
         staticLoading: false,
+        visibile: false,
     };
 
     onTypeChange = value => {
@@ -86,7 +88,7 @@ export default class NetworkTemple extends React.Component {
     }
 
     setWanInfo = async() => {
-        clearInterval(this.refreshWanInfo);
+        // clearInterval(this.refreshWanInfo);
         const {port, wanNum} = this.props;
         const portStr = `${port}`;
         const { type, dhcp, pppoe, staticIP, wansLen } = this.state;
@@ -144,7 +146,8 @@ export default class NetworkTemple extends React.Component {
         };
         const wanInfo = field[type];
         this.setState({
-            [field[type].loading]: true
+            [field[type].loading]: true,
+            visibile: true,
         });
 
         if(type === 'static' && ((staticIP.ipv4).join('.') === (staticIP.gateway).join('.'))){
@@ -175,7 +178,7 @@ export default class NetworkTemple extends React.Component {
 					data: { ports }
 				}
 			);
-		} 
+		}
         const response = await common.fetchApi(
             {
                 opcode : 'NETWORK_MULTI_WAN_SET',
@@ -188,12 +191,12 @@ export default class NetworkTemple extends React.Component {
             this.getWanInfo();
         } 
         this.setState({
-            [field[type].loading]: false
+            [field[type].loading]: false,
+            visibile: false,
         }); 
     }
 
     getWanInfo = async() => {
-        clearInterval(this.refreshWanInfo);
         const { port } = this.props;
         const response = await common.fetchApi(
             { opcode : 'NETWORK_MULTI_WAN_GET'}
@@ -276,25 +279,15 @@ export default class NetworkTemple extends React.Component {
                         service: pppoeService,
                     },
                     info: {dial_type: dial_type, ...info},
-                    wansLen: data[0].result.wans.length,
+                    wansLen: data[0].result.wans.length - 1,
                 });
-                this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
+                if(this.props.parent) {
+                    this.props.parent.refreshWanNum(data[0].result.wans.length - 1);
+                }
+
                 return dial_type;
             }
             
-        }
-    }
-    refreshWanIno = async() => {
-        const { port } = this.props;
-        const response = await common.fetchApi(
-            { opcode : 'NETWORK_MULTI_WAN_GET'}
-        );
-        const { data, errcode } = response;
-        if(errcode === 0) {
-            const { info = {}, dial_type = '' } = data[0].result.wans[port-1];
-            this.setState({
-                info: {dial_type: dial_type, ...info},
-            })
         }
     }
 
@@ -305,13 +298,10 @@ export default class NetworkTemple extends React.Component {
         });
     }
 
-    componentWillUnmount(){
-        clearInterval(this.refreshWanInfo);
-    }
-
     render(){
-        const { wanNum, port } = this.props;
-        const { dhcp, staticIP, pppoe, info, type, wansLen, pppoeLoading, dhcpLoading, staticLoading } = this.state;
+        const { port, refreshInfo } = this.props;
+
+        const { dhcp, staticIP, pppoe, type, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
         const {
             online = false,
             dial_type = '',
@@ -321,12 +311,13 @@ export default class NetworkTemple extends React.Component {
             dns1 = '',
             dns2 = '',
             isp = '',
-        } = info;
+        } = refreshInfo;
         const infoList = [
             [
                 {
                     label: intl.get(MODULE, 22)/*_i18n:联网状态：*/,
-                    content: online ? `${intl.get(MODULE, 19)/*_i18n:已联网*/}（${isp}）` : intl.get(MODULE, 20)/*_i18n:未联网*/,
+                    content: online ? intl.get(MODULE, 19)/*_i18n:已联网*/ : intl.get(MODULE, 20)/*_i18n:未联网*/,
+                    // content: online ? `${intl.get(MODULE, 19)/*_i18n:已联网*/}（${isp}）` : intl.get(MODULE, 20)/*_i18n:未联网*/,
                 },
                 {
                     label: intl.get(MODULE, 23)/*_i18n:上网方式：*/,
@@ -355,6 +346,7 @@ export default class NetworkTemple extends React.Component {
             ]
         ];
         
+        console.log('infoList', dial_type, this.DIAL_TYPE,this.DIAL_TYPE[dial_type]);
         return (
             <React.Fragment>
                 <section>
@@ -408,7 +400,11 @@ export default class NetworkTemple extends React.Component {
                             buttonLoading={staticLoading}
                         />
                     }
-                </section>  
+                </section>
+                <ModalLoading
+                    visible={visibile}
+                    tip={intl.get(MODULE, 50)/*_i18n:正在配置，请稍后...*/}
+                />
             </React.Fragment>
         );
     }

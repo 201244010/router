@@ -55,6 +55,18 @@
 					width: 136px;
 					height: 3px;
 					background: #fff;
+					position: relative;
+					#horizenline-tip {
+						position: absolute;
+						top: -25px;
+						left: 60px;
+						.horizenline-tip-card {
+							width: 180px;
+						}
+						.tooltip-icon {
+							cursor: pointer;
+						}
+					}
 				}
 				.dashline {
 					position: relative;

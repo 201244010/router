@@ -2,7 +2,7 @@ import React from 'react';
 import CustomIcon from '~/components/Icon';
 import Loading from '~/components/Loading';
 import { getQuickStartVersion } from '~/utils';
-import { Popover, Button, Input, Carousel } from 'antd';
+import { Popover, Button, Input, Carousel, Tooltip } from 'antd';
 import './topology.scss';
 
 import RouterContent from './RouterContent';
@@ -151,6 +151,7 @@ export default class Topology extends React.Component {
 			downUnit,
 			reList,
 			online,
+			onlineTip,
 			apInfo,
 			startRefresh,
 			stopRefresh
@@ -211,7 +212,26 @@ export default class Topology extends React.Component {
 						<li className="line">
 							<div className="circle" />
 							{online ? (
-								<div className="horizenline" />
+								<div className="horizenline">
+									<div id='horizenline-tip' >
+										<Tooltip
+											placement="top"
+											title={onlineTip}
+											overlayClassName='horizenline-tip-card'
+											getPopupContainer={() => {
+												return document.getElementById('horizenline-tip');
+											}}
+										>
+											<span className="tooltip-icon" >
+												<CustomIcon
+													size={16}
+													type="help"
+													color='#FFCEBD'
+												/>
+											</span>
+										</Tooltip>
+									</div>	
+								</div>
 							) : (
 								<div className="dashline">
 									<div className="dashpart">

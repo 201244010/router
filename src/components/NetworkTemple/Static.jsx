@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from "~/components/Form";
-import { checkIp, checkMask, checkSameNet, checkStr } from '~/assets/common/check';
+import { checkIp, checkMask } from '~/assets/common/check';
 import AdvancedSettings from './AdvancedSettings';
 
 const {FormItem, InputGroup, ErrorTip} = Form;
