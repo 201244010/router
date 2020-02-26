@@ -299,7 +299,7 @@ export default class NetworkTemple extends React.Component {
     }
 
     render(){
-        const { port, refreshInfo } = this.props;
+        const { port, refreshInfo = {} } = this.props;
 
         const { dhcp, staticIP, pppoe, type, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
         const {
