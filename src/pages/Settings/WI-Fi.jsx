@@ -76,8 +76,6 @@ export default class WIFI extends React.Component {
         moreSettingType5:'pulldown',
         moreDisplaydHost5:'none',
         //tip
-        guestSsidTip: '',
-        guestStaticPasswordTip: '',
         hostSsid24Tip: '',
         hostSsid24PasswordTip: '',
         hostSsid5Tip: '',
@@ -110,22 +108,6 @@ export default class WIFI extends React.Component {
                 [name]:value
             });
             break;
-            case 'guestSsid' : this.setState({
-                guestSsidTip: checkStr(value, { who: intl.get(MODULE, 8)/*_i18n:Wi-Fi名称*/, min: 1, max: 32, byte: true }),
-                [name]:value
-            });
-            break;
-            case 'guestStaticPassword': this.setState({
-                guestStaticPasswordTip: checkStr(value, { who: intl.get(MODULE, 9)/*_i18n:Wi-Fi密码*/, min:8 , max: 32, type: 'english', byte: true }
-                ),
-                [name]:value
-            });
-            break;
-            case 'period': this.setState({
-                periodTip: checkRange(value, { min: 1,max: 72,who: intl.get(MODULE, 10)/*_i18n:动态变更周期*/ }),
-                [name]:value
-            });
-            break;
             default: this.setState({
                 [name]:value
             },()=>{
@@ -152,83 +134,11 @@ export default class WIFI extends React.Component {
         }
         
     }
-    onChannelTypeChange = type =>{
-        this.setState({
-            channelType : type
-        });
-    }
     
     onBandSteering = e => {
         this.setState({
             channelType : e.target.value
         });
-    }
-
-    onPWDTypeChange = e =>{
-        if(e.target.value === 'static'){
-            let check ;
-            if(this.state.guestPwdForbid == true){
-                check = '';
-            }else{
-                check = checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 11)/*_i18n:Wi-Fi密码*/, min:8 , max: 32, type: 'english' });
-            }
-            this.setState({
-                guestStaticPasswordTip: check,
-                periodTip: '',
-                PWDType:e.target.value,
-                displayType:e.target.value == 'static'? 'none' : 'block'
-            });
-        }else{
-            this.setState({
-                guestStaticPasswordTip: '',
-                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: intl.get(MODULE, 12)/*_i18n:动态变更周期*/ }),
-                PWDType:e.target.value,
-                displayType:e.target.value == 'static'? 'none' : 'block'
-            });
-        }
-    }
-
-    onGuestEnableChange = type =>{
-        this.setState({
-            guestEnable:type,
-            disabledType2:!type,
-            guestPasswordDisabled:!type || this.state.guestPwdForbid,
-        });
-        if(type==false){
-            this.setState({ guestSsidTip: '', guestStaticPasswordTip: '',periodTip: '' });
-            
-        }else{
-            let tip ;
-            if(this.state.guestPwdForbid){ 
-                tip = '';
-            }else{
-                tip = checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 13)/*_i18n:Wi-Fi密码*/, min:8 , max: 32, type: 'english' });
-            }
-            this.setState({
-                guestSsidTip: checkStr(this.state.guestSsid, { who: intl.get(MODULE, 14)/*_i18n:Wi-Fi名称*/, min: 1, max: 32}),
-                guestStaticPasswordTip: tip,
-                periodTip: checkRange(this.state.period, { min: 1,max: 72,who: intl.get(MODULE, 15)/*_i18n:动态变更周期*/ }),
-            });
-        }
-    }
-
-    onGuestPwdForbidChange = e =>{
-        this.setState({
-            guestPwdForbid:e.target.checked,
-            guestPasswordDisabled:e.target.checked
-        });
-        if(e.target.checked == true){
-            this.setState({
-                guestEncryption : 'none',
-                guestStaticPasswordTip: '',
-                guestStaticPassword: '',    
-            });
-        }else{
-            this.setState({
-                guestEncryption : 'psk-mixed/ccmp+tkip',
-                guestStaticPasswordTip: checkStr(this.state.guestStaticPassword, { who: intl.get(MODULE, 16)/*_i18n:Wi-Fi密码*/, min:8 , max: 32, type: 'english' })
-            });
-        }
     }
      
     //2.4G
@@ -361,22 +271,12 @@ export default class WIFI extends React.Component {
     }
 
     submitMain = async ()=> {
-        const { channelType, host5Enable, host24Enable, guestEnable, hostSsid5, hostSsid24, guestSsid } = this.state;
+        const { channelType, host5Enable, host24Enable, hostSsid5, hostSsid24 } = this.state;
 
         await fetchPublicKey();
         //商户Wi-Fi 2.4G和5G ssid不能相同
         if (!channelType && host24Enable && host5Enable && hostSsid24 === hostSsid5) {
             message.error(intl.get(MODULE, 23)/*_i18n:2.4G、5G Wi-Fi名称不能相同*/);
-            return;
-        }
-
-        if (host24Enable && guestEnable && hostSsid24 === guestSsid) {
-            message.error(channelType ? intl.get(MODULE, 24)/*_i18n:商户、客用Wi-Fi名称不能相同*/:intl.get(MODULE, 25)/*_i18n:2.4G、客用Wi-Fi名称不能相同*/);
-            return;
-        }
-
-        if (host5Enable && guestEnable && hostSsid5 === guestSsid) {
-            message.error(intl.get(MODULE, 26)/*_i18n:5G、客用Wi-Fi名称不能相同*/);
             return;
         }
         //是否双频合一
@@ -432,51 +332,6 @@ export default class WIFI extends React.Component {
         }   
     }
 
-    submitGuest = async () => {
-        await fetchPublicKey();
-        this.setState({
-            visibile: true,
-        });
-
-        this.guestWireLess.ssid = this.state.guestSsid;
-        this.guestWireLess.static_password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : this.state.guestPwdForbid == true ? '' :this.guestWireLess.static_password;
-        this.guestWireLess.encryption = this.state.PWDType == 'static'? this.state.guestEncryption : this.guestWireLess.encryption;
-        this.guestWireLess.password_type = this.state.PWDType;
-        this.guestWireLess.enable = this.state.guestEnable == true? '1' : '0';         
-        this.guestWireLess.period = this.state.PWDType == 'static'? this.guestWireLess.period : this.state.period,
-        this.guestWireLess.password = this.state.PWDType == 'static'? encryption(this.state.guestStaticPassword) : encryption(this.state.guestDynamicPassword);
-        let response = await common.fetchApi(
-            [
-                {
-                    opcode: 'WIRELESS_SET',
-                    data: { main : this.initMain, guest : this.guestWireLess}
-                }
-            ]
-        );
-
-        let { errcode } = response;
-        if(errcode === 0){
-            setTimeout(async() => {
-                this.setState({
-                    visibile: false,
-                    resVisibile: true,
-                    result: true,
-                });
-            }, 10000);
-        }else{
-            this.setState({
-                visibile: false,
-                resVisibile: true,
-                result: false,
-                err: this.err[errcode] || errcode,
-            });    
-        }   
-    }
-
-    format = ()=>{
-        return this.tick + 'S';
-    }
-
     async fetchWireLessInfo(){
         let response = await common.fetchApi(
             [
@@ -528,19 +383,6 @@ export default class WIFI extends React.Component {
             this.setState({
                 //host
                 channelType : this.hostWireLess.band_division == '0'? true : false,
-                //guest
-                guestSsid : this.guestWireLess.ssid,
-                guestEncryption : this.guestWireLess.encryption,
-                guestStaticPassword : this.guestWireLess.encryption == 'none' ? '' : Base64.decode(this.guestWireLess.static_password),
-                guestPasswordDisabled : (this.guestWireLess.enable != '1') || (this.guestWireLess.encryption == 'none'),
-                PWDType : this.guestWireLess.password_type,
-                displayType : this.guestWireLess.password_type == 'static'? 'none' : 'block',
-                guestEnable : this.guestWireLess.enable == '1'? true : false,
-                disabledType2 : this.guestWireLess.enable == '1'? false : true,
-                period : this.guestWireLess.period,
-                guestDynamicPassword : this.guestWireLess.password_type == 'static'? '' : Base64.decode(this.guestWireLess.password),
-                guestStaticPassword : Base64.decode(this.guestWireLess.static_password), 
-                guestPwdForbid: this.guestWireLess.encryption == 'none',
                 
                 //2.4G
                 host24Enable : this.hostWireLess.band_2g.enable == '1',
@@ -586,10 +428,6 @@ export default class WIFI extends React.Component {
         this.fetchWireLessInfo();
     }
 
-    componentWillUnmount(){
-        this.stop = true;
-    }
-
     checkDisabled = () =>{
         let checkDisabled24, checkDisabled5, checkDisabled245;
         let { hostSsid24Tip, hostSsid24PasswordTip, hostSsid24, hostSsid24Password, hostSsid5Tip, hostSsid5PasswordTip,
@@ -615,35 +453,10 @@ export default class WIFI extends React.Component {
         return checkDisabled245;
     }
 
-    checkGuest = () => {
-        let checkDisabledGuest;
-        const {guestEnable, guestSsidTip, guestStaticPasswordTip, guestSsid, periodTip, guestStaticPassword, PWDType} = this.state;
-        if(guestEnable === true){
-            if(PWDType === 'static'){
-                checkDisabledGuest = ( guestSsidTip !== '' || guestStaticPasswordTip !== '' || guestSsid === '' ||
-                (guestStaticPassword.length !== 0 && guestStaticPassword.trim() === ''));
-            }else{
-                checkDisabledGuest = ( guestSsidTip !== '' || guestSsid === '' || periodTip !== '');
-            }    
-        }else{
-            checkDisabledGuest = false;
-        }
-
-        return checkDisabledGuest
-    }
-
     render(){
-        const { channelType, guestSsid, guestStaticPassword, guestDynamicPassword, guestPasswordDisabled, PWDType,
-             guestEnable, disabledType2, period, periodTip, displayType, guestPwdForbid, host24Enable, hostSsid24,
-             hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24,
-              current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5,
-               hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5,
-                moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5,
-                 guestSsidTip, guestStaticPasswordTip, hostSsid24Tip, hostSsid24PasswordTip, hostSsid5Tip, hostSsid5PasswordTip,
-                  visibile, resVisibile,result } = this.state;
+        const { channelType, host24Enable, hostSsid24, hostSsid24PasswordDisabled, pwdForbid24, hostSsid24Password, hide_ssid24, encryption24, htmode24, channel24, current_channel24, channelList24, disabledType24, host5Enable, hostSsid5, hostSsid5PasswordDisabled, pwdForbid5, hostSsid5Password, hide_ssid5, encryption5, htmode5, channel5, current_channel5, channelList5, disabledType5, moreSettingType, moreDisplaydHost, moreSettingType24, moreDisplaydHost24, moreSettingType5, moreDisplaydHost5, hostSsid24Tip, hostSsid24PasswordTip, hostSsid5Tip, hostSsid5PasswordTip,visibile, resVisibile,result } = this.state;
 
         let saveDisabled = this.checkDisabled();
-        let guestDisabled = this.checkGuest();
 
         return [
         <SubLayout className="settings">
@@ -804,54 +617,6 @@ export default class WIFI extends React.Component {
                 </Form>
                 <section className="save" style={{marginTop: moreSettingType5 === 'pullup' || moreSettingType24 === 'pullup' ? 16 : 32}}>
                         <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={saveDisabled} onClick={this.submitMain}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
-                </section>
-                <Form style={{ width : '100%', marginTop : 0,paddingLeft:0}}>
-                    <section className="wifi-setting-item" style={{marginTop: 48}}>
-                        <PanelHeader title={intl.get(MODULE, 65)/*_i18n:客用Wi-Fi*/} checkable={true} checked={guestEnable} onChange={this.onGuestEnableChange} tip={intl.get(MODULE, 86)/*_i18n:建议开放给顾客使用*/}/>
-                        <label className='ssidLabel'>{intl.get(MODULE, 66)/*_i18n:Wi-Fi名称*/}</label>
-                        <FormItem type="small" showErrorTip={guestSsidTip} style={{ width : 320}}>
-                            <Input type="text" maxLength={32} value={guestSsid} onChange={(value)=>this.onChange('guestSsid',value)} disabled={disabledType2}/>
-                            <ErrorTip>{guestSsidTip}</ErrorTip>
-                        </FormItem>
-                        <div className="wifi-settings">
-                            <label className='ui-tiled compact'>{intl.get(MODULE, 67)/*_i18n:密码方式*/}</label>
-                            <RadioGroup className='radio-choice' onChange={this.onPWDTypeChange} value={PWDType} disabled={disabledType2}>
-                                <Radio style={{display:'inline-block'}} value={'static'}>{intl.get(MODULE, 68)/*_i18n:静态密码*/}</Radio>
-                                <Radio style={{display:'inline-block'}} value={'dynamic'}>{intl.get(MODULE, 69)/*_i18n:动态密码*/}</Radio>
-                            </RadioGroup>
-                        </div>
-                        <section style={{display:displayType}}>
-                            <label>{intl.get(MODULE, 70)/*_i18n:动态变更周期*/}</label>
-                            <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" showErrorTip={periodTip} style={{ width : 320}}>
-                                <Input type="text" value={period} maxLength={2} onChange={(value)=>this.onChange('period',value)} disabled={disabledType2} placeholder={intl.get(MODULE, 71)/*_i18n:请输入变更周期时间(1～72)*/}/>
-                                <ErrorTip>{periodTip}</ErrorTip>    
-                            </FormItem>
-                            <span style={{height:40,lineHeight:'40px',marginLeft:-48,marginBottom:0,zIndex:1,opacity:0.5}}>{intl.get(MODULE, 72)/*_i18n:小时*/}</span>
-                            </div>
-                            <div style={{display:'flex',flexDirection : 'row',flexWrap :'nowrap', marginBottom: 0}}>
-                                <label>{intl.get(MODULE, 73)/*_i18n:当前密码是：*/}</label>
-                                <span style={{color:'orange'}} value={guestDynamicPassword}>{guestDynamicPassword}</span>
-                            </div> 
-                            <span style={{display: 'none', opacity:'0.5'}}>{intl.get(MODULE, 74)/*_i18n:如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上*/}</span>   
-                        </section>
-                        <section style={{display:displayType=='none'?'block':'none'}}>
-                            <ul className="ui-tiled compact">
-                                <li><label>{intl.get(MODULE, 55)/*_i18n:Wi-Fi密码*/}</label></li>
-                                <li><Checkbox checked={guestPwdForbid} onChange={this.onGuestPwdForbidChange} disabled={disabledType2}>{intl.get(MODULE, 75)/*_i18n:不设密码*/}</Checkbox></li>
-                            </ul>
-                            <div style={{display:'flex',flexDirection:'row',flexWrap:'nowrap'}}>
-                            <FormItem type="small" showErrorTip={guestStaticPasswordTip} style={{ width : 320, marginBottom: 0}}>
-                                <Input type="password"  maxLength={32} disabled={guestPasswordDisabled} value={guestStaticPassword} onChange={(value)=>this.onChange('guestStaticPassword',value)} />
-                                <ErrorTip>{guestStaticPasswordTip}</ErrorTip>
-                            </FormItem>
-                            <span style={{display:'none',height:40,lineHeight:'40px',marginLeft:10,marginBottom:0,zIndex:1,opacity:'0.5'}}>{intl.get(MODULE, 76)/*_i18n:如您有配套的商米收银设备，客用Wi-Fi名称和密码将打印在小票上*/}</span>
-                            </div>
-                        </section>  
-                    </section>
-                </Form>
-                <section className="save">
-                        <Button type="primary" size="large" style={{ width: 200, height: 42 }} disabled={guestDisabled} onClick={this.submitGuest}>{intl.get(MODULE, 77)/*_i18n:保存*/}</Button>
                 </section>
                 <ModalLoading
                     visible={visibile}
