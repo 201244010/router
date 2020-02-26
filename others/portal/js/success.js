@@ -17,7 +17,7 @@ window.onload = function () {
             if (response.errcode === 0) {
                 // var weixin = response.data[0].result.portal.weixin;
                 // var sms = response.data[0].result.portal.sms;
-                var portal = response.data[0].result.portal.portal;
+                var portal = response.data[0].result.portal;
                 if(Number(portal.enable) === 1) {
                     commonDataToPage(portal.auth_config);
                     countDown(Number(portal.auth_config.online_limit) * 60);    

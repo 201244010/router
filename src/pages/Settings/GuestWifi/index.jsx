@@ -629,7 +629,7 @@ export default class GuestWifi extends React.Component {
 			guestEnable,
 			radioValue,
 			inputValue: { guestSsid, hostSsidPassword, period },
-			guestDynamicPassword
+			guestDynamicPassword,
 		} = this.state;
 		const {
 			guestSsidTip,

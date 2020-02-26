@@ -110,7 +110,7 @@ window.onload = function () {
             // }
             console.log('portalResponse', response);
             if (response.errcode === 0) {
-                var portal = response.data[0].result.portal.portal;
+                var portal = response.data[0].result.portal;
                 // if(isMobile()) {
                     if (Number(portal.enable) === 1) {
                         if (portal.auth_config.auth_type === 'none') {
@@ -139,7 +139,7 @@ window.onload = function () {
                         }
                         commonDataToPage(portal.auth_config);
                     } else {
-                        showToast('请开启客用Wi-Fi功能', 0);
+                        showToast('请开启portal功能', 0);
                     }
                 // } else {
                 //     document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
@@ -507,6 +507,7 @@ function validate() {
 // }
 
 function commonDataToPage(data) {
+    console.log('commonDataToPage', data);
     connectText.innerText = data.connect_label || '连接Wi-Fi';
     document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(" + ((data.background_url ||
          "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
