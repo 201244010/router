@@ -67,6 +67,169 @@ export default class GuestWifi extends React.Component {
 		};
 	}
 
+	fetchGuest = async () => {
+		const response = await common.fetchApi({
+			opcode: 'WIRELESS_GUEST_GET'
+		});
+		console.log('response', response);
+		const { errcode, data } = response;
+		if(errcode === 0) {
+			const {
+				guest: {
+					enable,
+					ssid = '',
+					connect_type = '',
+					encryption,
+					dynamic: { period = '', password: dynamicPassword = '' },
+					static: { password: staticPassword = '' },
+					portal: {
+						server_type,
+						auth_config: {
+							welcome = '',
+							connect_label = '',
+							link_enable = '',
+							link_label = '',
+							link_addr = '',
+							statement = '',
+							online_limit = '',
+							idle_limit = '',
+							auth_type = '',
+							logo_url = '',
+							background_url = '',
+							pwd_auth: { auth_password = '' },
+							sms: {
+								code_expired = '',
+								server_provider = '',
+								access_key_id = '',
+								access_key_secret = '',
+								template_code = '',
+								sign_name = '',
+							}
+						}
+					}
+				}
+			} = data[0].result || {};
+	
+			this.strObjectTip = {
+				guestSsidTip: checkStr(ssid, {
+					who: intl.get(MODULE,0),
+					min: 1,
+					max: 32,
+					byte: true
+				}),
+				hostSsidPasswordTip: checkStr(Base64.decode(staticPassword), {
+					who: intl.get(MODULE,9),
+					min: 8,
+					max: 32,
+					type: 'english',
+					byte: true
+				}),
+				periodTip: checkRange(period, {
+					min: 1,
+					max: 72,
+					who: intl.get(MODULE,10)
+				}),
+				welcomeTip: checkStr(welcome, {
+					who: intl.get(MODULE,2),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				connectButtonTip: checkStr(connect_label, {
+					who: intl.get(MODULE,1),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				versionTip: checkStr(statement, {
+					who: intl.get(MODULE,5),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				jumpTextTip: checkStr(link_label, {
+					who: intl.get(MODULE,3),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				jumpLinkTip: checkStr(link_addr, {
+					who: intl.get(MODULE,4),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				messageTimeTip: checkRange(code_expired, {
+					min: 30,
+					max: 180,
+					who: intl.get(MODULE,11)
+				}),
+				appKeyTip: checkStr(access_key_id, {
+					who: 'AppKey',
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				appSecretTip: checkStr(access_key_secret, {
+					who: 'APP Secret',
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				modelIdTip: checkStr(template_code, {
+					who: intl.get(MODULE,7),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				signTip: checkStr(sign_name, {
+					who: intl.get(MODULE,8),
+					min: 1,
+					max: 30,
+					byte: true
+				}),
+				accessPasswordTip: checkStr(auth_password, {
+					who: intl.get(MODULE,12),
+					min: 8,
+					max: 32,
+					type: 'english',
+					byte: true
+				}),
+			};
+	
+			this.setState({
+				inputValue: {
+					guestSsid: ssid,
+					period,
+					hostSsidPassword: Base64.decode(staticPassword),
+					welcome,
+					connectButton: connect_label,
+					jumpLink: link_addr,
+					jumpText: link_label,
+					messageTime: code_expired,
+					appKey: access_key_id,
+					appSecret: access_key_secret,
+					modelId: template_code,
+					sign: sign_name,
+					accessPassword: auth_password,
+					version: statement
+				},
+				guestEnable: enable === '1',
+				radioValue: connect_type,
+				guestDynamicPassword: Base64.decode(dynamicPassword),
+				navigateValue: link_enable,
+				messageValue: server_provider,
+				validValue: online_limit,
+				emptyValue: idle_limit,
+				bgUrl: background_url,
+				logoUrl: logo_url,
+				portalValue: auth_type
+			});	
+		} else {
+			message.error('配置获取失败');
+		}	
+	};
+
 	submit = async() => {
 		await fetchPublicKey();
 		const {
@@ -162,246 +325,88 @@ export default class GuestWifi extends React.Component {
 
 		const { errcode } = response;
 		if(errcode === 0) {
+			this.fetchGuest();
 			message.success('配置成功');
 		} else {
 			message.error('配置失败');
 		}
 	}
 
-	submit2 = async () => {
-		const {
-			inputValue: {
-				guestSsid,
-				period,
-				hostSsidPassword,
-				welcome,
-				connectButton,
-				jumpLink,
-				jumpText,
-				messageTime,
-				appKey,
-				appSecret,
-				modelId,
-				sign,
-				accessPassword,
-				version
-			},
-			enable,
-			radioValue,
-			guestDynamicPassword,
-			navigateValue,
-			messageValue,
-			validValue,
-			emptyValue,
-			bgUrl,
-			logoUrl,
-			portalValue
-		} = this.state;
+	// submit2 = async () => {
+	// 	const {
+	// 		inputValue: {
+	// 			guestSsid,
+	// 			period,
+	// 			hostSsidPassword,
+	// 			welcome,
+	// 			connectButton,
+	// 			jumpLink,
+	// 			jumpText,
+	// 			messageTime,
+	// 			appKey,
+	// 			appSecret,
+	// 			modelId,
+	// 			sign,
+	// 			accessPassword,
+	// 			version
+	// 		},
+	// 		enable,
+	// 		radioValue,
+	// 		guestDynamicPassword,
+	// 		navigateValue,
+	// 		messageValue,
+	// 		validValue,
+	// 		emptyValue,
+	// 		bgUrl,
+	// 		logoUrl,
+	// 		portalValue
+	// 	} = this.state;
 
-		const guest = {
-			enable,
-			ssid: guestSsid,
-			connect_type: radioValue,
-			"encryption":"psk-mixed/ccmp+tkip",
-			dynamic: {
-				period,
-				password: guestDynamicPassword
-			},
-			static: {
-				password: hostSsidPassword
-			},
-			portal: {
-				auth_config: {
-					welcome,
-					connect_label: connectButton,
-					link_enable: navigateValue,
-					link_label: jumpText,
-					link_addr: jumpLink,
-					statement: version,
-					online_limit: validValue,
-					idle_limit: emptyValue,
-					auth_type: portalValue,
-					pwd_auth: {
-						auth_password: accessPassword
-					},
-					sms: {
-						server_provider: messageValue,
-						code_expired: messageTime,
-						access_key_id: appKey,
-						access_key_secret: appSecret,
-						template_code: modelId,
-						sign_name: sign
-					}
-				}
-			}
-		};
+	// 	const guest = {
+	// 		enable,
+	// 		ssid: guestSsid,
+	// 		connect_type: radioValue,
+	// 		"encryption":"psk-mixed/ccmp+tkip",
+	// 		dynamic: {
+	// 			period,
+	// 			password: guestDynamicPassword
+	// 		},
+	// 		static: {
+	// 			password: hostSsidPassword
+	// 		},
+	// 		portal: {
+	// 			auth_config: {
+	// 				welcome,
+	// 				connect_label: connectButton,
+	// 				link_enable: navigateValue,
+	// 				link_label: jumpText,
+	// 				link_addr: jumpLink,
+	// 				statement: version,
+	// 				online_limit: validValue,
+	// 				idle_limit: emptyValue,
+	// 				auth_type: portalValue,
+	// 				pwd_auth: {
+	// 					auth_password: accessPassword
+	// 				},
+	// 				sms: {
+	// 					server_provider: messageValue,
+	// 					code_expired: messageTime,
+	// 					access_key_id: appKey,
+	// 					access_key_secret: appSecret,
+	// 					template_code: modelId,
+	// 					sign_name: sign
+	// 				}
+	// 			}
+	// 		}
+	// 	};
 
-		const response = await common.fetchApi({
-			opcode: 'WIRELESS_GUEST_SET',
-			data: {
-				guest
-			}
-		});
-	};
-
-	fetchGuest = async () => {
-		const response = await common.fetchApi({
-			opcode: 'WIRELESS_GUEST_GET'
-		});
-		console.log('response', response);
-		const { errcode, data } = response;
-		const {
-			guest: {
-				enable,
-				ssid = '',
-				connect_type = '',
-				encryption,
-				dynamic: { period = '', password: dynamicPassword = '' },
-				static: { password: staticPassword = '' },
-				portal: {
-					server_type,
-					auth_config: {
-						welcome = '',
-						connect_label = '',
-						link_enable = '',
-						link_label = '',
-						link_addr = '',
-						statement = '',
-						online_limit = '',
-						idle_limit = '',
-						auth_type = '',
-						logo_url = '',
-						background_url = '',
-						pwd_auth: { auth_password = '' },
-						sms: {
-							code_expired = '',
-							server_provider = '',
-							access_key_id = '',
-							access_key_secret = '',
-							template_code = '',
-							sign_name = '',
-						}
-					}
-				}
-			}
-		} = data[0].result || {};
-
-		this.strObjectTip = {
-			guestSsidTip: checkStr(ssid, {
-				who: intl.get(MODULE,0),
-				min: 1,
-				max: 32,
-				byte: true
-			}),
-			hostSsidPasswordTip: checkStr(Base64.decode(staticPassword), {
-				who: intl.get(MODULE,9),
-				min: 8,
-				max: 32,
-				type: 'english',
-				byte: true
-			}),
-			periodTip: checkRange(period, {
-				min: 1,
-				max: 72,
-				who: intl.get(MODULE,10)
-			}),
-			welcomeTip: checkStr(welcome, {
-				who: intl.get(MODULE,2),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			connectButtonTip: checkStr(connect_label, {
-				who: intl.get(MODULE,1),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			versionTip: checkStr(statement, {
-				who: intl.get(MODULE,5),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			jumpTextTip: checkStr(link_label, {
-				who: intl.get(MODULE,3),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			jumpLinkTip: checkStr(link_addr, {
-				who: intl.get(MODULE,4),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			messageTimeTip: checkRange(code_expired, {
-				min: 30,
-				max: 180,
-				who: intl.get(MODULE,11)
-			}),
-			appKeyTip: checkStr(access_key_id, {
-				who: 'AppKey',
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			appSecretTip: checkStr(access_key_secret, {
-				who: 'APP Secret',
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			modelIdTip: checkStr(template_code, {
-				who: intl.get(MODULE,7),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			signTip: checkStr(sign_name, {
-				who: intl.get(MODULE,8),
-				min: 1,
-				max: 30,
-				byte: true
-			}),
-			accessPasswordTip: checkStr(auth_password, {
-				who: intl.get(MODULE,12),
-				min: 8,
-				max: 32,
-				type: 'english',
-				byte: true
-			}),
-		};
-
-		this.setState({
-			inputValue: {
-				guestSsid: ssid,
-				period,
-				hostSsidPassword: Base64.decode(staticPassword),
-				welcome,
-				connectButton: connect_label,
-				jumpLink: link_addr,
-				jumpText: link_label,
-				messageTime: code_expired,
-				appKey: access_key_id,
-				appSecret: access_key_secret,
-				modelId: template_code,
-				sign: sign_name,
-				accessPassword: auth_password,
-				version: statement
-			},
-			guestEnable: enable === '1',
-			radioValue: connect_type,
-			guestDynamicPassword: Base64.decode(dynamicPassword),
-			navigateValue: link_enable,
-			messageValue: server_provider,
-			validValue: online_limit,
-			emptyValue: idle_limit,
-			bgUrl: background_url,
-			logoUrl: logo_url,
-			portalValue: auth_type
-		});	
-	};
+	// 	const response = await common.fetchApi({
+	// 		opcode: 'WIRELESS_GUEST_SET',
+	// 		data: {
+	// 			guest
+	// 		}
+	// 	});
+	// };
 
 	onSelectChange = (type, value) => {
 		this.setState({
@@ -578,7 +583,7 @@ export default class GuestWifi extends React.Component {
 				item => item !== ''
 			);
 		let radioResult = false;
-		if (navigateValue) {
+		if (navigateValue === '1') {
 			radioResult =
 				[jumpText, jumpLink].includes('') ||
 				[jumpTextTip, jumpLinkTip].some(item => item !== '');
