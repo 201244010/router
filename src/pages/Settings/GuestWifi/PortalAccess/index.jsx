@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select, Modal, Upload, Icon, Button, Radio, message } from 'antd';
+import { get } from '~/assets/common/auth';
 import Form from '~/components/Form';
 import GuestWeb from './GuestWeb';
 import GuestPhone from './GuestPhone';
@@ -24,11 +25,11 @@ export default class PortalAccess extends React.Component {
 
 	beforeUpload = file => {
 		// console.log(file);
-		const isJpg = file.type === 'image/jpeg';
+		const isJpg = (file.type === 'image/jpeg') || (file.type === 'image/png');
 		// console.log(isJpg);
 		// const isLt128K = file.size / 1024 < 128;
 		if (!isJpg) {
-			message.error('只支持.jpg后缀的图片');
+			message.error('只支持.jpg、.png后缀的图片');
 		}
 
 		// if (!isLt128K) {
@@ -48,12 +49,10 @@ export default class PortalAccess extends React.Component {
 
 	handleUploadChange = (info, fileKey, imgKey) => {
 		let fileList = info.fileList;
-		console.log(info);
+		fileList = fileList.slice(-1);
 		const { setFile } = this.props;
 		setFile(fileKey, fileList);
-		const file = info.file;
 		if (info.file.status === 'uploading') {
-			// this.setState({ loading: true });
 			return;
 		}
 		if (info.file.status === 'done') {
@@ -254,24 +253,16 @@ export default class PortalAccess extends React.Component {
 				<div className="ad-title">{intl.get(MODULE, 22)}</div>
 				<div className="guest-upload">
 					<Upload
-						{...{
-							onChange: file => {
-								this.handleUploadChange(
-									file,
-									'logoFileList',
-									'logoUrl'
-								);
-							},
-							// beforeUpload: this.beforeUpload,
-							name: 'file',
-							multiple: false,
-							// data: { opcode: '0x2089' },
-							// action: __BASEAPI__,
-							action:
-								'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-							fileList: logoFileList,
-							uploadTitle: '上传Logo图'
+						onChange={file => this.handleUploadChange(file, 'logoFileList', 'logoUrl')}
+						beforeUpload={this.beforeUpload}
+						name='file'
+						data={{ opcode: '0x2086' }}
+						multiple={false}
+						headers={{
+							'XSRF-TOKEN': get(),
 						}}
+						action={__BASEAPI__}
+						fileList={logoFileList}
 					>
 						<Button>
 							<Icon type="upload" /> {intl.get(MODULE, 23)}
@@ -281,24 +272,17 @@ export default class PortalAccess extends React.Component {
 				</div>
 				<div className="guest-upload">
 					<Upload
-						{...{
-							onChange: file => {
-								this.handleUploadChange(
-									file,
-									'bgFileList',
-									'imgUrl'
-								);
-							},
-							// beforeUpload: this.beforeUpload,
-							name: 'file',
-							// multiple: false,
-							// data: { opcode: '0x2089' },
-							// action: __BASEAPI__,
-							action:
-								'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-							fileList: bgFileList,
-							uploadTitle: '上传Logo图'
+						onChange={file => this.handleUploadChange(file, 'bgFileList', 'imgUrl')}
+						beforeUpload={this.beforeUpload}
+						name='file'
+						data={{ opcode: '0x2087' }}
+						multiple={false}
+						headers={{
+							'XSRF-TOKEN': get(),
 						}}
+						action={__BASEAPI__}
+						fileList={bgFileList}
+						className='restore-func-upload'
 					>
 						<Button>
 							<Icon type="upload" /> {intl.get(MODULE, 24)}

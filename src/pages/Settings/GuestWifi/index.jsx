@@ -291,6 +291,7 @@ export default class GuestWifi extends React.Component {
 				connect_type: radioValue,
 				encryption: "none",
 				portal: {
+					server_type: "loacl",
 					auth_config: {
 						welcome,
 						connect_label: connectButton,

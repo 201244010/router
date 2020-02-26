@@ -108,9 +108,10 @@ window.onload = function () {
             // } else {
             //     showToast('请求失败，请稍后再试');
             // }
+            console.log('portalResponse', response);
             if (response.errcode === 0) {
                 var portal = response.data[0].result.portal.portal;
-                if(isMobile()) {
+                // if(isMobile()) {
                     if (Number(portal.enable) === 1) {
                         if (portal.auth_config.auth_type === 'none') {
                             smsInputsElement.style.display = 'none';
@@ -140,12 +141,12 @@ window.onload = function () {
                     } else {
                         showToast('请开启客用Wi-Fi功能', 0);
                     }
-                } else {
-                    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
-                    + ((weixin.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
-                    logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
-                    showToast('PC端暂不支持微信连Wi-Fi功能', 0);
-                }
+                // } else {
+                //     document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
+                //     + ((weixin.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
+                //     logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
+                //     showToast('PC端暂不支持微信连Wi-Fi功能', 0);
+                // }
             } else {
                 showToast('请求失败，请稍后再试');
             }
