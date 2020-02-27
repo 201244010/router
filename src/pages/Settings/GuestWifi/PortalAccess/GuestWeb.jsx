@@ -14,15 +14,16 @@ export default class GuestWeb extends React.Component {
 			welcome,
 			version,
 			connectButton,
-			imgUrl,
+			bgUrl,
 			logoUrl
 		} = this.props;
+
 		return (
 			<div>
 				<div
 					className="guest-web"
 					style={{
-						backgroundImage: `url(${imgUrl})`
+						backgroundImage: `url(${bgUrl})`
 					}}
 				>
 					<div

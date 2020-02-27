@@ -147,9 +147,10 @@ window.onload = function () {
                 //     logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
                 //     showToast('PC端暂不支持微信连Wi-Fi功能', 0);
                 // }
-            } else {
-                showToast('请求失败，请稍后再试');
             }
+            // } else {
+            //     showToast('请求失败，请稍后再试');
+            // }
         }
     });
 };
@@ -184,6 +185,7 @@ mobileInput.addEventListener('blur', function () {
         mobileError.classList.add('show');
         showToast('请输入正确的手机号');
     }
+    canConnect();
 }, false);
 
 cleanIcon.addEventListener('click', function () {
@@ -217,6 +219,7 @@ codeInput.addEventListener('blur', function () {
         // codeError.classList.add('show');
         showToast('请输入正确的验证码');
     }
+    canConnect();
 }, false);
 
 codeGetter.addEventListener('click', function () {
@@ -278,7 +281,7 @@ codeGetter.addEventListener('click', function () {
 // }, false);
 
 connectBtn.addEventListener('click', function () {
-    var isMobilePhone = isMobile();
+    // var isMobilePhone = isMobile();
 
     if (btnDisabled) {
         return;
@@ -373,13 +376,15 @@ connectBtn.addEventListener('click', function () {
     //         }
     //     });
     // }
-    if (isMobilePhone) {
+    // if (isMobilePhone) {
         if (enable.auth_type === 'pwd_auth') {
             var password = passwordInput.value;
             var params = {
                 params: [{
                     param: {
-                        password: password
+                        password: password,
+                        gw_address: parseUrl("gw_address"),
+                        gw_port: parseUrl("gw_port")
                     },
                     opcode: "0x2083"
                 }],
@@ -455,7 +460,7 @@ connectBtn.addEventListener('click', function () {
                 }
             });
         }
-    }
+    // }
 }, false);
 
 function showToast(msg, duration) {

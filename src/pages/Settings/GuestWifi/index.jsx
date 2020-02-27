@@ -219,8 +219,8 @@ export default class GuestWifi extends React.Component {
 				guestDynamicPassword: Base64.decode(dynamicPassword),
 				navigateValue: link_enable,
 				messageValue: server_provider,
-				validValue: online_limit,
-				emptyValue: idle_limit,
+				validValue: Number(online_limit),
+				emptyValue: Number(idle_limit),
 				bgUrl: background_url,
 				logoUrl: logo_url,
 				portalValue: auth_type
@@ -299,8 +299,8 @@ export default class GuestWifi extends React.Component {
 						link_label: jumpText,
 						link_addr: jumpLink,
 						statement: version,
-						online_limit: validValue,
-						idle_limit: emptyValue,
+						online_limit: String(validValue),
+						idle_limit: String(emptyValue),
 						auth_type: portalValue,
 						pwd_auth: {
 							auth_password: accessPassword

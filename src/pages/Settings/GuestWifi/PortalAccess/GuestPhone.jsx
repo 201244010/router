@@ -5,10 +5,11 @@ const MODULE = 'guestpreview';
 
 export default class GuestPhone extends React.Component {
 	render() {
-		const { portalValue, welcome, version, connectButton, imgUrl, logoUrl } = this.props;
+		const { portalValue, welcome, version, connectButton, bgUrl, logoUrl } = this.props;
+
 		return (
 			<div className="guest-phone" style={{
-				backgroundImage: `url(${imgUrl})`,
+				backgroundImage: `url(${bgUrl})`,
 			}}>
 				<div className="guest-logo" style={{
 				backgroundImage: `url(${logoUrl})`,

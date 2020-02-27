@@ -18,7 +18,7 @@ export default class PortalAccess extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			imgUrl: '',
+			bgUrl: '',
 			logoUrl: ''
 		};
 	}
@@ -57,16 +57,16 @@ export default class PortalAccess extends React.Component {
 		}
 		if (info.file.status === 'done') {
 			// Get this url from response in real world.
-			this.getBase64(info.file.originFileObj, imgUrl =>
+			this.getBase64(info.file.originFileObj, bgUrl =>
 				this.setState({
-					[imgKey]: imgUrl
+					[imgKey]: bgUrl
 				})
 			);
 		}
 	};
 
 	render() {
-		const { imgUrl, logoUrl } = this.state;
+		const { bgUrl, logoUrl } = this.state;
 		const {
 			onRadioChange,
 			onSelectChange,
@@ -104,10 +104,13 @@ export default class PortalAccess extends React.Component {
 				emptyValue,
 				previewValue,
 				logoFileList,
-				bgFileList
+				bgFileList,
+				logoUrl: preLogoUrl,
+				bgUrl: preBgUrl,
 			},
 			onChange
 		} = this.props;
+		console.log('validValue', validValue, 'emptyValue', emptyValue);
 		const messageMap = [
 			{
 				type: 'messageTime',
@@ -179,15 +182,16 @@ export default class PortalAccess extends React.Component {
 				label: intl.get(MODULE, 12)
 			}
 		];
-		// console.log(imgUrl);
+		// console.log(bgUrl);
 		return (
 			<div>
-				<div className={portalValue !== SMS ? 'message-service' : ''}>
+				<div className={portalValue !== SMS ? 'message-service' : ''} id='portalValueArea'>
 					<div>{intl.get(MODULE, 13)}</div>
 					<Select
 						style={{ width: 320 }}
 						onChange={value => onSelectChange('portalValue', value)}
 						value={portalValue}
+						getPopupContainer={() => document.getElementById('portalValueArea')}
 					>
 						<Option value={NONE}>{intl.get(MODULE, 14)}</Option>
 						<Option value={PWD_AUTH}>{intl.get(MODULE, 15)}</Option>
@@ -195,12 +199,13 @@ export default class PortalAccess extends React.Component {
 					</Select>
 					{portalValue === SMS && (
 						<div className="guest-message-block">
-							<div className="guest-left">
+							<div className="guest-left" id='messageValueArea'>
 								<div>{intl.get(MODULE, 17)}</div>
 								<Select
 									style={{ width: 320 }}
-									onChange={this.onChange}
-									defaultValue={messageValue}
+									onChange={value => onSelectChange('messageValue', value)}
+									value={messageValue}
+									getPopupContainer={() => document.getElementById('messageValueArea')}
 								>
 									<Option value={'ali'}>{intl.get(MODULE, 18)}</Option>
 									<Option value={'tencent'}>{intl.get(MODULE, 19)}</Option>
@@ -272,7 +277,7 @@ export default class PortalAccess extends React.Component {
 				</div>
 				<div className="guest-upload">
 					<Upload
-						onChange={file => this.handleUploadChange(file, 'bgFileList', 'imgUrl')}
+						onChange={file => this.handleUploadChange(file, 'bgFileList', 'bgUrl')}
 						beforeUpload={this.beforeUpload}
 						name='file'
 						data={{ opcode: '0x2087' }}
@@ -388,24 +393,26 @@ export default class PortalAccess extends React.Component {
 				)}
 				<div className="guest-padding">
 					<div className="ad-title">{intl.get(MODULE,34)}</div>
-					<div className="message-service">
+					<div className="message-service" id='validValueArea'>
 						<div>{intl.get(MODULE,35)}</div>
 						<Select
 							style={{ width: 320 }}
-							onChange={this.onChange}
-							defaultValue={validValue}
+							onChange={value => onSelectChange('validValue', value)}
+							value={validValue}
+							getPopupContainer={() => document.getElementById('validValueArea')}
 						>
 							{VALID_NETWORK_TIME.map(item => (
-								<Option value={item}>{item}h</Option>
+								<Option value={item*60}>{item}h</Option>
 							))}
 						</Select>
 					</div>
-					<div className="message-service">
+					<div className="message-service" id='emptyValueArea'>
 						<div>{intl.get(MODULE,36)}</div>
 						<Select
 							style={{ width: 320 }}
-							onChange={this.onChange}
-							defaultValue={emptyValue}
+							onChange={value => onSelectChange('emptyValue', value)}
+							value={emptyValue}
+							getPopupContainer={() => document.getElementById('emptyValueArea')}
 						>
 							{EMPTY_NETWORK_TIME.map(item => (
 								<Option value={item}>{item}min</Option>
@@ -434,8 +441,8 @@ export default class PortalAccess extends React.Component {
 								welcome,
 								version,
 								connectButton,
-								imgUrl,
-								logoUrl
+								bgUrl: bgUrl || preBgUrl,
+								logoUrl: logoUrl || preLogoUrl,
 							}}
 						/>
 					) : (
@@ -445,8 +452,8 @@ export default class PortalAccess extends React.Component {
 								welcome,
 								version,
 								connectButton,
-								imgUrl,
-								logoUrl
+								bgUrl: bgUrl || preBgUrl,
+								logoUrl: logoUrl || preLogoUrl,
 							}}
 						/>
 					)}
