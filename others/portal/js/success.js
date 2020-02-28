@@ -29,10 +29,12 @@ function commonDataToPage(data) {
     logoElement.style.backgroundImage = 'url('+ (data.logo_url || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
     if (Number(data.link_enable) === 1) {
         moreInfoBtnElement.style.display = 'block';
-        moreInfoElement.innerText = data.link_label;
+        moreInfoElement.style.display = 'block';
+        moreInfoBtnElement.innerText = data.link_label;
         moreInfoElement.href = data.link_addr;
     } else {
         moreInfoBtnElement.style.display = 'none';
+        moreInfoElement.style.display = 'none';
     }
     serviceElement.innerText = data.statement || '欢迎';
 }
