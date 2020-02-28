@@ -47,7 +47,7 @@ export default class Home extends React.Component {
 		downSpeed: 0,
 		downUnit: 'KB/s',
 		online: true,
-		onlineTip: [],
+		onlineTip: '',
 		qosEnable: false,
 		totalBand: 8 * 1024 * 1024,
 		source: 'default',
@@ -90,14 +90,12 @@ export default class Home extends React.Component {
 	};
 
 	stopRefresh = () => {
-		clearInterval(this.timer);
+		this.stop = false;
 	};
 
 	startRefresh = (once = false) => {
-		this.refreshStatus();
 		if (!once) {
-			clearInterval(this.timer);
-			this.timer = setInterval(this.refreshStatus, 3000);
+			this.refreshStatus();
 		}
 	};
 
@@ -186,220 +184,228 @@ export default class Home extends React.Component {
 			{ opcode: 'ROUTE_GET' },
 			{ opcode: 'SUNMIMESH_ROLE_GET' },
 		];
+
 		if(getQuickStartVersion() === 'abroad') {
 			opcodes.push({ opcode: 'MOBILE_STATS_GET' });
 		}
 
-		let resp = await common.fetchApi(
+		common.fetchApi(
 			opcodes,
-			{ ignoreErr: true }
-		);
+			{ timeout: 30000, ignoreErr: true },
+			{
+				loop : true,
+				interval : 3000, 
+				stop : ()=> {}, 
+				pending : resp => {
+					const ME = this.state.me;
+					let { errcode, data } = resp;
+					if (0 !== errcode) {
+						message.warning(
+							intl.get(MODULE, 8, {
+								error: errcode
+							}) /*_i18n:请求失败[{error}]*/
+						);
+						return this.stop;
+					}
 
-		const ME = this.state.me;
-		let { errcode, data } = resp;
-		if (0 !== errcode) {
-			message.warning(
-				intl.get(MODULE, 8, {
-					error: errcode
-				}) /*_i18n:请求失败[{error}]*/
-			);
-			return;
-		}
+					let clients = data[0].result.data,
+						alias = data[4].result.aliaslist,
+						traffics = data[1].result.traffic_stats.hosts,
+						wifiInfo = data[2].result.rssilist || {},
+						wechats = data[5].result,
+						reInfo = data[6].result.sonconnect.devices,
+						role = data[7].result.sunmimesh.role;
 
-		let clients = data[0].result.data,
-			alias = data[4].result.aliaslist,
-			traffics = data[1].result.traffic_stats.hosts,
-			wifiInfo = data[2].result.rssilist || {},
-			wechats = data[5].result,
-			reInfo = data[6].result.sonconnect.devices,
-			role = data[7].result.sunmimesh.role;
+					//时间戳转时间，获取每天微信接入的数量
+					const wechatList = wechats.access_report;
+					let band = {
+						sunmi: 0.2,
+						whitelist: 0.1,
+						normal: 0
+					};
+					// merge clients && traffic info
+					let totalList = clients.map(client => {
+						let mac = client.mac.toUpperCase();
+						client.mac = mac;
+						const modeMap = {
+							'5g': '0',
+							'2.4g': '1',
+							'not wifi': '2'
+						};
+						let dft = {
+							total_tx_bytes: 0,
+							total_rx_bytes: 0,
+							cur_tx_bytes: 0,
+							cur_rx_bytes: 0
+						};
+						let tf = traffics.find(item => item.ip === client.ip) || dft;
+						let flux = tf.total_tx_bytes + tf.total_rx_bytes;
 
-		//时间戳转时间，获取每天微信接入的数量
-		const wechatList = wechats.access_report;
-		let band = {
-			sunmi: 0.2,
-			whitelist: 0.1,
-			normal: 0
-		};
-		// merge clients && traffic info
-		let totalList = clients.map(client => {
-			let mac = client.mac.toUpperCase();
-			client.mac = mac;
-			const modeMap = {
-				'5g': '0',
-				'2.4g': '1',
-				'not wifi': '2'
-			};
-			let dft = {
-				total_tx_bytes: 0,
-				total_rx_bytes: 0,
-				cur_tx_bytes: 0,
-				cur_rx_bytes: 0
-			};
-			let tf = traffics.find(item => item.ip === client.ip) || dft;
-			let flux = tf.total_tx_bytes + tf.total_rx_bytes;
+						let mode = modeMap[client.wifi_mode];
 
-			let mode = modeMap[client.wifi_mode];
+						let rssi;
+						if ('not wifi' == client.wifi_mode) {
+							rssi = this.RSSI_GOOD;
+						} else {
+							let wi = wifiInfo[mac.toLowerCase()] || { rssi: 0 };
+							rssi = wi.rssi >= 20 ? this.RSSI_GOOD : this.RSSI_BAD;
+						}
 
-			let rssi;
-			if ('not wifi' == client.wifi_mode) {
-				rssi = this.RSSI_GOOD;
-			} else {
-				let wi = wifiInfo[mac.toLowerCase()] || { rssi: 0 };
-				rssi = wi.rssi >= 20 ? this.RSSI_GOOD : this.RSSI_BAD;
+						let aliasName = alias[mac] && alias[mac].alias;
+
+						// 优先显示用户编辑名称，其次显示机型，最次显示hostname
+						let hostname = aliasName || client.model || client.hostname;
+
+						// 统计不同类型设备带宽
+						client.type = client.type || TYPE_NORMAL;
+						band[client.type] += tf.cur_rx_bytes;
+
+						return {
+							me: client.mac === ME,
+							name: hostname,
+							model: client.model,
+							ip: client.ip,
+							mac: client.mac,
+							type: client.type,
+							mode: mode,
+							ontime: client.ontime,
+							rssi: rssi,
+							tx: formatSpeed(tf.cur_tx_bytes),
+							rx: formatSpeed(tf.cur_rx_bytes),
+							flux: flux
+						};
+					});
+
+					let priorityClients = totalList
+						.filter(item => {
+							return item.type === TYPE_WHITE;
+						})
+						.sort((a, b) => {
+							if (a.type === b.type) {
+								return a.ontime - b.ontime;
+							} else {
+								return TYPE_SUNMI === a.type ? -1 : 1;
+							}
+						});
+
+					let normalClients = totalList
+						.filter(item => {
+							return item.type === TYPE_NORMAL;
+						})
+						.sort((a, b) => {
+							return a.ontime - b.ontime;
+						});
+
+					let wan = data[1].result.traffic_stats.wan;
+					let tx = formatSpeed(wan.cur_tx_bytes);
+					let rx = formatSpeed(wan.cur_rx_bytes);
+
+					const {
+						percent: { normalPercent, priorityPercent, sunmiPercent }
+					} = this.state;
+
+					let total = this.state.totalBand;
+					const normal = parseInt(((band['normal'] / total) * 100).toFixed(0));
+					const whitelist = parseInt(
+						((band['whitelist'] / total) * 100).toFixed(0)
+					);
+					const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
+					const totalPercent = sunmi + whitelist + normal;
+
+					let online = true;
+					const { wans } = data[3].result;
+					if(getQuickStartVersion() === 'abroad') {
+						const { status } = data[8].result.mobile;
+						online = (!wans.every(item => item.online === false)) || (status === 'online');
+					} else {
+						online = (!wans.every(item => item.online === false));
+					}
+
+					const tips = [];
+					wans.map(item => {
+						if(item.port == 1) {
+							tips.push(`${intl.get(MODULE, 34) /*_i18n:默认WAN口*/}${item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
+						} else {
+							tips.push(`WAN ${item.port - 1}${intl.get(MODULE, 37) /*_i18n:口*/}${item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}`);
+						}
+					});
+					const onlineTip = tips.join('，');
+					const routeList = {};
+					const routeName = [];
+					reInfo.map(item => {
+						routeList[item.mac.toUpperCase()] = item.location;
+						routeName.push({
+							text: item.location,
+							value: item.location
+						});
+					});
+
+					const tmpList = reInfo.map(re => {
+						return {
+							mac: re.mac.toUpperCase(),
+							online: re.online,
+							name: re.location,
+							role: re.role,
+							rssi: re.rssi,
+							ip: re.ip,
+							devid: re.devid,
+							parent: routeList[re.routermac.toUpperCase()],
+							connMode: re.conn_mode || {}
+						};
+					});
+					const reList = tmpList.filter(item => item.role == 0);
+
+					const apInfo = tmpList.filter(item => item.role == 1)[0] || {};
+
+					window.sessionStorage.setItem(
+						'_ROUTER_LIST',
+						JSON.stringify(routeName)
+					);
+
+					this.setState({
+						onlineTip,
+						online: online,
+						upSpeed: tx.match(/[0-9\.]+/g),
+						upUnit: tx.match(/[a-z/]+/gi),
+						downSpeed: rx.match(/[0-9\.]+/g),
+						downUnit: rx.match(/[a-z/]+/gi),
+						priorityLength: priorityClients.length,
+						normalLength: normalClients.length,
+						sunmiLength:
+							totalList.length -
+							priorityClients.length -
+							normalClients.length,
+						totalList: totalList,
+						priorityClients: priorityClients,
+						normalClients: normalClients,
+						wechatList: wechatList,
+						chatTotal: wechats.access_total,
+						reList,
+						apInfo,
+						percent: {
+							normalPercent: (() => {
+								normalPercent.shift();
+								normalPercent.push(normal);
+								return normalPercent;
+							})(),
+							priorityPercent: (() => {
+								priorityPercent.shift();
+								priorityPercent.push(whitelist);
+								return priorityPercent;
+							})(),
+							sunmiPercent: (() => {
+								sunmiPercent.shift();
+								sunmiPercent.push(sunmi);
+								return sunmiPercent;
+							})()
+						},
+						largestPercent: totalPercent,
+						apModal: role === 'TAP' && online
+					});
+					return this.stop;
+				},
 			}
-
-			let aliasName = alias[mac] && alias[mac].alias;
-
-			// 优先显示用户编辑名称，其次显示机型，最次显示hostname
-			let hostname = aliasName || client.model || client.hostname;
-
-			// 统计不同类型设备带宽
-			client.type = client.type || TYPE_NORMAL;
-			band[client.type] += tf.cur_rx_bytes;
-
-			return {
-				me: client.mac === ME,
-				name: hostname,
-				model: client.model,
-				ip: client.ip,
-				mac: client.mac,
-				type: client.type,
-				mode: mode,
-				ontime: client.ontime,
-				rssi: rssi,
-				tx: formatSpeed(tf.cur_tx_bytes),
-				rx: formatSpeed(tf.cur_rx_bytes),
-				flux: flux
-			};
-		});
-
-		let priorityClients = totalList
-			.filter(item => {
-				return item.type === TYPE_WHITE;
-			})
-			.sort((a, b) => {
-				if (a.type === b.type) {
-					return a.ontime - b.ontime;
-				} else {
-					return TYPE_SUNMI === a.type ? -1 : 1;
-				}
-			});
-
-		let normalClients = totalList
-			.filter(item => {
-				return item.type === TYPE_NORMAL;
-			})
-			.sort((a, b) => {
-				return a.ontime - b.ontime;
-			});
-
-		let wan = data[1].result.traffic_stats.wan;
-		let tx = formatSpeed(wan.cur_tx_bytes);
-		let rx = formatSpeed(wan.cur_rx_bytes);
-
-		const {
-			percent: { normalPercent, priorityPercent, sunmiPercent }
-		} = this.state;
-
-		let total = this.state.totalBand;
-		const normal = parseInt(((band['normal'] / total) * 100).toFixed(0));
-		const whitelist = parseInt(
-			((band['whitelist'] / total) * 100).toFixed(0)
-		);
-		const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
-		const totalPercent = sunmi + whitelist + normal;
-
-		let online = true;
-		const { wans } = data[3].result;
-		if(getQuickStartVersion() === 'abroad') {
-			const { status } = data[8].result.mobile;
-			online = (!wans.every(item => item.online === false)) || (status === 'online');
-		} else {
-			online = (!wans.every(item => item.online === false));
-		}
-
-		const tips = [];
-		wans.map(item => {
-			if(item.port == 1) {
-				tips.push(<p>{intl.get(MODULE, 34) /*_i18n:默认WAN口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
-			} else {
-				tips.push(<p>WAN {item.port - 1}{intl.get(MODULE, 37) /*_i18n:口*/}{item.online ? intl.get(MODULE, 35) /*_i18n:网络连通*/:intl.get(MODULE, 36) /*_i18n:网络未连通*/}</p>);
-			}
-		});
-		const onlineTip = <div>{tips.map(item => item)}</div>;
-		const routeList = {};
-		const routeName = [];
-		reInfo.map(item => {
-			routeList[item.mac.toUpperCase()] = item.location;
-			routeName.push({
-				text: item.location,
-				value: item.location
-			});
-		});
-
-		const tmpList = reInfo.map(re => {
-			return {
-				mac: re.mac.toUpperCase(),
-				online: re.online,
-				name: re.location,
-				role: re.role,
-				rssi: re.rssi,
-				ip: re.ip,
-				devid: re.devid,
-				parent: routeList[re.routermac.toUpperCase()],
-				connMode: re.conn_mode || {}
-			};
-		});
-		const reList = tmpList.filter(item => item.role == 0);
-
-		const apInfo = tmpList.filter(item => item.role == 1)[0] || {};
-
-		window.sessionStorage.setItem(
-			'_ROUTER_LIST',
-			JSON.stringify(routeName)
-		);
-
-		this.setState({
-			onlineTip,
-			online: online,
-			upSpeed: tx.match(/[0-9\.]+/g),
-			upUnit: tx.match(/[a-z/]+/gi),
-			downSpeed: rx.match(/[0-9\.]+/g),
-			downUnit: rx.match(/[a-z/]+/gi),
-			priorityLength: priorityClients.length,
-			normalLength: normalClients.length,
-			sunmiLength:
-				totalList.length -
-				priorityClients.length -
-				normalClients.length,
-			totalList: totalList,
-			priorityClients: priorityClients,
-			normalClients: normalClients,
-			wechatList: wechatList,
-			chatTotal: wechats.access_total,
-			reList,
-			apInfo,
-			percent: {
-				normalPercent: (() => {
-					normalPercent.shift();
-					normalPercent.push(normal);
-					return normalPercent;
-				})(),
-				priorityPercent: (() => {
-					priorityPercent.shift();
-					priorityPercent.push(whitelist);
-					return priorityPercent;
-				})(),
-				sunmiPercent: (() => {
-					sunmiPercent.shift();
-					sunmiPercent.push(sunmi);
-					return sunmiPercent;
-				})()
-			},
-			largestPercent: totalPercent,
-			apModal: role === 'TAP' && online
-		});
+		);	
 	};
 
 	runningSpeedTest = async () => {
@@ -479,7 +485,7 @@ export default class Home extends React.Component {
 	};
 
 	async componentDidMount() {
-		this.stop = false;
+		this.stop = true;
 		await this.fetchMainRouter();
 		await this.fetchBasic();
 		await this.startRefresh();
@@ -487,8 +493,7 @@ export default class Home extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.stop = true;
-		this.stopRefresh();
+		this.stop = false;
 	}
 
 	render() {
@@ -513,8 +518,6 @@ export default class Home extends React.Component {
 			chatTotal,
 			apInfo
 		} = this.state;
-		// const tips1 = [<p>1234</p>,<p>23456</p>,<p>1313143看见伤口附近阿斯利康放假啊开始减肥</p>];
-		// const onlineTip1 = <div>{tips1.map(item => item)}</div>;
 		return (
 			<SubLayout className="home">
 				<div>
