@@ -88,7 +88,7 @@ export default class NetworkTemple extends React.Component {
     }
 
     setWanInfo = async() => {
-        clearInterval(this.refreshWanInfo);
+        // clearInterval(this.refreshWanInfo);
         const {port, wanNum} = this.props;
         const portStr = `${port}`;
         const { type, dhcp, pppoe, staticIP, wansLen } = this.state;
@@ -197,7 +197,6 @@ export default class NetworkTemple extends React.Component {
     }
 
     getWanInfo = async() => {
-        clearInterval(this.refreshWanInfo);
         const { port } = this.props;
         const response = await common.fetchApi(
             { opcode : 'NETWORK_MULTI_WAN_GET'}
@@ -285,23 +284,10 @@ export default class NetworkTemple extends React.Component {
                 if(this.props.parent) {
                     this.props.parent.refreshWanNum(data[0].result.wans.length - 1);
                 }
-                this.refreshWanInfo = setInterval(this.refreshWanIno, 3000);
+
                 return dial_type;
             }
             
-        }
-    }
-    refreshWanIno = async() => {
-        const { port } = this.props;
-        const response = await common.fetchApi(
-            { opcode : 'NETWORK_MULTI_WAN_GET'}
-        );
-        const { data, errcode } = response;
-        if(errcode === 0) {
-            const { info = {}, dial_type = '' } = data[0].result.wans[port-1];
-            this.setState({
-                info: {dial_type: dial_type, ...info},
-            })
         }
     }
 
@@ -312,13 +298,10 @@ export default class NetworkTemple extends React.Component {
         });
     }
 
-    componentWillUnmount(){
-        clearInterval(this.refreshWanInfo);
-    }
-
     render(){
-        const { wanNum, port } = this.props;
-        const { dhcp, staticIP, pppoe, info, type, wansLen, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
+        const { port, refreshInfo = {} } = this.props;
+
+        const { dhcp, staticIP, pppoe, type, pppoeLoading, dhcpLoading, staticLoading, visibile } = this.state;
         const {
             online = false,
             dial_type = '',
@@ -328,7 +311,7 @@ export default class NetworkTemple extends React.Component {
             dns1 = '',
             dns2 = '',
             isp = '',
-        } = info;
+        } = refreshInfo;
         const infoList = [
             [
                 {
@@ -363,6 +346,7 @@ export default class NetworkTemple extends React.Component {
             ]
         ];
         
+        console.log('infoList', dial_type, this.DIAL_TYPE,this.DIAL_TYPE[dial_type]);
         return (
             <React.Fragment>
                 <section>
