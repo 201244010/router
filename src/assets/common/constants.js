@@ -191,7 +191,9 @@ export const DIRECTIVE = {
     
     WIRELESS_GUEST_GET: '0x3005',
     WIRELESS_GUEST_SET: '0x3007',
-	
+    
+    WIRELESS_HOST_GET: '0x3004',
+    WIRELESS_HOST_SET: '0x3006',
 };
 
 /**

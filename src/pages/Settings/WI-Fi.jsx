@@ -308,8 +308,9 @@ export default class WIFI extends React.Component {
         this.mainWireLess.host=this.hostWireLess;
         let response = await common.fetchApi(
             [{
-                opcode: 'WIRELESS_SET',
-                data: { main : this.mainWireLess, guest : this.initGuest}
+                opcode: 'WIRELESS_HOST_SET',
+                // data: { main : this.mainWireLess, guest : this.initGuest}
+                data: { main : this.mainWireLess }
             }]
         );
 
@@ -336,7 +337,7 @@ export default class WIFI extends React.Component {
         let response = await common.fetchApi(
             [
                 {
-                    opcode: 'WIRELESS_GET',
+                    opcode: 'WIRELESS_HOST_GET',
                 },
                 {
                     opcode: 'WIRELESS_CHANNEL_LIST_GET',
@@ -346,9 +347,9 @@ export default class WIFI extends React.Component {
         await fetchPublicKey();
         let { errcode, data } = response;
         if(errcode == 0){
-            let { main, guest } = data[0].result;
+            let { main } = data[0].result;
             const { host: {band_2g: {password: password2G}, band_5g: { password: password5G}}} = main;
-            const { password: dynamicPassword, static_password: staticPassword } = guest;
+            // const { password: dynamicPassword, static_password: staticPassword } = guest;
             let { channel_list } = data[1].result;
             this.channel_list = channel_list;
             this.mainWireLess = main;
@@ -356,10 +357,10 @@ export default class WIFI extends React.Component {
             this.initMain.host.band_2g.password = encryption(Base64.decode(password2G));
             this.initMain.host.band_5g.password = encryption(Base64.decode(password5G));
             this.hostWireLess = main.host;
-            this.guestWireLess = guest;
-            this.initGuest = { ...guest };
-            this.initGuest.password = encryption(Base64.decode(dynamicPassword));
-            this.initGuest.static_password = encryption(Base64.decode(staticPassword));
+            // this.guestWireLess = guest;
+            // this.initGuest = { ...guest };
+            // this.initGuest.password = encryption(Base64.decode(dynamicPassword));
+            // this.initGuest.static_password = encryption(Base64.decode(staticPassword));
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
