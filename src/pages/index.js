@@ -32,6 +32,7 @@ import Lan from './Settings/Lan';
 import RouterList from './Settings/Router';
 import Network from './Settings/Network';
 import MultipleWan from './Settings/MultipleWan';
+import GuestWifi from './Settings/GuestWifi';
 
 import Dosd from './Advance/Systemsetup/Dosd';
 import ChangePassword from './Advance/Systemsetup/ChangePassword';
@@ -144,6 +145,7 @@ class PrimaryLayout extends React.Component {
             'localUpgrade': { main: 'bg', footer: '', header: true, title: true },
             'multipleWan': { main: 'bg', footer: '', header: true, title: true },
             'vpnClient': { main: 'bg', footer: '', header: true, title: true },
+            'guestWifi': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const height = {
@@ -237,6 +239,7 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/localUpgrade" component={LocalUpgrade} />
                     <Route path="/routersetting/multipleWan" component={MultipleWan} />
                     <Route path="/routersetting/vpnClient" component={VPNClient} />
+                    <Route path="/routersetting/guestWifi" component={GuestWifi} />
                 </Switch>
         )
     }

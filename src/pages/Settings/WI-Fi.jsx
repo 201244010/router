@@ -294,8 +294,8 @@ export default class WIFI extends React.Component {
         this.mainWireLess.host=this.hostWireLess;
         let response = await common.fetchApi(
             [{
-                opcode: 'WIRELESS_SET',
-                data: { main : this.mainWireLess, guest : this.initGuest}
+                opcode: 'WIRELESS_HOST_SET',
+                data: { main : this.mainWireLess }
             }]
         );
 
@@ -322,7 +322,7 @@ export default class WIFI extends React.Component {
         let response = await common.fetchApi(
             [
                 {
-                    opcode: 'WIRELESS_GET',
+                    opcode: 'WIRELESS_HOST_GET',
                 },
                 {
                     opcode: 'WIRELESS_CHANNEL_LIST_GET',
@@ -331,14 +331,12 @@ export default class WIFI extends React.Component {
         );
         let { errcode, data } = response;
         if(errcode == 0){
-            let { main, guest } = data[0].result;
+            let { main } = data[0].result;
             let { channel_list } = data[1].result;
             this.channel_list = channel_list;
             this.mainWireLess = main;
             this.initMain = main;
             this.hostWireLess = main.host;
-            this.guestWireLess = guest;
-            this.initGuest = guest;
             //channelList24
             const channelList24 = [];
             const channelList5 = [];
