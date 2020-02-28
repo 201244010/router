@@ -1,7 +1,6 @@
 import React from 'react';
 import { Checkbox, Select, Button, Radio, message, Modal, Icon } from 'antd';
 import { Base64 } from 'js-base64';
-import { encryption, fetchPublicKey } from '~/assets/common/encryption';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
@@ -71,7 +70,7 @@ export default class GuestWifi extends React.Component {
 		const response = await common.fetchApi({
 			opcode: 'WIRELESS_GUEST_GET'
 		});
-		console.log('response', response);
+
 		const { errcode, data } = response;
 		if(errcode === 0) {
 			const {
@@ -231,7 +230,6 @@ export default class GuestWifi extends React.Component {
 	};
 
 	submit = async() => {
-		await fetchPublicKey();
 		const {
 			inputValue: {
 				guestSsid,
@@ -272,7 +270,7 @@ export default class GuestWifi extends React.Component {
 				connect_type: radioValue,
 				encryption: "psk-mixed/ccmp+tkip",
 				static:{
-					password: encryption(hostSsidPassword),
+					password: Base64.encode(hostSsidPassword),
 				}
 			},
 			dynamic: {
@@ -282,7 +280,7 @@ export default class GuestWifi extends React.Component {
 				encryption: "psk-mixed/ccmp+tkip",
 				dynamic: {
 					period,
-					password: encryption(guestDynamicPassword),
+					password: Base64.encode(guestDynamicPassword),
 				},
 			},
 			portal: {

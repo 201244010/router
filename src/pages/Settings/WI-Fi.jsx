@@ -335,7 +335,6 @@ export default class WIFI extends React.Component {
             let { channel_list } = data[1].result;
             this.channel_list = channel_list;
             this.mainWireLess = main;
-            this.initMain = main;
             this.hostWireLess = main.host;
             //channelList24
             const channelList24 = [];
