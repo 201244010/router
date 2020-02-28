@@ -89,17 +89,10 @@ export default class Home extends React.Component {
 		]
 	};
 
-	// stopRefresh = () => {
-	// 	clearInterval(this.timer);
-	// };
+	stopRefresh = () => {
+		this.stop = false;
+	};
 
-	// startRefresh = (once = false) => {
-	// 	this.refreshStatus();
-	// 	if (!once) {
-	// 		clearInterval(this.timer);
-	// 		this.timer = setInterval(this.refreshStatus, 3000);
-	// 	}
-	// };
 	startRefresh = (once = false) => {
 		if (!once) {
 			this.refreshStatus();
@@ -492,7 +485,7 @@ export default class Home extends React.Component {
 	};
 
 	async componentDidMount() {
-		this.stop = false;
+		this.stop = true;
 		await this.fetchMainRouter();
 		await this.fetchBasic();
 		await this.startRefresh();
@@ -500,8 +493,7 @@ export default class Home extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.stop = true;
-		this.stopRefresh();
+		this.stop = false;
 	}
 
 	render() {
