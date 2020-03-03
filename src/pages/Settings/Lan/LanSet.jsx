@@ -27,17 +27,11 @@ export default class Lan extends React.Component {
         startipTip :"",
         endipTip :"",
         leasetimeTip :"",
-        disabled : false,
         loading : false
     };
 
     onChange = (val, key) => {
-        console.log('val',val,'key',key);
-        let tip = '',
-            startipTip = '',
-            endipTip = '';
-
-        let valid = {
+        const valid = {
             enable: {
                 func: () => {
                     return '';
@@ -69,72 +63,10 @@ export default class Lan extends React.Component {
             }
         };
 
-        tip = valid[key].func(val, valid[key].args);
-
-        if ('startip' !== key){
-            startipTip = checkIp(this.state.startip, {who : intl.get(MODULE, 4)/*_i18n:起始IP地址*/});
-        } else {
-            startipTip = tip;
-        }
-
-        if ('endip' !== key) {
-            endipTip = checkIp(this.state.endip, {who : intl.get(MODULE, 5)/*_i18n:结束IP地址*/})
-        } else {
-            endipTip = tip;
-        }
-
+        const tip = valid[key].func(val, valid[key].args);
         this.setState({
             [key]: (typeof val == 'object' ? [...val] : val),
             [key + 'Tip']: tip,
-            startipTip: startipTip,
-            endipTip: endipTip
-        }, () => {  // 这里用户输入合法后我们才检查是否同一个网段
-            let st = this.state;
-            let tip = ['ipv4Tip', 'maskTip', 'startipTip', 'endipTip', 'leasetimeTip'];
-            let ok = tip.every((tip) => { return '' === st[tip]});
-
-            if (ok) {
-                let num2ip = (num) => {
-                    let ip3 = (num << 0) >>> 24;
-                    let ip2 = (num << 8) >>> 24;
-                    let ip1 = (num << 16) >>> 24;
-                    let ip0 = (num << 24) >>> 24
-
-                    return `${ip3}.${ip2}.${ip1}.${ip0}`;
-                }
-
-                let netId = (transIp(st.ipv4) & transIp(st.mask)) >>> 0;
-                let netMax = ~transIp(st.mask);
-                let minStr = num2ip((netId + 1));
-                let maxStr = num2ip((netId + netMax - 1));
-                let range = `(${minStr} - ${maxStr})`;
-                if (!checkSameNet(st.ipv4, st.startip, st.mask)) {
-                    this.setState({ 
-                        startipTip: intl.get(MODULE, 7)/*_i18n:地址池与局域网IP应处于同一网段*/ + range,
-                        disabled: true 
-                    });
-                    return;
-                }
-
-                if (!checkSameNet(st.ipv4, st.endip, st.mask)) {
-                    this.setState({ 
-                        endipTip: intl.get(MODULE, 7)/*_i18n:地址池与局域网IP应处于同一网段*/ + range,
-                        disabled: true
-                    });
-                    return;
-                }
-
-                if (transIp(st.startip) >= transIp(st.endip)) {
-                    this.setState({ 
-                        endipTip: intl.get(MODULE, 8)/*_i18n:结束IP需大于起始IP*/,
-                        disabled: true
-                    });
-                    return;
-                }
-                this.setState({ disabled: false });
-            } else {
-                this.setState({ disabled: true });
-            }
         });
     }
 
@@ -227,7 +159,50 @@ export default class Lan extends React.Component {
     }
 
     render(){
-        const { ipv4, mask, enable, startip, endip, leasetime, ipv4Tip, maskTip,startipTip,endipTip, leasetimeTip, disabled, loading } = this.state;
+        let { ipv4, mask, enable, startip, endip, leasetime, ipv4Tip, maskTip,startipTip,endipTip, leasetimeTip, loading } = this.state;
+        if (enable === false ) {
+            startipTip = '';
+            endipTip = '';
+            leasetimeTip = '';
+        }
+        let disabled = true;
+        let tip = [ipv4Tip, maskTip, startipTip, endipTip, leasetimeTip];
+        let ok = tip.every(item => '' === item);
+        if(ok) {
+            disabled = false;
+        }
+
+        if (ok && enable === true) {
+            let num2ip = (num) => {
+                let ip3 = (num << 0) >>> 24;
+                let ip2 = (num << 8) >>> 24;
+                let ip1 = (num << 16) >>> 24;
+                let ip0 = (num << 24) >>> 24
+
+                return `${ip3}.${ip2}.${ip1}.${ip0}`;
+            }
+
+            let netId = (transIp(ipv4) & transIp(mask)) >>> 0;
+            let netMax = ~transIp(mask);
+            let minStr = num2ip((netId + 1));
+            let maxStr = num2ip((netId + netMax - 1));
+            let range = `(${minStr} - ${maxStr})`;
+            if (!checkSameNet(ipv4, startip, mask)) {
+                startipTip = intl.get(MODULE, 7)/*_i18n:地址池与局域网IP应处于同一网段*/ + range;
+                disabled = true;
+            }
+
+            if (!checkSameNet(ipv4, endip, mask)) {
+                endipTip = intl.get(MODULE, 7)/*_i18n:地址池与局域网IP应处于同一网段*/ + range;
+                disabled = true;
+            }
+
+            if (transIp(startip) >= transIp(endip)) {
+                endipTip = intl.get(MODULE, 8)/*_i18n:结束IP需大于起始IP*/;
+                disabled = true;
+            }
+        }
+
         const list = [
             {
                 header: {
