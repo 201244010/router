@@ -86,7 +86,8 @@ export default class Home extends React.Component {
 				value: 100,
 				color: '#DFE8F3'
 			}
-		]
+		],
+		showToolTip: false,
 	};
 
 	stopRefresh = () => {
@@ -321,6 +322,7 @@ export default class Home extends React.Component {
 						online = (!wans.every(item => item.online === false));
 					}
 
+					const showToolTip = wans.some(item => item.online === false);
 					const tips = [];
 					wans.map(item => {
 						if(item.port == 1) {
@@ -400,7 +402,8 @@ export default class Home extends React.Component {
 							})()
 						},
 						largestPercent: totalPercent,
-						apModal: role === 'TAP' && online
+						apModal: role === 'TAP' && online,
+						showToolTip: showToolTip,
 					});
 					return this.stop;
 				},
@@ -516,7 +519,8 @@ export default class Home extends React.Component {
 			percent,
 			largestPercent,
 			chatTotal,
-			apInfo
+			apInfo,
+			showToolTip,
 		} = this.state;
 		return (
 			<SubLayout className="home">
@@ -533,6 +537,7 @@ export default class Home extends React.Component {
 						startRefresh={this.startRefresh}
 						stopRefresh={this.stopRefresh}
 						history={this.props.history}
+						showToolTip={showToolTip}
 					/>
 					<ul
 						className={
