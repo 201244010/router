@@ -154,7 +154,8 @@ export default class Topology extends React.Component {
 			onlineTip,
 			apInfo,
 			startRefresh,
-			stopRefresh
+			stopRefresh,
+			showToolTip,
 		} = this.props;
 		const { editing } = this.state;
 		const listItems = this.arrayGroup(reList, 6).map(item => {
@@ -213,7 +214,7 @@ export default class Topology extends React.Component {
 							<div className="circle" />
 							{online ? (
 								<div className="horizenline">
-									<div id='horizenline-tip' >
+									{showToolTip&&<div id='horizenline-tip' >
 										<Tooltip
 											placement="top"
 											title={onlineTip}
@@ -230,7 +231,7 @@ export default class Topology extends React.Component {
 												/>
 											</span>
 										</Tooltip>
-									</div>	
+									</div>}
 								</div>
 							) : (
 								<div className="dashline">
