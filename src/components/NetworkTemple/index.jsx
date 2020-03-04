@@ -184,7 +184,7 @@ export default class NetworkTemple extends React.Component {
 
         let data = {};
         if(port !== 1) {
-            data = {mode: wanNum, wan: wanInfo};
+            data = {mode: wanNum + 1, wan: wanInfo};
         } else {
             data = {wan: wanInfo};
         }
