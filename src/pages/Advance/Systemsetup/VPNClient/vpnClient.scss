@@ -1,0 +1,26 @@
+.settings {
+	.vpnClient-settings {
+		margin-left: 60px;
+		.info-item {
+			position: relative;
+			.info-item-normal-label {
+				display: inline-block;
+				width: 100px;
+				text-align: right;
+				margin-right: 10px;
+			}
+			.info-item-formItem {
+				width: 320px;
+			}
+		}
+		.vpnClient-save {
+			border-top: 1px solid #ECECEC;
+			padding: 28px 60px 20px 0;
+			margin-top: 40px;
+			.save-button {
+				width: 200px;
+				height: 42px;
+			}
+		}
+	}
+}

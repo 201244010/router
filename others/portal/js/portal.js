@@ -43,6 +43,7 @@ if (!("classList" in document.documentElement)) {
     });
 }
 
+var passwordInput = document.getElementById('passwordInput');
 var mobileInput = document.getElementById('mobileInput');
 var mobileError = document.getElementById('mobileError');
 var codeInput = document.getElementById('codeInput');
@@ -52,15 +53,16 @@ var countDown = document.getElementById('countDown');
 var cleanIcon = document.getElementById('cleanIcon');
 var connectBtn = document.getElementById('connectBtn');
 var connectText = document.getElementById('connectText');
-var protocol = document.getElementById('protocol');
+// var protocol = document.getElementById('protocol');
 var toast = document.getElementById('toast');
-var nameElement = document.getElementById('name');
+// var nameElement = document.getElementById('name');
 var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
-var inputsElement = document.getElementById('inputs');
+var passwordInputsElement = document.getElementById('password-inputs');
+var smsInputsElement = document.getElementById('sms-inputs');
 var logoElement = document.getElementById('logo');
 var agreementElement = document.getElementById('agreement');
-var lawMaskElement = document.getElementById('lawMask');
+// var lawMaskElement = document.getElementById('lawMask');
 var lawContentElement = document.getElementById('lawContent');
 var iKnowElement = document.getElementById('iKnow');
 var agreeProtocol = true;
@@ -70,54 +72,65 @@ var btnDisabled = true;
 window.onload = function () {
     ajax({
         type: 'POST',
-        url: '/api/AUTH_PORTAL',
-        //url: '/web-w1/others/portal/data.json',
-        params: JSON.stringify({params: [{param: {}, opcode: "0x2088"}], count: "1"}),
+        url: '/api/AUTH_PORTAL_CONFIG_GET',
+        params: JSON.stringify({params: [{param: {}, opcode: "0x2063"}], count: "1"}),
         callback: function (response) {
             if (response.errcode === 0) {
-                var weixin = response.data[0].result.portal.weixin;
-                var sms = response.data[0].result.portal.sms;
-                if (Number(weixin.enable) === 1 && isMobile()) {
-                    inputsElement.style.display = 'none';
-                    document.getElementById('tip').style.display = 'block';
-                    connectBtn.classList.remove('btn-disabled');
-                    btnDisabled = false;
-                    weixinDataToPage(weixin);
-                    enable = {
-                        type: 'weixin',
-                        data: weixin
-                    };
-                } else if (Number(sms.enable) === 1) {
-                    inputsElement.style.display = 'block';
-                    document.getElementById('tip').style.display = 'none';
-                    smsDataToPage(sms);
-                    enable = {
-                        type: 'sms',
-                        data: sms
-                    };
+                var portal = response.data[0].result.portal;
+                if (Number(portal.enable) === 1) {
+                    if (portal.auth_config.auth_type === 'none') {
+                        smsInputsElement.style.display = 'none';
+                        passwordInputsElement.style.display = 'none';
+                        connectBtn.classList.remove('btn-disabled');
+                        btnDisabled = false;
+                        enable = {
+                            type: 'none',
+                            data: portal.auth_config
+                        };
+                    } else if (portal.auth_config.auth_type === 'pwd_auth') {
+                        smsInputsElement.style.display = 'none';
+                        passwordInputsElement.style.display = 'block';
+                        enable = {
+                            type: 'pwd_auth',
+                            data: portal.auth_config
+                        };
+                    } else {
+                        smsInputsElement.style.display = 'block';
+                        passwordInputsElement.style.display = 'none';
+                        enable = {
+                            type: 'sms',
+                            data: portal.auth_config
+                        };
+                    }
+                    commonDataToPage(portal.auth_config);
                 } else {
-                    inputsElement.style.display = 'none';
-                    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url("
-                    + ((weixin.background || "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
-                    logoElement.style.backgroundImage = 'url('+ (weixin.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
-                    showToast('PC端暂不支持微信连Wi-Fi功能', 0);
+                    showToast('请开启portal功能', 0);
                 }
-            } else {
-                showToast('请求失败，请稍后再试');
             }
         }
     });
 };
 
-agreementElement.addEventListener('click', function () {
-    lawMaskElement.classList.remove('not-show');
-    lawMaskElement.classList.add('show');
-    lawContentElement.style.display = 'block';
+function parseUrl(name) {
+    var url = location.search.slice(0);
+    var reg = new RegExp(name + '\=([^&]+)'), ret = reg.exec(url);
+    return ret ? ret[1] : null;
+}
+
+passwordInput.addEventListener('input', function () {
+    passwordInput.value = passwordInput.value.replace(/[^\d]/g, '');
+    canConnect();
 }, false);
-iKnowElement.addEventListener('click', function () {
-    lawMaskElement.classList.add('not-show');
-    lawMaskElement.classList.remove('show');
-    lawContentElement.style.display = 'none';
+
+passwordInput.addEventListener('focus', function () {
+    passwordInput.classList.remove('error');
+}, false);
+
+passwordInput.addEventListener('blur', function () {
+    if (passwordInput.value === '') {
+        passwordInput.classList.add('error');
+        showToast('请输入密码');
+    }
 }, false);
 
 mobileInput.addEventListener('input', function () {
@@ -127,16 +140,12 @@ mobileInput.addEventListener('input', function () {
 
 mobileInput.addEventListener('focus', function () {
     mobileInput.classList.remove('error');
-    mobileError.classList.remove('show');
-    mobileError.classList.add('not-show');
 }, false);
 
 mobileInput.addEventListener('blur', function () {
     var mobile = mobileInput.value;
     if (!checkMobile(mobile)) {
         mobileInput.classList.add('error');
-        mobileError.classList.remove('not-show');
-        mobileError.classList.add('show');
         showToast('请输入正确的手机号');
     }
 }, false);
@@ -156,20 +165,12 @@ codeInput.addEventListener('input', function () {
 
 codeInput.addEventListener('focus', function () {
     codeInput.classList.remove('error');
-    // codeGetter.classList.add('show');
-    // codeGetter.classList.remove('not-show');
-    // codeError.classList.add('not-show');
-    // codeError.classList.remove('show');
 }, false);
 
 codeInput.addEventListener('blur', function () {
     var code = codeInput.value;
     if (!checkCode(code)) {
         codeInput.classList.add('error');
-        // codeGetter.classList.remove('show');
-        // codeGetter.classList.add('not-show');
-        // codeError.classList.remove('not-show');
-        // codeError.classList.add('show');
         showToast('请输入正确的验证码');
     }
 }, false);
@@ -227,32 +228,42 @@ codeGetter.addEventListener('click', function () {
     }
 }, false);
 
-protocol.addEventListener('click', function () {
-    agreeProtocol = !agreeProtocol;
-    canConnect();
-}, false);
-
 connectBtn.addEventListener('click', function () {
-    var isMobilePhone = isMobile();
-
     if (btnDisabled) {
         return;
     }
+
     if (!validate()) {
         return;
     }
 
-    if (isMobilePhone && enable.type === 'weixin') {
-        var appId = enable.data.appid;
-        var secretkey = enable.data.secretkey;
-        // var ssid = enable.data.ssid;
-        var shopId = enable.data.shopid;
-        var extend = "wait_todo";
-        var timestamp = new Date().getTime();
-        var address = window.location.protocol + '//' + window.location.host;
-        var authUrl = address + "/api/wifidog/weixin.html?gw_address=" + parseUrl("gw_address") + "&gw_port=" + parseUrl('gw_port');
-        var sign = hex_md5(appId + shopId + authUrl + extend + timestamp + secretkey);
-        window.location = 'weixin://connectToFreeWifi/?apKey=_p33beta&appId=' + appId + '&shopId=' + shopId + '&authUrl=' + encodeURIComponent(authUrl) + '&extend=' + extend + '&timestamp=' + timestamp + '&sign=' + sign;
+    if (enable.type === 'pwd_auth') {
+        var password = passwordInput.value;
+        var params = {
+            params: [{
+                param: {
+                    password: password,
+                    gw_address: parseUrl("gw_address"),
+                    gw_port: parseUrl("gw_port"),
+                },
+                opcode: "0x2083"
+            }],
+            count: "1"
+        };
+        ajax({
+            url: '/api/AUTH_PASSWORD_VERIFY',
+            type: 'POST',
+            params: JSON.stringify(params),
+            callback: function (response) {
+                if (response.errcode === 0) {
+                    window.location.href = response.data[0].result.redirect_url;
+                } else if (response.errcode === -1) {
+                    showToast('请求失败，请稍后再试');
+                } else {
+                    showToast('连接Wi-Fi失败');
+                }
+            }
+        });
     } else if (enable.type === 'sms') {
         var phone = mobileInput.value;
         var code = codeInput.value;
@@ -272,6 +283,32 @@ connectBtn.addEventListener('click', function () {
         };
         ajax({
             url: '/api/AUTH_SHORTMESSAGE_CODE_VERIFY',
+            type: 'POST',
+            params: JSON.stringify(params),
+            callback: function (response) {
+                if (response.errcode === 0) {
+                    window.location.href = response.data[0].result.redirect_url;
+                } else if (response.errcode === -1) {
+                    showToast('请求失败，请稍后再试');
+                } else {
+                    showToast('连接Wi-Fi失败');
+                }
+            }
+        });
+    } else {
+        var params = {
+            params: [{
+                param: {
+                    password: '',
+                    gw_address: parseUrl("gw_address"),
+                    gw_port: parseUrl("gw_port"),
+                },
+                opcode: "0x2083"
+            }],
+            count: "1"
+        };
+        ajax({
+            url: '/api/AUTH_PASSWORD_VERIFY',
             type: 'POST',
             params: JSON.stringify(params),
             callback: function (response) {
@@ -305,10 +342,6 @@ function showToast(msg, duration) {
 }
 
 function validate() {
-    if (!agreeProtocol) {
-        showToast('请阅读并同意《上网协议》');
-        return false;
-    }
     if (enable.type === 'sms') {
         if (!checkMobileWithBlank()) {
             showToast('请填写正确的手机号');
@@ -323,22 +356,11 @@ function validate() {
     return true;
 }
 
-function weixinDataToPage(data) {
-    commonDataToPage(data);
-    nameElement.innerText = data.logo_info || '欢迎';
-    connectText.innerText = data.login_hint || '连接Wi-Fi';
-}
-
-function smsDataToPage(data) {
-    commonDataToPage(data);
-    nameElement.innerText = data.logo_info || '欢迎';
-    connectText.innerText = data.login_hint || '连接Wi-Fi';
-}
-
 function commonDataToPage(data) {
-    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(" + ((data.background ||
+    connectText.innerText = data.connect_label || '连接Wi-Fi';
+    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url(" + ((data.background_url ||
          "../common/imgs/bg.png") + "?r=") + Math.random() + ")";
-    logoElement.style.backgroundImage = 'url('+ (data.logo || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
+    logoElement.style.backgroundImage = 'url('+ (data.logo_url || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
     descElement.innerText = data.welcome || '欢迎';
     serviceElement.innerText = data.statement || '欢迎';
 }
@@ -367,23 +389,17 @@ function checkCodeWithBlank() {
     return /^\d{4}$/.test(code);
 }
 
-function parseUrl(name) {
-    var url = location.search.slice(0);
-    var reg = new RegExp(name + '\=([^&]+)'), ret = reg.exec(url);
-    return ret ? ret[1] : null;
-}
-
 function canConnect() {
-    if (enable.type === 'weixin') {
-        if (agreeProtocol) {
+    if (enable.type === 'pwd_auth') {
+        if (passwordInput.value !== '') {
             connectBtn.classList.remove('btn-disabled');
             btnDisabled = false;
         } else {
             connectBtn.classList.add('btn-disabled');
             btnDisabled = true;
         }
-    } else {
-        if (agreeProtocol && checkMobileWithBlank() && checkCodeWithBlank()) {
+    } else if (enable.type === 'sms') {
+        if (checkMobileWithBlank() && checkCodeWithBlank()) {
             connectBtn.classList.remove('btn-disabled');
             btnDisabled = false;
         } else {
