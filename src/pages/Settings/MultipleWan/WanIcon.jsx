@@ -7,12 +7,11 @@ export default class WanIcon extends React.Component {
     render() {
 		const { wanNum = 0 } = this.props;
 		const wanIconList = [];
-		let lanNum = 1;
 		for(let i = 0; i < 4; i++) {
 			if(i < wanNum) {
 				wanIconList.push(<WanItem num={i+1}/>);
 			} else {
-				wanIconList.push(<LanItem num={lanNum++}/>);
+				wanIconList.push(<LanItem num={i+1}/>);
 			}
 		}
 		return (
