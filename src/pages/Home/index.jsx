@@ -184,11 +184,8 @@ export default class Home extends React.Component {
 			{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
 			{ opcode: 'ROUTE_GET' },
 			{ opcode: 'SUNMIMESH_ROLE_GET' },
+			{ opcode: 'MOBILE_STATS_GET' },
 		];
-
-		if(getQuickStartVersion() === 'abroad') {
-			opcodes.push({ opcode: 'MOBILE_STATS_GET' });
-		}
 
 		common.fetchApi(
 			opcodes,
@@ -313,14 +310,9 @@ export default class Home extends React.Component {
 					const sunmi = parseInt(((band['sunmi'] / total) * 100).toFixed(0));
 					const totalPercent = sunmi + whitelist + normal;
 
-					let online = true;
 					const { wans } = data[3].result;
-					if(getQuickStartVersion() === 'abroad') {
-						const { status } = data[8].result.mobile;
-						online = (!wans.every(item => item.online === false)) || (status === 'online');
-					} else {
-						online = (!wans.every(item => item.online === false));
-					}
+					const { status } = data[8].result.mobile;
+					const online = (!wans.every(item => item.online === false)) || (status === 'online');
 
 					const showToolTip = wans.some(item => item.online === false);
 					const tips = [];
