@@ -180,11 +180,18 @@ export default class NetworkTemple extends React.Component {
 					data: { ports }
 				}
 			);
-		}
+        }
+
+        let data = {};
+        if(port !== 1) {
+            data = {mode: wanNum, wan: wanInfo};
+        } else {
+            data = {wan: wanInfo};
+        }
         const response = await common.fetchApi(
             {
                 opcode : 'NETWORK_MULTI_WAN_SET',
-                data: {wan: wanInfo}
+                data: data,
             }
         );
         const {errcode} = response;
