@@ -363,7 +363,11 @@ export default class PortForwarding extends React.Component {
 
 	onCancel = () => {
 		this.setState({
-			visible: false
+			visible: false,
+			nameTip: '',
+			destipTip: '',
+			desportTip: '',
+			srcportTip: '',
 		})
 	}
 
