@@ -47,11 +47,7 @@ export default class Home extends React.Component {
 		downSpeed: 0,
 		downUnit: 'KB/s',
 		online: true,
-<<<<<<< HEAD
-		onlineTip: '',
-=======
 		onlineTip: [],
->>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		qosEnable: false,
 		totalBand: 8 * 1024 * 1024,
 		source: 'default',
