@@ -125,11 +125,7 @@ export default class Finish extends React.PureComponent {
                         <span className='title-left'>{location}</span>
                     </div>
                     <div className='right'>
-<<<<<<< HEAD
                         <span className='title-right' onClick={this.addLocation}>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation'></div></span>
-=======
-                        <span className='title-right' onClick={this.addLocation}>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation'></div></span>   
->>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
                     </div>
                 </div>
                 <div>
