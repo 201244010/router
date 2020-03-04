@@ -35,28 +35,28 @@ export default class NetworkTemple extends React.Component {
         dhcp: {
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
-            down: '',
-            up: '',
-            mtu: '', 
+            down: '1000',
+            up: '1000',
+            mtu: '1500', 
         },
         staticIP: {
-            down:  '',
-            up: '',
+            down:  '1000',
+            up: '1000',
             gateway: ['', '', '', ''],
             mask: ['', '', '', ''],
             ipv4: ['', '', '', ''],
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
-            mtu: ''
+            mtu: '1500'
         },
         pppoe: {
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
-            down: '',
-            up: '',
+            down: '1000',
+            up: '1000',
             username: '',
             password: '',
-            mtu: '',
+            mtu: '1492',
             service: '',
         },
         info: {},
@@ -153,6 +153,7 @@ export default class NetworkTemple extends React.Component {
         if(type === 'static' && ((staticIP.ipv4).join('.') === (staticIP.gateway).join('.'))){
             this.setState({
                 [field[type].loading]: false,
+                visibile: false,
             });
             message.error(intl.get(MODULE, 37)/*_i18n:IP地址与默认网关不能相同*/);   
             return ;
@@ -161,6 +162,7 @@ export default class NetworkTemple extends React.Component {
         if(type === 'static' && (!checkSameNet(staticIP.ipv4,staticIP.gateway,staticIP.mask))){ 
             this.setState({
                 [field[type].loading]: false,
+                visibile: false,
             });
             message.error(intl.get(MODULE, 34)/*_i18n:IP地址与默认网关需在同一网段*/);
             return ;
