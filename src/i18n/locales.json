@@ -89,10 +89,13 @@
 		"title41": "将升级文件下载到本地电脑，手动升级路由器固件",
 		"title42": "多WAN设置",
 		"title43": " ",
+<<<<<<< HEAD
 		"title44": "VPN客户端",
 		"title45": " ",
 		"title46": "客用Wi-Fi",
 		"title47": " ",
+=======
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		"upnp.file": "src/pages/Advance/Systemsetup/UPnP.jsx",
 		"upnp0": "编号",
 		"upnp1": "应用名称",
@@ -311,7 +314,7 @@
 		"panelheader1": "关",
 		"primaryfooter.file": "src/components/PrimaryFooter/index.jsx",
 		"primaryfooter0": "系统版本：{version}",
-		"primaryfooter1": "©2019 上海商米科技有限公司 版权所有",
+		"primaryfooter1": "©2020 上海商米科技有限公司 版权所有",
 		"primaryfooter2": "MAC地址：{mac}",
 		"primaryfooter3": "官网",
 		"primaryfooter4": "服务热线：400-6666-509",
@@ -899,8 +902,11 @@
 		"routersettings23": "移动网络设置",
 		"routersettings24": "本地系统升级",
 		"routersettings25": "多WAN设置",
+<<<<<<< HEAD
 		"routersettings26": "VPN客户端",
 		"routersettings27": "客用Wi-Fi",
+=======
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		"backup.file": "src/pages/Advance/Systemsetup/Backup/index.jsx",
 		"backup0": "未绑定商米账号，请先下载商米助手APP进行绑定",
 		"backup1": "响应超时，请检查网络连接并重试",
@@ -2181,10 +2187,13 @@
 		"title41": "Download the update file to your local computer and manually upgrade the router firmware",
 		"title42": "Multiple WAN Settings",
 		"title43": " ",
+<<<<<<< HEAD
 		"title44": "VPN Client",
 		"title45": " ",
 		"title46": "Guest Wi-Fi",
 		"title47": " ",
+=======
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		"upnp.file": "src/pages/Advance/Systemsetup/UPnP.jsx",
 		"upnp0": "Number",
 		"upnp1": "Application Name",
@@ -2329,7 +2338,7 @@
 		"cascader47": "Saturday",
 		"cascader48": "Sunday",
 		"mobileNetwork0": "Mobile Data",
-		"mobileNetwork1": "Internet Status：",
+		"mobileNetwork1": "Internet Status: ",
 		"mobileNetwork2": "Connected",
 		"mobileNetwork3": "Unconnected",
 		"mobileNetwork4": "Network Mode",
@@ -2384,8 +2393,11 @@
 		"routersettings23": "LTE Settings",
 		"routersettings24": "Local Upgrade",
 		"routersettings25": "Multiple WAN Settings",
+<<<<<<< HEAD
 		"routersettings26": "VPN Client",
 		"routersettings27": "Guest Wi-Fi",
+=======
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		"subrouter.file": "src/components/SubRouter/index.jsx",
 		"subrouter0": "Completed",
 		"subrouter1": "The device is abnormal, please check",
@@ -3395,9 +3407,15 @@
 		"network20": "Disconnected",
 		"network21": "Internet Information",
 		"network22": "Status: ",
+<<<<<<< HEAD
 		"network23": "Connection Type：",
 		"network24": "IP Address: ",
 		"network25": "Subnet Mask: ",
+=======
+		"network23": "Connection Type: ",
+		"network24": "IP Address：",
+		"network25": "Subnet Mask：",
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 		"network26": "Default Gateway: ",
 		"network27": "Connection Type",
 		"network28": "Connection Type",

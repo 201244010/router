@@ -35,6 +35,7 @@ export default class NetworkTemple extends React.Component {
         dhcp: {
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
+<<<<<<< HEAD
             down: '',
             up: '',
             mtu: '', 
@@ -42,21 +43,42 @@ export default class NetworkTemple extends React.Component {
         staticIP: {
             down:  '',
             up: '',
+=======
+            down: '1000',
+            up: '1000',
+            mtu: '1500', 
+        },
+        staticIP: {
+            down:  '1000',
+            up: '1000',
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
             gateway: ['', '', '', ''],
             mask: ['', '', '', ''],
             ipv4: ['', '', '', ''],
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
+<<<<<<< HEAD
             mtu: ''
+=======
+            mtu: '1500'
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
         },
         pppoe: {
             dns1: ['', '', '', ''],
             dns2: ['', '', '', ''],
+<<<<<<< HEAD
             down: '',
             up: '',
             username: '',
             password: '',
             mtu: '',
+=======
+            down: '1000',
+            up: '1000',
+            username: '',
+            password: '',
+            mtu: '1492',
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
             service: '',
         },
         info: {},
@@ -153,6 +175,10 @@ export default class NetworkTemple extends React.Component {
         if(type === 'static' && ((staticIP.ipv4).join('.') === (staticIP.gateway).join('.'))){
             this.setState({
                 [field[type].loading]: false,
+<<<<<<< HEAD
+=======
+                visibile: false,
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
             });
             message.error(intl.get(MODULE, 37)/*_i18n:IP地址与默认网关不能相同*/);   
             return ;
@@ -161,6 +187,10 @@ export default class NetworkTemple extends React.Component {
         if(type === 'static' && (!checkSameNet(staticIP.ipv4,staticIP.gateway,staticIP.mask))){ 
             this.setState({
                 [field[type].loading]: false,
+<<<<<<< HEAD
+=======
+                visibile: false,
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
             });
             message.error(intl.get(MODULE, 34)/*_i18n:IP地址与默认网关需在同一网段*/);
             return ;

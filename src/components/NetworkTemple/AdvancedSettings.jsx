@@ -117,6 +117,10 @@ export default class AdvancedSettings extends React.Component {
 													maxLength={32} 
 													value={item.value}
 													onChange={value => this.onChange(value, item.key, advanceType)}
+<<<<<<< HEAD
+=======
+													unit={item.unit || ''}
+>>>>>>> a0439fe70e5f0bf39792589343911591b345fd35
 												/>
 											}
 											<ErrorTip>{item.tip}</ErrorTip>
