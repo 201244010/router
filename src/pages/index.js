@@ -32,6 +32,7 @@ import Lan from './Settings/Lan';
 import RouterList from './Settings/Router';
 import Network from './Settings/Network';
 import MultipleWan from './Settings/MultipleWan';
+import GuestWifi from './Settings/GuestWifi';
 
 import Dosd from './Advance/Systemsetup/Dosd';
 import ChangePassword from './Advance/Systemsetup/ChangePassword';
@@ -41,6 +42,7 @@ import TimeZone from './Advance/Systemsetup/TimeZone';
 import Reboot from './Advance/Systemsetup/Reboot';
 import Recovery from './Advance/Systemsetup/Recovery';
 import UPnP from './Advance/Systemsetup/UPnP';
+import VPNClient from './Advance/Systemsetup/VPNClient';
 import PortForwarding from './Advance/Systemsetup/PortForwarding';
 import CustomRestart from './Advance/Systemsetup/CustomRestart';
 import LocalUpgrade from './Advance/Systemsetup/LocalUpgrade';
@@ -144,6 +146,8 @@ class PrimaryLayout extends React.Component {
             'portforwarding': { main: 'bg', footer: '', header: true, title: true },
             'localUpgrade': { main: 'bg', footer: '', header: true, title: true },
             'multipleWan': { main: 'bg', footer: '', header: true, title: true },
+            'vpnClient': { main: 'bg', footer: '', header: true, title: true },
+            'guestWifi': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const height = {
@@ -237,6 +241,8 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/mobileNetwork" component={MobileNetwork} />
                     <Route path="/routersetting/localUpgrade" component={LocalUpgrade} />
                     <Route path="/routersetting/multipleWan" component={MultipleWan} />
+                    <Route path="/routersetting/vpnClient" component={VPNClient} />
+                    <Route path="/routersetting/guestWifi" component={GuestWifi} />
                 </Switch>
         )
     }
