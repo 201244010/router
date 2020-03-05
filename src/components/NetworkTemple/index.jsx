@@ -180,13 +180,21 @@ export default class NetworkTemple extends React.Component {
 					data: { ports }
 				}
 			);
-		}
+        }
+
+        let data = {};
+        if(port !== 1) {
+            data = {mode: wanNum + 1, wan: wanInfo};
+        } else {
+            data = {wan: wanInfo};
+        }
         const response = await common.fetchApi(
             {
                 opcode : 'NETWORK_MULTI_WAN_SET',
-                data: {wan: wanInfo}
+                data: data,
             }
         );
+
         const {errcode} = response;
         if (errcode === 0) {
             message.success(intl.get(MODULE, 15)/*_i18n:设置成功*/)
