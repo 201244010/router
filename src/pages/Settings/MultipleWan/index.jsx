@@ -134,7 +134,7 @@ export default class MultipleWan extends React.Component {
     }
 
     render() {
-		const { wanNum, buttonLoading, refreshInfo } = this.state;
+		const { wanNum, buttonLoading, refreshInfo, modalLoading } = this.state;
 
 		const tabsContent = [];
 		for(let i = 1; i <= wanNum; i++) {
