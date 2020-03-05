@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select, message, Tabs, Button } from 'antd';
+import ModalLoading from '~/components/ModalLoading';
 import NetworkTemple from '~/components/NetworkTemple';
 import PanelHeader from '~/components/PanelHeader';
 import SubLayout from '~/components/SubLayout';
@@ -19,12 +20,14 @@ export default class MultipleWan extends React.Component {
 			wanNum: 0,
 			buttonLoading: false,
 			refreshInfo: [],
+			modalLoading: false,
 		}
 	}
 
 	setWanInfo = async() => {
 		this.setState({
-			buttonLoading: true
+			buttonLoading: true,
+			modalLoading: true,
 		});
 		const resp = await common.fetchApi(
             { opcode : 'NETWORK_MULTI_WAN_GET'}
@@ -37,10 +40,17 @@ export default class MultipleWan extends React.Component {
 				for(let i = len; i > 1; i--){
 					ports.push(`${i}`);
 				}
-				const response = await common.fetchApi(
+				await common.fetchApi(
 					{
 						opcode : 'NETWORK_MULTI_WAN_RESET',
 						data: { ports }
+					}
+				);
+
+				const response = await common.fetchApi(
+					{
+						opcode : 'NETWORK_MULTI_WAN_SET',
+						data: {mode: 1},
 					}
 				);
 				const { errcode: err } = response;
@@ -52,7 +62,8 @@ export default class MultipleWan extends React.Component {
 			}
 		}
 		this.setState({
-			buttonLoading: false
+			buttonLoading: false,
+			modalLoading: false,
 		});
 	}
 	
@@ -174,6 +185,10 @@ export default class MultipleWan extends React.Component {
 					</section>
 				}
 			</Form>
+			<ModalLoading
+				visible={modalLoading}
+				tip={intl.get(MODULE, 50)/*_i18n:正在配置，请稍后...*/}
+			/>
 		</SubLayout>;
     }
 };
