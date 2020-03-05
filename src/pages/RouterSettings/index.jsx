@@ -17,7 +17,7 @@ export default class RouterSetting extends React.PureComponent {
             {route: 'routermanage', type: 'childroute', color: '#3CA8E7', content: intl.get(MODULE, 3)/*_i18n:组网设置*/},
             {route: 'multipleWan', type: 'WAN', color: '#448BE9', content: intl.get(MODULE, 25)/*_i18n:多WAN设置*/},
             {route: 'mobileNetwork', type: 'mobilenetwork', color: '#47D164', content: intl.get(MODULE, 23)/*_i18n:子路由设置*/},
-            {route: 'guestWifi', type: 'lan', color: '#448BE9', content: intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/},			
+            // {route: 'guestWifi', type: 'lan', color: '#448BE9', content: intl.get(MODULE, 27)/*_i18n:客用Wi-Fi*/},		
         ];
 
         this.appList = [
