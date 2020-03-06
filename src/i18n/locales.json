@@ -1874,7 +1874,23 @@
 		"portalaccess35": "有效上网时长",
 		"portalaccess36": "空闲断网时长",
 		"portalaccess37": "网页效果预览",
-		"portalaccess38": "手机效果预览"
+		"portalaccess38": "手机效果预览",
+		"vpn0": "设置成功",
+		"vpn1": "设置失败",
+		"vpn2": "当前状态：",
+		"vpn3": "未连接",
+		"vpn4": "已连接",
+		"vpn5": "IP地址：",
+		"vpn6": "DNS服务器：",
+		"vpn7": "服务器地址: ",
+		"vpn8": "服务器地址",
+		"vpn9": "用户名: ",
+		"vpn10": "用户名",
+		"vpn11": "密码: ",
+		"vpn12": "密码",
+		"vpn13": "当前上网信息",
+		"vpn14": "VPN设置",
+		"vpn15": "保存"
 	},
 	"en-us": {
 		"app0": "You might have selected the Private Mode, please turn off the Private Mode and retry",
@@ -3586,6 +3602,22 @@
 		"portalaccess35": "Effective online time",
 		"portalaccess36": "Idle disconnected time",
 		"portalaccess37": "PC Web preview",
-		"portalaccess38": "Mobile phone preview"
+		"portalaccess38": "Mobile phone preview",
+		"vpn0": "Saved",
+		"vpn1": "Failed",
+		"vpn2": "Status：",
+		"vpn3": "Disconnected",
+		"vpn4": "Connected",
+		"vpn5": "IP address：",
+		"vpn6": "DNS：",
+		"vpn7": "Server address: ",
+		"vpn8": "Server address",
+		"vpn9": "User name: ",
+		"vpn10": "User name",
+		"vpn11": "Password: ",
+		"vpn12": "Password",
+		"vpn13": "Internet status",
+		"vpn14": "VPN Settings",
+		"vpn15": "Save"
 	}
 }

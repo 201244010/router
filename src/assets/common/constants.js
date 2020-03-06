@@ -194,6 +194,10 @@ export const DIRECTIVE = {
     
     WIRELESS_HOST_GET: '0x3004',
     WIRELESS_HOST_SET: '0x3006',
+
+    //VPN
+    VPN_GET: '0x2151',
+    VPN_SET: '0x2150',
 };
 
 /**
