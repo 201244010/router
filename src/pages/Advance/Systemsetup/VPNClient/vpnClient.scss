@@ -1,13 +1,20 @@
 .settings {
 	.vpnClient-settings {
 		margin-left: 60px;
+		.panelHeader-setting {
+			margin-top: 48px;
+			margin-bottom: 24px;
+		}
 		.info-item {
 			position: relative;
 			.info-item-normal-label {
 				display: inline-block;
-				width: 100px;
-				text-align: right;
-				margin-right: 10px;
+				margin: 20px 0 0;
+				color: #ADB1B9;
+			}
+			.info-item-input-label {
+				display: inline-block;
+				margin-bottom: 8px;
 			}
 			.info-item-formItem {
 				width: 320px;
