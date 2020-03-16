@@ -91,6 +91,14 @@ export const getTitle = () => {
             "title" : intl.get(MODULE, 42)/*_i18n:多WAN设置*/,
             "titleTip": intl.get(MODULE, 43)/*_i18n:*/
             },
+        'vpnClient': {
+            "title" : intl.get(MODULE, 44)/*_i18n:VPN客户端*/,
+            "titleTip": intl.get(MODULE, 45)/*_i18n:*/
+            },
+		'guestWifi': {
+			"title" : intl.get(MODULE, 46)/*_i18n:客用Wi-Fi*/,
+			"titleTip": intl.get(MODULE, 47)/*_i18n:*/
+			},
     };
     return funcTitle;
 };

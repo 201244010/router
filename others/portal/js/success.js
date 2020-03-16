@@ -1,26 +1,23 @@
-var nameElement = document.getElementById('name');
+// var nameElement = document.getElementById('name');
 //var descElement = document.getElementById('desc');
 var serviceElement = document.getElementById('service');
 var logoElement = document.getElementById('logo');
 var logoIcon = document.getElementById('logoIcon');
 var timeDownElement = document.getElementById('timeDown');
+var moreInfoBtnElement = document.getElementById('moreInfoBtn');
+var moreInfoElement = document.getElementById('moreInfo');
 
 window.onload = function () {
     ajax({
         type: 'POST',
-        url: '/api/AUTH_PORTAL',
-        //url: '/web-w1/others/portal/data.json',
-        params: JSON.stringify({params: [{param: {}, opcode: "0x2088"}], count: "1"}),
+        url: '/api/AUTH_PORTAL_CONFIG_GET',
+        params: JSON.stringify({params: [{param: {}, opcode: "0x2063"}], count: "1"}),
         callback: function (response) {
             if (response.errcode === 0) {
-                var weixin = response.data[0].result.portal.weixin;
-                var sms = response.data[0].result.portal.sms;
-                if (Number(weixin.enable) === 1) {
-                    commonDataToPage(weixin);
-                    countDown(Number(weixin.online_limit) * 60);
-                } else if (Number(sms.enable)) {
-                    commonDataToPage(sms);
-                    countDown(Number(sms.online_limit) * 60);
+                var portal = response.data[0].result.portal;
+                if(Number(portal.enable) === 1) {
+                    commonDataToPage(portal.auth_config);
+                    countDown(Number(portal.auth_config.online_limit) * 60);    
                 }
             }
         }
@@ -28,17 +25,18 @@ window.onload = function () {
 };
 
 function commonDataToPage(data) {
-    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url('" + (data.background || "../common/imgs/bg.png") + "')";
-    if (data.logo) {
-        logoIcon.style.display = 'none';
-        logoElement.style.display = 'block';
-        logoElement.style.backgroundImage = 'url('+ data.logo +')';
+    document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),'+"url('" + (data.background_url || "../common/imgs/bg.png") + "')";
+    logoElement.style.backgroundImage = 'url('+ (data.logo_url || '../common/imgs/logo.png') +'?r=' + Math.random()+')';
+    if (Number(data.link_enable) === 1) {
+        moreInfoBtnElement.style.display = 'block';
+        moreInfoElement.style.display = 'block';
+        moreInfoBtnElement.innerText = data.link_label;
+        moreInfoElement.href = data.link_addr;
     } else {
-        logoElement.style.display = 'none';
-        logoIcon.style.display = 'block';
+        moreInfoBtnElement.style.display = 'none';
+        moreInfoElement.style.display = 'none';
     }
     serviceElement.innerText = data.statement || '欢迎';
-    nameElement.innerText = data.logo_info || '欢迎';
 }
 
 function countDown(time) {

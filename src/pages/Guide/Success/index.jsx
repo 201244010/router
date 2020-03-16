@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import CustomIcon from '~/components/Icon';
 import './success.scss';
 import { getQuickStartVersion } from '~/utils';
@@ -9,17 +9,50 @@ const MODULE = 'success';
 export default class Success extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			checked: true
+		}
+	}
+
+	onChange = (e) => {
+		this.setState({
+			checked: e.target.checked
+		})
+	}
+
+	setAutoUpgrade = async() => {
+		const { checked } = this.state;
+		const resp = await common.fetchApi([
+			{ 
+				opcode:'UPGRADETIME_GET',
+		 	},
+		], { ignoreErr: true });
+		const {errcode, data} = resp;
+		if (0 === errcode) {
+			await common.fetchApi([
+				{ 
+					opcode:'UPGRADETIME_SET', 
+					data: {
+						...data[0].result,
+						enable: checked ? '1' : '0',
+					},
+				 },
+			], { loading: true });
+		}
 	}
 
 	goHome = () => {
+		this.setAutoUpgrade();
 		this.props.history.push('/home');
 	};
 
 	addSubRouter = () => {
+		this.setAutoUpgrade();
 		this.props.history.push('/guide/addsubrouter');
 	};
 
 	render() {
+		const { checked } = this.state;
 		return (
 			<React.Fragment>
 				<div className="success">
@@ -54,6 +87,9 @@ export default class Success extends React.Component {
 						<Button onClick={this.addSubRouter}>
 							{intl.get(MODULE, 2) /*_i18n:添加更多商米路由器*/}
 						</Button>
+					</div>
+					<div className='auto-upgrade-tip'>
+						<Checkbox checked={checked} onChange={this.onChange}><span className='tip-font'>{intl.get(MODULE, 12) /*_i18n:闲时自动升级路由器固件，让您时刻享受最新体验*/}</span></Checkbox>
 					</div>
 				</div>
 			</React.Fragment>

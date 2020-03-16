@@ -1,0 +1,33 @@
+.settings {
+	.vpnClient-settings {
+		margin-left: 60px;
+		.panelHeader-setting {
+			margin-top: 48px;
+			margin-bottom: 24px;
+		}
+		.info-item {
+			position: relative;
+			.info-item-normal-label {
+				display: inline-block;
+				margin: 20px 0 0;
+				color: #ADB1B9;
+			}
+			.info-item-input-label {
+				display: inline-block;
+				margin-bottom: 8px;
+			}
+			.info-item-formItem {
+				width: 320px;
+			}
+		}
+		.vpnClient-save {
+			border-top: 1px solid #ECECEC;
+			padding: 28px 60px 20px 0;
+			margin-top: 40px;
+			.save-button {
+				width: 200px;
+				height: 42px;
+			}
+		}
+	}
+}

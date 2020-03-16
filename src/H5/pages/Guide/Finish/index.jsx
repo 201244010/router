@@ -118,13 +118,14 @@ export default class Finish extends React.PureComponent {
             <div className='h5finish'>
                 <div className='icon-success'></div>
                 <p className='finish-tip'>{intl.get(MODULE, 0)/*_i18n:路由器设置成功*/}</p>
+                <p className='finish-tip-small'>{intl.get(MODULE, 14)/*_i18n:Wi-Fi配置已变更，如有需要请重新连接*/}</p>
                 <div className='deviceInfo'>
                     <div className='left'>
                         <div className='deviceImg'></div>
                         <span className='title-left'>{location}</span>
                     </div>
                     <div className='right'>
-                        <span className='title-right' onClick={this.addLocation}>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation'></div></span>   
+                        <span className='title-right' onClick={this.addLocation}>{intl.get(MODULE, 1)/*_i18n:备注*/}<div className='addApLocation'></div></span>
                     </div>
                 </div>
                 <div>
