@@ -54,6 +54,10 @@ body {
     font-size: 0;
     cursor: pointer;
 }
+.btn.btn-text {
+    font-size: 0.43rem;
+    color: #fff;
+}
 .btn .btn-text {
     font-size: 0.43rem;
     color: #fff;

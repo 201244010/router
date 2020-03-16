@@ -110,6 +110,10 @@ body {
     font-size: 0;
     cursor: pointer;
 }
+.btn.btn-text {
+    font-size: 16px;
+    color: #fff;
+}
 .btn .btn-text {
     font-size: 16px;
     color: #fff;
