@@ -141,10 +141,10 @@ export default class PortalAccess extends React.Component {
 					}),
 				},
 				placeholder: {
-					ali: '请输入Access Key ID',
+					ali: intl.get(MODULE, 39), //请输入Access Key ID
 					tencent: intl.get(MODULE, 2), //请输入SMK_App_ID
-					baidu:  '请输入Access Key ID',
-					nets:  '请输入AppKey',
+					baidu: intl.get(MODULE, 40), //请输入Access Key ID
+					nets: intl.get(MODULE, 41), //请输入AppKey
 				},
 				label: {
 					ali: 'Access Key ID',
@@ -181,10 +181,10 @@ export default class PortalAccess extends React.Component {
 					}),
 				},
 				placeholder: {
-					ali: '请输入Access Key Secret',
+					ali: intl.get(MODULE, 42), //请输入Access Key Secret
 					tencent: intl.get(MODULE, 3), //请输入APP Secret
-					baidu:  '请输入Access Key Secret',
-					nets:  intl.get(MODULE, 3), //请输入APP Secret
+					baidu: intl.get(MODULE, 43), //请输入Access Key Secret
+					nets: intl.get(MODULE, 3), //请输入APP Secret
 				},
 				label: {
 					ali: 'Access Key Secret',
@@ -196,7 +196,7 @@ export default class PortalAccess extends React.Component {
 			modelId: {
 				tip: {
 					ali: checkStr(modelId, {
-						who: '模板Code',
+						who: intl.get(MODULE, 44), //模板Code
 						min: 1,
 						max: 30,
 						byte: true
@@ -221,17 +221,26 @@ export default class PortalAccess extends React.Component {
 					}),
 				},
 				placeholder: {
-					ali: '请输入模板Code',
+					ali: intl.get(MODULE, 45), //请输入模板Code
 					tencent: intl.get(MODULE, 4), //请输入模板ID
 					baidu:  intl.get(MODULE, 4), //请输入模板ID
 					nets:  intl.get(MODULE, 4), //请输入模板ID
 				},
 				label: {
-					ali: '模板Code',
+					ali: intl.get(MODULE, 46), //模板Code
 					tencent: intl.get(MODULE, 5), //模板ID
 					baidu: intl.get(MODULE, 5), //模板ID
 					nets: intl.get(MODULE, 5), //模板ID
 				},
+			},
+			sign: {
+				tip: checkStr(sign, {
+					who: intl.get(MODULE, 7),
+					min: 1,
+					max: 50,
+				}),
+				placeholder: intl.get(MODULE, 6),
+				label: intl.get(MODULE, 7),
 			},
 		};
 
@@ -274,10 +283,10 @@ export default class PortalAccess extends React.Component {
 				type: 'sign',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: signTip,
+				tip: field.sign.tip,
 				value: sign,
-				placeholder: intl.get(MODULE, 6),
-				label: intl.get(MODULE, 7)
+				placeholder: field.sign.placeholder,
+				label: field.sign.label,
 			}
 		];
 		const portalMap = [

@@ -40,7 +40,7 @@ export default class GuestWifi extends React.Component {
 			messageValue: 'ali',
 			portalValue: SMS,
 			navigateValue: '1',
-			validValue: 2,
+			validValue: '2h',
 			emptyValue: 10,
 			previewValue: 0,
 			logoFileList: [],
@@ -131,20 +131,17 @@ export default class GuestWifi extends React.Component {
 				welcomeTip: checkStr(welcome, {
 					who: intl.get(MODULE,2),
 					min: 1,
-					max: 90,
-					byte: true
+					max: 30,
 				}),
 				connectButtonTip: checkStr(connect_label, {
 					who: intl.get(MODULE,1),
 					min: 1,
-					max: 45,
-					byte: true
+					max: 15,
 				}),
 				versionTip: checkStr(statement, {
 					who: intl.get(MODULE,5),
 					min: 1,
-					max: 90,
-					byte: true
+					max: 30,
 				}),
 				jumpTextTip: checkStr(link_label, {
 					who: intl.get(MODULE,3),
@@ -184,8 +181,7 @@ export default class GuestWifi extends React.Component {
 				signTip: checkStr(sign_name, {
 					who: intl.get(MODULE,8),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 50,
 				}),
 				accessPasswordTip: checkStr(auth_password, {
 					who: intl.get(MODULE,12),
@@ -382,14 +378,12 @@ export default class GuestWifi extends React.Component {
 			connectButton: checkStr(value, {
 				who: intl.get(MODULE,1),
 				min: 1,
-				max: 45,
-				byte: true
+				max: 15,
 			}),
 			welcome: checkStr(value, {
 				who: intl.get(MODULE,2),
 				min: 1,
-				max: 90,
-				byte: true
+				max: 30,
 			}),
 			jumpText: checkStr(value, {
 				who: intl.get(MODULE,3),
@@ -406,8 +400,7 @@ export default class GuestWifi extends React.Component {
 			version: checkStr(value, {
 				who: intl.get(MODULE,5),
 				min: 1,
-				max: 90,
-				byte: true
+				max: 30,
 			}),
 			appKey: checkStr(value, {
 				who: 'AppKey',
@@ -430,8 +423,7 @@ export default class GuestWifi extends React.Component {
 			sign: checkStr(value, {
 				who: intl.get(MODULE,8),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 50,
 			}),
 			hostSsidPassword: checkStr(value, {
 				who: intl.get(MODULE,9),
