@@ -51,6 +51,10 @@ export default {
         "color": "#333C4F",
         "brand": "t2_mini"
     },
+    "t2mini_s": {
+        "color": "#333C4F",
+        "brand": "t2_mini"
+    },
     "t1": {
         "color": "#333C4F",
         "brand": "t1"
