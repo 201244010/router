@@ -500,10 +500,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={10}
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
+								description={intl.get(MODULE,47)/*1~10个字符*/}
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
@@ -515,10 +516,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={64}
 								value={jumpLink}
 								placeholder={intl.get(MODULE,33)}
 								onChange={value => onChange('jumpLink', value)}
+								description={intl.get(MODULE,48)/*1~64个字符*/}
 							/>
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
 						</FormItem>
