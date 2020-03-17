@@ -114,7 +114,7 @@ export default class PortalAccess extends React.Component {
 		const messageMap = [
 			{
 				type: 'messageTime',
-				description: '30s-180s',
+				description: '60s-180s',
 				tip: messageTimeTip,
 				value: messageTime,
 				label: intl.get(MODULE, 0)

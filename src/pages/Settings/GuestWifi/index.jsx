@@ -159,7 +159,7 @@ export default class GuestWifi extends React.Component {
 					byte: true
 				}),
 				messageTimeTip: checkRange(code_expired, {
-					min: 30,
+					min: 60,
 					max: 180,
 					who: intl.get(MODULE,11)
 				}),
@@ -446,7 +446,7 @@ export default class GuestWifi extends React.Component {
 				who: intl.get(MODULE,10)
 			}),
 			messageTime: checkRange(value, {
-				min: 30,
+				min: 60,
 				max: 180,
 				who: intl.get(MODULE,11)
 			}),
