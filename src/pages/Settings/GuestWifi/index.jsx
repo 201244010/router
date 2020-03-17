@@ -146,14 +146,12 @@ export default class GuestWifi extends React.Component {
 				jumpTextTip: checkStr(link_label, {
 					who: intl.get(MODULE,3),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 10,
 				}),
 				jumpLinkTip: checkStr(link_addr, {
 					who: intl.get(MODULE,4),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 64,
 				}),
 				messageTimeTip: checkRange(code_expired, {
 					min: 60,
@@ -388,14 +386,12 @@ export default class GuestWifi extends React.Component {
 			jumpText: checkStr(value, {
 				who: intl.get(MODULE,3),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 10,
 			}),
 			jumpLink: checkStr(value, {
 				who: intl.get(MODULE,4),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 64,
 			}),
 			version: checkStr(value, {
 				who: intl.get(MODULE,5),
