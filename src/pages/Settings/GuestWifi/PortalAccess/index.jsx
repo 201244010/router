@@ -110,7 +110,7 @@ export default class PortalAccess extends React.Component {
 			},
 			onChange
 		} = this.props;
-		console.log('validValue', validValue, 'emptyValue', emptyValue);
+
 		const messageMap = [
 			{
 				type: 'messageTime',
@@ -255,6 +255,27 @@ export default class PortalAccess extends React.Component {
 						</div>
 					)}
 				</div>
+				{portalValue === PWD_AUTH && (
+					<div>
+						<label>{intl.get(MODULE, 25)}</label>
+						<FormItem
+							type="small"
+							showErrorTip={accessPasswordTip}
+							style={{ width: 320 }}
+						>
+							<Input
+								type="text"
+								maxLength={32}
+								value={accessPassword}
+								placeholder={intl.get(MODULE, 26)}
+								onChange={value =>
+									onChange('accessPassword', value)
+								}
+							/>
+							<ErrorTip>{accessPasswordTip}</ErrorTip>
+						</FormItem>
+					</div>
+				)}
 				<div className="ad-title">{intl.get(MODULE, 22)}</div>
 				<div className="guest-upload">
 					<Upload
@@ -295,27 +316,6 @@ export default class PortalAccess extends React.Component {
 					</Upload>
 					{/* <span className="guest-tip">图片最大128k, 支持jpg格式</span> */}
 				</div>
-				{portalValue === PWD_AUTH && (
-					<div>
-						<label>{intl.get(MODULE, 25)}</label>
-						<FormItem
-							type="small"
-							showErrorTip={accessPasswordTip}
-							style={{ width: 320 }}
-						>
-							<Input
-								type="text"
-								maxLength={32}
-								value={accessPassword}
-								placeholder={intl.get(MODULE, 26)}
-								onChange={value =>
-									onChange('accessPassword', value)
-								}
-							/>
-							<ErrorTip>{accessPasswordTip}</ErrorTip>
-						</FormItem>
-					</div>
-				)}
 				{portalMap.map(item => {
 					const {
 						label,
