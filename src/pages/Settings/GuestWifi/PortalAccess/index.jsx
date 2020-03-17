@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select, Modal, Upload, Icon, Button, Radio, message } from 'antd';
 import { get } from '~/assets/common/auth';
+import { checkStr } from '~/assets/common/check';
 import Form from '~/components/Form';
 import GuestWeb from './GuestWeb';
 import GuestPhone from './GuestPhone';
@@ -111,6 +112,129 @@ export default class PortalAccess extends React.Component {
 			onChange
 		} = this.props;
 
+		const field = {
+			appKey: {
+				tip: {
+					ali: checkStr(appKey, {
+						who: 'Access Key ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(appKey, {
+						who: 'SMK_App_ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(appKey, {
+						who: 'Access Key ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(appKey, {
+						who: 'AppKey',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: '请输入Access Key ID',
+					tencent: intl.get(MODULE, 2), //请输入SMK_App_ID
+					baidu:  '请输入Access Key ID',
+					nets:  '请输入AppKey',
+				},
+				label: {
+					ali: 'Access Key ID',
+					tencent: 'SMK_App_ID',
+					baidu: 'Access Key ID',
+					nets: 'AppKey',
+				},
+			},
+			appSecret: {
+				tip: {
+					ali: checkStr(appSecret, {
+						who: 'Access Key Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(appSecret, {
+						who: 'APP Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(appSecret, {
+						who: 'Access Key Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(appSecret, {
+						who: 'APP Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: '请输入Access Key Secret',
+					tencent: intl.get(MODULE, 3), //请输入APP Secret
+					baidu:  '请输入Access Key Secret',
+					nets:  intl.get(MODULE, 3), //请输入APP Secret
+				},
+				label: {
+					ali: 'Access Key Secret',
+					tencent: 'APP Secret',
+					baidu: 'Access Key Secret',
+					nets: 'APP Secret',
+				},
+			},
+			modelId: {
+				tip: {
+					ali: checkStr(modelId, {
+						who: '模板Code',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: '请输入模板Code',
+					tencent: intl.get(MODULE, 4), //请输入模板ID
+					baidu:  intl.get(MODULE, 4), //请输入模板ID
+					nets:  intl.get(MODULE, 4), //请输入模板ID
+				},
+				label: {
+					ali: '模板Code',
+					tencent: intl.get(MODULE, 5), //模板ID
+					baidu: intl.get(MODULE, 5), //模板ID
+					nets: intl.get(MODULE, 5), //模板ID
+				},
+			},
+		};
+
 		const messageMap = [
 			{
 				type: 'messageTime',
@@ -123,28 +247,28 @@ export default class PortalAccess extends React.Component {
 				type: 'appKey',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: appKeyTip,
+				tip: field.appKey.tip[messageValue],
 				value: appKey,
-				placeholder: intl.get(MODULE, 2),
-				label: 'AppKey'
+				placeholder: field.appKey.placeholder[messageValue],
+				label: field.appKey.label[messageValue],
 			},
 			{
 				type: 'appSecret',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: appSecretTip,
+				tip: field.appSecret.tip[messageValue],
 				value: appSecret,
-				placeholder: intl.get(MODULE, 3),
-				label: 'APP Secret'
+				placeholder: field.appSecret.placeholder[messageValue],
+				label: field.appSecret.label[messageValue],
 			},
 			{
 				type: 'modelId',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: modelIdTip,
+				tip: field.modelId.tip[messageValue],
 				value: modelId,
-				placeholder: intl.get(MODULE, 4),
-				label: intl.get(MODULE, 5)
+				placeholder: field.modelId.placeholder[messageValue],
+				label: field.modelId.label[messageValue],
 			},
 			{
 				type: 'sign',

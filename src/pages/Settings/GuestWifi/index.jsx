@@ -29,7 +29,7 @@ export default class GuestWifi extends React.Component {
 				version: '',
 				jumpText: '',
 				jumpLink: '',
-				messageTime: '',
+				messageTime: '60',
 				appKey: '',
 				appSecret: '',
 				modelId: '',
