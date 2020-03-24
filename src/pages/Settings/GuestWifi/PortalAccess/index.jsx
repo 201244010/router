@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select, Modal, Upload, Icon, Button, Radio, message } from 'antd';
 import { get } from '~/assets/common/auth';
+import { checkStr } from '~/assets/common/check';
 import Form from '~/components/Form';
 import GuestWeb from './GuestWeb';
 import GuestPhone from './GuestPhone';
@@ -110,11 +111,143 @@ export default class PortalAccess extends React.Component {
 			},
 			onChange
 		} = this.props;
-		console.log('validValue', validValue, 'emptyValue', emptyValue);
+
+		const field = {
+			appKey: {
+				tip: {
+					ali: checkStr(appKey, {
+						who: 'Access Key ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(appKey, {
+						who: 'SMK_App_ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(appKey, {
+						who: 'Access Key ID',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(appKey, {
+						who: 'AppKey',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: intl.get(MODULE, 39), //请输入Access Key ID
+					tencent: intl.get(MODULE, 2), //请输入SMK_App_ID
+					baidu: intl.get(MODULE, 40), //请输入Access Key ID
+					nets: intl.get(MODULE, 41), //请输入AppKey
+				},
+				label: {
+					ali: 'Access Key ID',
+					tencent: 'SMK_App_ID',
+					baidu: 'Access Key ID',
+					nets: 'AppKey',
+				},
+			},
+			appSecret: {
+				tip: {
+					ali: checkStr(appSecret, {
+						who: 'Access Key Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(appSecret, {
+						who: 'APP Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(appSecret, {
+						who: 'Access Key Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(appSecret, {
+						who: 'APP Secret',
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: intl.get(MODULE, 42), //请输入Access Key Secret
+					tencent: intl.get(MODULE, 3), //请输入APP Secret
+					baidu: intl.get(MODULE, 43), //请输入Access Key Secret
+					nets: intl.get(MODULE, 3), //请输入APP Secret
+				},
+				label: {
+					ali: 'Access Key Secret',
+					tencent: 'APP Secret',
+					baidu: 'Access Key Secret',
+					nets: 'APP Secret',
+				},
+			},
+			modelId: {
+				tip: {
+					ali: checkStr(modelId, {
+						who: intl.get(MODULE, 44), //模板Code
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					tencent: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					baidu: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+					nets: checkStr(modelId, {
+						who: intl.get(MODULE, 5), //模板ID
+						min: 1,
+						max: 30,
+						byte: true
+					}),
+				},
+				placeholder: {
+					ali: intl.get(MODULE, 45), //请输入模板Code
+					tencent: intl.get(MODULE, 4), //请输入模板ID
+					baidu:  intl.get(MODULE, 4), //请输入模板ID
+					nets:  intl.get(MODULE, 4), //请输入模板ID
+				},
+				label: {
+					ali: intl.get(MODULE, 46), //模板Code
+					tencent: intl.get(MODULE, 5), //模板ID
+					baidu: intl.get(MODULE, 5), //模板ID
+					nets: intl.get(MODULE, 5), //模板ID
+				},
+			},
+			sign: {
+				tip: checkStr(sign, {
+					who: intl.get(MODULE, 7),
+					min: 1,
+					max: 50,
+				}),
+				placeholder: intl.get(MODULE, 6),
+				label: intl.get(MODULE, 7),
+			},
+		};
+
 		const messageMap = [
 			{
 				type: 'messageTime',
-				description: '30s-180s',
+				description: '60s-180s',
 				tip: messageTimeTip,
 				value: messageTime,
 				label: intl.get(MODULE, 0)
@@ -123,37 +256,37 @@ export default class PortalAccess extends React.Component {
 				type: 'appKey',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: appKeyTip,
+				tip: field.appKey.tip[messageValue],
 				value: appKey,
-				placeholder: intl.get(MODULE, 2),
-				label: 'AppKey'
+				placeholder: field.appKey.placeholder[messageValue],
+				label: field.appKey.label[messageValue],
 			},
 			{
 				type: 'appSecret',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: appSecretTip,
+				tip: field.appSecret.tip[messageValue],
 				value: appSecret,
-				placeholder: intl.get(MODULE, 3),
-				label: 'APP Secret'
+				placeholder: field.appSecret.placeholder[messageValue],
+				label: field.appSecret.label[messageValue],
 			},
 			{
 				type: 'modelId',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: modelIdTip,
+				tip: field.modelId.tip[messageValue],
 				value: modelId,
-				placeholder: intl.get(MODULE, 4),
-				label: intl.get(MODULE, 5)
+				placeholder: field.modelId.placeholder[messageValue],
+				label: field.modelId.label[messageValue],
 			},
 			{
 				type: 'sign',
 				description: intl.get(MODULE, 1),
 				maxLength: 50,
-				tip: signTip,
+				tip: field.sign.tip,
 				value: sign,
-				placeholder: intl.get(MODULE, 6),
-				label: intl.get(MODULE, 7)
+				placeholder: field.sign.placeholder,
+				label: field.sign.label,
 			}
 		];
 		const portalMap = [
@@ -255,6 +388,27 @@ export default class PortalAccess extends React.Component {
 						</div>
 					)}
 				</div>
+				{portalValue === PWD_AUTH && (
+					<div>
+						<label>{intl.get(MODULE, 25)}</label>
+						<FormItem
+							type="small"
+							showErrorTip={accessPasswordTip}
+							style={{ width: 320 }}
+						>
+							<Input
+								type="text"
+								maxLength={32}
+								value={accessPassword}
+								placeholder={intl.get(MODULE, 26)}
+								onChange={value =>
+									onChange('accessPassword', value)
+								}
+							/>
+							<ErrorTip>{accessPasswordTip}</ErrorTip>
+						</FormItem>
+					</div>
+				)}
 				<div className="ad-title">{intl.get(MODULE, 22)}</div>
 				<div className="guest-upload">
 					<Upload
@@ -295,27 +449,6 @@ export default class PortalAccess extends React.Component {
 					</Upload>
 					{/* <span className="guest-tip">图片最大128k, 支持jpg格式</span> */}
 				</div>
-				{portalValue === PWD_AUTH && (
-					<div>
-						<label>{intl.get(MODULE, 25)}</label>
-						<FormItem
-							type="small"
-							showErrorTip={accessPasswordTip}
-							style={{ width: 320 }}
-						>
-							<Input
-								type="text"
-								maxLength={32}
-								value={accessPassword}
-								placeholder={intl.get(MODULE, 26)}
-								onChange={value =>
-									onChange('accessPassword', value)
-								}
-							/>
-							<ErrorTip>{accessPasswordTip}</ErrorTip>
-						</FormItem>
-					</div>
-				)}
 				{portalMap.map(item => {
 					const {
 						label,
@@ -367,10 +500,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={10}
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
+								description={intl.get(MODULE,47)/*1~10个字符*/}
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
@@ -382,10 +516,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={64}
 								value={jumpLink}
 								placeholder={intl.get(MODULE,33)}
 								onChange={value => onChange('jumpLink', value)}
+								description={intl.get(MODULE,48)/*1~64个字符*/}
 							/>
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
 						</FormItem>

@@ -29,7 +29,7 @@ export default class GuestWifi extends React.Component {
 				version: '',
 				jumpText: '',
 				jumpLink: '',
-				messageTime: '',
+				messageTime: '60',
 				appKey: '',
 				appSecret: '',
 				modelId: '',
@@ -40,7 +40,7 @@ export default class GuestWifi extends React.Component {
 			messageValue: 'ali',
 			portalValue: SMS,
 			navigateValue: '1',
-			validValue: 2,
+			validValue: '2h',
 			emptyValue: 10,
 			previewValue: 0,
 			logoFileList: [],
@@ -132,34 +132,29 @@ export default class GuestWifi extends React.Component {
 					who: intl.get(MODULE,2),
 					min: 1,
 					max: 30,
-					byte: true
 				}),
 				connectButtonTip: checkStr(connect_label, {
 					who: intl.get(MODULE,1),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 15,
 				}),
 				versionTip: checkStr(statement, {
 					who: intl.get(MODULE,5),
 					min: 1,
 					max: 30,
-					byte: true
 				}),
 				jumpTextTip: checkStr(link_label, {
 					who: intl.get(MODULE,3),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 10,
 				}),
 				jumpLinkTip: checkStr(link_addr, {
 					who: intl.get(MODULE,4),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 64,
 				}),
 				messageTimeTip: checkRange(code_expired, {
-					min: 30,
+					min: 60,
 					max: 180,
 					who: intl.get(MODULE,11)
 				}),
@@ -184,8 +179,7 @@ export default class GuestWifi extends React.Component {
 				signTip: checkStr(sign_name, {
 					who: intl.get(MODULE,8),
 					min: 1,
-					max: 30,
-					byte: true
+					max: 50,
 				}),
 				accessPasswordTip: checkStr(auth_password, {
 					who: intl.get(MODULE,12),
@@ -331,82 +325,6 @@ export default class GuestWifi extends React.Component {
 		}
 	}
 
-	// submit2 = async () => {
-	// 	const {
-	// 		inputValue: {
-	// 			guestSsid,
-	// 			period,
-	// 			hostSsidPassword,
-	// 			welcome,
-	// 			connectButton,
-	// 			jumpLink,
-	// 			jumpText,
-	// 			messageTime,
-	// 			appKey,
-	// 			appSecret,
-	// 			modelId,
-	// 			sign,
-	// 			accessPassword,
-	// 			version
-	// 		},
-	// 		enable,
-	// 		radioValue,
-	// 		guestDynamicPassword,
-	// 		navigateValue,
-	// 		messageValue,
-	// 		validValue,
-	// 		emptyValue,
-	// 		bgUrl,
-	// 		logoUrl,
-	// 		portalValue
-	// 	} = this.state;
-
-	// 	const guest = {
-	// 		enable,
-	// 		ssid: guestSsid,
-	// 		connect_type: radioValue,
-	// 		"encryption":"psk-mixed/ccmp+tkip",
-	// 		dynamic: {
-	// 			period,
-	// 			password: guestDynamicPassword
-	// 		},
-	// 		static: {
-	// 			password: hostSsidPassword
-	// 		},
-	// 		portal: {
-	// 			auth_config: {
-	// 				welcome,
-	// 				connect_label: connectButton,
-	// 				link_enable: navigateValue,
-	// 				link_label: jumpText,
-	// 				link_addr: jumpLink,
-	// 				statement: version,
-	// 				online_limit: validValue,
-	// 				idle_limit: emptyValue,
-	// 				auth_type: portalValue,
-	// 				pwd_auth: {
-	// 					auth_password: accessPassword
-	// 				},
-	// 				sms: {
-	// 					server_provider: messageValue,
-	// 					code_expired: messageTime,
-	// 					access_key_id: appKey,
-	// 					access_key_secret: appSecret,
-	// 					template_code: modelId,
-	// 					sign_name: sign
-	// 				}
-	// 			}
-	// 		}
-	// 	};
-
-	// 	const response = await common.fetchApi({
-	// 		opcode: 'WIRELESS_GUEST_SET',
-	// 		data: {
-	// 			guest
-	// 		}
-	// 	});
-	// };
-
 	onSelectChange = (type, value) => {
 		this.setState({
 			[type]: value
@@ -458,32 +376,27 @@ export default class GuestWifi extends React.Component {
 			connectButton: checkStr(value, {
 				who: intl.get(MODULE,1),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 15,
 			}),
 			welcome: checkStr(value, {
 				who: intl.get(MODULE,2),
 				min: 1,
 				max: 30,
-				byte: true
 			}),
 			jumpText: checkStr(value, {
 				who: intl.get(MODULE,3),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 10,
 			}),
 			jumpLink: checkStr(value, {
 				who: intl.get(MODULE,4),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 64,
 			}),
 			version: checkStr(value, {
 				who: intl.get(MODULE,5),
 				min: 1,
 				max: 30,
-				byte: true
 			}),
 			appKey: checkStr(value, {
 				who: 'AppKey',
@@ -506,8 +419,7 @@ export default class GuestWifi extends React.Component {
 			sign: checkStr(value, {
 				who: intl.get(MODULE,8),
 				min: 1,
-				max: 30,
-				byte: true
+				max: 50,
 			}),
 			hostSsidPassword: checkStr(value, {
 				who: intl.get(MODULE,9),
@@ -522,7 +434,7 @@ export default class GuestWifi extends React.Component {
 				who: intl.get(MODULE,10)
 			}),
 			messageTime: checkRange(value, {
-				min: 30,
+				min: 60,
 				max: 180,
 				who: intl.get(MODULE,11)
 			}),
@@ -629,6 +541,7 @@ export default class GuestWifi extends React.Component {
 			inputValue: { guestSsid, hostSsidPassword, period },
 			guestDynamicPassword,
 		} = this.state;
+
 		const {
 			guestSsidTip,
 			hostSsidPasswordTip,
@@ -645,7 +558,7 @@ export default class GuestWifi extends React.Component {
 				this.strObjectTip['periodTip'] !== '',
 			portal: this.checkMessage()
 		};
-		console.log('disableResult',disableResult, 'radioValue', radioValue);
+
 		const buttonDisabled = disableResult[radioValue];
 		return (
 			<SubLayout className="settings">
