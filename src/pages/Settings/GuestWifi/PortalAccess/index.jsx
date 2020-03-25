@@ -344,9 +344,9 @@ export default class PortalAccess extends React.Component {
 									getPopupContainer={() => document.getElementById('messageValueArea')}
 								>
 									<Option value={'ali'}>{intl.get(MODULE, 18)}</Option>
-									<Option value={'tencent'}>{intl.get(MODULE, 19)}</Option>
+									{/* <Option value={'tencent'}>{intl.get(MODULE, 19)}</Option>
 									<Option value={'baidu'}>{intl.get(MODULE, 20)}</Option>
-									<Option value={'nets'}>{intl.get(MODULE, 21)}</Option>
+									<Option value={'nets'}>{intl.get(MODULE, 21)}</Option> */}
 								</Select>
 							</div>
 							{messageMap.map((item, index) => {
