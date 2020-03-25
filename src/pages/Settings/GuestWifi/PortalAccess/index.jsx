@@ -296,7 +296,8 @@ export default class PortalAccess extends React.Component {
 				tip: welcomeTip,
 				maxLength: 30,
 				value: welcome,
-				label: intl.get(MODULE, 9)
+				label: intl.get(MODULE, 9),
+				placeholder: intl.get(MODULE, 47)/*请输入欢迎语*/,
 			},
 			{
 				type: 'connectButton',
@@ -304,7 +305,8 @@ export default class PortalAccess extends React.Component {
 				tip: connectButtonTip,
 				maxLength: 15,
 				value: connectButton,
-				label: intl.get(MODULE, 11)
+				label: intl.get(MODULE, 11),
+				placeholder: intl.get(MODULE, 48)/*请输入连接按钮文案*/,
 			},
 			{
 				type: 'version',
@@ -312,7 +314,8 @@ export default class PortalAccess extends React.Component {
 				tip: versionTip,
 				maxLength: 30,
 				value: version,
-				label: intl.get(MODULE, 12)
+				label: intl.get(MODULE, 12),
+				placeholder: intl.get(MODULE, 49)/*请输入版本声明*/,
 			}
 		];
 		// console.log(bgUrl);
@@ -457,7 +460,7 @@ export default class PortalAccess extends React.Component {
 						maxLength = 32,
 						value,
 						tip,
-						type
+						type,
 					} = item;
 					return (
 						<div>
