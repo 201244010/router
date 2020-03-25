@@ -297,7 +297,7 @@ export default class PortalAccess extends React.Component {
 				maxLength: 30,
 				value: welcome,
 				label: intl.get(MODULE, 9),
-				placeholder: intl.get(MODULE, 47)/*请输入欢迎语*/,
+				placeholder: intl.get(MODULE, 49)/*请输入欢迎语*/,
 			},
 			{
 				type: 'connectButton',
@@ -306,7 +306,7 @@ export default class PortalAccess extends React.Component {
 				maxLength: 15,
 				value: connectButton,
 				label: intl.get(MODULE, 11),
-				placeholder: intl.get(MODULE, 48)/*请输入连接按钮文案*/,
+				placeholder: intl.get(MODULE, 50)/*请输入连接按钮文案*/,
 			},
 			{
 				type: 'version',
@@ -315,7 +315,7 @@ export default class PortalAccess extends React.Component {
 				maxLength: 30,
 				value: version,
 				label: intl.get(MODULE, 12),
-				placeholder: intl.get(MODULE, 49)/*请输入版本声明*/,
+				placeholder: intl.get(MODULE, 51)/*请输入版本声明*/,
 			}
 		];
 		// console.log(bgUrl);
@@ -503,10 +503,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={10}
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
+								description={intl.get(MODULE,47)/*1~10个字符*/}
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
@@ -518,10 +519,11 @@ export default class PortalAccess extends React.Component {
 						>
 							<Input
 								type="text"
-								maxLength={32}
+								maxLength={64}
 								value={jumpLink}
 								placeholder={intl.get(MODULE,33)}
 								onChange={value => onChange('jumpLink', value)}
+								description={intl.get(MODULE,48)/*1~64个字符*/}
 							/>
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
 						</FormItem>
