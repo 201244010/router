@@ -504,7 +504,7 @@ export default class StaticBind extends React.Component {
                     onOk={this.onEditOk}
                     okButtonProps={{ disabled: ('' !== editNameTip || '' !== editIpTip || '' !== editMacTip) }}
                     onCancel={this.onEditCancle} >
-                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 35)/*_i18n:备注名称*/}</label>
+                    <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 46)/*_i18n:备注名称*/}</label>
                     <FormItem showErrorTip={editNameTip} type="small" >
                         <Input type="text" value={editName} onChange={value => this.onChange(value, 'editName')} placeholder={intl.get(MODULE, 36)/*_i18n:请输入备注名称*/} maxLength={32} />
                         <ErrorTip>{editNameTip}</ErrorTip>
