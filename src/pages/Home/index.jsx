@@ -184,7 +184,7 @@ export default class Home extends React.Component {
 			{ opcode: 'AUTH_CHAT_TOTAL_LIST' },
 			{ opcode: 'ROUTE_GET' },
 			{ opcode: 'SUNMIMESH_ROLE_GET' },
-			{ opcode: 'MOBILE_STATS_GET' },
+			{ opcode: 'MOBILE_CONFIG_GET' },
 		];
 
 		common.fetchApi(
