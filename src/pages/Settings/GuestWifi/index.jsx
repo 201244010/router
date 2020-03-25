@@ -622,7 +622,7 @@ export default class GuestWifi extends React.Component {
 											style={{ width: 320 }}
 										>
 											<Input
-												type="text"
+												type="password"
 												maxLength={32}
 												value={hostSsidPassword}
 												onChange={value =>
