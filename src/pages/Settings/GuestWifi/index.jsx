@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64';
 import SubLayout from '~/components/SubLayout';
 import PanelHeader from '~/components/PanelHeader';
 import Form from '~/components/Form';
+import ModalLoading from '~/components/ModalLoading';
 import DynamicPassword from './DynamicPassword';
 import PortalAccess from './PortalAccess';
 import { checkStr, checkRange } from '~/assets/common/check';
@@ -46,7 +47,8 @@ export default class GuestWifi extends React.Component {
 			logoFileList: [],
 			bgFileList: [],
 			logoUrl: '',
-			bgUrl: ''
+			bgUrl: '',
+			visibile: false,
 		};
 		this.strObjectTip = {
 			guestSsidTip: '',
@@ -224,6 +226,9 @@ export default class GuestWifi extends React.Component {
 	};
 
 	submit = async() => {
+		this.setState({
+			visibile: true,
+		});
 		const {
 			inputValue: {
 				guestSsid,
@@ -316,6 +321,9 @@ export default class GuestWifi extends React.Component {
 			}
 		});
 
+		this.setState({
+			visibile: false,
+		});
 		const { errcode } = response;
 		if(errcode === 0) {
 			this.fetchGuest();
@@ -540,6 +548,7 @@ export default class GuestWifi extends React.Component {
 			radioValue,
 			inputValue: { guestSsid, hostSsidPassword, period },
 			guestDynamicPassword,
+			visibile,
 		} = this.state;
 
 		const {
@@ -677,6 +686,10 @@ export default class GuestWifi extends React.Component {
 						)}
 					</div>
 				</Form>
+				<ModalLoading
+                    visible={visibile}
+                    tip={intl.get(MODULE, 27)/*_i18n:正在配置客用Wi-Fi，请稍候...*/}
+                />
 			</SubLayout>
 		);
 	}
