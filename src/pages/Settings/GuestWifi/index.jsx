@@ -219,7 +219,7 @@ export default class GuestWifi extends React.Component {
 				portalValue: auth_type
 			});	
 		} else {
-			message.error('配置获取失败');
+			message.error(intl.get(MODULE, 22)/*配置获取失败*/);
 		}	
 	};
 
@@ -319,9 +319,9 @@ export default class GuestWifi extends React.Component {
 		const { errcode } = response;
 		if(errcode === 0) {
 			this.fetchGuest();
-			message.success('配置成功');
+			message.success(intl.get(MODULE, 23)/*配置成功*/);
 		} else {
-			message.error('配置失败');
+			message.error(intl.get(MODULE, 24)/*配置失败*/);
 		}
 	}
 
@@ -347,10 +347,10 @@ export default class GuestWifi extends React.Component {
 			this.setState({
 				guestEnable: type
 			});
-			message.success(type? '打开成功' : '关闭成功');
+			message.success(type? intl.get(MODULE, 25)/*打开成功*/ : intl.get(MODULE, 26)/*关闭成功*/);
 			this.fetchGuest();
 		} else {
-			message.error(type?'打开失败' : '关闭失败');
+			message.error(type? intl.get(MODULE, 25)/*打开成功*/ : intl.get(MODULE, 26)/*关闭成功*/);
 		}
 	};
 
