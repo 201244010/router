@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Modal, Upload, Icon, Button, Radio, message } from 'antd';
+import { Select, Modal, Upload, Icon, Button, Radio, message, Input } from 'antd';
 import { get } from '~/assets/common/auth';
 import { checkStr } from '~/assets/common/check';
 import Form from '~/components/Form';
@@ -12,7 +12,8 @@ import {
 	PWD_AUTH,
 	SMS
 } from '~/assets/common/constants';
-const { FormItem, ErrorTip, Input } = Form;
+const { FormItem, ErrorTip } = Form;
+const { Option } = Select;
 
 const MODULE = 'portalaccess';
 export default class PortalAccess extends React.Component {
@@ -48,6 +49,12 @@ export default class PortalAccess extends React.Component {
 
 	onRemove = () => {};
 
+	// jumpLinkChange = (type, value) => {
+	// 	console.log(type, value);
+	// 	this.setState({
+	// 		[type]: value,
+	// 	})
+	// }
 	handleUploadChange = (info, fileKey, imgKey) => {
 		let fileList = info.fileList;
 		fileList = fileList.slice(-1);
@@ -108,8 +115,10 @@ export default class PortalAccess extends React.Component {
 				bgFileList,
 				logoUrl: preLogoUrl,
 				bgUrl: preBgUrl,
+				jumpLinkHeader,
 			},
-			onChange
+			onChange,
+			jumpLinkHeaderChange,
 		} = this.props;
 
 		const field = {
@@ -318,7 +327,13 @@ export default class PortalAccess extends React.Component {
 				placeholder: intl.get(MODULE, 51)/*请输入版本声明*/,
 			}
 		];
-		// console.log(bgUrl);
+
+		const jumpLinkBefore = (
+			<Select defaultValue={jumpLinkHeader} className='jump-link-select' onChange={ value => jumpLinkHeaderChange('jumpLinkHeader',value)}>
+				<Option value="http://">http://</Option>
+				<Option value="https://">https://</Option>
+			</Select>
+		);
 		return (
 			<div>
 				<div className={portalValue !== SMS ? 'message-service' : ''} id='portalValueArea'>
@@ -373,7 +388,7 @@ export default class PortalAccess extends React.Component {
 											showErrorTip={tip}
 											style={{ width: 320 }}
 										>
-											<Input
+											<Form.Input
 												type="text"
 												maxLength={maxLength}
 												value={value}
@@ -399,7 +414,7 @@ export default class PortalAccess extends React.Component {
 							showErrorTip={accessPasswordTip}
 							style={{ width: 320 }}
 						>
-							<Input
+							<Form.Input
 								type="text"
 								maxLength={32}
 								value={accessPassword}
@@ -470,7 +485,7 @@ export default class PortalAccess extends React.Component {
 								showErrorTip={tip}
 								style={{ width: 320 }}
 							>
-								<Input
+								<Form.Input
 									type="text"
 									maxLength={maxLength}
 									value={value}
@@ -502,13 +517,19 @@ export default class PortalAccess extends React.Component {
 							style={{ width: 320 }}
 						>
 							<Input
+							 	className='jump-link-input'
+								addonBefore={jumpLinkBefore}
+								value={jumpLink}
+								placeholder={intl.get(MODULE,33)}
+								onChange={e => onChange('jumpLink', e.target.value)}
+							/>
+							{/* <Form.Input
 								type="text"
 								maxLength={10}
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
-								description={intl.get(MODULE,47)/*1~10个字符*/}
-							/>
+								description={intl.get(MODULE,47)}/> */}
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
 						<label>{intl.get(MODULE,32)}</label>
