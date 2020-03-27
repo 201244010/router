@@ -111,7 +111,7 @@ export default class GuestWifi extends React.Component {
 					}
 				}
 			} = data[0].result || {};
-
+	
 			let jumpLinkHeader = '';
 			if (link_addr.indexOf('https://') > -1) {
 				link_addr = link_addr.replace('https://','');
