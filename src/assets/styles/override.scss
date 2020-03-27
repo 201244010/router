@@ -365,6 +365,25 @@ input[type="radio"][disabled] {
 .ant-timeline-item-head {
     background-color: rgb(97, 116, 241);
 }
+.ant-input-group-addon .ant-select-open .ant-select-selection, .ant-input-group-addon .ant-select-focused .ant-select-selection {
+    color: #333c4f;
+}
+.has-error .ant-input-group-addon {
+    border-color: #D0021B;
+}
+.has-error .ant-input, .has-error .ant-input:hover {
+    border-color: #D0021B;
+}
+.has-error .ant-input:focus {
+    border-color: #D0021B;
+    box-shadow: 0 0 0 0 rgba(97, 116, 241, 0.2);
+}
+.ant-input-group-addon {
+    border-radius: 8px;
+}
+.ant-input {
+    border-radius: 8px;
+}
 // .ant-select-focused .ant-select-selection,
 // .ant-select-selection:focus,
 // .ant-select-selection:active {

@@ -49,6 +49,7 @@ export default class GuestWifi extends React.Component {
 			logoUrl: '',
 			bgUrl: '',
 			visibile: false,
+			jumpLinkHeader: 'http://',
 		};
 		this.strObjectTip = {
 			guestSsidTip: '',
@@ -75,7 +76,7 @@ export default class GuestWifi extends React.Component {
 
 		const { errcode, data } = response;
 		if(errcode === 0) {
-			const {
+			let {
 				guest: {
 					enable,
 					ssid = '',
@@ -110,7 +111,16 @@ export default class GuestWifi extends React.Component {
 					}
 				}
 			} = data[0].result || {};
-	
+
+			let jumpLinkHeader = '';
+			if (link_addr.indexOf('https://') > -1) {
+				link_addr = link_addr.replace('https://','');
+				jumpLinkHeader = 'https://';
+			} else if (link_addr.indexOf('http://') > -1) {
+				link_addr = link_addr.replace('http://','');
+				jumpLinkHeader = 'http://';
+			}
+
 			this.strObjectTip = {
 				guestSsidTip: checkStr(ssid, {
 					who: intl.get(MODULE,0),
@@ -153,7 +163,6 @@ export default class GuestWifi extends React.Component {
 				jumpLinkTip: checkStr(link_addr, {
 					who: intl.get(MODULE,4),
 					min: 1,
-					max: 64,
 				}),
 				messageTimeTip: checkRange(code_expired, {
 					min: 60,
@@ -218,7 +227,8 @@ export default class GuestWifi extends React.Component {
 				emptyValue: Number(idle_limit),
 				bgUrl: background_url,
 				logoUrl: logo_url,
-				portalValue: auth_type
+				portalValue: auth_type,
+				jumpLinkHeader: jumpLinkHeader,
 			});	
 		} else {
 			message.error(intl.get(MODULE, 22)/*配置获取失败*/);
@@ -229,7 +239,7 @@ export default class GuestWifi extends React.Component {
 		this.setState({
 			visibile: true,
 		});
-		const {
+		let {
 			inputValue: {
 				guestSsid,
 				period,
@@ -253,8 +263,15 @@ export default class GuestWifi extends React.Component {
 			messageValue,
 			validValue,
 			emptyValue,
-			portalValue
+			portalValue,
+			jumpLinkHeader,
 		} = this.state;
+
+		if (jumpLink.indexOf('https://') > -1) {
+			jumpLink = jumpLink.replace('https://','');
+		} else if (jumpLink.indexOf('http://') > -1) {
+			jumpLink = jumpLink.replace('http://','');
+		}
 
 		const data = {
 			none: {
@@ -294,7 +311,7 @@ export default class GuestWifi extends React.Component {
 						connect_label: connectButton,
 						link_enable: navigateValue,
 						link_label: jumpText,
-						link_addr: jumpLink,
+						link_addr: jumpLinkHeader+jumpLink+'',
 						statement: version,
 						online_limit: String(validValue),
 						idle_limit: String(emptyValue),
@@ -372,7 +389,15 @@ export default class GuestWifi extends React.Component {
 		this.setState({ [fileKey]: fileList });
 	};
 
+	jumpLinkHeaderChange = (type, value) => {
+		console.log('type',type, 'value', value);
+		this.setState({
+			[type]: value,
+		});
+	}
+
 	onChange = (type, value) => {
+		console.log('type',type, 'value', value);
 		const { inputValue } = this.state;
 		const strObjectTip = {
 			guestSsid: checkStr(value, {
@@ -399,7 +424,6 @@ export default class GuestWifi extends React.Component {
 			jumpLink: checkStr(value, {
 				who: intl.get(MODULE,4),
 				min: 1,
-				max: 64,
 			}),
 			version: checkStr(value, {
 				who: intl.get(MODULE,5),
@@ -663,7 +687,8 @@ export default class GuestWifi extends React.Component {
 											onRadioChange: this.onRadioChange,
 											strObjectTip: this.strObjectTip,
 											onSelectChange: this.onSelectChange,
-											setFile: this.setFile
+											setFile: this.setFile,
+											jumpLinkHeaderChange: this.jumpLinkHeaderChange
 										}}
 									/>
 								)}
