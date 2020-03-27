@@ -390,14 +390,12 @@ export default class GuestWifi extends React.Component {
 	};
 
 	jumpLinkHeaderChange = (type, value) => {
-		console.log('type',type, 'value', value);
 		this.setState({
 			[type]: value,
 		});
 	}
 
 	onChange = (type, value) => {
-		console.log('type',type, 'value', value);
 		const { inputValue } = this.state;
 		const strObjectTip = {
 			guestSsid: checkStr(value, {
