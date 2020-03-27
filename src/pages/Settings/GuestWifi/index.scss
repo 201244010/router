@@ -392,6 +392,14 @@
 		display: inline-block;
 		margin-left: 207px;
 	}
+	.ui-form-item {
+		.jump-link-select {
+			width: 100px;
+		}
+		.jump-link-input {
+			height: 36px;
+		}
+	}
 }
 
 .message-service {
