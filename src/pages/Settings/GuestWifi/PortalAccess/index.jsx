@@ -522,7 +522,8 @@ export default class PortalAccess extends React.Component {
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
-								description={intl.get(MODULE,47)}/>
+								description={intl.get(MODULE,47)}/*1~10个字符*/
+							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
 						<label>{intl.get(MODULE,32)}</label>
