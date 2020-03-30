@@ -516,20 +516,14 @@ export default class PortalAccess extends React.Component {
 							showErrorTip={jumpTextTip}
 							style={{ width: 320 }}
 						>
-							<Input
-							 	className='jump-link-input'
-								addonBefore={jumpLinkBefore}
-								value={jumpLink}
-								placeholder={intl.get(MODULE,33)}
-								onChange={e => onChange('jumpLink', e.target.value)}
-							/>
-							{/* <Form.Input
+							<Form.Input
 								type="text"
 								maxLength={10}
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
-								description={intl.get(MODULE,47)}/> */}
+								description={intl.get(MODULE,47)}/*1~10个字符*/
+							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
 						<label>{intl.get(MODULE,32)}</label>
@@ -539,13 +533,19 @@ export default class PortalAccess extends React.Component {
 							style={{ width: 320 }}
 						>
 							<Input
+								className='jump-link-input'
+								addonBefore={jumpLinkBefore}
+								value={jumpLink}
+								placeholder={intl.get(MODULE,33)}
+								onChange={e => onChange('jumpLink', e.target.value)}
+							/>
+							{/* <Input
 								type="text"
 								maxLength={64}
 								value={jumpLink}
 								placeholder={intl.get(MODULE,33)}
 								onChange={value => onChange('jumpLink', value)}
-								description={intl.get(MODULE,48)/*1~64个字符*/}
-							/>
+								description={intl.get(MODULE,48)}/> */}
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
 						</FormItem>
 					</div>
