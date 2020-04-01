@@ -337,7 +337,12 @@ export default class Bootdevice extends React.Component {
             disAddBtn: true,
             whiteList: whites.map(item => {
                 let mac = item.mac.toUpperCase();
-                let name = alias[mac] && alias[mac].alias || 'unknown';
+                const hostname = clients.map(item => {
+                    if(item.mac.toUpperCase() === mac) {
+                        return item.hostname;
+                    }
+                });
+                let name = alias[mac] && alias[mac].alias || hostname;
                 let client = clients.find(item => item.mac.toUpperCase() === mac) || {
                     online: false,
                     ontime: 0,
