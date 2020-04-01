@@ -114,7 +114,7 @@ export default class CustomRestart extends React.Component {
 				<PanelHeader title={intl.get(MODULE, 0)/*_i18n:自定义时间*/} checkable={true} checked={enable} onChange={this.onPanelChange}/>
 				<div>
 					<p className="custom-paragraph">{intl.get(MODULE, 1)/*_i18n:执行规则*/}</p>
-					<Radio.Group onChange={this.onRadioChange} value={mode}>
+					<Radio.Group onChange={this.onRadioChange} value={mode} disabled={!enable}>
 						<Radio value="cycle">{intl.get(MODULE, 7)/*_i18n:循环执行*/}</Radio>
 						<Radio value="single">{intl.get(MODULE, 8)/*_i18n:仅执行一次*/}</Radio>
 					</Radio.Group>
@@ -127,6 +127,7 @@ export default class CustomRestart extends React.Component {
 						onChange={this.onCascaderChange}
 						className='settings-cascader'
 						placeholder= {intl.get(MODULE, 9)/*_i18n:请选择时间*/}
+						disabled={!enable}
 					/>
 				</div>
 				<div className="customrestart-save">
