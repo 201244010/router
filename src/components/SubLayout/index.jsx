@@ -20,9 +20,8 @@ export default function SubLayout(props){
     }
     const {children, className, ...rest} = props;
     const names = classNames([className, 'ui-container']);
-    const height = style === 'none' ? '100%' : window.innerHeight - 224;
     return (
-        <div className={names} style={{maxHeight: height, height: height, overflow: 'auto'}} {...rest}> {props.children} </div>
+        <div className={names} style={{height:'calc(100% - 65px)', overflow: 'auto',marginTop: 8}} {...rest}> {props.children} </div>
     )
 }
 
