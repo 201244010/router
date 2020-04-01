@@ -77,7 +77,7 @@ export default class RouterSetting extends React.PureComponent {
             )}
         
         return (
-            <SubLayout className="advance-settings" style={{height: window.innerHeight - 148, marginTop: 8}}>
+            <SubLayout className="advance-settings" style={{marginTop: 8}}>
                 <ul>
                     {listItems(this.netList, intl.get(MODULE, 11)/*_i18n:网络设置*/)}
                     {listItems(this.appList, intl.get(MODULE, 12)/*_i18n:应用工具*/)}

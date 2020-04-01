@@ -793,8 +793,6 @@ export default class ClientList extends React.Component {
 				className="net-setting"
 				style={{
 					marginTop: 8,
-					height: window.innerHeight - 148,
-					maxHeight: window.innerHeight - 148,
 					overflow: 'auto'
 				}}
 			>
