@@ -100,7 +100,8 @@ export default class PortForwarding extends React.Component {
 		destip: ["","","",""],
 		destipTip: '',
 		disabled: false,
-		switchDisable: false
+		switchDisable: false,
+		loading: false,
 	}
 
 	deleteRule = async (record) => {
@@ -177,6 +178,7 @@ export default class PortForwarding extends React.Component {
 	}
 
 	submit = async () => {
+		this.setState({loading: true});
 		const {name, desport, srcport, proto, type, tag, destip} = this.state;
 		const resp = await common.fetchApi([{
 			opcode: type === 'create' ? 'PORTFORWARDING_CREATE' : 'PORTFORWARDING_UPDATE',
@@ -196,7 +198,9 @@ export default class PortForwarding extends React.Component {
 					tag
 				}
 			},
-		}], { loading: true });
+		}]);
+		this.setState({loading: false});
+
         const { errcode } = resp;
 		if (errcode === 0) {
 			this.fetchPortforwarding({});
@@ -386,7 +390,7 @@ export default class PortForwarding extends React.Component {
 	render() {
 		const {
 			visible, nameTip, portList, name, srcport, desport, proto, desportTip, srcportTip, pagination, destip,
-			type, destipTip, disabled, pagination: {total}
+			type, destipTip, disabled, pagination: {total}, loading
 		} = this.state;
 		const ruleNum = total;
 		return <SubLayout className="settings">
@@ -425,7 +429,7 @@ export default class PortForwarding extends React.Component {
 				footer={
 					[
 						<Button key="back" onClick={this.onCancel}>{intl.get(MODULE, 39)/*_i18n:取消*/}</Button>,
-						<Button key="submit" type="primary" disabled={disabled} onClick={this.submit}>
+						<Button key="submit" type="primary" disabled={disabled} onClick={this.submit} loading={loading}>
 							{type === 'create' ? intl.get(MODULE, 40)/*_i18n:新建*/ : intl.get(MODULE, 51)/*_i18n:保存*/}
 						</Button>,
 					]
