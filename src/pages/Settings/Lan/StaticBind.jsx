@@ -115,12 +115,10 @@ export default class StaticBind extends React.Component {
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchApi({
+        let response = await common.fetchApi([{
             opcode: 'DHCPS_RESERVEDIP_DELETE',
             data: { reserved_ip: [Object.assign({}, record)] }
-        }, {
-            loading: true
-        });
+        }]);
 
         let { errcode } = response;
         if (errcode == 0) {
@@ -199,9 +197,7 @@ export default class StaticBind extends React.Component {
                 opcode: 'CLIENT_ITEM_SET',
                 data: { aliaslist }
             }
-        ], {
-            loading: true
-        });
+        ]);
 
         this.setState({
             loading: false
@@ -275,9 +271,7 @@ export default class StaticBind extends React.Component {
                     mac: editMac.join(':').toUpperCase(),
                 }] }
             },
-        ], {
-            loading: true
-        });
+        ]);
 
         this.setState({
             editLoading: false

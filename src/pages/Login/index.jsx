@@ -95,7 +95,7 @@ class Login extends React.Component {
 	};
 
 	render() {
-		const { password } = this.state;
+		const { password, loading } = this.state;
 
 		return (
 			<div
@@ -127,7 +127,7 @@ class Login extends React.Component {
 						type="primary"
 						size="large"
 						onClick={this.post}
-						loading={this.state.loading}
+						loading={loading}
 					>
 						{intl.get(MODULE, 7) /*_i18n:登录*/}
 					</Button>

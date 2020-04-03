@@ -17,6 +17,7 @@ export default class CustomUpgrade extends React.Component {
 		enable: false,
 		upgradeTime: [],
 		mode: '',
+		loading: false,
 	}
 
 	onOK = async() => {
@@ -78,6 +79,9 @@ export default class CustomUpgrade extends React.Component {
 	}
 
 	save = async (confirm = false) => {
+		this.setState({
+			loading: true,
+		});
 		const { enable, upgradeTime, mode } = this.state;
 		const beEnable = confirm? !enable : enable;
 		const startHour = upgradeTime[upgradeTime.length - 1];
@@ -107,7 +111,11 @@ export default class CustomUpgrade extends React.Component {
 					mode: mode,
 				},
 		 	},
-		], { loading: true });
+		]);
+
+		this.setState({
+			loading: false,
+		});
 		const {errcode} = resp;
 		if (0 === errcode) {
 			message.success(intl.get(MODULE, 4)/*_i18n:保存成功*/);
@@ -139,7 +147,7 @@ export default class CustomUpgrade extends React.Component {
 	}
 
 	render() {
-		const { enable, mode, upgradeTime } = this.state;
+		const { enable, mode, upgradeTime, loading } = this.state;
 		return (
 			<React.Fragment>
 				<div className='settings-content'>
@@ -172,7 +180,7 @@ export default class CustomUpgrade extends React.Component {
 								/>
 							</div>
 							<div className="custom-upgrade-save">
-								<Button type="primary" size='large' className='custom-button' onClick={this.saveClick}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
+								<Button type="primary" size='large' className='custom-button' onClick={this.saveClick} loading={loading}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
 							</div>
 						</React.Fragment>	
 					}
