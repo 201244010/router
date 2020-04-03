@@ -73,14 +73,12 @@ export default class Dosd extends React.Component {
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchApi({
+        let response = await common.fetchApi([{
             opcode: 'DOSD_BLOCKLIST_DELETE',
             data: {
                 block_list: [record]
             }
-        }, {
-            loading: true
-        });
+        }]);
 
         let { errcode, message } = response;
         if (errcode == 0) {

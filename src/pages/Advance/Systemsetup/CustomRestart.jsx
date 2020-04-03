@@ -16,6 +16,7 @@ export default class CustomRestart extends React.Component {
 		enable: true,
 		restartTime: [],
 		mode: '',
+		loading: false,
 	}
 
 	onPanelChange = () => {
@@ -54,6 +55,9 @@ export default class CustomRestart extends React.Component {
 	}
 
 	save = async () => {
+		this.setState({
+			loading: true,
+		});
 		const { enable, restartTime, mode } = this.state;
 		const startHour = restartTime[restartTime.length - 1];
 		const stopHour = restartTime[restartTime.length - 1] !== '23'? `${parseInt(restartTime[restartTime.length - 1])+1}` : '0';
@@ -82,7 +86,11 @@ export default class CustomRestart extends React.Component {
 					mode: mode,
 				},
 		 	},
-		], { loading: true });
+		]);
+
+		this.setState({
+			loading: false,
+		});
 		const {errcode} = resp;
 		if (0 === errcode) {
 			message.success(intl.get(MODULE, 4)/*_i18n:保存成功*/)
@@ -108,7 +116,7 @@ export default class CustomRestart extends React.Component {
 	}
 
 	render() {
-		const { enable, mode, restartTime } = this.state;
+		const { enable, mode, restartTime, loading } = this.state;
 		return <SubLayout className="settings">
 			<div className='settings-content'>
 				<PanelHeader title={intl.get(MODULE, 0)/*_i18n:自定义时间*/} checkable={true} checked={enable} onChange={this.onPanelChange}/>
@@ -131,7 +139,7 @@ export default class CustomRestart extends React.Component {
 					/>
 				</div>
 				<div className="customrestart-save">
-					<Button type="primary" size='large' className='customrestart-button' onClick={this.save}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
+					<Button type="primary" size='large' className='customrestart-button' onClick={this.save} loading={loading}>{intl.get(MODULE, 2)/*_i18n:保存*/}</Button>
 				</div>
 			</div>
 		</SubLayout>

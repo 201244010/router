@@ -160,6 +160,7 @@ export default class SetPassword extends React.Component {
                                                 }
                                             );
                                             let { errcode, data } = connectStatus;
+                                            this.setState({ loading: false });
                                             if(errcode == 0){
                                                 let online = data[0].result.onlinetest.online;
 												if(online) {
