@@ -10,7 +10,9 @@ export default class Success extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			checked: true
+			checked: true,
+			homeLoading: false,
+			addLoading: false,
 		}
 	}
 
@@ -37,22 +39,34 @@ export default class Success extends React.Component {
 						enable: checked ? '1' : '0',
 					},
 				 },
-			], { loading: true });
+			]);
 		}
 	}
 
 	goHome = () => {
+		this.setState({
+			homeLoading: true,
+		});
 		this.setAutoUpgrade();
+		this.setState({
+			homeLoading: false,
+		});
 		this.props.history.push('/home');
 	};
 
 	addSubRouter = () => {
+		this.setState({
+			addLoading: true,
+		});
 		this.setAutoUpgrade();
+		this.setState({
+			addLoading: false,
+		});
 		this.props.history.push('/guide/addsubrouter');
 	};
 
 	render() {
-		const { checked } = this.state;
+		const { checked, homeLoading, addLoading } = this.state;
 		return (
 			<React.Fragment>
 				<div className="success">
@@ -81,10 +95,10 @@ export default class Success extends React.Component {
 						</p>
 					</div>
 					<div className="footButtons">
-						<Button type="primary" onClick={this.goHome}>
+						<Button type="primary" onClick={this.goHome} loading={homeLoading}>
 							{intl.get(MODULE, 1) /*_i18n:配置完成*/}
 						</Button>
-						<Button onClick={this.addSubRouter}>
+						<Button onClick={this.addSubRouter} loading={addLoading}>
 							{intl.get(MODULE, 2) /*_i18n:添加更多商米路由器*/}
 						</Button>
 					</div>

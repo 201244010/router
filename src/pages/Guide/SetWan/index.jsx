@@ -135,28 +135,31 @@ export default class SetWan extends React.PureComponent {
 
     // 提交表单
     submit = async () => {
+        this.setState({ loading : true });
         let payload = this.composeParams(), info = payload.wan.info; 
         if(this.state.type === 'static' && info.ipv4 === info.gateway){
+            this.setState({
+                loading: false,
+            });
             // message.error(`IP地址与默认网关不能相同`);
             message.error(intl.get(MODULE, 4)/*_i18n:IP地址与默认网关不能相同*/);   
             return ;
         }
         if(!checkSameNet(this.state.ip,this.state.gateway,this.state.subnetmask)){
             this.setState({
-                disabled: false,
                 loading: false,
             });
             // message.error( 'IP地址与默认网关需在同一网段' );
             message.error(intl.get(MODULE, 5)/*_i18n:IP地址与默认网关需在同一网段*/);
             return ;
         }
-        this.setState({ loading : true });
-        let response = await common.fetchApi(
+
+        const response = await common.fetchApi(
             [
                 {opcode: 'NETWORK_WAN_IPV4_SET', data: payload}
             ]
         );
-        let { errcode } = response;
+        const { errcode } = response;
         if(errcode == 0){
             // 触发检测联网状态
             common.fetchApi(
@@ -183,7 +186,8 @@ export default class SetWan extends React.PureComponent {
                     let online = data[0].result.onlinetest.online;
                     this.setState({
                         showNetWorkStatus : true,
-                        online :online
+                        online :online,
+                        loading : false
                     });
                     if(online){
                         setTimeout(() => { this.props.history.push("/guide/setwifi/setting") }, 3000);
@@ -263,9 +267,10 @@ export default class SetWan extends React.PureComponent {
                                     dial_type  = dial_type === 'none' ? 'dhcp' : dial_type;
                                     this.setState({ 
                                     type :  dial_type, 
-                                    disabled : dial_type == 'dhcp' ? false : true 
+                                    disabled : dial_type == 'dhcp' ? false : true,
+                                    detect: false
                                     });
-                                    this.setState({ detect: false });
+
                                     return;
                             }else{
                                 this.setState({ detect: false });
