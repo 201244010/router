@@ -130,16 +130,16 @@ export default class SetPassword extends React.Component {
                                 let { dial_type } = dialdetect;
                                 dial_type  = dial_type === 'none' ? 'dhcp' : dial_type;
                                 if ('dhcp' === dial_type) {
-                                    let result = await common.fetchApi(
-                                        [
-                                            {
-                                                opcode: 'NETWORK_WAN_IPV4_SET',
-                                                data: {wan: {dial_type: "dhcp", dns_type: "auto"}}
-                                            }
-                                        ]
-                                    );
-                                    let { errcode } = result;
-                                    if(errcode == 0){
+                                    // let result = await common.fetchApi(
+                                    //     [
+                                    //         {
+                                    //             opcode: 'NETWORK_WAN_IPV4_SET',
+                                    //             data: {wan: {dial_type: "dhcp", dns_type: "auto"}}
+                                    //         }
+                                    //     ]
+                                    // );
+                                    // let { errcode } = result;
+                                    // if(errcode == 0){
                                         // 触发检测联网状态
                                         common.fetchApi(
                                             [
@@ -172,7 +172,7 @@ export default class SetPassword extends React.Component {
 												this.props.history.push('/guide/setwan');
 											}
                                         });
-                                    }
+                                    // }
                                 } else {
                                     this.props.history.push('/guide/setwan');
                                 }
