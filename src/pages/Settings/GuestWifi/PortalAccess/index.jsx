@@ -533,7 +533,7 @@ export default class PortalAccess extends React.Component {
 							style={{ width: 320 }}
 						>
 							<Input
-								className='jump-link-input'
+							 	className='jump-link-input'
 								addonBefore={jumpLinkBefore}
 								value={jumpLink}
 								placeholder={intl.get(MODULE,33)}

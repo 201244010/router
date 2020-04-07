@@ -422,7 +422,6 @@ export default class GuestWifi extends React.Component {
 			jumpLink: checkStr(value, {
 				who: intl.get(MODULE,4),
 				min: 1,
-				max: 64,
 			}),
 			version: checkStr(value, {
 				who: intl.get(MODULE,5),
