@@ -21,6 +21,7 @@ export default class RouterSetting extends React.PureComponent {
         ];
 
         this.appList = [
+            {route: 'flowControl', color: '#6D6BD8', type: 'Bandwidth', content: '4G流量控制'},
             {route: 'bandwidth', color: '#6D6BD8', type: 'Bandwidth', content: intl.get(MODULE, 14)/*_i18n:网速智能分配*/},
             {route: 'blacklist', color: '#E96044', type: 'blacklist', content: intl.get(MODULE, 17)/*_i18n:防蹭网*/},
             {route: 'bootdevice', color: '#448BE9', type: 'Bootdevice', content: intl.get(MODULE, 16)/*_i18n:优先设备*/}, 

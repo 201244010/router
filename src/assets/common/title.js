@@ -98,7 +98,11 @@ export const getTitle = () => {
 		'guestWifi': {
 			"title" : intl.get(MODULE, 46)/*_i18n:客用Wi-Fi*/,
 			"titleTip": intl.get(MODULE, 47)/*_i18n:*/
-			},
+            },
+        'flowControl': {
+            "title" : '4G流量控制',
+            "titleTip": '仅业务设备和应用可使用流量，省成本'
+            },
     };
     return funcTitle;
 };
