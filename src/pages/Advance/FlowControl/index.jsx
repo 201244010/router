@@ -8,7 +8,7 @@ import Form from "~/components/Form";
 import SubLayout from '~/components/SubLayout';
 import './index.scss';
 
-const MODULE = 'blacklist';
+const MODULE = 'flowControl';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
 
@@ -20,18 +20,19 @@ const pagination = {
 class FlowControl extends React.Component {
     constructor(props) {
         super(props);
-        this.err = {
-            '-1073': intl.get(MODULE, 0)/*_i18n:设备已存在，请勿重复添加*/,
-        }
+        this.onlineList = [];
     }
     state = {
+        controlEnable: false,
+        mode: 'device',
         visible: false,    // 是否显示在线客户端列表弹窗
         loading: false,          // 保存loading,
         disAddBtn: true,
         editLoading: false,
+        saveLoading: false,
         editShow: false,
         name: '',
-        mac: '',
+        mac: [],
         me: '',
         nameTip: '',
         macTip: '',
@@ -39,18 +40,54 @@ class FlowControl extends React.Component {
         onlineList: []
     };
 
+    onControlEnableChange = async(value) =>{
+        const { mode, blockLists } = this.state;
+        const whiteList = blockLists.map(item => {
+            return {
+                name: item.name,
+                mac: item.mac,
+            };
+        })
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_MODIFY',
+                data: {
+                    global: {
+                        enable: value? 'on':'off',
+                        mode,
+                    },
+                    white_list: whiteList,
+                }
+            }
+        ], { loading: true });
+
+        const { errcode } = response;
+        if( errcode === 0) {
+            this.setState({
+                controlEnable: value
+            });
+            message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
+            this.fetchBasic();
+        } else {
+            message.error(intl.get(MODULE, 31)/*_i18n:操作失败*/);
+        }
+
+        
+        
+    }
+
     onChange = (val, key) => {
         let tip = '';
 
         let valid = {
             name: {
                 func: (val) => {
-                    return (val.length <= 0) ? intl.get(MODULE, 4)/*_i18n:请输入备注名称*/ : '';
+                    return (val.length <= 0) ? intl.get(MODULE, 0)/*_i18n:请输入备注名称*/ : '';
                 },
             },
             mac: {
                 func: checkMac,
-            }
+            },
         };
 
         tip = valid[key].func(val, valid[key].args);
@@ -62,9 +99,11 @@ class FlowControl extends React.Component {
     }
 
     selectAdd = () => {
-        this.fetchBasic();
+        const { onlineList, blockLists } = this.state;
+        const filterList = onlineList.filter(item => !blockLists.some(list => list.mac === item.mac));
         this.setState({
-            visible: true
+            onlineList: filterList,
+            visible: true,
         });
     }
 
@@ -80,25 +119,20 @@ class FlowControl extends React.Component {
     }
 
     handleDelete = async (record) => {
-        let response = await common.fetchApi([{
-            opcode: 'QOS_AC_BLACKLIST_DELETE',
-            data: {
-                black_list: [{
-                    index: record.index,
-                    name: record.name,
-                    mac: record.mac,
-                }]
-            }
-        }]);
+        const { onlineList, blockLists } = this.state;
+        const filterList = blockLists.filter(item => !(item.mac === record.mac));
+        const inOnlineList = this.onlineList.some(item => item.mac === record.mac);
 
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            this.fetchBasic();
-            message.success(intl.get(MODULE, 32)/*_i18n:删除成功*/);
-            return;
+        //判断是否在一开始的在线列表里，如果之前是手动添加的就不用恢复到在线列表里
+        if (inOnlineList) {
+            onlineList.push({name: record.name, mac: record.mac});
         }
 
-        message.error(intl.get(MODULE, 5, {error: errcode})/*_i18n:删除失败[{error}]*/);
+        this.setState({
+            blockLists: filterList,
+            onlineList,
+        });
+        message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
     }
 
     handleSelect = (mac) => {
@@ -122,105 +156,51 @@ class FlowControl extends React.Component {
     }
 
     onSelectOk = async () => {
+        const { onlineList, blockLists } = this.state;
         this.setState({
             loading: true
         });
 
-        let directive = 'QOS_AC_BLACKLIST_ADD',
-            checked = this.state.onlineList.filter(item => item.checked),
-            aliaslist = checked.map(item => {
-                return {
-                    alias: item.name,
-                    mac: item.mac.toUpperCase()
-                };
-            }),
-            black_list = checked.map(item => {
-                return {
-                    name: item.name,
-                    mac: item.mac.toUpperCase()
-                };
+        const checked = onlineList.filter(item => item.checked);
+        const unchecked = onlineList.filter(item => !item.checked);
+        checked.map(item => {
+            blockLists.push({
+                mac: item.mac,
+                name: item.name,
             });
-
-        let response = await common.fetchApi([
-            {
-                opcode: directive,
-                data: { black_list: black_list }
-            }, {
-                opcode: 'CLIENT_ITEM_SET',
-                data: { aliaslist }
-            }
-        ]);
-
+        });
         this.setState({
+            blockLists,
+            onlineList: unchecked,
+            visible: false,
+            editShow: false,
             loading: false
         });
-
-        let { errcode, message } = response;
-        if (errcode == 0) {
-            // refresh list
-            this.fetchBasic();
-
-            this.setState({
-                visible: false,
-                editShow: false
-            })
-            return;
-        }
-
-        message.error(intl.get(MODULE, 6, {error: errcode})/*_i18n:保存失败[{error}]*/);
+        message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onEditOk = async () => {
-        let { me, mac, name }  = this.state;
-        mac = mac.join(':').toUpperCase();
-
-        if (me === mac) {
-            message.warning(intl.get(MODULE, 7)/*_i18n:不能禁止本机上网*/);
-            return;
-        }
-
         this.setState({
             editLoading: true
         });
+        let { mac, name, blockLists }  = this.state;
+        mac = mac.join(':').toUpperCase();
 
-        let directive = 'QOS_AC_BLACKLIST_ADD';
-        let black_list = [{
-            mac: mac,
-            name: name
-        }];
-        let aliaslist = [{
-            alias: name,
-            mac: mac,
-        }];
-
-        let response = await common.fetchApi([
-            {
-                opcode: directive,
-                data: { black_list: black_list }
-            },
-            {
-                opcode: 'CLIENT_ITEM_SET',
-                data: { aliaslist: aliaslist }
-            },
-        ], {
-            loading: true
-        });
-
-        this.setState({
-            editLoading: false
-        });
-
-        let { errcode } = response;
-        if (errcode == 0) {
-            this.fetchBasic();
+        
+        if (blockLists.some(item => item.mac === mac)) {
             this.setState({
-                editShow: false
-            })
-            message.success(intl.get(MODULE, 33)/*_i18n:添加成功*/);
+                editLoading: false,
+            });
+            message.warning(intl.get(MODULE, 3)/*_i18n:该设备已在白名单，无需重复添加*/);
             return;
         }
 
-        message.error(this.err[errcode]);
+        blockLists.push({mac, name});
+        this.setState({
+            editLoading: false,
+            editShow: false,
+        });
+        message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onSelectCancle = () => {
@@ -240,53 +220,98 @@ class FlowControl extends React.Component {
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
-            { opcode: 'QOS_AC_BLACKLIST_GET' },
+            { opcode: 'MOBILE_TC_GET' },
             { opcode: 'WHOAMI_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
         ]);
 
         let { errcode, data } = response;
         if (0 !== errcode) {
-            message.error(intl.get(MODULE, 8, {error: errcode})/*_i18n:未知错误[{error}]*/);
+            message.error(intl.get(MODULE, 4, {error: errcode})/*_i18n:接口错误[{error}]*/);
             return;
         }
 
-        let { black_list } = data[1].result;
+        const {
+            global: {
+                enable,
+                mode,  
+            },
+            whitedevice_list,
+            whiteapp_list,
+        } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
         let alias = data[3].result.aliaslist;
 
-        // filter clients in dhcp static list
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return (mac !== me) && !!!(black_list.find(client => {
+            return (mac !== me) && !!!(whitedevice_list.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
 
+        this.onlineList = restClients.map(item => {
+            let mac = item.mac.toUpperCase();
+            let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
+
+            return {
+                name: hostname,
+                mac: mac,
+                checked: false
+            }
+        });
+
         this.setState({
+            controlEnable: enable !== 'off',
+            mode,
             me: me,
-            blockLists: black_list.map(item => {
+            blockLists: whitedevice_list.map((item, index) => {
                 let mac = item.mac.toUpperCase();
                 let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
 
                 return {
-                    name: name,
-                    mac: mac,
-                    time: new Date(parseInt(item.time) * 1000).toLocaleString(),
-                    index: item.index
+                    name,
+                    mac,
+                    index,
                 }
             }),
-            onlineList: restClients.map(item => {
-                let mac = item.mac.toUpperCase();
-                let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
-
-                return {
-                    name: hostname,
-                    mac: mac,
-                    checked: false
-                }
-            }),
+            onlineList: this.onlineList,
         });
+    }
+
+    save = async() => {
+        this.setState({
+            saveLoading: true,
+        });
+        const { mode, controlEnable, blockLists } = this.state;
+        const whiteList = blockLists.map(item => {
+            return {
+                name: item.name,
+                mac: item.mac,
+            };
+        })
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_MODIFY',
+                data: {
+                    global: {
+                        enable: controlEnable? 'on':'off',
+                        mode,
+                    },
+                    white_list: whiteList,
+                }
+            }
+        ]);
+        this.setState({
+            saveLoading: false,
+        });
+        const { errcode } = response;
+        if( errcode === 0) {
+            message.success(intl.get(MODULE, 5)/*_i18n:保存成功*/);
+            this.fetchBasic();
+        } else {
+            message.error(intl.get(MODULE, 6)/*_i18n:保存失败*/);
+        }
+        
     }
 
     componentDidMount() {
@@ -294,48 +319,49 @@ class FlowControl extends React.Component {
     }
 
     render() {
-        const { blockLists, onlineList, visible, loading,
-            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn } = this.state;
+        let { controlEnable, mode, blockLists, onlineList, visible, loading,
+            editLoading, editShow, name, mac, nameTip, macTip, disAddBtn, saveLoading, me } = this.state;
+        const ManualBtn = [nameTip, macTip].some(item => item !== '') || name=== '' || mac.some(item => item === '');
 
-        //校验手动添加-添加按钮的diasbled属性
-        const keys = ['name', 'mac'];
-        let check = keys.some(k => {
-            return this.state[k + 'Tip'].length > 0 || this.state[k].length === 0;
-        });
-        const disabled = check;
-
-        const columns = [{
-            title: intl.get(MODULE, 9)/*_i18n:设备*/,
-            dataIndex: 'mac',
-            width: 440,
-            className: 'center',
-            render: (mac, record) => (
-                <div className="black-list">
-                    <div style={{display: 'inline-block'}}>
-                        <Logo mac={mac} size={32} />
+        const columns = [
+            {
+                title: intl.get(MODULE, 7)/*_i18n:设备名称*/,
+                dataIndex: 'mac',
+                width: 520,
+                className: 'center',
+                render: (mac, record) => (
+                    <div className="black-list">
+                        <div style={{display: 'inline-block'}}>
+                            <Logo mac={mac} size={32} />
+                        </div>
+                        <label>{record.name}{mac === me? intl.get(MODULE, 8)/*_i18n:（当前设备）*/:'' }</label>
                     </div>
-                    <label>{record.name}</label>
-                </div>
-            )
-        }, {
-            title: intl.get(MODULE, 10)/*_i18n:IP/MAC地址*/,
-            dataIndex: 'mac',
-            width: 240
-        }, {
-            title: intl.get(MODULE, 11)/*_i18n:拉黑时间*/,
-            dataIndex: 'time',
-            width: 240
-        }, {
-            title: intl.get(MODULE, 12)/*_i18n:操作*/,
-            width: 296,
-            render: (text, record) => (
-                <span>
-                    <Popconfirm title={intl.get(MODULE, 13)/*_i18n:确定恢复上网？*/} okText={intl.get(MODULE, 30)/*_i18n:确定*/} cancelText={intl.get(MODULE, 31)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
-                        <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 14)/*_i18n:恢复上网*/}</a>
-                    </Popconfirm>
-                </span>
-            )
-        }];
+                )
+            },
+            {
+                title: intl.get(MODULE, 9)/*_i18n:MAC地址*/,
+                dataIndex: 'mac',
+                width: 400
+            }, 
+            {
+                title: intl.get(MODULE, 10)/*_i18n:操作*/,
+                width: 296,
+                render: (text, record) => (
+                    <React.Fragment>
+                    {
+                        record.mac !== me?
+                        <span>
+                            <Popconfirm title={intl.get(MODULE, 11)/*_i18n:你确定要将此设备从白名单中移除？*/} okText={intl.get(MODULE, 12)/*_i18n:确定*/} cancelText={intl.get(MODULE, 13)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
+                                <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 14)/*_i18n:移除白名单*/}</a>
+                            </Popconfirm>
+                        </span>
+                        :
+                        <span style={{ color: "#ADB1B9" }}>{intl.get(MODULE, 14)/*_i18n:移除白名单*/}</span>
+                    }
+                    </React.Fragment>
+                )
+            }
+        ];
 
         const onlineCols = [{
             title: '',
@@ -346,97 +372,101 @@ class FlowControl extends React.Component {
                 <Logo mac={mac} size={32} />
             )
         }, {
-            title: intl.get(MODULE, 15)/*_i18n:设备名称*/,
+            title: intl.get(MODULE, 7)/*_i18n:设备名称*/,
             dataIndex: 'name',
-            width: 245
+            width: 390,
         }, {
-            title: intl.get(MODULE, 16)/*_i18n:MAC地址*/,
+            title: intl.get(MODULE, 9)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
-            width: 210,
+            width: 345,
         }, {
-            title: intl.get(MODULE, 17)/*_i18n:操作*/,
+            title: intl.get(MODULE, 10)/*_i18n:操作*/,
             dataIndex: 'checked',
-            width: 60,
+            width: 125,
             render: (checked, record) => (
                 <Checkbox checked={checked} onChange={() => this.handleSelect(record.mac)}></Checkbox>
             )
         }];
-        const total = blockLists.length;
+
         return (
             <SubLayout className="settings">
-                <div className='settings-flowControl'>
-                    <PanelHeader title='设备流量控制' checkable={true} checked={true} />
+                <div className='flowControl-head'>
+                    <PanelHeader title={intl.get(MODULE, 15)/*_i18n:设备流量控制*/} checkable={true} checked={controlEnable} onChange={value => this.onControlEnableChange(value)}/>
+                    {!controlEnable&&<span className='head-description'>{intl.get(MODULE, 32)/*_i18n:开启设备流量控制，只有白名单设备可以在宽带中断时，切换至4G，节省成本*/}</span>}
+                </div>
+                {controlEnable &&<React.Fragment>
                     <div className='flowControl-info'>
-                        <p>白名单设备</p>
+                        <p>{intl.get(MODULE, 16)/*_i18n:白名单设备*/}</p>
                         <div>
-                            <Button onClick={this.selectAdd} className='info-button'>列表添加</Button>
-                            <Button onClick={this.manualAdd}>手动添加</Button>
+                            <Button onClick={this.selectAdd} className='info-button'>{intl.get(MODULE, 17)/*_i18n:列表添加*/}</Button>
+                            <Button onClick={this.manualAdd}>{intl.get(MODULE, 18)/*_i18n:手动添加*/}</Button>
                         </div>
                     </div>
-                    <Modal
-                        cancelText={intl.get(MODULE, 23)/*_i18n:取消*/}
-                        okText={intl.get(MODULE, 24)/*_i18n:添加*/}
-                        closable={false}
-                        maskClosable={false}
-                        centered={true}
-                        width={960}
-                        style={{ position: 'relative' }}
-                        visible={visible}
-                        footer={[
-                            <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 23)/*_i18n:取消*/}</Button>,
-                            <Button key="submit" type="primary" disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>
-                                {intl.get(MODULE, 24)/*_i18n:添加*/}
-                            </Button>,
-                        ]} >
-                        <div style={{padding: '0 0 16px',marginBottom: 24}}>
-                            <p style={{fontSize: 16,lineHeight: '22px',fontWeight: 500,color: 'rgba(0,0,0,.85)',display: 'inline-block',marginRight: 10}}>{intl.get(MODULE, 22)/*_i18n:在线列表*/}</p>
-                            <Button size="large" style={{
-                                display: 'inline-block',
-                                border: 0,
-                                padding: 0,
-                                height: 22,
-                            }} onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+                    <div className="static-table">
+                            <Table columns={columns} dataSource={blockLists} 
+                            rowKey={record => record.index}
+                            rowClassName={(record, index) => {
+                                let className = 'editable-row';
+                                if (index % 2 === 1) {
+                                    className = 'editable-row-light';
+                                }
+                                return className;
+                            }}
+                            bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 27)/*_i18n:暂无设备*/ }} />
+                    </div>
+                    <div className='flowControl-save'>
+                        <Button type="primary" className='save-btn' loading={saveLoading} onClick={this.save}>{intl.get(MODULE, 28)/*_i18n:保存*/}</Button>
+                    </div>
+                </React.Fragment>}
+                <Modal
+                    closable={false}
+                    maskClosable={false}
+                    centered={true}
+                    width={960}
+                    style={{ position: 'relative' }}
+                    visible={visible}
+                    footer={
+                        <div className='footer-buttons'>
+                            <Button key="back" onClick={this.onSelectCancle}>{intl.get(MODULE, 19)/*_i18n:取消*/}</Button>
+                            <Button key="submit" type="primary" className='buttons-add' disabled={disAddBtn} loading={loading} onClick={this.onSelectOk}>{intl.get(MODULE, 20)/*_i18n:添加*/}</Button>
                         </div>
-                        <div style={{position: 'absolute',width: '100%',left: 0,top:62,borderBottom: '1px solid #e8e8e8'}}></div>
-                        <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
-                            scroll={{ y: 336 }}
-                            style={{ minHeight: 360 }}
-                            bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 25)/*_i18n:暂无设备*/ }} />
-                    </Modal>
-                    <Modal title={intl.get(MODULE, 26)/*_i18n:添加黑名单设备*/} centered={true}
-                        cancelText={intl.get(MODULE, 23)/*_i18n:取消*/} okText={intl.get(MODULE, 24)/*_i18n:添加*/}
-                        closable={false} maskClosable={false} width={360}
-                        visible={editShow}
-                        confirmLoading={editLoading}
-                        onOk={this.onEditOk}
-                        okButtonProps={{ disabled: disabled }}
-                        onCancel={this.onEditCancle} >
-                        <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 27)/*_i18n:备注名称*/}</label>
-                        <FormItem showErrorTip={nameTip} type="small" >
-                            <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 28)/*_i18n:请输入备注名称*/} maxLength={32} />
-                            <ErrorTip>{nameTip}</ErrorTip>
-                        </FormItem>
-                        <label style={{ display:'block',marginBottom: 6 }}>{intl.get(MODULE, 29)/*_i18n:MAC地址*/}</label>
-                        <FormItem showErrorTip={macTip} style={{ marginBottom:8 }}>
-                            <InputGroup size="small" type="mac"
-                                inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
-                                onChange={value => this.onChange(value, 'mac')} />
-                            <ErrorTip>{macTip}</ErrorTip>
-                        </FormItem>
-                    </Modal>
-                </div>
-                <div className="static-table">
-                        <Table columns={columns} dataSource={blockLists} 
-                        rowKey={record => record.index}
-                        rowClassName={(record, index) => {
-                            let className = 'editable-row';
-                            if (index % 2 === 1) {
-                                className = 'editable-row-light';
-                            }
-                            return className;
-                        }}
-                        bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 21)/*_i18n:暂无设备*/ }} />
-                </div>
+                    } >
+                    <div className='modal-header'>
+                        <p className='header-title'>{intl.get(MODULE, 21)/*_i18n:在线列表*/}</p>
+                        <Button size="large" className='header-refresh' onClick={this.fetchBasic}><CustomIcon type="refresh" /></Button>
+                    </div>
+                    <div className='modal-header-line'></div>
+                    <Table columns={onlineCols} dataSource={onlineList} rowKey={record => record.mac}
+                        scroll={{ y: 336 }}
+                        style={{ minHeight: 360 }}
+                        bordered size="middle" pagination={false} locale={{ emptyText: intl.get(MODULE, 22)/*_i18n:暂无设备*/ }} />
+                </Modal>
+                <Modal
+                    title={intl.get(MODULE, 23)/*_i18n:手动添加设备*/}
+                    centered={true}
+                    closable={false}
+                    maskClosable={false}
+                    width={360}
+                    visible={editShow}
+                    footer={
+                        <div className='footer-buttons'>
+                            <Button key="back" onClick={this.onEditCancle}>{intl.get(MODULE, 19)/*_i18n:取消*/}</Button>
+                            <Button key="submit" type="primary" className='buttons-add' disabled={ManualBtn} loading={editLoading} onClick={this.onEditOk}>{intl.get(MODULE, 20)/*_i18n:添加*/}</Button>
+                        </div>
+                    }>
+                    <label className='modal-body-label'>{intl.get(MODULE, 24)/*_i18n:备注名称*/}</label>
+                    <FormItem showErrorTip={nameTip} type="small" >
+                        <Input type="text" value={name} onChange={value => this.onChange(value, 'name')} placeholder={intl.get(MODULE, 25)/*_i18n:请输入备注名称*/} maxLength={32} />
+                        <ErrorTip>{nameTip}</ErrorTip>
+                    </FormItem>
+                    <label className='modal-body-label'>{intl.get(MODULE, 26)/*_i18n:MAC地址*/}</label>
+                    <FormItem showErrorTip={macTip} className='modal-body-lastFormItem'>
+                        <InputGroup size="small" type="mac"
+                            inputs={[{ value: mac[0], maxLength: 2 }, { value: mac[1], maxLength: 2 }, { value: mac[2], maxLength: 2 }, { value: mac[3], maxLength: 2 }, { value: mac[4], maxLength: 2 }, { value: mac[5], maxLength: 2 }]}
+                            onChange={value => this.onChange(value, 'mac')} />
+                        <ErrorTip>{macTip}</ErrorTip>
+                    </FormItem>
+                </Modal>
             </SubLayout>
         );
     }

@@ -100,8 +100,8 @@ export const getTitle = () => {
 			"titleTip": intl.get(MODULE, 47)/*_i18n:*/
             },
         'flowControl': {
-            "title" : '4G流量控制',
-            "titleTip": '仅业务设备和应用可使用流量，省成本'
+            "title" : intl.get(MODULE, 48)/*_i18n:4G流量控制*/,
+            "titleTip": intl.get(MODULE, 49)/*_i18n:仅业务设备和应用可使用流量，省成本*/
             },
     };
     return funcTitle;
