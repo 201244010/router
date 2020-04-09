@@ -41,39 +41,45 @@ class FlowControl extends React.Component {
     };
 
     onControlEnableChange = async(value) =>{
-        const { mode, blockLists } = this.state;
-        const whiteList = blockLists.map(item => {
-            return {
-                name: item.name,
-                mac: item.mac,
-            };
-        })
-        const response = await common.fetchApi([
-            {
-                opcode: 'MOBILE_TC_MODIFY',
-                data: {
-                    global: {
-                        enable: value? 'on':'off',
-                        mode,
-                    },
-                    white_list: whiteList,
+        if(!value) {
+            const { mode, blockLists } = this.state;
+            const whiteList = blockLists.map(item => {
+                return {
+                    name: item.name,
+                    mac: item.mac,
+                };
+            })
+            const response = await common.fetchApi([
+                {
+                    opcode: 'MOBILE_TC_MODIFY',
+                    data: {
+                        global: {
+                            enable: value? 'on':'off',
+                            mode,
+                        },
+                        white_list: whiteList,
+                    }
                 }
-            }
-        ], { loading: true });
+            ], { loading: true });
 
-        const { errcode } = response;
-        if( errcode === 0) {
+            const { errcode } = response;
+            if( errcode === 0) {
+                this.setState({
+                    controlEnable: value
+                });
+                message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
+                this.fetchBasic();
+            } else {
+                this.setState({
+                    controlEnable: !value
+                });
+                message.error(intl.get(MODULE, 31)/*_i18n:操作失败*/);
+            }
+        } else {
             this.setState({
                 controlEnable: value
             });
-            message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
-            this.fetchBasic();
-        } else {
-            message.error(intl.get(MODULE, 31)/*_i18n:操作失败*/);
         }
-
-        
-        
     }
 
     onChange = (val, key) => {
