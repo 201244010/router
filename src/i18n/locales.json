@@ -1944,11 +1944,14 @@
 		"flowControl25": "请输入备注名称",
 		"flowControl26": "MAC地址",
 		"flowControl27": "暂无设备",
-		"flowControl28": "保存",
+		"flowControl28": "删除失败",
 		"flowControl29": "开启成功",
 		"flowControl30": "关闭成功",
 		"flowControl31": "操作失败",
-		"flowControl32":"开启设备流量控制，只有白名单设备可以在宽带中断时，切换至4G，节省成本"
+		"flowControl32":"开启设备流量控制，只有白名单设备可以在宽带中断时，切换至4G，节省成本",
+		"flowControl33":"添加失败",
+		"flowControl34":"提示",
+		"flowControl35":"当前设备白名单为空，打开流量控制开关，将无设备可以使用4G！是否先添加白名单设备？"
 	},
 	"en-us": {
 		"app0": "You might have selected the Private Mode, please turn off the Private Mode and retry",

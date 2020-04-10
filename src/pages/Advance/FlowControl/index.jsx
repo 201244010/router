@@ -11,7 +11,7 @@ import './index.scss';
 const MODULE = 'flowControl';
 
 const { FormItem, ErrorTip, InputGroup, Input } = Form;
-
+const confirm = Modal.confirm;
 const pagination = {
     pageSize: 6,
     hideOnSinglePage: false,
@@ -41,44 +41,31 @@ class FlowControl extends React.Component {
     };
 
     onControlEnableChange = async(value) =>{
-        if(!value) {
-            const { mode, blockLists } = this.state;
-            const whiteList = blockLists.map(item => {
-                return {
-                    name: item.name,
-                    mac: item.mac,
-                };
-            })
-            const response = await common.fetchApi([
-                {
-                    opcode: 'MOBILE_TC_MODIFY',
-                    data: {
-                        global: {
-                            enable: value? 'on':'off',
-                            mode,
-                        },
-                        white_list: whiteList,
-                    }
+        const { mode } = this.state;
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_GLOBAL_SET',
+                data: {
+                    global: {
+                        enable: value? 'on':'off',
+                        mode,
+                    },
                 }
-            ], { loading: true });
-
-            const { errcode } = response;
-            if( errcode === 0) {
-                this.setState({
-                    controlEnable: value
-                });
-                message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
-                this.fetchBasic();
-            } else {
-                this.setState({
-                    controlEnable: !value
-                });
-                message.error(intl.get(MODULE, 31)/*_i18n:操作失败*/);
             }
-        } else {
+        ], { loading: true });
+
+        const { errcode } = response;
+        if( errcode === 0) {
             this.setState({
                 controlEnable: value
             });
+            message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
+            this.fetchBasic();
+        } else {
+            this.setState({
+                controlEnable: !value
+            });
+            message.error(intl.get(MODULE, 31)/*_i18n:操作失败*/);
         }
     }
 
@@ -105,10 +92,10 @@ class FlowControl extends React.Component {
     }
 
     selectAdd = () => {
-        const { onlineList, blockLists } = this.state;
-        const filterList = onlineList.filter(item => !blockLists.some(list => list.mac === item.mac));
+        // const { onlineList, blockLists } = this.state;
+        // const filterList = onlineList.filter(item => !blockLists.some(list => list.mac === item.mac));
         this.setState({
-            onlineList: filterList,
+            // onlineList: filterList,
             visible: true,
         });
     }
@@ -125,20 +112,55 @@ class FlowControl extends React.Component {
     }
 
     handleDelete = async (record) => {
-        const { onlineList, blockLists } = this.state;
-        const filterList = blockLists.filter(item => !(item.mac === record.mac));
-        const inOnlineList = this.onlineList.some(item => item.mac === record.mac);
+        const { controlEnable, mode } = this.state;
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_DELETE',
+                data: {
+                    global:{
+                        enable: controlEnable? 'on':'off',
+                        mode: mode,
+                    },
+                    white_list:[
+                        // mode === 'device'?
+                        // {
+                        //     name: record.name,
+                        //     mac: record.mac,
+                        //     devicetype: record.devicetype
+                        // }
+                        // :
+                        // {
+                        //     class: record.class,
+                        //     name: record.name,
+                        //     appid: record.appid,
+                        // }
+                        record,
+                    ]
+                }
+            }
+        ])
 
-        //判断是否在一开始的在线列表里，如果之前是手动添加的就不用恢复到在线列表里
-        if (inOnlineList) {
-            onlineList.push({name: record.name, mac: record.mac});
+        const { errcode } = response;
+        if(errcode === 0) {
+            this.fetchBasic();
+            message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
+        } else {
+            message.success(intl.get(MODULE, 28)/*_i18n:删除失败*/);
         }
+        // const { onlineList, blockLists } = this.state;
+        // const filterList = blockLists.filter(item => !(item.mac === record.mac));
+        // const inOnlineList = this.onlineList.some(item => item.mac === record.mac);
 
-        this.setState({
-            blockLists: filterList,
-            onlineList,
-        });
-        message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
+        // //判断是否在一开始的在线列表里，如果之前是手动添加的就不用恢复到在线列表里
+        // if (inOnlineList) {
+        //     onlineList.push({name: record.name, mac: record.mac, devicetype: record.devicetype});
+        // }
+
+        // this.setState({
+        //     blockLists: filterList,
+        //     onlineList,
+        // });
+        // message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
     }
 
     handleSelect = (mac) => {
@@ -162,34 +184,62 @@ class FlowControl extends React.Component {
     }
 
     onSelectOk = async () => {
-        const { onlineList, blockLists } = this.state;
+        const { onlineList, mode, controlEnable } = this.state;
         this.setState({
             loading: true
         });
+        const checkedList = onlineList.filter(item => item.checked);
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_ADD',
+                data: {
+                    global:{
+                        enable: controlEnable? "on":"off",
+                        mode,
+                    },
+                    white_list: checkedList,
+                }
+            }
+        ]);
 
-        const checked = onlineList.filter(item => item.checked);
-        const unchecked = onlineList.filter(item => !item.checked);
-        checked.map(item => {
-            blockLists.push({
-                mac: item.mac,
-                name: item.name,
+        const { errcode } = response;
+        if( errcode === 0 ) {
+            this.fetchBasic();
+            this.setState({
+                loading: false,
+                visible: false,
             });
-        });
-        this.setState({
-            blockLists,
-            onlineList: unchecked,
-            visible: false,
-            editShow: false,
-            loading: false
-        });
-        message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
+            message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
+        } else {
+            this.setState({
+                loading: false
+            });
+            message.success(intl.get(MODULE, 33)/*_i18n:添加失败*/);
+        }
+
+        // const { onlineList, blockLists } = this.state;
+        // const checked = onlineList.filter(item => item.checked);
+        // const unchecked = onlineList.filter(item => !item.checked);
+        // checked.map(item => {
+        //     blockLists.push({
+        //         mac: item.mac,
+        //         name: item.name,
+        //     });
+        // });
+        // this.setState({
+        //     blockLists,
+        //     onlineList: unchecked,
+        //     visible: false,
+        //     loading: false
+        // });
+        // message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onEditOk = async () => {
         this.setState({
             editLoading: true
         });
-        let { mac, name, blockLists }  = this.state;
+        let { mac, name, blockLists, controlEnable, mode }  = this.state;
         mac = mac.join(':').toUpperCase();
 
         
@@ -201,12 +251,46 @@ class FlowControl extends React.Component {
             return;
         }
 
-        blockLists.push({mac, name});
-        this.setState({
-            editLoading: false,
-            editShow: false,
-        });
-        message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
+        const response = await common.fetchApi([
+            {
+                opcode: 'MOBILE_TC_ADD',
+                data: {
+                    global:{
+                        enable: controlEnable? "on":"off",
+                        mode,
+                    },
+                    white_list: [
+                        {
+                            name,
+                            mac,
+                            devicetype: "",
+                        } 
+                    ],
+                }
+            }
+        ]);
+        
+        const { errcode } = response;
+        if(errcode === 0) {
+            this.fetchBasic();
+            this.setState({
+                editLoading: false,
+                editShow: false,
+            });
+            message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
+        } else {
+            this.setState({
+                editLoading: false,
+            });
+            message.success(intl.get(MODULE, 33)/*_i18n:添加失败*/);
+        }
+
+        // blockLists.push({mac, name});
+        // this.setState({
+        //     editLoading: false,
+        //     editShow: false,
+        // });
+        // message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onSelectCancle = () => {
@@ -220,6 +304,12 @@ class FlowControl extends React.Component {
         this.setState({
             editLoading: false,
             editShow: false
+        })
+    }
+
+    factorySet = () => {
+        this.setState({
+            visible: true,
         })
     }
 
@@ -243,15 +333,14 @@ class FlowControl extends React.Component {
                 mode,
                 factory, 
             },
-            whitedevice_list,
-            whiteapp_list,
+            white_list,
         } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
         let alias = data[3].result.aliaslist;
 
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return (mac !== me) && !!!(whitedevice_list.find(client => {
+            return (mac !== me) && !!!(white_list.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
@@ -263,7 +352,8 @@ class FlowControl extends React.Component {
             return {
                 name: hostname,
                 mac: mac,
-                checked: false
+                devicetype: item.model,
+                checked: false,
             }
         });
 
@@ -271,7 +361,7 @@ class FlowControl extends React.Component {
             controlEnable: enable !== 'off',
             mode,
             me: me,
-            blockLists: whitedevice_list.map((item, index) => {
+            blockLists: white_list.map((item, index) => {
                 let mac = item.mac.toUpperCase();
                 let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
 
@@ -279,47 +369,62 @@ class FlowControl extends React.Component {
                     name,
                     mac,
                     index,
+                    devicetype: item.devicetype || '',
                 }
             }),
             onlineList: this.onlineList,
         });
+
+        if( factory == 0) {
+            confirm({
+                title: intl.get(MODULE, 34)/*_i18n:提示*/,
+                content: intl.get(MODULE, 35)/*_i18n:当前设备白名单为空，打开流量控制开关，将无设备可以使用4G！是否先添加白名单设备？*/,
+                onOk: this.factorySet,
+                onCancel(){   
+
+                },
+                cancelText: intl.get(MODULE, 13)/*_i18n:取消*/,
+                okText: intl.get(MODULE, 12)/*_i18n:确定*/,
+                centered: true
+            });
+        }
     }
 
-    save = async() => {
-        this.setState({
-            saveLoading: true,
-        });
-        const { mode, controlEnable, blockLists } = this.state;
-        const whiteList = blockLists.map(item => {
-            return {
-                name: item.name,
-                mac: item.mac,
-            };
-        })
-        const response = await common.fetchApi([
-            {
-                opcode: 'MOBILE_TC_MODIFY',
-                data: {
-                    global: {
-                        enable: controlEnable? 'on':'off',
-                        mode,
-                    },
-                    white_list: whiteList,
-                }
-            }
-        ]);
-        this.setState({
-            saveLoading: false,
-        });
-        const { errcode } = response;
-        if( errcode === 0) {
-            message.success(intl.get(MODULE, 5)/*_i18n:保存成功*/);
-            this.fetchBasic();
-        } else {
-            message.error(intl.get(MODULE, 6)/*_i18n:保存失败*/);
-        }
+    // save = async() => {
+    //     this.setState({
+    //         saveLoading: true,
+    //     });
+    //     const { mode, controlEnable, blockLists } = this.state;
+    //     const whiteList = blockLists.map(item => {
+    //         return {
+    //             name: item.name,
+    //             mac: item.mac,
+    //         };
+    //     })
+    //     const response = await common.fetchApi([
+    //         {
+    //             opcode: 'MOBILE_TC_MODIFY',
+    //             data: {
+    //                 global: {
+    //                     enable: controlEnable? 'on':'off',
+    //                     mode,
+    //                 },
+    //                 white_list: whiteList,
+    //             }
+    //         }
+    //     ]);
+    //     this.setState({
+    //         saveLoading: false,
+    //     });
+    //     const { errcode } = response;
+    //     if( errcode === 0) {
+    //         message.success(intl.get(MODULE, 5)/*_i18n:保存成功*/);
+    //         this.fetchBasic();
+    //     } else {
+    //         message.error(intl.get(MODULE, 6)/*_i18n:保存失败*/);
+    //     }
         
-    }
+    // }
 
     componentDidMount() {
         this.fetchBasic();
@@ -339,7 +444,11 @@ class FlowControl extends React.Component {
                 render: (mac, record) => (
                     <div className="black-list">
                         <div style={{display: 'inline-block'}}>
-                            <Logo mac={mac} size={32} />
+                            {record.devicetype === ('' || null)?
+                                <Logo model={record.devicetype} size={32} />
+                                :
+                                <Logo mac={mac} size={32} />
+                            }
                         </div>
                         <label>{record.name}{mac === me? intl.get(MODULE, 8)/*_i18n:（当前设备）*/:'' }</label>
                     </div>
@@ -354,18 +463,11 @@ class FlowControl extends React.Component {
                 title: intl.get(MODULE, 10)/*_i18n:操作*/,
                 width: 296,
                 render: (text, record) => (
-                    <React.Fragment>
-                    {
-                        record.mac !== me?
-                        <span>
-                            <Popconfirm title={intl.get(MODULE, 11)/*_i18n:你确定要将此设备从白名单中移除？*/} okText={intl.get(MODULE, 12)/*_i18n:确定*/} cancelText={intl.get(MODULE, 13)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
-                                <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 14)/*_i18n:移除白名单*/}</a>
-                            </Popconfirm>
-                        </span>
-                        :
-                        <span style={{ color: "#ADB1B9" }}>{intl.get(MODULE, 14)/*_i18n:移除白名单*/}</span>
-                    }
-                    </React.Fragment>
+                    <span>
+                        <Popconfirm title={intl.get(MODULE, 11)/*_i18n:你确定要将此设备从白名单中移除？*/} okText={intl.get(MODULE, 12)/*_i18n:确定*/} cancelText={intl.get(MODULE, 13)/*_i18n:取消*/} onConfirm={() => this.handleDelete(record)}>
+                            <a href="javascript:;" style={{ color: "#3D76F6" }}>{intl.get(MODULE, 14)/*_i18n:移除白名单*/}</a>
+                        </Popconfirm>
+                    </span>
                 )
             }
         ];
@@ -376,7 +478,13 @@ class FlowControl extends React.Component {
             width: 60,
             className: 'center',
             render: (mac, record) => (
-                <Logo mac={mac} size={32} />
+                <React.Fragment>
+                {record.devicetype === (''||null)?
+                    <Logo model={record.devicetype} size={32} />
+                    :
+                    <Logo mac={mac} size={32} />
+                }
+                </React.Fragment>
             )
         }, {
             title: intl.get(MODULE, 7)/*_i18n:设备名称*/,
@@ -421,9 +529,9 @@ class FlowControl extends React.Component {
                             }}
                             bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 27)/*_i18n:暂无设备*/ }} />
                     </div>
-                    <div className='flowControl-save'>
-                        <Button type="primary" className='save-btn' loading={saveLoading} onClick={this.save}>{intl.get(MODULE, 28)/*_i18n:保存*/}</Button>
-                    </div>
+                    {/* <div className='flowControl-save'>
+                        <Button type="primary" className='save-btn' loading={saveLoading} onClick={this.save}>{intl.get(MODULE, 28)}</Button>
+                    </div> */}
                 </React.Fragment>}
                 <Modal
                     closable={false}
