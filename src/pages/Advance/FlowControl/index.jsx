@@ -316,7 +316,7 @@ class FlowControl extends React.Component {
     fetchBasic = async () => {
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
-            { opcode: 'MOBILE_TC_LIST_GET' },
+            { opcode: 'MOBILE_TC_LIST_GET', data: { global: { mode: 'device' } } },
             { opcode: 'WHOAMI_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
         ]);
