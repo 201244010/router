@@ -195,7 +195,7 @@ class FlowControl extends React.Component {
                 opcode: 'MOBILE_TC_ADD',
                 data: {
                     global:{
-                        enable: controlEnable? "on":"off",
+                        enable: this.factory == 0? "on" : controlEnable? "on":"off",
                         mode,
                     },
                     white_list: checkedList,
@@ -205,9 +205,6 @@ class FlowControl extends React.Component {
 
         const { errcode } = response;
         if( errcode === 0 ) {
-            if(this.factory == 0) {
-                this.onControlEnableChange(true);
-            }
             this.fetchBasic();
             this.setState({
                 loading: false,
