@@ -21,6 +21,7 @@ class FlowControl extends React.Component {
     constructor(props) {
         super(props);
         this.onlineList = [];
+        this.factory = 1;
     }
     state = {
         controlEnable: false,
@@ -204,6 +205,9 @@ class FlowControl extends React.Component {
 
         const { errcode } = response;
         if( errcode === 0 ) {
+            if(this.factory == 0) {
+                this.onControlEnableChange(true);
+            }
             this.fetchBasic();
             this.setState({
                 loading: false,
@@ -340,7 +344,7 @@ class FlowControl extends React.Component {
 
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return (mac !== me) && !!!(white_list.find(client => {
+            return !!!(white_list.find(client => {
                 return (mac == client.mac.toUpperCase());
             }));
         });
@@ -375,6 +379,7 @@ class FlowControl extends React.Component {
             onlineList: this.onlineList,
         });
 
+        this.factory = factory;
         if( factory == 0) {
             confirm({
                 title: intl.get(MODULE, 34)/*_i18n:提示*/,
