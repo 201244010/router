@@ -351,7 +351,7 @@ class FlowControl extends React.Component {
             let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
 
             return {
-                name: hostname,
+                name: hostname.Substring(0,32),
                 mac: mac,
                 devicetype: item.model,
                 checked: false,
@@ -367,7 +367,7 @@ class FlowControl extends React.Component {
                 let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
 
                 return {
-                    name,
+                    name: name.Substring(0,32),
                     mac,
                     index,
                     devicetype: item.devicetype || '',
