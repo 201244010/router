@@ -349,9 +349,8 @@ class FlowControl extends React.Component {
         this.onlineList = restClients.map(item => {
             let mac = item.mac.toUpperCase();
             let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
-
             return {
-                name: hostname.Substring(0,32),
+                name: hostname.substring(0,32),
                 mac: mac,
                 devicetype: item.model,
                 checked: false,
@@ -365,9 +364,8 @@ class FlowControl extends React.Component {
             blockLists: white_list.map((item, index) => {
                 let mac = item.mac.toUpperCase();
                 let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
-
                 return {
-                    name: name.Substring(0,32),
+                    name: name.substring(0,32),
                     mac,
                     index,
                     devicetype: item.devicetype || '',
@@ -446,11 +444,12 @@ class FlowControl extends React.Component {
                 render: (mac, record) => (
                     <div className="black-list">
                         <div style={{display: 'inline-block'}}>
-                            {record.devicetype === ('' || null)?
+                            {/* {record.devicetype === ('' || null)?
                                 <Logo model={record.devicetype} size={32} />
                                 :
                                 <Logo mac={mac} size={32} />
-                            }
+                            } */}
+                            <Logo mac={mac} model={record.devicetype} size={32} />
                         </div>
                         <label>{record.name}{mac === me? intl.get(MODULE, 8)/*_i18n:（当前设备）*/:'' }</label>
                     </div>
@@ -480,13 +479,14 @@ class FlowControl extends React.Component {
             width: 60,
             className: 'center',
             render: (mac, record) => (
-                <React.Fragment>
-                {record.devicetype === (''||null)?
-                    <Logo model={record.devicetype} size={32} />
-                    :
-                    <Logo mac={mac} size={32} />
-                }
-                </React.Fragment>
+                // <React.Fragment>
+                // {record.devicetype === ''?
+                //     <Logo model={record.devicetype} size={32} />
+                //     :
+                //     <Logo mac={mac} size={32} />
+                // }
+                // </React.Fragment>
+                <Logo mac={mac} model={record.devicetype} size={32} />
             )
         }, {
             title: intl.get(MODULE, 7)/*_i18n:设备名称*/,
