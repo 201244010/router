@@ -26,6 +26,7 @@ import Blacklist from './Advance/Blacklist';
 import Bootdevice from './Advance/Bootdevice';
 import Bandwidth from './Advance/Bandwidth';
 import Systemsetup from './Advance/Systemsetup';
+import FlowControl from './Advance/FlowControl';
 
 import Wifi from './Settings/WI-Fi';
 import Lan from './Settings/Lan';
@@ -148,6 +149,7 @@ class PrimaryLayout extends React.Component {
             'multipleWan': { main: 'bg', footer: '', header: true, title: true },
             'vpnClient': { main: 'bg', footer: '', header: true, title: true },
             'guestWifi': { main: 'bg', footer: '', header: true, title: true },
+            'flowControl': { main: 'bg', footer: '', header: true, title: true },
         }
 
         const height = {
@@ -244,6 +246,7 @@ class RouterSetting extends React.Component {
                     <Route path="/routersetting/multipleWan" component={MultipleWan} />
                     <Route path="/routersetting/vpnClient" component={VPNClient} />
                     <Route path="/routersetting/guestWifi" component={GuestWifi} />
+                    <Route path="/routersetting/flowControl" component={FlowControl} />
                 </Switch>
         )
     }
