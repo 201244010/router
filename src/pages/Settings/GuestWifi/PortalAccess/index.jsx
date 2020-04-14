@@ -82,7 +82,7 @@ export default class PortalAccess extends React.Component {
 				welcomeTip,
 				connectButtonTip,
 				versionTip,
-				jumpTextTip,
+				// jumpTextTip,
 				jumpLinkTip,
 				messageTimeTip,
 				appKeyTip,
@@ -96,7 +96,7 @@ export default class PortalAccess extends React.Component {
 					welcome,
 					connectButton,
 					version,
-					jumpText,
+					// jumpText,
 					jumpLink,
 					messageTime,
 					appKey,
@@ -510,7 +510,7 @@ export default class PortalAccess extends React.Component {
 				</FormItem>
 				{navigateValue === '1' && (
 					<div>
-						<label>{intl.get(MODULE,30)}</label>
+						{/* <label>{intl.get(MODULE,30)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={jumpTextTip}
@@ -522,11 +522,11 @@ export default class PortalAccess extends React.Component {
 								value={jumpText}
 								placeholder={intl.get(MODULE,31)}
 								onChange={value => onChange('jumpText', value)}
-								description={intl.get(MODULE,47)}/*1~10个字符*/
+								description={intl.get(MODULE,47)}
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
-						<label>{intl.get(MODULE,32)}</label>
+						<label>{intl.get(MODULE,32)}</label> */}
 						<FormItem
 							type="small"
 							showErrorTip={jumpLinkTip}
@@ -539,13 +539,6 @@ export default class PortalAccess extends React.Component {
 								placeholder={intl.get(MODULE,33)}
 								onChange={e => onChange('jumpLink', e.target.value)}
 							/>
-							{/* <Input
-								type="text"
-								maxLength={64}
-								value={jumpLink}
-								placeholder={intl.get(MODULE,33)}
-								onChange={value => onChange('jumpLink', value)}
-								description={intl.get(MODULE,48)}/> */}
 							<ErrorTip>{jumpLinkTip}</ErrorTip>
 						</FormItem>
 					</div>

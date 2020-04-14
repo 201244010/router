@@ -523,7 +523,7 @@ export default class Home extends React.Component {
 			showToolTip,
 		} = this.state;
 		return (
-			<SubLayout className="home">
+			<div className='home-body'>
 				<div>
 					<Topology
 						upSpeed={upSpeed}
@@ -648,7 +648,7 @@ export default class Home extends React.Component {
 						) /*_i18n:检测到当前网络没有主路由，为了保障更好的体验，已将当前设备设置为主路由*/}
 					</span>
 				</Modal>
-			</SubLayout>
+			</div>
 		);
 	}
 }
