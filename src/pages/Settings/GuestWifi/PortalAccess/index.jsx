@@ -83,7 +83,7 @@ export default class PortalAccess extends React.Component {
 				connectButtonTip,
 				versionTip,
 				jumpTextTip,
-				// jumpLinkTip,
+				jumpLinkTip,
 				messageTimeTip,
 				appKeyTip,
 				appSecretTip,
@@ -96,7 +96,7 @@ export default class PortalAccess extends React.Component {
 					welcome,
 					connectButton,
 					version,
-					// jumpText,
+					jumpText,
 					jumpLink,
 					messageTime,
 					appKey,
@@ -510,7 +510,7 @@ export default class PortalAccess extends React.Component {
 				</FormItem>
 				{navigateValue === '1' && (
 					<div>
-						{/* <label>{intl.get(MODULE,30)}</label>
+						<label>{intl.get(MODULE,30)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={jumpTextTip}
@@ -526,7 +526,7 @@ export default class PortalAccess extends React.Component {
 							/>
 							<ErrorTip>{jumpTextTip}</ErrorTip>
 						</FormItem>
-						<label>{intl.get(MODULE,32)}</label> */}
+						<label>{intl.get(MODULE,32)}</label>
 						<FormItem
 							type="small"
 							showErrorTip={jumpLinkTip}

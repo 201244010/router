@@ -28,7 +28,7 @@ export default class GuestWifi extends React.Component {
 				welcome: '',
 				connectButton: '',
 				version: '',
-				// jumpText: '',
+				jumpText: '',
 				jumpLink: '',
 				messageTime: '60',
 				appKey: '',
@@ -58,7 +58,7 @@ export default class GuestWifi extends React.Component {
 			welcomeTip: '',
 			connectButtonTip: '',
 			versionTip: '',
-			// jumpTextTip: '',
+			jumpTextTip: '',
 			jumpLinkTip: '',
 			messageTimeTip: '',
 			appKeyTip: '',
@@ -155,11 +155,11 @@ export default class GuestWifi extends React.Component {
 					min: 1,
 					max: 30,
 				}),
-				// jumpTextTip: checkStr(link_label, {
-				// 	who: intl.get(MODULE,3),
-				// 	min: 1,
-				// 	max: 10,
-				// }),
+				jumpTextTip: checkStr(link_label, {
+					who: intl.get(MODULE,3),
+					min: 1,
+					max: 10,
+				}),
 				jumpLinkTip: checkStr(link_addr, {
 					who: intl.get(MODULE,4),
 					min: 1,
@@ -209,7 +209,7 @@ export default class GuestWifi extends React.Component {
 					welcome,
 					connectButton: connect_label,
 					jumpLink: link_addr,
-					// jumpText: link_label,
+					jumpText: link_label,
 					messageTime: code_expired,
 					appKey: access_key_id,
 					appSecret: access_key_secret,
@@ -247,7 +247,7 @@ export default class GuestWifi extends React.Component {
 				welcome,
 				connectButton,
 				jumpLink,
-				// jumpText,
+				jumpText,
 				messageTime,
 				appKey,
 				appSecret,
@@ -310,7 +310,7 @@ export default class GuestWifi extends React.Component {
 						welcome,
 						connect_label: connectButton,
 						link_enable: navigateValue,
-						// link_label: jumpText,
+						link_label: jumpText,
 						link_addr: jumpLinkHeader+jumpLink+'',
 						statement: version,
 						online_limit: String(validValue),
@@ -414,11 +414,11 @@ export default class GuestWifi extends React.Component {
 				min: 1,
 				max: 30,
 			}),
-			// jumpText: checkStr(value, {
-			// 	who: intl.get(MODULE,3),
-			// 	min: 1,
-			// 	max: 10,
-			// }),
+			jumpText: checkStr(value, {
+				who: intl.get(MODULE,3),
+				min: 1,
+				max: 10,
+			}),
 			jumpLink: checkStr(value, {
 				who: intl.get(MODULE,4),
 				min: 1,
@@ -493,7 +493,7 @@ export default class GuestWifi extends React.Component {
 				welcome,
 				connectButton,
 				version,
-				// jumpText,
+				jumpText,
 				jumpLink,
 				messageTime,
 				appKey,
@@ -511,7 +511,7 @@ export default class GuestWifi extends React.Component {
 			connectButtonTip,
 			versionTip,
 			accessPasswordTip,
-			// jumpTextTip,
+			jumpTextTip,
 			jumpLinkTip,
 			messageTimeTip,
 			appKeyTip,
@@ -526,8 +526,8 @@ export default class GuestWifi extends React.Component {
 			);
 		let radioResult = false;
 		if (navigateValue === '1') {
-			// radioResult = [jumpText, jumpLink].includes('') || [jumpTextTip, jumpLinkTip].some(item => item !== '');
-			radioResult = [jumpLink].includes('') || [jumpLinkTip].some(item => item !== '');
+			radioResult = [jumpText, jumpLink].includes('') || [jumpTextTip, jumpLinkTip].some(item => item !== '');
+			// radioResult = [jumpLink].includes('') || [jumpLinkTip].some(item => item !== '');
 		}
 		if (portalValue === NONE) {
 			return fixResult || radioResult;
