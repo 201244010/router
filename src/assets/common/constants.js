@@ -198,6 +198,13 @@ export const DIRECTIVE = {
     //VPN
     VPN_GET: '0x2151',
     VPN_SET: '0x2150',
+
+    //4G流量控制
+    MOBILE_TC_GLOBAL_SET: '0x2400',
+    MOBILE_TC_LIST_GET: '0x2401',
+    MOBILE_TC_ADD: '0x2402',
+    MOBILE_TC_DELETE: '0x2403',
+    MOBILE_TC_APPLIST_GET: '0x2404',
 };
 
 /**
