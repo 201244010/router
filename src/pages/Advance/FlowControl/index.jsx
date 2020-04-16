@@ -20,7 +20,7 @@ const pagination = {
 class FlowControl extends React.Component {
     constructor(props) {
         super(props);
-        this.onlineList = [];
+        this.blockLists = [],
         this.factory = 1;
     }
     state = {
@@ -61,7 +61,7 @@ class FlowControl extends React.Component {
                 controlEnable: value
             });
             message.success(value?intl.get(MODULE, 29)/*_i18n:开启成功*/:intl.get(MODULE, 30)/*_i18n:关闭成功*/);
-            this.fetchBasic();
+            this.fetchBasic(true);
         } else {
             this.setState({
                 controlEnable: !value
@@ -93,11 +93,23 @@ class FlowControl extends React.Component {
     }
 
     selectAdd = () => {
-        // const { onlineList, blockLists } = this.state;
-        // const filterList = onlineList.filter(item => !blockLists.some(list => list.mac === item.mac));
+        const { onlineList, me } = this.state;
+
         this.setState({
-            // onlineList: filterList,
+            onlineList: onlineList.map(item => {
+                if(item.devicetype !== '' || item.mac === me) {
+                    item.checked = true;
+                }
+                return item;
+            }),
             visible: true,
+        },() => {
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
+            });
+            this.setState({
+                disAddBtn: !checked,
+            });
         });
     }
 
@@ -113,6 +125,25 @@ class FlowControl extends React.Component {
     }
 
     handleDelete = async (record) => {
+        const { blockLists } = this.state;
+        if(blockLists.length === 1) {
+            confirm({
+                title: intl.get(MODULE, 34)/*_i18n:提示*/,
+                content: '移除该设备后，将无设备可以使用4G，确认移除？',
+                onOk:() => this.deviceDelete(record),
+                onCancel(){   
+
+                },
+                cancelText: intl.get(MODULE, 13)/*_i18n:取消*/,
+                okText: intl.get(MODULE, 12)/*_i18n:确定*/,
+                centered: true
+            });
+        } else {
+            this.deviceDelete(record);
+        }
+    }
+
+    deviceDelete = async(record) => {
         const { controlEnable, mode } = this.state;
         const response = await common.fetchApi([
             {
@@ -143,25 +174,11 @@ class FlowControl extends React.Component {
 
         const { errcode } = response;
         if(errcode === 0) {
-            this.fetchBasic();
+            this.fetchBasic(false);
             message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
         } else {
             message.success(intl.get(MODULE, 28)/*_i18n:删除失败*/);
         }
-        // const { onlineList, blockLists } = this.state;
-        // const filterList = blockLists.filter(item => !(item.mac === record.mac));
-        // const inOnlineList = this.onlineList.some(item => item.mac === record.mac);
-
-        // //判断是否在一开始的在线列表里，如果之前是手动添加的就不用恢复到在线列表里
-        // if (inOnlineList) {
-        //     onlineList.push({name: record.name, mac: record.mac, devicetype: record.devicetype});
-        // }
-
-        // this.setState({
-        //     blockLists: filterList,
-        //     onlineList,
-        // });
-        // message.success(intl.get(MODULE, 1)/*_i18n:删除成功*/);
     }
 
     handleSelect = (mac) => {
@@ -205,7 +222,7 @@ class FlowControl extends React.Component {
 
         const { errcode } = response;
         if( errcode === 0 ) {
-            this.fetchBasic();
+            this.fetchBasic(false);
             this.setState({
                 loading: false,
                 visible: false,
@@ -217,23 +234,6 @@ class FlowControl extends React.Component {
             });
             message.success(intl.get(MODULE, 33)/*_i18n:添加失败*/);
         }
-
-        // const { onlineList, blockLists } = this.state;
-        // const checked = onlineList.filter(item => item.checked);
-        // const unchecked = onlineList.filter(item => !item.checked);
-        // checked.map(item => {
-        //     blockLists.push({
-        //         mac: item.mac,
-        //         name: item.name,
-        //     });
-        // });
-        // this.setState({
-        //     blockLists,
-        //     onlineList: unchecked,
-        //     visible: false,
-        //     loading: false
-        // });
-        // message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onEditOk = async () => {
@@ -249,6 +249,14 @@ class FlowControl extends React.Component {
                 editLoading: false,
             });
             message.warning(intl.get(MODULE, 3)/*_i18n:该设备已在白名单，无需重复添加*/);
+            return;
+        }
+
+        if(this.blockLists.some(item => item.mac === mac)) {
+            this.setState({
+                editLoading: false,
+            });
+            message.warning('该设备已在黑名单中，无法添加');
             return;
         }
 
@@ -273,7 +281,7 @@ class FlowControl extends React.Component {
         
         const { errcode } = response;
         if(errcode === 0) {
-            this.fetchBasic();
+            this.fetchBasic(false);
             this.setState({
                 editLoading: false,
                 editShow: false,
@@ -285,13 +293,6 @@ class FlowControl extends React.Component {
             });
             message.success(intl.get(MODULE, 33)/*_i18n:添加失败*/);
         }
-
-        // blockLists.push({mac, name});
-        // this.setState({
-        //     editLoading: false,
-        //     editShow: false,
-        // });
-        // message.success(intl.get(MODULE, 2)/*_i18n:添加成功*/);
     }
 
     onSelectCancle = () => {
@@ -309,17 +310,33 @@ class FlowControl extends React.Component {
     }
 
     factorySet = () => {
+        const { onlineList, me } = this.state;
+
         this.setState({
+            onlineList: onlineList.map(item => {
+                if(item.devicetype !== '' || item.mac === me) {
+                    item.checked = true;
+                }
+                return item;
+            }),
             visible: true,
+        }, () => {
+            const checked = this.state.onlineList.some(item => {
+                return item.checked;
+            });
+            this.setState({
+                disAddBtn: !checked,
+            });
         })
     }
 
-    fetchBasic = async () => {
+    fetchBasic = async (checkable) => {
         let response = await common.fetchApi([
             { opcode: 'CLIENT_LIST_GET' },
             { opcode: 'MOBILE_TC_LIST_GET', data: { global: { mode: 'device' } } },
             { opcode: 'WHOAMI_GET' },
             { opcode: 'CLIENT_ALIAS_GET' },
+            { opcode: 'QOS_AC_BLACKLIST_GET' },
         ]);
 
         let { errcode, data } = response;
@@ -338,15 +355,15 @@ class FlowControl extends React.Component {
         } = data[1].result;
         let me = data[2].result.mac.toUpperCase();
         let alias = data[3].result.aliaslist;
-
+        let { black_list } = data[4].result;
+    
+        this.blockLists = black_list;
         let restClients = data[0].result.data.filter(item => {
             let mac = item.mac.toUpperCase();
-            return !!!(white_list.find(client => {
-                return (mac == client.mac.toUpperCase());
-            }));
+            return (!!!(white_list.find(client => {return (mac == client.mac.toUpperCase());}))) && (!!!(black_list.find(client => {return (mac == client.mac.toUpperCase());})));
         });
 
-        this.onlineList = restClients.map(item => {
+        const onlineList = restClients.map(item => {
             let mac = item.mac.toUpperCase();
             let hostname = alias[mac] && alias[mac].alias || item.model || item.hostname;
             return {
@@ -357,25 +374,36 @@ class FlowControl extends React.Component {
             }
         });
 
+        const blockLists = white_list.map((item, index) => {
+            let mac = item.mac.toUpperCase();
+            let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
+            return {
+                name: name.substring(0,32),
+                mac,
+                index,
+                devicetype: item.devicetype || '',
+            }
+        });
+
+        const SUNMIList  = onlineList.filter(item => item.devicetype !== '');
+        const meList = onlineList.filter(item => item.mac === me);
+        const restList = onlineList.filter(items => !(SUNMIList.some(item => item.mac === items.mac) || meList.some(item => item.mac === items.mac)));
+
+        const newOnlineList = [];
+        SUNMIList.map(item => newOnlineList.push(item));
+        meList.map(item => newOnlineList.push(item));
+        restList.map(item => newOnlineList.push(item));
+
         this.setState({
             controlEnable: enable !== 'off',
             mode,
             me: me,
-            blockLists: white_list.map((item, index) => {
-                let mac = item.mac.toUpperCase();
-                let name = alias[mac] && alias[mac].alias || item.name || 'unknown';
-                return {
-                    name: name.substring(0,32),
-                    mac,
-                    index,
-                    devicetype: item.devicetype || '',
-                }
-            }),
-            onlineList: this.onlineList,
+            blockLists: blockLists,
+            onlineList: newOnlineList,
         });
 
         this.factory = factory;
-        if( factory == 0) {
+        if(checkable && (factory == 0 || (blockLists.length === 0 && enable === 'on') )) {
             confirm({
                 title: intl.get(MODULE, 34)/*_i18n:提示*/,
                 content: intl.get(MODULE, 35)/*_i18n:当前设备白名单为空，打开流量控制开关，将无设备可以使用4G！是否先添加白名单设备？*/,
@@ -390,44 +418,8 @@ class FlowControl extends React.Component {
         }
     }
 
-    // save = async() => {
-    //     this.setState({
-    //         saveLoading: true,
-    //     });
-    //     const { mode, controlEnable, blockLists } = this.state;
-    //     const whiteList = blockLists.map(item => {
-    //         return {
-    //             name: item.name,
-    //             mac: item.mac,
-    //         };
-    //     })
-    //     const response = await common.fetchApi([
-    //         {
-    //             opcode: 'MOBILE_TC_MODIFY',
-    //             data: {
-    //                 global: {
-    //                     enable: controlEnable? 'on':'off',
-    //                     mode,
-    //                 },
-    //                 white_list: whiteList,
-    //             }
-    //         }
-    //     ]);
-    //     this.setState({
-    //         saveLoading: false,
-    //     });
-    //     const { errcode } = response;
-    //     if( errcode === 0) {
-    //         message.success(intl.get(MODULE, 5)/*_i18n:保存成功*/);
-    //         this.fetchBasic();
-    //     } else {
-    //         message.error(intl.get(MODULE, 6)/*_i18n:保存失败*/);
-    //     }
-        
-    // }
-
     componentDidMount() {
-        this.fetchBasic();
+        this.fetchBasic(true);
     }
 
     render() {
@@ -444,11 +436,6 @@ class FlowControl extends React.Component {
                 render: (mac, record) => (
                     <div className="black-list">
                         <div style={{display: 'inline-block'}}>
-                            {/* {record.devicetype === ('' || null)?
-                                <Logo model={record.devicetype} size={32} />
-                                :
-                                <Logo mac={mac} size={32} />
-                            } */}
                             <Logo mac={mac} model={record.devicetype} size={32} />
                         </div>
                         <label>{record.name}{mac === me? intl.get(MODULE, 8)/*_i18n:（当前设备）*/:'' }</label>
@@ -479,19 +466,15 @@ class FlowControl extends React.Component {
             width: 60,
             className: 'center',
             render: (mac, record) => (
-                // <React.Fragment>
-                // {record.devicetype === ''?
-                //     <Logo model={record.devicetype} size={32} />
-                //     :
-                //     <Logo mac={mac} size={32} />
-                // }
-                // </React.Fragment>
                 <Logo mac={mac} model={record.devicetype} size={32} />
             )
         }, {
             title: intl.get(MODULE, 7)/*_i18n:设备名称*/,
             dataIndex: 'name',
             width: 390,
+            render: (name, record) => (
+                <label>{record.name}{record.mac === me? intl.get(MODULE, 8)/*_i18n:（当前设备）*/:'' }</label>
+            ),
         }, {
             title: intl.get(MODULE, 9)/*_i18n:MAC地址*/,
             dataIndex: 'mac',
@@ -531,9 +514,6 @@ class FlowControl extends React.Component {
                             }}
                             bordered={false} size="middle" pagination={pagination} locale={{ emptyText: intl.get(MODULE, 27)/*_i18n:暂无设备*/ }} />
                     </div>
-                    {/* <div className='flowControl-save'>
-                        <Button type="primary" className='save-btn' loading={saveLoading} onClick={this.save}>{intl.get(MODULE, 28)}</Button>
-                    </div> */}
                 </React.Fragment>}
                 <Modal
                     closable={false}
