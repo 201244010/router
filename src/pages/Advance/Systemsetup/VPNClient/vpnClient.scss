@@ -5,6 +5,11 @@
 			margin-top: 48px;
 			margin-bottom: 24px;
 		}
+		.info-header {
+			border-bottom: 0;
+			margin-top: 30px;
+			margin-bottom: 10px;
+		}
 		.info-item {
 			position: relative;
 			.info-item-normal-label {
@@ -16,8 +21,39 @@
 				display: inline-block;
 				margin-bottom: 8px;
 			}
+			.info-item-select {
+				width: 320px;
+				display: block;
+				margin-bottom: 24px;
+				.ant-cascader-input {
+					border-radius: 8px;
+					height: 36px;
+				}
+				.ant-radio-wrapper {
+					display: inline-flex;
+					align-items: center;
+					margin-right: 12px;
+					margin-top: 8px;
+				}
+			}
 			.info-item-formItem {
 				width: 320px;
+			}
+		}
+		.info-item-right {
+			margin-left: 60px;
+		}
+		.info-list {
+			display: flex;
+		}
+		.advance-info {
+			cursor: pointer;
+			display: inline-block;
+			margin-bottom: 20px;
+			span {
+				font-size: 14px;
+				color: #ADB1B9;
+				margin-right: 8px;
 			}
 		}
 		.vpnClient-save {
