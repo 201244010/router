@@ -30,7 +30,7 @@
     "core-js": "^2.4.1",
     "cross-env": "^5.1.1",
     "debug": "^2.6.3",
-    "ejs": "~2.3.3",
+    "ejs": "~2.5.5",
     "eslint": "^3.19.0",
     "eslint-plugin-html": "^3.0.0",
     "exceljs": "^1.7.0",
