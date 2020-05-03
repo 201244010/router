@@ -55,7 +55,7 @@
     "sass-loader": "^6.0.6",
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^3.1.11"
   },
   "keywords": [],
   "author": "189 <kv.wang87@gmail.com>",
