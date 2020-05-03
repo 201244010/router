@@ -91,7 +91,7 @@
     "redux-thunk": "^2.3.0",
     "rimraf": "^2.6.2",
     "style-loader": "^0.21.0",
-    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-merge": "^4.1.3"
   }
 }
